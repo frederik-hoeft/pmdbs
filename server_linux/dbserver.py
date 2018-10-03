@@ -29,6 +29,10 @@ import subprocess
 import select
 import re
 import errno
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.image import MIMEImage
 ################################################################################
 #-------------------------------GLOBAL VARIABLES-------------------------------#
 ################################################################################
@@ -63,6 +67,7 @@ SUPPORT_EMAIL_HOST = "smtp.gmail.com"
 SUPPORT_EMAIL_SSL_PORT = 465
 SUPPORT_EMAIL_ADDRESS = ""
 SUPPORT_EMAIL_PASSWORD = ""
+
 ################################################################################
 #------------------------------SERVER CRYPTO CLASS-----------------------------#
 ################################################################################
@@ -239,6 +244,9 @@ class DatabaseManagement():
 			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
 			if not userID:
 				PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 				return
 			# CREDENTIAL CHECK PASSED
 			# FORMAT PARAMETERS
@@ -599,9 +607,14 @@ class Log():
 
 	# SCANS THE CLIENTS PORTS USING NMAP TO GET DETAILS FOR LOGGING
 	def GetDetails(address, clientSocket):
-		details = "IP: " + address
+		if "(" in address:
+			address = address.replace("(","!").replace(")","!").split("!")[1]
+		details = ""
 		if ":" in address:
+			details = "IP: " + address.split(":")[0] + "\nPort: " + address.split(":")[1]
 			address = address.split(":")[0]
+		else:
+			details = "IP: " + address
 		# CHECK IF SERVER SUPPORTS NMAP SCANS
 		if Server.nmap:
 			# USE COMMON PORTS FOR OS DETECTION
@@ -699,28 +712,497 @@ class Log():
 		
 class Management():
 	
-	def ResetRequest():
-		return
-	
-	def SendMail(command, UID):
-		if not isinstance(UID, int):
-			# PRINT ERROR MESSAGE
-			return 1
-		# MODES:
-		# NEW_LOGIN
-		# PASSWORD_CHANGE
-		# mode%eq!NEW_LOGIN!;
+	# USES A CODE PROVIDED BY THE USER TO VERIFY THE EMAL ADDRESS
+	def EmailVerification(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# username%eq!username!;code%eq!code!;
+		creds = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# INITIALIZE VARIABLES
+		username = None
+		providedCode = None
 		try:
-			mode = command.split("!")[1]
-			if mode == "NEW_LOGIN":
-				pass
-			elif mode == "PASSWORD_CHANGE":
-				pass
-			else:
-				pass
+			# POPULATE VARIABLES FROM COMMAND
+			for credential in creds:
+				if "password" in credential:
+					password = credential.split("!")[1]
+				elif "code" in credential:
+					providedCode = credential.split("!")[1]
+				# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND ERROR
+				else:
+					PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		# COMMAND IS FORMATTED IN AN UNKNOWN WAY --> THROW INVALID COMMAND ERROR
 		except:
-			return 2
-		return 0
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITAILZE VERIABLES
+		code = None
+		codeTime = None
+		codeAttemps = None
+		isVerifyed = None
+		# EXECUTE SQL QUERY TO GET CODE RELATED DATA
+		try:
+			cursor.execute("SELECT U_isVerifyed, U_code, U_codeTime, U_codeAttemps from Tbl_user WHERE U_username = \"" + username + "\";")
+			data = cursor.fetchall()
+			isVerifyed = data[0][0]
+			code = data[0][1]
+			codeTime = data[0][2]
+			codeAttemps = data[0][3]
+		# THROW SQL ERROR / MAY ALSO BE INDEX OUT OF RANGE
+		except:
+			connection.close()
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF ALL VARIABLES ARE INITIALIZED
+		if not isVerifyed or not code or not codeTime or not codeAttempts:
+			connection.close()
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF VERIFICATION IS NECESSARY
+		if codeAttempts == -1:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 21] NCES         -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNO_PASSWORD_CHANGE_SCHEDULED")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF CODE MATCHES THE CODE BY USER
+		if not code == providedCode:
+			# CHECK PROVIDED CODE WAS WRONG FOR THREE TIMES IN A ROW
+			if codeAttempts + 1 >= 3:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 20] F2FA            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRFAILED_REGISTRATION_2FA_CODE")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				# 2FA FAILED --> DELETE ACCOUNT
+				try:
+					cusor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
+				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+				except:
+					connection.close()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+				else:
+					# ACCOUNT DELETED SUCCESSFULLY --> COMMIT CHANGES AND FREE RESSOURCES
+					connection.commit()
+					connection.close()
+				return
+			# PROVIDED CODE WAS WRONG --> INCREMENT COUNTER
+			else:
+				codeAttempts += 1
+				# UPDATE COUNTER IN DATABASE
+				try:
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_id = " + userID + ";")
+				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+				except:
+					connection.close()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+				# DATABASE UPDATED SUCCESSFULLY --> COMMIT CHANGES AND RETURN STATUS TO USER
+				else:
+					connection.commit()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 18] I2FA            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_2FA_CODE")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		# CHECK IF CODE IS EXPIRED
+		if int(Timestamp()) - int(codeTime) > 1800:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 19] E2FA            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERREXPIRED_2FA_CODE")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# ALL CHECKS PASSED
+		# VERIFY ACCOUNT
+		try:
+			cursor.execute("UPDATE Tbl_user SET U_isVerifyed = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\";")
+		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+		except:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
+		else:
+			connection.commit()
+			PrintSendToAdmin("SERVER ---> ACCOUNT VERIFIED           ---> " + clientAddress)
+		# FREE RESOURCES
+		finally:
+			connection.close()
+	
+	# HANDLES REQUESTS FOR CHANGED MASTER PASSWORDS
+	def MasterPasswordRequest(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# username%eq!username!;
+		creds = command.split("!")
+		# CHECK FOR SQL INJECTION ATTEMPTS
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# INITIALIZE VARIABLE TO STORE THE USERNAME
+		username = None
+		# EXTRACT USERNAME FROM COMMAND
+		try:
+			for credential in creds:
+				if "username" in credential:
+					username = credential.split("!")[1]
+				else:
+					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+					PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		except:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITIALIZE VARIABLE TO STORE PASSWORD-HASH IN
+		passwordHash = None
+		try:
+			# QUERY DATABASE FOR PASSWORD HASH OF PROVIDED USERNAME
+			cursor.execute("SELECT U_password from Tbl_user WHERE U_username = \"" + username + "\";")
+			data = cursor.fetchall()
+			passwordHash = data[0][0]
+		except:
+			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# RETURN PASSSWORD HASH TO USER
+		PrintSendToAdmin("SERVER ---> MASTERPASSWORD HASH        ---> " + clientAddress)
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("DTARETSYNPWD" + passwordHash)
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+	
+	# CHANGES THE PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
+	def PasswordChange(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# password%eq!hash!;code%eq!code!;
+		creds = command.split(";")
+		# CHECK FOR SQL INJECTION ATTEMPTS
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK CREDENTIALS
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		# CHECK IF USER IS LOGGED IN
+		if not userID:
+			# CHECK FAILED
+			PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# INITAILIZE VARIABLES TO STORE EXTRACTED VALUES
+		newPassword = None
+		providedCode = None
+		# EXTRACT VALUES FROM PROVIDED COMMAND
+		try:
+			for element in creds:
+				if "password" in element:
+					newPassword = element.split("!")[1]
+				elif "code" in element:
+					providedCode = element.split("!")[1]
+				else:
+					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+					PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		except:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
+		if not newPassword or not providedCode:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITALIZE VARIABLES TO STORE VALUES FOR CODE VALIDATION
+		code = None
+		codeTime = None
+		codeAttempts = None
+		username = None
+		try:
+			# QUERY DAATABASE FOR VALIDATION CODES
+			cursor.execute("SELECT U_code, U_codeTime, U_codeAttempts, U_username FROM Tbl_user WHERE U_id = " + userID + ";")
+			data = cursor.fetchall()
+			code = data[0][0]
+			codeTime = data[0][1]
+			codeAttempts = data[0][2]
+			username = data[0][3]
+		except:
+			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
+			connection.close()
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
+		if not code or not codeTime or not codeAttempts or not username:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF PASSWORD CHANGE HAS BEEN REQUESTED IN THE FIRST PLACE
+		if codeAttempts == -1:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 21] NCES         -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNO_PASSWORD_CHANGE_SCHEDULED")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
+		if not code == providedCode:
+			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
+			if codeAttempts + 1 >= 3:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY MAC ADDRESS OR IP
+				PrintSendToAdmin("SERVER <-#- [ERRNO 20] F2FA            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRFAILED_2FA_CODE")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				# TODO: BAN DEVICE FOR 1H
+				return
+			else:
+				# INCREMENT COUNTER FOR WRONG ATTEMPTS
+				codeAttempts += 1
+				try:
+					# UPDATE COUNTER IN DATABASE
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_id = " + userID + ";")
+				except:
+					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION AND FREE RESOURCES
+					connection.close()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+				else:
+					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
+					connection.commit()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 18] I2FA            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_2FA_CODE")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		# CHECK IF VALIDATION CODE HAS EXPIRED
+		if int(Timestamp()) - int(codeTime) > 1800:
+			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
+			PrintSendToAdmin("SERVER <-#- [ERRNO 19] E2FA            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERREXPIRED_2FA_CODE")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# ALL CHECKS PASSED
+		# UPDATE PASSWORD HASH
+		hashedUsername = CryptoHelper.SHA256(username)
+		salt = CryptoHelper.SHA256(hashedUsername + password)
+		newHash = CryptoHelper.Scrypt(newPassword, salt)
+		try:
+			# WRITE CHANGES TO DATABASE
+			cursor.execute("UPDATE Tbl_user SET U_password = \"" + newHash + "\", U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp().split(".")[0] + "\" WHERE U_id = " + userID + ";")
+		except:
+			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		else:
+			# UPDATED SUCCESSFULLY --> COMMIT CHANGES 
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# ALL UPDATED
+		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
+		PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFACKSEND_UPDATE")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+
+	# HANDLES REQUESTS TO CHANGE THE MASTER PASSWORDS AND SENDS VERIFICATION CODES TO EMAIL
+	def PasswordChangeRequest(command, clientAddress, clientSocket, aesKey):
+		# GET USER ID
+		UID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not UID:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITIALIZE VARIABLES TO STORE DATABASE QUERY RESULTS
+		address = None
+		name = None
+		try:
+			# GET DATA NEEDED TO GENERATE EMAIL
+			cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_id = " + UID + ";")
+			data = cursor.fetchall()
+			address = str(data[0][0])
+			name = str(data[0][1])
+		except:
+			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+			connection.close()
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF VARIABLES HAVE BEEN PROPERLY INITAILIZED
+		if not address or not name:
+			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# GENERATE VERIFICATION CODE
+		codeFinal = CodeGenerator()
+		try:
+			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
+			timestamp = Timestamp()
+			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeAttempts = 0 WHERE U_id = " + UID + ";")
+			connection.commit()
+		except:
+			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# INITIALIZE VARIABLES TO STORE EMAIL RELATED INFORMATION
+		subject = None
+		text = None
+		html = None
+		details = None
+		# GET DEVICE DETAILS
+		allClients = Server.allClients
+		for client in allClients:
+			if clientSocket in client:
+				details = client[3]
+		if not details:
+			# DETAILS HAVE NOT BEEN FOUND
+			PrintSendToAdmin("SERVER <-#- [ERRNO 16] NFND            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# TODO: Geolocate
+		# ip = details.split("\n")[0].split(" ")[1]
+		# ADAPT FORMATTING TO WORK IN HTML
+		htmlDetails = details.replace("\n","<br>")
+		try:
+			# EXAMPLE COMMAND
+			# mode%eq!PASSWORD_CHANGE!;
+			mode = command.split("!")[1]
+			if mode == "PASSWORD_CHANGE":
+				# FILL NEEDED INFORMATION TO SEND EMAIL
+				subject = "Password change request"
+				text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nYour login: " + name + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
+				html = "<html><head><style>table.main {width:800px;background-color:#121212;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#121212;color:#DAA520;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>Your login: <b>" + name + "</b><br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			else:
+				# COMMAND WAS INVALID
+				PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		except:
+			# COMMAND WAS FORMATTED IN AN UNUSUAL MANNER
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CALL SENDMAIL
+		Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+	
+	# SENDS AN EMAIL USING GIVEN PARAMETERS
+	def SendMail(From, To, subject, text, html, clientAddress):
+		# CONNECT TO SMTP SERVER (SSL)
+		server = smtplib.SMTP_SSL(host = SUPPORT_EMAIL_HOST, port = SUPPORT_EMAIL_SSL_PORT)
+		# LOGIN
+		server.login(SUPPORT_EMAIL_ADDRESS, SUPPORT_EMAIL_PASSWORD)
+		message = MIMEMultipart("alternative")
+		# SET EMAIL RELATED VARIABLES
+		message["Subject"] = subject
+		message["From"] = From
+		message["To"] = To
+		# READ IMAGE AS RAW BYTES
+		imageFile = open("lock.png", "rb")
+		msgImage = MIMEImage(imageFile.read())
+		imageFile.close()
+		# ADD HEADER TO IMAGE
+		msgImage.add_header("Content-ID", "<icon1>")
+		part1 = MIMEText(text, "plain")
+		part2 = MIMEText(html, "html")
+		# ATTACH IMAGE TO EMAIL
+		message.attach(msgImage)
+		# ATTACH TEXT TO EMAIL
+		message.attach(part1)
+		message.attach(part2)
+		# SEND THE EMAIL
+		server.sendmail(From, To, message.as_string())
+		# DISCONNECT
+		server.quit()
+		PrintSendToAdmin("SERVER ---> VERIFICATION MAIL SENT     ---> " + clientAddress)
 	
 	# KICKS A CLIENT SPECIFIED BY THE COMMAND (CAN BE USERNAME, IP, IP:PORT)
 	def Kick(command, clientAddress, clientSocket, aesKey):
@@ -972,12 +1454,44 @@ class Management():
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
+		# username%eq!username!;password%eq!password!;email%eq!email!;nickname%eq!nickname!;
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
-		creds = command.split('\x1f')
+		creds = command.split(";")
 		# GET THE CREDENTIALS FROM ARRAY
-		username = creds[0]
-		password = creds[1]
-		email = creds[2]
+		codeFinal = CodeGenerator()
+		codeTime = Timestamp()
+		# INITIALIZE VARIABLES TO STORE EXTRACTED INFORMATION FROM COMMAND
+		username = None
+		password = None
+		email = None
+		nickname = None
+		# ECTRACT INFORAMTION FROM COMMAND
+		# TODO EXCEPTION HANDLING
+		for credential in creds:
+			if "username" in credential:
+				username = credential.split("!")[1]
+			elif "password" in credential:
+				password = credential.split("!")[1]
+			elif "email" in credential:
+				email = credential.split("!")[1]
+			elif "nickname" in credential:
+				nickname = credential.split("!")[1]
+			elif len(credential) == 0:
+				pass
+			else:
+				# COMMAND CONTAINED MORE DATA THAN REQUESTED
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+				PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
+		if not username or not password or not email or not nickname:
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
 			return
@@ -988,29 +1502,39 @@ class Management():
 		hashedPassword = CryptoHelper.Scrypt(password, salt)
 		try:
 			# EXECUTE SQL QUERY
-			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\")")
+			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeAttempts,U_lastPasswordChange) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",0,\"" + Timestamp() + "\");")
 			# COMMIT CHANGES
 			connection.commit()
 			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username)
 			# SEND ACKNOWLEDGEMENT TO CLIENT
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("INFACKDONE")
+			encryptedData = aesEncryptor.encrypt("INFACKREQUEST_VERIFICATION")
 			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		except:
+		except Exception as e:
+			print(e)
 			# USER NAME ALREADY EXISTS
 			# SEND ERROR MESSAGE
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
 			encryptedData = aesEncryptor.encrypt("INFERRUSER_ALREADY_EXISTS")
-			PrintSendToAdmin("SERVER ---> ERR: USER_EXISTS           ---> " + clientAddress)
+			PrintSendToAdmin("SERVER <-#- [ERRNO 22] UEXT            -#-> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
 		finally:
 			# FREE RESOURCES
 			connection.close()
-			
+		# GENERATE VERIFICATION CODE
+		codeFinal = CodeGenerator()
+		# GENERATE EMAIL
+		subject = "[PMDBS] Please verify your email address."
+		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nBest regards,\nPMDBS Support Team"
+		html = "<html><head><style>table.main {width:800px;background-color:#121212;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#121212;color:#DAA520;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		# SEND VERIFICATION CODE BY EMAIL
+		Management.SendMail("PMDBS Support", email,	subject, text, html, clientAddress)
+		
+	# DUMP THE EVENT LOG / ADMIN PRIVILEGES REQUIRED
 	def DumpEventLog(command, clientAddress, clientSocket, aesKey):
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
 		if not clientSocket == Server.admin:
@@ -1297,6 +1821,7 @@ class Management():
 				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 				PrintSendToAdmin("SERVER ---> ALREADY LOGGED IN          ---> " + clientAddress)
 				return
+		
 		# EXAMPLE command = "username\x1fpassword"
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -1311,12 +1836,13 @@ class Management():
 			# CHECK FOR SECURITY ISSUES
 			if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
 				return
+			# CHECK IF USER ACCOUNT IS VERIFIED
 			# HASH PASSWORD
 			hashedUsername = CryptoHelper.SHA256(username)
 			salt = CryptoHelper.SHA256(hashedUsername + password)
 			hashedPassword = CryptoHelper.Scrypt(password, salt)
 			# QUERY FOR USER ID
-			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";")
+			cursor.execute("SELECT U_id, U_isVerified FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";")
 			# FETCH DATA
 			data = cursor.fetchall()
 			# CHECK IF CREDENTIALS ARE VALID
@@ -1332,6 +1858,13 @@ class Management():
 			# CREDENTIAL CHECK PASSED
 			# GET USER ID
 			userID = str(data[0][0])
+			isVerified = data[0][1]
+			if isVerified == 0:
+				PrintSendToAdmin("SERVER ---> ACCOUT NOT VERIFIED        ---> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRACCOUNT_NOT_VERIFIED")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
 			# ADD USER TO WHITELIST
 			Server.authorizedClients.append([userID, clientSocket, username])
 			Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
@@ -1401,7 +1934,7 @@ class Management():
 
 # RETURNS A TIMESTAMP OF THE CURRENT DATETIME IN FORMAT YYYYMMDDHHMMSS		
 def Timestamp():
-	return ReplaceAll(str(datetime.datetime.now()).split('.')[0], ['-',' ',':'])
+	return str(time.time()).split('.')[0]
 	
 # REMOVES ALL CHARACTERS OF TEXT THAT ARE DEFINED IN CHARARRAY
 def ReplaceAll(text, charArray):
@@ -1420,7 +1953,11 @@ def PrintSendToAdmin(text):
 			Server.admin.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		except SocketError:
 			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
-
+def CodeGenerator():
+	code = str(secrets.randbelow(1000000))
+	while not len(code) >= 6:
+		code = "0" + code
+	return "PM-" + code
 	
 ################################################################################
 #-------------------------------SERVER MAIN THREAD-----------------------------#
@@ -1609,7 +2146,7 @@ class Server(Thread):
 			Server.TCPsocket.close()
 
 ################################################################################
-#------------------------SERVER CONNECTION-HANDLER THREAD----------------------#
+#--------------------------------CUSTOM PROTOCOL-------------------------------#
 ################################################################################
 #-------------------------------PACKET SPECIFIER-------------------------------#
 #
@@ -1671,9 +2208,19 @@ class Server(Thread):
 # [ERRNO 13] NLGI				--> (LOGOUT ERROR) NOT LOGGED IN
 # [ERRNO 14] ISOH				--> INVALID START OF HEADER
 # [ERRNO 15] ICMD				--> INVALID COMMAND	
+# [ERRNO 16] NFND				--> NOT FOUND
+# [ERRNO 17] SQLE				--> SQL	ERROR
+# [ERRNO 18] I2FA				--> INVALID 2FA CODE
+# [ERRNO 19] E2FA				--> EXPIRED 2FA CODE
+# [ERRNO 20] F2FA				--> FILED 2FA (3 TIMES WRONG CODE)
+# [ERRNO 21] NCES				--> NO CODE EVENT SCHEDULED
+# [ERRNO 22] UEXT				--> USER ALREADY EXISTS
 #
 #------------------------------------------------------------------------------#
 
+################################################################################
+#------------------------SERVER CONNECTION-HANDLER THREAD----------------------#
+################################################################################
 # MANAGES CONNECTION TO CLIENT
 class ClientHandler():
 
@@ -1970,6 +2517,11 @@ class ClientHandler():
 								elif packetSID == "KIK":
 									PrintSendToAdmin("SERVER <--- KICK CLIENT                <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.Kick, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# REQUEST PASSWORD CHANGE
+								elif packetSID == "RPC":
+									PrintSendToAdmin("SERVER <--- PASSWORD CHANGE REQUEST    <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.PasswordChangeRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
