@@ -1,0 +1,2052 @@
+#!/usr/bin/python
+
+import socket
+from socket import error as SocketError
+import Crypto
+from Crypto import Random
+from Crypto.Util import number
+from Crypto.Cipher import PKCS1_OAEP, AES
+from Crypto.Util.asn1 import DerSequence
+from Crypto.PublicKey import RSA
+import threading
+from threading import Thread
+from base64 import standard_b64encode, b64decode
+from binascii import a2b_base64
+from os.path import basename, exists
+from xml.dom import minidom
+import ast
+import pyscrypt
+import sqlite3
+import base64
+import argparse
+import secrets
+import hashlib
+import os
+import glob
+import datetime
+import time
+import subprocess
+import select
+import re
+import errno
+################################################################################
+#-------------------------------GLOBAL VARIABLES-------------------------------#
+################################################################################
+# ANSI FORMATTINGS
+FOVERLINED="\033[53m"
+FITALIC="\033[3m"
+FUNDERLINED="\033[4m"
+FBLINKING="\033[5m"
+FCROSSED="\033[9m"
+# ANSI COLOR CODES
+CBLACK="\033[90m"
+CRED="\033[91m"
+CGREEN="\033[92m"
+CYELLOW="\033[93m"
+CBLUE="\033[94m"
+CPINK="\033[95m"
+CCYAN="\033[96m"
+CWHITE="\033[97m"
+ENDF="\033[0m"
+# VERSION INFO
+NAME = "PMDB-Server"
+VERSION = "0.10-1.18"
+BUILD = "development"
+DATE = "Oct 03 2018"
+TIME = "13:24:48"
+PYTHON = "Python 3.6.6 / LINUX"
+# CONFIG
+REBOOT_TIME = 1
+LOCAL_ADDRESS = "192.168.178.46"
+LOCAL_PORT = 4444
+SUPPORT_EMAIL_HOST = "smtp.gmail.com"
+SUPPORT_EMAIL_SSL_PORT = 465
+SUPPORT_EMAIL_ADDRESS = ""
+SUPPORT_EMAIL_PASSWORD = ""
+################################################################################
+#------------------------------SERVER CRYPTO CLASS-----------------------------#
+################################################################################
+
+
+# PROVIDES CRYPTOGRAPHIC METHODS
+class CryptoHelper():
+
+	# ENCRYPTS A MESSAGE USING A 4096 BIT RSA KEY
+	def RSAEncrypt(plaintext, publicKeyPemString):
+		# CREATE RSA KEY OBJECT
+		publicKey = RSA.importKey(publicKeyPemString)
+		# CREATE CIPHER
+		cipher = PKCS1_OAEP.new(publicKey)
+		# ENCRYPT MESSAGE
+		encryptedBytes = cipher.encrypt(bytes(plaintext, "utf-8"))
+		encryptedBytes = base64.b64encode(encryptedBytes)
+		# RETURN ENCRYPTED MESSAGE AS BASE64 STRING
+		return encryptedBytes.decode("utf-8")
+	
+	# DECRYPTS A MESSAGE USING A 4096 BIT RSA PRIVATE KEY OBJECT
+	def RSADecrypt(cryptotext, privateKey):
+		# CREATE CIPHER BASED ON PRIVATE KEY
+		cipher = PKCS1_OAEP.new(privateKey)
+		# DECRYPT MESSAGE
+		decryptedBytes = base64.b64decode(bytes(cryptotext,"utf-8"))
+		decryptedBytes = cipher.decrypt(decryptedBytes)
+		# RETTURN DECRYPTED MESSAGE AS UTF-8 STRING
+		return decryptedBytes.decode("utf-8")
+		
+	# RETURNS SHA256 HASH OF PLAINTEXT
+	def SHA256(plaintext):
+		hashBytes = base64.b64encode(hashlib.sha256(bytes(plaintext, "utf-8")).digest())
+		return hashBytes.decode("utf-8")
+		
+	# RETURNS BLAKE2 SALTED HASH OF PLAINTEXT (FAST & SECURE)
+	def BLAKE2(plaintext, salt):
+		hashBytes = base64.b64encode(hashlib.blake2b(bytes(plaintext + salt, "utf-8")).digest())
+		return hashBytes.decode("utf-8")
+		
+	# RETURNS SCRYPT SALTED HASH OF PLAINTEXT (SLOW & UNCRACKABLE)
+	def Scrypt(plaintext, salt):
+		return pyscrypt.hash(password = bytes(plaintext, "utf-8"), salt = bytes(salt, "utf-8"), N = 4096, r = 2, p = 1, dkLen = 128).hex()
+		
+	# GENERATES RSA KEY PAIR
+	def RSAKeyPairGenerator():
+		# GET A RANDOM SEED
+		random_generator = Random.new().read
+		# USE RANDOM SEED TO GENERATE RSA OBJECT
+		key = RSA.generate(4096, random_generator)
+		# GET THE PUBLIC AND PRIVATE KEY FROM RSA OBJECT
+		PubKey = key.publickey()
+		PrivKey = key
+		# RETURN BOTH KEYS (RSA OBJECTS)
+		return PubKey, PrivKey
+
+	# CONVERTS PUBLIC RSA KEY FROM PEM FORMAT TO XML
+	def RSAPublicPemToXml(pemPublicKey):
+		# IMPORT PEM KEY TO RSA OBJECT
+		publicKey = RSA.importKey(pemPublicKey)
+		# publicKey = pemPublicKey
+		# CONSTRUCT XML-FORMATTED KEY STEP-BY-STEP
+		xml  = '<RSAKeyValue>'
+		xml += '<Modulus>'
+		# EXPORT THE MODULUS FROM RSA OBJECT AND ADD IT TO XML STRING
+		xml += standard_b64encode(number.long_to_bytes(publicKey.n)).decode("utf-8")
+		xml += '</Modulus>'
+		xml += '<Exponent>'
+		# EXPORT THE EXPONENT FROM RSA OBJECT AND ADD IT TO XML STRING
+		xml += standard_b64encode(number.long_to_bytes(publicKey.e)).decode("utf-8")
+		xml += '</Exponent>'
+		xml += '</RSAKeyValue>'
+		# RETURN THE PUBLIC XML KEY-STRING
+		return xml
+	
+	# GENERATES 256 BYTE AES KEY
+	def AESKeyGenerator():
+		# GET 512 RANDOM BYTES
+		randomBytes = CryptoHelper.GetRandomBytes(512)
+		# CREATE SHA 256 HASH AND ENCODE TO BASE64
+		keyBytes = base64.b64encode(hashlib.sha256(randomBytes).digest())
+		# DECODE KEY BYTES TO UTF-8 STRING
+		AESKeyString = keyBytes.decode("utf-8")
+		# RETURN AES KEY
+		return AESKeyString
+		
+	# CONVERTS PUBLIC RSA KEY FROM XML FORMAT TO PEM
+	def RSAPublicXmlToPem(xmlPublicKey):
+		# PARSE XML-KEY-STRING TO minidom XML-OBJECT
+		rsaKeyValue = minidom.parseString(xmlPublicKey)
+		# EXTRACT MODULUS AND EXPONENT FROM minidom
+		modulus = CryptoHelper.GetLong(rsaKeyValue.getElementsByTagName('Modulus')[0].childNodes)
+		exponent = CryptoHelper.GetLong(rsaKeyValue.getElementsByTagName('Exponent')[0].childNodes)
+		# CONSTRUCT RSA KEY FROM MODULUS AND EXPONENT
+		publicKey = RSA.construct((modulus, exponent))
+		# RETURN THE PUBLIC PEM KEY-STRING
+		return publicKey.exportKey()
+		
+	#------------------------------HELPER FUNCTIONS----------------------------#
+	# GET LONG INTEGER
+	def GetLong(nodelist):
+		rc = []
+		for node in nodelist:
+			if node.nodeType == node.TEXT_NODE:
+				rc.append(node.data)
+		string = ''.join(rc) 
+		return number.bytes_to_long(b64decode(string))
+	
+	# GET RANDOM BYTES 
+	def GetRandomBytes(length):
+		randomBytes = secrets.token_bytes(length)
+		return randomBytes
+
+# AES CIPHER CLASS
+class AESCipher(object):
+	# INIT FUNCTION (HASH THE KEY/SET BLOCKSIZE)
+	def __init__(self, key): 
+		# SET BLOCKSIZE TO 32 BYTES (256 BITS)
+		self.bs = 32
+		# HASH THE PROVIDED KEY USING SHA 256
+		self.key = hashlib.sha256(key.encode()).digest()
+		
+	# ENCRYPT FUNCTION
+	def encrypt(self, raw):
+		# ENCODE UTF-8 FOR UNICODE CHARACTERS
+		raw = raw.encode("utf-8")
+		# GET PADDING RIGHT
+		raw = self._pad(raw)
+		# CREATE RANDOM IV
+		iv = Random.new().read(AES.block_size)
+		# CREATE CIPHER 
+		cipher = AES.new(self.key, AES.MODE_CBC, iv)
+		# ENCRYPT + APPEND ENCRYPTED MESSAGE TO IV AND CONVERT TO BASE64 STRING
+		return base64.b64encode(iv + cipher.encrypt(raw)).decode("utf-8")
+		
+	# DECRYPT FUNCTION
+	def decrypt(self, enc):
+		# DECODE BASE64 STRING TO BYTES
+		enc = base64.b64decode(enc)
+		# READ IV FROM BYTES
+		iv = enc[:AES.block_size]
+		# CREATE AES CIPHER
+		cipher = AES.new(self.key, AES.MODE_CBC, iv)
+		# DECRYPT MESSAGE + CONVERT TO UTF-8 STRING
+		return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode("utf-8")
+
+	def _pad(self, s):
+		return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs).encode("utf-8")
+
+	@staticmethod
+	def _unpad(s):
+		return s[:-ord(s[len(s)-1:])]
+
+# PROVIDES DATABASE RELATED METHODS
+class DatabaseManagement():
+	
+	# INSERT DATA 
+	def Insert(command, clientAddress, clientSocket, aesKey):
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+			parameters = command.split('\x1f')
+			# GET THE CREDENTIALS FROM ARRAY
+			queryParameter = parameters[0]
+			localID = parameters[1]
+			# CHECK FOR SECURITY ISSUES
+			if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+				return
+			# SECURITY CHECK PASSED
+			# CHECK CREDENTIALS
+			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+			if not userID:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+				return
+			# CREDENTIAL CHECK PASSED
+			# FORMAT PARAMETERS
+			queryParameters = queryParameter.split(";")
+			# INITIALIZE VARAIBLES
+			qUsername = None
+			qPassword = None
+			qHost = None
+			qEmail = None
+			qNotes = None
+			query = ""
+			values = ""
+			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+			for rawParameter in queryParameters:
+				if not len(rawParameter) == 0:
+					parameters = rawParameter.split("%eq")
+					column = parameters[0]
+					value = parameters[1].replace('!','')
+					# CHECK IF CULUMN IS VALID
+					if column in ["uname","password","host","notes","email","datetime"]:
+						if query == "":
+							query = "D_" + column
+							values = "\"" + value + "\""
+						else:
+							query += ",D_" + column
+							values += ",\"" + value + "\""
+			# CHECK IF ANY PARAMETERS HAVE BEEN SET
+			if query == "":
+				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 09] ISQP            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_SQL_QUERY_PARAMETERS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# CHECK PASSED: REQUEST IS VALID
+			# APPEND USER ID TO QUERY
+			query += "," + "D_userid"
+			values += "," + str(userID)
+			# EXECUTE SQL QUERY
+			fullQuery = "INSERT INTO Tbl_data (" + query + ") VALUES (" + values + ");"
+			# PrintSendToAdmin(fullQuery)
+			cursor.execute(fullQuery)
+			# COMMIT CHANGES
+			connection.commit()
+			cursor.execute("SELECT last_insert_rowid() FROM Tbl_data;")
+			# CREATE HID (HASHED ID)
+			dataID = cursor.fetchall()
+			if len(dataID) == 0:
+				return
+			HID = dataID[0][0]
+			hashedID = CryptoHelper.BLAKE2(str(HID), str(userID))
+			# ADD HID TO ENTRY
+			cursor.execute("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";")
+			connection.commit()
+			Log.ClientEventLog("INSERT", clientSocket)
+			# SEND ACKNOWLEDGEMENT TO CLIENT
+			aesEncryptor = AESCipher(aesKey)
+			# ENCRYPT DATA
+			encryptedData = aesEncryptor.encrypt("DTARETINS" + localID + "\x1f" + hashedID)
+			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		
+	# UPDATE DATA	
+	def Update(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;datetime%eq!test!;hid%eq!test!\x1f12;"
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# SPLIT THE RAW COMMAND TO GET THE parameters
+			parameters = command.split('\x1f')
+			# GET THE CREDENTIALS FROM ARRAY
+			queryParameter = parameters[0]
+			localID = parameters[1]
+			# CHECK FOR SECURITY ISSUES
+			if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+				return
+			# SECURITY CHECK PASSED
+			# CHECK CREDENTIALS
+			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+			if not userID:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+				return
+			# CREDENTIAL CHECK PASSED
+			# FORMAT PARAMETERS
+			queryParameters = queryParameter.split(";")
+			query = ""
+			HID = None
+			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+			for rawParameter in queryParameters:
+				if not len(rawParameter) == 0:
+					parameters = rawParameter.split("%eq")
+					column = parameters[0]
+					value = parameters[1].replace('!','')
+					if column in ["uname","password","host","notes","email","datetime"]:
+						if query == "":
+							query = "D_" + column + " = \"" + value + "\""
+						else:
+							query += ",D_" + column + " = \"" + value + "\""
+					elif column == "hid":
+						HID = value
+			# CHECK IF ANY PARAMETERS HAVE BEEN SET
+			if query == "":
+				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 09] ISQP            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_SQL_QUERY_PARAMETERS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# CHECK PASSED: REQUEST IS VALID
+			# CONCATENATE AND EXECUTE QUERY
+			fullQuery = "UPDATE Tbl_data SET " + query + " WHERE D_userid = " + userID + " AND d_hid = \"" + HID + "\";"
+			#PrintSendToAdmin(fullQuery)
+			cursor.execute(fullQuery)
+			# COMMIT CHANGES
+			connection.commit()
+			Log.ClientEventLog("UPDATE", clientSocket)
+			# SEND ACKNOWLEDGEMENT TO CLIENT
+			aesEncryptor = AESCipher(aesKey)
+			# ENCRYPT DATA
+			encryptedData = aesEncryptor.encrypt("DTARETUPD" + localID + "\x1f" + "ACK")
+			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		
+	# SELECT DATA FROM THE DATABASE
+	def Select(queryParameter, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "username\x1fpassword\x1fHID1;HID2;HID3;HID4;HID5;"
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# CHECK FOR SECURITY ISSUES
+			queryParameters = queryParameter.split(";")
+			if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+				return
+			# SECURITY CHECK PASSED
+			# CHECK CREDENTIALS
+			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+			if not userID:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+				return
+			# CREDENTIAL CHECK PASSED
+			# FORMAT PARAMETERS
+			query = ""
+			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+			for parameter in queryParameters:
+				if not len(parameter) == 0:
+					if query == "":
+						query = "d_hid = \"" + parameter + "\""
+					else:
+						query += " OR d_hid = \"" + parameter + "\""
+			# CHECK IF ANY PARAMETERS HAVE BEEN SET
+			if query == "":
+				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 09] ISQP            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_SQL_QUERY_PARAMETERS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# CHECK PASSED: REQUEST IS VALID
+			cursor.execute("SELECT * FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
+			# GET DATA FROM CURSOR OBJECT
+			rawData = cursor.fetchall()
+			# COMMIT CHANGES
+			connection.commit()
+			# CREATE AND SEND PACKET FOR EACH RETURNED ROW
+			for entry in rawData:
+				# GET VALUES FROM DATA ARRAY
+				dHost = str(entry[1])
+				dUname = str(entry[2])
+				dPassword = str(entry[3])
+				dEmail = str(entry[4])
+				dNotes = str(entry[5])
+				dHid = str(entry[7])
+				dDatetime = str(entry[8])
+				# APPLY PACKET FORMATTING
+				# EXAMPLE: host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;hid%eq!test!;datetime%eq!test!;
+				data = "host%eq!" + dHost + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
+				# RETURN DATA TO CLIENT
+				aesEncryptor = AESCipher(aesKey)
+				# ENCRYPT DATA
+				encryptedData = aesEncryptor.encrypt("DTARETSEL" + data)
+				PrintSendToAdmin("SERVER ---> RETURNED DATA              ---> " + clientAddress)
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			Log.ClientEventLog("SELECT", clientSocket)
+			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
+			aesEncryptor = AESCipher(aesKey)
+			# ENCRYPT DATA
+			encryptedData = aesEncryptor.encrypt("INFRETSELACK")
+			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		finally:
+			# FREE RESOURCES
+			connection.close()
+	
+	def Delete(queryParameter, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			queryParameters = queryParameter.split(";")
+			# CHECK FOR SECURITY ISSUES
+			if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+				return
+			# SECURITY CHECK PASSED
+			# CHECK CREDENTIALS
+			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+			if not userID:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+				return
+			# CREDENTIAL CHECK PASSED
+			# FORMAT PARAMETERS
+			query = ""
+			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+			for parameter in queryParameters:
+				if not len(parameter) == 0:
+					if query == "":
+						query = "d_hid = \"" + parameter + "\""
+					else:
+						query += " OR d_hid = \"" + parameter + "\""
+			# CHECK IF ANY PARAMETERS HAVE BEEN SET
+			if query == "":
+				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 09] ISQP            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_SQL_QUERY_PARAMETERS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# CHECK PASSED: REQUEST IS VALID
+			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
+			connection.commit()
+			Log.ClientEventLog("DELETE", clientSocket)
+			# SEND ACKNOWLEDGEMENT TO CLIENT
+			aesEncryptor = AESCipher(aesKey)
+			# ENCRYPT DATA
+			encryptedData = aesEncryptor.encrypt("DTARETDELCONFIRMED" + queryParameter)
+			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		finally:
+			# FREE RESOURCES
+			connection.close()
+			
+	def Sync(queryParameter, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "fetch_mode%eq!FETCH_SYNC!"
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# CHECK FOR SECURITY ISSUES
+			if not DatabaseManagement.Security([queryParameter], clientAddress, clientSocket, aesKey):
+				return
+			# SECURITY CHECK PASSED
+			# CHECK CREDENTIALS
+			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+			if not userID:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+				return
+			# CREDENTIAL CHECK PASSED
+			# CHECK IF THERE IS NOT MORE THAN 1 PARAMETER
+			if not queryParameter.count("%eq") == 1:
+				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 09] ISQP            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_SQL_QUERY_PARAMETERS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# PARAMETER CHECK PASSED
+			# GENERATE SQL QUERY
+			fetchMode = queryParameter.split("%eq")[1].replace('!','')
+			# SYNC-MODE ONLY FETCHES IDS 
+			if fetchMode == "FETCH_SYNC":
+				cursor.execute("SELECT D_hid,D_datetime FROM Tbl_data WHERE D_userid = " + userID + ";")
+				data = cursor.fetchall()
+				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+				# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
+				aesEncryptor = AESCipher(aesKey)
+				# ENCRYPT DATA
+				encryptedData = aesEncryptor.encrypt("DTARETSYN" + finalData)
+				PrintSendToAdmin("SERVER ---> RETURNED SYNDATA           ---> " + clientAddress)
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				Log.ClientEventLog("SYNC", clientSocket)
+			# DUMP-MODE RETURNS ALL DATA
+			elif fetchMode == "FETCH_ALL":
+				cursor.execute("SELECT * FROM Tbl_data WHERE D_userid = " + userID + ";")
+				data = cursor.fetchall()
+				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+				# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
+				aesEncryptor = AESCipher(aesKey)
+				# ENCRYPT DATA
+				encryptedData = aesEncryptor.encrypt("DTARETSYN" + finalData)
+				PrintSendToAdmin("SERVER ---> RETURNED DTADUMP           ---> " + clientAddress)
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				Log.ClientEventLog("DATA_DUMP", clientSocket)
+			else:
+				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 09]           ISQP  -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_SQL_QUERY_PARAMETERS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		
+	# CHECKS FOR SECURITY ISSUES
+	def Security(queryArray, clientAddress, clientSocket, aesKey):
+		# CHECK FOR SQL INJECTION
+		for element in queryArray:
+			if ('\"' in element) or ('\'' in element):
+				PrintSendToAdmin("SERVER <-#- [ERRNO 07]           SQLI  -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRANTI_SQL_INJECTION")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				Log.ClientEventLog("SQL_INJECTION_ATTEMPT", clientSocket)
+				Log.ServerEventLog("SQL_INJECTION_ATTEMPT", clientAddress)
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				Management.Disconnect(clientSocket, "ANTI_SQL_INJECTION", clientAddress, False)
+				return False
+		# SQL INJECTION CHECK PASSED
+		return True
+	
+	# CHECKS FOR SECURITY ISSUES WITHOUT HANDLING ERRORS OR WRITING LOGS
+	def SecurityNoError(queryArray):
+		# CHECK FOR SQL INJECTION
+		for element in queryArray:
+			if ('\"' in element) or ('\'' in element):
+				return False
+		# SQL INJECTION CHECK PASSED
+		return True
+		
+# METHODS RELATED TO CREATING AND MANAGING LOGS		
+class Log():
+
+	# SCANS THE CLIENTS PORTS USING NMAP TO GET DETAILS FOR LOGGING
+	def GetDetails(address, clientSocket):
+		details = "IP: " + address
+		if ":" in address:
+			address = address.split(":")[0]
+		# CHECK IF SERVER SUPPORTS NMAP SCANS
+		if Server.nmap:
+			# USE COMMON PORTS FOR OS DETECTION
+			command = ["nmap", "-p", "22,80,445,65123,56123,54674", "-O", address]
+			# START NMAP IN SUBPROCESS
+			resultArray = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0].decode("utf-8").split("\n")
+			# PARSE NMAP RESULTS
+			for info in resultArray:
+				if "MAC Address:" in info:
+					details += "\n" + info
+				elif "Running:" in info or "Aggressive OS guesses:" in info:
+					details += "\n" + info.replace("Running:","OS:")
+				elif "Nmap scan report for" in info:
+					details += "\nDNS: " + info.split(" ")[4]
+				elif "Host is up" in info:
+					details += "\nPing: " + info.split(" ")[3].replace("(","")
+		# USE SOME FANCY FORMATTING FOR THE OUTPUT
+		PrintSendToAdmin(CWHITE + "┌─[" + CRED + "DETAILS FOR " + address + CWHITE + "]" + ENDF)
+		detailArray = details.split("\n")
+		detailCount = len(detailArray)
+		for index, detail in enumerate(detailArray):
+			if not index == (detailCount - 1):
+				PrintSendToAdmin(CWHITE + "├─╼ " + detail + ENDF)
+			else:
+				PrintSendToAdmin(CWHITE + "└─╼ " + detail + ENDF)
+		# ADD DETAILS TO CLIENT PROFILE
+		for index, client in enumerate(Server.allClients):
+			if clientSocket in client and len(client) == 3:
+				Server.allClients[index].append(details)
+	
+	# CREATES LOG FOR CLIENT RELATED EVENTS 
+	def ClientEventLog(event, clientSocket):
+		# CHECKS FOR SQL INJECTION
+		sqliSecure = DatabaseManagement.SecurityNoError([event])
+		if not sqliSecure:
+			return False
+		# INITIALIZE VARIABLES
+		dateTime = Timestamp()
+		address = None
+		userID = None
+		details = None
+		#allClients = [] #[[socket, ip, adminFlag, details],[...]]
+		#authorizedClients = [] # [[ID, socket],[...]]
+		# GET USER ID
+		for client in Server.authorizedClients:
+			if clientSocket in client:
+				userID = client[0]
+		if not userID:
+			return False
+		# GET ADDRESS AND DETAILS
+		for client in Server.allClients:
+			if clientSocket in client:
+				address = client[1]
+				try:
+					details = client[3]
+				except:
+					pass
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# WRITE ENTRY TO DATABASE
+		try:
+			cursor.execute("INSERT INTO Tbl_clientLog (L_event, L_ip, L_datetime, L_details, L_userid) VALUES (\"" + event + "\",\"" + address + "\",\"" + dateTime + "\",\"" + details + "\"," + userID + ");")
+			connection.commit()
+			return True
+		except:
+			return False
+		finally:
+			# FREE RESOURCES
+			connection.close()
+	
+	# CREATES LOG FOR SERVER RELATED OR GLOBAL EVENTS
+	def ServerEventLog(event, details):
+		# CHECKS FOR SQL INJECTION
+		sqliSecure = DatabaseManagement.SecurityNoError([event, details])
+		if not sqliSecure:
+			return False
+		# GET TIMESTAMP
+		dateTime = Timestamp()
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# WRITE ENTRY TO DATABASE
+		try:
+			cursor.execute("INSERT INTO Tbl_serverLog (S_event, S_datetime, S_details) VALUES(\"" + event + "\",\"" + dateTime + "\",\"" + details + "\");")
+			connection.commit()
+			return True
+		except:
+			return False
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		
+class Management():
+	
+	def ResetRequest():
+		return
+	
+	def SendMail(command, UID):
+		if not isinstance(UID, int):
+			# PRINT ERROR MESSAGE
+			return 1
+		# MODES:
+		# NEW_LOGIN
+		# PASSWORD_CHANGE
+		# mode%eq!NEW_LOGIN!;
+		try:
+			mode = command.split("!")[1]
+			if mode == "NEW_LOGIN":
+				pass
+			elif mode == "PASSWORD_CHANGE":
+				pass
+			else:
+				pass
+		except:
+			return 2
+		return 0
+	
+	# KICKS A CLIENT SPECIFIED BY THE COMMAND (CAN BE USERNAME, IP, IP:PORT)
+	def Kick(command, clientAddress, clientSocket, aesKey):
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 12] PERM            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINSUFFICIENT_PERMISSIONS")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# mode%eq!ipport!;target%eq!192.168.178.50:52336!
+		try:
+			# GET MODE AND TARGET
+			splittedCommands = command.split(";")
+			mode = splittedCommands[0].split("!")[1]
+			target = splittedCommands[1].split("!")[1]
+			# CHECK FOR SUPPORTED MODES
+			if mode == "ip":
+				# TRY REGEX --> EXCEPTION == INVALID COMMAND
+				try:
+					[0<=int(x)<256 for x in re.split('\.',re.match(r'^\d+\.\d+\.\d+\.\d+$',target).group(0))].count(True)==4
+				except:
+					PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+				# COMMAND IS VALID
+				else:
+					kicked = False
+					# CREATE LOCAL COPY OF THE SERVER PROPERTY "allClients"
+					allClientsLocal = Server.allClients.copy()
+					# ITERATE OVER LOCAL COPY OF ALL CLIENTS
+					for client in allClientsLocal:
+						# CHECK IF TARGET IP == CURRENT CLIENT
+						if target in client[1]:
+							# LOGOUT CLIENT (NOTE "NONE" FOR AESKEY IS ONLY VALID BECAUSE 4TH PARAMETER IS TRUE)
+							Management.Logout(client[1], client[0], None, True)
+							# DISCONNECT CLIENT
+							Management.Disconnect(client[0], "KICKED_BY_ADMIN", client[1], False)
+							kicked = True
+					# CHECK IF CLIENT HAS BEEN KICKED
+					if not kicked:
+						# CLIENT NOT FOUND
+						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
+						aesEncryptor = AESCipher(aesKey)
+						encryptedData = aesEncryptor.encrypt("INFCLIENT_NOT_FOUND")
+						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					# CLIENT HAS BEEN KICKED
+					else:
+						# CKECK IF CLIENT WAS ADMIN
+						if Server.admin == clientSocket:
+							# SEND CONFIRMATION TO ADMIN
+							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+							aesEncryptor = AESCipher(aesKey)
+							encryptedData = aesEncryptor.encrypt("INFACKNOWLEDGE")
+							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			elif mode == "ipport":
+				ip = target.split(":")[0]
+				port = target.split(":")[1]
+				# TRY REGEX --> EXCEPTION == INVALID COMMAND
+				try:
+					[0<=int(x)<256 for x in re.split('\.',re.match(r'^\d+\.\d+\.\d+\.\d+$',ip).group(0))].count(True)==4 and re.match("^[0-9]{5}$",port) and int(port) < 65536
+				except:
+					PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+				# COMMAND IS VALID
+				else:
+					kicked = False
+					# CREATE LOCAL COPY OF THE SERVER PROPERTY "allClients"
+					allClientsLocal = Server.allClients.copy()
+					# ITERATE OVER LOCAL COPY OF ALL CLIENTS
+					for client in allClientsLocal:
+						# CHECK IF TARGET IP == CURRENT CLIENT
+						if target == client[1]:
+							# LOGOUT CLIENT (NOTE "NONE" FOR AESKEY IS ONLY VALID BECAUSE 4TH PARAMETER IS TRUE)
+							Management.Logout(client[1], client[0], None, True)
+							# DISCONNECT CLIENT
+							Management.Disconnect(client[0], "KICKED_BY_ADMIN", client[1], False)
+							kicked = True
+					# CHECK IF CLIENT HAS BEEN KICKED
+					if not kicked:
+						# CLIENT NOT FOUND
+						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
+						aesEncryptor = AESCipher(aesKey)
+						encryptedData = aesEncryptor.encrypt("INFCLIENT_NOT_FOUND")
+						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					# CLIENT HAS BEEN KICKED
+					else:
+						# CKECK IF CLIENT WAS ADMIN
+						if Server.admin == clientSocket:
+							# SEND CONFIRMATION TO ADMIN
+							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+							aesEncryptor = AESCipher(aesKey)
+							encryptedData = aesEncryptor.encrypt("INFACKNOWLEDGE")
+							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			elif mode == "username":
+				kicked = False
+				# CREATE LOCAL COPY OF THE SERVER PROPERTY "authorizedClients"
+				authorizedClientsLocal = Server.authorizedClients.copy()
+				# ITERATE OVER LOCAL COPY OF AUTHORIZED CLIENTS
+				for client in authorizedClientsLocal:
+					# CHECK IF PROVIDED USERNAME MATCHES
+					if client[2] == target:
+						# GET ADDRESS FROM CLIENT LIST
+						# ITERATE OVER CLIENT LIST
+						for cclient in Server.allClients:
+							# CHECK IF SOCKETS MATCH
+							if client[1] in cclient:
+								# LOGOUT CLIENT (NOTE "NONE" FOR AESKEY IS ONLY VALID BECAUSE 4TH PARAMETER IS TRUE)
+								Management.Logout(client[1], client[0], None, True)
+								# DISCONNECT CLIENT
+								Management.Disconnect(cclient[0], "KICKED_BY_ADMIN", cclient[1], False)
+								kicked = True
+								break
+				# CHECK IF CLIENT HAS BEEN KICKED
+				if not kicked:
+					# CLIENT NOT FOUND
+					PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFCLIENT_NOT_FOUND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				# CLIENT HAS BEEN KICKED
+				else:
+					# CKECK IF CLIENT WAS ADMIN
+					if Server.admin == clientSocket:
+						# SEND CONFIRMATION TO ADMIN
+						PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+						aesEncryptor = AESCipher(aesKey)
+						encryptedData = aesEncryptor.encrypt("INFACKNOWLEDGE")
+						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			# COMMAND IS INVALID
+			else:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		# SOMETHING WENT WRONG --> BETTER TELL ADMIN
+		except Exception as E:
+			# PRINT ERROR MESSAGE
+			print("Error: {0}".format(E))
+			try:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			except:
+				pass
+	
+	# REMOVES CLIENT FROM CLIENT LIST
+	def Unlist(clientSocket):
+		# ITERATE OVER CLIENT LIST
+		for client in Server.allClients:
+			# CHECK FOR MATCHING SOCKET
+			if clientSocket in client:
+				# REMOVE CLIENT
+				Server.allClients.remove(client)
+				return
+
+	# DISCONNECT A CLIENT
+	def Disconnect(clientSocket, message, address, ignoreErrors):
+		# IF NO REASON IS SPECIFIED "UNKNOWN" WILL BE USED
+		if message == "":
+			message = "UNKNOWN"
+		# IF CLIENT IS ADMIN FREE UP ADMIN SLOT
+		if clientSocket == Server.admin:
+			Server.admin = None
+			Server.adminIp = None
+			Log.ServerEventLog("ADMIN_LOGOUT", "IP: " + address)
+			for client in Server.allClients:
+				if clientSocket in client:
+					Server.allClients.remove(client)
+		# IF CLIENT IS USER REMOVE HIM FROM THE CURRENTLY-CONNECTED LIST
+		else:
+			for client in Server.allClients:
+				if clientSocket in client:
+					Server.allClients.remove(client)
+		Log.ServerEventLog("CLIENT_DISCONNECTED", "IP: " + address)
+		if not ignoreErrors:
+			# SEND CUSTOM FIN
+			clientSocket.send(b'\x01' + bytes("UFIN" + message, "utf-8") + b'\x04')
+		# SEND TCP FIN
+		clientSocket.shutdown(socket.SHUT_RDWR)
+		# CLOSE SOCKET
+		clientSocket.close()
+		PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + address)
+
+	# RETURNS LIST OF CLIENTS
+	def ListClients(command, clientAddress, clientSocket, aesKey):
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 12]           PERM  -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINSUFFICIENT_PERMISSIONS")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK FOR DIFFERENT FILTER MODES
+		if command == "mode%eq!ALL_CONNECTED!":
+			# RETURN ALL CURRENTLY CONNECTED CLIENTS
+			# CREATE A HEADER FOT THE TABLE
+			header = CWHITE + FUNDERLINED + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + ENDF
+			PrintSendToAdmin(header)
+			# ITERATE OVER CLIENT LIST
+			for client in Server.allClients:
+				# GET IP AND SOCKET
+				ip = client[1]
+				csocket = client[0]
+				# FIX PADDING TO ALIGN THE RESULTS
+				ip += (21 - len(ip)) * " "
+				clientStatus = None
+				# CHECK IF CLIENT IS LOGGED IN
+				# ITERATE OVER LIST OF AUTHORIZED CLIENTS
+				for authClient in Server.authorizedClients:
+					# CHECK FOR MATCH WITH SOCKET
+					if csocket in authClient:
+						# CONCATENATE RESULTS AND APPLY COLOR CODES
+						clientStatus = CCYAN + ip + ENDF + CWHITE + " │ " + ENDF + CCYAN + "logged in as: " + authClient[2] + ENDF
+						break
+				# CHECK IF CLIENT IS ADMIN
+				if not clientStatus:
+					# ITERATE OVER CLIENT LIST
+					for connClient in Server.allClients:
+						# CHECK FOR ADMIN FLAG
+						if csocket in connClient and connClient[2] == 1:
+							# CONCATENATE RESULTS AND APPLY COLOR CODES
+							clientStatus = CRED + ip + ENDF + CWHITE + " │ " + ENDF + CRED + "logged in as: ADMIN" + ENDF
+							break
+				# CLIENT IS NOT LOGGED IN
+				if not clientStatus:
+					# CONCATENATE RESULTS AND APPLY COLOR CODES
+					clientStatus = CYELLOW + ip + ENDF + CWHITE + " │ " + ENDF + CYELLOW + "not logged in" + ENDF
+				# PRINT IT
+				PrintSendToAdmin(clientStatus)
+		else:
+			# COMMAND IS INVALID OR SELECTED MODE IS NOT SUPPORTED
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				
+				
+		
+	# REGISTER A NEW USER 
+	def Register(command, clientAddress, clientSocket, aesKey):
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+		creds = command.split('\x1f')
+		# GET THE CREDENTIALS FROM ARRAY
+		username = creds[0]
+		password = creds[1]
+		email = creds[2]
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SQL INJECTION CHECK PASSED. CREDENTIALS ARE VALID
+		# CREATE SCRYPT HASHED PASSWORD
+		hashedUsername = CryptoHelper.SHA256(username)
+		salt = CryptoHelper.SHA256(hashedUsername + password)
+		hashedPassword = CryptoHelper.Scrypt(password, salt)
+		try:
+			# EXECUTE SQL QUERY
+			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\")")
+			# COMMIT CHANGES
+			connection.commit()
+			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username)
+			# SEND ACKNOWLEDGEMENT TO CLIENT
+			aesEncryptor = AESCipher(aesKey)
+			# ENCRYPT DATA
+			encryptedData = aesEncryptor.encrypt("INFACKDONE")
+			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		except:
+			# USER NAME ALREADY EXISTS
+			# SEND ERROR MESSAGE
+			aesEncryptor = AESCipher(aesKey)
+			# ENCRYPT DATA
+			encryptedData = aesEncryptor.encrypt("INFERRUSER_ALREADY_EXISTS")
+			PrintSendToAdmin("SERVER ---> ERR: USER_EXISTS           ---> " + clientAddress)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		finally:
+			# FREE RESOURCES
+			connection.close()
+			
+	def DumpEventLog(command, clientAddress, clientSocket, aesKey):
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 12] PERM            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINSUFFICIENT_PERMISSIONS")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF PACKET IS VALID
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# CHECK IF SERVER OR CLIENT LOG SHOULD BE DUMPED
+			if command == "SERVER":
+				# EXECUTE QUERY
+				cursor.execute("SELECT * FROM Tbl_serverLog;")
+				# FETCH DATA
+				data = cursor.fetchall()
+				# FORMAT DATA
+				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+				# ENCRYPT AND SEND TO ADMIN
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("LOGDMPSERVER\n" + finalData)
+				sendData = b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04'
+				clientSocket.sendall(sendData)
+				PrintSendToAdmin("SERVER ---> SERVER LOG DUMP            ---> " + clientAddress)
+				# LOG DATA DUMP
+				Log.ServerEventLog("SERVER_LOG_DUMP", "IP: " + clientAddress)
+			elif command == "CLIENT":
+				# EXECUTE QUERY
+				cursor.execute("SELECT * FROM Tbl_clientLog;")
+				# FETCH DATA
+				data = cursor.fetchall()
+				# FORMAT DATA
+				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+				# ENCRYPT AND SEND TO ADMIN
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("LOGDMPCLIENT\n" + finalData)
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				PrintSendToAdmin("SERVER ---> CLIENT LOG DUMP            ---> " + clientAddress)
+				# LOG DATA DUMP
+				Log.ServerEventLog("CLIENT_LOG_DUMP", "IP: " + clientAddress)
+			else:
+				return
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		
+	# ALLOWS TO LOG IN AS A REMOTE ADMIN
+	def LoginAdmin(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "username\x1fpassword\x1ffetch_mode%eq!FETCH_SYNC!"
+		# CHECK IF USER IS ADMIN
+		if clientSocket == Server.admin:
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("LOG|Ok! You are already Admin.")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+			creds = command.split('\x1f')
+			# GET THE CREDENTIALS FROM ARRAY
+			username = creds[0]
+			password = creds[1]
+			# CHECK FOR SECURITY ISSUES
+			if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+				return
+			# SECURITY CHECK PASSED
+			# HASH PASSWORD
+			hashedUsername = CryptoHelper.SHA256(username)
+			salt = CryptoHelper.SHA256(hashedUsername + password)
+			hashedPassword = CryptoHelper.Scrypt(password, salt)
+			# QUERY FOR USER ID
+			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";")
+			# FETCH DATA
+			data = cursor.fetchall()
+			# CHECK IF CREDENTIALS ARE VALID
+			if len(data) == 0:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 08] CRED            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_CREDENTIALS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# CREDENTIAL CHECK PASSED
+			# GET USER ID
+			userID = str(data[0][0])
+			# CHECK IF USER IS ADMIN
+			if not userID == "1" and username == "__ADMIN__":
+				# THROW INVALID CREDENTIALS EXCEPTION
+				PrintSendToAdmin("SERVER <-#- [ERRNO 10] ADMN            -#-> " + clientAddress)
+				# TRY TO GATHER DETAILS FOR LOG ENTRY
+				details = None
+				try:
+					for client in Server.allClients:
+						if clientSocket in client:
+							details = client[3]
+				except:
+					pass
+				if details:
+					Log.ServerEventLog("ADMIN_LOGIN_ATTEMPT", details)
+				else:
+					Log.ServerEventLog("ADMIN_LOGIN_ATTEMPT", "IP: " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_ADMIN_CREDENTIALS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# USER IS ADMIN
+			# CHECK FOR OTHER ADMINS
+			if not Server.admin == None:
+				# THROW ADMIN ALREADY LOGGED IN
+				PrintSendToAdmin("SERVER <-#- [ERRNO 11] ACNA            -#-> " + clientAddress)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRADMIN_SLOT_OCCUPIED")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			Management.Logout(clientAddress, clientSocket, aesKey, False)
+			# SET UP ADMIN STATUS
+			Server.admin = clientSocket
+			Server.adminIp = clientAddress
+			details = None
+			for index, client in enumerate(Server.allClients):
+				if clientSocket in client:
+					Server.allClients[index][2] = 1
+					try:
+						details = client[3]
+					except:
+						pass
+			Server.adminAesKey = aesKey
+			# TRY TO GATHER DETAILS FOR LOG ENTRY
+			if details:
+				Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
+			else:
+				Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", "IP: " + clientAddress)
+			PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
+		finally:
+			# FREE RESOURCES
+			connection.close()
+			
+	# DISCONNECT ALL CLIENTS AND SHUT DOWN SERVER
+	def Shutdown(command, clientAddress, clientSocket, aesKey):
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 12] PERM            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINSUFFICIENT_PERMISSIONS")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		PrintSendToAdmin(CWHITE + "         Initializing shutdown ..." + ENDF)
+		# CHECK IF PACKET IS VALID
+		if not command == "SHUTDOWN":
+			PrintSendToAdmin(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Shutdown initalized." + ENDF)
+			return
+		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
+		allClients = Server.allClients
+		# CREATE LOG
+		Log.ServerEventLog("SHUTDOWN", "Clients: " + str(allClients))
+		# INITIALIZE SHUTDOWN SEQUENCE
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Shutdown initalized." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
+		Server.running = False
+		time.sleep(REBOOT_TIME)
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Sockets closed." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Disconnecting clients ..." + ENDF)
+		# INITIALIZE ITERATOR
+		index = 0
+		# ITERATE OVER CLIENT 2D ARRAY
+		for client in allClients:
+			# CHECK IF CURRENT CLIENT IS DEFAULT USER
+			if client[2] == 0:
+				# GET SOCKET + IP
+				csocket = client[0]
+				address = client[1]
+				# DELETE CLIENT IN GLOBAL ARRAY
+				del Server.allClients[index]
+				# DISCONNECT CLIENT
+				Management.Disconnect(csocket, "SERVER_SHUTDOWN", address, True)
+			# CLIENT IS ADMIN
+			else:
+				# INCREMENT ITERATOR
+				index += 1
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Disconnected clients." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Stopping threads ..." + ENDF)
+		# WAIT 5 SECONDS IN CASE THREADS ARE STILL RUNNING
+		time.sleep(REBOOT_TIME)
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Stopped threads." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Closing remote admin session ..." + ENDF)
+		Server.stopped = True
+		# CLOSE REMOTE SESSION
+		Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, True)
+		time.sleep(1)
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Closed remote admin session." + ENDF)
+		# CONNECT TO LOCALHOST TO TRIGGER socket.accept() (STUCK IN ENDLESS LOOP)
+		PrintSendToAdmin(CWHITE + "         Triggering full stop ..." + ENDF)
+		socket.create_connection((Server.localAddress, Server.localPort))
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server shutdown complete." + ENDF)
+		
+		# DISCONNECT ALL CLIENTS AND REBOOT SERVER
+	def Reboot(command, clientAddress, clientSocket, aesKey):
+		# CHECK IF REQUEST COMES FROM ADMIN
+		if not clientSocket == Server.admin:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 12] PERM            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINSUFFICIENT_PERMISSIONS")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF PACKET IS VALID
+		PrintSendToAdmin(CWHITE + "         Initializing reboot ..." + ENDF)
+		if not command == "REBOOT":
+			PrintSendToAdmin(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reboot initalized." + ENDF)
+			return
+		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
+		allClients = Server.allClients
+		# CREATE LOG
+		Log.ServerEventLog("REBOOT", "Clients: " + str(allClients))
+		# INITIALIZE SHUTDOWN SEQUENCE
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Reboot initalized." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
+		Server.running = False
+		time.sleep(REBOOT_TIME)
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Sockets closed." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Disconnecting clients ..." + ENDF)
+		# INITIALIZE ITERATOR
+		index = 0
+		# ITERATE OVER CLIENT 2D ARRAY
+		for client in allClients:
+			# CHECK IF CURRENT CLIENT IS DEFAULT USER
+			if client[2] == 0:
+				# GET SOCKET + IP
+				csocket = client[0]
+				address = client[1]
+				# DELETE CLIENT IN GLOBAL ARRAY
+				del Server.allClients[index]
+				# DISCONNECT CLIENT
+				Management.Disconnect(csocket, "SERVER_REBOOT", address, True)
+			# CLIENT IS ADMIN
+			else:
+				# INCREMENT ITERATOR
+				index += 1
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Disconnected clients." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Stopping threads ..." + ENDF)
+		# WAIT 5 SECONDS IN CASE THREADS ARE STILL RUNNING
+		time.sleep(REBOOT_TIME)
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Stopped threads." + ENDF)
+		PrintSendToAdmin(CWHITE + "         Closing remote admin session ..." + ENDF)
+		Server.stopped = True
+		# CLOSE REMOTE SESSION
+		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Closed remote admin session." + ENDF)
+		time.sleep(1)
+		Management.Disconnect(clientSocket, "SERVER_REBOOT", clientAddress, True)
+		# CONNECT TO LOCALHOST TO TRIGGER socket.accept() (STUCK IN ENDLESS LOOP)
+		print(CWHITE + "         Triggering full stop ..." + ENDF)
+		socket.create_connection((Server.localAddress, Server.localPort))
+		# RESTART SERVER
+		print(CWHITE + "         Rescheduling process ..." + ENDF)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Rescheduled process." + ENDF)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server shutdown complete." + ENDF)
+		os.system("sleep " + str(REBOOT_TIME) + " && python3 dbserver.py")
+	
+	# LOGIN A CLIENT AND ADD HIM TO AUTHORIZED CLIENTS (SAVES EXPENSIVE DATABASE LOOKUPS)
+	def Login(command, clientAddress, clientSocket, aesKey):
+		# CHECK IF USER IS ADMIN
+		if clientSocket == Server.admin:
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("LOG|You are already Admin. Use \'logout\' and try again.")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			PrintSendToAdmin("SERVER ---> ALREADY LOGGED IN          ---> " + clientAddress)
+			return
+		# CHECK IF USER IS LOGGED IN ALREADY
+		for client in Server.authorizedClients:
+			if clientSocket in client:
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("You are already logged in. Use \'logout\' and try again.")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				PrintSendToAdmin("SERVER ---> ALREADY LOGGED IN          ---> " + clientAddress)
+				return
+		# EXAMPLE command = "username\x1fpassword"
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+			creds = command.split('\x1f')
+			# GET THE CREDENTIALS FROM ARRAY
+			username = creds[0]
+			password = creds[1]
+			# CHECK FOR SECURITY ISSUES
+			if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+				return
+			# HASH PASSWORD
+			hashedUsername = CryptoHelper.SHA256(username)
+			salt = CryptoHelper.SHA256(hashedUsername + password)
+			hashedPassword = CryptoHelper.Scrypt(password, salt)
+			# QUERY FOR USER ID
+			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";")
+			# FETCH DATA
+			data = cursor.fetchall()
+			# CHECK IF CREDENTIALS ARE VALID
+			if len(data) == 0:
+				PrintSendToAdmin("SERVER <-#- [ERRNO 08] CRED            -#-> " + clientAddress)
+				Log.ClientEventLog("LOGIN_ATTEMPT_FAILED", clientSocket)
+				# RETURN ERROR MESSAGE TO CLIENT
+				# ENCRYPT DATA
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRINVALID_CREDENTIALS")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
+			# CREDENTIAL CHECK PASSED
+			# GET USER ID
+			userID = str(data[0][0])
+			# ADD USER TO WHITELIST
+			Server.authorizedClients.append([userID, clientSocket, username])
+			Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFLOGIN_SUCCESSFUL")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+		finally:
+			# FREE RESOURCES
+			connection.close()
+	
+	# REMOVES USER FROM WHITELIST
+	def Logout(clientAddress, clientSocket, aesKey, isDisconnected):
+		isLoggedout = False
+		# CHECK IF USER IS ADMIN
+		if clientSocket == Server.admin:
+			# LOGOUT ADMIN
+			# ITERATE OVER ALL CLIENTS
+			for index, client in enumerate(Server.allClients):
+				# CHECK IF ADMIN FLAG IS SET
+				if client[2] == 1:
+					# SET ADMIN FLAG TO 0
+					Server.allClients[index][2] = 0
+			Server.admin = None
+			Server.adminIp = None
+			isLoggedout = True
+			Log.ServerEventLog("ADMIN_LOGOUT", "IP: " + clientAddress)
+			print("SERVER **** ADMIN LOGOUT     **** " + clientAddress)
+		else:
+			# ITERATE OVER WHITELISTED CLIENTS AND REMOVE CLIENT TO LOGOUT
+			for client in Server.authorizedClients:
+				if clientSocket in client and not isDisconnected:
+					Server.authorizedClients.remove(client)
+					isLoggedout = True
+					Log.ClientEventLog("LOGOUT", clientSocket)
+					PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+					break
+			# USER IS NOT WHITELISTED
+			if not isLoggedout and not isDisconnected:
+				try:
+					# RETURN ERROR MESSAGE TO CLIENT
+					clientSocket.send(b'\x01' + bytes("UINFERRNOT_LOGGED_IN", "utf-8") + b'\x04')
+				except:
+					pass
+		# RETURN STATUS
+		return isLoggedout
+	
+	# CHECKS IF USER IS WHITELISTED (SAVES EXPENSIVE DATABASE LOOKUPS)
+	def CheckCredentials(clientAddress, clientSocket, aesKey):
+		userID = None
+		try:
+			# ITERATE OVER 2D ARRAY
+			for client in Server.authorizedClients:
+				if clientSocket in client:
+					userID = client[0]
+		except:
+			pass
+		# USER IS NOT LOGGED IN
+		if not userID:
+			# RETURN ERROR MESSAGE TO CLIENT
+			# ENCRYPT DATA
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		# RETURN ID OR NONE IF USER NOT WHITELISTED
+		return userID
+
+# RETURNS A TIMESTAMP OF THE CURRENT DATETIME IN FORMAT YYYYMMDDHHMMSS		
+def Timestamp():
+	return ReplaceAll(str(datetime.datetime.now()).split('.')[0], ['-',' ',':'])
+	
+# REMOVES ALL CHARACTERS OF TEXT THAT ARE DEFINED IN CHARARRAY
+def ReplaceAll(text, charArray):
+	for char in charArray:
+		text = text.replace(char,'')
+	return text
+
+# MIRRORS SERVER OUTPUT TO REMOTE ADMIN
+def PrintSendToAdmin(text):
+	print(text)
+	# IF ADMIN IS LOGGED IN SEND SERVER MESSAGES
+	if not Server.admin == None:
+		aesEncryptor = AESCipher(Server.adminAesKey)
+		encryptedData = aesEncryptor.encrypt("LOG|" + text)
+		try:
+			Server.admin.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		except SocketError:
+			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
+
+	
+################################################################################
+#-------------------------------SERVER MAIN THREAD-----------------------------#
+################################################################################
+# LISTENS ON PORT 4444 AND STARTS NEW THREAD FOR EACH CLIENT
+class Server(Thread):
+	# INITIALIZE GLOBAL SERVER ATTRIBUTES
+	serverPublicKey = None
+	serverPrivateKey = None
+	connection = None
+	cursor = None
+	dataBase = None
+	localAddress = LOCAL_ADDRESS
+	localPort = LOCAL_PORT
+	allClients = [] #[[socket, address, adminFlag, details],[...]]
+	authorizedClients = [] # [[ID, socket, username],[...]]
+	admin = None
+	adminIp = None
+	running = True
+	adminAesKey = None
+	stopped = False
+	TCPsocket = None
+	nmap = False
+	
+	# RUN METHOD
+	def run(self):
+		# CLEAR THE CONSOLE
+		os.system("cls" if os.name == "nt" else "clear")
+		print(CWHITE + "         Initializing boot sequence ..." + ENDF)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Boot sequence initialized." + ENDF)
+		# GET ANY DATABASES IN CURRENT WORKING DIRECTORY
+		print(CWHITE + "         Checking for database in " + os.getcwd() + " ..." + ENDF)
+		dataBases = glob.glob(os.getcwd() + "/*.db")
+		# EXIT IF NO DATABASES HAVE BEEN FOUND
+		if len(dataBases) == 0:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: No database found." + ENDF)
+			return
+		# IF ONLY ONE DATABASE IS AVAILABLE AUTOSELECT IT
+		elif len(dataBases) == 1:
+			# GLOB RETURNS NAME + PATH --> REMOVE PATH
+			pathParts = dataBases[0].split("/")
+			db = pathParts[len(pathParts) - 1]
+			# SET DATABASE
+			Server.dataBase = db
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found sqlite3 database \"" + self.dataBase + "\" in " + os.getcwd() + ENDF)
+			print(CWHITE + "         Autoselecting ..." + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + self.dataBase + ENDF)
+		# GLOB RETURNED MORE THAN ONE DATABASE --> MANUAL SELECTION NEEDED
+		else:
+			notSelected = True
+			# LOOP IN CASE USER INPUT IS INVALID
+			while notSelected:
+				iterator = 0
+				print(CWHITE + "         Found more than one databases in " + os.getcwd() + ENDF)
+				print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Which database do you want to use? (enter index)" + ENDF)
+				cleanedDataBases = []
+				# LIST AVAILABLE DATABASES
+				for dbpath in dataBases:
+					pathParts = dbpath.split("/")
+					db = pathParts[len(pathParts) - 1]
+					print(CWHITE + "         (" + str(iterator) + ") " + db + ENDF)
+					cleanedDataBases.append(db)
+					iterator = iterator + 1
+				# PROMPT USER INPUT
+				selectedDbString = input(FBLINKING + CWHITE + " > " + ENDF)
+				# TRY TO SELECT DATABASE AT SELECTED INDEX
+				try:
+					selectedDb = int(selectedDbString)
+					Server.dataBase = cleanedDataBases[selectedDb]
+					notSelected = False
+				# INDEX WAS INVALID --> RETRY
+				except:
+					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
+					pass
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + self.dataBase + ENDF)
+		# CHECK FOR READ / WRITE PERMISSIONS
+		print(CWHITE + "         Checking permissions ..." + ENDF)
+		print(CWHITE + "         Checking for READ permission ..." + ENDF)
+		if os.access(self.dataBase, os.R_OK):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+			return
+		print(CWHITE + "         Checking for WRITE permission ..." + ENDF)
+		if os.access(self.dataBase, os.W_OK):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for WRITE permission." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for WRITE permission." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+			return
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked permissions." + ENDF)
+		# LOG SERVER START
+		Log.ServerEventLog("SERVER_STARTED", "IP: " + self.localAddress + "\nPort: " + str(self.localPort) + "\nBuild: " + NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ") " + PYTHON)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Created log." + ENDF)
+		# IF NMAP IS INSTALLED AND HAS ROOT ACCESS ADVANCED LOGGING CAN BE USED
+		print(CWHITE + "         Checking for Advanced Logging ..." + ENDF)
+		print(CWHITE + "         Checking for nmap installation ..." + ENDF)
+		nmapInstalled = os.system("type nmap >/dev/null 2>&1")
+		if nmapInstalled == 0:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] nmap is installed." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] nmap is not installed / not accessible." + ENDF)
+		print(CWHITE + "         Checking for root privileges ..." + ENDF)
+		if os.geteuid() == 0:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] root access." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] root access." + ENDF)
+		if nmapInstalled == 0 and os.geteuid() == 0:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Enabled Advanced Logging." + ENDF)
+			Server.nmap = True
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Enabled Advanced Logging." + ENDF)
+		print(CWHITE + "         Generating RSA keys ..." + ENDF)
+		try:
+			# GENERATE RSA KEY PAIR
+			keyPair = CryptoHelper.RSAKeyPairGenerator()
+			Server.serverPublicKey = keyPair[0]
+			Server.serverPrivateKey = keyPair[1]
+		except:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
+			return
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
+		# CREATE SOCKET
+		portBlocked = True
+		while portBlocked:
+			try:
+				print(CWHITE + "         Setting up TCP listener on " + self.localAddress + ":" + str(self.localPort) + " ..." + ENDF)
+				Server.TCPsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+				# USE NON-BLOCKING SOCKET
+				Server.TCPsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+				# TEST START
+				#Server.TCPsocket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+				#Server.TCPsocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 1)
+				#Server.TCPsocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 1)
+				#Server.TCPsocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 5)
+				# TEST END
+				Server.TCPsocket.bind((self.localAddress, self.localPort))
+				Server.TCPsocket.listen(1)
+				portBlocked = False
+			except Exception as error:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Set up TCP listener on " + self.localAddress + ":" + str(self.localPort) + "." + ENDF)
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Error: {0}".format(error) + ENDF)
+				print(CWHITE + "         Retrying in 5 seconds ..." + ENDF)
+				time.sleep(5)
+				Server.TCPsocket.close()
+				pass
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Set up TCP listener on " + self.localAddress + ":" + str(self.localPort) + "." + ENDF)
+		print("")
+		print("                      _ _                       ")
+		print("                     | | |                      ")
+		print("  _ __  _ __ ___   __| | |__  ___   _ __  _   _ ")
+		print(" | '_ \| '_ ` _ \ / _` | '_ \/ __| | '_ \| | | |")
+		print(" | |_) | | | | | | (_| | |_) \__ \_| |_) | |_| |")
+		print(" | .__/|_| |_| |_|\__,_|_.__/|___(_) .__/ \__, |")
+		print(" | |                               | |     __/ |")
+		print(" |_|                               |_|    |___/ ")
+		print("------------------------------------------------")
+		print(NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ")")
+		print("for " + PYTHON)
+		print("Copyright (c) 2018 Frederik Hoeft")
+		print("All Rights Reserved.")
+		print("------------------------------------------------")
+		print("")
+		print("------------- AWAITING CONNECTIONS -------------")
+		# CONTINUALLY ACCEPT INCOMING CONNECTIONS WHILE THE SERVER IS RUNNING
+		try:
+			while Server.running:
+				clientsocket, address = Server.TCPsocket.accept()
+				if Server.running:
+					# DISPLAY IP OF CONNECTED CLIENT
+					finalAddress = address[0] + ":" + str(address[1])
+					PrintSendToAdmin("SERVER ---> CONNECTED                  <--- " + finalAddress)
+					# CREATE NEW THREAD FOR EACH CLIENT
+					handlerThread = Thread(target = ClientHandler.Handler, args = (clientsocket,finalAddress))
+					handlerThread.start()
+					# ADD CLIENT DO CONNECTED CLIENTS
+					Server.allClients.append([clientsocket, finalAddress, 0])
+					logThread = Thread(target = Log.GetDetails, args = (finalAddress, clientsocket))
+					logThread.start()
+		# CATCH SOCKET ERRORS
+		except Exception as error:
+			print("[-] FATAL: {0}".format(error))
+		finally:
+			# CLOSE PORT IN CASE OF ERROR
+			Server.TCPsocket.close()
+
+################################################################################
+#------------------------SERVER CONNECTION-HANDLER THREAD----------------------#
+################################################################################
+#-------------------------------PACKET SPECIFIER-------------------------------#
+#
+# U == UNENCRYPTED				--> PACKET IS UNENCRYPTED
+# K == KEY EXCHANGE				--> PACKET IS RSA ENCRYPTED
+# E == ENCRYPTED				--> PACKET IS AES ENCRYPTED
+#
+#----------------------------------PACKET IDS----------------------------------#
+#
+# PPK == "PEM PUBLIC KEY" 		--> PACKET CONTAINS RSA KEY IN PEM FORMAT
+# XPK == "XML PUBLIC KEY" 		--> PACKET CONTAINS RSA KEY IN XML FORMAT
+# EXC == "KEY EXCHANGE" 		--> PACKET CONTAINS AES KEY
+# FIN == "FINISH CONNECTION"	--> CONNECTION IS BEING CLOSED
+# DTA == "DATA"					--> PACKET CONTAINS AES ENCRYPTED DATA
+# INF == "INFO"					--> PACKET CONTAINS INFORMATION ABOUT OTHER PACKETS
+#
+#--------------------------------PACKET SUB IDS--------------------------------#
+#
+# INF SUB IDS:
+#	BGN == "BEGIN TRANSACTION"	--> CURRENTLY NOT IN USE
+# 	END == "END TRANSACTION"	--> CURRENTLY NOT IN USE
+# 	REG == "REGISTER USER"		--> REGISTER NEW USER
+# 	CNG == "CHANGE CREDS"		--> CHANGE USER CREDENTIALS
+# 	DEL == "DELETE ACCOUNT"		--> DELETE ACCOUNT OF USER
+# 	ERR == "ERROR"				--> PACKET CONTAINS ERROR MESSAGE
+# 	ACK == "ACKNOWLEDGE"		--> LAST COMMAND SUCCESSFULLY EXECUTED
+#
+# DTA SUB IDS:
+#	RET == "RETURN"
+#		INS == "INSERT"			--> CONTAINS ID OF INSERTED DATA
+#		UPD == "UPDATE"			--> CONTAINS STATUS OF UPDATE QUERY
+#		SEL == "SELECT"			--> CONTAINS SELECTED DATA
+#
+# REQ SUB IDS:
+#	INS == "INSERT"				--> CONTAINS REQUEST TO INSERT DATA
+#	UPD == "UPDATE"				--> CONTAINS REQUEST TO UPDATE DATA
+#	SEL == "UPDATE"				--> CONTAINS REQUEST TO SELECT DATA
+#
+#---------------------------------TERMINATORS----------------------------------#
+#
+# \x01 == SOH					--> START OF HEADER (START OF TRANSMISSION)
+# \x04 == EOT					--> END OF TRANSMISSION
+# 
+#---------------------------------ERROR CODES----------------------------------#
+#
+# [ERRNO 00] WIP				--> WORK IN PROGRESS (NOT IMPLEMENTED)
+# [ERRNO 01] IEOT				--> INVALID PACKET TERMINATOR
+# [ERRNO 02] IRSA				--> INVALID RSA KEY
+# [ERRNO 03] USEC				--> UNSECURE CONNECTION
+# [ERRNO 04] IPID				--> INVALID PACKET ID
+# [ERRNO 05] IPSP				--> INVALID PACKET SPECIFIER
+# [ERRNO 06] ISID				--> INVALID PACKET SUB ID
+# [ERRNO 07] SQLI				--> SQL INJECTION ATTEMPT
+# [ERRNO 08] CRED				--> INVALID CREDENTIALS
+# [ERRNO 09] ISQP				--> INVALID SQL QUERY PARAMETERS
+# [ERRNO 10] ADMN				--> INVALID ADMIN CREDENTIALS
+# [ERRNO 11] ACNA				--> ADMIN ALREADY LOGGED IN
+# [ERRNO 12] PERM				--> INSUFFICIENT PERMISSIONS
+# [ERRNO 13] NLGI				--> (LOGOUT ERROR) NOT LOGGED IN
+# [ERRNO 14] ISOH				--> INVALID START OF HEADER
+# [ERRNO 15] ICMD				--> INVALID COMMAND	
+#
+#------------------------------------------------------------------------------#
+
+# MANAGES CONNECTION TO CLIENT
+class ClientHandler():
+
+	# MAIN FUNCTION
+	def Handler(clientSocket, address):
+		clientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+		clientSocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 10)
+		clientSocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 5)
+		clientSocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 6)
+		# INITIALIZING VARIABLES
+		clientPublicKey = None
+		aesKey = None
+		clientAddress = address
+		isSocketError = False
+		isDisconnected = False
+		isTimedOut = False
+		isTcpFin = False
+		isXmlClient = False
+		# EXPORT PUBLIC KEY TO STRING IN PEM FORMAT
+		serverPublicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+		# AWAIT PACKETS FROM CLIENT
+		try:
+			# BUFFER FOR HUGE PACKETS
+			buffer = b''
+			# BREAK IF SERVER STOPPED
+			while not Server.stopped and not clientSocket.fileno() == -1:
+				receiving = True
+				# RECEIVE AND DUMP TO BUFFER UNTIL EOT FLAG IS FOUND
+				while receiving:
+					# LOAD DATA TO 32768 BYTE 
+					data = clientSocket.recv(32768)
+					# CHECK IF ANY DATA HAS BEEN RECEIVED
+					if data:
+						# INITIALIZE ARRAY FOR PACKETS
+						dataPackets = None
+						# ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER----
+						# CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER IS EMPTY
+						if b'\x04' in data and len(buffer) == 0:
+							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
+							rawDataPackets = data.split(b'\x04')
+							# GRAB THE LAST PACKET
+							lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
+							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
+							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
+							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
+							if not len(lastDataPacket) == 0:
+								buffer += lastDataPacket
+							# SET RECEIVING TO FALSE TO BREAK THE LOOP
+							receiving = False
+						# CHECK IF PACKET CONTAINS DATA AND BUFFER IS NOT EMPTY
+						elif b'\x04' in data and not len(buffer) == 0:
+							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
+							rawDataPackets = data.split(b'\x04')
+							# APPEND BUFFER CONTENT TO FIRST PACKET
+							rawDataPackets[0] = buffer + rawDataPackets[0]
+							# RESET THE BUFFER
+							buffer = b''
+							# GRAB THE LAST PACKET
+							lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
+							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
+							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
+							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
+							if not len(lastDataPacket) == 0:
+								buffer += lastDataPacket
+							# SET RECEIVING TO FALSE TO BREAK THE LOOP
+							receiving = False
+						# THE PACKET DOES NOT CONTAIN ANY EOT FLAG
+						else:
+							# APPEND THE WHOLE RECEIVE BUFFER TO THE BUFFER AND REPEAT UNTIL EOT FLAG IS FOUND
+							buffer += data
+					else:
+						isTcpFin = True
+						return
+				# ITERATE OVER PACKET ARRAY
+				for dataPacket in dataPackets:
+					# ADMIN IS ALLOWED TO STAY CONNECTED IN SHUTDOWN SEQUENCE
+					if Server.running or Server.admin == clientSocket:
+						# CHECK FOR ADMIN PRIVILEGES (AND DISPLAY FANCY "ADMIN" BADGE)
+						if Server.admin == clientSocket and not "ADMIN" in clientAddress:
+							clientAddress = "ADMIN(" + clientAddress + ")"
+						elif not Server.admin == clientSocket and "ADMIN" in clientAddress:
+							clientAddress = address
+						# ----PACKET VALIDATION----
+						# CHECK IF SOH FLAG IS *NOT* FIRST CHARACTER
+						if not dataPacket[0] == b'\x01':
+							# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONINUE WITH NEXT PACKET
+							if dataPacket.count(b'\x01') == 0:
+								# PACKET IS INVALID
+								PrintSendToAdmin("SERVER <-#- [ERRNO 01] ISOH            -#-> " + clientAddress)
+								continue
+							# IF THE PACKET CONTAINS A SOH FLAG BUT IT IS NOT IN THE BEGINNING REMOVE THE BEGINNING UNTIL SOH IS FIRST CHARACTER
+							elif dataPacket.count(b'\x01') == 1:
+								dataPacket = b'\x01' + dataPacket.split(b'\x01')[1]
+							# THE PACKET CONTAINS MORE THAN ONE SOH. SOMETHING WENT HORRIBLY WRONG
+							else:
+								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
+								continue
+						# DECODE THE PACKET TO UTF-8 STRING
+						dataString = dataPacket[1:].decode("utf-8")
+						# GET PACKET SPECIFIER
+						packetSpecifier = dataString[:1]
+						# CHECK IF DATA IS UNENCRYPTED
+						if packetSpecifier == 'U':
+							# GET PACKETID
+							packetID = dataString[1:4]
+							# CHECK IF PACKET IS DEAUTH PACKET
+							if packetID == "FIN":
+								isDisconnected = True
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								return
+							# CHECK IF PACKET CONTAINS RSA KEY
+							if packetID in ("XPK","PPK"):
+								PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
+								# GET PUBLIC KEY FROM PACKET
+								publicKey = dataString[4:]
+								# CHECK IF KEY IS IN PEM FORMAT
+								if packetID == "PPK":
+									try:
+										# SET THE CLIENT RSA KEY
+										clientPublicKey = publicKey
+									except:
+										# IF ANYTHING GOES WRONG DISCONNECT CLIENT
+										# INVALID RSA KEY
+										PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+										# JUMP TO FINALLY AND FINISH CONNECTION
+										return
+									# SET XML ATTRIBUTE FOR CLIENT (XML IS NOT USED)
+									isXmlClient = False
+								else:
+									try:
+										# CONVERT XML KEY TO PEM
+										clientPublicKeyString = CryptoHelper.RSAPublicXmlToPem(publicKey)
+										# SET THE CLIENT RSA KEY
+										clientPublicKey = clientPublicKeyString
+									except:
+										# IF ANYTHING GOES WRONG DISCONNECT CLIENT
+										# INVALID RSA KEY
+										PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+										# JUMP TO FINALLY AND FINISH CONNECTION
+										return
+									# SET XML ATTRIBUTE FOR CLIENT (XML IS USED)
+									isXmlClient = True
+								# SEND THE SERVER'S PUBLIC KEY TO THE CLIENT
+								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
+								# CHECK IF THE CLIENT USES XML FORMAT
+								if isXmlClient:
+									# CONVERT SERVER'S PEM KEY TO XML FORMAT
+									serverPublicKey = CryptoHelper.RSAPublicPemToXml(serverPublicKeyPem)
+									# SEND XML KEY TO CLIENT
+									clientSocket.send(b'\x01' + bytes("UXPK" + serverPublicKey, "utf-8") + b'\x04')
+								else:
+									# SEND PEM KEY TO CLIENT
+									clientSocket.send(b'\x01' + bytes("UPPK" + serverPublicKeyPem, "utf-8") + b'\x04')
+								# AES KEY EXCHANGE
+								PrintSendToAdmin("SERVER <--- KEY EXCHANGE               ---> " + clientAddress)
+								# GENERATE 256 BIT AES KEY
+								aesKey = CryptoHelper.AESKeyGenerator()
+								# PrintSendToAdmin("AES: " + aesKey)
+								# ENCRYPT AES KEY USING RSA 4096
+								encryptedAesKey = CryptoHelper.RSAEncrypt(aesKey, clientPublicKey)
+								# CONVERT KEY TO BYTES
+								finalBytes = b'\x01' + bytes("KEXC" + encryptedAesKey, "utf-8") + b'\x04'
+								# SEND KEY TO CLIENT
+								clientSocket.send(finalBytes)
+							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
+							elif packetID in ("EXC", "DTA", "INF"):
+								# RECEIVED SOME OTHER PACKET OVER UNENCRYPTED CONNECTION
+								# UNSECURE CONNECTION
+								PrintSendToAdmin("SERVER <-#- [ERRNO 03] USEC             -#-> " + clientAddress)
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								return
+							else:
+								# RECEIVED INVALID PACKET ID
+								PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								return
+						# CHECK IF PACKET "IS KEY EXCHANGE" (RSA ENCRYPTED) 
+						elif packetSpecifier == 'K':
+							# TODO: IMPLEMENT
+							PrintSendToAdmin("SERVER <-#- [ERRNO 00] WIP             -#-> " + clientAddress)
+							# JUMP TO FINALLY AND FINISH CONNECTION
+							return
+						# CHECK IF PACKET IS AES ENCRYPTED
+						elif packetSpecifier == 'E':
+							# CREATE AES CIPHER
+							aesDecryptor = AESCipher(aesKey)
+							# DECRYPT DATA
+							decryptedData = aesDecryptor.decrypt(dataString[1:])
+							# DEBUG PrintSendToAdmin DATA
+							# GET PACKET ID
+							packetID = decryptedData[:3]
+							# GET PACKET SUB-ID
+							packetSID = decryptedData[3:6]
+							# INFORMATION / ADMINISTRATIVE PACKETS
+							if packetID == "INF":
+								if packetSID == "BGN":
+									# BEGIN TRANSACTION
+									PrintSendToAdmin("SERVER <--- BEGIN TRANSACT.            <--- " + clientAddress)
+									# TODO: OPEN CONNECTION TO DATABASE
+								elif packetSID == "END":
+									# COMMIT TRANSACTION
+									PrintSendToAdmin("SERVER <--- COMMIT TRANSACT.           <--- " + clientAddress)
+									# TODO: COMMIT CHANGES TO DATABASE
+								elif packetSID == "CNG":
+									# UPDATE ACCOUNT --> NEEDS (VALID CID), UNAME, PWD --> EMAIL CONFIRMATION
+									return
+								elif packetSID == "DEL":
+									# DELETE CLIENTS DATA --> EMAIL CONFIRMATION
+									return
+								elif packetSID == "ERR":
+									# SOMETHING WENT WRONG
+									return
+								elif packetSID == "ACK":
+									# ACKNOWLEDGEMENT PACKET
+									return
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+							# REQUEST PACKETS
+							elif packetID == "REQ":
+								# INSERT REQUEST
+								if packetSID == "INS":
+									PrintSendToAdmin("SERVER <--- DBQ: INSERT DATA           <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Insert, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# UPDATE REQUEST
+								elif packetSID == "UPD":
+									PrintSendToAdmin("SERVER <--- DBQ: UPDATE DATA           <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Update, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# SELECT REQUEST
+								elif packetSID == "SEL":
+									PrintSendToAdmin("SERVER <--- DBQ: SELECT DATA           <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Select, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# HEADER REQUEST FOR DATABASE SYNCRONIZATION
+								elif packetSID == "SYN":
+									PrintSendToAdmin("SERVER <--- DBQ: SYNCRONIZE            <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Sync, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# DELETE REQUEST
+								elif packetSID == "DEL":
+									PrintSendToAdmin("SERVER <--- DBQ: DELETE DATA           <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Delete, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+									return
+							# ACCOUNT MANAGEMENT PACKETS 
+							elif packetID == "MNG":
+								# ADMIN LOGIN
+								if packetSID == "ADM":
+									PrintSendToAdmin("SERVER <--- ADMIN REQUEST              <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.LoginAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# USER REGISTRATION
+								elif packetSID == "REG":
+									PrintSendToAdmin("SERVER <--- DQ: CREATE USER            <--- " + clientAddress)
+									# REGISTER IN DATABASE
+									dbThread = Thread(target = Management.Register, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# USER LOGIN
+								elif packetSID == "LGI":
+									PrintSendToAdmin("SERVER <--- LOGIN REQUEST              <--- " + clientAddress)
+									dbThread = Thread(target = Management.Login, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# REMOTE SERVER SHUTDOWN
+								elif packetSID == "SHT":
+									PrintSendToAdmin("SERVER <--- SHUTDOWN REQUEST           <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Shutdown, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# REMOTE SERVER REBOOT
+								elif packetSID == "RBT":
+									PrintSendToAdmin("SERVER <--- REBOOT REQUEST             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Reboot, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# DUMP LOGS
+								elif packetSID == "LOG":
+									PrintSendToAdmin("SERVER <--- LOG DUMP REQUEST           <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.DumpEventLog, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# USER LOGOUT
+								elif packetSID == "LGO":
+									PrintSendToAdmin("SERVER <--- LOGOUT REQUEST             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Logout, args = (clientAddress, clientSocket, aesKey, False))
+									mgmtThread.start()
+								# LIST CONNECTED CLIENTS
+								elif packetSID == "LIC":
+									PrintSendToAdmin("SERVER <--- DISPLAY CLIENTS            <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ListClients, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# KICK CLIENT(S)
+								elif packetSID == "KIK":
+									PrintSendToAdmin("SERVER <--- KICK CLIENT                <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Kick, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+									return
+						else:
+							# INVALID PACKET SPECIFIER
+							PrintSendToAdmin("SERVER <-#- [ERRNO 05] IPSP             -#-> " + clientAddress)
+							return
+					else:
+						return
+		except SocketError as SOCKET_ERROR:
+			if SOCKET_ERROR.errno == errno.ETIMEDOUT:
+				isTimedOut = True
+			else:
+				# SET SOCKET ERROR FLAG
+				isSocketError = True
+		# FREE THE SOCKET ONCE THE CLIENT DISCONNECTS OR THE CONNECTION FAILS
+		finally:
+			# TODO: FIX ANY LOGOUT / DISCONNECT ERRORS (BROKEN PIPE / TRANSPORT)
+			# SERVER HAS BEEN STOPPED
+			if Server.stopped or clientSocket.fileno() == -1:
+				exit()
+			# CHECK IF SOCKET ERROR OCCURED
+			elif isSocketError:
+				# CLOSE THE CONNECTION
+				clientSocket.close()
+				# REMOVE CLIENT FROM ALL LISTS
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				Management.Unlist(clientSocket)
+				PrintSendToAdmin("SERVER <-x- DISCONNECTED:ERR           -x-> " + clientAddress)
+			# CHECK IF A TCP FIN HASH BEEN RECEIVED
+			elif isTcpFin:
+				# CHECK IF DISCONNECT MESSAGE HAS ALREADY BEEN SHOWN
+				disconnectMessageShowed = True
+				# ITERATE OVER ALL LISTE CLIENTS
+				for client in Server.allClients:
+					# IF THERE IS NOT MATCH THERE IS NO NEED TO SHOW THE MESSAGE AGAIN
+					if clientSocket in client:
+						disconnectMessageShowed = False
+						break
+				# REMOVE CLIENT FROM LISTING
+				Management.Unlist(clientSocket)
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				# SEND TCP FIN
+				clientSocket.shutdown(socket.SHUT_RDWR)
+				# CLOSE SOCKET
+				clientSocket.close()
+				# CHECK IF MESSAGE FLAG HAS BEEN SET
+				if not disconnectMessageShowed:
+					# SHOW DISCONNECTED-MESSAGE
+					PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + clientAddress)
+			elif isTimedOut:
+				clientSocket.close()
+				# REMOVE CLIENT FROM ALL LISTS
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				Management.Unlist(clientSocket)
+				PrintSendToAdmin("SERVER <-x- DISCONNECTED: TIMEOUT      -x-> " + clientAddress)
+			else:
+				# LOGOUT CLIENT
+				if isDisconnected:
+					# REMOVE CLIENT FROM LISTING
+					Management.Unlist(clientSocket)
+					# REMOVE CLIENT FROM AUTHORIZED CLIENTS
+					Management.Logout(clientAddress, clientSocket, aesKey, False)
+					# SEND TCP FIN
+					clientSocket.shutdown(socket.SHUT_RDWR)
+					# CLOSE SOCKET
+					clientSocket.close()
+					PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + clientAddress)
+				elif not Server.running:
+					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, False)
+				else:
+					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					Management.Disconnect(clientSocket, "", clientAddress, True)
+		
+# INITIALIZE THE SERVER
+ServerThread = Server()
+ServerThread.start()
