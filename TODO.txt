@@ -12,3 +12,9 @@
 			- static
 			- generated on first connection
 			- save in db
+			- parameter on login
+			--> update login()
+			--> cookie request after key exchange
+				- originating from client if not cookie
+			- update databases
+			
