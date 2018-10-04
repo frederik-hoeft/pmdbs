@@ -18,7 +18,7 @@
 			--> update login()
 			--> cookie request after key exchange
 				- originating from client if cookie is not set locally
-			- save cookie in local database --> no need for encryption --> password alway required
+			- save cookie in local database --> no need for encryption --> password always required
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 			
