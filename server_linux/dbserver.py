@@ -30,9 +30,11 @@ import select
 import re
 import errno
 import smtplib
+import pygeoip
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
+
 ################################################################################
 #-------------------------------GLOBAL VARIABLES-------------------------------#
 ################################################################################
@@ -54,10 +56,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-1.18"
+VERSION = "0.10-2.18"
 BUILD = "development"
-DATE = "Oct 03 2018"
-TIME = "13:24:48"
+DATE = "Oct 05 2018"
+TIME = "00:12:38"
 PYTHON = "Python 3.6.6 / LINUX"
 # CONFIG
 REBOOT_TIME = 1
@@ -631,6 +633,45 @@ class Log():
 					details += "\nDNS: " + info.split(" ")[4]
 				elif "Host is up" in info:
 					details += "\nPing: " + info.split(" ")[3].replace("(","")
+		if Server.geolocatingAvailable:
+			NetLocator = pygeoip.GeoIP("GeoDataBases/GeoIPASNum.dat", pygeoip.MEMORY_CACHE)
+			GeoLocator = pygeoip.GeoIP("GeoDataBases/GeoLiteCity.dat", pygeoip.MEMORY_CACHE)
+			isLocal = False
+			try:
+				isp = str(NetLocator.isp_by_addr(address))
+				country = str(GeoLocator.country_name_by_addr(address))
+				data = str(GeoLocator.record_by_addr(address)).split(",")
+			except:
+				isLocal = True
+			if isLocal:
+				details += "\nLocation: local network"
+			else:
+				postalCode = None
+				continent = None
+				city = None
+				timeZone = None
+				for info in data:
+					if not " None" in info:
+						if "postal_code" in info:
+							postalCode = "\nPostal code: " + info.split("\'")[3]
+						elif "continent" in info:
+							continent = "\nContinent: " + info.split("\'")[3]
+						elif "city" in info:
+							city = "\nCity: " + info.split("\'")[3]
+						elif "time_zone" in info:
+							timeZone = "\nTime zone: " + info.split("\'")[3]
+				if isp:
+					details += "\nISP: " + isp
+				if continent:
+					details += continent
+				if timeZone:
+					details += timeZone
+				if country:
+					details += "\nCountry: " + country
+				if city:
+					details += city
+				if postalCode:
+					details += postalCode
 		# USE SOME FANCY FORMATTING FOR THE OUTPUT
 		PrintSendToAdmin(CWHITE + "┌─[" + CRED + "DETAILS FOR " + address + CWHITE + "]" + ENDF)
 		detailArray = details.split("\n")
@@ -711,6 +752,46 @@ class Log():
 			connection.close()
 		
 class Management():
+	
+	# GENERATES A COOKIE AND SAVES IT TO THE DATABASE
+	def GenerateCookie():
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR OBJECT
+		cursor = connection.cursor()
+		while True:
+			# GET TIME AND CRYPTOGRAPHIC RANDOM
+			currentTime = str(time.time())
+			salt = str(secrets.randbelow(10**20))
+			# USE BLAKE2 TO CREATE COOKIE
+			cookie = CryptoHelper.BLAKE2(currentTime, salt)
+			repeat = False
+			try:
+				# INSERT COOKIE INTO DATABASE
+				cursor.execute("INSERT INTO Tbl_cookies (C_cookie) VALUES (\"" + cookie + "\")")
+			except sqlite3.Error as e:
+				# IF AN ERROR OCCURE DUE TO "UNIQUE" CONSTRAINT GENERATE NEW COOKIE
+				if "UNIQUE" in str(e):
+					repeat = True
+				else:
+					# AN UNKNOWN ERROR OCCURED
+					# FREE RESOURCES AND RETURN NONE
+					connection.close()
+					return None
+			else:
+				# COOKIE SUCCESSFULLY INSTERTED INTO DATABASE
+				repeat = False
+				# COMMIT CHANGES
+				connection.commit()
+				# RETURN THE COOKIE
+				return cookie
+			finally:
+				# CHECK IF A NEW COOKIE HAS TO BE GENERATED
+				if not repeat:
+					# FREE RESOURCES AND BREAK OUT OF CURRENT SCOPE
+					connection.close()
+					break
+		
 	
 	# USES A CODE PROVIDED BY THE USER TO VERIFY THE EMAL ADDRESS
 	def EmailVerification(command, clientAddress, clientSocket, aesKey):
@@ -1157,7 +1238,7 @@ class Management():
 				# FILL NEEDED INFORMATION TO SEND EMAIL
 				subject = "Password change request"
 				text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nYour login: " + name + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
-				html = "<html><head><style>table.main {width:800px;background-color:#121212;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#121212;color:#DAA520;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>Your login: <b>" + name + "</b><br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+				html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>Your login: <b>" + name + "</b><br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			else:
 				# COMMAND WAS INVALID
 				PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
@@ -1186,7 +1267,7 @@ class Management():
 		message["From"] = From
 		message["To"] = To
 		# READ IMAGE AS RAW BYTES
-		imageFile = open("lock.png", "rb")
+		imageFile = open("icon.png", "rb")
 		msgImage = MIMEImage(imageFile.read())
 		imageFile.close()
 		# ADD HEADER TO IMAGE
@@ -1512,8 +1593,7 @@ class Management():
 			encryptedData = aesEncryptor.encrypt("INFACKREQUEST_VERIFICATION")
 			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		except Exception as e:
-			print(e)
+		except:
 			# USER NAME ALREADY EXISTS
 			# SEND ERROR MESSAGE
 			aesEncryptor = AESCipher(aesKey)
@@ -1530,7 +1610,7 @@ class Management():
 		# GENERATE EMAIL
 		subject = "[PMDBS] Please verify your email address."
 		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#121212;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#121212;color:#DAA520;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 		# SEND VERIFICATION CODE BY EMAIL
 		Management.SendMail("PMDBS Support", email,	subject, text, html, clientAddress)
 		
@@ -1967,6 +2047,7 @@ class Server(Thread):
 	# INITIALIZE GLOBAL SERVER ATTRIBUTES
 	serverPublicKey = None
 	serverPrivateKey = None
+	geolocatingAvailable = True
 	connection = None
 	cursor = None
 	dataBase = None
@@ -2071,6 +2152,30 @@ class Server(Thread):
 			Server.nmap = True
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Enabled Advanced Logging." + ENDF)
+		print(CWHITE + "         Checking for Geolocating ..." + ENDF)
+		print(CWHITE + "         Checking for GeoDataBases in " + os.getcwd() + " ..." + ENDF)
+		if os.path.isdir("GeoDataBases"):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Directory \"GeoData\" exists." + ENDF)
+			print(CWHITE + "         Checking for GeoLiteCity.dat in " + os.getcwd() + "/GeoDataBases ..." + ENDF)
+			if os.path.isfile("GeoDataBases/GeoLiteCity.dat"):
+				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] File \"GeoLiteCity.dat\" exists." + ENDF)
+			else:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] File \"GeoLiteCity.dat\" not found." + ENDF)
+				Server.geolocatingAvailable = False
+			print(CWHITE + "         Checking for GeoIPASNum.dat in " + os.getcwd() + "/GeoDataBases ..." + ENDF)
+			if os.path.isfile("GeoDataBases/GeoIPASNum.dat"):
+				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] File \"GeoIPASNum.dat\" exists." + ENDF)
+			else:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] File \"GeoIPASNum.dat\" not found." + ENDF)
+				Server.geolocatingAvailable = False
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Directory \"GeoData\" not found." + ENDF)
+			print(CWHITE + "         Skipping further checks ..." + ENDF)
+			Server.geolocatingAvailable = False
+		if Server.geolocatingAvailable:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Enabled Geolocating." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Enabled Geolocating." + ENDF)
 		print(CWHITE + "         Generating RSA keys ..." + ENDF)
 		try:
 			# GENERATE RSA KEY PAIR
@@ -2192,7 +2297,7 @@ class Server(Thread):
 # 
 #---------------------------------ERROR CODES----------------------------------#
 #
-# [ERRNO 00] WIP				--> WORK IN PROGRESS (NOT IMPLEMENTED)
+# [ERRNO 00] WINP				--> WORK IN PROGRESS (NOT IMPLEMENTED)
 # [ERRNO 01] IEOT				--> INVALID PACKET TERMINATOR
 # [ERRNO 02] IRSA				--> INVALID RSA KEY
 # [ERRNO 03] USEC				--> UNSECURE CONNECTION
@@ -2518,10 +2623,15 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <--- KICK CLIENT                <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.Kick, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
-								# REQUEST PASSWORD CHANGE
-								elif packetSID == "RPC":
-									PrintSendToAdmin("SERVER <--- PASSWORD CHANGE REQUEST    <--- " + clientAddress)
+								# INITIALIZE PASSWORD CHANGE
+								elif packetSID == "IPC":
+									PrintSendToAdmin("SERVER <--- INITIALIZE PASSWORD CHANGE <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.PasswordChangeRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# COMMIT PASSWORD CHANGE
+								elif packetSID == "CPC":
+									PrintSendToAdmin("SERVER <--- COMMIT PASSWORD CHANGE     <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.PasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
