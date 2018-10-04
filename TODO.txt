@@ -7,3 +7,8 @@
 			- delete accounts
 		- check running python version
 		- code optimization
+		- cookies:
+			- identify new devices
+			- static
+			- generated on first connection
+			- save in db
