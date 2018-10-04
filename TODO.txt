@@ -10,12 +10,13 @@
 			- function-based error handling
 		- cookies:
 			- only for identification --> no advantage in cookie stealing (only useful if password has been aquired)
+			- needed for 2FA
 			- identify new devices
 			- static
 			- generated on first connection
 			- parameter on login
 			--> update login()
 			--> cookie request after key exchange
-				- originating from client if not cookie
+				- originating from client if cookie is not set locally
 			- save cookie in local database --> no need for encryption --> password alway required
 			
