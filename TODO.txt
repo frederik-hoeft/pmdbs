@@ -6,7 +6,7 @@
 			- autoban for 3 times wrong verification code
 			- delete accounts
 		- check running python version
-		- RETURN ERROR CODE (!!!)
+		- RETURN ERROR CODES (!!!)
 		- code optimization
 			- function-based error handling
 		- cookies:
