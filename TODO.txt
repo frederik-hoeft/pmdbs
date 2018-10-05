@@ -9,6 +9,7 @@
 		- RETURN ERROR CODES (!!!)
 		- code optimization
 			- function-based error handling
+			- write errors to logs
 		- cookies:
 			- only for identification --> no advantage in cookie stealing (only useful if password has been aquired)
 			- needed for 2FA
