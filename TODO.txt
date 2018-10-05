@@ -1,15 +1,16 @@
 - PasswordManager v2
 	SERVER TODO:
 		- delete account (and all data)
-		- Admin:
+		- Admin features:
 			- ban clients by mac/ip
-			- autoban for 3 times wrong verification code
 			- delete accounts
-		- check running python version
-		- RETURN ERROR CODES (!!!)
-		- code optimization
+		- 2FA:
+			- autoban for 3 times wrong verification code
+		- code optimization:
+			- check running python version
 			- function-based error handling
 			- write errors to logs
+			- RETURN ERROR CODES (!!!)
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 		- request cookie
