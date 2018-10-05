@@ -11,14 +11,13 @@
 			- function-based error handling
 			- write errors to logs
 		- cookies:
+			- method to handle new device login
 			- only for identification --> no advantage in cookie stealing (only useful if password has been aquired)
 			- needed for 2FA
 			- identify new devices
 			- static
 			- generated on first connection
-			- required parameter on login
 			- required parameter on register
-			--> update login()
 			--> update register()
 			--> cookie request after key exchange
 				- originating from client if cookie is not set locally
