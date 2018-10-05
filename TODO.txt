@@ -3,6 +3,7 @@
 		- delete account (and all data)
 		- Admin features:
 			- ban clients by mac/ip
+				--> check on connection (Server main thread)
 			- delete accounts
 		- 2FA:
 			- autoban for 3 times wrong verification code
