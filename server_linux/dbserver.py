@@ -56,10 +56,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-3.18"
+VERSION = "0.10-4.18"
 BUILD = "development"
-DATE = "Oct 05 2018"
-TIME = "20:01:49"
+DATE = "Oct 06 2018"
+TIME = "17:38:56"
 PYTHON = "Python 3.6.6 / LINUX"
 # CONFIG
 REBOOT_TIME = 1
@@ -755,6 +755,156 @@ class Log():
 		
 class Management():
 	
+	# DELETES AN ACCOUNT AFTER VALIDATING PROVIDED 2FA CODE
+	def DeleteAccount(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# code%eq!code!;
+		# GET USER ID
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not userID:
+			# USER IS NOT LOGGED IN
+			PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# EXAMPLE COMMAND
+		# code%eq!code!;
+		creds = command.split(";")
+		# INITIALIZE VARIABLES
+		providedCode = None
+		# EXTRACT VALUES FROM PROVIDED COMMAND
+		try:
+			for credential in creds:
+				if "code" in credential:
+					providedCode = element.split("!")[1]
+				elif len(credential) == 0:
+					continue
+				else:
+					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+					PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		except:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITALIZE VARIABLES TO STORE VALUES FOR CODE VALIDATION
+		code = None
+		codeTime = None
+		codeType = None
+		codeAttempts = None
+		try:
+			# QUERY DAATABASE FOR VALIDATION CODES
+			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_id = " + userID + ";")
+			data = cursor.fetchall()
+			code = data[0][0]
+			codeTime = data[0][1]
+			codeType = data[0][2]
+			codeAttempts = data[0][3]
+		except:
+			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
+			connection.close()
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
+		if not code or not codeTime or not codeAttempts or not codeType:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
+		if not codeType == "DELETE_ACCOUNT" or codeAttempts == -1:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 21] NCES         -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNO_NEW_LOGIN_SCHEDULED")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
+		if not code == providedCode:
+			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
+			if codeAttempts + 1 >= 3:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY MAC ADDRESS OR IP
+				PrintSendToAdmin("SERVER <-#- [ERRNO 20] F2FA            -#-> " + clientAddress)
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFERRFAILED_2FA_CODE")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				# TODO: BAN DEVICE FOR 1H
+				return
+			else:
+				# INCREMENT COUNTER FOR WRONG ATTEMPTS
+				codeAttempts += 1
+				try:
+					# UPDATE COUNTER IN DATABASE
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_username = " + username + ";")
+				except:
+					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION AND FREE RESOURCES
+					connection.close()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+				else:
+					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
+					connection.commit()
+					PrintSendToAdmin("SERVER <-#- [ERRNO 18] I2FA            -#-> " + clientAddress)
+					aesEncryptor = AESCipher(aesKey)
+					encryptedData = aesEncryptor.encrypt("INFERRINVALID_2FA_CODE")
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					return
+		# CHECK IF VALIDATION CODE HAS EXPIRED
+		if int(Timestamp()) - int(codeTime) > 1800:
+			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
+			PrintSendToAdmin("SERVER <-#- [ERRNO 19] E2FA            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERREXPIRED_2FA_CODE")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# ALL CODE CHECKS PASSED
+		# LOGOUT USER
+		Management.Logout(clientAddress, clientSocket, aesKey, False)
+		try:
+			# DELETE WHITELISTED COOKIES, USER DATA, USER LOG AND USER ACCOUNT
+			cursor.execute("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";")
+			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";")
+			cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
+			cursor.execute("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";")
+		except:
+			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLL BACK AND FREE RESOURCES
+			connection.rollback()
+			connection.close()
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRFAILED_TO_DELETE_ACCOUNT_SQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		else:
+			# COMMIT CHANGES
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# SEND CONFIRMATION TO CLIENT
+		PrintSendToAdmin("SERVER ---> ACCOUNT DELETED            ---> " + clientAddress)
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFRETACCOUNT_DELETED_SUCCESSFULLY")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+	
 	# WHITELISTS DEVICE COOKIE AFTER VALIDATING PROVIDED 2FA CODE
 	def NewDeviceLogin(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
@@ -810,14 +960,16 @@ class Management():
 		# INITALIZE VARIABLES TO STORE VALUES FOR CODE VALIDATION
 		code = None
 		codeTime = None
+		codeType = None
 		codeAttempts = None
 		try:
 			# QUERY DAATABASE FOR VALIDATION CODES
-			cursor.execute("SELECT U_code, U_codeTime, U_codeAttempts FROM Tbl_user WHERE U_username = " + username + ";")
+			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_username = " + username + ";")
 			data = cursor.fetchall()
 			code = data[0][0]
 			codeTime = data[0][1]
-			codeAttempts = data[0][2]
+			codeType = data[0][2]
+			codeAttempts = data[0][3]
 		except:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
@@ -827,17 +979,17 @@ class Management():
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not username:
+		if not code or not codeTime or not codeAttempts or not username or not codeType:
 			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
-		# CHECK IF PASSWORD CHANGE HAS BEEN REQUESTED IN THE FIRST PLACE
-		if codeAttempts == -1:
+		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
+		if not codeType == "NEW_LOGIN" or codeAttempts == -1:
 			PrintSendToAdmin("SERVER <-#- [ERRNO 21] NCES         -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFERRNO_PASSWORD_CHANGE_SCHEDULED")
+			encryptedData = aesEncryptor.encrypt("INFERRNO_NEW_LOGIN_SCHEDULED")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
@@ -881,6 +1033,19 @@ class Management():
 			encryptedData = aesEncryptor.encrypt("INFERREXPIRED_2FA_CODE")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
+		# CANCEL ACTIVE CODE
+		try:
+			cursor.execute("UPDATE Tbl_user SET U_codeAttempts = -1, U_codeType = \"NONE\";")
+		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+		except:
+			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
+		else:
+			connection.commit()
 		# ALL CODE CHECKS PASSED
 		# HASH PASSWORD
 		hashedUsername = CryptoHelper.SHA256(username)
@@ -1026,16 +1191,18 @@ class Management():
 		# INITAILZE VERIABLES
 		code = None
 		codeTime = None
+		codeType = None
 		codeAttemps = None
 		isVerifyed = None
 		# EXECUTE SQL QUERY TO GET CODE RELATED DATA
 		try:
-			cursor.execute("SELECT U_isVerifyed, U_code, U_codeTime, U_codeAttemps from Tbl_user WHERE U_username = \"" + username + "\";")
+			cursor.execute("SELECT U_isVerifyed, U_code, U_codeTime, U_codeType, U_codeAttemps from Tbl_user WHERE U_username = \"" + username + "\";")
 			data = cursor.fetchall()
 			isVerifyed = data[0][0]
 			code = data[0][1]
 			codeTime = data[0][2]
-			codeAttemps = data[0][3]
+			codeType = data[0][3]
+			codeAttemps = data[0][4]
 		# THROW SQL ERROR / MAY ALSO BE INDEX OUT OF RANGE
 		except:
 			connection.close()
@@ -1045,15 +1212,15 @@ class Management():
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
 		# CHECK IF ALL VARIABLES ARE INITIALIZED
-		if not isVerifyed or not code or not codeTime or not codeAttempts:
+		if not isVerifyed or not code or not codeTime or not codeAttempts or not codeType:
 			connection.close()
 			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
-		# CHECK IF VERIFICATION IS NECESSARY
-		if codeAttempts == -1:
+		# CHECK IF ACCOUNT ACTIVATION HAS BEEN SCHEDULED
+		if not codeType == "ACTIVATE_ACCOUNT" or codeAttempts == -1:
 			PrintSendToAdmin("SERVER <-#- [ERRNO 21] NCES         -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFERRNO_PASSWORD_CHANGE_SCHEDULED")
@@ -1115,7 +1282,7 @@ class Management():
 		# ALL CHECKS PASSED
 		# VERIFY ACCOUNT
 		try:
-			cursor.execute("UPDATE Tbl_user SET U_isVerifyed = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\";")
+			cursor.execute("UPDATE Tbl_user SET U_isVerifyed = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\";")
 		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 		except:
 			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
@@ -1247,16 +1414,18 @@ class Management():
 		# INITALIZE VARIABLES TO STORE VALUES FOR CODE VALIDATION
 		code = None
 		codeTime = None
+		codeType = None
 		codeAttempts = None
 		username = None
 		try:
 			# QUERY DAATABASE FOR VALIDATION CODES
-			cursor.execute("SELECT U_code, U_codeTime, U_codeAttempts, U_username FROM Tbl_user WHERE U_id = " + userID + ";")
+			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts, U_username FROM Tbl_user WHERE U_id = " + userID + ";")
 			data = cursor.fetchall()
 			code = data[0][0]
 			codeTime = data[0][1]
-			codeAttempts = data[0][2]
-			username = data[0][3]
+			codeType = data[0][2]
+			codeAttempts = data[0][3]
+			username = data[0][4]
 		except:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
@@ -1266,10 +1435,16 @@ class Management():
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not username:
+		if not code or not codeTime or not codeAttempts or not username or not codeType:
 			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		if not codeType == "PASSWORD_CHANGE":
+			PrintSendToAdmin("SERVER <-#- [ERRNO 21] NCES         -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRNO_PASSWORD_CHANGE_SCHEDULED")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
 		# CHECK IF PASSWORD CHANGE HAS BEEN REQUESTED IN THE FIRST PLACE
@@ -1327,7 +1502,7 @@ class Management():
 		newHash = CryptoHelper.Scrypt(newPassword, salt)
 		try:
 			# WRITE CHANGES TO DATABASE
-			cursor.execute("UPDATE Tbl_user SET U_password = \"" + newHash + "\", U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp().split(".")[0] + "\" WHERE U_id = " + userID + ";")
+			cursor.execute("UPDATE Tbl_user SET U_password = \"" + newHash + "\", U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp().split(".")[0] + "\", U_codeType = \"NONE\" WHERE U_id = " + userID + ";")
 		except:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
@@ -1349,10 +1524,12 @@ class Management():
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 
 	# HANDLES REQUESTS TO CHANGE THE MASTER PASSWORDS AND SENDS VERIFICATION CODES TO EMAIL
-	def PasswordChangeRequest(command, clientAddress, clientSocket, aesKey):
+	def AccountRequest(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# mode%eq!PASSWORD_CHANGE!; OR mode%eq!DELETE_ACCOUNT!;
 		# GET USER ID
-		UID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not UID:
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not userID:
 			PrintSendToAdmin("SERVER <-#- [ERRNO 13] NLGI            -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
@@ -1367,7 +1544,7 @@ class Management():
 		name = None
 		try:
 			# GET DATA NEEDED TO GENERATE EMAIL
-			cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_id = " + UID + ";")
+			cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_id = " + userID + ";")
 			data = cursor.fetchall()
 			address = str(data[0][0])
 			name = str(data[0][1])
@@ -1389,12 +1566,32 @@ class Management():
 			return
 		# GENERATE VERIFICATION CODE
 		codeFinal = CodeGenerator()
+		mode = None
+		try:
+			# EXAMPLE COMMAND
+			# mode%eq!PASSWORD_CHANGE!;
+			mode = command.split("!")[1]
+		except:
+			# COMMAND WAS FORMATTED IN AN UNUSUAL MANNER
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
+		if not mode == "PASSWORD_CHANGE" or not mode == "DELETE_ACCOUNT":
+			# COMMAND IS INVALID
+			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			return
 		try:
 			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
 			timestamp = Timestamp()
-			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeAttempts = 0 WHERE U_id = " + UID + ";")
+			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeAttempts = 0, U_codeType = \"" + mode + "\" WHERE U_id = " + userID + ";")
 			connection.commit()
 		except:
+			connection.rollback()
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 			PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
@@ -1421,27 +1618,21 @@ class Management():
 			encryptedData = aesEncryptor.encrypt("INFERRNO_16")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			return
-		# TODO: Geolocate
-		# ip = details.split("\n")[0].split(" ")[1]
 		# ADAPT FORMATTING TO WORK IN HTML
 		htmlDetails = details.replace("\n","<br>")
-		try:
-			# EXAMPLE COMMAND
-			# mode%eq!PASSWORD_CHANGE!;
-			mode = command.split("!")[1]
-			if mode == "PASSWORD_CHANGE":
-				# FILL NEEDED INFORMATION TO SEND EMAIL
-				subject = "Password change request"
-				text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nYour login: " + name + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
-				html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>Your login: <b>" + name + "</b><br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
-			else:
-				# COMMAND WAS INVALID
-				PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
-				aesEncryptor = AESCipher(aesKey)
-				encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		except:
-			# COMMAND WAS FORMATTED IN AN UNUSUAL MANNER
+		if mode == "PASSWORD_CHANGE":
+			# FILL NEEDED INFORMATION TO SEND EMAIL
+			subject = "[PMDBS] Password change"
+			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nYour login: " + name + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>Your login: <b>" + name + "</b><br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		elif mode == "DELETE_ACCOUNT":
+			# TODO ADAPT EMAIL TO "DELETE ACCOUNT"
+			# FILL NEEDED INFORMATION TO SEND EMAIL
+			subject = "[PMDBS] Delete your account?"
+			text = "Dear " + name + ",\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n" + details + "\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to delete your account and all data associated to it.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br><b>ALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!</b><br><br><br>To confirm your request, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		else:
+			# COMMAND WAS INVALID
 			PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFERRINVALID_COMMAND")
@@ -1781,7 +1972,7 @@ class Management():
 		hashedPassword = CryptoHelper.Scrypt(password, salt)
 		try:
 			# INSERT NEW USER INTO DATABASE
-			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeAttempts,U_lastPasswordChange) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",0,\"" + Timestamp() + "\");")
+			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\");")
 		except:
 			# USER NAME ALREADY EXISTS
 			connection.close()
@@ -1841,12 +2032,14 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
-		# GENERATE VERIFICATION CODE
-		codeFinal = CodeGenerator()
+		PrintSendToAdmin("SERVER ---> TODO: ACTIVATE ACCOUNT     ---> " + clientAddress)
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# GENERATE EMAIL
 		subject = "[PMDBS] Please verify your email address."
-		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
+		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 		# SEND VERIFICATION CODE BY EMAIL
 		Management.SendMail("PMDBS Support", email,	subject, text, html, clientAddress)
 		
@@ -2237,11 +2430,10 @@ class Management():
 				return
 			# GENERATE VERIFICATION CODE
 			codeFinal = CodeGenerator()
+			timestamp = Timestamp()
 			try:
 				# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-				timestamp = Timestamp()
-				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeAttempts = 0 WHERE U_username = " + username + ";")
-				connection.commit()
+				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = " + username + ";")
 			except:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 				PrintSendToAdmin("SERVER <-#- [ERRNO 17] SQLE            -#-> " + clientAddress)
@@ -2249,6 +2441,8 @@ class Management():
 				encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
 				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 				return
+			else:
+				connection.commit()
 			finally:
 				# FREE RESOURCES
 				connection.close()
@@ -2270,8 +2464,8 @@ class Management():
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
 			subject = "[PMDBS] Security warning"
-			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			# SEND ACCOUNT VALIDATION EMAIL
 			SendMail("PMDBS Support", address, subject, text, html, clientAddress)
 			aesEncryptor = AESCipher(aesKey)
@@ -2558,12 +2752,6 @@ class Server(Thread):
 				Server.TCPsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 				# USE NON-BLOCKING SOCKET
 				Server.TCPsocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-				# TEST START
-				#Server.TCPsocket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-				#Server.TCPsocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 1)
-				#Server.TCPsocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 1)
-				#Server.TCPsocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 5)
-				# TEST END
 				Server.TCPsocket.bind((self.localAddress, self.localPort))
 				Server.TCPsocket.listen(1)
 				portBlocked = False
