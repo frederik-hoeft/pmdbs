@@ -7,6 +7,7 @@
 		- 2FA:
 			- autoban for 3 times wrong verification code
 		- code optimization:
+			- check for commits and rollbacks after each database transaction
 			- check running python version
 			- function-based error handling
 			- write errors to logs
