@@ -1,7 +1,5 @@
 - PasswordManager v2
 	SERVER TODO:
-		- delete account (and all data)
-			--> 2FA
 		- Admin features:
 			- ban clients by mac/ip
 				--> check on connection (Server main thread)
