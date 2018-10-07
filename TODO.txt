@@ -2,7 +2,6 @@
 	SERVER TODO:
 		- code optimization:
 			- check running python version
-			- write errors to logs
 		- rework custom key exchange
 	SERVER LOW PRIORITY:
 		- Admin features:
