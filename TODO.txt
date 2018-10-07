@@ -2,8 +2,8 @@
 	SERVER TODO:
 		- code optimization:
 			- check running python version
-		- rework custom key exchange
 	SERVER LOW PRIORITY:
+		- rework custom key exchange
 		- Admin features:
 			- ban clients by mac/ip
 			- delete accounts
