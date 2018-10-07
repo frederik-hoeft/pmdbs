@@ -8,6 +8,8 @@
 			- autoban for 3 times wrong verification code
 		- update login:
 			- check if isBanned
+		- on Server Boot:
+			- clean up database
 		- code optimization:
 			- check for commits and rollbacks after each database transaction
 			- check running python version
