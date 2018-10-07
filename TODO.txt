@@ -1,8 +1,5 @@
 - PasswordManager v2
 	SERVER TODO:
-		- code optimization:
-			- check running python version
-	SERVER LOW PRIORITY:
 		- rework custom key exchange
 		- Admin features:
 			- ban clients by mac/ip
