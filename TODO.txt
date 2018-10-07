@@ -8,7 +8,7 @@
 			- check if isBanned
 		- on Server Boot:
 			- clean up database --> garbageCollection()
-		- export config to different file --> use exec / execfile on boot
+		- export config to different file (config.py) --> import config file
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 		- request cookie
