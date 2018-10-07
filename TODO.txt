@@ -9,7 +9,7 @@
 		- update login:
 			- check if isBanned
 		- on Server Boot:
-			- clean up database
+			- clean up database --> garbageCollection()
 		- code optimization:
 			- check for commits and rollbacks after each database transaction
 			- check running python version
