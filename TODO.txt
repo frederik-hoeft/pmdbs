@@ -3,7 +3,6 @@
 		- code optimization:
 			- check running python version
 			- write errors to logs
-			- RETURN ERROR CODES (!!!)
 		- rework custom key exchange
 	SERVER LOW PRIORITY:
 		- Admin features:
