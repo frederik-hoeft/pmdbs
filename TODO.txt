@@ -5,6 +5,7 @@
 			- function-based error handling
 			- write errors to logs
 			- RETURN ERROR CODES (!!!)
+		- rework custom key exchange
 	SERVER LOW PRIORITY:
 		- Admin features:
 			- ban clients by mac/ip
