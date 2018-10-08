@@ -2,7 +2,7 @@
 	SERVER TODO:
 		- rework custom key exchange
 		- Admin features:
-			- ban clients by mac/ip
+			- ban accouts
 			- delete accounts
 		- update login:
 			- check if isBanned
