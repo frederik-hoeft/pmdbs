@@ -3,8 +3,6 @@
 		- rework custom key exchange
 		- Admin features:
 			- delete accounts
-		- update login:
-			- check if isBanned
 		- on Server Boot:
 			- clean up database --> garbageCollection()
 		- export config to different file (config.py) --> import config file
