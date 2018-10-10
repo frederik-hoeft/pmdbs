@@ -1,8 +1,5 @@
 - PasswordManager v2
 	SERVER TODO:
-		- rework custom key exchange
-			+ RSA working for C# and python
-			- check AES
 		- Admin features:
 			- delete accounts
 		- on Server Boot:
