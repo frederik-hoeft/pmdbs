@@ -5,6 +5,8 @@
 		- on Server Boot:
 			- clean up database --> garbageCollection()
 			- check for config
+		- update doc
+		- check error handling for key exchange
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 		- request cookie
