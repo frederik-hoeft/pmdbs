@@ -4,7 +4,7 @@
 			- delete accounts
 		- on Server Boot:
 			- clean up database --> garbageCollection()
-		- export config to different file (config.py) --> import config file
+			- check for config
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 		- request cookie
