@@ -32,6 +32,7 @@ import errno
 import smtplib
 import pygeoip
 import sys
+from config import *
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
@@ -57,19 +58,11 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-5.18"
+VERSION = "0.10-6.18"
 BUILD = "development"
-DATE = "Oct 06 2018"
-TIME = "20:40:07"
+DATE = "Oct 10 2018"
+TIME = "17:04:26"
 PYTHON = "Python 3.6.6 / LINUX"
-# CONFIG
-REBOOT_TIME = 1
-LOCAL_ADDRESS = "192.168.178.46"
-LOCAL_PORT = 4444
-SUPPORT_EMAIL_HOST = "smtp.gmail.com"
-SUPPORT_EMAIL_SSL_PORT = 465
-SUPPORT_EMAIL_ADDRESS = ""
-SUPPORT_EMAIL_PASSWORD = ""
 
 ################################################################################
 #------------------------------SERVER CRYPTO CLASS-----------------------------#
@@ -133,7 +126,7 @@ class CryptoHelper():
 		publicKey = RSA.importKey(pemPublicKey)
 		# publicKey = pemPublicKey
 		# CONSTRUCT XML-FORMATTED KEY STEP-BY-STEP
-		xml  = '<RSAKeyValue>'
+		xml  = '<RSAParameters>'
 		xml += '<Modulus>'
 		# EXPORT THE MODULUS FROM RSA OBJECT AND ADD IT TO XML STRING
 		xml += standard_b64encode(number.long_to_bytes(publicKey.n)).decode("utf-8")
@@ -142,7 +135,7 @@ class CryptoHelper():
 		# EXPORT THE EXPONENT FROM RSA OBJECT AND ADD IT TO XML STRING
 		xml += standard_b64encode(number.long_to_bytes(publicKey.e)).decode("utf-8")
 		xml += '</Exponent>'
-		xml += '</RSAKeyValue>'
+		xml += '</RSAParameters>'
 		# RETURN THE PUBLIC XML KEY-STRING
 		return xml
 	
@@ -167,7 +160,7 @@ class CryptoHelper():
 		# CONSTRUCT RSA KEY FROM MODULUS AND EXPONENT
 		publicKey = RSA.construct((modulus, exponent))
 		# RETURN THE PUBLIC PEM KEY-STRING
-		return publicKey.exportKey()
+		return publicKey.exportKey().decode("utf-8")
 		
 	#------------------------------HELPER FUNCTIONS----------------------------#
 	# GET LONG INTEGER
@@ -746,6 +739,9 @@ class Handle():
 		# [ERRNO 22] UEXT				--> USER ALREADY EXISTS
 		# [ERRNO 23] CDNE				--> COOKIE DOES NOT EXIST
 		# [ERRNO 24] DVFY				--> VERIFY NEW DEVICE
+		# [ERRNO 25] UDNE				--> USER DOES NOT EXIST
+		# [ERRNO 26] ACCB				--> ACCOUNT BANNED
+		# [ERRNO 27] CRYP				--> CRYPTOGRAPHIC EXCEPTION
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -849,6 +845,18 @@ class Handle():
 			errorNo = "24"
 			if not message:
 				message = "VERIFY_NEW_DEVICE"
+		elif errorID == "UDNE":
+			errorNo = "25"
+			if not message:
+				message = "USER_DOES_NOT_EXIST"
+		elif errorID == "ACCB":
+			errorNo = "26"
+			if not message:
+				message = "ACCOUNT_BANNED"
+		elif errorID == "CRYP":
+			errorNo = "27"
+			if not message:
+				message = "CRYPTOGRAPHIC_EXCEPTION"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + message +"!;"
@@ -862,16 +870,88 @@ class Handle():
 		
 class Management():
 	
+	# BAN A USER (ADMIN PRIVILEGES NEEDED)
+	def BanAccount(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# username%eq!username!;duration%eq!duration_in_seconds!;
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+			return
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# INITIALIZE VARIABLES
+		username = None
+		duration = None
+		# STORE PROVIDED DATA IN VARIABLES
+		try:
+			for parameter in parameters:
+				if "username" in parameter:
+					username = parameter.split("!")[1]
+				elif "account" in parameter:
+					account = parameter.split("!")[1]
+				elif len(parameter) == 0:
+					pass
+				else:
+					# MORE DATA PROVIDED THAN NEEDED --> THROW EXCEPTION
+					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					return
+		except:
+			# INVALID FORMATTING
+			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF CRUCIAL VARIABLES HAVE BEEN SET
+		if not username or not duration:
+			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		userExists = 0
+		try:
+			# QUERY DATABASE FOR USER
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");")
+			data = cursor.fetchall()
+			userExists = data[0][0]
+		except:
+			# SQL ERROR
+			connection.close()
+			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF USER EXISTS
+		if not userExists == 1:
+			Handle.Error("UDNE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		try:
+			# SET ISBANNED FLAG FOR USER
+			cursor.execute("UPDATE Tbl_user SET U_isBanned = 1, U_banTime = \"" + Timestamp() + "\", U_banDuration = \"" + duration + "\";")
+		except:
+			# SQL ERROR --> ROLLBACK
+			connection.rollback()
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# KICK USER
+		Management.Kick("mode%eq!username!;target%eq!;" + username + "!", clientAddress, clientSocket, aesKey)
+	
 	# ALLOWS CONNECTION TO SERVER AND SETS UP CLIENT HANDLER THREAD
 	def AllowConnection(clientAddress, clientSocket):
 		# DISPLAY IP OF CONNECTED CLIENT
 		PrintSendToAdmin("SERVER ---> CONNECTED                  <--- " + clientAddress)
 		# CREATE NEW THREAD FOR EACH CLIENT
-		handlerThread = Thread(target = ClientHandler.Handler, args = (clientsocket, clientAddress))
+		handlerThread = Thread(target = ClientHandler.Handler, args = (clientSocket, clientAddress))
 		handlerThread.start()
 		# ADD CLIENT DO CONNECTED CLIENTS
-		Server.allClients.append([clientsocket, clientAddress, 0])
-		logThread = Thread(target = Log.GetDetails, args = (clientAddress, clientsocket))
+		Server.allClients.append([clientSocket, clientAddress, 0])
+		logThread = Thread(target = Log.GetDetails, args = (clientAddress, clientSocket))
 		logThread.start()
 	
 	# CHECKS IF CLIENT IS BANNED
@@ -924,9 +1004,10 @@ class Management():
 		# ip%eq!ip!;duration%eq!duration_in_seconds!;
 		# TODO: BAN ACCOUNT
 		if not isSystem:
-			# DO ADMIN VALIDATION STUFF
-			# UNTIL NOW:
-			return
+			# CHECK IF REQUEST COMES FROM ADMIN
+			if not clientSocket == Server.admin:
+				Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+				return
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
@@ -996,6 +1077,8 @@ class Management():
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETBANNED")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		if not isSystem:
+			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 	
 	# DELETES AN ACCOUNT AFTER VALIDATING PROVIDED 2FA CODE
 	def DeleteAccount(command, clientAddress, clientSocket, aesKey):
@@ -1120,7 +1203,7 @@ class Management():
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 	
 	# WHITELISTS DEVICE COOKIE AFTER VALIDATING PROVIDED 2FA CODE
-	def NewDeviceLogin(command, clientAddress, clientSocket, aesKey):
+	def LoginNewDevice(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
 		# username%eq!username!;code%eq!code!;password%eq!password!;cookie%eq!cookie!;
 		creds = command.split(";")
@@ -1167,23 +1250,44 @@ class Management():
 		codeTime = None
 		codeType = None
 		codeAttempts = None
+		isBanned = None
+		banTime = None
+		banDuration = None
 		try:
 			# QUERY DAATABASE FOR VALIDATION CODES
-			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_username = " + username + ";")
+			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts, U_isBanned, U_banTime, U_banDuration FROM Tbl_user WHERE U_username = " + username + ";")
 			data = cursor.fetchall()
 			code = data[0][0]
 			codeTime = data[0][1]
 			codeType = data[0][2]
 			codeAttempts = data[0][3]
+			isBanned = data[0][4]
+			banTime = data[0][5]
+			banDuration = data[0][6]
 		except:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
 			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not username or not codeType:
+		if not code or not codeTime or not codeAttempts or not username or not codeType or not isBanned or not banTime or not banDuration:
 			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
 			return
+		if isBanned == 1:
+			if int(banTime) + int(banDuration) < int(Timestamp()):
+				try:
+					cursor.execute("UPDATE Tbl_user SET U_isBanned = 0 WHERE U_username = \"" + username + "\";")
+				except:
+					connection.rollback()
+					connection.close()
+					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					return
+				else:
+					connection.commit()
+			else:
+				connection.close()
+				Handle.Error("ACCB", None, clientAddress, clientSocket, aesKey, True)
+				return
 		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
 		if not codeType == "NEW_LOGIN" or codeAttempts == -1:
 			Handle.Error("NCES", "NO_NEW_LOGIN_SCHEDULED", clientAddress, clientSocket, aesKey, True)
@@ -2385,23 +2489,59 @@ class Management():
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
-		exists = 0
+		userExists = 0
+		cookieExists = 0
 		isNewDevice = 1
 		try:
 			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
-			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\");")
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\") UNION ALL SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");")
 			data = cursor.fetchall()
-			exists = data[0][0]
+			cookieExists = data[0][0]
 			isNewDevice = data[1][0]
+			userExists = data[2][0]
 		except:
 			# SQL ERROR 
 			connection.close()
 			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
 			return
-		if exists == 0:
+		if userExists == 0:
+			connection.close()
+			Handle.Error("UDNE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		if cookieExists == 0:
 			# HANDLE INVALID COOKIES
+			connection.close()
 			Handle.Error("CDNE", None, clientAddress, clientSocket, aesKey, True)
 			return
+		isBanned = 1
+		banTime = None
+		banDuration = None
+		try:
+			cursor.execute("SELECT U_isBanned, U_banTime, U_banDuration FROM Tbl_user WHERE U_username = \"" + username + "\";")
+			data = cursor.fetchall()
+			isBanned = data[0][0]
+			banTime = data[0][1]
+			banDuration = data[0][2]
+		except:
+			# SQL ERROR 
+			connection.close()
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		if isBanned == 1:
+			if int(banTime) + int(banDuration) < int(Timestamp()):
+				try:
+					cursor.execute("UPDATE Tbl_user SET U_isBanned = 0 WHERE U_username = \"" + username + "\";")
+				except:
+					connection.rollback()
+					connection.close()
+					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					return
+				else:
+					connection.commit()
+			else:
+				connection.close()
+				Handle.Error("ACCB", None, clientAddress, clientSocket, aesKey, True)
+				return
 		if isNewDevice == 1:
 			# CREATE CONNECTION TO DATABASE
 			connection = sqlite3.connect(Server.dataBase)
@@ -2598,6 +2738,8 @@ class Server(Thread):
 	# INITIALIZE GLOBAL SERVER ATTRIBUTES
 	serverPublicKey = None
 	serverPrivateKey = None
+	publicKeyPem = None
+	publicKeyXml = None
 	geolocatingAvailable = True
 	connection = None
 	cursor = None
@@ -2738,6 +2880,8 @@ class Server(Thread):
 			keyPair = CryptoHelper.RSAKeyPairGenerator()
 			Server.serverPublicKey = keyPair[0]
 			Server.serverPrivateKey = keyPair[1]
+			Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+			Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
 		except:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
 			return
@@ -2781,7 +2925,7 @@ class Server(Thread):
 		# CONTINUALLY ACCEPT INCOMING CONNECTIONS WHILE THE SERVER IS RUNNING
 		try:
 			while Server.running:
-				clientsocket, address = Server.TCPsocket.accept()
+				clientSocket, address = Server.TCPsocket.accept()
 				if Server.running:
 					finalAddress = address[0] + ":" + str(address[1])
 					# INITAILIZE CHECKS
@@ -2891,7 +3035,7 @@ class ClientHandler():
 		isTcpFin = False
 		isXmlClient = False
 		# EXPORT PUBLIC KEY TO STRING IN PEM FORMAT
-		serverPublicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+		
 		# AWAIT PACKETS FROM CLIENT
 		try:
 			# BUFFER FOR HUGE PACKETS
@@ -2982,60 +3126,23 @@ class ClientHandler():
 								isDisconnected = True
 								# JUMP TO FINALLY AND FINISH CONNECTION
 								return
-							# CHECK IF PACKET CONTAINS RSA KEY
-							if packetID in ("XPK","PPK"):
+							elif packetID == "INI":
 								PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
-								# GET PUBLIC KEY FROM PACKET
-								publicKey = dataString[4:]
-								# CHECK IF KEY IS IN PEM FORMAT
-								if packetID == "PPK":
-									try:
-										# SET THE CLIENT RSA KEY
-										clientPublicKey = publicKey
-									except:
-										# IF ANYTHING GOES WRONG DISCONNECT CLIENT
-										# INVALID RSA KEY
-										PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
-										# JUMP TO FINALLY AND FINISH CONNECTION
-										return
-									# SET XML ATTRIBUTE FOR CLIENT (XML IS NOT USED)
-									isXmlClient = False
-								else:
-									try:
-										# CONVERT XML KEY TO PEM
-										clientPublicKeyString = CryptoHelper.RSAPublicXmlToPem(publicKey)
-										# SET THE CLIENT RSA KEY
-										clientPublicKey = clientPublicKeyString
-									except:
-										# IF ANYTHING GOES WRONG DISCONNECT CLIENT
-										# INVALID RSA KEY
-										PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
-										# JUMP TO FINALLY AND FINISH CONNECTION
-										return
-									# SET XML ATTRIBUTE FOR CLIENT (XML IS USED)
+								# GET PACKET ID
+								packetSID = dataString[4:7]
+								# GET FORMAT
+								if packetSID == "XML":
 									isXmlClient = True
-								# SEND THE SERVER'S PUBLIC KEY TO THE CLIENT
-								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
-								# CHECK IF THE CLIENT USES XML FORMAT
-								if isXmlClient:
-									# CONVERT SERVER'S PEM KEY TO XML FORMAT
-									serverPublicKey = CryptoHelper.RSAPublicPemToXml(serverPublicKeyPem)
-									# SEND XML KEY TO CLIENT
-									clientSocket.send(b'\x01' + bytes("UXPK" + serverPublicKey, "utf-8") + b'\x04')
+									# SEND PUBLIC KEY
+									clientSocket.send(b'\x01' + bytes("UKEYXMLkey%eq!" + Server.publicKeyXml + "!;", "utf-8") + b'\x04')
+								elif packetSID == "PEM":
+									isXmlClient = False
+									# SEND PUBLIC KEY
+									clientSocket.send(b'\x01' + bytes("UKEYPEMkey%eq!" + Server.publicKeyPem + "!;", "utf-8") + b'\x04')
 								else:
-									# SEND PEM KEY TO CLIENT
-									clientSocket.send(b'\x01' + bytes("UPPK" + serverPublicKeyPem, "utf-8") + b'\x04')
-								# AES KEY EXCHANGE
-								PrintSendToAdmin("SERVER <--- KEY EXCHANGE               ---> " + clientAddress)
-								# GENERATE 256 BIT AES KEY
-								aesKey = CryptoHelper.AESKeyGenerator()
-								# PrintSendToAdmin("AES: " + aesKey)
-								# ENCRYPT AES KEY USING RSA 4096
-								encryptedAesKey = CryptoHelper.RSAEncrypt(aesKey, clientPublicKey)
-								# CONVERT KEY TO BYTES
-								finalBytes = b'\x01' + bytes("KEXC" + encryptedAesKey, "utf-8") + b'\x04'
-								# SEND KEY TO CLIENT
-								clientSocket.send(finalBytes)
+									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+									return
+								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
 							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
 							elif packetID in ("EXC", "DTA", "INF"):
 								# RECEIVED SOME OTHER PACKET OVER UNENCRYPTED CONNECTION
@@ -3050,8 +3157,62 @@ class ClientHandler():
 								return
 						# CHECK IF PACKET "IS KEY EXCHANGE" (RSA ENCRYPTED) 
 						elif packetSpecifier == 'K':
-							# TODO: IMPLEMENT
-							pass
+							# GET PACKETID
+							packetID = dataString[1:4]
+							if packetID == "CKE":
+								PrintSendToAdmin("SERVER <--- CLIENT KEY EXCHANGE        <--- " + clientAddress)
+								command = dataString[4:]
+								# EXAMPLE COMMAND = key%eq!key!;nonce%eq!encrypted_nonce!;
+								cryptoInformation = command.split(";")
+								key = None
+								nonce = None
+								# EXTRACT KEY AND NONCE FROM PACKET
+								# TODO: RETURN ERRORS TO CLIENT
+								try:
+									for info in cryptoInformation:
+										if "key" in info:
+											key = info.split("!")[1]
+										elif "nonce" in info:
+											nonce = info.split("!")[1]
+										elif len(info) == 0:
+											pass
+										else:
+											# COMMAND CONTAINED MORE INFORMATION THAN REQUESTED
+											PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+											return
+								except:
+									# COMMAND HAS UNKNOWN FORMATTING
+									PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+									return
+								# COMMAND DID NOT CONTAIN ALL INFORMATION
+								if not nonce or not key:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+									return
+								try:
+									if isXmlClient:
+										clientPublicKey = CryptoHelper.RSAPublicXmlToPem(key)
+									else:
+										clientPublicKey = key
+								except:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+									return
+								# GENERATE 256 BIT AES KEY
+								aesKey = CryptoHelper.AESKeyGenerator()
+								# PrintSendToAdmin("AES: " + aesKey)
+								# ENCRYPT AES KEY USING RSA 4096
+								decNonce = CryptoHelper.RSADecrypt(nonce, Server.serverPrivateKey)
+								message = "SKEkey%eq!" + aesKey + "!;nonce%eq!" + decNonce + "!;"
+								encryptedMessage = CryptoHelper.RSAEncrypt(message, clientPublicKey)
+								# CONVERT KEY TO BYTES
+								finalBytes = b'\x01' + bytes("K" + encryptedMessage, "utf-8") + b'\x04'
+								# SEND KEY TO CLIENT
+								clientSocket.send(finalBytes)
+								PrintSendToAdmin("SERVER ---> SYMMETRIC KEY EXCHANGE     ---> " + clientAddress)
+							else:
+								# RECEIVED INVALID PACKET ID
+								PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								return
 						# CHECK IF PACKET IS AES ENCRYPTED
 						elif packetSpecifier == 'E':
 							# CREATE AES CIPHER
@@ -3063,8 +3224,28 @@ class ClientHandler():
 							packetID = decryptedData[:3]
 							# GET PACKET SUB-ID
 							packetSID = decryptedData[3:6]
+							if packetID == "KEX":
+								if packetSID == "ACK":
+									command = decryptedData[6:]
+									nonce = None
+									if "nonce" in command:
+										nonce = command.split("!")[1]
+									else:
+										PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+										return
+									# ENCRYPT DATA
+									message = "nonce%eq!" + nonce + "!;"
+									aesEncryptor = AESCipher(aesKey)
+									encryptedData = aesEncryptor.encrypt("KEXACK" + message)
+									clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+									PrintSendToAdmin("SERVER <--- ACKNOWLEDGE                ---> " + clientAddress)
+									PrintSendToAdmin("SERVER <--- KEY EXCHANGE FINISHED      ---> " + clientAddress)
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+									return
 							# INFORMATION / ADMINISTRATIVE PACKETS
-							if packetID == "INF":
+							elif packetID == "INF":
 								if packetSID == "BGN":
 									# BEGIN TRANSACTION
 									PrintSendToAdmin("SERVER <--- BEGIN TRANSACT.            <--- " + clientAddress)
@@ -3087,7 +3268,6 @@ class ClientHandler():
 									return
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
-									# JUMP TO FINALLY AND FINISH CONNECTION
 							# REQUEST PACKETS
 							elif packetID == "REQ":
 								# INSERT REQUEST
@@ -3196,7 +3376,7 @@ class ClientHandler():
 								# PROVIDE VALIDATION CODE FOR NEW DEVICE
 								elif packetSID == "CND":
 									PrintSendToAdmin("SERVER <--- VERIFY NEW DEVICE          <--- " + clientAddress)
-									mgmtThread = Thread(target = Management.NewDeviceLogin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread = Thread(target = Management.LoginNewDevice, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# PROVIDE ACTIVATION CODE FOR ACCOUNT
 								elif packetSID == "VER":
@@ -3207,6 +3387,11 @@ class ClientHandler():
 								elif packetSID == "DEL":
 									PrintSendToAdmin("SERVER <--- DELETE ACCOUNT             <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.DeleteAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# BAN CLIENT
+								elif packetSID == "BAN":
+									PrintSendToAdmin("SERVER <--- BAN USER BY IP             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Ban, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
