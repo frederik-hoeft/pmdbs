@@ -2,7 +2,7 @@
 	SERVER TODO:
 		- Admin features:
 			- delete accounts
-			- change admin password ?
+			- continue change admin password ?
 		- on Server Boot:
 			- clean up database --> garbageCollection()
 		- update doc
