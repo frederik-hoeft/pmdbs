@@ -5,7 +5,6 @@
 			- change admin password ?
 		- on Server Boot:
 			- clean up database --> garbageCollection()
-			- check for config
 		- update doc
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
