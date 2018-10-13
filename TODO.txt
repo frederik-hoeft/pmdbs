@@ -2,10 +2,15 @@
 	SERVER TODO:
 		- Admin features:
 			- delete accounts
-			- continue change admin password ?
+			- rework admin login
 		- on Server Boot:
 			- clean up database --> garbageCollection()
 		- update doc
+		- LOW PRIORITY (FINISH CLIENTS FIRST):
+			- Change admin setup:
+				- one "__ROOT__" user ("master admin")
+				- __ROOT__ can promote users to become admin 
+				--> better maintenance for an admin team
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 		- request cookie
