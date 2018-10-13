@@ -1,16 +1,14 @@
 - PasswordManager v2
 	SERVER TODO:
-		- Admin features:
-			- delete accounts
-			- rework admin login
-		- on Server Boot:
-			- clean up database --> garbageCollection()
-		- update doc
+		- HIGH PRIORITY:
+			- update doc
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
 				- __ROOT__ can promote users to become admin 
 				--> better maintenance for an admin team
+			- Admin features:
+				- delete accounts
 	DEBUG / ADMIN CLIENT TODO:
 		- allow dynamic query creation (no more hard coding)
 		- request cookie
