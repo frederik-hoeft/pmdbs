@@ -3312,7 +3312,7 @@ class ClientHandler():
 				receiving = True
 				# RECEIVE AND DUMP TO BUFFER UNTIL EOT FLAG IS FOUND
 				while receiving:
-					# LOAD DATA TO 32768 BYTE 
+					# LOAD DATA TO 32768 BYTE BUFFER
 					data = clientSocket.recv(32768)
 					# CHECK IF ANY DATA HAS BEEN RECEIVED
 					if data:
@@ -3368,7 +3368,7 @@ class ClientHandler():
 						# ----PACKET VALIDATION----
 						# CHECK IF SOH FLAG IS *NOT* FIRST CHARACTER
 						if not dataPacket[0] == b'\x01':
-							# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONINUE WITH NEXT PACKET
+							# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONTINUE WITH NEXT PACKET
 							if dataPacket.count(b'\x01') == 0:
 								# PACKET IS INVALID
 								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
@@ -3376,7 +3376,7 @@ class ClientHandler():
 							# IF THE PACKET CONTAINS A SOH FLAG BUT IT IS NOT IN THE BEGINNING REMOVE THE BEGINNING UNTIL SOH IS FIRST CHARACTER
 							elif dataPacket.count(b'\x01') == 1:
 								dataPacket = b'\x01' + dataPacket.split(b'\x01')[1]
-							# THE PACKET CONTAINS MORE THAN ONE SOH. SOMETHING WENT HORRIBLY WRONG
+							# THE PACKET CONTAINS MORE THAN ONE SOH! SOMETHING WENT HORRIBLY WRONG
 							else:
 								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
 								continue
