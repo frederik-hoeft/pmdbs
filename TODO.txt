@@ -2,6 +2,7 @@
 	SERVER TODO:
 		- HIGH PRIORITY:
 			- update docs
+			- update logging
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
