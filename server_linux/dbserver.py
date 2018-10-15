@@ -58,10 +58,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-7.18"
+VERSION = "0.10-8.18"
 BUILD = "development"
-DATE = "Oct 13 2018"
-TIME = "16:48:17"
+DATE = "Oct 15 2018"
+TIME = "02:08:51"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -3312,7 +3312,7 @@ class ClientHandler():
 				receiving = True
 				# RECEIVE AND DUMP TO BUFFER UNTIL EOT FLAG IS FOUND
 				while receiving:
-					# LOAD DATA TO 32768 BYTE BUFFER
+					# LOAD DATA TO 32768 BYTE 
 					data = clientSocket.recv(32768)
 					# CHECK IF ANY DATA HAS BEEN RECEIVED
 					if data:
@@ -3368,7 +3368,7 @@ class ClientHandler():
 						# ----PACKET VALIDATION----
 						# CHECK IF SOH FLAG IS *NOT* FIRST CHARACTER
 						if not dataPacket[0] == b'\x01':
-							# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONTINUE WITH NEXT PACKET
+							# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONINUE WITH NEXT PACKET
 							if dataPacket.count(b'\x01') == 0:
 								# PACKET IS INVALID
 								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
@@ -3376,7 +3376,7 @@ class ClientHandler():
 							# IF THE PACKET CONTAINS A SOH FLAG BUT IT IS NOT IN THE BEGINNING REMOVE THE BEGINNING UNTIL SOH IS FIRST CHARACTER
 							elif dataPacket.count(b'\x01') == 1:
 								dataPacket = b'\x01' + dataPacket.split(b'\x01')[1]
-							# THE PACKET CONTAINS MORE THAN ONE SOH! SOMETHING WENT HORRIBLY WRONG
+							# THE PACKET CONTAINS MORE THAN ONE SOH. SOMETHING WENT HORRIBLY WRONG
 							else:
 								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
 								continue
@@ -3411,7 +3411,7 @@ class ClientHandler():
 									return
 								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
 							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
-							elif packetID in ("EXC", "DTA", "INF"):
+							elif packetID in ("EXC", "DTA", "INF", "REQ", "MNG", "LOG", "KEX"):
 								# RECEIVED SOME OTHER PACKET OVER UNENCRYPTED CONNECTION
 								# UNSECURE CONNECTION
 								PrintSendToAdmin("SERVER <-#- [ERRNO 03] USEC             -#-> " + clientAddress)
