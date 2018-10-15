@@ -1,7 +1,6 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
-			- update docs
 			- update logging
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
