@@ -2,6 +2,9 @@
 	SERVER TODO:
 		- HIGH PRIORITY:
 			- update logging
+			- FIX PYTHON "BUG":
+				not 0 == False
+				use 0 == None!!!
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
