@@ -32,6 +32,7 @@ import errno
 import smtplib
 import pygeoip
 import sys
+import getpass
 from config import *
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -58,10 +59,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-9.18"
+VERSION = "0.10-8.18"
 BUILD = "development"
-DATE = "Oct 16 2018"
-TIME = "22:17:03"
+DATE = "Oct 15 2018"
+TIME = "02:08:51"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -261,7 +262,7 @@ class DatabaseManagement():
 					column = parameters[0]
 					value = parameters[1].replace('!','')
 					# CHECK IF CULUMN IS VALID
-					if column in ["uname","password","host","notes","email","datetime"]:
+					if column in ["uname","password","host","notes","email","datetime","url"]:
 						if query == "":
 							query = "D_" + column
 							values = "\"" + value + "\""
@@ -322,8 +323,9 @@ class DatabaseManagement():
 				return
 			# SECURITY CHECK PASSED
 			# CHECK CREDENTIALS
+			userID = None
 			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if not userID:
+			if userID == None:
 				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 				return
 			# CREDENTIAL CHECK PASSED
@@ -381,8 +383,9 @@ class DatabaseManagement():
 				return
 			# SECURITY CHECK PASSED
 			# CHECK CREDENTIALS
+			userID = None
 			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if not userID:
+			if userID == None:
 				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 				return
 			# CREDENTIAL CHECK PASSED
@@ -449,8 +452,9 @@ class DatabaseManagement():
 				return
 			# SECURITY CHECK PASSED
 			# CHECK CREDENTIALS
+			userID = None
 			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if not userID:
+			if userID == None:
 				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 				return
 			# CREDENTIAL CHECK PASSED
@@ -533,7 +537,7 @@ class DatabaseManagement():
 				Log.ClientEventLog("DATA_DUMP", clientSocket)
 			else:
 				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 				return
 		finally:
 			# FREE RESOURCES
@@ -859,7 +863,7 @@ class Handle():
 				message = "CRYPTOGRAPHIC_EXCEPTION"
 		else:
 			return
-		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + message +"!;"
+		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
 		Log.ServerEventLog("Error", info)
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
 		if not isEncrypted:
@@ -870,90 +874,41 @@ class Handle():
 		
 class Management():
 	
-	# INITIALIZES ADMIN-PASSWORD CHANGE AND SEND OUT 2FA EMAIL
-	def AdminPasswordChangeRequest(clientAddress, clientSocket, aesKey):
-		# CHECK IF REQUEST ORIGINATES FROM ADMIN
-		if not clientSocket == Server.admin:
-			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
-			return
-		# GENERATE VERIFICATION CODE
-		codeFinal = CodeGenerator()
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		try:
-			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + Timestamp() + "\", U_codeAttempts = 0, U_codeType = \"" + mode + "\" WHERE U_username = \"__ADMIN__\";")
-		except:
-			connection.rollback()
-			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
-			return
-		else:
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
-		# INITIALIZE VARIABLE TO STORE DETAILS IN
-		details = None
-		# GET DEVICE DETAILS
-		allClients = Server.allClients
-		for client in allClients:
-			if clientSocket in client:
-				details = client[3]
-		if not details:
-			# DETAILS HAVE NOT BEEN FOUND
-			Handle.Error("NFND", None, clientAddress, clientSocket, aesKey, True)
-			return
-		# ADAPT FORMATTING TO WORK IN HTML
-		htmlDetails = details.replace("\n","<br>")
-		subject = "[PMDBS] Admin password change"
-		text = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
-		# CALL SENDMAIL
-		Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
-		PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETADMIN_PASSWORD_CHANGE_INITIALIZED")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		
-	# CHANGES THE ADMIN PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
-	def AdminPasswordChange(command, clientAddress, clientSocket, aesKey):
+	# WHITELISTS CLIENT AS ADMIN AFTER VALIDATING PROVIDED 2FA CODE
+	def LoginNewAdmin(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
-		# password%eq!hash!;code%eq!code!;
+		# code%eq!code!;password%eq!password!;cookie%eq!cookie!;
 		creds = command.split(";")
-		# CHECK FOR SQL INJECTION ATTEMPTS
+		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
-		# CHECK IF REQUEST ORIGINATES FROM ADMIN
-		if not clientSocket == Server.admin:
-			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
-			return
-		# INITAILIZE VARIABLES TO STORE EXTRACTED VALUES
-		newPassword = None
+		# INITIALIZE VARIABLES
+		password = None
+		cookie = None
 		providedCode = None
 		# EXTRACT VALUES FROM PROVIDED COMMAND
 		try:
 			for credential in creds:
-				if "password" in element:
-					newPassword = credential.split("!")[1]
-				elif "code" in element:
+				if "password" in credential:
+					password = credential.split("!")[1]
+				elif "cookie" in credential:
+					cookie = credential.split("!")[1]
+				elif "code" in credential:
 					providedCode = credential.split("!")[1]
 				elif len(credential) == 0:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
-		if not newPassword or not providedCode:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+		if not providedCode or not password or not cookie:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -972,14 +927,231 @@ class Management():
 			codeTime = data[0][1]
 			codeType = data[0][2]
 			codeAttempts = data[0][3]
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not codeType:
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if not code or not codeTime or codeAttempts == None or not codeType:
+			Handle.Error("SQLE", "VALIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
+		if not codeType == "NEW_LOGIN" or codeAttempts == -1:
+			Handle.Error("NCES", "NO_NEW_LOGIN_SCHEDULED", clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
+		if not code == providedCode:
+			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
+			if codeAttempts + 1 >= 3:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY MAC ADDRESS OR IP
+				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
+				# BAN DEVICE FOR 1H
+				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!3600!;", clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# INCREMENT COUNTER FOR WRONG ATTEMPTS
+				codeAttempts += 1
+				try:
+					# UPDATE COUNTER IN DATABASE
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";")
+				except Exception as e:
+					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLLBACK AND FREE RESOURCES
+					connection.rollback()
+					connection.close()
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+					return
+				else:
+					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
+					connection.commit()
+					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
+					return
+		# CHECK IF VALIDATION CODE HAS EXPIRED
+		if int(Timestamp()) - int(codeTime) > 1800:
+			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
+			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CANCEL ACTIVE CODE
+		try:
+			cursor.execute("UPDATE Tbl_user SET U_codeAttempts = -1, U_codeType = \"NONE\";")
+		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+		except Exception as e:
+			connection.rollback()
+			connection.close()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
+		else:
+			connection.commit()
+		# ALL CODE CHECKS PASSED
+		# HASH PASSWORD
+		hashedUsername = CryptoHelper.SHA256("__ADMIN__")
+		salt = CryptoHelper.SHA256(hashedUsername + password)
+		hashedPassword = CryptoHelper.Scrypt(password, salt)
+		userID = None
+		try:
+			# CHECK IF CREDENTIALS ARE VALID
+			# QUERY FOR USER ID
+			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"__ADMIN__\" AND U_password = \"" + hashedPassword + "\";")
+			# FETCH DATA
+			data = cursor.fetchall()
+			# GET USER ID
+			userID = str(data[0][0])
+		except:
+			connection.close()
+			Log.ClientEventLog("LOGIN_ATTEMPT_FAILED", clientSocket)
+			# RETURN ERROR MESSAGE TO CLIENT
+			Handle.Error("ADMN", None, clientAddress, clientSocket, aesKey, True)
+			return
+		try:
+			# CREATE CONNECTION BETWEEN ACCOUNT ID AND COOKIE ID
+			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) VALUES (" + userID + ", (SELECT C_id FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\"));")
+		except Exception as e:
+			# SQL ERROR --> ROLLBACK
+			connection.rollback()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES 
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# CREDENTIAL CHECK PASSED
+		# CHECK FOR OTHER ADMINS
+		if not Server.admin == None:
+			# THROW ADMIN ALREADY LOGGED IN
+			# RETURN ERROR MESSAGE TO CLIENT
+			Handle.Error("ACNA", None, clientAddress, clientSocket, aesKey, True)
+			return
+		Management.Logout(clientAddress, clientSocket, aesKey, False)
+		# SET UP ADMIN STATUS
+		Server.admin = clientSocket
+		Server.adminIp = clientAddress
+		details = None
+		for index, client in enumerate(Server.allClients):
+			if clientSocket in client:
+				Server.allClients[index][2] = 1
+				try:
+					details = client[3]
+				except:
+					pass
+		Server.adminAesKey = aesKey
+		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFACKSUCCESSFUL_ADMIN_LOGIN")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
+	
+	# INITIALIZES ADMIN-PASSWORD CHANGE AND SEND OUT 2FA EMAIL
+	def AdminPasswordChangeRequest(clientAddress, clientSocket, aesKey):
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# GENERATE VERIFICATION CODE
+		codeFinal = CodeGenerator()
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
+			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + Timestamp() + "\", U_codeAttempts = 0, U_codeType = \"PASSWORD_CHANGE\" WHERE U_username = \"__ADMIN__\";")
+		except Exception as e:
+			connection.rollback()
+			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# INITIALIZE VARIABLE TO STORE DETAILS IN
+		details = None
+		# GET DEVICE DETAILS
+		allClients = Server.allClients
+		for client in allClients:
+			if clientSocket in client:
+				details = client[3]
+		if not details:
+			# DETAILS HAVE NOT BEEN FOUND
+			Handle.Error("NFND", "DETAILS_NOT_FOUND", clientAddress, clientSocket, aesKey, True)
+			return
+		# ADAPT FORMATTING TO WORK IN HTML
+		htmlDetails = details.replace("\n","<br>")
+		subject = "[PMDBS] Admin password change"
+		text = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
+		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		# CALL SENDMAIL
+		Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFRETADMIN_PASSWORD_CHANGE_INITIALIZED")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		
+	# CHANGES THE ADMIN PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
+	def AdminPasswordChange(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# password%eq!password!;code%eq!code!;
+		creds = command.split(";")
+		# CHECK FOR SQL INJECTION ATTEMPTS
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		if not clientSocket == Server.admin:
+			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# INITAILIZE VARIABLES TO STORE EXTRACTED VALUES
+		newPassword = None
+		providedCode = None
+		# EXTRACT VALUES FROM PROVIDED COMMAND
+		try:
+			for credential in creds:
+				if "password" in credential:
+					newPassword = credential.split("!")[1]
+				elif "code" in credential:
+					providedCode = credential.split("!")[1]
+				elif len(credential) == 0:
+					pass
+				else:
+					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+					Handle.Error("ICMD", "TOO_MUCH_DATA", clientAddress, clientSocket, aesKey, True)
+					return
+		except Exception as e:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
+		if not newPassword or not providedCode:
+			Handle.Error("ICMD", "NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITALIZE VARIABLES TO STORE VALUES FOR CODE VALIDATION
+		code = None
+		codeTime = None
+		codeType = None
+		codeAttempts = None
+		try:
+			# QUERY DAATABASE FOR VALIDATION CODES
+			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_username = \"__ADMIN__\";")
+			data = cursor.fetchall()
+			code = data[0][0]
+			codeTime = data[0][1]
+			codeType = data[0][2]
+			codeAttempts = data[0][3]
+		except Exception as e:
+			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
+			connection.close()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
+		if not code or not codeTime or codeAttempts == None or not codeType:
+			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		if not codeType == "PASSWORD_CHANGE":
 			Handle.Error("NCES", "NO_PASSWORD_CHANGE_SCHEDULED", clientAddress, clientSocket, aesKey, True)
@@ -1002,12 +1174,12 @@ class Management():
 				codeAttempts += 1
 				try:
 					# UPDATE COUNTER IN DATABASE
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_username = \"__ADMIN__\";")
-				except:
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";")
+				except Exception as e:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION AND FREE RESOURCES
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
@@ -1022,15 +1194,15 @@ class Management():
 		# ALL CHECKS PASSED
 		# UPDATE PASSWORD HASH
 		hashedUsername = CryptoHelper.SHA256("__ADMIN__")
-		salt = CryptoHelper.SHA256(hashedUsername + password)
+		salt = CryptoHelper.SHA256(hashedUsername + newPassword)
 		newHash = CryptoHelper.Scrypt(newPassword, salt)
 		try:
 			# WRITE CHANGES TO DATABASE
 			cursor.execute("UPDATE Tbl_user SET U_password = \"" + newHash + "\", U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\" WHERE U_username = \"__ADMIN__\";")
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# UPDATED SUCCESSFULLY --> COMMIT CHANGES 
@@ -1039,8 +1211,7 @@ class Management():
 			# FREE RESOURCES
 			connection.close()
 		# ALL UPDATED
-		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
-		PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFACKSEND_UPDATE")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -1071,15 +1242,15 @@ class Management():
 					pass
 				else:
 					# MORE DATA PROVIDED THAN NEEDED --> THROW EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MUCH_DATA", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# INVALID FORMATTING
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF CRUCIAL VARIABLES HAVE BEEN SET
 		if not username or not duration:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_PARAMETERS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -1091,10 +1262,10 @@ class Management():
 			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");")
 			data = cursor.fetchall()
 			userExists = data[0][0]
-		except:
+		except Exception as e:
 			# SQL ERROR
 			connection.close()
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF USER EXISTS
 		if not userExists == 1:
@@ -1103,10 +1274,10 @@ class Management():
 		try:
 			# SET ISBANNED FLAG FOR USER
 			cursor.execute("UPDATE Tbl_user SET U_isBanned = 1, U_banTime = \"" + Timestamp() + "\", U_banDuration = \"" + duration + "\";")
-		except:
+		except Exception as e:
 			# SQL ERROR --> ROLLBACK
 			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# COMMIT CHANGES
@@ -1201,16 +1372,16 @@ class Management():
 					continue
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF VARIABLES HAVE BEEN SET
 		if not ip or not duration:
 			# A CRUCIAL PARAMETER IS MISSING
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF IP IS VALID
 		isValid = False
@@ -1233,10 +1404,10 @@ class Management():
 		try:
 			# WRITE BAN RELATED INFORMATION TO DATABASE
 			cursor.execute("INSERT INTO Tbl_blacklist (B_ip, B_time, B_duration) VALUES (\"" + ip + "\", \"" + time + "\", \"" + duration + "\")")
-		except:
+		except Exception as e:
 			# ROLLBACK IN CASE OF ERROR
 			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# COMMIT CHANGES
@@ -1279,15 +1450,15 @@ class Management():
 					continue
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if not providedCode:
 			# A CRUCIAL PARAMETER IS MISSING
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -1306,14 +1477,14 @@ class Management():
 			codeTime = data[0][1]
 			codeType = data[0][2]
 			codeAttempts = data[0][3]
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not codeType:
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if not code or not codeTime or codeAttempts == None or not codeType:
+			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
 		if not codeType == "DELETE_ACCOUNT" or codeAttempts == -1:
@@ -1333,12 +1504,12 @@ class Management():
 				codeAttempts += 1
 				try:
 					# UPDATE COUNTER IN DATABASE
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_username = " + username + ";")
-				except:
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = " + username + ";")
+				except Exception as e:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION AND FREE RESOURCES
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
@@ -1357,13 +1528,13 @@ class Management():
 			# DELETE WHITELISTED COOKIES, USER DATA, USER LOG AND USER ACCOUNT
 			cursor.execute("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";")
 			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";")
-			cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
 			cursor.execute("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";")
-		except:
+			cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLL BACK AND FREE RESOURCES
 			connection.rollback()
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# COMMIT CHANGES
@@ -1395,26 +1566,26 @@ class Management():
 		try:
 			for credential in creds:
 				if "username" in credential:
-					username = element.split("!")[1]
+					username = credential.split("!")[1]
 				elif "password" in credential:
-					password = element.split("!")[1]
+					password = credential.split("!")[1]
 				elif "cookie" in credential:
-					cookie = element.split("!")[1]
+					cookie = credential.split("!")[1]
 				elif "code" in credential:
-					providedCode = element.split("!")[1]
+					providedCode = credential.split("!")[1]
 				elif len(credential) == 0:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
 		if not username or not providedCode or not password or not cookie:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -1430,7 +1601,7 @@ class Management():
 		banDuration = None
 		try:
 			# QUERY DAATABASE FOR VALIDATION CODES
-			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts, U_isBanned, U_banTime, U_banDuration FROM Tbl_user WHERE U_username = " + username + ";")
+			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts, U_isBanned, U_banTime, U_banDuration FROM Tbl_user WHERE U_username = \"" + username + "\";")
 			data = cursor.fetchall()
 			code = data[0][0]
 			codeTime = data[0][1]
@@ -1439,23 +1610,23 @@ class Management():
 			isBanned = data[0][4]
 			banTime = data[0][5]
 			banDuration = data[0][6]
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not username or not codeType or not isBanned or not banTime or not banDuration:
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if not code or not codeTime or codeAttempts == None or not username or not codeType or isBanned == None or not banTime or not banDuration:
+			Handle.Error("SQLE", "VALIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		if isBanned == 1:
 			if int(banTime) + int(banDuration) < int(Timestamp()):
 				try:
 					cursor.execute("UPDATE Tbl_user SET U_isBanned = 0 WHERE U_username = \"" + username + "\";")
-				except:
+				except Exception as e:
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					connection.commit()
@@ -1481,12 +1652,12 @@ class Management():
 				codeAttempts += 1
 				try:
 					# UPDATE COUNTER IN DATABASE
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_username = " + username + ";")
-				except:
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"" + username + "\";")
+				except Exception as e:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLLBACK AND FREE RESOURCES
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
@@ -1502,10 +1673,10 @@ class Management():
 		try:
 			cursor.execute("UPDATE Tbl_user SET U_codeAttempts = -1, U_codeType = \"NONE\";")
 		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-		except:
+		except Exception as e:
 			connection.rollback()
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
 		else:
@@ -1535,11 +1706,11 @@ class Management():
 			return
 		try:
 			# CREATE CONNECTION BETWEEN ACCOUNT ID AND COOKIE ID
-			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) VALUES (" + userID + ", (SELECT C_id FROM Tbl_cookies WHERE C_cookies = \"" + cookie + "\"));")
-		except:
+			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) VALUES (" + userID + ", (SELECT C_id FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\"));")
+		except Exception as e:
 			# SQL ERROR --> ROLLBACK
 			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# COMMIT CHANGES 
@@ -1589,7 +1760,7 @@ class Management():
 					# FREE RESOURCES
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 			else:
 				# COOKIE SUCCESSFULLY INSTERTED INTO DATABASE
@@ -1631,15 +1802,15 @@ class Management():
 					pass
 				# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND ERROR
 				else:
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
 		# COMMAND IS FORMATTED IN AN UNKNOWN WAY --> THROW INVALID COMMAND ERROR
-		except:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+		except Exception as e:
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# COMMAND DOES NOT CONTAIN ALL REQUIRED INFORMATION
 		if not username or not providedCode:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -1662,14 +1833,13 @@ class Management():
 			codeAttempts = data[0][4]
 		# THROW SQL ERROR / MAY ALSO BE INDEX OUT OF RANGE
 		except Exception as e:
-			print(e)
 			connection.close()
-			Handle.Error("SQLE", "1", clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VARIABLES ARE INITIALIZED
 		if isVerified == None or not code or not codeTime or codeAttempts == None or not codeType:
 			connection.close()
-			Handle.Error("SQLE", "2", clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ACCOUNT ACTIVATION HAS BEEN SCHEDULED
 		if not codeType == "ACTIVATE_ACCOUNT" or codeAttempts == -1:
@@ -1683,10 +1853,10 @@ class Management():
 				# 2FA FAILED --> DELETE ACCOUNT
 				try:
 					cusor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
-				except:
+				except Exception as e:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 					connection.rollback()
-					Handle.Error("SQLE", "3", clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# ACCOUNT DELETED SUCCESSFULLY --> COMMIT CHANGES AND FREE RESSOURCES
@@ -1700,12 +1870,12 @@ class Management():
 				codeAttempts += 1
 				# UPDATE COUNTER IN DATABASE
 				try:
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_id = " + userID + ";")
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_id = " + userID + ";")
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-				except:
+				except Exception as e:
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", "4", clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				# DATABASE UPDATED SUCCESSFULLY --> COMMIT CHANGES AND RETURN STATUS TO USER
 				else:
@@ -1721,14 +1891,17 @@ class Management():
 		try:
 			cursor.execute("UPDATE Tbl_user SET U_isVerified = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\";")
 		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-		except:
+		except Exception as e:
 			connection.rollback()
-			Handle.Error("SQLE", "5", clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
 		else:
 			connection.commit()
 			PrintSendToAdmin("SERVER ---> ACCOUNT VERIFIED           ---> " + clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFACKACCOUNT_VERIFIED")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# FREE RESOURCES
 		finally:
 			connection.close()
@@ -1749,14 +1922,18 @@ class Management():
 			for credential in creds:
 				if "username" in credential:
 					username = credential.split("!")[1]
+				elif len(credential) == 0:
+					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
+		if not username:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
@@ -1768,9 +1945,9 @@ class Management():
 			cursor.execute("SELECT U_password from Tbl_user WHERE U_username = \"" + username + "\";")
 			data = cursor.fetchall()
 			passwordHash = data[0][0]
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		finally:
 			# FREE RESOURCES
@@ -1811,15 +1988,15 @@ class Management():
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 					return
-		except:
+		except Exception as e:
 			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
 		if not newPassword or not providedCode:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -1840,14 +2017,14 @@ class Management():
 			codeType = data[0][2]
 			codeAttempts = data[0][3]
 			username = data[0][4]
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or not codeAttempts or not username or not codeType:
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if not code or not codeTime or codeAttempts == None or not username or not codeType:
+			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		if not codeType == "PASSWORD_CHANGE":
 			Handle.Error("NCES", "NO_PASSWORD_CHANGE_SCHEDULED", clientAddress, clientSocket, aesKey, True)
@@ -1870,12 +2047,12 @@ class Management():
 				codeAttempts += 1
 				try:
 					# UPDATE COUNTER IN DATABASE
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + codeAttempts + " WHERE U_id = " + userID + ";")
-				except:
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_id = " + userID + ";")
+				except Exception as e:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION AND FREE RESOURCES
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
@@ -1895,10 +2072,10 @@ class Management():
 		try:
 			# WRITE CHANGES TO DATABASE
 			cursor.execute("UPDATE Tbl_user SET U_password = \"" + newHash + "\", U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\" WHERE U_id = " + userID + ";")
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# UPDATED SUCCESSFULLY --> COMMIT CHANGES 
@@ -1908,7 +2085,7 @@ class Management():
 			connection.close()
 		# ALL UPDATED
 		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
-		PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFACKPASSWORD_CHANGED")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -1935,15 +2112,15 @@ class Management():
 			data = cursor.fetchall()
 			address = str(data[0][0])
 			name = str(data[0][1])
-		except:
+		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF VARIABLES HAVE BEEN PROPERLY INITAILIZED
 		if not address or not name:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# GENERATE VERIFICATION CODE
 		codeFinal = CodeGenerator()
@@ -1952,23 +2129,23 @@ class Management():
 			# EXAMPLE COMMAND
 			# mode%eq!PASSWORD_CHANGE!;
 			mode = command.split("!")[1]
-		except:
+		except Exception as e:
 			# COMMAND WAS FORMATTED IN AN UNUSUAL MANNER
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if not mode == "PASSWORD_CHANGE" or not mode == "DELETE_ACCOUNT":
 			# COMMAND IS INVALID
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 			return
 		try:
 			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
 			timestamp = Timestamp()
 			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeAttempts = 0, U_codeType = \"" + mode + "\" WHERE U_id = " + userID + ";")
 			connection.commit()
-		except:
+		except Exception as e:
 			connection.rollback()
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		finally:
 			# FREE RESOURCES
@@ -1985,7 +2162,7 @@ class Management():
 				details = client[3]
 		if not details:
 			# DETAILS HAVE NOT BEEN FOUND
-			Handle.Error("NFND", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("NFND", "NO_DETAILS_FOUND", clientAddress, clientSocket, aesKey, True)
 			return
 		# ADAPT FORMATTING TO WORK IN HTML
 		htmlDetails = details.replace("\n","<br>")
@@ -2002,7 +2179,7 @@ class Management():
 			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to delete your account and all data associated to it.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br><b>ALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!</b><br><br><br>To confirm your request, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 		else:
 			# COMMAND WAS INVALID
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "_INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 			return
 		# CALL SENDMAIL
 		Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
@@ -2054,8 +2231,8 @@ class Management():
 				# TRY REGEX --> EXCEPTION == INVALID COMMAND
 				try:
 					[0<=int(x)<256 for x in re.split('\.',re.match(r'^\d+\.\d+\.\d+\.\d+$',target).group(0))].count(True)==4
-				except:
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+				except Exception as e:
+					Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 					return
 				# COMMAND IS VALID
 				else:
@@ -2093,8 +2270,8 @@ class Management():
 				# TRY REGEX --> EXCEPTION == INVALID COMMAND
 				try:
 					[0<=int(x)<256 for x in re.split('\.',re.match(r'^\d+\.\d+\.\d+\.\d+$',ip).group(0))].count(True)==4 and re.match("^[0-9]{5}$",port) and int(port) < 65536
-				except:
-					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+				except Exception as e:
+					Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 					return
 				# COMMAND IS VALID
 				else:
@@ -2163,13 +2340,13 @@ class Management():
 						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# COMMAND IS INVALID
 			else:
-				Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 		# SOMETHING WENT WRONG --> BETTER TELL ADMIN
-		except Exception as E:
+		except Exception as e:
 			# PRINT ERROR MESSAGE
-			print("Error: {0}".format(E))
+			print("Error: {0}".format(e))
 			try:
-				Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			except:
 				pass
 	
@@ -2256,7 +2433,7 @@ class Management():
 				PrintSendToAdmin(clientStatus)
 		else:
 			# COMMAND IS INVALID OR SELECTED MODE IS NOT SUPPORTED
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 				
 				
 		
@@ -2295,11 +2472,11 @@ class Management():
 				pass
 			else:
 				# COMMAND CONTAINED MORE DATA THAN REQUESTED
-				Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 				return
 		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
 		if not username or not password or not email or not nickname or not cookie:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
@@ -2312,11 +2489,11 @@ class Management():
 		try:
 			# INSERT NEW USER INTO DATABASE
 			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0);")
-		except:
+		except Exception as e:
 			# USER NAME ALREADY EXISTS
 			connection.close()
 			# SEND ERROR MESSAGE
-			Handle.Error("UEXT", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("UEXT", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# COMMIT CHANGES
@@ -2334,10 +2511,10 @@ class Management():
 			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\");")
 			data = cursor.fetchall()
 			isCookieValid = data[0][0]
-		except:
+		except Exception as e:
 			# SQL ERROR
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if isCookieValid == 0:
 			# SEND ERROR MESSAGE
@@ -2346,11 +2523,11 @@ class Management():
 		try:
 			# CREATE CONNECTION BETWEEN COOKIE AND USER IN DATABASE
 			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) SELECT U.U_id, C.C_id FROM Tbl_user as U, Tbl_cookies AS C WHERE U.U_username = \"" + username + "\" AND C.C_cookie = \"" + cookie + "\";")
-		except:
+		except Exception as e:
 			# SQL ERROR --> ROLLBACK
 			connection.rollback()
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		else:
 			# COMMIT CHANGES
@@ -2442,17 +2619,19 @@ class Management():
 						password = credential.split("!")[1]
 					elif "cookie" in credential:
 						cookie = credential.split("!")[1]
+					elif len(credential) == 0:
+						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-						Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 						return
-		except:
+		except Exception as e:
 			# COMMAND CONTAINS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
 		if not password or not cookie:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -2462,19 +2641,30 @@ class Management():
 		isNewDevice = 1
 		try:
 			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
-			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\");")
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"__ADMIN__\");")
 			data = cursor.fetchall()
 			cookieExists = data[0][0]
 			isNewDevice = data[1][0]
-		except:
+		except Exception as e:
 			# SQL ERROR 
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if cookieExists == 0:
 			# HANDLE INVALID COOKIES
 			connection.close()
 			Handle.Error("CDNE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# INITIALIZE VARIABLES TO STORE DETAILS IN
+		details = None
+		# GET DEVICE DETAILS
+		allClients = Server.allClients
+		for client in allClients:
+			if clientSocket in client:
+				details = client[3]
+		if not details:
+			# DETAILS HAVE NOT BEEN FOUND
+			Handle.Error("NFND", "DETAILS_NOT_FOUND", clientAddress, clientSocket, aesKey, True)
 			return
 		if isNewDevice == 1:
 			# CREATE CONNECTION TO DATABASE
@@ -2486,55 +2676,44 @@ class Management():
 			name = None
 			try:
 				# GET DATA NEEDED TO GENERATE EMAIL
-				cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_id = " + UID + ";")
+				cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_username = \"__ADMIN__\";")
 				data = cursor.fetchall()
 				address = str(data[0][0])
 				name = str(data[0][1])
-			except:
+			except Exception as e:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 				connection.close()
-				Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			# CHECK IF VARIABLES HAVE BEEN PROPERLY SET
 			if not address or not name:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-				Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", "VARiABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 				return
 			# GENERATE VERIFICATION CODE
 			codeFinal = CodeGenerator()
 			timestamp = Timestamp()
 			try:
 				# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = " + username + ";")
-			except:
+				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = \"__ADMIN__\";")
+			except Exception as e:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLLBACK
 				connection.rollback()
-				Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				connection.commit()
 			finally:
 				# FREE RESOURCES
 				connection.close()
-			# INITIALIZE VARIABLES TO STORE EMAIL RELATED INFORMATION
-			details = None
-			# GET DEVICE DETAILS
-			allClients = Server.allClients
-			for client in allClients:
-				if clientSocket in client:
-					details = client[3]
-			if not details:
-				# DETAILS HAVE NOT BEEN FOUND
-				Handle.Error("NFND", None, clientAddress, clientSocket, aesKey, True)
-				return
 			Handle.Error("DVFY", None, clientAddress, clientSocket, aesKey, True)
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
 			subject = "[PMDBS] Admin security warning"
 			text = "Hey Admin!\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log in as admin using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing the admin password.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Hey Admin!</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing the admin password!</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Hey Admin!</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log in as admin using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing the admin password!</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			# SEND ACCOUNT VALIDATION EMAIL
-			SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
+			Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 			return
 		# HASH PASSWORD
 		hashedUsername = CryptoHelper.SHA256("__ADMIN__")
@@ -2549,10 +2728,9 @@ class Management():
 			data = cursor.fetchall()
 			# GET USER ID
 			credentialsAreValid = data[0][0]
-		except:
-			Log.ClientEventLog("LOGIN_ATTEMPT_FAILED", clientSocket)
-			# RETURN ERROR MESSAGE TO CLIENT
-			Handle.Error("CRED", None, clientAddress, clientSocket, aesKey, True)
+		except Exception as e:
+			# RETURN ERROR MESSAGE TO CLIENT 
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		finally:
 			connection.close()
@@ -2739,17 +2917,19 @@ class Management():
 						password = credential.split("!")[1]
 					elif "cookie" in credential:
 						cookie = credential.split("!")[1]
+					elif len(credential) == 0:
+						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
-						Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 						return
-		except:
+		except Exception as e:
 			# COMMAND CONTAINS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
 		if not username or not password or not cookie:
-			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -2765,10 +2945,10 @@ class Management():
 			cookieExists = data[0][0]
 			isNewDevice = data[1][0]
 			userExists = data[2][0]
-		except:
+		except Exception as e:
 			# SQL ERROR 
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if userExists == 0:
 			connection.close()
@@ -2788,19 +2968,19 @@ class Management():
 			isBanned = data[0][0]
 			banTime = data[0][1]
 			banDuration = data[0][2]
-		except:
+		except Exception as e:
 			# SQL ERROR 
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if isBanned == 1:
 			if int(banTime) + int(banDuration) < int(Timestamp()):
 				try:
 					cursor.execute("UPDATE Tbl_user SET U_isBanned = 0 WHERE U_username = \"" + username + "\";")
-				except:
+				except Exception as e:
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					connection.commit()
@@ -2818,30 +2998,30 @@ class Management():
 			name = None
 			try:
 				# GET DATA NEEDED TO GENERATE EMAIL
-				cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_id = " + UID + ";")
+				cursor.execute("SELECT U_email, U_name FROM Tbl_user WHERE U_username = \"" + username + "\";")
 				data = cursor.fetchall()
 				address = str(data[0][0])
 				name = str(data[0][1])
-			except:
+			except Exception as e:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 				connection.close()
-				Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			# CHECK IF VARIABLES HAVE BEEN PROPERLY SET
 			if not address or not name:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-				Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 				return
 			# GENERATE VERIFICATION CODE
 			codeFinal = CodeGenerator()
 			timestamp = Timestamp()
 			try:
 				# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = " + username + ";")
-			except:
+				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = \"" + username + "\";")
+			except Exception as e:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLLBACK
 				connection.rollback()
-				Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				connection.commit()
@@ -2866,7 +3046,7 @@ class Management():
 			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
 			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			# SEND ACCOUNT VALIDATION EMAIL
-			SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
 			return
 		# CHECK IF USER ACCOUNT IS VERIFIED
 		# HASH PASSWORD
@@ -3073,7 +3253,7 @@ class Server(Thread):
 					cleanedDataBases.append(db)
 					iterator = iterator + 1
 				# PROMPT USER INPUT
-				selectedDbString = input(FBLINKING + CWHITE + " > " + ENDF)
+				selectedDbString = input(CWHITE + " > " + ENDF)
 				# TRY TO SELECT DATABASE AT SELECTED INDEX
 				try:
 					selectedDb = int(selectedDbString)
@@ -3101,9 +3281,83 @@ class Server(Thread):
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
 			return
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked permissions." + ENDF)
+		# CHECK FOR ADMIN ACCOUNT
+		print(CWHITE + "         Verifying database integrity ..." + ENDF)
+		connection = sqlite3.connect(self.dataBase)
+		cursor = connection.cursor()
+		userLen = None
+		blacklistLen = None
+		clientLogLen = None
+		connectUserCookiesLen = None
+		cookiesLen = None
+		dataLen = None
+		serverLogLen = None
+		try:
+			cursor.execute("PRAGMA table_info(Tbl_blacklist);")
+			blacklistLen = len(cursor.fetchall())
+			cursor.execute("PRAGMA table_info(Tbl_clientLog);")
+			clientLogLen = len(cursor.fetchall())
+			cursor.execute("PRAGMA table_info(Tbl_connectUserCookies);")
+			connectUserCookiesLen = len(cursor.fetchall())
+			cursor.execute("PRAGMA table_info(Tbl_cookies);")
+			cookiesLen = len(cursor.fetchall())
+			cursor.execute("PRAGMA table_info(Tbl_data);")
+			dataLen = len(cursor.fetchall())
+			cursor.execute("PRAGMA table_info(Tbl_serverLog);")
+			serverLogLen = len(cursor.fetchall())
+			cursor.execute("PRAGMA table_info(Tbl_user);")
+			userLen = len(cursor.fetchall())
+		except Exception as e:
+			connection.close()
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity: " + str(e) + ENDF)
+			return
+		if not userLen == 14 or not blacklistLen == 4 or not clientLogLen == 6 or not connectUserCookiesLen == 2 or not cookiesLen == 2 or not dataLen == 10 or not serverLogLen == 4:
+			connection.close()
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity." + ENDF)
+			return
+		adminSet = 0
+		try:
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"__ADMIN__\");")
+			adminSet = cursor.fetchall()[0][0]
+		except Exception as e:
+			connection.close()
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity: " + str(e) + ENDF)
+			return
+		if adminSet == 0:
+			noMatch = True
+			while noMatch:
+				print(CWHITE + "         Admin password not set!" + ENDF)
+				print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Please enter the new admin password:" + ENDF)
+				newAdminPassword = getpass.getpass(CWHITE + " > " + ENDF)
+				print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Please confirm the new admin password:" + ENDF)
+				newAdminPasswordConfirm = getpass.getpass(CWHITE + " > " + ENDF)
+				if newAdminPassword == newAdminPasswordConfirm and len(newAdminPassword) > 0:
+					print(CWHITE + "         Setting admin password ..." + ENDF)
+					adminPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(newAdminPassword)[:32])
+					hashedUsername = CryptoHelper.SHA256("__ADMIN__")
+					salt = CryptoHelper.SHA256(hashedUsername + adminPassword)
+					hashedPassword = CryptoHelper.Scrypt(adminPassword, salt)
+					try:
+						cursor.execute("INSERT INTO Tbl_user (U_username, U_name, U_password, U_email, U_isVerified, U_lastPasswordChange, U_isBanned) VALUES (\"__ADMIN__\", \"__ADMIN__\", \"" + hashedPassword + "\", \"" + SUPPORT_EMAIL_ADDRESS + "\", 1, \"" + Timestamp() + "\",0);")
+					except Exception as e:
+						connection.rollback()
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Setting admin password: " + str(e) + ENDF)
+						return
+					else:
+						connection.commit()
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Set admin password." + ENDF)
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database integrity." + ENDF)
+						noMatch = False
+					finally:
+						connection.close()
+				else:
+					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] These passwords don't match! Please try again." + ENDF)
+		else:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database integrity." + ENDF)
 		# LOG SERVER START
+		print(CWHITE + "         Logging server start ..." + ENDF)
 		Log.ServerEventLog("SERVER_STARTED", "IP: " + self.localAddress + "\nPort: " + str(self.localPort) + "\nBuild: " + NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ") " + PYTHON)
-		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Created log." + ENDF)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Logged server start." + ENDF)
 		# IF NMAP IS INSTALLED AND HAS ROOT ACCESS ADVANCED LOGGING CAN BE USED
 		print(CWHITE + "         Checking for Advanced Logging ..." + ENDF)
 		print(CWHITE + "         Checking for nmap installation ..." + ENDF)
@@ -3547,27 +3801,27 @@ class ClientHandler():
 							elif packetID == "REQ" and keyExchangeFinished:
 								# INSERT REQUEST
 								if packetSID == "INS":
-									PrintSendToAdmin("SERVER <--- DBQ: INSERT DATA           <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- DB-QUERY: INSERT DATA      <--- " + clientAddress)
 									dbThread = Thread(target = DatabaseManagement.Insert, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									dbThread.start()
 								# UPDATE REQUEST
 								elif packetSID == "UPD":
-									PrintSendToAdmin("SERVER <--- DBQ: UPDATE DATA           <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- DB-QUERY: UPDATE DATA      <--- " + clientAddress)
 									dbThread = Thread(target = DatabaseManagement.Update, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									dbThread.start()
 								# SELECT REQUEST
 								elif packetSID == "SEL":
-									PrintSendToAdmin("SERVER <--- DBQ: SELECT DATA           <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- DB-QUERY: SELECT DATA      <--- " + clientAddress)
 									dbThread = Thread(target = DatabaseManagement.Select, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									dbThread.start()
 								# HEADER REQUEST FOR DATABASE SYNCRONIZATION
 								elif packetSID == "SYN":
-									PrintSendToAdmin("SERVER <--- DBQ: SYNCRONIZE            <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- DB-QUERY: SYNCHRONIZE      <--- " + clientAddress)
 									dbThread = Thread(target = DatabaseManagement.Sync, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									dbThread.start()
 								# DELETE REQUEST
 								elif packetSID == "DEL":
-									PrintSendToAdmin("SERVER <--- DBQ: DELETE DATA           <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- DB-QUERY: DELETE DATA      <--- " + clientAddress)
 									dbThread = Thread(target = DatabaseManagement.Delete, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									dbThread.start()
 								else:
@@ -3578,12 +3832,12 @@ class ClientHandler():
 							elif packetID == "MNG" and keyExchangeFinished:
 								# ADMIN LOGIN
 								if packetSID == "ADM":
-									PrintSendToAdmin("SERVER <--- ADMIN REQUEST              <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- LOGIN AS ADMIN             <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.LoginAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# USER REGISTRATION
 								elif packetSID == "REG":
-									PrintSendToAdmin("SERVER <--- DQ: CREATE USER            <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- REGISTER NEW USER          <--- " + clientAddress)
 									# REGISTER IN DATABASE
 									dbThread = Thread(target = Management.Register, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									dbThread.start()
@@ -3650,12 +3904,12 @@ class ClientHandler():
 									mgmtThread.start()
 								# PROVIDE VALIDATION CODE FOR NEW DEVICE
 								elif packetSID == "CND":
-									PrintSendToAdmin("SERVER <--- VERIFY NEW DEVICE          <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- VALIDATE NEW DEVICE        <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.LoginNewDevice, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# PROVIDE ACTIVATION CODE FOR ACCOUNT
 								elif packetSID == "VER":
-									PrintSendToAdmin("SERVER <--- VERIFY ACCOUNT             <--- " + clientAddress)
+									PrintSendToAdmin("SERVER <--- ACTIVATE ACCOUNT           <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.EmailVerification, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# PROVIDE VALIDATION CODE TO DELETE ACCOUNT
@@ -3667,6 +3921,21 @@ class ClientHandler():
 								elif packetSID == "BAN":
 									PrintSendToAdmin("SERVER <--- BAN USER BY IP             <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.Ban, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
+									mgmtThread.start()
+								# PROVIDE VALIDATION CODE FOR NEW ADMIN DEVICE
+								elif packetSID == "NAD":
+									PrintSendToAdmin("SERVER <--- VALIDATE NEW ADMIN DEVICE  <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.LoginNewAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# INITIALIZE ADMIN PASSWORD CHANGE
+								elif packetSID == "APR":
+									PrintSendToAdmin("SERVER <--- INITIALIZE ADMIN-PW CHANGE <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AdminPasswordChangeRequest, args = (clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# COMMIT ADMIN PASSWORD CHANGE
+								elif packetSID == "APC":
+									PrintSendToAdmin("SERVER <--- COMMIT ADMIN-PW CHANGE     <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
@@ -3697,7 +3966,7 @@ class ClientHandler():
 				# REMOVE CLIENT FROM ALL LISTS
 				Management.Logout(clientAddress, clientSocket, aesKey, True)
 				Management.Unlist(clientSocket)
-				PrintSendToAdmin("SERVER <-x- DISCONNECTED:ERR           -x-> " + clientAddress)
+				PrintSendToAdmin("SERVER <-x- DISCONNECTED: ERROR        -x-> " + clientAddress)
 			# CHECK IF A TCP FIN HASH BEEN RECEIVED
 			elif isTcpFin:
 				# CHECK IF DISCONNECT MESSAGE HAS ALREADY BEEN SHOWN
