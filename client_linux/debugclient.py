@@ -29,6 +29,11 @@ from Crypto.Cipher import AES
 # PROVIDES CRYPTOGRAPHIC METHODS
 class CryptoHelper():
 
+	# RETURNS SHA256 HASH OF PLAINTEXT
+	def SHA256(plaintext):
+		hashBytes = base64.b64encode(hashlib.sha256(bytes(plaintext, "utf-8")).digest())
+		return hashBytes.decode("utf-8")
+	
 	# ENCRYPTS A MESSAGE USING A 4096 BIT RSA KEY
 	def RSAEncrypt(plaintext, publicKeyPemString):
 		# CREATE RSA KEY OBJECT
@@ -116,47 +121,60 @@ class IO(Thread):
 		ACThread.start()
 		try:
 			while True:
-				command = input("")
-				if command == 'auth':
-					self.IOauth()
+				parameters = input("").split(" ")
+				command = parameters[0]
+				if command == "pwchange":
+					self.IOpasswordChangeRequest(parameters)
 				elif command == "exit":
-					self.IOexit()
+					self.IOexit(parameters)
 				elif command == 'register':
-					self.IOregister()
+					self.IOregister(parameters)
 				elif command == 'insert':
-					self.IOinsert()
+					self.IOinsert(parameters)
 				elif command == 'select':
-					self.IOselect()
+					self.IOselect(parameters)
 				elif command == 'update':
-					self.IOupdate()
+					self.IOupdate(parameters)
 				elif command == 'msg':
-					self.IOmsg()
+					self.IOmsg(parameters)
 				elif command == 'sync':
-					self.IOsync()
-				elif command == 'all':
-					self.IOall()
+					self.IOsync(parameters)
+				elif command == 'alldata':
+					self.IOall(parameters)
 				elif command == 'login':
-					self.IOlogin()
+					self.IOlogin(parameters)
 				elif command == "logout":
-					self.IOlogout()
-				elif command == 'sudo':
-					self.IOsudo()
+					self.IOlogout(parameters)
+				elif command == 'su':
+					self.IOsudo(parameters)
 				elif command == 'shutdown':
-					self.IOshutdown()
+					self.IOshutdown(parameters)
 				elif command == 'reboot':
-					self.IOreboot()
+					self.IOreboot(parameters)
 				elif command == 'start':
-					self.IOstart()
+					self.IOstart(parameters)
 				elif command == "slog":
-					self.IOslog()
+					self.IOslog(parameters)
 				elif command == "clog":
-					self.IOclog()
-				elif command == "listallc":
-					self.IOlistAllClients()
+					self.IOclog(parameters)
+				elif command == "listallclients":
+					self.IOlistAllClients(parameters)
 				elif command == "error":
-					self.IOerror()
-				elif command[:4] == "kick":
-					self.IOkick(command)
+					self.IOerror(parameters)
+				elif command == "cookie":
+					self.IOcookie(parameters)
+				elif command == "kick":
+					self.IOkick(parameters)
+				elif command == "verify":
+					self.IOverify(parameters)
+				elif command == "confirmnewdevice":
+					self.IOconfirmNewDevice(parameters)
+				elif command == "newadmindevice":
+					self.IOnewAdminDevice(parameters)
+				elif command == "initadminpwchange":
+					self.IOinitAdminPwChange(parameters)
+				elif command == "commitadminpwchange":
+					self.IOcommitAdminPwChange(parameters)
 				else:
 					print('unknown command ' + '\'' + command + '\'')
 		except:
@@ -173,99 +191,296 @@ class IO(Thread):
 		except:
 			print('typo in command ' + '\'' + command + '\'')
 	
-	def IOlistAllClients(self):
+	def IOpasswordChangeRequest(self, parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
+		aesEncryptor = AESCipher(ActiveConnection.aesKey)
+		cryptmsg = aesEncryptor.encrypt("MNGIPCmode%eq!PASSWORD_CHANGE!;")
+		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+	
+	def IOlistAllClients(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGLICmode%eq!ALL_CONNECTED!")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 	
-	def IOslog(self):
+	def IOslog(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGLOGSERVER")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 	
-	def IOclog(self):
+	def IOclog(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGLOGCLIENT")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04') 
 	   
 	def IOauth():
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("UPPK" + IO.pemKey, "utf-8") + b'\x04')
+		ActiveConnection.clientSocket.send(b'\x01' + bytes("UINIPEM", "utf-8") + b'\x04')
 		
-	def IOexit(self):
+	def IOexit(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("UFIN", "utf-8") + b'\x04')
-		ActiveConnection.clientSocket.shutdown(socket.SHUT_RDWR)
-		ActiveConnection.clientSocket.close()
 		exit()
+		
+	def IOcookie(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
+		aesEncryptor = AESCipher(ActiveConnection.aesKey)
+		cryptmsg = aesEncryptor.encrypt("MNGCKI")
+		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 	
-	def IOmsg(self):
+	def IOmsg(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("UHello", "utf-8") + b'\x04')
 		
-	def IOregister(self):
+	def IOregister(self, parameters):
+		try:
+			if parameters[1] == "--help":
+				print("\"register <username> <password> <email> <nickname>\"")
+				return
+		except:
+			print("too few arguments")
+		try:
+			username = parameters[1]
+			password = parameters[2]
+			email = parameters[3]
+			nickname = parameters[4]
+			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGREGusername%eq!" + username + "!;password%eq!" + finalPassword + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+		
+	def IOinsert(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("insert <localID> <username> <password> <host> <notes> <email> <datetime>")
+				return
+		except:
+			pass
+		try:
+			localID = parameters[1]
+			uname = parameters[2]
+			password = parameters[3]
+			host = parameters[4]
+			notes = parameters[5]
+			email = parameters[6]
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("REQINSuname&eq!" +  + "!;password%eq!" +  + "!;host&eq!" +  + "!;notes%eq!" +  + "!;email%eq!" +  + "!;datetime%eq!" + str(time.time()).split('.')[0] + "!;\x1f" + localID)
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+		
+	def IOselect(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("select HID1 HID2 HID3 [...]")
+				return
+		except:
+			print("too few arguments")
+		hidString = ""
+		for HID in parameters[1:]:
+			hidString += HID + ";"
+		if hidString == "":
+			print("too few arguments")
+			return
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGREGUSER\x1f5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8\x1ffrederik.hoeft@gmail.com")
+		cryptmsg = aesEncryptor.encrypt("REQSEL" + hidString)
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOinsert(self):
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQINShost%eq!test!;password%eq!test!;datetime%eq!20180831183209!;\x1f12")
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
-		
-	def IOselect(self):
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQSEL7mRYoHaxRgpN+KH8mb92xKc1F2m4BWKMXS5u0vRCqND/5WZ5JWBcue/LVrrcwOJCfzbB5vu1bhaMQPSwlUmgpw==;VjjBgvgnhGPLKijI4BjRoJgILrX6SlHeIjBmWjhQXZT6nk52yUWkcLeQjFgoEsJmYIQmWacuJ61rIHtHQm8fQQ==;mKolv7XwxCxCJr6oAHTNJjtuKmFY4lLIEecE1CXGiQUBlFGJ4gBrAHx3JfH9X4yXzOP7iSYMg5QT7We1Bd1LUQ==;JKqL9rE0NciMWP+VOdVycGA+O29+07TrTiKlyhoq7D/T37eQ1n+idoUOsk0wDPoIl4e8kif/0dPj3lRSzpXEpA==;VgYstSzzgYg/12aoVFQp5ijP2cHRND8W6P0kQioYRFleth75OSKDa2snh7R+mMmq1TjURQWM0B98QeCcwG6T0A==;E1aP9yowzxdpTb7bmU3pmfvEai8i81oeD+Nn27XL8U9ujkVwf7T0gJI/kPie1BbX4N5TNPbPel4srKRYqLSlPA==;")
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
-		
-	def IOupdate(self):
+	def IOupdate(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("TODO...")
+				return
+		except:
+			print("too few arguments")
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("REQUPDhost%eq!test!;password%eq!password!;datetime%eq!20180831183209!;hid%eq!VjjBgvgnhGPLKijI4BjRoJgILrX6SlHeIjBmWjhQXZT6nk52yUWkcLeQjFgoEsJmYIQmWacuJ61rIHtHQm8fQQ==!;\x1f12")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOsync(self):
+	def IOsync(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("REQSYNfetch_mode%eq!FETCH_SYNC!")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOall(self):
+	def IOall(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("REQSYNfetch_mode%eq!FETCH_ALL!")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOlogin(self):
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGLGIUSER\x1f5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+	def IOlogin(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("login <username> <password>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			username = parameters[1]
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[2])[:32])
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGLGIusername%eq!" + username + "!;password%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+	
+	def IOconfirmNewDevice(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("confirmnewdevice <username> <password> <code>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			username = parameters[1]
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[2])[:32])
+			code = parameters[3]
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
 		
-	def IOlogout(self):
+	def IOverify(self, parameters):
+		try:
+			if parameters[1] == "--help":
+				print("verify <username> <code>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			username = parameters[1]
+			code = parameters[2]
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGVERusername%eq!" + username + "!;code%eq!" + code + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+			
+	def IOlogout(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGLGO")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOsudo(self):
+	def IOsudo(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("su <password>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[1])[:32])
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGADMpassword%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+	
+	def IOnewAdminDevice(self, parameters):
+		try:
+			if parameters[1] == "--help":
+				print("newadmindevice <password> <code>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[1])[:32])
+			code = parameters[2]
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGNADpassword%eq!" + password + "!;code%eq!" + code + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+			
+	def IOinitAdminPwChange(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGADM__ADMIN__\x1f5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8")
+		cryptmsg = aesEncryptor.encrypt("MNGAPR")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOshutdown(self):
+	def IOcommitAdminPwChange(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("commitadminpwchange <new_password> <code>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[1])[:32])
+			code = parameters[2] 
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGAPCpassword%eq!" + password + "!;code%!" + code + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + str(parameters) + "\"")
+		
+	def IOshutdown(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGSHTSHUTDOWN")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOreboot(self):
+	def IOreboot(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGRBTREBOOT")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
-	def IOstart(self):
+	def IOstart(self,parameters):
 		ACThread = ActiveConnection()
 		ACThread.start()
 		
-	def IOerror(self):
+	def IOerror(self,parameters):
 		print("SOCKET CLOSED (HANG UP SIMULATED)")
 		ActiveConnection.clientSocket.close()
 			
 class ActiveConnection(Thread):
 	clientSocket = None
 	aesKey = None
+	nonce = None
+	foreignRsaKey = None
+	cookie = None
 	def run(self):
 		isDisconnected = False
 		isSocketError = False
@@ -341,11 +556,37 @@ class ActiveConnection(Thread):
 							isDisconnected = True
 							# JUMP TO FINALLY AND FINISH CONNECTION
 							return
+						elif packetID == "KEY":
+							packetSID = dataString[4:7]
+							if packetSID == "PEM":
+								ActiveConnection.foreignRsaKey = dataString[7:].split("!")[1]
+							# TODO: VALIDATE KEY
+							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow(10**50)), "utf-8")).hexdigest()
+							encNonce = CryptoHelper.RSAEncrypt(ActiveConnection.nonce, ActiveConnection.foreignRsaKey)
+							message = "key%eq!" + IO.pemKey + "!;nonce%eq!" + encNonce + "!;"
+							ActiveConnection.clientSocket.send(b'\x01' + bytes("KCKE" + message, "utf-8") + b'\x04')
 					# CHECK IF PACKET "IS KEY EXCHANGE" (RSA ENCRYPTED) 
 					elif packetSpecifier == 'K':
-						key = dataString[4:]
-						ActiveConnection.aesKey = CryptoHelper.RSADecrypt(key, IO.privateKey)
-						print("AES: " + ActiveConnection.aesKey)
+						dec = CryptoHelper.RSADecrypt(dataString[1:], IO.privateKey)
+						packetID = dec[:3]
+						if packetID == "SKE":
+							commandArray = dec[3:].split(";")
+							key = None
+							nonce = None
+							for info in commandArray:
+								if "key" in info:
+									key = info.split("!")[1]
+								elif "nonce" in info:
+									nonce = info.split("!")[1]
+							if not nonce == ActiveConnection.nonce:
+								return
+							ActiveConnection.aesKey = key
+							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow(10**50)), "utf-8")).hexdigest()
+							message = "nonce%eq!" + ActiveConnection.nonce + "!;"
+							aesEncryptor = AESCipher(ActiveConnection.aesKey)
+							cryptmsg = aesEncryptor.encrypt("KEXACK" + message)
+							ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+							print("AES: " + ActiveConnection.aesKey)
 					# CHECK IF PACKET IS AES ENCRYPTED
 					elif packetSpecifier == 'E':
 						# TODO: DECRYPT
@@ -354,7 +595,12 @@ class ActiveConnection(Thread):
 						print("SERVER (AES)" + decryptedData)
 						packetID = decryptedData[:3]
 						packetSID = decryptedData[3:6]
-						if packetID == "DTA":
+						if packetID == "KEX":
+							if packetSID == "ACK":
+								if not decryptedData[6:].split("!")[1] == ActiveConnection.nonce:
+									return
+								print("CORRECT :)")
+						elif packetID == "DTA":
 							if packetSID == "RET":
 								returnID = decryptedData[6:9]
 								if returnID == "INS":
@@ -367,6 +613,8 @@ class ActiveConnection(Thread):
 									for value in valueArray:
 										valueTuple = value.replace(',',' | ').replace('(','').replace(')','')
 										print(valueTuple)
+							elif packetSID == "CKI":
+								ActiveConnection.cookie = decryptedData[6:].split("!")[1]
 						elif packetID == "LOG":
 							if packetSID == "DMP":
 								valueArray = decryptedData[12:].split('),(')
