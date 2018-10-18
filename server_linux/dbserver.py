@@ -59,10 +59,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-8.18"
+VERSION = "0.10-9.18"
 BUILD = "development"
-DATE = "Oct 15 2018"
-TIME = "02:08:51"
+DATE = "Oct 18 2018"
+TIME = "17:07:28"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
