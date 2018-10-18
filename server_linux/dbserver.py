@@ -58,10 +58,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-8.18"
+VERSION = "0.10-9.18"
 BUILD = "development"
-DATE = "Oct 15 2018"
-TIME = "02:08:51"
+DATE = "Oct 16 2018"
+TIME = "22:17:03"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -369,7 +369,7 @@ class DatabaseManagement():
 		
 	# SELECT DATA FROM THE DATABASE
 	def Select(queryParameter, clientAddress, clientSocket, aesKey):
-		# EXAMPLE command = "username\x1fpassword\x1fHID1;HID2;HID3;HID4;HID5;"
+		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
@@ -1623,16 +1623,22 @@ class Management():
 		try:
 			# POPULATE VARIABLES FROM COMMAND
 			for credential in creds:
-				if "password" in credential:
-					password = credential.split("!")[1]
+				if "username" in credential:
+					username = credential.split("!")[1]
 				elif "code" in credential:
 					providedCode = credential.split("!")[1]
+				elif len(credential) == 0:
+					pass
 				# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND ERROR
 				else:
 					Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# COMMAND IS FORMATTED IN AN UNKNOWN WAY --> THROW INVALID COMMAND ERROR
 		except:
+			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# COMMAND DOES NOT CONTAIN ALL REQUIRED INFORMATION
+		if not username or not providedCode:
 			Handle.Error("ICMD", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO DATABASE
@@ -1643,26 +1649,27 @@ class Management():
 		code = None
 		codeTime = None
 		codeType = None
-		codeAttemps = None
-		isVerifyed = None
+		codeAttempts = None
+		isVerified = None
 		# EXECUTE SQL QUERY TO GET CODE RELATED DATA
 		try:
-			cursor.execute("SELECT U_isVerifyed, U_code, U_codeTime, U_codeType, U_codeAttemps from Tbl_user WHERE U_username = \"" + username + "\";")
+			cursor.execute("SELECT U_isVerified, U_code, U_codeTime, U_codeType, U_codeAttempts from Tbl_user WHERE U_username = \"" + username + "\";")
 			data = cursor.fetchall()
-			isVerifyed = data[0][0]
+			isVerified = data[0][0]
 			code = data[0][1]
 			codeTime = data[0][2]
 			codeType = data[0][3]
-			codeAttemps = data[0][4]
+			codeAttempts = data[0][4]
 		# THROW SQL ERROR / MAY ALSO BE INDEX OUT OF RANGE
-		except:
+		except Exception as e:
+			print(e)
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "1", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VARIABLES ARE INITIALIZED
-		if not isVerifyed or not code or not codeTime or not codeAttempts or not codeType:
+		if isVerified == None or not code or not codeTime or codeAttempts == None or not codeType:
 			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "2", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ACCOUNT ACTIVATION HAS BEEN SCHEDULED
 		if not codeType == "ACTIVATE_ACCOUNT" or codeAttempts == -1:
@@ -1679,7 +1686,7 @@ class Management():
 				except:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 					connection.rollback()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", "3", clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# ACCOUNT DELETED SUCCESSFULLY --> COMMIT CHANGES AND FREE RESSOURCES
@@ -1698,7 +1705,7 @@ class Management():
 				except:
 					connection.rollback()
 					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					Handle.Error("SQLE", "4", clientAddress, clientSocket, aesKey, True)
 					return
 				# DATABASE UPDATED SUCCESSFULLY --> COMMIT CHANGES AND RETURN STATUS TO USER
 				else:
@@ -1712,11 +1719,11 @@ class Management():
 		# ALL CHECKS PASSED
 		# VERIFY ACCOUNT
 		try:
-			cursor.execute("UPDATE Tbl_user SET U_isVerifyed = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\";")
+			cursor.execute("UPDATE Tbl_user SET U_isVerified = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\";")
 		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 		except:
 			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "5", clientAddress, clientSocket, aesKey, True)
 			return
 		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
 		else:
@@ -2304,7 +2311,7 @@ class Management():
 		hashedPassword = CryptoHelper.Scrypt(password, salt)
 		try:
 			# INSERT NEW USER INTO DATABASE
-			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\");")
+			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0);")
 		except:
 			# USER NAME ALREADY EXISTS
 			connection.close()
@@ -2324,7 +2331,7 @@ class Management():
 		isCookieValid = 0
 		try:
 			# CHECK IF THE PROVIDED COOKIE EXISTS
-			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookies = \"" + cookie + "\");")
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\");")
 			data = cursor.fetchall()
 			isCookieValid = data[0][0]
 		except:
@@ -2338,7 +2345,7 @@ class Management():
 			return
 		try:
 			# CREATE CONNECTION BETWEEN COOKIE AND USER IN DATABASE
-			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) VALUES (SELECT U_id FROM Tbl_user WHERE U_username = \"" + username + "\", SELECT C_id FROM Tbl_Cookies WHERE C_cookies = \"" + cookie + "\");")
+			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) SELECT U.U_id, C.C_id FROM Tbl_user as U, Tbl_cookies AS C WHERE U.U_username = \"" + username + "\" AND C.C_cookie = \"" + cookie + "\";")
 		except:
 			# SQL ERROR --> ROLLBACK
 			connection.rollback()
@@ -2353,7 +2360,7 @@ class Management():
 			connection.close()
 		PrintSendToAdmin("SERVER ---> TODO: ACTIVATE ACCOUNT     ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFERRSQL_ERROR")
+		encryptedData = aesEncryptor.encrypt("INFACKTODO_VERIFY_MAIL_SENT")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# GENERATE EMAIL
 		subject = "[PMDBS] Please verify your email address."
