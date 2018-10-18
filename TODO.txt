@@ -11,6 +11,6 @@
 			- Admin features:
 				- delete accounts
 	DEBUG / ADMIN CLIENT TODO:
-		- allow dynamic query creation (no more hard coding)
+		- continue dynamic query creation (no more hard coding)
 		- request cookie
 			
