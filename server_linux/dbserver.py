@@ -59,10 +59,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-9.18"
+VERSION = "0.10-10.18"
 BUILD = "development"
-DATE = "Oct 18 2018"
-TIME = "17:07:28"
+DATE = "Oct 20 2018"
+TIME = "18:26:36"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -1961,7 +1961,7 @@ class Management():
 	# CHANGES THE PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
 	def PasswordChange(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
-		# password%eq!hash!;code%eq!code!;
+		# password%eq!passsword!;code%eq!code!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION ATTEMPTS
 		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
@@ -3311,7 +3311,7 @@ class Server(Thread):
 			connection.close()
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity: " + str(e) + ENDF)
 			return
-		if not userLen == 14 or not blacklistLen == 4 or not clientLogLen == 6 or not connectUserCookiesLen == 2 or not cookiesLen == 2 or not dataLen == 10 or not serverLogLen == 4:
+		if not userLen == TABLE_USER_LENGTH or not blacklistLen == TABLE_BLACKLIST_LENGTH or not clientLogLen == TABLE_CLIENTLOG_LENGTH or not connectUserCookiesLen == TABLE_CONNECTUSERCOOKIES_LENGTH or not cookiesLen == TABLE_COOKIES_LENGTH or not dataLen == TABLE_DATA_LENGTH or not serverLogLen == TABLE_SERVERLOG_LENGTH:
 			connection.close()
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity." + ENDF)
 			return
@@ -3548,9 +3548,13 @@ class ClientHandler():
 	
 	# MAIN FUNCTION
 	def Handler(clientSocket, address):
+		# TCP KEEP-ALIVE SETTINGS
 		clientSocket.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+		# START SENDING KEEPALIVE PACKETS AFTER 10 SECONDS OF IDLING
 		clientSocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 10)
+		# SEND PACKETS IN 5 SECONDS INTERVAL
 		clientSocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 5)
+		# DROP CONNECTION AFTER 6 MISSED KEEPALIVE PACKETS (30 SECONDS WITHOUT CONNECTION)
 		clientSocket.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 6)
 		# INITIALIZING VARIABLES
 		clientPublicKey = None
@@ -3562,18 +3566,16 @@ class ClientHandler():
 		isTcpFin = False
 		isXmlClient = False
 		keyExchangeFinished = False
-		# EXPORT PUBLIC KEY TO STRING IN PEM FORMAT
-		
 		# AWAIT PACKETS FROM CLIENT
 		try:
 			# BUFFER FOR HUGE PACKETS
-			buffer = b''
+			buf = b''
 			# BREAK IF SERVER STOPPED
 			while not Server.stopped and not clientSocket.fileno() == -1:
 				receiving = True
 				# RECEIVE AND DUMP TO BUFFER UNTIL EOT FLAG IS FOUND
 				while receiving:
-					# LOAD DATA TO 32768 BYTE 
+					# LOAD DATA TO 32768 BYTE BUFFER --> DOES NOT REALLY MATTER: MAX. ETHERNET PACKET SIZE IS 1500 BYTES
 					data = clientSocket.recv(32768)
 					# CHECK IF ANY DATA HAS BEEN RECEIVED
 					if data:
@@ -3581,7 +3583,7 @@ class ClientHandler():
 						dataPackets = None
 						# ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER----
 						# CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER IS EMPTY
-						if b'\x04' in data and len(buffer) == 0:
+						if b'\x04' in data and len(buf) == 0:
 							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
 							rawDataPackets = data.split(b'\x04')
 							# GRAB THE LAST PACKET
@@ -3590,30 +3592,30 @@ class ClientHandler():
 							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
 							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
 							if not len(lastDataPacket) == 0:
-								buffer += lastDataPacket
+								buf += lastDataPacket
 							# SET RECEIVING TO FALSE TO BREAK THE LOOP
 							receiving = False
 						# CHECK IF PACKET CONTAINS DATA AND BUFFER IS NOT EMPTY
-						elif b'\x04' in data and not len(buffer) == 0:
+						elif b'\x04' in data and not len(buf) == 0:
 							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
 							rawDataPackets = data.split(b'\x04')
 							# APPEND BUFFER CONTENT TO FIRST PACKET
-							rawDataPackets[0] = buffer + rawDataPackets[0]
+							rawDataPackets[0] = buf + rawDataPackets[0]
 							# RESET THE BUFFER
-							buffer = b''
+							buf = b''
 							# GRAB THE LAST PACKET
 							lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
 							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
 							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
 							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
 							if not len(lastDataPacket) == 0:
-								buffer += lastDataPacket
+								buf += lastDataPacket
 							# SET RECEIVING TO FALSE TO BREAK THE LOOP
 							receiving = False
 						# THE PACKET DOES NOT CONTAIN ANY EOT FLAG
 						else:
 							# APPEND THE WHOLE RECEIVE BUFFER TO THE BUFFER AND REPEAT UNTIL EOT FLAG IS FOUND
-							buffer += data
+							buf += data
 					else:
 						isTcpFin = True
 						return
@@ -3921,6 +3923,11 @@ class ClientHandler():
 								elif packetSID == "BAN":
 									PrintSendToAdmin("SERVER <--- BAN USER BY IP             <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.Ban, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
+									mgmtThread.start()
+								# BAN ACCOUNT
+								elif packetSID == "BNA":
+									PrintSendToAdmin("SERVER <--- BAN ACCOUNT                <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.BanAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# PROVIDE VALIDATION CODE FOR NEW ADMIN DEVICE
 								elif packetSID == "NAD":
