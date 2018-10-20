@@ -3,6 +3,7 @@
 		- HIGH PRIORITY:
 			- update logging
 			- bug fixing
+				- shutdown sometimes not working correctly
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
