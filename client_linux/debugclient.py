@@ -175,6 +175,14 @@ class IO(Thread):
 					self.IOinitAdminPwChange(parameters)
 				elif command == "commitadminpwchange":
 					self.IOcommitAdminPwChange(parameters)
+				elif command == "initpwchange":
+					self.IOinitPwChange(parameters)
+				elif command == "commitpwchange":
+					self.IOcommitPwChange(parameters)
+				elif command == "initdelaccount":
+					self.IOinitDelAccount(parameters)
+				elif command == "commitdelaccount":
+					self.IOcommitDelAccount(parameters)
 				else:
 					print('unknown command ' + '\'' + command + '\'')
 		except:
@@ -285,7 +293,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGREGusername%eq!" + username + "!;password%eq!" + finalPassword + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 		
 	def IOinsert(self,parameters):
 		try:
@@ -305,7 +313,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("REQINSuname&eq!" +  + "!;password%eq!" +  + "!;host&eq!" +  + "!;notes%eq!" +  + "!;email%eq!" +  + "!;datetime%eq!" + str(time.time()).split('.')[0] + "!;\x1f" + localID)
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 		
 	def IOselect(self,parameters):
 		try:
@@ -359,7 +367,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGLGIusername%eq!" + username + "!;password%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 	
 	def IOconfirmNewDevice(self,parameters):
 		try:
@@ -376,7 +384,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 		
 	def IOverify(self, parameters):
 		try:
@@ -392,7 +400,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGVERusername%eq!" + username + "!;code%eq!" + code + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 			
 	def IOlogout(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
@@ -412,7 +420,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGADMpassword%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 	
 	def IOnewAdminDevice(self, parameters):
 		try:
@@ -428,7 +436,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGNADpassword%eq!" + password + "!;code%eq!" + code + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
 			
 	def IOinitAdminPwChange(self,parameters):
 		try:
@@ -439,6 +447,28 @@ class IO(Thread):
 			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGAPR")
+		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		
+	def IOinitPwChange(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
+		aesEncryptor = AESCipher(ActiveConnection.aesKey)
+		cryptmsg = aesEncryptor.encrypt("MNGACRPWC")
+		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		
+	def IOinitDelAccount(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
+		aesEncryptor = AESCipher(ActiveConnection.aesKey)
+		cryptmsg = aesEncryptor.encrypt("MNGACRDEL")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOcommitAdminPwChange(self,parameters):
@@ -455,7 +485,39 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGAPCpassword%eq!" + password + "!;code%!" + code + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
-			print("typo in command \"" + str(parameters) + "\"")
+			print("typo in command \"" + " ".join(parameters) + "\"")
+			
+	def IOcommitPwChange(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("commitpwchange <new_password> <code>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[1])[:32])
+			code = parameters[2] 
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGCPCpassword%eq!" + password + "!;code%!" + code + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + " ".join(parameters) + "\"")
+			
+	def IOcommitDelAccount(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("commitdelaccount <code>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[1])[:32])
+			code = parameters[2] 
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGDELcode%!" + code + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + " ".join(parameters) + "\"")
 		
 	def IOshutdown(self,parameters):
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
