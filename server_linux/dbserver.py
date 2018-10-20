@@ -59,10 +59,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-10.18"
+VERSION = "0.10-11.18"
 BUILD = "development"
 DATE = "Oct 20 2018"
-TIME = "18:26:36"
+TIME = "20:44:25"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -1039,7 +1039,7 @@ class Management():
 		Server.adminAesKey = aesKey
 		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFACKSUCCESSFUL_ADMIN_LOGIN")
+		encryptedData = aesEncryptor.encrypt("INFRETSUCCESSFUL_ADMIN_LOGIN")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
 	
@@ -1087,7 +1087,7 @@ class Management():
 		# CALL SENDMAIL
 		Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETADMIN_PASSWORD_CHANGE_INITIALIZED")
+		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_CHANGE_PASSWORD!;")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		
 	# CHANGES THE ADMIN PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
@@ -1213,7 +1213,7 @@ class Management():
 		# ALL UPDATED
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFACKSEND_UPDATE")
+		encryptedData = aesEncryptor.encrypt("INFRETSEND_UPDATE")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 	
 	# BAN A USER (ADMIN PRIVILEGES NEEDED)
@@ -1236,8 +1236,8 @@ class Management():
 			for parameter in parameters:
 				if "username" in parameter:
 					username = parameter.split("!")[1]
-				elif "account" in parameter:
-					account = parameter.split("!")[1]
+				elif "duration" in parameter:
+					duration = parameter.split("!")[1]
 				elif len(parameter) == 0:
 					pass
 				else:
@@ -1285,8 +1285,9 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
+		PrintSendToAdmin("SERVER ---> BANNED ACCOUNT             ---> " + clientAddress)
 		# KICK USER
-		Management.Kick("mode%eq!username!;target%eq!;" + username + "!", clientAddress, clientSocket, aesKey)
+		Management.Kick("mode%eq!username!;target%eq!" + username + ";!", clientAddress, clientSocket, aesKey)
 	
 	# ALLOWS CONNECTION TO SERVER AND SETS UP CLIENT HANDLER THREAD
 	def AllowConnection(clientAddress, clientSocket):
@@ -1366,10 +1367,10 @@ class Management():
 			for parameter in parameters:
 				if "ip" in parameter:
 					ip = parameter.split("!")[1]
-				if "duration" in parameter:
+				elif "duration" in parameter:
 					duration = parameter.split("!")[1]
 				elif len(parameter) == 0:
-					continue
+					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
 					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
@@ -1415,14 +1416,14 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
-		# LOGOUT CLIENT (NOTE "NONE" FOR AESKEY IS ONLY VALID BECAUSE 4TH PARAMETER IS TRUE)
-		Management.Logout(clientAddress, clientSocket, None, True)
-		# DISCONNECT CLIENT
-		Management.Disconnect(clientSocket, "BANNED", clientAddress, False)
+		Management.Kick("mode%eq!ip!;target%eq!" + ip + ";!", clientAddress, clientSocket, aesKey)
 		PrintSendToAdmin("SERVER ---> BANNED BY IP               ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETBANNED")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		try:
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFRETBANNED")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		except:
+			pass
 		if not isSystem:
 			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 	
@@ -1445,9 +1446,9 @@ class Management():
 		try:
 			for credential in creds:
 				if "code" in credential:
-					providedCode = element.split("!")[1]
+					providedCode = credential.split("!")[1]
 				elif len(credential) == 0:
-					continue
+					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
 					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
@@ -1870,7 +1871,7 @@ class Management():
 				codeAttempts += 1
 				# UPDATE COUNTER IN DATABASE
 				try:
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_id = " + userID + ";")
+					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = " + username + ";")
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 				except Exception as e:
 					connection.rollback()
@@ -1900,7 +1901,7 @@ class Management():
 			connection.commit()
 			PrintSendToAdmin("SERVER ---> ACCOUNT VERIFIED           ---> " + clientAddress)
 			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFACKACCOUNT_VERIFIED")
+			encryptedData = aesEncryptor.encrypt("INFRETACCOUNT_VERIFIED")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# FREE RESOURCES
 		finally:
@@ -1980,9 +1981,9 @@ class Management():
 		# EXTRACT VALUES FROM PROVIDED COMMAND
 		try:
 			for credential in creds:
-				if "password" in element:
+				if "password" in credential:
 					newPassword = credential.split("!")[1]
-				elif "code" in element:
+				elif "code" in credential:
 					providedCode = credential.split("!")[1]
 				elif len(credential) == 0:
 					pass
@@ -2067,7 +2068,7 @@ class Management():
 		# ALL CHECKS PASSED
 		# UPDATE PASSWORD HASH
 		hashedUsername = CryptoHelper.SHA256(username)
-		salt = CryptoHelper.SHA256(hashedUsername + password)
+		salt = CryptoHelper.SHA256(hashedUsername + newPassword)
 		newHash = CryptoHelper.Scrypt(newPassword, salt)
 		try:
 			# WRITE CHANGES TO DATABASE
@@ -2087,7 +2088,7 @@ class Management():
 		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFACKPASSWORD_CHANGED")
+		encryptedData = aesEncryptor.encrypt("INFRETPASSWORD_CHANGED")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 
 	# HANDLES REQUESTS TO CHANGE THE MASTER PASSWORDS AND SENDS VERIFICATION CODES TO EMAIL
@@ -2133,7 +2134,7 @@ class Management():
 			# COMMAND WAS FORMATTED IN AN UNUSUAL MANNER
 			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
-		if not mode == "PASSWORD_CHANGE" or not mode == "DELETE_ACCOUNT":
+		if not mode == "PASSWORD_CHANGE" and not mode == "DELETE_ACCOUNT":
 			# COMMAND IS INVALID
 			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 			return
@@ -2169,20 +2170,29 @@ class Management():
 		if mode == "PASSWORD_CHANGE":
 			# FILL NEEDED INFORMATION TO SEND EMAIL
 			subject = "[PMDBS] Password change"
-			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nYour login: " + name + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>Your login: <b>" + name + "</b><br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			# CALL SENDMAIL
+			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		elif mode == "DELETE_ACCOUNT":
 			# TODO ADAPT EMAIL TO "DELETE ACCOUNT"
 			# FILL NEEDED INFORMATION TO SEND EMAIL
 			subject = "[PMDBS] Delete your account?"
 			text = "Dear " + name + ",\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n" + details + "\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
 			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to delete your account and all data associated to it.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br><b>ALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!</b><br><br><br>To confirm your request, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			# CALL SENDMAIL
+			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		else:
 			# COMMAND WAS INVALID
-			Handle.Error("ICMD", "_INVALID_MODE", clientAddress, clientSocket, aesKey, True)
+			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 			return
-		# CALL SENDMAIL
-		Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+		
 	
 	# SENDS AN EMAIL USING GIVEN PARAMETERS
 	def SendMail(From, To, subject, text, html, clientAddress):
@@ -2262,7 +2272,7 @@ class Management():
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFACKNOWLEDGE")
+							encryptedData = aesEncryptor.encrypt("INFRETNOWLEDGE")
 							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			elif mode == "ipport":
 				ip = target.split(":")[0]
@@ -2301,7 +2311,7 @@ class Management():
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFACKNOWLEDGE")
+							encryptedData = aesEncryptor.encrypt("INFRETNOWLEDGE")
 							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			elif mode == "username":
 				kicked = False
@@ -2336,7 +2346,7 @@ class Management():
 						# SEND CONFIRMATION TO ADMIN
 						PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 						aesEncryptor = AESCipher(aesKey)
-						encryptedData = aesEncryptor.encrypt("INFACKNOWLEDGE")
+						encryptedData = aesEncryptor.encrypt("INFRETNOWLEDGE")
 						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# COMMAND IS INVALID
 			else:
@@ -2502,7 +2512,7 @@ class Management():
 			# SEND ACKNOWLEDGEMENT TO CLIENT
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("INFACKREQUEST_VERIFICATION")
+			encryptedData = aesEncryptor.encrypt("INFRETREQUEST_VERIFICATION")
 			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		isCookieValid = 0
@@ -2537,12 +2547,15 @@ class Management():
 			connection.close()
 		PrintSendToAdmin("SERVER ---> TODO: ACTIVATE ACCOUNT     ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFACKTODO_VERIFY_MAIL_SENT")
+		encryptedData = aesEncryptor.encrypt("INFRETTODO_VERIFY_MAIL_SENT")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# GENERATE EMAIL
 		subject = "[PMDBS] Please verify your email address."
 		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
 		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# SEND VERIFICATION CODE BY EMAIL
 		Management.SendMail("PMDBS Support", email,	subject, text, html, clientAddress)
 		
@@ -2688,7 +2701,7 @@ class Management():
 			# CHECK IF VARIABLES HAVE BEEN PROPERLY SET
 			if not address or not name:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-				Handle.Error("SQLE", "VARiABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
+				Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 				return
 			# GENERATE VERIFICATION CODE
 			codeFinal = CodeGenerator()
@@ -2712,6 +2725,9 @@ class Management():
 			subject = "[PMDBS] Admin security warning"
 			text = "Hey Admin!\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log in as admin using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing the admin password.\n\nBest regards,\nPMDBS Support Team"
 			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Hey Admin!</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log in as admin using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing the admin password!</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# SEND ACCOUNT VALIDATION EMAIL
 			Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 			return
@@ -2762,7 +2778,7 @@ class Management():
 		Server.adminAesKey = aesKey
 		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFACKSUCCESSFUL_ADMIN_LOGIN")
+		encryptedData = aesEncryptor.encrypt("INFRETSUCCESSFUL_ADMIN_LOGIN")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
 			
@@ -3045,6 +3061,9 @@ class Management():
 			subject = "[PMDBS] Security warning"
 			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
 			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_NEW_DEVICE!;")
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# SEND ACCOUNT VALIDATION EMAIL
 			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
 			return
@@ -3082,7 +3101,7 @@ class Management():
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFLOGIN_SUCCESSFUL")
+		encryptedData = aesEncryptor.encrypt("INFRETLOGIN_SUCCESSFUL")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
 	
@@ -3115,7 +3134,11 @@ class Management():
 						Server.authorizedClients.remove(client)
 						isLoggedout = True
 						Log.ClientEventLog("LOGOUT", clientSocket)
-						PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
+						PrintSendToAdmin("SERVER ---> LOGGED OUT                 ---> " + clientAddress)
+						if not isDisconnected:
+							aesEncryptor = AESCipher(aesKey)
+							encryptedData = aesEncryptor.encrypt("INFRETLOGGED_OUT")
+							clientSocket.send(b'\x01' + bytes("U" + encryptedData, "utf-8") + b'\x04')
 						break
 			# USER IS NOT WHITELISTED
 			if not isLoggedout and not isDisconnected:
