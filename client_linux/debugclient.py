@@ -153,9 +153,9 @@ class IO(Thread):
 					self.IOreboot(parameters)
 				elif command == 'start':
 					self.IOstart(parameters)
-				elif command == "slog":
+				elif command == "serverlog":
 					self.IOslog(parameters)
-				elif command == "clog":
+				elif command == "clientlog":
 					self.IOclog(parameters)
 				elif command == "listallclients":
 					self.IOlistAllClients(parameters)
@@ -183,11 +183,64 @@ class IO(Thread):
 					self.IOinitDelAccount(parameters)
 				elif command == "commitdelaccount":
 					self.IOcommitDelAccount(parameters)
+				elif command == "banclient":
+					self.IObanClient(parameters)
+				elif command == "banaccount":
+					self.IObanAccount(parameters)
+				elif command == "help":
+					self.IOhelp(parameters)
 				else:
 					print('unknown command ' + '\'' + command + '\'')
 		except:
 			pass
 			
+	def IOhelp(self, parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
+		allCommands = """
+		
+		AVAILABLE COMMANDS:\n
+		pwchange
+		exit
+		register
+		insert
+		select
+		update
+		msg
+		sync
+		alldata
+		login
+		logout
+		su
+		shutdown
+		reboot
+		start
+		serverlog
+		clientlog
+		listallclients
+		error
+		cookie
+		kick
+		verify
+		confirmnewdevice
+		newadmindevice
+		initadminpwchange
+		commitadminpwchange
+		initpwchange
+		commitpwchange
+		initdelaccount
+		commitdelaccount
+		banclient
+		banaccount
+		help
+		
+		Type \"<command> --help\" for more information about commands
+		"""
+		print(allCommands)
 	def IOkick(self, command):
 		try:
 			commands = command.split(" ")
@@ -197,6 +250,7 @@ class IO(Thread):
 			cryptmsg = aesEncryptor.encrypt("MNGKIKmode%eq!" + mode + "!;target%eq!" + target + "!")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
+			
 			print('typo in command ' + '\'' + command + '\'')
 	
 	def IOpasswordChangeRequest(self, parameters):
@@ -344,11 +398,23 @@ class IO(Thread):
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOsync(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("REQSYNfetch_mode%eq!FETCH_SYNC!")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOall(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("REQSYNfetch_mode%eq!FETCH_ALL!")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
@@ -403,6 +469,12 @@ class IO(Thread):
 			print("typo in command \"" + " ".join(parameters) + "\"")
 			
 	def IOlogout(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGLGO")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
@@ -457,7 +529,7 @@ class IO(Thread):
 		except:
 			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGACRPWC")
+		cryptmsg = aesEncryptor.encrypt("MNGACRPWCmode%eq!PASSWORD_CHANGE!;")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOinitDelAccount(self,parameters):
@@ -468,7 +540,7 @@ class IO(Thread):
 		except:
 			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGACRDEL")
+		cryptmsg = aesEncryptor.encrypt("MNGACRDELmode%eq!DELETE_ACCOUNT!;")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOcommitAdminPwChange(self,parameters):
@@ -511,29 +583,84 @@ class IO(Thread):
 		except:
 			print("too few arguments")
 		try:
-			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[1])[:32])
-			code = parameters[2] 
+			code = parameters[1]
 			aesEncryptor = AESCipher(ActiveConnection.aesKey)
 			cryptmsg = aesEncryptor.encrypt("MNGDELcode%!" + code + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except:
 			print("typo in command \"" + " ".join(parameters) + "\"")
+			
+	def IObanClient(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("banclient <ip> <duration_in_seconds>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			ip = parameters[1]
+			duration = parameters[2] 
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGBANip%eq!" + ip + "!;duration%eq!" + duration + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + " ".join(parameters) + "\"")
+			
+	def IObanAccount(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("banaccount <username> <duration_in_seconds>")
+				return
+		except:
+			print("too few arguments")
+		try:
+			username = parameters[1]
+			duration = parameters[2] 
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("MNGBNAusername%eq!" + username + "!;duration%eq!" + duration + "!;")
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except:
+			print("typo in command \"" + " ".join(parameters) + "\"")
 		
 	def IOshutdown(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGSHTSHUTDOWN")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOreboot(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		aesEncryptor = AESCipher(ActiveConnection.aesKey)
 		cryptmsg = aesEncryptor.encrypt("MNGRBTREBOOT")
 		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		
 	def IOstart(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		ACThread = ActiveConnection()
 		ACThread.start()
 		
 	def IOerror(self,parameters):
+		try:
+			if parameters[1] == "--help":
+				print("this command takes no parameters")
+				return
+		except:
+			pass
 		print("SOCKET CLOSED (HANG UP SIMULATED)")
 		ActiveConnection.clientSocket.close()
 			
@@ -654,7 +781,7 @@ class ActiveConnection(Thread):
 						# TODO: DECRYPT
 						aesDecryptor = AESCipher(ActiveConnection.aesKey)
 						decryptedData = aesDecryptor.decrypt(dataString[1:])
-						print("SERVER (AES)" + decryptedData)
+						print("SERVER (MIRRORED)" + decryptedData)
 						packetID = decryptedData[:3]
 						packetSID = decryptedData[3:6]
 						if packetID == "KEX":
@@ -700,8 +827,11 @@ class ActiveConnection(Thread):
 				self.clientSocket.close()
 				print("CLIENT <-x-  DISCONNECTED ERR  -x-> " + server)
 			elif isTcpFin:
-				# SEND TCP FIN
-				self.clientSocket.shutdown(socket.SHUT_RDWR)
+				# GOT TCP FIN
+				try:
+					self.clientSocket.shutdown(socket.SHUT_RDWR)
+				except:
+					pass
 				# CLOSE SOCKET
 				self.clientSocket.close()
 				print ("CLIENT <-x-  DISCONNECTED FIN  -x-> " + server)
