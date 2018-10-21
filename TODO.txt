@@ -4,6 +4,8 @@
 			- update logging
 			- bug fixing
 				- shutdown sometimes not working correctly
+			- Admin features:
+				- list all accounts (including offline)
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
