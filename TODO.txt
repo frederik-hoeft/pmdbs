@@ -1,6 +1,7 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
+			- check for TODOs in source code
 			- getDetails(clientSocket):
 				- returns details
 				- takes clientSocket as argument
