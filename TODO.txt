@@ -18,6 +18,7 @@
 					- if account is not yet activated
 					- security:
 						- device based cookie
+			- update documentation
 		- MEDIUM PRIORITY:
 			- new features:
 				- change email address
