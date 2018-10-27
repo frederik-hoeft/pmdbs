@@ -13,7 +13,10 @@
 				- add option: change email address
 					- if account is not yet activated
 					- security:
-						- cookie
+						- device based cookie
+		- MEDIUM PRIORITY:
+			- new features:
+				- change email address
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
