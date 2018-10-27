@@ -2,11 +2,18 @@
 	SERVER TODO:
 		- HIGH PRIORITY:
 			- garbage collection on boot --> clean up database
-			- update logging
-			- bug fixing
+				- clear expired blacklist entries
+				- clear expired / not activated accounts
+			- update logging:
+				- log everything
+			- bug fixing:
 				- shutdown sometimes not working correctly
-			- Admin features:
-				- list all accounts (including offline)
+			- update register:
+				- add option: resend activation code
+				- add option: change email address
+					- if account is not yet activated
+					- security:
+						- cookie
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
