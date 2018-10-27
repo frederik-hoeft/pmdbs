@@ -63,7 +63,7 @@ NAME = "PMDB-Server"
 VERSION = "0.10-12.18"
 BUILD = "development"
 DATE = "Oct 27 2018"
-TIME = "18:40:31"
+TIME = "20:44:25"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -867,7 +867,7 @@ class Handle():
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
-		Log.ServerEventLog("Error", info)
+		Log.ServerEventLog("ERROR", info)
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
 		if not isEncrypted:
 			clientSocket.send(b'\x01' + bytes("UINFERR" + info, "utf-8") + b'\x04')
@@ -1083,6 +1083,7 @@ class Management():
 			Handle.Error("NFND", "DETAILS_NOT_FOUND", clientAddress, clientSocket, aesKey, True)
 			return
 		# ADAPT FORMATTING TO WORK IN HTML
+		Log.ServerEventLog("ADMIN_PASSWORD_CHANGE_REQUEST", "IP: " + clientAddress)
 		htmlDetails = details.replace("\n","<br>")
 		subject = "[PMDBS] Admin password change"
 		text = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
@@ -1214,6 +1215,7 @@ class Management():
 			# FREE RESOURCES
 			connection.close()
 		# ALL UPDATED
+		Log.ServerEventLog("ADMIN_PASSWORD_CHANGED", "IP: " + Server.adminIp)
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETSEND_UPDATE")
@@ -1289,11 +1291,13 @@ class Management():
 			# FREE RESOURCES
 			connection.close()
 		PrintSendToAdmin("SERVER ---> BANNED ACCOUNT             ---> " + clientAddress)
+		Log.ServerEventLog("BAN_BY_ACCOUNT", username + " has been banned for " + duration + " seconds!")
 		# KICK USER
 		Management.Kick("mode%eq!username!;target%eq!" + username + ";!", clientAddress, clientSocket, aesKey)
 	
 	# ALLOWS CONNECTION TO SERVER AND SETS UP CLIENT HANDLER THREAD
 	def AllowConnection(clientAddress, clientSocket):
+		Log.ServerEventLog("CLIENT_CONNECTED", "IP: " + clientAddress)
 		# DISPLAY IP OF CONNECTED CLIENT
 		PrintSendToAdmin("SERVER ---> CONNECTED                  <--- " + clientAddress)
 		# CREATE NEW THREAD FOR EACH CLIENT
@@ -1320,7 +1324,7 @@ class Management():
 		duration = None
 		# GET VALUES FROM DATABASE AND STORE THEM IN VARIABLES
 		try:
-			cursor.execute("SELECT B_time, B_duration FROM Tbl_blacklist WHERE B_ip = \"" + ip + "\" ORDER BY B_id DESC;")
+			cursor.execute("SELECT B_time, B_duration FROM Tbl_blacklist WHERE B_ip = \"" + ip + "\" ORDER BY B_id DESC LIMIT 1;")
 			data = cursor.fetchall()
 			time = data[0][0]
 			duration = data[0][1]
@@ -1419,6 +1423,7 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
+		Log.ServerEventLog("BAN_BY_IP", ip + " has been banned for " + duration " seconds!");
 		Management.Kick("mode%eq!ip!;target%eq!" + ip + ";!", clientAddress, clientSocket, aesKey)
 		PrintSendToAdmin("SERVER ---> BANNED BY IP               ---> " + clientAddress)
 		try:
@@ -1777,6 +1782,7 @@ class Management():
 					# FREE RESOURCES AND BREAK OUT OF CURRENT SCOPE
 					connection.close()
 					break
+		Log.ServerEventLog("COOKIE_REQUESTED", "IP: " + clientAddress)
 		# RETURN COOKIE TO CLIENT
 		PrintSendToAdmin("SERVER ---> COOKIE                     ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
@@ -1956,10 +1962,11 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
+		Log.ServerEventLog("SYNC_PASSWORD_HASH_REQUEST", "IP: " + clientAddress)
 		# RETURN PASSSWORD HASH TO USER
 		PrintSendToAdmin("SERVER ---> MASTERPASSWORD HASH        ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("DTARETSYNPWD" + passwordHash)
+		encryptedData = aesEncryptor.encrypt("DTARETSYNPWDsalted_password_hash%eq!" + passwordHash + "!;")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 	
 	# CHANGES THE PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
@@ -2087,6 +2094,7 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
+		Log.ClientEventLog("PASSWORD_CHANGE", clientSocket)
 		# ALL UPDATED
 		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
@@ -2171,6 +2179,8 @@ class Management():
 		# ADAPT FORMATTING TO WORK IN HTML
 		htmlDetails = details.replace("\n","<br>")
 		if mode == "PASSWORD_CHANGE":
+			# CREATE LOG
+			Log.ClientEventLog("PASSWORD_CHANGE_REQUESTED", clientSocket)
 			# FILL NEEDED INFORMATION TO SEND EMAIL
 			subject = "[PMDBS] Password change"
 			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
@@ -2181,7 +2191,8 @@ class Management():
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		elif mode == "DELETE_ACCOUNT":
-			# TODO ADAPT EMAIL TO "DELETE ACCOUNT"
+			# CREATE LOG
+			Log.ClientEventLog("DELETE_ACCOUNT_REQUESTED", clientSocket)
 			# FILL NEEDED INFORMATION TO SEND EMAIL
 			subject = "[PMDBS] Delete your account?"
 			text = "Dear " + name + ",\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n" + details + "\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
@@ -2195,8 +2206,7 @@ class Management():
 			# COMMAND WAS INVALID
 			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 			return
-		
-	
+
 	# SENDS AN EMAIL USING GIVEN PARAMETERS
 	def SendMail(From, To, subject, text, html, clientAddress):
 		# CONNECT TO SMTP SERVER (SSL)
@@ -2260,6 +2270,7 @@ class Management():
 							Management.Logout(client[1], client[0], None, True)
 							# DISCONNECT CLIENT
 							Management.Disconnect(client[0], "KICKED_BY_ADMIN", client[1], False)
+							Log.ServerEventLog("KICKED_USER_BY_IP", "kicked_user: " + target)
 							kicked = True
 					# CHECK IF CLIENT HAS BEEN KICKED
 					if not kicked:
@@ -2271,11 +2282,11 @@ class Management():
 					# CLIENT HAS BEEN KICKED
 					else:
 						# CKECK IF CLIENT WAS ADMIN
-						if Server.admin == clientSocket:
+						if not Server.admin == target:
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFRETNOWLEDGE")
+							encryptedData = aesEncryptor.encrypt("INFRETACKNOWLEDGE")
 							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			elif mode == "ipport":
 				ip = target.split(":")[0]
@@ -2299,6 +2310,7 @@ class Management():
 							Management.Logout(client[1], client[0], None, True)
 							# DISCONNECT CLIENT
 							Management.Disconnect(client[0], "KICKED_BY_ADMIN", client[1], False)
+							Log.ServerEventLog("KICKED_USER_BY_IP_AND_PORT", "kicked_user: " + target)
 							kicked = True
 					# CHECK IF CLIENT HAS BEEN KICKED
 					if not kicked:
@@ -2333,6 +2345,7 @@ class Management():
 								Management.Logout(client[1], client[0], None, True)
 								# DISCONNECT CLIENT
 								Management.Disconnect(cclient[0], "KICKED_BY_ADMIN", cclient[1], False)
+								Log.ServerEventLog("KICKED_USER_BY_USERNAME", "kicked_user: " + target)
 								kicked = True
 								break
 				# CHECK IF CLIENT HAS BEEN KICKED
@@ -2349,7 +2362,7 @@ class Management():
 						# SEND CONFIRMATION TO ADMIN
 						PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 						aesEncryptor = AESCipher(aesKey)
-						encryptedData = aesEncryptor.encrypt("INFRETNOWLEDGE")
+						encryptedData = aesEncryptor.encrypt("INFRETACKNOWLEDGE")
 						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# COMMAND IS INVALID
 			else:
@@ -2410,6 +2423,7 @@ class Management():
 		# CHECK FOR DIFFERENT FILTER MODES
 		if command == "mode%eq!ALL_CONNECTED!;":
 			# RETURN ALL CURRENTLY CONNECTED CLIENTS
+			Log.ServerEventLog("SHOW_CONNECTED_CLIENTS", "IP: " + clientAddress)
 			# CREATE A HEADER FOT THE TABLE
 			header = CWHITE + FUNDERLINED + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + ENDF
 			PrintSendToAdmin(header)
@@ -2445,63 +2459,86 @@ class Management():
 				# PRINT IT
 				PrintSendToAdmin(clientStatus)
 		elif command == "mode%eq!ALL_USERS!;":
+			# RETURN A LIST OF ALL ACCOUNTS
+			Log.ServerEventLog("SHOW_ALL_ACCOUNTS", "IP: " + clientAddress)
 			# CREATE A HEADER FOT THE TABLE
 			header = CWHITE + FUNDERLINED + "USERNAME" + 12 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + ENDF
 			PrintSendToAdmin(header)
+			# CREATE CONNECTION TO DATABASE
 			connection = sqlite3.connect(Server.dataBase)
+			# CREATE CURSOR OBJECT
 			cursor = connection.cursor()
+			# INITIALIZE LIST TO STORE USERS IN
 			allUsers = []
 			try:
 				try:
+					# GET ALL USERS FROM DATABASE
 					cursor.execute("SELECT U_username from Tbl_user;")
+					# FETCH DATA TABLE
 					dataTable = cursor.fetchall()
+					# ITERATE  OVER DATA TABLE AND APPEND USERS TO LIST
 					for row in dataTable:
 						allUsers.append(row[0])
 				except Exception as e:
+					# SQL ERROR
 					# SEND ERROR MESSAGE
 					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 					return
+				# ITERATE OVER USER LIST
 				for user in allUsers:
+					# INITIALIZE DEFAULT VALUES
 					status = "OFFLINE"
 					lastSeen = "JUST NOW"
+					# CHECK IF USER IS LOGGED IN / ONLINE
 					for client in Server.authorizedClients:
 						if user in client:
 							status = "ONLINE"
+					# CHECK IF USER IS ADMIN
 					if Server.admin and user == "__ADMIN__":
 						status = "ONLINE"
+					# IF THE USER IS OFFFLINE GET LAST ONLINE DATETIME
 					if status == "OFFLINE":
+						# INITIALIZE VARIABLE TO STORE ROUNDED UNIX TIMESTAMP IN
 						unixTime = None
 						try:
+							# GET UNIX TIMESTAMP FROM DATABASE
 							cursor.execute("SELECT L_datetime FROM Tbl_clientLog WHERE L_userid = (SELECT U_id from Tbl_user WHERE U_username = \"" + user + "\") AND L_event = \"LOGOUT\" ORDER BY L_id desc LIMIT 1;")
 							data = cursor.fetchall()
 							unixTime = data[0][0]
 						except:
+							# INDEX OUT OF RANGE --> USER IS PROBABLY ADMIN
 							pass
-						if not unixTime == None:
+						if unixTime:
+							# CONVERT UNIX TIMESTAMP TO HUMAN READABLE FORMAT
 							lastSeen = str(datetime.utcfromtimestamp(int(unixTime)).strftime("%Y-%m-%d %H:%M:%S"))
 						else:
+							# USER WAS NEVER ONLINE BEFORE OR SOME ERROR OCCURED
 							lastSeen = "N/A"
+					# ADD PADDING FOR TABLE
 					status += (7 - len(status)) * " "
 					user += (20 - len(user)) * " "
+					# SET ONLINE / OFFLINE COLOR CODING
 					if "ONLINE" in status:
 						status = CGREEN + status
 					else:
 						status = CRED + status
+					# CHECK IF USER IS ADMIN FOR HIGHLIGHTING 
 					if user.replace(" ","") == "__ADMIN__":
 						user = CRED + user
 						lastSeen = CRED + lastSeen
 					else:
 						user = CCYAN + user
 						lastSeen = CCYAN + lastSeen
+					# CONCATENATE STRINGS TO TABLE ROW
 					entry = user + CWHITE + " │ " + status + CWHITE + " │ " + lastSeen + ENDF
+					# PRINT TABLE ROW
 					PrintSendToAdmin(entry)
 			finally:
+				# FREE RESOURCES
 				connection.close()
 		else:
 			# COMMAND IS INVALID OR SELECTED MODE IS NOT SUPPORTED
 			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
-				
-				
 		
 	# REGISTER A NEW USER 
 	def Register(command, clientAddress, clientSocket, aesKey):
@@ -2564,7 +2601,7 @@ class Management():
 		else:
 			# COMMIT CHANGES
 			connection.commit()
-			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username)
+			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username + "\nIP: " + clientAddress)
 			# SEND ACKNOWLEDGEMENT TO CLIENT
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
@@ -2776,6 +2813,7 @@ class Management():
 				# FREE RESOURCES
 				connection.close()
 			Handle.Error("DVFY", None, clientAddress, clientSocket, aesKey, True)
+			Log.ServerEventLog("ADMIN_LOGIN_FROM_NEW_DEVICE", details)
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
 			subject = "[PMDBS] Admin security warning"
@@ -2852,7 +2890,7 @@ class Management():
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
 		allClients = Server.allClients
 		# CREATE LOG
-		Log.ServerEventLog("SHUTDOWN", "Clients: " + str(allClients))
+		Log.ServerEventLog("SERVER_SHUTDOWN", "IP: " + clientAddress)
 		# INITIALIZE SHUTDOWN SEQUENCE
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Shutdown initalized." + ENDF)
 		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
@@ -2907,7 +2945,7 @@ class Management():
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
 		allClients = Server.allClients
 		# CREATE LOG
-		Log.ServerEventLog("REBOOT", "Clients: " + str(allClients))
+		Log.ServerEventLog("SERVER_REBOOT", "IP: " + clientAddress)
 		# INITIALIZE SHUTDOWN SEQUENCE
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Reboot initalized." + ENDF)
 		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
@@ -3112,6 +3150,7 @@ class Management():
 				Handle.Error("NFND", None, clientAddress, clientSocket, aesKey, True)
 				return
 			Handle.Error("DVFY", None, clientAddress, clientSocket, aesKey, True)
+			Log.ClientEventLog("LOGIN_FROM_NEW_DEVICE", clientSocket)
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
 			subject = "[PMDBS] Security warning"
@@ -3547,76 +3586,7 @@ class Server(Thread):
 ################################################################################
 #--------------------------------CUSTOM PROTOCOL-------------------------------#
 ################################################################################
-#-------------------------------PACKET SPECIFIER-------------------------------#
-#
-# U == UNENCRYPTED				--> PACKET IS UNENCRYPTED
-# K == KEY EXCHANGE				--> PACKET IS RSA ENCRYPTED
-# E == ENCRYPTED				--> PACKET IS AES ENCRYPTED
-#
-#----------------------------------PACKET IDS----------------------------------#
-#
-# PPK == "PEM PUBLIC KEY" 		--> PACKET CONTAINS RSA KEY IN PEM FORMAT
-# XPK == "XML PUBLIC KEY" 		--> PACKET CONTAINS RSA KEY IN XML FORMAT
-# EXC == "KEY EXCHANGE" 		--> PACKET CONTAINS AES KEY
-# FIN == "FINISH CONNECTION"	--> CONNECTION IS BEING CLOSED
-# DTA == "DATA"					--> PACKET CONTAINS AES ENCRYPTED DATA
-# INF == "INFO"					--> PACKET CONTAINS INFORMATION ABOUT OTHER PACKETS
-#
-#--------------------------------PACKET SUB IDS--------------------------------#
-#
-# INF SUB IDS:
-#	BGN == "BEGIN TRANSACTION"	--> CURRENTLY NOT IN USE
-# 	END == "END TRANSACTION"	--> CURRENTLY NOT IN USE
-# 	REG == "REGISTER USER"		--> REGISTER NEW USER
-# 	CNG == "CHANGE CREDS"		--> CHANGE USER CREDENTIALS
-# 	DEL == "DELETE ACCOUNT"		--> DELETE ACCOUNT OF USER
-# 	ERR == "ERROR"				--> PACKET CONTAINS ERROR MESSAGE
-# 	ACK == "ACKNOWLEDGE"		--> LAST COMMAND SUCCESSFULLY EXECUTED
-#
-# DTA SUB IDS:
-#	RET == "RETURN"
-#		INS == "INSERT"			--> CONTAINS ID OF INSERTED DATA
-#		UPD == "UPDATE"			--> CONTAINS STATUS OF UPDATE QUERY
-#		SEL == "SELECT"			--> CONTAINS SELECTED DATA
-#
-# REQ SUB IDS:
-#	INS == "INSERT"				--> CONTAINS REQUEST TO INSERT DATA
-#	UPD == "UPDATE"				--> CONTAINS REQUEST TO UPDATE DATA
-#	SEL == "UPDATE"				--> CONTAINS REQUEST TO SELECT DATA
-#
-#---------------------------------TERMINATORS----------------------------------#
-#
-# \x01 == SOH					--> START OF HEADER (START OF TRANSMISSION)
-# \x04 == EOT					--> END OF TRANSMISSION
-# 
-#---------------------------------ERROR CODES----------------------------------#
-#
-# [ERRNO 00] UNKN				--> UNKNOWN ERROR
-# [ERRNO 01] IEOT				--> INVALID PACKET TERMINATOR
-# [ERRNO 02] IRSA				--> INVALID RSA KEY
-# [ERRNO 03] USEC				--> UNSECURE CONNECTION
-# [ERRNO 04] IPID				--> INVALID PACKET ID
-# [ERRNO 05] IPSP				--> INVALID PACKET SPECIFIER
-# [ERRNO 06] ISID				--> INVALID PACKET SUB ID
-# [ERRNO 07] SQLI				--> SQL INJECTION ATTEMPT
-# [ERRNO 08] CRED				--> INVALID CREDENTIALS
-# [ERRNO 09] ISQP				--> INVALID SQL QUERY PARAMETERS
-# [ERRNO 10] ADMN				--> INVALID ADMIN CREDENTIALS
-# [ERRNO 11] ACNA				--> ADMIN ALREADY LOGGED IN
-# [ERRNO 12] PERM				--> INSUFFICIENT PERMISSIONS
-# [ERRNO 13] NLGI				--> (LOGOUT ERROR) NOT LOGGED IN
-# [ERRNO 14] ISOH				--> INVALID START OF HEADER
-# [ERRNO 15] ICMD				--> INVALID COMMAND	
-# [ERRNO 16] NFND				--> NOT FOUND
-# [ERRNO 17] SQLE				--> SQL	ERROR
-# [ERRNO 18] I2FA				--> INVALID 2FA CODE
-# [ERRNO 19] E2FA				--> EXPIRED 2FA CODE
-# [ERRNO 20] F2FA				--> FILED 2FA (3 TIMES WRONG CODE)
-# [ERRNO 21] NCES				--> NO CODE EVENT SCHEDULED
-# [ERRNO 22] UEXT				--> USER ALREADY EXISTS
-# [ERRNO 23] CDNE				--> COOKIE DOES NOT EXIST
-# [ERRNO 24] DVFY				--> VERIFY NEW DEVICE
-#
+# ---> VIEW DOCUMENTATION
 #------------------------------------------------------------------------------#
 
 ################################################################################
@@ -4022,6 +3992,11 @@ class ClientHandler():
 								elif packetSID == "APC":
 									PrintSendToAdmin("SERVER <--- COMMIT ADMIN-PW CHANGE     <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# REQUEST MASTER-PASSWORD HASH
+								elif packetSID == "PWH":
+									PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
