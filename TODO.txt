@@ -1,6 +1,7 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
+			- garbage collection on boot --> clean up database
 			- update logging
 			- bug fixing
 				- shutdown sometimes not working correctly
