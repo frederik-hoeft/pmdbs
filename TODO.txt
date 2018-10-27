@@ -1,11 +1,15 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
+			- getDetails(clientSocket):
+				- returns details
+				- takes clientSocket as argument
 			- garbage collection on boot --> clean up database
 				- clear expired blacklist entries
 				- clear expired / not activated accounts
 			- update logging:
 				- log everything
+				- replace ip with details
 			- bug fixing:
 				- shutdown sometimes not working correctly
 			- update register:
