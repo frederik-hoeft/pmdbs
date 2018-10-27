@@ -24,6 +24,7 @@ import hashlib
 import os
 import glob
 import datetime
+from datetime import datetime
 import time
 import subprocess
 import select
@@ -59,9 +60,9 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-11.18"
+VERSION = "0.10-12.18"
 BUILD = "development"
-DATE = "Oct 20 2018"
+DATE = "Oct 27 2018"
 TIME = "20:44:25"
 PYTHON = "Python 3.6.6 / LINUX"
 
@@ -659,8 +660,8 @@ class Log():
 		address = None
 		userID = None
 		details = None
-		#allClients = [] #[[socket, ip, adminFlag, details],[...]]
-		#authorizedClients = [] # [[ID, socket],[...]]
+		#allClients = [] #[[socket, address, adminFlag, details],[...]]
+		#authorizedClients = [] # [[ID, socket, username],[...]]
 		# GET USER ID
 		for client in Server.authorizedClients:
 			if clientSocket in client:
@@ -682,10 +683,12 @@ class Log():
 		# WRITE ENTRY TO DATABASE
 		try:
 			cursor.execute("INSERT INTO Tbl_clientLog (L_event, L_ip, L_datetime, L_details, L_userid) VALUES (\"" + event + "\",\"" + address + "\",\"" + dateTime + "\",\"" + details + "\"," + userID + ");")
+		except:
+			connection.rollback()
+			return False
+		else:
 			connection.commit()
 			return True
-		except:
-			return False
 		finally:
 			# FREE RESOURCES
 			connection.close()
@@ -1273,7 +1276,7 @@ class Management():
 			return
 		try:
 			# SET ISBANNED FLAG FOR USER
-			cursor.execute("UPDATE Tbl_user SET U_isBanned = 1, U_banTime = \"" + Timestamp() + "\", U_banDuration = \"" + duration + "\";")
+			cursor.execute("UPDATE Tbl_user SET U_isBanned = 1, U_banTime = \"" + Timestamp() + "\", U_banDuration = \"" + duration + "\" WHERE U_username = \"" + username + "\";")
 		except Exception as e:
 			# SQL ERROR --> ROLLBACK
 			connection.rollback()
@@ -1884,7 +1887,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF CODE IS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 1800:
+		if int(Timestamp()) - int(codeTime) > 3600:
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# ALL CHECKS PASSED
@@ -2405,7 +2408,7 @@ class Management():
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK FOR DIFFERENT FILTER MODES
-		if command == "mode%eq!ALL_CONNECTED!":
+		if command == "mode%eq!ALL_CONNECTED!;":
 			# RETURN ALL CURRENTLY CONNECTED CLIENTS
 			# CREATE A HEADER FOT THE TABLE
 			header = CWHITE + FUNDERLINED + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + ENDF
@@ -2441,6 +2444,59 @@ class Management():
 					clientStatus = CYELLOW + ip + ENDF + CWHITE + " │ " + ENDF + CYELLOW + "not logged in" + ENDF
 				# PRINT IT
 				PrintSendToAdmin(clientStatus)
+		elif command == "mode%eq!ALL_USERS!;":
+			# CREATE A HEADER FOT THE TABLE
+			header = CWHITE + FUNDERLINED + "USERNAME" + 12 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + ENDF
+			PrintSendToAdmin(header)
+			connection = sqlite3.connect(Server.dataBase)
+			cursor = connection.cursor()
+			allUsers = []
+			try:
+				try:
+					cursor.execute("SELECT U_username from Tbl_user;")
+					dataTable = cursor.fetchall()
+					for row in dataTable:
+						allUsers.append(row[0])
+				except Exception as e:
+					# SEND ERROR MESSAGE
+					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+					return
+				for user in allUsers:
+					status = "OFFLINE"
+					lastSeen = "JUST NOW"
+					for client in Server.authorizedClients:
+						if user in client:
+							status = "ONLINE"
+					if Server.admin and user == "__ADMIN__":
+						status = "ONLINE"
+					if status == "OFFLINE":
+						unixTime = None
+						try:
+							cursor.execute("SELECT L_datetime FROM Tbl_clientLog WHERE L_userid = (SELECT U_id from Tbl_user WHERE U_username = \"" + user + "\") AND L_event = \"LOGOUT\" ORDER BY L_id desc LIMIT 1;")
+							data = cursor.fetchall()
+							unixTime = data[0][0]
+						except:
+							pass
+						if not unixTime == None:
+							lastSeen = str(datetime.utcfromtimestamp(int(unixTime)).strftime("%Y-%m-%d %H:%M:%S"))
+						else:
+							lastSeen = "N/A"
+					status += (7 - len(status)) * " "
+					user += (20 - len(user)) * " "
+					if "ONLINE" in status:
+						status = CGREEN + status
+					else:
+						status = CRED + status
+					if user.replace(" ","") == "__ADMIN__":
+						user = CRED + user
+						lastSeen = CRED + lastSeen
+					else:
+						user = CCYAN + user
+						lastSeen = CCYAN + lastSeen
+					entry = user + CWHITE + " │ " + status + CWHITE + " │ " + lastSeen + ENDF
+					PrintSendToAdmin(entry)
+			finally:
+				connection.close()
 		else:
 			# COMMAND IS INVALID OR SELECTED MODE IS NOT SUPPORTED
 			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
@@ -3117,28 +3173,28 @@ class Management():
 				if client[2] == 1:
 					# SET ADMIN FLAG TO 0
 					Server.allClients[index][2] = 0
+			Log.ServerEventLog("ADMIN_LOGOUT", "IP: " + clientAddress)
 			Server.admin = None
 			Server.adminIp = None
 			isLoggedout = True
-			Log.ServerEventLog("ADMIN_LOGOUT", "IP: " + clientAddress)
 			print("SERVER **** ADMIN LOGOUT     **** " + clientAddress)
 		else:
 			# ITERATE OVER WHITELISTED CLIENTS AND REMOVE CLIENT TO LOGOUT
 			for client in Server.authorizedClients:
 				if clientSocket in client:
 					if isDisconnected:
+						Log.ClientEventLog("LOGOUT", clientSocket)
 						Server.authorizedClients.remove(client)
 						isLoggedout = True
-						Log.ClientEventLog("LOGOUT", clientSocket)
 					else:
+						Log.ClientEventLog("LOGOUT", clientSocket)
 						Server.authorizedClients.remove(client)
 						isLoggedout = True
-						Log.ClientEventLog("LOGOUT", clientSocket)
 						PrintSendToAdmin("SERVER ---> LOGGED OUT                 ---> " + clientAddress)
 						if not isDisconnected:
 							aesEncryptor = AESCipher(aesKey)
 							encryptedData = aesEncryptor.encrypt("INFRETLOGGED_OUT")
-							clientSocket.send(b'\x01' + bytes("U" + encryptedData, "utf-8") + b'\x04')
+							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 						break
 			# USER IS NOT WHITELISTED
 			if not isLoggedout and not isDisconnected:
@@ -3146,7 +3202,7 @@ class Management():
 					# RETURN ERROR MESSAGE TO CLIENT
 					aesEncryptor = AESCipher(aesKey)
 					encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
-					clientSocket.send(b'\x01' + bytes("U" + encryptedData, "utf-8") + b'\x04')
+					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 				except:
 					clientSocket.send(b'\x01' + bytes("UINFERRNOT_LOGGED_IN", "utf-8") + b'\x04')
 		# RETURN STATUS
