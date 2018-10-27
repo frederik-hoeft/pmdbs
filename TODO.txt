@@ -17,6 +17,7 @@
 		- MEDIUM PRIORITY:
 			- new features:
 				- change email address
+				- request "account activity" (client log dump)
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
