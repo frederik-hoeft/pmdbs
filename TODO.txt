@@ -9,7 +9,6 @@
 				- clear expired blacklist entries
 				- clear expired / not activated accounts
 			- update logging:
-				- log everything
 				- replace ip with details
 			- bug fixing:
 				- shutdown sometimes not working correctly
