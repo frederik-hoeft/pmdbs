@@ -31,5 +31,4 @@
 				- delete accounts
 	DEBUG / ADMIN CLIENT TODO:
 		- continue dynamic query creation (no more hard coding)
-		- request cookie
-			
+		- check user data related methods
