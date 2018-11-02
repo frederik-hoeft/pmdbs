@@ -2,7 +2,6 @@
 	SERVER TODO:
 		- HIGH PRIORITY:
 			- check config version on boot
-			- update config check on boot
 			- update email text code time
 			- check for TODOs in source code
 			- garbage collection on boot --> clean up database
@@ -11,7 +10,6 @@
 			- bug fixing:
 				- shutdown sometimes not working correctly
 				- kick sometimes not working correctly
-			- update config
 			- update register:
 				- add option: resend activation code
 				- add option: change email address
