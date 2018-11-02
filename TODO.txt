@@ -1,6 +1,7 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
+			- check config version on boot
 			- check for TODOs in source code
 			- garbage collection on boot --> clean up database
 				- clear expired blacklist entries
