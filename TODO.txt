@@ -3,9 +3,6 @@
 		- HIGH PRIORITY:
 			- update email text code time
 			- check for TODOs in source code
-			- garbage collection on boot --> clean up database
-				- clear expired blacklist entries
-				- clear expired / not activated accounts
 			- bug fixing:
 				- shutdown sometimes not working correctly
 				- kick sometimes not working correctly
