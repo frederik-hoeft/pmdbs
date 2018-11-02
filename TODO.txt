@@ -2,14 +2,9 @@
 	SERVER TODO:
 		- HIGH PRIORITY:
 			- check for TODOs in source code
-			- getDetails(clientSocket):
-				- returns details
-				- takes clientSocket as argument
 			- garbage collection on boot --> clean up database
 				- clear expired blacklist entries
 				- clear expired / not activated accounts
-			- update logging:
-				- replace ip with details
 			- bug fixing:
 				- shutdown sometimes not working correctly
 				- kick sometimes not working correctly
