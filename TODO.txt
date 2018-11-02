@@ -13,7 +13,6 @@
 						- device based cookie
 			- update documentation
 		- MEDIUM PRIORITY:
-			- handle import errors 
 			- new features:
 				- change email address
 				- request "account activity" (client log dump)
