@@ -1,44 +1,5 @@
 #!/usr/bin/python
 
-import socket
-from socket import error as SocketError
-import Crypto
-from Crypto import Random
-from Crypto.Util import number
-from Crypto.Cipher import PKCS1_OAEP, AES
-from Crypto.Util.asn1 import DerSequence
-from Crypto.PublicKey import RSA
-import threading
-from threading import Thread
-from base64 import standard_b64encode, b64decode
-from binascii import a2b_base64
-from os.path import basename, exists
-from xml.dom import minidom
-import ast
-import pyscrypt
-import sqlite3
-import base64
-import argparse
-import secrets
-import hashlib
-import os
-import glob
-import datetime
-from datetime import datetime
-import time
-import subprocess
-import select
-import re
-import errno
-import smtplib
-import pygeoip
-import sys
-import getpass
-from config import *
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from email.mime.image import MIMEImage
-
 ################################################################################
 #-------------------------------GLOBAL VARIABLES-------------------------------#
 ################################################################################
@@ -60,11 +21,76 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.10-12.18"
+VERSION = "0.11-1.18"
 BUILD = "development"
-DATE = "Oct 27 2018"
-TIME = "20:44:25"
+DATE = "Nov 02 2018"
+TIME = "15:00:43"
 PYTHON = "Python 3.6.6 / LINUX"
+
+################################################################################
+#------------------------------------IMPORTS-----------------------------------#
+################################################################################
+try:
+	# os IS NEEDED TO CLEAR THE CONSOLE. SO IMPORT IT FIRST
+	import os
+except Exception as e:
+	# IF THE PYTHON INSTALLATION IS MESSED UP EXIT HERE AND PRINT ERROR MESSAGE
+	print(e)
+	exit()
+# CHECK IF RUNNING IN MICROSOFT-WINDOWS ENVIRONMENT 
+if os.name == "nt":
+	# HELL NO! IT'S WINDOWS :O  NOTHING'S GONNA WORK--> EXIT
+	print("FATAL: This program is not designed to be run on windows!")
+	exit()
+# CLEAR THE CONSOLE
+os.system("clear")
+print(CWHITE + "         Importing required packages ..." + ENDF)
+# IMPORT PACKAGES
+try:
+	import socket
+	from socket import error as SocketError
+	import Crypto
+	from Crypto import Random
+	from Crypto.Util import number
+	from Crypto.Cipher import PKCS1_OAEP, AES
+	from Crypto.Util.asn1 import DerSequence
+	from Crypto.PublicKey import RSA
+	import threading
+	from threading import Thread
+	from base64 import standard_b64encode, b64decode
+	from binascii import a2b_base64
+	from os.path import basename, exists
+	from xml.dom import minidom
+	import ast
+	import pyscrypt
+	import sqlite3
+	import base64
+	import argparse
+	import secrets
+	import hashlib
+	import glob
+	import datetime
+	from datetime import datetime
+	import time
+	import subprocess
+	import select
+	import re
+	import errno
+	import smtplib
+	import pygeoip
+	import sys
+	import getpass
+	from config import *
+	from email.mime.multipart import MIMEMultipart
+	from email.mime.text import MIMEText
+	from email.mime.image import MIMEImage
+except Exception as e:
+	# IF ANYTHING GOES WRONG PRINT ERROR MESSAGE AND EXIT
+	print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Importing required packages: " + str(e) + ENDF)
+	exit()
+else:
+	# ALL IMPORTS DONE
+	print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Imported required packages." + ENDF)
 
 ################################################################################
 #------------------------------SERVER CRYPTO CLASS-----------------------------#
@@ -222,6 +248,62 @@ class AESCipher(object):
 # PROVIDES DATABASE RELATED METHODS
 class DatabaseManagement():
 	
+	# CLEANS UP THE DATABASE
+	def GarbageCollection():
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITIALIZE VARIABLES
+		users = None
+		blacklist = None
+		# QUERY DATABASE AND STORE FETCHED RUSULTS IN PREVIOUSLY INITIALIZED VARIABLES
+		try:
+			cursor.execute("SELECT B_id, B_time, B_duration FROM Tbl_blacklist;")
+			blacklist = cursor.fetchall()
+			cursor.execute("SELECT U_id, U_isVerified, U_codeType, U_codeTime FROM Tbl_user;")
+			users = cursor.fetchall()
+		# THROW SQL EXCEPTION AND LOG ERROR
+		except Exception as e:
+			connection.close()
+			info = "errno%eq!17!;code%eq!SQLE!;message%eq!" + e +"!;"
+			Log.ServerEventLog("ERROR", info)
+			return False
+		try:
+			# ITERATE OVER ALL BLACKLIST ENTRIES
+			for entry in blacklist:
+				# CHECK IF ENTRY IS EXPIRED
+				if int(entry[1]) + int(entry[2]) < int(Timestamp().split(".")[0]):
+					B_id = entry[0]
+					# DELETE ENTRY
+					cursor.execute("DELETE FROM Tbl_blacklist where B_id = " + str(B_id) + ";")
+		# THROW EXCEPTION AND LOG ERROR
+		except Exception as e:
+			connection.close()
+			info = "errno%eq!00!;code%eq!UNKN!;message%eq!" + e +"!;"
+			Log.ServerEventLog("ERROR", info)
+			return False
+		try:
+			# ITERATE OVER ALL ACCOUNTS
+			for user in users:
+				# CHECK IF ACCOUNBT HAS NOT BEEN ACTIVATED AND IF THE CODE IS EXPIRED
+				if user[1] == 0 and user[2] == "ACTIVATE_ACCOUNT" and int(user[3]) + ACCOUNT_ACTIVATION_MAX_TIME < int(Timestamp().split(".")[0]):
+					U_id = entry[0]
+					# DELETE ACCOUNT
+					cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + str(U_id) + ";")
+		# THROW EXCEPTION AND LOG ERROR
+		except Exception as e:
+			info = "errno%eq!00!;code%eq!UNKN!;message%eq!" + e +"!;"
+			Log.ServerEventLog("ERROR", info)
+			return False
+		else:
+			# EXIT THREAD
+			return True
+		finally:
+			# FREE RESOURCES
+			connection.close()
+
+			
 	# INSERT DATA 
 	def Insert(command, clientAddress, clientSocket, aesKey):
 		# CREATE CONNECTION TO DATABASE
@@ -551,7 +633,7 @@ class DatabaseManagement():
 			if ('\"' in element) or ('\'' in element):
 				Handle.Error("SQLI", None, clientAddress, clientSocket, aesKey, True)
 				Log.ClientEventLog("SQL_INJECTION_ATTEMPT", clientSocket)
-				Log.ServerEventLog("SQL_INJECTION_ATTEMPT", clientAddress)
+				Log.ServerEventLog("SQL_INJECTION_ATTEMPT", GetDetails(clientSocket))
 				Management.Logout(clientAddress, clientSocket, aesKey, True)
 				Management.Disconnect(clientSocket, "ANTI_SQL_INJECTION", clientAddress, False)
 				return False
@@ -571,7 +653,7 @@ class DatabaseManagement():
 class Log():
 
 	# SCANS THE CLIENTS PORTS USING NMAP TO GET DETAILS FOR LOGGING
-	def GetDetails(address, clientSocket):
+	def SetDetails(address, clientSocket):
 		if "(" in address:
 			address = address.replace("(","!").replace(")","!").split("!")[1]
 		details = ""
@@ -970,7 +1052,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 1800:
+		if int(Timestamp()) - int(codeTime) > NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -1083,11 +1165,11 @@ class Management():
 			Handle.Error("NFND", "DETAILS_NOT_FOUND", clientAddress, clientSocket, aesKey, True)
 			return
 		# ADAPT FORMATTING TO WORK IN HTML
-		Log.ServerEventLog("ADMIN_PASSWORD_CHANGE_REQUEST", "IP: " + clientAddress)
+		Log.ServerEventLog("ADMIN_PASSWORD_CHANGE_REQUEST", details)
 		htmlDetails = details.replace("\n","<br>")
 		subject = "[PMDBS] Admin password change"
-		text = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		text = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) + ".\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
+		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) + ".<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 		# CALL SENDMAIL
 		Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 		aesEncryptor = AESCipher(aesKey)
@@ -1191,7 +1273,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 1800:
+		if int(Timestamp()) - int(codeTime) > PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -1215,7 +1297,7 @@ class Management():
 			# FREE RESOURCES
 			connection.close()
 		# ALL UPDATED
-		Log.ServerEventLog("ADMIN_PASSWORD_CHANGED", "IP: " + Server.adminIp)
+		Log.ServerEventLog("ADMIN_PASSWORD_CHANGED", GetDetails(clientSocket))
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETSEND_UPDATE")
@@ -1305,7 +1387,7 @@ class Management():
 		handlerThread.start()
 		# ADD CLIENT DO CONNECTED CLIENTS
 		Server.allClients.append([clientSocket, clientAddress, 0])
-		logThread = Thread(target = Log.GetDetails, args = (clientAddress, clientSocket))
+		logThread = Thread(target = Log.SetDetails, args = (clientAddress, clientSocket))
 		logThread.start()
 	
 	# CHECKS IF CLIENT IS BANNED
@@ -1423,7 +1505,7 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
-		Log.ServerEventLog("BAN_BY_IP", ip + " has been banned for " + duration " seconds!");
+		Log.ServerEventLog("BAN_BY_IP", ip + " has been banned for " + duration + " seconds!")
 		Management.Kick("mode%eq!ip!;target%eq!" + ip + ";!", clientAddress, clientSocket, aesKey)
 		PrintSendToAdmin("SERVER ---> BANNED BY IP               ---> " + clientAddress)
 		try:
@@ -1526,7 +1608,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 1800:
+		if int(Timestamp()) - int(codeTime) > DELETE_ACCOUNT_CONFIRMATION_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -1674,7 +1756,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 1800:
+		if int(Timestamp()) - int(codeTime) > NEW_DEVICE_CONFIRMATION_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -1782,7 +1864,7 @@ class Management():
 					# FREE RESOURCES AND BREAK OUT OF CURRENT SCOPE
 					connection.close()
 					break
-		Log.ServerEventLog("COOKIE_REQUESTED", "IP: " + clientAddress)
+		Log.ServerEventLog("COOKIE_REQUESTED", GetDetails(clientSocket))
 		# RETURN COOKIE TO CLIENT
 		PrintSendToAdmin("SERVER ---> COOKIE                     ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
@@ -1893,7 +1975,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF CODE IS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 3600:
+		if int(Timestamp()) - int(codeTime) > ACCOUNT_ACTIVATION_MAX_TIME:
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# ALL CHECKS PASSED
@@ -1962,7 +2044,7 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
-		Log.ServerEventLog("SYNC_PASSWORD_HASH_REQUEST", "IP: " + clientAddress)
+		Log.ServerEventLog("SYNC_PASSWORD_HASH_REQUEST", GetDetails(clientSocket))
 		# RETURN PASSSWORD HASH TO USER
 		PrintSendToAdmin("SERVER ---> MASTERPASSWORD HASH        ---> " + clientAddress)
 		aesEncryptor = AESCipher(aesKey)
@@ -2071,7 +2153,7 @@ class Management():
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
-		if int(Timestamp()) - int(codeTime) > 1800:
+		if int(Timestamp()) - int(codeTime) > PASSWORD_CHANGE_CONFIRMATION_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -2183,8 +2265,8 @@ class Management():
 			Log.ClientEventLog("PASSWORD_CHANGE_REQUESTED", clientSocket)
 			# FILL NEEDED INFORMATION TO SEND EMAIL
 			subject = "[PMDBS] Password change"
-			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) + ".\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) + ".<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			# CALL SENDMAIL
 			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
 			aesEncryptor = AESCipher(aesKey)
@@ -2195,8 +2277,8 @@ class Management():
 			Log.ClientEventLog("DELETE_ACCOUNT_REQUESTED", clientSocket)
 			# FILL NEEDED INFORMATION TO SEND EMAIL
 			subject = "[PMDBS] Delete your account?"
-			text = "Dear " + name + ",\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n" + details + "\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to delete your account and all data associated to it.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br><b>ALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!</b><br><br><br>To confirm your request, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			text = "Dear " + name + ",\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n" + details + "\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) + ".\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to delete your account and all data associated to it.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br><b>ALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!</b><br><br><br>To confirm your request, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: " + ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) + ".<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			# CALL SENDMAIL
 			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
 			aesEncryptor = AESCipher(aesKey)
@@ -2395,7 +2477,7 @@ class Management():
 		if clientSocket == Server.admin:
 			Server.admin = None
 			Server.adminIp = None
-			Log.ServerEventLog("ADMIN_LOGOUT", "IP: " + address)
+			Log.ServerEventLog("ADMIN_LOGOUT", GetDetails(clientSocket))
 			for client in Server.allClients:
 				if clientSocket in client:
 					Server.allClients.remove(client)
@@ -2423,7 +2505,7 @@ class Management():
 		# CHECK FOR DIFFERENT FILTER MODES
 		if command == "mode%eq!ALL_CONNECTED!;":
 			# RETURN ALL CURRENTLY CONNECTED CLIENTS
-			Log.ServerEventLog("SHOW_CONNECTED_CLIENTS", "IP: " + clientAddress)
+			Log.ServerEventLog("SHOW_CONNECTED_CLIENTS", GetDetails(clientSocket))
 			# CREATE A HEADER FOT THE TABLE
 			header = CWHITE + FUNDERLINED + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + ENDF
 			PrintSendToAdmin(header)
@@ -2460,7 +2542,7 @@ class Management():
 				PrintSendToAdmin(clientStatus)
 		elif command == "mode%eq!ALL_USERS!;":
 			# RETURN A LIST OF ALL ACCOUNTS
-			Log.ServerEventLog("SHOW_ALL_ACCOUNTS", "IP: " + clientAddress)
+			Log.ServerEventLog("SHOW_ALL_ACCOUNTS", GetDetails(clientSocket))
 			# CREATE A HEADER FOT THE TABLE
 			header = CWHITE + FUNDERLINED + "USERNAME" + 12 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + ENDF
 			PrintSendToAdmin(header)
@@ -2601,7 +2683,7 @@ class Management():
 		else:
 			# COMMIT CHANGES
 			connection.commit()
-			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username + "\nIP: " + clientAddress)
+			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username + "\n" + GetDetails(clientSocket))
 			# SEND ACKNOWLEDGEMENT TO CLIENT
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
@@ -2644,8 +2726,8 @@ class Management():
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# GENERATE EMAIL
 		subject = "[PMDBS] Please verify your email address."
-		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME) + ".\n\nBest regards,\nPMDBS Support Team"
+		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Time left until the code expires: " + ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME) + ".<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -2679,7 +2761,7 @@ class Management():
 				clientSocket.sendall(sendData)
 				PrintSendToAdmin("SERVER ---> SERVER LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
-				Log.ServerEventLog("SERVER_LOG_DUMP", "IP: " + clientAddress)
+				Log.ServerEventLog("SERVER_LOG_DUMP", GetDetails(clientSocket))
 			elif command == "CLIENT":
 				# EXECUTE QUERY
 				cursor.execute("SELECT * FROM Tbl_clientLog;")
@@ -2693,7 +2775,7 @@ class Management():
 				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 				PrintSendToAdmin("SERVER ---> CLIENT LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
-				Log.ServerEventLog("CLIENT_LOG_DUMP", "IP: " + clientAddress)
+				Log.ServerEventLog("CLIENT_LOG_DUMP", GetDetails(clientSocket))
 			else:
 				return
 		finally:
@@ -2817,8 +2899,8 @@ class Management():
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
 			subject = "[PMDBS] Admin security warning"
-			text = "Hey Admin!\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log in as admin using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing the admin password.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Hey Admin!</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log in as admin using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing the admin password!</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			text = "Hey Admin!\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log in as admin using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) + ".\n\nIf you did not try to sign in, you should consider changing the admin password.\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Hey Admin!</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log in as admin using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Time left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) + ".<br><br>If you did not try to sign in, you should consider <b>changing the admin password!</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -2890,7 +2972,7 @@ class Management():
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
 		allClients = Server.allClients
 		# CREATE LOG
-		Log.ServerEventLog("SERVER_SHUTDOWN", "IP: " + clientAddress)
+		Log.ServerEventLog("SERVER_SHUTDOWN", GetDetails(clientSocket))
 		# INITIALIZE SHUTDOWN SEQUENCE
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Shutdown initalized." + ENDF)
 		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
@@ -2945,7 +3027,7 @@ class Management():
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
 		allClients = Server.allClients
 		# CREATE LOG
-		Log.ServerEventLog("SERVER_REBOOT", "IP: " + clientAddress)
+		Log.ServerEventLog("SERVER_REBOOT", GetDetails(clientSocket))
 		# INITIALIZE SHUTDOWN SEQUENCE
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Reboot initalized." + ENDF)
 		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
@@ -3154,8 +3236,8 @@ class Management():
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
 			subject = "[PMDBS] Security warning"
-			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nThe code is valid for 30 minutes.\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>The code is valid for 30 minutes.<br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME) + ".\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
+			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Time left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME) + ".<br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_NEW_DEVICE!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -3212,7 +3294,7 @@ class Management():
 				if client[2] == 1:
 					# SET ADMIN FLAG TO 0
 					Server.allClients[index][2] = 0
-			Log.ServerEventLog("ADMIN_LOGOUT", "IP: " + clientAddress)
+			Log.ServerEventLog("ADMIN_LOGOUT", GetDetails(clientSocket))
 			Server.admin = None
 			Server.adminIp = None
 			isLoggedout = True
@@ -3288,12 +3370,23 @@ def PrintSendToAdmin(text):
 			Server.admin.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		except SocketError:
 			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
+
+# GENERATES A 2 FACTOR AUTHENTICATION CODE
 def CodeGenerator():
 	code = str(secrets.randbelow(1000000))
 	while not len(code) >= 6:
 		code = "0" + code
 	return "PM-" + code
+
+# RETURNS KNOWN DETAILS RELATED TO A CONNECTED CLIENT
+def GetDetails(clientSocket):
+	for client in Server.allClients:
+		if clientSocket in client:
+			return client[3]
+	return "N/A"
 	
+def ConvertFromSeconds(_seconds):
+	return str(datetime.timedelta(seconds=_seconds))
 ################################################################################
 #-------------------------------SERVER MAIN THREAD-----------------------------#
 ################################################################################
@@ -3322,8 +3415,7 @@ class Server(Thread):
 	
 	# RUN METHOD
 	def run(self):
-		# CLEAR THE CONSOLE
-		os.system("cls" if os.name == "nt" else "clear")
+		
 		print(CWHITE + "         Initializing boot sequence ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Boot sequence initialized." + ENDF)
 		print(CWHITE + "         Checking python version ..." + ENDF)
@@ -3332,11 +3424,27 @@ class Server(Thread):
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: 3.6.6" + ENDF)
 		print(CWHITE + "         Checking config ..." + ENDF)
-		if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "":
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Undefined variables in config file." + ENDF)
+		print(CWHITE + "         Checking global variables ..." + ENDF)
+		if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD:
+			if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
+			else:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Undefined variables in config file." + ENDF)
 			return
 		else:
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked config. " + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked global variables. " + ENDF)
+		print(CWHITE + "         Checking version info ..." + ENDF)
+		if not CONFIG_VERSION == VERSION:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
+			return
+		else:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked version info. VERSION: " + VERSION + ". " + ENDF)
+		print(CWHITE + "         Checking build info ..." + ENDF)
+		if not CONFIG_BUILD == BUILD:
+			print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Server is on " + BUILD + "-build but config file is for " + CONFIG_BUILD + "-build." + ENDF)
+		else:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked build info. Current build: " + BUILD + "-build. " + ENDF)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked config. " + ENDF)
 		# GET ANY DATABASES IN CURRENT WORKING DIRECTORY
 		print(CWHITE + "         Checking for database in " + os.getcwd() + " ..." + ENDF)
 		dataBases = glob.glob(os.getcwd() + "/*.db")
@@ -3472,6 +3580,11 @@ class Server(Thread):
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] These passwords don't match! Please try again." + ENDF)
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database integrity." + ENDF)
+		print(CWHITE + "         Running garbage collection on database ..." + ENDF)
+		if not DatabaseManagement.GarbageCollection():
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Garbage collection. " + ENDF)
+		else:
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Deleted deprecated data." + ENDF)
 		# LOG SERVER START
 		print(CWHITE + "         Logging server start ..." + ENDF)
 		Log.ServerEventLog("SERVER_STARTED", "IP: " + self.localAddress + "\nPort: " + str(self.localPort) + "\nBuild: " + NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ") " + PYTHON)
