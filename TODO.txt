@@ -3,6 +3,7 @@
 		- HIGH PRIORITY:
 			- check config version on boot
 			- update config check on boot
+			- update email text code time
 			- check for TODOs in source code
 			- garbage collection on boot --> clean up database
 				- clear expired blacklist entries
