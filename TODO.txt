@@ -1,7 +1,6 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
-			- update email text code time
 			- check for TODOs in source code
 			- bug fixing:
 				- shutdown sometimes not working correctly
@@ -14,6 +13,7 @@
 						- device based cookie
 			- update documentation
 		- MEDIUM PRIORITY:
+			- handle import errors 
 			- new features:
 				- change email address
 				- request "account activity" (client log dump)
