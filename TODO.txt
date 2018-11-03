@@ -4,7 +4,7 @@
 			- check for TODOs in source code
 			- bug fixing:
 				- shutdown sometimes not working correctly
-				- kick sometimes not working correctly --> may be clientside
+				- kick sometimes not working correctly --> probably clientside
 			- update register:
 				- add option: resend activation code
 				- add option: change email address
