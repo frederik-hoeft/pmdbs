@@ -3,8 +3,8 @@
 		- HIGH PRIORITY:
 			- check for TODOs in source code
 			- bug fixing:
-				- shutdown sometimes not working correctly
-				- kick sometimes not working correctly --> probably clientside
+				- Shutdown() sometimes not working correctly
+				- Kick() sometimes not working correctly --> probably clientside
 			- update register:
 				- add option: resend activation code
 			- update documentation
