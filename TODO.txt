@@ -1,6 +1,7 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
+			- email address should be unique
 			- check for TODOs in source code
 			- bug fixing:
 				- shutdown sometimes not working correctly
