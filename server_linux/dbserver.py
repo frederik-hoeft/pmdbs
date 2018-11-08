@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-1.18"
+VERSION = "0.11-2.18"
 BUILD = "development"
-DATE = "Nov 02 2018"
-TIME = "15:00:43"
+DATE = "Nov 08 2018"
+TIME = "20:39:26"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -831,6 +831,7 @@ class Handle():
 		# [ERRNO 25] UDNE				--> USER DOES NOT EXIST
 		# [ERRNO 26] ACCB				--> ACCOUNT BANNED
 		# [ERRNO 27] CRYP				--> CRYPTOGRAPHIC EXCEPTION
+		# [ERRNO 28] ACCA				--> ACCOUNT ALREADY ACTIVATED
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -946,6 +947,10 @@ class Handle():
 			errorNo = "27"
 			if not message:
 				message = "CRYPTOGRAPHIC_EXCEPTION"
+		elif errorID == "ACCA":
+			errorNo = "28"
+			if not message:
+				message = "ACCOUNT_ALREADY_ACTIVATED"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
@@ -957,8 +962,102 @@ class Handle():
 		encryptedData = aesEncryptor.encrypt("INFERR" + info)
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		
+# CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
 	
+	# CHANGES THE EMAIL ADDRESS IF THE ACCOUNT HAS NOT BEEN ACTIVATED / VERIFIED YET
+	def ChangeEmailAddress(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# username%eq!username!;cookie%eq!cookie!;new_email%eq!new_email!;
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# INITIALIZE VARIABLES
+		username = None
+		cookie = None
+		newEmail = None
+		# EXTRACT VALUES FROM PROVIDED COMMAND
+		try:
+			for parameter in parameters:
+				if "username" in parameter:
+					password = parameter.split("!")[1]
+				elif "cookie" in parameter:
+					cookie = parameter.split("!")[1]
+				elif "new_email" in parameter:
+					newEmail = parameter.split("!")[1]
+				elif len(parameter) == 0:
+					pass
+				else:
+					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+					return
+		except Exception as e:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
+		if not username or not newEmail or not cookie:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		# CREATE CONNECTION TO SQLITE DATABASE
+		connection = sqlite3.connection()
+		# CREATE CURSOR OBJECT
+		cursor = connection.cursor()
+		# INITIALIZE VARIABLE TO STORE ACCOUNT STATUS IN
+		isVerified = None
+		try:
+			# QUERY DATABASE FOR ACCOUNT STATUS
+			cursor.execute("SELECT U.U_isVerified FROM Tbl_user as U, Tbl_connectUserCookies as CUO, Tbl_cookies as C WHERE U.U_username = \"" + username + "\" and C.C_cookie = \"" + cookie + "\" and U.U_id = CUO.U_id and CUO.C_id = C.C_id;")
+			isVerified = cursor.fetchall()[0][0]
+		except IndexError:
+			# INDEX OUT OF RANGE --> COOKIE IS NOT BOUND TO ACCOUNT / ACCOUNT DOES NOT EXIST / COOKIE DOES NOT EXIST
+			# FREE RESOURCES
+			connection.close()
+			# LOG ERROR
+			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+			return
+		except Exception as e:
+			# FREE RESOURCES
+			connection.close()
+			# LOG ERROR
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF VARIABLE HAS BEEN SET AT ALL
+		if isVerified == None:
+			# FREE RESOURCES
+			connection.close()
+			# LOG ERROR
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHACK IF ACCOUNT HAS ALREADY BEEN VERIFIED
+		if not isVerified == 0:
+			# FREE RESOURCES
+			connection.close()
+			# LOG ERROR
+			Handle.Error("ACCA", None, clientAddress, clientSocket, aesKey, True)
+			return
+		try:
+			# UPDATE EMAIL ADDRESS IN DATABASE
+			cursor.execute("UPDATE Tbl_user SET U_email = \"" + newEmail + "\" WHERE U_username = \"" + username + "\";")
+		except Exception as e:
+			# SOMETHING WENT WRONG --> ROLLBACK
+			connection.rollback()
+			# LOG ERROR
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# RETURN STATUS TO CLIENT
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFRETEMAIL_UPDATED")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			
 	# WHITELISTS CLIENT AS ADMIN AFTER VALIDATING PROVIDED 2FA CODE
 	def LoginNewAdmin(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
@@ -2671,6 +2770,24 @@ class Management():
 		hashedUsername = CryptoHelper.SHA256(username)
 		salt = CryptoHelper.SHA256(hashedUsername + password)
 		hashedPassword = CryptoHelper.Scrypt(password, salt)
+		emailInUse = 0
+		try:
+			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_email = \"" + email + "\";")
+			emailInUse = len(cursor.fetchall())
+		except Exception as e:
+			# USER NAME ALREADY EXISTS
+			connection.close()
+			# SEND ERROR MESSAGE
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			if not emailInUse == 0:
+				aesEncryptor = AESCipher(aesKey)
+				# ENCRYPT DATA
+				encryptedData = aesEncryptor.encrypt("INFERREMAIL_ALREADY_IN_USE")
+				PrintSendToAdmin("SERVER ---> EMAIL ADDRESS IN USE       ---> " + clientAddress)
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				return
 		try:
 			# INSERT NEW USER INTO DATABASE
 			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0);")
@@ -4109,6 +4226,11 @@ class ClientHandler():
 								# REQUEST MASTER-PASSWORD HASH
 								elif packetSID == "PWH":
 									PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHANGE EMAIL ADDRESS (ONLY IF ACCOUNT IS NOT YET ACTIVATED)
+								elif packetSID == "CEA":
+									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
