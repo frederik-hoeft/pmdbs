@@ -1,21 +1,18 @@
 - PasswordManager v2
 	SERVER TODO:
 		- HIGH PRIORITY:
-			- email address should be unique
 			- check for TODOs in source code
 			- bug fixing:
 				- shutdown sometimes not working correctly
 				- kick sometimes not working correctly --> probably clientside
 			- update register:
 				- add option: resend activation code
-				- add option: change email address
-					- if account is not yet activated
-					- security:
-						- device based cookie
 			- update documentation
+			- testing:
+				- ChangeEmailAddress()
+				- MasterPasswordRequest()
 		- MEDIUM PRIORITY:
 			- new features:
-				- change email address
 				- request "account activity" (client log dump)
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
