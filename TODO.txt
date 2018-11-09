@@ -6,23 +6,13 @@
 			- ChangeEmailAddress()
 			- MasterPasswordRequest()
 			- GetAccountActivity()
+			- ResendCode()
 			
 		- HIGH PRIORITY:
-			- update register:
-				- add option: resend activation code
-					- if account is activated:
-						- unlimited
-					- else:
-						- 3 times until deleted
-			- update all SendMail() related methods
-			- update config:
-				- export all email presets to config file
-				- make email logo customizable
-			- update boot checks
-			- update documentation
+			Nothing :)
 				
 		- MEDIUM PRIORITY:
-			Nothing :)
+			- allow user to change their name
 			
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
@@ -39,3 +29,4 @@
 			- ChangeEmailAddress()
 			- MasterPasswordRequest()
 			- GetAccountActivity()
+			- ResendCode()
