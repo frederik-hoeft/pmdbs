@@ -14,6 +14,7 @@
 						- unlimited
 					- else:
 						- 3 times until disabled
+			- update all SendMail() related methods
 			- update config:
 				- export all email presets to config
 				- make email logo customizable
