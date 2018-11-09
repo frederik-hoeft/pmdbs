@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-2.18"
+VERSION = "0.11-4.18"
 BUILD = "development"
 DATE = "Nov 08 2018"
-TIME = "20:39:26"
+TIME = "20:43:16"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -70,7 +70,7 @@ try:
 	import hashlib
 	import glob
 	import datetime
-	from datetime import datetime
+	from datetime import datetime as datetimealt
 	import time
 	import subprocess
 	import select
@@ -832,6 +832,8 @@ class Handle():
 		# [ERRNO 26] ACCB				--> ACCOUNT BANNED
 		# [ERRNO 27] CRYP				--> CRYPTOGRAPHIC EXCEPTION
 		# [ERRNO 28] ACCA				--> ACCOUNT ALREADY ACTIVATED
+		# [ERRNO 29] ADEL				--> ACCOUNT DELETED
+		# [ERRNO 30] E2RE				--> EXPIRED 2FA REQUEST
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -951,6 +953,14 @@ class Handle():
 			errorNo = "28"
 			if not message:
 				message = "ACCOUNT_ALREADY_ACTIVATED"
+		elif errorID == "ADEL":
+			errorNo = "29"
+			if not message:
+				message = "ACCOUNT_DELETED_TOO_MANY_REQUESTS"
+		elif errorID == "E2RE":
+			errorNo = "30"
+			if not message:
+				message = "EXPIRED_2FA_REQUEST"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
@@ -958,12 +968,260 @@ class Handle():
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
 		if not isEncrypted:
 			clientSocket.send(b'\x01' + bytes("UINFERR" + info, "utf-8") + b'\x04')
+			return
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFERR" + info)
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
+	
+	# ALLOWS TO RESEND ANY 2FA CODE IN CASE SOME ERROR OCCURED
+	def ResendCode(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# username%eq!username!;name%eq!name!;email%eq!email!;
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# INITIALIZE VARIABLES TO STORE EXTRACTED DATA IN
+		username = None
+		nickname = None
+		email = None
+		# EXTRACT REQUIRED DATA FROM PARAMETER-ARRAY
+		try:
+			for parameter in parameters:
+				if parameter:
+					if "username" in parameter:
+						username = parameter.split("!")[1]
+					elif "nickname" in parameter:
+						nickname = parameter.split("!")[1]
+					elif "email" in parameter:
+						email = parameter.split("!")[1]
+					elif len(parameter) == 0:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+		except Exception as e:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if not username or not email or not nickname:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		# INITIALIZE VARIABLES
+		codeTime = None
+		codeAttempts = None
+		codeType = None
+		codeResend = None
+		isVerified = None
+		userID = None
+		try:
+			# POPULATE VARIABLES WITH VALUES FROM DATABASE
+			cursor.execute("SELECT U_codeType, U_codeTime, U_codeAttempts, U_codeResend, U_isVerified, U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_name = \"" + nickname + "\" AND U_email = \"" + email + "\";")
+			data = cursor.fetchall()
+			codeType = data[0][0]
+			codeTime = data[0][1]
+			codeAttempts = data[0][2]
+			codeResend = data[0][3]
+			isVerified = data[0][4]
+			userID = str(data[0][5])
+		except Exception as e:
+			# IN CASE OF ERROR FREE RESOURCES AND THROW SQL EXCEPTION
+			connection.close()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
+		if not codeType or not codeTime or codeAttempts == None or codeResend == None or isVerified == None or not userID:
+			# SOMETHING WENT WRONG --> TROW SQL EXCEPTION AND FREE RESOURCES
+			connection.close()
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF CODE EVENT IS AVTIVE
+		if codeAttempts == -1:
+			# FREE RESOURCES
+			connection.close()
+			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF ACCOUNT IS ACVIVATED
+		if not codeResend == -1 and isVerified == 0:
+			# CHECK IF THE MAXIMUM AMOUNT OF RESEND CALLS HAS BEEN REACHED
+			if codeResend + 1 > RESEND_CODE_MAX_COUNT:
+				# DELETE ACCOUNT --> (USER HAS NEVER BEEN LOGGED IN BEFORE)
+				Handle.Error("ADEL", None, clientAddress, clientSocket, aesKey, True)
+				try:
+					# DELETE ALL DATA ASSOCIATED TO THE USERS ACCOUNT
+					cursor.execute("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";")
+					cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";")
+					cursor.execute("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";")
+					cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
+				except:
+					# SOMETHING WENT WRONG --> LOG ERROR MESSAGE AND ROLLBACK
+					connection.rollback()
+					# FREE RESOURCES
+					connection.close()
+					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					return
+				else:
+					# ALL GOOD --> COMMIT CHANGES
+					connection.commit()
+			else:
+				# INCREMENT RESEND-CALL-COUNTER BY 1
+				try:
+					cursor.execute("UPDATE Tbl_user SET U_codeResend = " + str(codeResend + 1) + " WHERE U_id = " + userID + ";")
+				except Exception as e:
+					# SOMETHING WENT WRONG --> LOG ERROR MESSAGE AND ROLLBACK
+					connection.rollback()
+					# FREE RESOURCES
+					connection.close()
+					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+					return
+				else:
+					# COMMIT CHANGES
+					connection.commit()
+		# ALL UNSPECIFIC CHECKS PASSED
+		# GENERATE NEW 2FA CODE
+		codeFinal = CodeGenerator()
+		# UPDATE DATABASE AND SET NEW CODE
+		try:
+			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\" WHERE U_id = " + userID + ";")
+		except Exception as e:
+			# ROLLBACK IN CASE OF ERROR
+			connection.rollback()
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES
+			connection.commit()
+		finally:
+			# FREE RESOURCES --> DATABASE ACCESS NOT NEEDED ANYMORE IN THIS THREAD
+			connection.close()
+		# INITIALZE VARIABLES FOR SWITCH CASE (MORE LIKE IF ELIF ... BECAUSE PYTHON :P)
+		subject = None
+		text = None
+		html = None
+		# GET DETAILS OF CLIENTS MACHINE
+		details = GetDetails(clientSocket)
+		# ADAPT FORMATTING TO WORK WITH HTML
+		htmlDetails = details.replace("\n","<br>")
+		# SWITCH CODE TYPE
+		if codeType == "ADMIN_PASSWORD_CHANGE":
+			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
+				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# SET CODE EVENT SPECIFIC VALUES
+				subject = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT
+				text = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
+				html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
+		elif codeType == "PASSWORD_CHANGE":
+			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# SET CODE EVENT SPECIFIC VALUES
+				subject = SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT
+				text = SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
+				html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
+		elif codeType == "DELETE_ACCOUNT":
+			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# SET CODE EVENT SPECIFIC VALUES
+				subject = SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT
+				text = SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
+				html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
+		elif codeType == "ACTIVATE_ACCOUNT":
+			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# SET CODE EVENT SPECIFIC VALUES
+				subject = SUPPORT_EMAIL_REGISTER_SUBJECT
+				text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
+				html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
+		elif codeType == "ADMIN_NEW_LOGIN":
+			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
+				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# SET CODE EVENT SPECIFIC VALUES
+				subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
+				text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
+				html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
+		elif codeType == "NEW_LOGIN":
+			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
+				return
+			else:
+				# SET CODE EVENT SPECIFIC VALUES
+				subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
+				text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
+				html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
+		else:
+			# UNKNOWN CODE EVENT --> JUST DO NOTHING AND CREATE LOG ENTRY
+			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# RETURN SUCCESS STATUS TO CLIENT
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!CODE_RESEND!;")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		# SEND EMAIL
+		Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
+		
+			
+	# RETURN THE CLIENT LOG OF THE LOGGED IN USER
+	def GetAccountActivity(clientAddress, clientSocket, aesKey):
+		# GET USER ID
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not userID:
+			# USER IS NOT LOGGED IN
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# USER IS LOGGED IN
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR OBJECT TO INTERACT WITH DATABASE
+		cursor = connection.cursor()
+		# INITIALIZE VARIABLE TO STORE RETURNED DATA
+		clientLog = None
+		try:
+			# QUERY THE DATABASE FOR THE ACCOUNT ACTIVITY
+			cursor.execute("SELECT L_event, L_ip, L_datetime, L_details FROM Tbl_clientLog, Tbl_user WHERE L_userid = U_id AND U_id = " + userID + ";")
+			clientLog = cursor.fetchall()
+		except Exception as e:
+			# AN SQL ERROR OCCURED --> LOG ERROR
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# CHECK IF DATA HAS BEEN FETCHED PROPERLY
+			if clientLog == None:
+				# SOMETHONG WENT WRONG --> SQL ERROR
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+				return
+			# RETURN DATA TO CLIENT
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt("LOGDMP" + str(clientLog))
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
+		finally:
+			# FREE RESOURCES
+			connection.close()
 	
 	# CHANGES THE EMAIL ADDRESS IF THE ACCOUNT HAS NOT BEEN ACTIVATED / VERIFIED YET
 	def ChangeEmailAddress(command, clientAddress, clientSocket, aesKey):
@@ -1121,17 +1379,17 @@ class Management():
 			Handle.Error("SQLE", "VALIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
-		if not codeType == "NEW_LOGIN" or codeAttempts == -1:
+		if not codeType == "ADMIN_NEW_LOGIN" or codeAttempts == -1:
 			Handle.Error("NCES", "NO_NEW_LOGIN_SCHEDULED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
 			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
-			if codeAttempts + 1 >= 3:
-				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY MAC ADDRESS OR IP
+			if codeAttempts + 1 >= MAX_CODE_ATTEMPTS_ADMIN:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
-				# BAN DEVICE FOR 1H
-				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!3600!;", clientAddress, clientSocket, aesKey, True)
+				# BAN DEVICE
+				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION_ADMIN) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
@@ -1241,7 +1499,7 @@ class Management():
 		cursor = connection.cursor()
 		try:
 			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + Timestamp() + "\", U_codeAttempts = 0, U_codeType = \"PASSWORD_CHANGE\" WHERE U_username = \"__ADMIN__\";")
+			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + Timestamp() + "\", U_codeAttempts = 0, U_codeType = \"ADMIN_PASSWORD_CHANGE\" WHERE U_username = \"__ADMIN__\";")
 		except Exception as e:
 			connection.rollback()
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
@@ -1266,11 +1524,11 @@ class Management():
 		# ADAPT FORMATTING TO WORK IN HTML
 		Log.ServerEventLog("ADMIN_PASSWORD_CHANGE_REQUEST", details)
 		htmlDetails = details.replace("\n","<br>")
-		subject = "[PMDBS] Admin password change"
-		text = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) + ".\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) + ".<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		subject = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT
+		text = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
+		html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
 		# CALL SENDMAIL
-		Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
+		Management.SendMail(SUPPORT_EMAIL_SENDER, SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_CHANGE_PASSWORD!;")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -1338,7 +1596,7 @@ class Management():
 		if not code or not codeTime or codeAttempts == None or not codeType:
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
-		if not codeType == "PASSWORD_CHANGE":
+		if not codeType == "ADMIN_PASSWORD_CHANGE":
 			Handle.Error("NCES", "NO_PASSWORD_CHANGE_SCHEDULED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF PASSWORD CHANGE HAS BEEN REQUESTED IN THE FIRST PLACE
@@ -1348,11 +1606,11 @@ class Management():
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
 			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
-			if codeAttempts + 1 >= 3:
-				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY IP
+			if codeAttempts + 1 >= MAX_CODE_ATTEMPTS_ADMIN:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
-				# TODO: BAN DEVICE FOR 24H
-				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!86400!;", clientAddress, clientSocket, aesKey, True)
+				# BAN DEVICE
+				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION_ADMIN) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
@@ -1513,14 +1771,15 @@ class Management():
 			# INDEX OUT OF RANGE --> CLIENT IS NOT BANNED
 			Management.AllowConnection(clientAddress, clientSocket)
 			return
-		except sqlite3.Error:
+		except sqlite3.Error as e:
 			# SQL ERROR --> DISALLOW CONNECTION AND SEND STATUS TO ADMIN
-			# TODO: LOG
+			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR",e)
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: SQLE    ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("U" + "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR", "utf-8") + b'\x04')
 			return
 		# CHECK IF ALL VARAIABLES HAVE BEEN SET
 		if not time or not duration:
+			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR","N/A")
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: SQLE    ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("U" + "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR", "utf-8") + b'\x04')
 			return
@@ -1537,7 +1796,6 @@ class Management():
 	def Ban(command, clientAddress, clientSocket, aesKey, isSystem):
 		# EXAMPLE COMMAND
 		# ip%eq!ip!;duration%eq!duration_in_seconds!;
-		# TODO: BAN ACCOUNT
 		if not isSystem:
 			# CHECK IF REQUEST COMES FROM ADMIN
 			if not clientSocket == Server.admin:
@@ -1683,11 +1941,11 @@ class Management():
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
 			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
-			if codeAttempts + 1 >= 3:
-				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY IP
+			if codeAttempts + 1 >= MAX_CODE_ATTEMPTS:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
 				# BAN DEVICE FOR 1H
-				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!3600!;", clientAddress, clientSocket, aesKey, True)
+				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
@@ -1831,11 +2089,11 @@ class Management():
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
 			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
-			if codeAttempts + 1 >= 3:
-				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY MAC ADDRESS OR IP
+			if codeAttempts + 1 >= MAX_CODE_ATTEMPTS:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
 				# BAN DEVICE FOR 1H
-				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!3600!;", clientAddress, clientSocket, aesKey, True)
+				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
@@ -2080,7 +2338,7 @@ class Management():
 		# ALL CHECKS PASSED
 		# VERIFY ACCOUNT
 		try:
-			cursor.execute("UPDATE Tbl_user SET U_isVerified = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\";")
+			cursor.execute("UPDATE Tbl_user SET U_isVerified = 1, U_codeAttempts = -1, U_lastPasswordChange = \"" + Timestamp() + "\", U_codeType = \"NONE\", U_codeResend = -1;")
 		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 		except Exception as e:
 			connection.rollback()
@@ -2228,11 +2486,11 @@ class Management():
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
 			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
-			if codeAttempts + 1 >= 3:
-				# USER TRIES TO BRUTEFORCE VALIDATION CODE --> 1 HOUR BAN BY IP
+			if codeAttempts + 1 >= MAX_CODE_ATTEMPTS:
+				# USER TRIES TO BRUTEFORCE VALIDATION CODE
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
-				# TODO: BAN DEVICE FOR 1H
-				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!3600!;", clientAddress, clientSocket, aesKey, True)
+				# BAN DEVICE FOR 1H
+				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
@@ -2363,11 +2621,11 @@ class Management():
 			# CREATE LOG
 			Log.ClientEventLog("PASSWORD_CHANGE_REQUESTED", clientSocket)
 			# FILL NEEDED INFORMATION TO SEND EMAIL
-			subject = "[PMDBS] Password change"
-			text = "Dear " + name + "\n\nYou have requested to change your master password in our app.\nThe request originated from the following device:\n\n" + details + "\n\nTo change your password, please enter the code below when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) + ".\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to change your master password in our app. The request originated from the following device:<br><br>" + htmlDetails + "<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: " + ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) + ".<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			subject = SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT
+			text = SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT % (name, details, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
+			html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
-			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -2375,11 +2633,11 @@ class Management():
 			# CREATE LOG
 			Log.ClientEventLog("DELETE_ACCOUNT_REQUESTED", clientSocket)
 			# FILL NEEDED INFORMATION TO SEND EMAIL
-			subject = "[PMDBS] Delete your account?"
-			text = "Dear " + name + ",\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n" + details + "\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) + ".\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Dear " + name + ",</h3></td></tr><tr><td class=\"text\"><p>You have requested to delete your account and all data associated to it.<br>The request originated from the following device:<br><br>" + htmlDetails + "<br><br><b>ALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!</b><br><br><br>To confirm your request, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: " + ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) + ".<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			subject = SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT
+			text = SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT % (name, details, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
+			html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
-			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
@@ -2400,7 +2658,7 @@ class Management():
 		message["From"] = From
 		message["To"] = To
 		# READ IMAGE AS RAW BYTES
-		imageFile = open("icon.png", "rb")
+		imageFile = open(SUPPORT_EMAIL_LOGO, "rb")
 		msgImage = MIMEImage(imageFile.read())
 		imageFile.close()
 		# ADD HEADER TO IMAGE
@@ -2691,7 +2949,7 @@ class Management():
 							pass
 						if unixTime:
 							# CONVERT UNIX TIMESTAMP TO HUMAN READABLE FORMAT
-							lastSeen = str(datetime.utcfromtimestamp(int(unixTime)).strftime("%Y-%m-%d %H:%M:%S"))
+							lastSeen = str(datetimealt.utcfromtimestamp(int(unixTime)).strftime("%Y-%m-%d %H:%M:%S"))
 						else:
 							# USER WAS NEVER ONLINE BEFORE OR SOME ERROR OCCURED
 							lastSeen = "N/A"
@@ -2740,24 +2998,27 @@ class Management():
 		nickname = None
 		cookie = None
 		# ECTRACT INFORAMTION FROM COMMAND
-		# TODO EXCEPTION HANDLING
-		for credential in creds:
-			if "username" in credential:
-				username = credential.split("!")[1]
-			elif "password" in credential:
-				password = credential.split("!")[1]
-			elif "email" in credential:
-				email = credential.split("!")[1]
-			elif "nickname" in credential:
-				nickname = credential.split("!")[1]
-			elif "cookie" in credential:
-				cookie = credential.split("!")[1]
-			elif len(credential) == 0:
-				pass
-			else:
-				# COMMAND CONTAINED MORE DATA THAN REQUESTED
-				Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
-				return
+		try:
+			for credential in creds:
+				if "username" in credential:
+					username = credential.split("!")[1]
+				elif "password" in credential:
+					password = credential.split("!")[1]
+				elif "email" in credential:
+					email = credential.split("!")[1]
+				elif "nickname" in credential:
+					nickname = credential.split("!")[1]
+				elif "cookie" in credential:
+					cookie = credential.split("!")[1]
+				elif len(credential) == 0:
+					pass
+				else:
+					# COMMAND CONTAINED MORE DATA THAN REQUESTED
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+					return
+		except Exception as e:
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
 		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
 		if not username or not password or not email or not nickname or not cookie:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
@@ -2790,7 +3051,7 @@ class Management():
 				return
 		try:
 			# INSERT NEW USER INTO DATABASE
-			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0);")
+			cursor.execute("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned,U_codeResend) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0,0);")
 		except Exception as e:
 			# USER NAME ALREADY EXISTS
 			connection.close()
@@ -2842,14 +3103,14 @@ class Management():
 		encryptedData = aesEncryptor.encrypt("INFRETTODO_VERIFY_MAIL_SENT")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# GENERATE EMAIL
-		subject = "[PMDBS] Please verify your email address."
-		text = "Welcome, " + nickname + "!\n\nThe Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.\n\nTo verify your account, please enter the following code when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME) + ".\n\nBest regards,\nPMDBS Support Team"
-		html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Welcome, " + nickname + "!</h2></td></tr><tr><td class=\"text\"><p>The Password Management Database System enables you to securely store your passwords and confident information in one place and allows an easy access from all your devices.<br><br>To verify your account, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Time left until the code expires: " + ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME) + ".<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+		subject = SUPPORT_EMAIL_REGISTER_SUBJECT
+		text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
+		html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# SEND VERIFICATION CODE BY EMAIL
-		Management.SendMail("PMDBS Support", email,	subject, text, html, clientAddress)
+		Management.SendMail(SUPPORT_EMAIL_SENDER, email, subject, text, html, clientAddress)
 		
 	# DUMP THE EVENT LOG / ADMIN PRIVILEGES REQUIRED
 	def DumpEventLog(command, clientAddress, clientSocket, aesKey):
@@ -3000,7 +3261,7 @@ class Management():
 			timestamp = Timestamp()
 			try:
 				# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = \"__ADMIN__\";")
+				cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"ADMIN_NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = \"__ADMIN__\";")
 			except Exception as e:
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLLBACK
 				connection.rollback()
@@ -3015,14 +3276,14 @@ class Management():
 			Log.ServerEventLog("ADMIN_LOGIN_FROM_NEW_DEVICE", details)
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
-			subject = "[PMDBS] Admin security warning"
-			text = "Hey Admin!\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log in as admin using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) + ".\n\nIf you did not try to sign in, you should consider changing the admin password.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Hey Admin!</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log in as admin using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Time left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) + ".<br><br>If you did not try to sign in, you should consider <b>changing the admin password!</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
+			text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
+			html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# SEND ACCOUNT VALIDATION EMAIL
-			Management.SendMail("PMDBS Support", SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
+			Management.SendMail(SUPPORT_EMAIL_SENDER, SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 			return
 		# HASH PASSWORD
 		hashedUsername = CryptoHelper.SHA256("__ADMIN__")
@@ -3352,14 +3613,14 @@ class Management():
 			Log.ClientEventLog("LOGIN_FROM_NEW_DEVICE", clientSocket)
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
-			subject = "[PMDBS] Security warning"
-			text = "Dear " + name + ",\n\nAre you trying to log in from a new device?\n\nSomeone just tried to log into your account using the following device:\n\n" + details + "\n\nYou have received this email because we want to make sure that this is really you.\nTo verify that it is you, please enter the following code when prompted:\n\n" + codeFinal + "\n\nTime left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME) + ".\n\nIf you did not try to sign in, you should consider changing your master password. There is no need to panic though, your account is save as long as your email is not compromized as well.\n\nBest regards,\nPMDBS Support Team"
-			html = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;color:#FFFFFF;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h2>Dear " + name + ",</h2></td></tr><tr><td class=\"text\"><p><b>Are you trying to log in from a new device?</b><br><br>Someone just tried to log into your account using the following device:<br><br>" + htmlDetails + "<br><br>You have received this email because we want to make sure that this is really you.<br>To verify that it is you, please enter the following code when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>" + codeFinal + "</b></p></td></tr><tr><td class=\"bottom\"><p><br><br>Time left until the code expires: " + ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME) + ".<br><br>If you did not try to sign in, you should consider <b>changing your master password</b>. There is no need to panic though, your account is save as long as your email is not compromized as well.<br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
+			subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
+			text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (name, details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
+			html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_NEW_DEVICE!;")
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			# SEND ACCOUNT VALIDATION EMAIL
-			Management.SendMail("PMDBS Support", address, subject, text, html, clientAddress)
+			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
 			return
 		# CHECK IF USER ACCOUNT IS VERIFIED
 		# HASH PASSWORD
@@ -3542,7 +3803,7 @@ class Server(Thread):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: 3.6.6" + ENDF)
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
-		if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD:
+		if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT:
 			if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
 				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 			else:
@@ -3976,7 +4237,6 @@ class ClientHandler():
 								key = None
 								nonce = None
 								# EXTRACT KEY AND NONCE FROM PACKET
-								# TODO: RETURN ERRORS TO CLIENT
 								try:
 									for info in cryptoInformation:
 										if "key" in info:
@@ -3988,14 +4248,17 @@ class ClientHandler():
 										else:
 											# COMMAND CONTAINED MORE INFORMATION THAN REQUESTED
 											PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+											Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, None, False)
 											return
 								except:
 									# COMMAND HAS UNKNOWN FORMATTING
 									PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+									Handle.Error("ICMD", "INVALID_FORMATTING", clientAddress, clientSocket, None, False)
 									return
 								# COMMAND DID NOT CONTAIN ALL INFORMATION
 								if not nonce or not key:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+									Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
 									return
 								try:
 									if isXmlClient:
@@ -4004,6 +4267,7 @@ class ClientHandler():
 										clientPublicKey = key
 								except:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+									Handle.Error("IRSA", "INVALID_RSA_KEY", clientAddress, clientSocket, None, False)
 									return
 								# GENERATE 256 BIT AES KEY
 								aesKey = CryptoHelper.AESKeyGenerator()
@@ -4040,7 +4304,9 @@ class ClientHandler():
 									if "nonce" in command:
 										nonce = command.split("!")[1]
 									else:
+										# TOO FEW ARGUMENTS
 										PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+										Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
 										return
 									# ENCRYPT DATA
 									message = "nonce%eq!" + nonce + "!;"
@@ -4054,30 +4320,6 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 									# JUMP TO FINALLY AND FINISH CONNECTION
 									return
-							# INFORMATION / ADMINISTRATIVE PACKETS
-							elif packetID == "INF" and keyExchangeFinished:
-								if packetSID == "BGN":
-									# BEGIN TRANSACTION
-									PrintSendToAdmin("SERVER <--- BEGIN TRANSACT.            <--- " + clientAddress)
-									# TODO: OPEN CONNECTION TO DATABASE
-								elif packetSID == "END":
-									# COMMIT TRANSACTION
-									PrintSendToAdmin("SERVER <--- COMMIT TRANSACT.           <--- " + clientAddress)
-									# TODO: COMMIT CHANGES TO DATABASE
-								elif packetSID == "CNG":
-									# UPDATE ACCOUNT --> NEEDS (VALID CID), UNAME, PWD --> EMAIL CONFIRMATION
-									return
-								elif packetSID == "DEL":
-									# DELETE CLIENTS DATA --> EMAIL CONFIRMATION
-									return
-								elif packetSID == "ERR":
-									# SOMETHING WENT WRONG
-									return
-								elif packetSID == "ACK":
-									# ACKNOWLEDGEMENT PACKET
-									return
-								else:
-									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 							# REQUEST PACKETS
 							elif packetID == "REQ" and keyExchangeFinished:
 								# INSERT REQUEST
@@ -4233,6 +4475,16 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
+								# GET ACCOUNT ACTIVITY
+								elif packetSID == "GAA":
+									PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT ACTIVITY   <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.GetAccountActivity, args = (clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# RESEND 2FA CODE
+								elif packetSID == "RTC":
+									PrintSendToAdmin("SERVER <--- RESEND 2FA CODE            <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ResendCode, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 									# JUMP TO FINALLY AND FINISH CONNECTION
@@ -4251,7 +4503,6 @@ class ClientHandler():
 				isSocketError = True
 		# FREE THE SOCKET ONCE THE CLIENT DISCONNECTS OR THE CONNECTION FAILS
 		finally:
-			# TODO: FIX ANY LOGOUT / DISCONNECT ERRORS (BROKEN PIPE / TRANSPORT)
 			# SERVER HAS BEEN STOPPED
 			if Server.stopped or clientSocket.fileno() == -1:
 				exit()
