@@ -13,7 +13,7 @@
 					- if account is activated:
 						- unlimited
 					- else:
-						- 3 times until disabled
+						- 3 times until deleted
 			- update all SendMail() related methods
 			- update config:
 				- export all email presets to config file
