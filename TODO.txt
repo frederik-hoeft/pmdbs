@@ -18,6 +18,7 @@
 			- update config:
 				- export all email presets to config
 				- make email logo customizable
+			- update boot checks
 			- update documentation
 				
 		- MEDIUM PRIORITY:
