@@ -11,7 +11,9 @@
 			- update register:
 				- add option: resend activation code
 			- update documentation
-			
+			- update config file:
+				- add customizable auto-ban duration
+				
 		- MEDIUM PRIORITY:
 			Nothing :)
 			
