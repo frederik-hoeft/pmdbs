@@ -16,7 +16,7 @@
 						- 3 times until disabled
 			- update all SendMail() related methods
 			- update config:
-				- export all email presets to config
+				- export all email presets to config file
 				- make email logo customizable
 			- update boot checks
 			- update documentation
