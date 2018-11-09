@@ -10,6 +10,10 @@
 		- HIGH PRIORITY:
 			- update register:
 				- add option: resend activation code
+					- if account is activated:
+						- unlimited
+					- else:
+						- 3 times until disabled
 			- update documentation
 				
 		- MEDIUM PRIORITY:
