@@ -1,19 +1,20 @@
 - PasswordManager v2
 	SERVER TODO:
+		- TESTING:
+			- Shutdown() --> may be buggy?
+			- Kick() --> may be buggy?
+			- ChangeEmailAddress()
+			- MasterPasswordRequest()
+			- GetAccountActivity()
+			
 		- HIGH PRIORITY:
-			- check for TODOs in source code
-			- bug fixing:
-				- Shutdown() sometimes not working correctly
-				- Kick() sometimes not working correctly --> probably clientside
 			- update register:
 				- add option: resend activation code
 			- update documentation
-			- testing:
-				- ChangeEmailAddress()
-				- MasterPasswordRequest()
+			
 		- MEDIUM PRIORITY:
-			- new features:
-				- request "account activity" (client log dump)
+			Nothing :)
+			
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
@@ -21,9 +22,11 @@
 				--> better maintenance for an admin team
 			- Admin features:
 				- delete accounts
+				
 	DEBUG / ADMIN CLIENT TODO:
 		- continue dynamic query creation (no more hard coding)
 		- update user password data related methods to work dynamically
-		add:
+		add support for:
 			- ChangeEmailAddress()
 			- MasterPasswordRequest()
+			- GetAccountActivity()
