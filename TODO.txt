@@ -7,12 +7,13 @@
 			- MasterPasswordRequest()
 			- GetAccountActivity()
 			- ResendCode()
+			- ChangeName()
 			
 		- HIGH PRIORITY:
 			Nothing :)
 				
 		- MEDIUM PRIORITY:
-			- allow user to change their name
+			Nothing :)
 			
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
 			- Change admin setup:
@@ -30,3 +31,4 @@
 			- MasterPasswordRequest()
 			- GetAccountActivity()
 			- ResendCode()
+			- ChangeName()
