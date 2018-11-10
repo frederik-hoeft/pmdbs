@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-4.18"
+VERSION = "0.11-5.18"
 BUILD = "development"
-DATE = "Nov 08 2018"
-TIME = "20:43:16"
+DATE = "Nov 09 2018"
+TIME = "10:58:37"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -975,6 +975,69 @@ class Handle():
 		
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
+	
+	# CHANGES THE USERS NAME THAT IS USED TO PERSONALIZE MESSAGES
+	def ChangeName(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# new_name%eq!new_name!;
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# INITIALIZE VARIABLES TO STORE EXTRACTED DATA IN
+		newName = None
+		# EXTRACT REQUIRED DATA FROM PARAMETER-ARRAY
+		try:
+			for parameter in parameters:
+				if parameter:
+					if "new_name" in parameter:
+						newName = parameter.split("!")[1]
+					elif len(parameter) == 0:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+		except Exception as e:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if not newName:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		# GET USER ID AND CHACK IF USER IS LOGGED IN
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not userID:
+			# USER IS NOT LOGGED IN
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# USER IS LOGGED IN
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
+			# UPDATE THE NAME IN THE DATABASE
+			cursor.execute("UPDATE Tbl_user SET U_name = \"" + newName + "\" WHERE U_id = " + userID + ";")
+		except Exception as e:
+			# SOMETHING WENT WRONG --> THROW SQL EXCEPTION AND ROLLBACK
+			connection.rollback()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		# RETURN SUCCESS STATUS TO CLIENT
+		aesEncryptor = AESCipher(aesKey)
+		encryptedData = aesEncryptor.encrypt("INFRETstatus%eq!NAME_CHANGED!;")
+		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		# GET SOME DEBUG OUTPUT HAPPENING
+		PrintSendToAdmin("SERVER ---> NAME CHANGED               ---> " + clientAddress)
 	
 	# ALLOWS TO RESEND ANY 2FA CODE IN CASE SOME ERROR OCCURED
 	def ResendCode(command, clientAddress, clientSocket, aesKey):
@@ -3794,13 +3857,14 @@ class Server(Thread):
 	# RUN METHOD
 	def run(self):
 		
+		# RUN CHECKS
 		print(CWHITE + "         Initializing boot sequence ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Boot sequence initialized." + ENDF)
 		print(CWHITE + "         Checking python version ..." + ENDF)
-		if not sys.version.split(" ")[0] == "3.6.6":
+		if not sys.version.split(" ")[0] in ["3.6.6","3.6.7"]:
 			print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Not tested on python " + sys.version.split(" ")[0] + ENDF)
 		else:
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: 3.6.6" + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: " + sys.version.split(" ")[0] + ENDF)
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
 		if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT:
@@ -3816,7 +3880,7 @@ class Server(Thread):
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 			return
 		else:
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked version info. VERSION: " + VERSION + ". " + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked version info. Current version: " + VERSION + ". " + ENDF)
 		print(CWHITE + "         Checking build info ..." + ENDF)
 		if not CONFIG_BUILD == BUILD:
 			print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Server is on " + BUILD + "-build but config file is for " + CONFIG_BUILD + "-build." + ENDF)
@@ -4484,6 +4548,11 @@ class ClientHandler():
 								elif packetSID == "RTC":
 									PrintSendToAdmin("SERVER <--- RESEND 2FA CODE            <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.ResendCode, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHANGE NAME OF USER USED IN MESSAGES
+								elif packetSID == "CHN":
+									PrintSendToAdmin("SERVER <--- REQUEST NAME CHANGE        <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ChangeName, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
