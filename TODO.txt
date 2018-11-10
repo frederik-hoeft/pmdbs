@@ -24,8 +24,9 @@
 				- delete accounts
 				
 	DEBUG / ADMIN CLIENT TODO:
-		- continue dynamic query creation (no more hard coding)
-		- update user password data related methods to work dynamically
+		- continue reworking everything:
+			- Problem 2FA code contains "-" --> used for argument parsing -.-
+			- continue from line 609
 		add support for:
 			- ChangeEmailAddress()
 			- MasterPasswordRequest()
