@@ -17,6 +17,7 @@ from Crypto.Cipher import PKCS1_OAEP
 import base64
 import argparse
 import secrets
+import readline
 import hashlib
 from socket import error as SocketError
 import os
@@ -121,8 +122,8 @@ class IO(Thread):
 		ACThread.start()
 		try:
 			while True:
-				parameters = input("").split(" ")
-				command = parameters[0]
+				parameters = input("").split("-")
+				command = parameters[0].replace(" ","")
 				if command == "pwchange":
 					self.IOpasswordChangeRequest(parameters)
 				elif command == "exit":
@@ -194,7 +195,7 @@ class IO(Thread):
 				else:
 					print('unknown command ' + '\'' + command + '\'')
 		except Exception as e:
-print(e)
+			print(e)
 			pass
 			
 	def IOhelp(self, parameters):
@@ -203,44 +204,45 @@ print(e)
 				print("this command takes no parameters")
 				return
 		except Exception as e:
-print(e)
+			print(e)
 			pass
 		allCommands = """
 		
 	AVAILABLE COMMANDS:\n
-	pwchange
-	exit
-	register
-	insert
-	select
-	update
-	msg
-	sync
 	alldata
-	login
-	logout
-	su
-	shutdown
-	reboot
-	start
-	serverlog
+	banaccount
+	banclient
 	clientlog
+	commitadminpwchange
+	commitdelaccount
+	commitpwchange
+	confirmnewdevice
+	cookie
+	error
+	exit
+	initadminpwchange
+	initdelaccount
+	initpwchange
+	insert
+	kick
 	listallclients
 	listallusers
-	error
-	cookie
-	kick
-	verify
-	confirmnewdevice
+	login
+	logout
+	msg
 	newadmindevice
-	initadminpwchange
-	commitadminpwchange
-	initpwchange
-	commitpwchange
-	initdelaccount
-	commitdelaccount
-	banclient
-	banaccount
+	pwchange
+	reboot
+	register
+	select
+	serverlog
+	shutdown
+	start
+	su
+	sync
+	update
+	verify
+	
 	help
 	
 	Type \"<command> --help\" for more information about commands
@@ -248,9 +250,29 @@ print(e)
 		print(allCommands)
 	def IOkick(self, command):
 		try:
-			commands = command.split(" ")
-			mode = commands[1]
-			target = commands[2]
+			if parameters[1] == "h":
+				print("arguments: \n\nkick\n-m <ip/ipport/username>\n-t <target>")
+				return
+		except Exception as e:
+			print(e)
+			print("too few arguments")
+		try:
+			commands = command.split("-")
+			mode = None
+			target = None
+			for command in commands:
+				if command.split(" ")[0] == "m":
+					mode = command.split(" ")[1]
+				elif command.split(" ")[0] == "t":
+					target = command.split(" ")[1]
+				elif len(command) == 0 or command == "kick ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not mode or not target:
+				print("too few arguments")
+				return
 			aesEncryptor = AESCipher(ActiveConnection.aesKey)
 			cryptmsg = aesEncryptor.encrypt("MNGKIKmode%eq!" + mode + "!;target%eq!" + target + "!")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
@@ -261,7 +283,7 @@ print(e)
 	
 	def IOpasswordChangeRequest(self, parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -273,7 +295,7 @@ print(e)
 	
 	def IOlistAllClients(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -285,7 +307,7 @@ print(e)
 	
 	def IOListAllUsers(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -297,7 +319,7 @@ print(e)
 	
 	def IOslog(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -309,7 +331,7 @@ print(e)
 	
 	def IOclog(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -324,7 +346,7 @@ print(e)
 		
 	def IOexit(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -335,7 +357,7 @@ print(e)
 		
 	def IOcookie(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -347,7 +369,7 @@ print(e)
 	
 	def IOmsg(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -357,42 +379,93 @@ print(e)
 		
 	def IOregister(self, parameters):
 		try:
-			if parameters[1] == "--help":
-				print("\"register <username> <password> <email> <nickname>\"")
+			if parameters[1] == "h":
+				print("arguments: \n\n-u <username>\n-p <password>\n-e <email>\n-n <nickname>")
 				return
 		except Exception as e:
 			print(e)
 			print("too few arguments")
 		try:
-			username = parameters[1]
-			password = parameters[2]
-			email = parameters[3]
-			nickname = parameters[4]
+			commands = command.split("-")
+			nickname = None
+			email = None
+			password = None
+			username = None
+			for command in commands:
+				if command.split(" ")[0] == "u":
+					username = command.split(" ")[1]
+				elif command.split(" ")[0] == "p":
+					password = command.split(" ")[1]
+				elif command.split(" ")[0] == "e":
+					email = command.split(" ")[1]
+				elif command.split(" ")[0] == "n":
+					nickname = command.split(" ")[1]
+				elif len(command) == 0 or command == "kick ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not password or not username or not email:
+				print("too few arguments")
+				return
+			if not nickname:
+				nickname = "user"
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
 			aesEncryptor = AESCipher(ActiveConnection.aesKey)
 			cryptmsg = aesEncryptor.encrypt("MNGREGusername%eq!" + username + "!;password%eq!" + finalPassword + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except Exception as e:
 			print(e)
-			print("typo in command \"" + " ".join(parameters) + "\"")
+			print("typo in command \"" + "-".join(parameters) + "\"")
 		
 	def IOinsert(self,parameters):
 		try:
-			if parameters[1] == "--help":
-				print("insert <localID> <username> <password> <host> <notes> <email>")
+			if parameters[1] == "h":
+				print("arguments: \n\ninsert\n-hs <host>\n-p <password>\n\nOPTIONAL:\n-u <username>\n-e <email>\n-n <notes>\n-url <url>")
 				return
 		except Exception as e:
 			print(e)
-			pass
+			print("too few arguments")
 		try:
-			localID = parameters[1]
-			uname = parameters[2]
-			password = parameters[3]
-			host = parameters[4]
-			notes = parameters[5]
-			email = parameters[6]
+			commands = command.split("-")
+			host = None
+			password = None
+			username = None
+			email = None
+			notes = None
+			url = None
+			for command in commands:
+				if command.split(" ")[0] == "hs":
+					username = command.split(" ")[1]
+				elif command.split(" ")[0] == "p":
+					password = command.split(" ")[1]
+				elif command.split(" ")[0] == "u":
+					email = command.split(" ")[1]
+				elif command.split(" ")[0] == "e":
+					email = command.split(" ")[1]
+				elif command.split(" ")[0] == "n":
+					notes = command.split(" ")[1]
+				elif command.split(" ")[0] == "url":
+					url = command.split(" ")[1]
+				elif len(command) == 0 or command == "kick ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not host or not password:
+				print("too few arguments")
+				return
+			query = "local_id%eq!" + str(secrets.randbelow(10**6)) + "!;host%eq!" + host + "!;password%eq!" + password + "!;"
+			if username:
+				query += "uname%eq!" + username + "!;"
+			if email:
+				query += "email%eq!" + email + "!;"
+			if notes:
+				query += "notes%eq!" + notes + "!;"
+			if url:
+				query += "url%eq!" + url + "!;"
 			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("REQINSuname&eq!" +  + "!;password%eq!" +  + "!;host&eq!" +  + "!;notes%eq!" +  + "!;email%eq!" +  + "!;datetime%eq!" + str(time.time()).split('.')[0] + "!;\x1f" + localID)
+			cryptmsg = aesEncryptor.encrypt("REQINS" + query + "datetime%eq!" + str(time.time()).split('.')[0] + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except Exception as e:
 			print(e)
@@ -400,7 +473,7 @@ print(e)
 		
 	def IOselect(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "h":
 				print("select HID1 HID2 HID3 [...]")
 				return
 		except Exception as e:
@@ -418,19 +491,67 @@ print(e)
 		
 	def IOupdate(self,parameters):
 		try:
-			if parameters[1] == "--help":
-				print("TODO...")
+			if parameters[1] == "h":
+				print("arguments: \n\nupdate\n-hid <hid>\n\nOPTIONAL:\n-hs <host>\n-u <username>\n-p <password>\n-url <url>\n-n <notes> \n-e <email>")
 				return
 		except Exception as e:
 			print(e)
 			print("too few arguments")
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQUPDhost%eq!test!;password%eq!password!;datetime%eq!20180831183209!;hid%eq!VjjBgvgnhGPLKijI4BjRoJgILrX6SlHeIjBmWjhQXZT6nk52yUWkcLeQjFgoEsJmYIQmWacuJ61rIHtHQm8fQQ==!;\x1f12")
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		try:
+			commands = command.split("-")
+			hid = None
+			host = None
+			password = None
+			username = None
+			email = None
+			notes = None
+			url = None
+			for command in commands:
+				if command.split(" ")[0] == "hs":
+					username = command.split(" ")[1]
+				elif command.split(" ")[0] == "p":
+					password = command.split(" ")[1]
+				elif command.split(" ")[0] == "u":
+					email = command.split(" ")[1]
+				elif command.split(" ")[0] == "e":
+					email = command.split(" ")[1]
+				elif command.split(" ")[0] == "n":
+					notes = command.split(" ")[1]
+				elif command.split(" ")[0] == "hid":
+					hid = command.split(" ")[1]
+				elif command.split(" ")[0] == "url":
+					url = command.split(" ")[1]
+				elif len(command) == 0 or command == "kick ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not hid:
+				print("too few arguments")
+				return
+			query = "hid%eq!" + hid + "!;datetime%eq!" + str(time.time()).split('.')[0] + "!;"
+			if host:
+				query += "host%eq!" + host + "!;"
+			if password:
+				query += "password%eq!" + password + "!;"
+			if username:
+				query += "uname%eq!" + username + "!;"
+			if email:
+				query += "email%eq!" + email + "!;"
+			if notes:
+				query += "notes%eq!" + notes + "!;"
+			if url:
+				query += "url%eq!" + url + "!;"
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			cryptmsg = aesEncryptor.encrypt("REQUPD" + query)
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		except Exception as e:
+			print(e)
+			print("typo in command \"" + " ".join(parameters) + "\"")
 		
 	def IOsync(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "-h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -442,7 +563,7 @@ print(e)
 		
 	def IOall(self,parameters):
 		try:
-			if parameters[1] == "--help":
+			if parameters[1] == "-h":
 				print("this command takes no parameters")
 				return
 		except Exception as e:
@@ -454,17 +575,32 @@ print(e)
 		
 	def IOlogin(self,parameters):
 		try:
-			if parameters[1] == "--help":
-				print("login <username> <password>")
+			if parameters[1] == "h":
+				print("arguments: \n\nlogin\n-u <username>\n-p <password>")
 				return
 		except Exception as e:
 			print(e)
 			print("too few arguments")
 		try:
-			username = parameters[1]
-			password = CryptoHelper.SHA256(CryptoHelper.SHA256(parameters[2])[:32])
+			commands = command.split("-")
+			username = None
+			password = None
+			for command in commands:
+				if command.split(" ")[0] == "u":
+					username = command.split(" ")[1]
+				elif command.split(" ")[0] == "p":
+					password = command.split(" ")[1]
+				elif len(command) == 0 or command == "kick ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not username or not password:
+				print("too few arguments")
+				return
+			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
 			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGLGIusername%eq!" + username + "!;password%eq!" + password + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
+			cryptmsg = aesEncryptor.encrypt("MNGLGIusername%eq!" + username + "!;password%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
 		except Exception as e:
 			print(e)
@@ -865,6 +1001,9 @@ class ActiveConnection(Thread):
 										print(valueTuple)
 							elif packetSID == "CKI":
 								ActiveConnection.cookie = decryptedData[6:].split("!")[1]
+								with open("cookie.txt", "w") as out:
+									out.write(ActiveConnection.cookie)
+									out.close()
 						elif packetID == "LOG":
 							if packetSID == "DMP":
 								valueArray = decryptedData[12:].split('),(')
@@ -908,7 +1047,12 @@ class ActiveConnection(Thread):
 				print ("CLIENT <-x-  DISCONNECTED  -x-> " + server)
 
 os.system('cls' if os.name == 'nt' else 'clear')
-print('DEBUG CLIENT v0.45\n')
+print('DEBUG CLIENT 0.11-5.18\n')
 IOThread = IO()
 IOThread.start()
-
+try:
+	with open("cookie.txt", "r") as fileIn:
+		ActiveConnection.cookie = fileIn.readline()
+		fileIn.close
+except:
+	print("NO COOKIE FOUND")
