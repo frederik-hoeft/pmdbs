@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-5.18"
+VERSION = "0.11-6.18"
 BUILD = "development"
-DATE = "Nov 09 2018"
-TIME = "10:58:37"
+DATE = "Nov 11 2018"
+TIME = "12:32:16"
 PYTHON = "Python 3.6.6 / LINUX"
 
 ################################################################################
@@ -313,11 +313,8 @@ class DatabaseManagement():
 		try:
 			# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 			# EXAMPLE COMMAND
-			# localID\x1funame&eq!uname!;password%eq!password!;...
-			parameters = command.split('\x1f')
-			# GET THE CREDENTIALS FROM ARRAY
-			queryParameter = parameters[0]
-			localID = parameters[1]
+			# local_id%eq!local_id!;uname%eq!uname!;password%eq!password!;...
+			queryParameter = command.split(";")
 			# CHECK FOR SECURITY ISSUES
 			if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
 				return
@@ -329,7 +326,10 @@ class DatabaseManagement():
 				return
 			# CREDENTIAL CHECK PASSED
 			# FORMAT PARAMETERS
-			queryParameters = queryParameter.split(";")
+			localID = None
+			for param in queryParameters:
+				if local_id in param:
+					localID = param.split("%eq").replace("!","")
 			# INITIALIZE VARAIBLES
 			qUsername = None
 			qPassword = None
@@ -390,30 +390,25 @@ class DatabaseManagement():
 		
 	# UPDATE DATA	
 	def Update(command, clientAddress, clientSocket, aesKey):
-		# EXAMPLE command = "host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;datetime%eq!test!;hid%eq!test!\x1f12;"
+		# EXAMPLE command = "url%eq!url!;host%eq!host!;uname%eq!username!;password%eq!password!;email%eq!email!;notes%eq!notes!;datetime%eq!datetime!;hid%eq!hid!;"
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
 		try:
-			# SPLIT THE RAW COMMAND TO GET THE parameters
-			parameters = command.split('\x1f')
-			# GET THE CREDENTIALS FROM ARRAY
-			queryParameter = parameters[0]
-			localID = parameters[1]
+			# SPLIT THE RAW COMMAND TO GET THE PARAMETERS
+			queryParameters = command.split(";")
 			# CHECK FOR SECURITY ISSUES
 			if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
 				return
 			# SECURITY CHECK PASSED
 			# CHECK CREDENTIALS
-			userID = None
 			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
 			if userID == None:
 				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 				return
 			# CREDENTIAL CHECK PASSED
 			# FORMAT PARAMETERS
-			queryParameters = queryParameter.split(";")
 			query = ""
 			HID = None
 			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
@@ -422,7 +417,7 @@ class DatabaseManagement():
 					parameters = rawParameter.split("%eq")
 					column = parameters[0]
 					value = parameters[1].replace('!','')
-					if column in ["uname","password","host","notes","email","datetime"]:
+					if column in ["uname","password","host","notes","email","datetime","url"]:
 						if query == "":
 							query = "D_" + column + " = \"" + value + "\""
 						else:
@@ -4537,7 +4532,7 @@ class ClientHandler():
 								# CHANGE EMAIL ADDRESS (ONLY IF ACCOUNT IS NOT YET ACTIVATED)
 								elif packetSID == "CEA":
 									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
-									mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread = Thread(target = Management.ChangeEmailAddress, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# GET ACCOUNT ACTIVITY
 								elif packetSID == "GAA":
