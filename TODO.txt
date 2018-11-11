@@ -1,13 +1,11 @@
 - PasswordManager v2
 	SERVER TODO:
 		- TESTING:
-			- Shutdown() --> may be buggy?
-			- Kick() --> may be buggy?
-			- ChangeEmailAddress()
-			- MasterPasswordRequest()
-			- GetAccountActivity()
-			- ResendCode()
-			- ChangeName()
+			Nothing :)
+			
+		- OPTIMIZATION:
+			- Error handling for DatabaseManagement methods
+			- Kick() not returning message to client
 			
 		- HIGH PRIORITY:
 			Nothing :)
@@ -24,4 +22,27 @@
 				- delete accounts
 				
 	DEBUG / ADMIN CLIENT TODO:
-		- Test all methods
+		TESTED:
+			- register
+			- login
+			- insert
+			- update
+			- delete
+			- select
+			- sync
+			- changename
+			- getaccountactivity
+			- logout
+			- initdelaccount
+			- commitdelaccount
+			- changeemailaddress
+			- resendcode
+			- verify
+			- commitpwchange
+			- initpwchange
+			- clientlog
+			- listallusers
+			- listallclients
+			- masterpwrequest
+			- kick
+			- shutdown
