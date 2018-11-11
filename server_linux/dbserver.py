@@ -314,9 +314,9 @@ class DatabaseManagement():
 			# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 			# EXAMPLE COMMAND
 			# local_id%eq!local_id!;uname%eq!uname!;password%eq!password!;...
-			queryParameter = command.split(";")
+			queryParameters = command.split(";")
 			# CHECK FOR SECURITY ISSUES
-			if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+			if not DatabaseManagement.Security(queryParameter, clientAddress, clientSocket, aesKey):
 				return
 			# SECURITY CHECK PASSED
 			# CHECK CREDENTIALS
@@ -328,8 +328,8 @@ class DatabaseManagement():
 			# FORMAT PARAMETERS
 			localID = None
 			for param in queryParameters:
-				if local_id in param:
-					localID = param.split("%eq").replace("!","")
+				if "local_id" in param:
+					localID = param.split("%eq")[1].replace("!","")
 			# INITIALIZE VARAIBLES
 			qUsername = None
 			qPassword = None
@@ -381,7 +381,7 @@ class DatabaseManagement():
 			# SEND ACKNOWLEDGEMENT TO CLIENT
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("DTARETINS" + localID + "\x1f" + hashedID)
+			encryptedData = aesEncryptor.encrypt("DTARETINSlocal_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;")
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		finally:
@@ -399,7 +399,7 @@ class DatabaseManagement():
 			# SPLIT THE RAW COMMAND TO GET THE PARAMETERS
 			queryParameters = command.split(";")
 			# CHECK FOR SECURITY ISSUES
-			if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+			if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
 				return
 			# SECURITY CHECK PASSED
 			# CHECK CREDENTIALS
@@ -440,7 +440,7 @@ class DatabaseManagement():
 			# SEND ACKNOWLEDGEMENT TO CLIENT
 			aesEncryptor = AESCipher(aesKey)
 			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("DTARETUPD" + localID + "\x1f" + "ACK")
+			encryptedData = aesEncryptor.encrypt("DTARETUPDhashed_id%eq!" + HID + "!;")
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
 			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		finally:
@@ -482,7 +482,7 @@ class DatabaseManagement():
 				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
 				return
 			# CHECK PASSED: REQUEST IS VALID
-			cursor.execute("SELECT * FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
+			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_hid, D_datetime FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
 			# GET DATA FROM CURSOR OBJECT
 			rawData = cursor.fetchall()
 			# COMMIT CHANGES
@@ -490,13 +490,13 @@ class DatabaseManagement():
 			# CREATE AND SEND PACKET FOR EACH RETURNED ROW
 			for entry in rawData:
 				# GET VALUES FROM DATA ARRAY
-				dHost = str(entry[1])
-				dUname = str(entry[2])
-				dPassword = str(entry[3])
-				dEmail = str(entry[4])
-				dNotes = str(entry[5])
-				dHid = str(entry[7])
-				dDatetime = str(entry[8])
+				dHost = str(entry[0])
+				dUname = str(entry[1])
+				dPassword = str(entry[2])
+				dEmail = str(entry[3])
+				dNotes = str(entry[4])
+				dHid = str(entry[5])
+				dDatetime = str(entry[6])
 				# APPLY PACKET FORMATTING
 				# EXAMPLE: host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;hid%eq!test!;datetime%eq!test!;
 				data = "host%eq!" + dHost + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
@@ -1053,7 +1053,7 @@ class Management():
 				if parameter:
 					if "username" in parameter:
 						username = parameter.split("!")[1]
-					elif "nickname" in parameter:
+					elif "name" in parameter:
 						nickname = parameter.split("!")[1]
 					elif "email" in parameter:
 						email = parameter.split("!")[1]
@@ -1124,13 +1124,15 @@ class Management():
 				except:
 					# SOMETHING WENT WRONG --> LOG ERROR MESSAGE AND ROLLBACK
 					connection.rollback()
-					# FREE RESOURCES
-					connection.close()
 					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
 					return
 				else:
 					# ALL GOOD --> COMMIT CHANGES
 					connection.commit()
+				finally:
+					# FREE RESOURCES
+					connection.close()
+					return
 			else:
 				# INCREMENT RESEND-CALL-COUNTER BY 1
 				try:
@@ -1173,64 +1175,64 @@ class Management():
 		# SWITCH CODE TYPE
 		if codeType == "ADMIN_PASSWORD_CHANGE":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
-			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# SET CODE EVENT SPECIFIC VALUES
 				subject = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT
-				text = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
-				html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
+				text = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
+				html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
 		elif codeType == "PASSWORD_CHANGE":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
-			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# SET CODE EVENT SPECIFIC VALUES
 				subject = SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT
-				text = SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
-				html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
+				text = SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) - int(time.time())))
+				html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) - int(time.time())))
 		elif codeType == "DELETE_ACCOUNT":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
-			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+			if int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# SET CODE EVENT SPECIFIC VALUES
 				subject = SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT
-				text = SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
-				html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
+				text = SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) - int(time.time())))
+				html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) - int(time.time())))
 		elif codeType == "ACTIVATE_ACCOUNT":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
-			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+			if int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# SET CODE EVENT SPECIFIC VALUES
 				subject = SUPPORT_EMAIL_REGISTER_SUBJECT
-				text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
-				html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
+				text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds((int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME) - int(time.time())))
+				html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds((int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME) - int(time.time())))
 		elif codeType == "ADMIN_NEW_LOGIN":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
-			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
+			if int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# SET CODE EVENT SPECIFIC VALUES
 				subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
-				text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
-				html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
+				text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
+				html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
 		elif codeType == "NEW_LOGIN":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
-			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME > int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
+			if int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# SET CODE EVENT SPECIFIC VALUES
 				subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
-				text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
-				html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
+				text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME) - int(time.time())))
+				html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME) - int(time.time())))
 		else:
 			# UNKNOWN CODE EVENT --> JUST DO NOTHING AND CREATE LOG ENTRY
 			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
@@ -1240,7 +1242,7 @@ class Management():
 		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!CODE_RESEND!;")
 		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# SEND EMAIL
-		Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
+		Management.SendMail(SUPPORT_EMAIL_SENDER, email, subject, text, html, clientAddress)
 		
 			
 	# RETURN THE CLIENT LOG OF THE LOGGED IN USER
@@ -1284,6 +1286,7 @@ class Management():
 	# CHANGES THE EMAIL ADDRESS IF THE ACCOUNT HAS NOT BEEN ACTIVATED / VERIFIED YET
 	def ChangeEmailAddress(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
+		# username%eq!testuser1!;cookie%eq!cookie!;new_email%eq!frederik.hoeft@gmail.com!;
 		# username%eq!username!;cookie%eq!cookie!;new_email%eq!new_email!;
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
@@ -1298,7 +1301,7 @@ class Management():
 		try:
 			for parameter in parameters:
 				if "username" in parameter:
-					password = parameter.split("!")[1]
+					username = parameter.split("!")[1]
 				elif "cookie" in parameter:
 					cookie = parameter.split("!")[1]
 				elif "new_email" in parameter:
@@ -1318,7 +1321,7 @@ class Management():
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CREATE CONNECTION TO SQLITE DATABASE
-		connection = sqlite3.connection()
+		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR OBJECT
 		cursor = connection.cursor()
 		# INITIALIZE VARIABLE TO STORE ACCOUNT STATUS IN
@@ -1369,6 +1372,7 @@ class Management():
 		finally:
 			# FREE RESOURCES
 			connection.close()
+		PrintSendToAdmin("SERVER ---> EMAIL ADDRESS UPDATED      ---> " + clientAddress)
 		# RETURN STATUS TO CLIENT
 		aesEncryptor = AESCipher(aesKey)
 		encryptedData = aesEncryptor.encrypt("INFRETEMAIL_UPDATED")
@@ -2359,7 +2363,7 @@ class Management():
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
 				# 2FA FAILED --> DELETE ACCOUNT
 				try:
-					cusor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
+					cusor.execute("DELETE FROM Tbl_user WHERE U_username = " + username + ";")
 				except Exception as e:
 					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 					connection.rollback()
@@ -2377,7 +2381,7 @@ class Management():
 				codeAttempts += 1
 				# UPDATE COUNTER IN DATABASE
 				try:
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = " + username + ";")
+					cursor.execute("UPDATE Tbl_user SET U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"" + username + "\";")
 				# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
 				except Exception as e:
 					connection.rollback()
@@ -2416,8 +2420,9 @@ class Management():
 	# HANDLES REQUESTS FOR CHANGED MASTER PASSWORDS
 	def MasterPasswordRequest(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
+		# username%eq!testuser1!;
 		# username%eq!username!;
-		creds = command.split("!")
+		creds = command.split(";")
 		# CHECK FOR SQL INJECTION ATTEMPTS
 		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
 			return
@@ -2823,7 +2828,7 @@ class Management():
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFRETNOWLEDGE")
+							encryptedData = aesEncryptor.encrypt("INFRETACKNOWLEDGE")
 							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			elif mode == "username":
 				kicked = False
@@ -3119,13 +3124,7 @@ class Management():
 		else:
 			# COMMIT CHANGES
 			connection.commit()
-			Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username + "\n" + GetDetails(clientSocket))
-			# SEND ACKNOWLEDGEMENT TO CLIENT
-			aesEncryptor = AESCipher(aesKey)
-			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("INFRETREQUEST_VERIFICATION")
-			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		Log.ServerEventLog("REGISTER_NEW_USER", "User: " + username + "\n" + GetDetails(clientSocket))
 		isCookieValid = 0
 		try:
 			# CHECK IF THE PROVIDED COOKIE EXISTS
@@ -3157,9 +3156,6 @@ class Management():
 			# FREE RESOURCES
 			connection.close()
 		PrintSendToAdmin("SERVER ---> TODO: ACTIVATE ACCOUNT     ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETTODO_VERIFY_MAIL_SENT")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		# GENERATE EMAIL
 		subject = SUPPORT_EMAIL_REGISTER_SUBJECT
 		text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
@@ -3734,7 +3730,11 @@ class Management():
 			Server.admin = None
 			Server.adminIp = None
 			isLoggedout = True
-			print("SERVER **** ADMIN LOGOUT     **** " + clientAddress)
+			print("SERVER **** ADMIN LOGOUT               **** " + clientAddress)
+			if not isDisconnected:
+				aesEncryptor = AESCipher(aesKey)
+				encryptedData = aesEncryptor.encrypt("INFRETLOGGED_OUT")
+				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		else:
 			# ITERATE OVER WHITELISTED CLIENTS AND REMOVE CLIENT TO LOGOUT
 			for client in Server.authorizedClients:
