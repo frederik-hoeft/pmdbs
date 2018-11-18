@@ -5,7 +5,6 @@
 			
 		- OPTIMIZATION:
 			- Error handling for DatabaseManagement methods
-			- Kick() not returning message to client
 			
 		- HIGH PRIORITY:
 			Nothing :)
