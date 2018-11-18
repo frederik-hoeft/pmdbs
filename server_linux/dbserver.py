@@ -21,11 +21,11 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-6.18"
+VERSION = "0.11-7.18"
 BUILD = "development"
-DATE = "Nov 11 2018"
-TIME = "12:32:16"
-PYTHON = "Python 3.6.6 / LINUX"
+DATE = "Nov 18 2018"
+TIME = "02:39:18"
+PYTHON = "Python 3.6.6 / 3.6.7 - LINUX"
 
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
@@ -245,6 +245,24 @@ class AESCipher(object):
 	def _unpad(s):
 		return s[:-ord(s[len(s)-1:])]
 
+# PROVIDES NETWORK RELATED METHODS
+class Network():
+	
+	# SEND DATA USING ENCRYPTION
+	def SendEncrypted(clientSocket, aesKey, data):
+		try:
+			aesEncryptor = AESCipher(aesKey)
+			encryptedData = aesEncryptor.encrypt(data)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		except SocketError as e:
+			Log.ServerEventLog("SOCKET_ERROR", e)
+	
+	# SEND DATA WITHOUT ENCRYPTION
+	def Send(clientSocket, data):
+		clientSocket.send(b'\x01' + bytes("U" + data, "utf-8") + b'\x04')
+		
+			
+
 # PROVIDES DATABASE RELATED METHODS
 class DatabaseManagement():
 	
@@ -306,39 +324,42 @@ class DatabaseManagement():
 			
 	# INSERT DATA 
 	def Insert(command, clientAddress, clientSocket, aesKey):
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
+		
+		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+		# EXAMPLE COMMAND
+		# local_id%eq!local_id!;uname%eq!uname!;password%eq!password!;...
+		queryParameters = command.split(";")
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK CREDENTIALS
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not userID:
+			return
+		# CREDENTIAL CHECK PASSED
+		# FORMAT PARAMETERS
+		localID = None
 		try:
-			# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
-			# EXAMPLE COMMAND
-			# local_id%eq!local_id!;uname%eq!uname!;password%eq!password!;...
-			queryParameters = command.split(";")
-			# CHECK FOR SECURITY ISSUES
-			if not DatabaseManagement.Security(queryParameter, clientAddress, clientSocket, aesKey):
-				return
-			# SECURITY CHECK PASSED
-			# CHECK CREDENTIALS
-			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if not userID:
-				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CREDENTIAL CHECK PASSED
-			# FORMAT PARAMETERS
-			localID = None
 			for param in queryParameters:
 				if "local_id" in param:
 					localID = param.split("%eq")[1].replace("!","")
-			# INITIALIZE VARAIBLES
-			qUsername = None
-			qPassword = None
-			qHost = None
-			qEmail = None
-			qNotes = None
-			query = ""
-			values = ""
-			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+		except Exception as e:
+			Handle.Error("ICMD", "INVALID_FORMATTING: " + e, clientAddress, clientSocket, aesKey, True)
+			return
+		if not localID:
+			Handle.Error("ICMD", "TOO_FEW_PARAMETERS", clientAddress, clientSocket, aesKey, True)
+			return
+		# INITIALIZE VARAIBLES
+		qUsername = None
+		qPassword = None
+		qHost = None
+		qEmail = None
+		qNotes = None
+		query = ""
+		values = ""
+		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+		try:
 			for rawParameter in queryParameters:
 				if not len(rawParameter) == 0:
 					parameters = rawParameter.split("%eq")
@@ -352,65 +373,90 @@ class DatabaseManagement():
 						else:
 							query += ",D_" + column
 							values += ",\"" + value + "\""
-			# CHECK IF ANY PARAMETERS HAVE BEEN SET
-			if query == "":
-				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CHECK PASSED: REQUEST IS VALID
-			# APPEND USER ID TO QUERY
-			query += "," + "D_userid"
-			values += "," + str(userID)
+		except Exception as e:
+			Handle.Error("ICMD", "INVALID_FORMATTING: " + e, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF ANY PARAMETERS HAVE BEEN SET
+		if query == "":
+			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK PASSED: REQUEST IS VALID
+		# APPEND USER ID TO QUERY
+		query += "," + "D_userid"
+		values += "," + str(userID)
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		try:
 			# EXECUTE SQL QUERY
 			fullQuery = "INSERT INTO Tbl_data (" + query + ") VALUES (" + values + ");"
 			# PrintSendToAdmin(fullQuery)
 			cursor.execute(fullQuery)
+		except Exception as e:
+			connection.rollback()
+			connection.close()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
 			# COMMIT CHANGES
 			connection.commit()
+		HID = None
+		try:
 			cursor.execute("SELECT last_insert_rowid() FROM Tbl_data;")
 			# CREATE HID (HASHED ID)
 			dataID = cursor.fetchall()
 			if len(dataID) == 0:
 				return
 			HID = dataID[0][0]
-			hashedID = CryptoHelper.BLAKE2(str(HID), str(userID))
+		except Exception as e:
+			connection.close()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		if HID == None:
+			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		hashedID = CryptoHelper.BLAKE2(str(HID), str(userID))
+		try:
 			# ADD HID TO ENTRY
 			cursor.execute("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";")
+		except Exception as e:
+			connection.rollback()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES
 			connection.commit()
-			Log.ClientEventLog("INSERT", clientSocket)
-			# SEND ACKNOWLEDGEMENT TO CLIENT
-			aesEncryptor = AESCipher(aesKey)
-			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("DTARETINSlocal_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;")
-			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		finally:
 			# FREE RESOURCES
 			connection.close()
+		Log.ClientEventLog("INSERT", clientSocket)
+		# SEND ACKNOWLEDGEMENT TO CLIENT
+		returnData = "DTARETINSlocal_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;"
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
+		PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
+			
 		
 	# UPDATE DATA	
 	def Update(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "url%eq!url!;host%eq!host!;uname%eq!username!;password%eq!password!;email%eq!email!;notes%eq!notes!;datetime%eq!datetime!;hid%eq!hid!;"
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
+		# SPLIT THE RAW COMMAND TO GET THE PARAMETERS
+		queryParameters = command.split(";")
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK CREDENTIALS
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if userID == None:
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CREDENTIAL CHECK PASSED
+		# FORMAT PARAMETERS
+		query = ""
+		HID = None
 		try:
-			# SPLIT THE RAW COMMAND TO GET THE PARAMETERS
-			queryParameters = command.split(";")
-			# CHECK FOR SECURITY ISSUES
-			if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
-				return
-			# SECURITY CHECK PASSED
-			# CHECK CREDENTIALS
-			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if userID == None:
-				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CREDENTIAL CHECK PASSED
-			# FORMAT PARAMETERS
-			query = ""
-			HID = None
 			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
 			for rawParameter in queryParameters:
 				if not len(rawParameter) == 0:
@@ -424,69 +470,86 @@ class DatabaseManagement():
 							query += ",D_" + column + " = \"" + value + "\""
 					elif column == "hid":
 						HID = value
-			# CHECK IF ANY PARAMETERS HAVE BEEN SET
-			if query == "":
-				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CHECK PASSED: REQUEST IS VALID
-			# CONCATENATE AND EXECUTE QUERY
-			fullQuery = "UPDATE Tbl_data SET " + query + " WHERE D_userid = " + userID + " AND d_hid = \"" + HID + "\";"
-			#PrintSendToAdmin(fullQuery)
-			cursor.execute(fullQuery)
-			# COMMIT CHANGES
-			connection.commit()
-			Log.ClientEventLog("UPDATE", clientSocket)
-			# SEND ACKNOWLEDGEMENT TO CLIENT
-			aesEncryptor = AESCipher(aesKey)
-			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("DTARETUPDhashed_id%eq!" + HID + "!;")
-			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		finally:
-			# FREE RESOURCES
-			connection.close()
-		
-	# SELECT DATA FROM THE DATABASE
-	def Select(queryParameter, clientAddress, clientSocket, aesKey):
-		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
+		except Exception as e:
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		if not HID:
+			Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF ANY PARAMETERS HAVE BEEN SET
+		if query == "":
+			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK PASSED: REQUEST IS VALID
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
 		try:
-			# CHECK FOR SECURITY ISSUES
-			queryParameters = queryParameter.split(";")
-			if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
-				return
-			# SECURITY CHECK PASSED
-			# CHECK CREDENTIALS
-			userID = None
-			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if userID == None:
-				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CREDENTIAL CHECK PASSED
-			# FORMAT PARAMETERS
-			query = ""
-			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
-			for parameter in queryParameters:
-				if not len(parameter) == 0:
-					if query == "":
-						query = "d_hid = \"" + parameter + "\""
-					else:
-						query += " OR d_hid = \"" + parameter + "\""
-			# CHECK IF ANY PARAMETERS HAVE BEEN SET
-			if query == "":
-				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CHECK PASSED: REQUEST IS VALID
+			# EXECUTE QUERY
+			cursor.execute("UPDATE Tbl_data SET " + query + " WHERE D_userid = " + userID + " AND d_hid = \"" + HID + "\";")
+		except Exception as e:
+			connection.rollback()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
+			# COMMIT CHANGES
+			connection.commit()
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		Log.ClientEventLog("UPDATE", clientSocket)
+		# SEND ACKNOWLEDGEMENT TO CLIENT
+		returnData = "DTARETUPDhashed_id%eq!" + HID + "!;"
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
+		PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
+		
+	# SELECT DATA FROM THE DATABASE
+	def Select(queryParameter, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
+		# CHECK FOR SECURITY ISSUES
+		queryParameters = queryParameter.split(";")
+		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK CREDENTIALS
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if userID == None:
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CREDENTIAL CHECK PASSED
+		# FORMAT PARAMETERS
+		query = ""
+		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+		for parameter in queryParameters:
+			if not len(parameter) == 0:
+				if query == "":
+					query = "d_hid = \"" + parameter + "\""
+				else:
+					query += " OR d_hid = \"" + parameter + "\""
+		# CHECK IF ANY PARAMETERS HAVE BEEN SET
+		if query == "":
+			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK PASSED: REQUEST IS VALID
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		rawData = None
+		try:
 			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_hid, D_datetime FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
 			# GET DATA FROM CURSOR OBJECT
 			rawData = cursor.fetchall()
-			# COMMIT CHANGES
-			connection.commit()
+		except Exception as e:
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		finally:
+			# FREE RESOURCES
+			connection.close()
+		try:
 			# CREATE AND SEND PACKET FOR EACH RETURNED ROW
 			for entry in rawData:
 				# GET VALUES FROM DATA ARRAY
@@ -501,125 +564,148 @@ class DatabaseManagement():
 				# EXAMPLE: host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;hid%eq!test!;datetime%eq!test!;
 				data = "host%eq!" + dHost + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
 				# RETURN DATA TO CLIENT
-				aesEncryptor = AESCipher(aesKey)
-				# ENCRYPT DATA
-				encryptedData = aesEncryptor.encrypt("DTARETSEL" + data)
+				returnData = "DTARETSEL" + data
+				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> RETURNED DATA              ---> " + clientAddress)
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 			Log.ClientEventLog("SELECT", clientSocket)
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			aesEncryptor = AESCipher(aesKey)
-			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("INFRETSELACK")
+			returnData = "INFRETSELACK"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		finally:
-			# FREE RESOURCES
-			connection.close()
+		except Exception as e:
+			Handle.Error("UNKN", e, clientAddress, clientSocket, aesKey, True)
+			return
 	
 	def Delete(queryParameter, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
+		queryParameters = queryParameter.split(";")
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK CREDENTIALS
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if userID == None:
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CREDENTIAL CHECK PASSED
+		# FORMAT PARAMETERS
+		query = ""
+		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
+		for parameter in queryParameters:
+			if not len(parameter) == 0:
+				if query == "":
+					query = "d_hid = \"" + parameter + "\""
+				else:
+					query += " OR d_hid = \"" + parameter + "\""
+		# CHECK IF ANY PARAMETERS HAVE BEEN SET
+		if query == "":
+			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK PASSED: REQUEST IS VALID
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
-		try:
-			queryParameters = queryParameter.split(";")
-			# CHECK FOR SECURITY ISSUES
-			if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
-				return
-			# SECURITY CHECK PASSED
-			# CHECK CREDENTIALS
-			userID = None
-			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if userID == None:
-				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CREDENTIAL CHECK PASSED
-			# FORMAT PARAMETERS
-			query = ""
-			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
-			for parameter in queryParameters:
-				if not len(parameter) == 0:
-					if query == "":
-						query = "d_hid = \"" + parameter + "\""
-					else:
-						query += " OR d_hid = \"" + parameter + "\""
-			# CHECK IF ANY PARAMETERS HAVE BEEN SET
-			if query == "":
-				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CHECK PASSED: REQUEST IS VALID
+		try:	
 			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
+		except Exception as e:
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		else:
 			connection.commit()
 			Log.ClientEventLog("DELETE", clientSocket)
 			# SEND ACKNOWLEDGEMENT TO CLIENT
-			aesEncryptor = AESCipher(aesKey)
-			# ENCRYPT DATA
-			encryptedData = aesEncryptor.encrypt("DTARETDELCONFIRMED" + queryParameter)
+			returnData = "DTARETDELCONFIRMED" + queryParameter
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 		finally:
 			# FREE RESOURCES
 			connection.close()
 			
 	def Sync(queryParameter, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "fetch_mode%eq!FETCH_SYNC!"
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security([queryParameter], clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# CHECK CREDENTIALS
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if not userID:
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# CREDENTIAL CHECK PASSED
+		# CHECK IF THERE IS NOT MORE THAN 1 PARAMETER
+		if not queryParameter.count("%eq") == 1:
+			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# PARAMETER CHECK PASSED
+		# GENERATE SQL QUERY
+		fetchMode = queryParameter.split("%eq")[1].replace('!','')
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
-		try:
-			# CHECK FOR SECURITY ISSUES
-			if not DatabaseManagement.Security([queryParameter], clientAddress, clientSocket, aesKey):
-				return
-			# SECURITY CHECK PASSED
-			# CHECK CREDENTIALS
-			userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-			if not userID:
-				Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# CREDENTIAL CHECK PASSED
-			# CHECK IF THERE IS NOT MORE THAN 1 PARAMETER
-			if not queryParameter.count("%eq") == 1:
-				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
-				return
-			# PARAMETER CHECK PASSED
-			# GENERATE SQL QUERY
-			fetchMode = queryParameter.split("%eq")[1].replace('!','')
-			# SYNC-MODE ONLY FETCHES IDS 
-			if fetchMode == "FETCH_SYNC":
+		# SYNC-MODE ONLY FETCHES IDS 
+		if fetchMode == "FETCH_SYNC":
+			data = None
+			try:
 				cursor.execute("SELECT D_hid,D_datetime FROM Tbl_data WHERE D_userid = " + userID + ";")
 				data = cursor.fetchall()
-				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
-				# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-				aesEncryptor = AESCipher(aesKey)
-				# ENCRYPT DATA
-				encryptedData = aesEncryptor.encrypt("DTARETSYN" + finalData)
-				PrintSendToAdmin("SERVER ---> RETURNED SYNDATA           ---> " + clientAddress)
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-				Log.ClientEventLog("SYNC", clientSocket)
-			# DUMP-MODE RETURNS ALL DATA
-			elif fetchMode == "FETCH_ALL":
-				cursor.execute("SELECT * FROM Tbl_data WHERE D_userid = " + userID + ";")
-				data = cursor.fetchall()
-				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
-				# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-				aesEncryptor = AESCipher(aesKey)
-				# ENCRYPT DATA
-				encryptedData = aesEncryptor.encrypt("DTARETSYN" + finalData)
-				PrintSendToAdmin("SERVER ---> RETURNED DTADUMP           ---> " + clientAddress)
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-				Log.ClientEventLog("DATA_DUMP", clientSocket)
-			else:
-				# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-				Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
+			except Exception as e:
+				# FREE RESOURCES
+				connection.close()
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
-		finally:
+			if not data:
+				# FREE RESOURCES
+				connection.close()
+				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
+				return
 			# FREE RESOURCES
 			connection.close()
+			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
+			returnData = "DTARETSYN" + finalData
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
+			PrintSendToAdmin("SERVER ---> RETURNED SYNDATA           ---> " + clientAddress)
+			Log.ClientEventLog("SYNC", clientSocket)
+		# DUMP-MODE RETURNS ALL DATA
+		elif fetchMode == "FETCH_ALL":
+			data = None
+			try:
+				cursor.execute("SELECT * FROM Tbl_data WHERE D_userid = " + userID + ";")
+				data = cursor.fetchall()
+			except Exception as e:
+				# FREE RESOURCES
+				connection.close()
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+				return
+			if not data:
+				# FREE RESOURCES
+				connection.close()
+				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
+				return
+			# FREE RESOURCES
+			connection.close()
+			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
+			returnData = "DTARETSYN" + finalData
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
+			PrintSendToAdmin("SERVER ---> RETURNED DTADUMP           ---> " + clientAddress)
+			Log.ClientEventLog("DATA_DUMP", clientSocket)
+		else:
+			# FREE RESOURCES
+			connection.close()
+			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
+			return
 		
 	# CHECKS FOR SECURITY ISSUES
 	def Security(queryArray, clientAddress, clientSocket, aesKey):
@@ -962,11 +1048,11 @@ class Handle():
 		Log.ServerEventLog("ERROR", info)
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
 		if not isEncrypted:
-			clientSocket.send(b'\x01' + bytes("UINFERR" + info, "utf-8") + b'\x04')
+			Network.Send(clientSocket, "INFERR" + info)
 			return
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFERR" + info)
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFERR" + info
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
@@ -1028,9 +1114,9 @@ class Management():
 			# FREE RESOURCES
 			connection.close()
 		# RETURN SUCCESS STATUS TO CLIENT
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETstatus%eq!NAME_CHANGED!;")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETstatus%eq!NAME_CHANGED!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# GET SOME DEBUG OUTPUT HAPPENING
 		PrintSendToAdmin("SERVER ---> NAME CHANGED               ---> " + clientAddress)
 	
@@ -1238,9 +1324,9 @@ class Management():
 			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# RETURN SUCCESS STATUS TO CLIENT
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!CODE_RESEND!;")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETtodo%eq!CODE_RESEND!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# SEND EMAIL
 		Management.SendMail(SUPPORT_EMAIL_SENDER, email, subject, text, html, clientAddress)
 		
@@ -1275,9 +1361,9 @@ class Management():
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			# RETURN DATA TO CLIENT
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("LOGDMP" + str(clientLog))
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "LOGDMP" + str(clientLog)
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
 		finally:
 			# FREE RESOURCES
@@ -1374,9 +1460,9 @@ class Management():
 			connection.close()
 		PrintSendToAdmin("SERVER ---> EMAIL ADDRESS UPDATED      ---> " + clientAddress)
 		# RETURN STATUS TO CLIENT
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETEMAIL_UPDATED")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETEMAIL_UPDATED"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 			
 	# WHITELISTS CLIENT AS ADMIN AFTER VALIDATING PROVIDED 2FA CODE
 	def LoginNewAdmin(command, clientAddress, clientSocket, aesKey):
@@ -1542,9 +1628,9 @@ class Management():
 					pass
 		Server.adminAesKey = aesKey
 		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETSUCCESSFUL_ADMIN_LOGIN")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETSUCCESSFUL_ADMIN_LOGIN"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
 	
 	# INITIALIZES ADMIN-PASSWORD CHANGE AND SEND OUT 2FA EMAIL
@@ -1591,9 +1677,9 @@ class Management():
 		html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME))
 		# CALL SENDMAIL
 		Management.SendMail(SUPPORT_EMAIL_SENDER, SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_CHANGE_PASSWORD!;")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETtodo%eq!SEND_VERIFICATION_ADMIN_CHANGE_PASSWORD!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		
 	# CHANGES THE ADMIN PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
 	def AdminPasswordChange(command, clientAddress, clientSocket, aesKey):
@@ -1718,9 +1804,9 @@ class Management():
 		# ALL UPDATED
 		Log.ServerEventLog("ADMIN_PASSWORD_CHANGED", GetDetails(clientSocket))
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETSEND_UPDATE")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETSEND_UPDATE"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 	
 	# BAN A USER (ADMIN PRIVILEGES NEEDED)
 	def BanAccount(command, clientAddress, clientSocket, aesKey):
@@ -1837,18 +1923,18 @@ class Management():
 			# SQL ERROR --> DISALLOW CONNECTION AND SEND STATUS TO ADMIN
 			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR",e)
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: SQLE    ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("U" + "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR", "utf-8") + b'\x04')
+			Network.Send(clientSocket, "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR")
 			return
 		# CHECK IF ALL VARAIABLES HAVE BEEN SET
 		if not time or not duration:
 			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR","N/A")
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: SQLE    ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("U" + "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR", "utf-8") + b'\x04')
+			Network.Send(clientSocket, "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR")
 			return
 		# CHECK IF CLIENT IS ALLOWED TO CONNECT AGAIN
 		if int(time) + int(duration) > int(Timestamp()):
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: BANNED  ---> " + clientAddress)
-			clientSocket.send(b'\x01' + bytes("U" + "ERRCONNECTION_FAILED_BANNED", "utf-8") + b'\x04')
+			Network.Send(clientSocket, "ERRCONNECTION_FAILED_BANNED")
 			return
 		else:
 			# ALL CHECKS PASSED --> ALLOW CONNECTION
@@ -1928,9 +2014,9 @@ class Management():
 		Management.Kick("mode%eq!ip!;target%eq!" + ip + ";!", clientAddress, clientSocket, aesKey)
 		PrintSendToAdmin("SERVER ---> BANNED BY IP               ---> " + clientAddress)
 		try:
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFRETBANNED")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFRETBANNED"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		except:
 			pass
 		if not isSystem:
@@ -2054,9 +2140,9 @@ class Management():
 			connection.close()
 		# SEND CONFIRMATION TO CLIENT
 		PrintSendToAdmin("SERVER ---> ACCOUNT DELETED            ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETACCOUNT_DELETED_SUCCESSFULLY")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETACCOUNT_DELETED_SUCCESSFULLY"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 	
 	# WHITELISTS DEVICE COOKIE AFTER VALIDATING PROVIDED 2FA CODE
 	def LoginNewDevice(command, clientAddress, clientSocket, aesKey):
@@ -2232,16 +2318,16 @@ class Management():
 		# CHECK IF USER ACCOUNT IS VERIFIED
 		if isVerified == 0:
 			PrintSendToAdmin("SERVER ---> ACCOUT NOT VERIFIED        ---> " + clientAddress)
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFERRACCOUNT_NOT_VERIFIED")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFERRACCOUNT_NOT_VERIFIED"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
 		# ADD USER TO WHITELIST
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFLOGIN_SUCCESSFUL")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFLOGIN_SUCCESSFUL"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
 		return
 	
@@ -2286,9 +2372,9 @@ class Management():
 		Log.ServerEventLog("COOKIE_REQUESTED", GetDetails(clientSocket))
 		# RETURN COOKIE TO CLIENT
 		PrintSendToAdmin("SERVER ---> COOKIE                     ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("DTACKIcookie%eq!" + cookie + "!;")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "DTACKIcookie%eq!" + cookie + "!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 	
 	# USES A CODE PROVIDED BY THE USER TO VERIFY THE EMAL ADDRESS
 	def EmailVerification(command, clientAddress, clientSocket, aesKey):
@@ -2410,9 +2496,9 @@ class Management():
 		else:
 			connection.commit()
 			PrintSendToAdmin("SERVER ---> ACCOUNT VERIFIED           ---> " + clientAddress)
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFRETACCOUNT_VERIFIED")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFRETACCOUNT_VERIFIED"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# FREE RESOURCES
 		finally:
 			connection.close()
@@ -2467,9 +2553,9 @@ class Management():
 		Log.ServerEventLog("SYNC_PASSWORD_HASH_REQUEST", GetDetails(clientSocket))
 		# RETURN PASSSWORD HASH TO USER
 		PrintSendToAdmin("SERVER ---> MASTERPASSWORD HASH        ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("DTARETSYNPWDsalted_password_hash%eq!" + passwordHash + "!;")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "DTARETSYNPWDsalted_password_hash%eq!" + passwordHash + "!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 	
 	# CHANGES THE PASSWORD AFTER VALIDATING PROVIDED 2FA CODE
 	def PasswordChange(command, clientAddress, clientSocket, aesKey):
@@ -2600,9 +2686,9 @@ class Management():
 		# ALL UPDATED
 		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETPASSWORD_CHANGED")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETPASSWORD_CHANGED"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 
 	# HANDLES REQUESTS TO CHANGE THE MASTER PASSWORDS AND SENDS VERIFICATION CODES TO EMAIL
 	def AccountRequest(command, clientAddress, clientSocket, aesKey):
@@ -2689,9 +2775,9 @@ class Management():
 			html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		elif mode == "DELETE_ACCOUNT":
 			# CREATE LOG
 			Log.ClientEventLog("DELETE_ACCOUNT_REQUESTED", clientSocket)
@@ -2701,9 +2787,9 @@ class Management():
 			html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFRETtodo%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		else:
 			# COMMAND WAS INVALID
 			Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
@@ -2778,18 +2864,18 @@ class Management():
 					if not kicked:
 						# CLIENT NOT FOUND
 						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						aesEncryptor = AESCipher(aesKey)
-						encryptedData = aesEncryptor.encrypt("INFCLIENT_NOT_FOUND")
-						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+						returnData = "INFRETCLIENT_NOT_FOUND"
+						# SEND DATA ENCRYPTED TO CLIENT
+						Network.SendEncrypted(clientSocket, aesKey, returnData)
 					# CLIENT HAS BEEN KICKED
 					else:
 						# CKECK IF CLIENT WAS ADMIN
 						if not Server.admin == target:
 							# SEND CONFIRMATION TO ADMIN
-							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
-							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFRETACKNOWLEDGE")
-							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
+							returnData = "INFRETKICKED_CLIENT"
+							# SEND DATA ENCRYPTED TO CLIENT
+							Network.SendEncrypted(clientSocket, aesKey, returnData)
 			elif mode == "ipport":
 				ip = target.split(":")[0]
 				port = target.split(":")[1]
@@ -2818,18 +2904,18 @@ class Management():
 					if not kicked:
 						# CLIENT NOT FOUND
 						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						aesEncryptor = AESCipher(aesKey)
-						encryptedData = aesEncryptor.encrypt("INFCLIENT_NOT_FOUND")
-						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+						returnData = "INFRETCLIENT_NOT_FOUND"
+						# SEND DATA ENCRYPTED TO CLIENT
+						Network.SendEncrypted(clientSocket, aesKey, returnData)
 					# CLIENT HAS BEEN KICKED
 					else:
 						# CKECK IF CLIENT WAS ADMIN
 						if Server.admin == clientSocket:
 							# SEND CONFIRMATION TO ADMIN
-							PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
-							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFRETACKNOWLEDGE")
-							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
+							returnData = "INFRETCLIENT_KICKED"
+							# SEND DATA ENCRYPTED TO CLIENT
+							Network.SendEncrypted(clientSocket, aesKey, returnData)
 			elif mode == "username":
 				kicked = False
 				# CREATE LOCAL COPY OF THE SERVER PROPERTY "authorizedClients"
@@ -2854,18 +2940,18 @@ class Management():
 				if not kicked:
 					# CLIENT NOT FOUND
 					PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-					aesEncryptor = AESCipher(aesKey)
-					encryptedData = aesEncryptor.encrypt("INFCLIENT_NOT_FOUND")
-					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					returnData = "INFRETCLIENT_NOT_FOUND"
+					# SEND DATA ENCRYPTED TO CLIENT
+					Network.SendEncrypted(clientSocket, aesKey, returnData)
 				# CLIENT HAS BEEN KICKED
 				else:
 					# CKECK IF CLIENT WAS ADMIN
 					if Server.admin == clientSocket:
 						# SEND CONFIRMATION TO ADMIN
-						PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
-						aesEncryptor = AESCipher(aesKey)
-						encryptedData = aesEncryptor.encrypt("INFRETACKNOWLEDGE")
-						clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+						PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
+						returnData = "INFRETCLIENT_KICKED"
+						# SEND DATA ENCRYPTED TO CLIENT
+						Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# COMMAND IS INVALID
 			else:
 				Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
@@ -2909,7 +2995,7 @@ class Management():
 		Log.ServerEventLog("CLIENT_DISCONNECTED", "IP: " + address)
 		if not ignoreErrors:
 			# SEND CUSTOM FIN
-			clientSocket.send(b'\x01' + bytes("UFIN" + message, "utf-8") + b'\x04')
+			Network.Send(clientSocket, "FINmessage%eq!" + message + "!;")
 		# SEND TCP FIN
 		clientSocket.shutdown(socket.SHUT_RDWR)
 		# CLOSE SOCKET
@@ -3106,11 +3192,10 @@ class Management():
 			return
 		else:
 			if not emailInUse == 0:
-				aesEncryptor = AESCipher(aesKey)
-				# ENCRYPT DATA
-				encryptedData = aesEncryptor.encrypt("INFERREMAIL_ALREADY_IN_USE")
+				returnData = "INFERREMAIL_ALREADY_IN_USE"
+				# SEND DATA ENCRYPTED TO CLIENT
+				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> EMAIL ADDRESS IN USE       ---> " + clientAddress)
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
 				return
 		try:
 			# INSERT NEW USER INTO DATABASE
@@ -3160,9 +3245,9 @@ class Management():
 		subject = SUPPORT_EMAIL_REGISTER_SUBJECT
 		text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
 		html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETtodo%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# SEND VERIFICATION CODE BY EMAIL
 		Management.SendMail(SUPPORT_EMAIL_SENDER, email, subject, text, html, clientAddress)
 		
@@ -3187,10 +3272,9 @@ class Management():
 				# FORMAT DATA
 				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 				# ENCRYPT AND SEND TO ADMIN
-				aesEncryptor = AESCipher(aesKey)
-				encryptedData = aesEncryptor.encrypt("LOGDMPSERVER\n" + finalData)
-				sendData = b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04'
-				clientSocket.sendall(sendData)
+				returnData = "LOGDMPSERVER\n" + finalData
+				# SEND DATA ENCRYPTED TO CLIENT
+				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> SERVER LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
 				Log.ServerEventLog("SERVER_LOG_DUMP", GetDetails(clientSocket))
@@ -3202,9 +3286,9 @@ class Management():
 				# FORMAT DATA
 				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 				# ENCRYPT AND SEND TO ADMIN
-				aesEncryptor = AESCipher(aesKey)
-				encryptedData = aesEncryptor.encrypt("LOGDMPCLIENT\n" + finalData)
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				returnData = "LOGDMPCLIENT\n" + finalData
+				# SEND DATA ENCRYPTED TO CLIENT
+				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> CLIENT LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
 				Log.ServerEventLog("CLIENT_LOG_DUMP", GetDetails(clientSocket))
@@ -3221,9 +3305,9 @@ class Management():
 		creds = command.split(";")
 		# CHECK IF USER IS ADMIN
 		if clientSocket == Server.admin:
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("LOG|Ok! You are already Admin.")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "Ok! You are already Admin."
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
 		# CHECK FOR SECURITY ISSUES
 		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
@@ -3333,9 +3417,9 @@ class Management():
 			subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
 			text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
 			html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFRETtodo%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# SEND ACCOUNT VALIDATION EMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, SUPPORT_EMAIL_ADDRESS, subject, text, html, clientAddress)
 			return
@@ -3385,9 +3469,9 @@ class Management():
 					pass
 		Server.adminAesKey = aesKey
 		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETSUCCESSFUL_ADMIN_LOGIN")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETSUCCESSFUL_ADMIN_LOGIN"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
 			
 	# DISCONNECT ALL CLIENTS AND SHUT DOWN SERVER
@@ -3508,17 +3592,17 @@ class Management():
 	def Login(command, clientAddress, clientSocket, aesKey):
 		# CHECK IF USER IS ADMIN
 		if clientSocket == Server.admin:
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("LOG|You are already Admin. Use \'logout\' and try again.")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "You are already Admin. Use \'logout\' and try again."
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> ALREADY LOGGED IN          ---> " + clientAddress)
 			return
 		# CHECK IF USER IS LOGGED IN ALREADY
 		for client in Server.authorizedClients:
 			if clientSocket in client:
-				aesEncryptor = AESCipher(aesKey)
-				encryptedData = aesEncryptor.encrypt("You are already logged in. Use \'logout\' and try again.")
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				returnData = "INFRETALREADY_LOGGED_IN"
+				# SEND DATA ENCRYPTED TO CLIENT
+				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> ALREADY LOGGED IN          ---> " + clientAddress)
 				return
 		# EXAMPLE command = "username%eq!username!;password%eq!password!;cookie%eq!cookie!;"
@@ -3670,9 +3754,9 @@ class Management():
 			subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
 			text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (name, details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
 			html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFRETtodo%eq!SEND_VERIFICATION_NEW_DEVICE!;")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFRETtodo%eq!SEND_VERIFICATION_NEW_DEVICE!;"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# SEND ACCOUNT VALIDATION EMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
 			return
@@ -3702,16 +3786,16 @@ class Management():
 		# CREDENTIAL CHECK PASSED
 		if isVerified == 0:
 			PrintSendToAdmin("SERVER ---> ACCOUT NOT VERIFIED        ---> " + clientAddress)
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFERRACCOUNT_NOT_VERIFIED")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFERRACCOUNT_NOT_VERIFIED"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
 		# ADD USER TO WHITELIST
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
-		aesEncryptor = AESCipher(aesKey)
-		encryptedData = aesEncryptor.encrypt("INFRETLOGIN_SUCCESSFUL")
-		clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+		returnData = "INFRETLOGIN_SUCCESSFUL"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
 	
 	# REMOVES USER FROM WHITELIST
@@ -3732,9 +3816,9 @@ class Management():
 			isLoggedout = True
 			print("SERVER **** ADMIN LOGOUT               **** " + clientAddress)
 			if not isDisconnected:
-				aesEncryptor = AESCipher(aesKey)
-				encryptedData = aesEncryptor.encrypt("INFRETLOGGED_OUT")
-				clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+				returnData = "INFRETLOGGED_OUT"
+				# SEND DATA ENCRYPTED TO CLIENT
+				Network.SendEncrypted(clientSocket, aesKey, returnData)
 		else:
 			# ITERATE OVER WHITELISTED CLIENTS AND REMOVE CLIENT TO LOGOUT
 			for client in Server.authorizedClients:
@@ -3749,19 +3833,19 @@ class Management():
 						isLoggedout = True
 						PrintSendToAdmin("SERVER ---> LOGGED OUT                 ---> " + clientAddress)
 						if not isDisconnected:
-							aesEncryptor = AESCipher(aesKey)
-							encryptedData = aesEncryptor.encrypt("INFRETLOGGED_OUT")
-							clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+							returnData = "INFRETLOGGED_OUT"
+							# SEND DATA ENCRYPTED TO CLIENT
+							Network.SendEncrypted(clientSocket, aesKey, returnData)
 						break
 			# USER IS NOT WHITELISTED
 			if not isLoggedout and not isDisconnected:
 				try:
 					# RETURN ERROR MESSAGE TO CLIENT
-					aesEncryptor = AESCipher(aesKey)
-					encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
-					clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+					returnData = "INFERRNOT_LOGGED_IN"
+					# SEND DATA ENCRYPTED TO CLIENT
+					Network.SendEncrypted(clientSocket, aesKey, returnData)
 				except:
-					clientSocket.send(b'\x01' + bytes("UINFERRNOT_LOGGED_IN", "utf-8") + b'\x04')
+					Network.Send(clientSocket, "INFERRNOT_LOGGED_IN")
 		# RETURN STATUS
 		return isLoggedout
 	
@@ -3778,10 +3862,9 @@ class Management():
 		# USER IS NOT LOGGED IN
 		if not userID:
 			# RETURN ERROR MESSAGE TO CLIENT
-			# ENCRYPT DATA
-			aesEncryptor = AESCipher(aesKey)
-			encryptedData = aesEncryptor.encrypt("INFERRNOT_LOGGED_IN")
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			returnData = "INFERRNOT_LOGGED_IN"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# RETURN ID OR NONE IF USER NOT WHITELISTED
 		return userID
 
@@ -3801,10 +3884,11 @@ def PrintSendToAdmin(text):
 	# IF ADMIN IS LOGGED IN SEND SERVER MESSAGES
 	if not Server.admin == None:
 		aesEncryptor = AESCipher(Server.adminAesKey)
-		encryptedData = aesEncryptor.encrypt("LOG|" + text)
+		encryptedData = aesEncryptor.encrypt(text)
 		try:
 			Server.admin.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
-		except SocketError:
+		except SocketError as e:
+			Log.ServerEventLog("SOCKET_ERROR", str(e))
 			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
 
 # GENERATES A 2 FACTOR AUTHENTICATION CODE
@@ -4263,11 +4347,11 @@ class ClientHandler():
 								if packetSID == "XML":
 									isXmlClient = True
 									# SEND PUBLIC KEY
-									clientSocket.send(b'\x01' + bytes("UKEYXMLkey%eq!" + Server.publicKeyXml + "!;", "utf-8") + b'\x04')
+									Network.Send(clientSocket, "KEYXMLkey%eq!" + Server.publicKeyXml + "!;")
 								elif packetSID == "PEM":
 									isXmlClient = False
 									# SEND PUBLIC KEY
-									clientSocket.send(b'\x01' + bytes("UKEYPEMkey%eq!" + Server.publicKeyPem + "!;", "utf-8") + b'\x04')
+									Network.Send(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
 									return
@@ -4368,10 +4452,9 @@ class ClientHandler():
 										Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
 										return
 									# ENCRYPT DATA
-									message = "nonce%eq!" + nonce + "!;"
-									aesEncryptor = AESCipher(aesKey)
-									encryptedData = aesEncryptor.encrypt("KEXACK" + message)
-									clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+									returnData = "KEXACKnonce%eq!" + nonce + "!;"
+									# SEND DATA ENCRYPTED TO CLIENT
+									Network.SendEncrypted(clientSocket, aesKey, returnData)
 									PrintSendToAdmin("SERVER <--- ACKNOWLEDGE                ---> " + clientAddress)
 									PrintSendToAdmin("SERVER <--- KEY EXCHANGE FINISHED      ---> " + clientAddress)
 									keyExchangeFinished = True
