@@ -5,6 +5,7 @@
 			
 		- OPTIMIZATION:
 			- Error handling for DatabaseManagement methods
+			- Create function to send encrypted and unencrypted data to client
 			
 		- HIGH PRIORITY:
 			Nothing :)
