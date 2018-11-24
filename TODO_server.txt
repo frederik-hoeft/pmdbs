@@ -1,0 +1,21 @@
+- PasswordManager v2
+	SERVER TODO:
+		- TESTING:
+			Nothing :)
+			
+		- OPTIMIZATION:
+			Nothing :)
+			
+		- HIGH PRIORITY:
+			- Update Docs
+				
+		- MEDIUM PRIORITY:
+			Nothing :)
+			
+		- LOW PRIORITY (FINISH CLIENTS FIRST):
+			- Change admin setup:
+				- one "__ROOT__" user ("master admin")
+				- __ROOT__ can promote users to become admin 
+				--> better maintenance for an admin team
+			- Admin features:
+				- delete accounts
