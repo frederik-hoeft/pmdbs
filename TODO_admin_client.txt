@@ -1,0 +1,28 @@
+	DEBUG / ADMIN CLIENT TODO:
+  
+    - TEST ALL METHODS:
+      
+		- TESTED:
+      - register
+			- login
+			- insert
+			- update
+			- delete
+			- select
+			- sync
+			- changename
+			- getaccountactivity
+			- logout
+			- initdelaccount
+			- commitdelaccount
+			- changeemailaddress
+			- resendcode
+			- verify
+			- commitpwchange
+			- initpwchange
+			- clientlog
+			- listallusers
+			- listallclients
+			- masterpwrequest
+			- kick
+			- shutdown
