@@ -8,6 +8,8 @@
 			
 		- HIGH PRIORITY:
 			- Update Docs
+			- FIX AES:
+				- add HMAC or something to prevent padding oracle attacks
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
