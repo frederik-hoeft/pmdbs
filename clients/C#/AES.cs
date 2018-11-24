@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,10 +10,15 @@ namespace ConsoleApplication2
 {
     class CryptoHelper
     {
+        // using AES with:
+        // Key hash algorithm: SHA-256
+        // Key Size: 256 Bit
+        // Block Size: 128 Bit
+        // Input Vector (IV): 128 Bit
+        // Mode of Operation: Cipher-Block Chaining (CBC)
         public static string AESEncrypt(string plainText, string password)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            // Hash the password with SHA256
             byte[] hashedPasswordBytes = SHA256Managed.Create().ComputeHash(passwordBytes);
             byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             byte[] encryptedBytes = null;
@@ -23,11 +28,8 @@ namespace ConsoleApplication2
                 using (RijndaelManaged AES = new RijndaelManaged())
                 {
                     AES.KeySize = 256;
-                    AES.BlockSize = 256;
-
                     AES.Key = hashedPasswordBytes;
                     AES.IV = GetRandomBytes(AES.BlockSize / 8);
-
                     AES.Mode = CipherMode.CBC;
 
                     using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
@@ -45,39 +47,38 @@ namespace ConsoleApplication2
 
         public static string AESDecrypt(string cipherText, string password)
         {
+            byte[] iv = new byte[16];
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
-            // Hash the password with SHA256
-            byte[] hashedPasswordBytes = SHA256Managed.Create().ComputeHash(passwordBytes);
             byte[] cipherBytes = Convert.FromBase64String(cipherText);
-
+            byte[] hashedPasswordBytes = SHA256Managed.Create().ComputeHash(passwordBytes);
+            Array.Copy(cipherBytes, iv, 16);
             byte[] decryptedBytes = null;
-            using (MemoryStream ms = new MemoryStream())
+            using (AesCng AES = new AesCng())
             {
-                using (RijndaelManaged AES = new RijndaelManaged())
+                AES.IV = iv;
+                AES.KeySize = 256;
+                AES.Mode = CipherMode.CBC;
+                AES.Key = hashedPasswordBytes;
+                using (ICryptoTransform decryptor = AES.CreateDecryptor())
                 {
-                    AES.KeySize = 256;
-                    AES.BlockSize = 256;
-
-                    AES.Key = hashedPasswordBytes;
-                    AES.IV = cipherBytes.Take(AES.BlockSize / 8).ToArray();
-
-                    AES.Mode = CipherMode.CBC;
-
-                    using (var cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
+                    using (MemoryStream msDecrypted = new MemoryStream())
                     {
-                        cs.Write(cipherBytes.Skip(AES.BlockSize / 8).ToArray(), 0, cipherBytes.Skip(AES.BlockSize / 8).ToArray().Length);
-                        cs.Close();
+                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypted, decryptor, CryptoStreamMode.Write))
+                        {
+                            csDecrypt.Write(cipherBytes, 16, cipherBytes.Length - 16);
+                            csDecrypt.Close();
+                        }
+                        decryptedBytes = msDecrypted.ToArray();
                     }
-                    decryptedBytes = ms.ToArray();
                 }
             }
             return Encoding.UTF8.GetString(decryptedBytes);
         }
         public static byte[] GetRandomBytes(int saltLength)
         {
-            byte[] ba = new byte[saltLength];
-            RNGCryptoServiceProvider.Create().GetBytes(ba);
-            return ba;
+            byte[] randomBytes = new byte[saltLength];
+            RNGCryptoServiceProvider.Create().GetBytes(randomBytes);
+            return randomBytes;
         }
     }
 }
