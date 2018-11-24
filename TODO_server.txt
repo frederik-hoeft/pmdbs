@@ -20,28 +20,4 @@
 			- Admin features:
 				- delete accounts
 				
-	DEBUG / ADMIN CLIENT TODO:
-		TESTED:
-			- register
-			- login
-			- insert
-			- update
-			- delete
-			- select
-			- sync
-			- changename
-			- getaccountactivity
-			- logout
-			- initdelaccount
-			- commitdelaccount
-			- changeemailaddress
-			- resendcode
-			- verify
-			- commitpwchange
-			- initpwchange
-			- clientlog
-			- listallusers
-			- listallclients
-			- masterpwrequest
-			- kick
-			- shutdown
+
