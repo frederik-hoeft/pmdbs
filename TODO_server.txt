@@ -19,5 +19,3 @@
 				--> better maintenance for an admin team
 			- Admin features:
 				- delete accounts
-				
-
