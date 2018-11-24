@@ -82,27 +82,42 @@ class CryptoHelper():
 		return randomBytes
 		
 class AESCipher(object):
-
+	# INIT FUNCTION (HASH THE KEY/SET BLOCKSIZE)
 	def __init__(self, key): 
-		self.bs = 32
+		# SET BLOCKSIZE FOR PADDING TO 16 BYTES (128 BITS)
+		self.bs = 16
+		# HASH THE PROVIDED KEY USING SHA 256
 		self.key = hashlib.sha256(key.encode()).digest()
-
+		
+	# ENCRYPT FUNCTION
 	def encrypt(self, raw):
+		# ENCODE UTF-8 FOR UNICODE CHARACTERS
 		raw = raw.encode("utf-8")
+		# GET PADDING RIGHT
 		raw = self._pad(raw)
+		# CREATE RANDOM IV
 		iv = Random.new().read(AES.block_size)
+		# CREATE CIPHER 
 		cipher = AES.new(self.key, AES.MODE_CBC, iv)
-		return base64.b64encode(iv + cipher.encrypt(raw)).decode("utf-8")
-
+		# ENCRYPT + APPEND ENCRYPTED MESSAGE TO IV AND CONVERT TO BASE64 STRING
+		return str(base64.b64encode(iv + cipher.encrypt(raw)))[2:-1]
+		
+	# DECRYPT FUNCTION
 	def decrypt(self, enc):
+		# DECODE BASE64 STRING TO BYTES
 		enc = base64.b64decode(enc)
+		# READ IV FROM BYTES
 		iv = enc[:AES.block_size]
+		# CREATE AES CIPHER
 		cipher = AES.new(self.key, AES.MODE_CBC, iv)
+		# DECRYPT MESSAGE + CONVERT TO UTF-8 STRING
 		return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode("utf-8")
 
+	# ADD PADDING
 	def _pad(self, s):
-		return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs).encode("utf-8")
-
+		return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs).encode("ASCII")
+		
+	# REMOVE PADDING
 	@staticmethod
 	def _unpad(s):
 		return s[:-ord(s[len(s)-1:])]
@@ -1334,6 +1349,10 @@ class ActiveConnection(Thread):
 							print("received FIN")
 							isDisconnected = True
 							# JUMP TO FINALLY AND FINISH CONNECTION
+							try:
+								print("REASON: " + dataString[4:].split("%eq")[1].replace("!",""))
+							except:
+								pass
 							return
 						elif packetID == "KEY":
 							packetSID = dataString[4:7]
@@ -1446,7 +1465,7 @@ class ActiveConnection(Thread):
 				print ("CLIENT <-x-  DISCONNECTED  -x-> " + server)
 
 os.system('cls' if os.name == 'nt' else 'clear')
-print('DEBUG CLIENT 0.11-5.18\n')
+print('DEBUG CLIENT 0.11-8.18\n')
 IOThread = IO()
 IOThread.start()
 try:
