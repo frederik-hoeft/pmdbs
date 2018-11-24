@@ -16,9 +16,11 @@
 			Nothing :)
 			
 		- LOW PRIORITY (FINISH CLIENTS FIRST):
+			- Admin features:
+				- delete accounts
+				
+		- CANCELLED:
 			- Change admin setup:
 				- one "__ROOT__" user ("master admin")
 				- __ROOT__ can promote users to become admin 
 				--> better maintenance for an admin team
-			- Admin features:
-				- delete accounts
