@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-7.18"
+VERSION = "0.11-8.18"
 BUILD = "development"
 DATE = "Nov 18 2018"
-TIME = "02:39:18"
+TIME = "12:44:18"
 PYTHON = "Python 3.6.6 / 3.6.7 - LINUX"
 
 ################################################################################
@@ -209,8 +209,8 @@ class CryptoHelper():
 class AESCipher(object):
 	# INIT FUNCTION (HASH THE KEY/SET BLOCKSIZE)
 	def __init__(self, key): 
-		# SET BLOCKSIZE TO 32 BYTES (256 BITS)
-		self.bs = 32
+		# SET BLOCKSIZE FOR PADDING TO 16 BYTES (128 BITS)
+		self.bs = 16
 		# HASH THE PROVIDED KEY USING SHA 256
 		self.key = hashlib.sha256(key.encode()).digest()
 		
@@ -225,7 +225,7 @@ class AESCipher(object):
 		# CREATE CIPHER 
 		cipher = AES.new(self.key, AES.MODE_CBC, iv)
 		# ENCRYPT + APPEND ENCRYPTED MESSAGE TO IV AND CONVERT TO BASE64 STRING
-		return base64.b64encode(iv + cipher.encrypt(raw)).decode("utf-8")
+		return str(base64.b64encode(iv + cipher.encrypt(raw)))[2:-1]
 		
 	# DECRYPT FUNCTION
 	def decrypt(self, enc):
@@ -238,9 +238,11 @@ class AESCipher(object):
 		# DECRYPT MESSAGE + CONVERT TO UTF-8 STRING
 		return self._unpad(cipher.decrypt(enc[AES.block_size:])).decode("utf-8")
 
+	# ADD PADDING
 	def _pad(self, s):
-		return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs).encode("utf-8")
-
+		return s + (self.bs - len(s) % self.bs) * chr(self.bs - len(s) % self.bs).encode("ASCII")
+		
+	# REMOVE PADDING
 	@staticmethod
 	def _unpad(s):
 		return s[:-ord(s[len(s)-1:])]
