@@ -7,7 +7,7 @@
 			Nothing :)
 			
 		- HIGH PRIORITY:
-			- Fix AES encryption --> Needs to be compatible with c# and java
+			Nothing :)
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
