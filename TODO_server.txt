@@ -8,8 +8,9 @@
 			
 		- HIGH PRIORITY:
 			- Update Docs
-			- FIX AES:
-				- add HMAC or something to prevent padding oracle attacks
+			- FIX SECURITY ISSUES:
+				- add HMAC to prevent padding oracle attacks
+				- derive HMAC key from hashed AES --> a == HMAC_key[:Len(HMAC_key) / 2] b == HMAC_key[Len(HMAC_key) / 2:]
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
