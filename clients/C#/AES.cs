@@ -25,7 +25,7 @@ namespace ConsoleApplication2
 
             using (MemoryStream ms = new MemoryStream())
             {
-                using (RijndaelManaged AES = new RijndaelManaged())
+                using (AesCng AES = new AesCng())
                 {
                     AES.KeySize = 256;
                     AES.Key = hashedPasswordBytes;
