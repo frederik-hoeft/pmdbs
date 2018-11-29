@@ -1,5 +1,5 @@
 # CONFIG
-# VERSION INFO: 0.11-4.18
+# VERSION INFO: 0.11-10.18
 
 # CHANGE SERVER SETTINGS HERE
 # ALL OF THESE VALUES *MUST* BE SET --> LIMITED ERROR HANDLING
@@ -68,5 +68,5 @@ SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT = "[PMDBS] Admin password change"
 SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n%s\n\nTo change your password, please enter the code below when prompted:\n\n%s\n\nTime left until the code expires: %s.\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
 SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>%s<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>%s</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: %s.<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 # VERSION INFO
-CONFIG_VERSION = "0.11-8.18"
+CONFIG_VERSION = "0.11-10.18"
 CONFIG_BUILD = "development"
