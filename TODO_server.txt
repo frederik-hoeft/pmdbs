@@ -7,8 +7,6 @@
 			Nothing :)
 			
 		- HIGH PRIORITY:
-			- Update Docs
-			- Test HMAC implementation
 			- Allow adding Custom RSA private keys in key file
 				
 		- MEDIUM PRIORITY:
