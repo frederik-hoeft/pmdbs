@@ -1,5 +1,10 @@
 	DEBUG / ADMIN CLIENT TODO:
   
+  FIX SECURITY ISSUES:
+			- add HMAC to prevent padding oracle attacks
+			- derive HMAC key from salted hash of AES key and Nonce:
+				--> a == HMAC_key[:Len(HMAC_key) / 2]
+				--> b == HMAC_key[Len(HMAC_key) / 2:]
     - TEST ALL METHODS:
       
 		- TESTED:
