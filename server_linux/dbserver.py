@@ -21,7 +21,7 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-8.18"
+VERSION = "0.11-10.18"
 BUILD = "development"
 DATE = "Nov 18 2018"
 TIME = "12:44:18"
@@ -99,7 +99,26 @@ else:
 
 # PROVIDES CRYPTOGRAPHIC METHODS
 class CryptoHelper():
-
+	
+	def GenerateHMACkey(aesKey, nonce, clientSocket):
+		hmacKey = hashlib.sha256(bytes(aesKey + nonce,"utf-8")).hexdigest()
+		for client in Server.allClients:
+			if clientSocket in client:
+				client[4] = hmacKey
+				break
+				
+	def CalculateHMAC(k1, k2, message):
+		return CryptoHelper.SHA256(k2 + CryptoHelper.SHA256(k1 + message))
+		
+	def VerifyHMAC(k1, k2, fullMessage):
+		hmac = fullMessage[-44:]
+		message = fullMessage[:-44]
+		actualHMAC = CryptoHelper.SHA256(k2 + CryptoHelper.SHA256(k1 + message))
+		if not hmac == actualHMAC:
+			return False
+		else:
+			return True
+			
 	# ENCRYPTS A MESSAGE USING A 4096 BIT RSA KEY
 	def RSAEncrypt(plaintext, publicKeyPemString):
 		# CREATE RSA KEY OBJECT
@@ -255,7 +274,8 @@ class Network():
 		try:
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt(data)
-			clientSocket.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			hmacKeys = GetHMACkeys(clientSocket)
+			clientSocket.send(b'\x01' + bytes("E" + encryptedData + CryptoHelper.CalculateHMAC(hmacKeys[0], hmacKeys[1], encryptedData), "utf-8") + b'\x04')
 		except SocketError as e:
 			Log.ServerEventLog("SOCKET_ERROR", e)
 	
@@ -811,8 +831,8 @@ class Log():
 				PrintSendToAdmin(CWHITE + "└─╼ " + detail + ENDF)
 		# ADD DETAILS TO CLIENT PROFILE
 		for index, client in enumerate(Server.allClients):
-			if clientSocket in client and len(client) == 3:
-				Server.allClients[index].append(details)
+			if clientSocket in client:
+				Server.allClients[index][3] = details
 	
 	# CREATES LOG FOR CLIENT RELATED EVENTS 
 	def ClientEventLog(event, clientSocket):
@@ -917,6 +937,7 @@ class Handle():
 		# [ERRNO 28] ACCA				--> ACCOUNT ALREADY ACTIVATED
 		# [ERRNO 29] ADEL				--> ACCOUNT DELETED
 		# [ERRNO 30] E2RE				--> EXPIRED 2FA REQUEST
+		# [ERRNO 31] IMAC				--> INVALID MESSAGE AUTHENTICATION CODE
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -1044,6 +1065,10 @@ class Handle():
 			errorNo = "30"
 			if not message:
 				message = "EXPIRED_2FA_REQUEST"
+		elif errorID == "IMAC":
+			errorNo = "31"
+			if not message:
+				message = "INVALID_MESSAGE_AUTHENTICATION_CODE"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
@@ -1893,7 +1918,7 @@ class Management():
 		handlerThread = Thread(target = ClientHandler.Handler, args = (clientSocket, clientAddress))
 		handlerThread.start()
 		# ADD CLIENT DO CONNECTED CLIENTS
-		Server.allClients.append([clientSocket, clientAddress, 0])
+		Server.allClients.append([clientSocket, clientAddress, 0, None, None])
 		logThread = Thread(target = Log.SetDetails, args = (clientAddress, clientSocket))
 		logThread.start()
 	
@@ -3457,7 +3482,12 @@ class Management():
 			# RETURN ERROR MESSAGE TO CLIENT
 			Handle.Error("ACNA", None, clientAddress, clientSocket, aesKey, True)
 			return
-		Management.Logout(clientAddress, clientSocket, aesKey, False)
+		isLoggedIn = False
+		for client in Server.authorizedClients:
+			if clientSocket in client:
+				isLoggedIn = True
+		if isLoggedIn:
+			Management.Logout(clientAddress, clientSocket, aesKey, False)
 		# SET UP ADMIN STATUS
 		Server.admin = clientSocket
 		Server.adminIp = clientAddress
@@ -3887,8 +3917,9 @@ def PrintSendToAdmin(text):
 	if not Server.admin == None:
 		aesEncryptor = AESCipher(Server.adminAesKey)
 		encryptedData = aesEncryptor.encrypt(text)
+		hmacKeys = GetHMACkeys(Server.admin)
 		try:
-			Server.admin.send(b'\x01' + bytes("E" + encryptedData, "utf-8") + b'\x04')
+			Server.admin.send(b'\x01' + bytes("E" + encryptedData + CryptoHelper.CalculateHMAC(hmacKeys[0], hmacKeys[1], encryptedData), "utf-8") + b'\x04')
 		except SocketError as e:
 			Log.ServerEventLog("SOCKET_ERROR", str(e))
 			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
@@ -3909,6 +3940,17 @@ def GetDetails(clientSocket):
 	
 def ConvertFromSeconds(_seconds):
 	return str(datetime.timedelta(seconds=_seconds))
+	
+def GetHMACkeys(clientSocket):
+	hmacKey = None
+	for client in Server.allClients:
+		if clientSocket in client:
+			hmacKey = client[4]
+			break
+	if not hmacKey:
+		return False
+	else:
+		return [hmacKey[:32], hmacKey[32:]]
 ################################################################################
 #-------------------------------SERVER MAIN THREAD-----------------------------#
 ################################################################################
@@ -3925,7 +3967,7 @@ class Server(Thread):
 	dataBase = None
 	localAddress = LOCAL_ADDRESS
 	localPort = LOCAL_PORT
-	allClients = [] #[[socket, address, adminFlag, details],[...]]
+	allClients = [] #[[socket, address, adminFlag, details, HMACkey],[...]]
 	authorizedClients = [] # [[ID, socket, username],[...]]
 	admin = None
 	adminIp = None
@@ -4244,6 +4286,7 @@ class ClientHandler():
 		# INITIALIZING VARIABLES
 		clientPublicKey = None
 		aesKey = None
+		nonce = None
 		clientAddress = address
 		isSocketError = False
 		isDisconnected = False
@@ -4251,6 +4294,7 @@ class ClientHandler():
 		isTcpFin = False
 		isXmlClient = False
 		keyExchangeFinished = False
+		message = ""
 		# AWAIT PACKETS FROM CLIENT
 		try:
 			# BUFFER FOR HUGE PACKETS
@@ -4303,6 +4347,7 @@ class ClientHandler():
 							buf += data
 					else:
 						isTcpFin = True
+						message = "RECEIVED_TCP_FIN"
 						return
 				# ITERATE OVER PACKET ARRAY
 				for dataPacket in dataPackets:
@@ -4340,6 +4385,7 @@ class ClientHandler():
 							if packetID == "FIN":
 								isDisconnected = True
 								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "RECEIVED_FIN"
 								return
 							elif packetID == "INI":
 								PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
@@ -4356,6 +4402,7 @@ class ClientHandler():
 									Network.Send(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+									message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
 									return
 								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
 							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
@@ -4364,11 +4411,13 @@ class ClientHandler():
 								# UNSECURE CONNECTION
 								PrintSendToAdmin("SERVER <-#- [ERRNO 03] USEC             -#-> " + clientAddress)
 								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "SECURITY_EXCEPTION_RECEIVED_SECURE_PACKET_OVER_UNSECURE_CONNECTION"
 								return
 							else:
 								# RECEIVED INVALID PACKET ID
 								PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
 								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "GENERIC_EXCEPTION_INVALID_PACKET_ID"
 								return
 						# CHECK IF PACKET "IS KEY EXCHANGE" (RSA ENCRYPTED) 
 						elif packetSpecifier == 'K':
@@ -4380,30 +4429,30 @@ class ClientHandler():
 								# EXAMPLE COMMAND = key%eq!key!;nonce%eq!encrypted_nonce!;
 								cryptoInformation = command.split(";")
 								key = None
-								nonce = None
+								cryptNonce = None
 								# EXTRACT KEY AND NONCE FROM PACKET
 								try:
 									for info in cryptoInformation:
 										if "key" in info:
 											key = info.split("!")[1]
 										elif "nonce" in info:
-											nonce = info.split("!")[1]
+											cryptNonce = info.split("!")[1]
 										elif len(info) == 0:
 											pass
 										else:
 											# COMMAND CONTAINED MORE INFORMATION THAN REQUESTED
-											PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
 											Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, None, False)
+											message = "GENERIC_EXCEPTION_TOO_MANY_ARGUMENTS"
 											return
 								except:
 									# COMMAND HAS UNKNOWN FORMATTING
-									PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
 									Handle.Error("ICMD", "INVALID_FORMATTING", clientAddress, clientSocket, None, False)
+									message = "GENERIC_EXCEPTION_INVALID_FORMATTING"
 									return
 								# COMMAND DID NOT CONTAIN ALL INFORMATION
-								if not nonce or not key:
-									PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
+								if not cryptNonce or not key:
 									Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
+									message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
 									return
 								try:
 									if isXmlClient:
@@ -4411,14 +4460,15 @@ class ClientHandler():
 									else:
 										clientPublicKey = key
 								except:
-									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
 									Handle.Error("IRSA", "INVALID_RSA_KEY", clientAddress, clientSocket, None, False)
+									message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
 									return
 								# GENERATE 256 BIT AES KEY
 								aesKey = CryptoHelper.AESKeyGenerator()
 								# PrintSendToAdmin("AES: " + aesKey)
 								# ENCRYPT AES KEY USING RSA 4096
-								decNonce = CryptoHelper.RSADecrypt(nonce, Server.serverPrivateKey)
+								decNonce = CryptoHelper.RSADecrypt(cryptNonce, Server.serverPrivateKey)
+								CryptoHelper.GenerateHMACkey(aesKey, decNonce, clientSocket)
 								message = "SKEkey%eq!" + aesKey + "!;nonce%eq!" + decNonce + "!;"
 								encryptedMessage = CryptoHelper.RSAEncrypt(message, clientPublicKey)
 								# CONVERT KEY TO BYTES
@@ -4430,13 +4480,19 @@ class ClientHandler():
 								# RECEIVED INVALID PACKET ID
 								PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
 								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "GENERIC_EXCEPTION_INVALID_PACKET_ID"
 								return
 						# CHECK IF PACKET IS AES ENCRYPTED
 						elif packetSpecifier == 'E':
 							# CREATE AES CIPHER
+							hmacKeys = GetHMACkeys(clientSocket)
+							if not CryptoHelper.VerifyHMAC(hmacKeys[0], hmacKeys[1], dataString[1:]):
+								Handle.Error("IMAC", None, clientAddress, clientSocket, None, False)
+								message = "SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM"
+								return
 							aesDecryptor = AESCipher(aesKey)
 							# DECRYPT DATA
-							decryptedData = aesDecryptor.decrypt(dataString[1:])
+							decryptedData = aesDecryptor.decrypt(dataString[1:-44])
 							# DEBUG PrintSendToAdmin DATA
 							# GET PACKET ID
 							packetID = decryptedData[:3]
@@ -4450,8 +4506,8 @@ class ClientHandler():
 										nonce = command.split("!")[1]
 									else:
 										# TOO FEW ARGUMENTS
-										PrintSendToAdmin("SERVER <-#- [ERRNO 15] ICMD            -#-> " + clientAddress)
 										Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
+										message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
 										return
 									# ENCRYPT DATA
 									returnData = "KEXACKnonce%eq!" + nonce + "!;"
@@ -4463,6 +4519,7 @@ class ClientHandler():
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 									# JUMP TO FINALLY AND FINISH CONNECTION
+									message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
 									return
 							# REQUEST PACKETS
 							elif packetID == "REQ" and keyExchangeFinished:
@@ -4494,6 +4551,7 @@ class ClientHandler():
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 									# JUMP TO FINALLY AND FINISH CONNECTION
+									message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
 									return
 							# ACCOUNT MANAGEMENT PACKETS 
 							elif packetID == "MNG" and keyExchangeFinished:
@@ -4558,6 +4616,7 @@ class ClientHandler():
 									else:
 										PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 										# JUMP TO FINALLY AND FINISH CONNECTION
+										message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
 										return
 								# COMMIT PASSWORD CHANGE
 								elif packetSID == "CPC":
@@ -4637,10 +4696,12 @@ class ClientHandler():
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
 									# JUMP TO FINALLY AND FINISH CONNECTION
+									message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
 									return
 						else:
 							# INVALID PACKET SPECIFIER
 							PrintSendToAdmin("SERVER <-#- [ERRNO 05] IPSP             -#-> " + clientAddress)
+							message = "GENERIC_EXCEPTION_INVALID_PACKET_SPECIFIER"
 							return
 					else:
 						return
@@ -4707,7 +4768,7 @@ class ClientHandler():
 					Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, False)
 				else:
 					Management.Logout(clientAddress, clientSocket, aesKey, True)
-					Management.Disconnect(clientSocket, "", clientAddress, True)
+					Management.Disconnect(clientSocket, message, clientAddress, False)
 		
 # INITIALIZE THE SERVER
 ServerThread = Server()
