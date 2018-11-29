@@ -30,7 +30,26 @@ from Crypto.Cipher import AES
 
 # PROVIDES CRYPTOGRAPHIC METHODS
 class CryptoHelper():
+	
+	def GenerateHMACkey(aesKey, nonce):
+		ActiveConnection.hmac = hashlib.sha256(bytes(aesKey + nonce,"utf-8")).hexdigest()
 
+	def CalculateHMAC(message):
+		return CryptoHelper.SHA256(ActiveConnection.hmac[32:] + CryptoHelper.SHA256(ActiveConnection.hmac[:32] + message))
+		
+	def VerifyHMAC(fullMessage):
+		hmac = fullMessage[-44:]
+		if ActiveConnection.debugging:
+			print("Received HMAC: " + hmac)
+		message = fullMessage[:-44]
+		actualHMAC = CryptoHelper.SHA256(ActiveConnection.hmac[32:] + CryptoHelper.SHA256(ActiveConnection.hmac[:32] + message))
+		if ActiveConnection.debugging:
+			print("Correct HMAC: " + actualHMAC)
+		if not hmac == actualHMAC:
+			return False
+		else:
+			return True
+	
 	# RETURNS SHA256 HASH OF PLAINTEXT
 	def SHA256(plaintext):
 		hashBytes = base64.b64encode(hashlib.sha256(bytes(plaintext, "utf-8")).digest())
@@ -122,8 +141,30 @@ class AESCipher(object):
 	def _unpad(s):
 		return s[:-ord(s[len(s)-1:])]
 		
-		
-
+# PROVIDES NETWORK RELATED METHODS
+class Network():
+	
+	# SEND DATA USING ENCRYPTION
+	def SendEncrypted(data):
+		try:
+			aesEncryptor = AESCipher(ActiveConnection.aesKey)
+			encryptedData = aesEncryptor.encrypt(data)
+			hmac = CryptoHelper.CalculateHMAC(encryptedData)
+			if ActiveConnection.debugging:
+				print("SENDING: E" + data)
+				print("HMAC: " + hmac)
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + encryptedData + hmac, "utf-8") + b'\x04')
+		except SocketError as e:
+			print(e)
+	
+	# SEND DATA WITHOUT ENCRYPTION
+	def Send(data):
+		try:
+			if ActiveConnection.debugging:
+				print("SENDING: U" + data)
+			ActiveConnection.clientSocket.send(b'\x01' + bytes("U" + data, "utf-8") + b'\x04')
+		except SocketError as e:
+			print(e)
 	
 class IO(Thread):
 	publicKey = None
@@ -152,8 +193,10 @@ class IO(Thread):
 					self.IOselect(parameters)
 				elif command == 'update':
 					self.IOupdate(parameters)
-				elif command == 'msg':
-					self.IOmsg(parameters)
+				elif command == 'customencrypted':
+					self.IOcustomEncrypted(parameters)
+				elif command == 'custom':
+					self.IOcustom(parameters)
 				elif command == 'sync':
 					self.IOsync(parameters)
 				elif command == 'alldata':
@@ -252,6 +295,8 @@ class IO(Thread):
 	commitpwchange
 	confirmnewdevice
 	cookie
+	custom
+	customencrypted
 	delete
 	error
 	exit
@@ -266,7 +311,6 @@ class IO(Thread):
 	login
 	logout
 	masterpwrequest
-	msg
 	newadmindevice
 	pwchange
 	reboot
@@ -305,8 +349,6 @@ class IO(Thread):
 			print(e)
 		ActiveConnection.debugging = False
 		
-		
-		
 	def IOkick(self, parameters):
 		try:
 			if parameters[1] == "h":
@@ -331,11 +373,7 @@ class IO(Thread):
 			if not mode or not target:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGKIKmode%eq!" + mode + "!;target%eq!" + target + "!")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGKIKmode%eq!" + mode + "!;target%eq!" + target + "!")
 		except Exception as e:
 			print(e)
 			
@@ -349,11 +387,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGIPCmode%eq!PASSWORD_CHANGE!;")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;")
 	
 	def IOlistAllClients(self,parameters):
 		try:
@@ -363,11 +397,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGLICmode%eq!ALL_CONNECTED!;")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGLICmode%eq!ALL_CONNECTED!;")
 	
 	def IOListAllUsers(self,parameters):
 		try:
@@ -377,11 +407,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGLICmode%eq!ALL_USERS!;")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGLICmode%eq!ALL_USERS!;")
 	
 	def IOslog(self,parameters):
 		try:
@@ -391,11 +417,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGLOGSERVER")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGLOGSERVER")
 	
 	def IOclog(self,parameters):
 		try:
@@ -405,14 +427,10 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGLOGCLIENT")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04') 
+		Network.SendEncrypted("MNGLOGCLIENT")
 	   
 	def IOauth():
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("UINIPEM", "utf-8") + b'\x04')
+		Network.Send("INIPEM")
 		
 	def IOexit(self,parameters):
 		try:
@@ -422,7 +440,8 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("UFIN", "utf-8") + b'\x04')
+		if not ActiveConnection.isDisconnected:
+			Network.Send("FIN")
 		exit()
 		
 	def IOcookie(self,parameters):
@@ -433,26 +452,65 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGCKI")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGCKI")
 	
-	def IOmsg(self,parameters):
+	def IOcustom(self,parameters):
 		try:
 			if parameters[1] == "h":
-				print("this command takes no parameters")
+				print("arguments: \n\ncustom\n-q <query>")
 				return
 		except Exception as e:
 			print(e)
-			pass
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("UHello", "utf-8") + b'\x04')
+			print("too few arguments")
+		try:
+			query = None
+			for command in parameters:
+				if command.split(" ")[0] == "q":
+					query = command[2:]
+				elif len(command) == 0 or command == "custom ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not query:
+				print("too few arguments")
+				return
+			Network.Send(query)
+		except Exception as e:
+			print(e)
+			print("typo in command \"" + "-".join(parameters) + "\"")
+		
+		
+	def IOcustomEncrypted(self,parameters):
+		try:
+			if parameters[1] == "h":
+				print("arguments: \n\ncustomencrypted\n-q <query>")
+				return
+		except Exception as e:
+			print(e)
+			print("too few arguments")
+		try:
+			query = None
+			for command in parameters:
+				if command.split(" ")[0] == "q":
+					query = command[2:]
+				elif len(command) == 0 or command == "customencrypted ":
+					pass
+				else:
+					print("invalid argument: -" + command)
+					return
+			if not query:
+				print("too few arguments")
+				return
+			Network.SendEncrypted(query)
+		except Exception as e:
+			print(e)
+			print("typo in command \"" + "-".join(parameters) + "\"")
 		
 	def IOregister(self, parameters):
 		try:
 			if parameters[1] == "h":
-				print("arguments: \n\n-u <username>\n-p <password>\n-e <email>\n-n <nickname>")
+				print("arguments: \n\nregister\n-u <username>\n-p <password>\n-e <email>\n-n <nickname>")
 				return
 		except Exception as e:
 			print(e)
@@ -482,11 +540,7 @@ class IO(Thread):
 			if not nickname:
 				nickname = "user"
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGREGusername%eq!" + username + "!;password%eq!" + finalPassword + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGREGusername%eq!" + username + "!;password%eq!" + finalPassword + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + "-".join(parameters) + "\"")
@@ -536,11 +590,7 @@ class IO(Thread):
 				query += "notes%eq!" + notes + "!;"
 			if url:
 				query += "url%eq!" + url + "!;"
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("REQINS" + query + "datetime%eq!" + str(time.time()).split('.')[0] + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("REQINS" + query + "datetime%eq!" + str(time.time()).split('.')[0] + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -560,11 +610,7 @@ class IO(Thread):
 		if hidString == "":
 			print("too few arguments")
 			return
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQSEL" + hidString)
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("REQSEL" + hidString)
 		
 	def IOdelete(self,parameters):
 		try:
@@ -581,11 +627,7 @@ class IO(Thread):
 		if hidString == "":
 			print("too few arguments")
 			return
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQDEL" + hidString)
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("REQDEL" + hidString)
 		
 	def IOupdate(self,parameters):
 		try:
@@ -639,11 +681,7 @@ class IO(Thread):
 				query += "notes%eq!" + notes + "!;"
 			if url:
 				query += "url%eq!" + url + "!;"
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("REQUPD" + query)
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("REQUPD" + query)
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -656,11 +694,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQSYNfetch_mode%eq!FETCH_SYNC!")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!")
 		
 	def IOall(self,parameters):
 		try:
@@ -670,11 +704,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("REQSYNfetch_mode%eq!FETCH_ALL!")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_ALL!")
 		
 	def IOlogin(self,parameters):
 		try:
@@ -701,11 +731,7 @@ class IO(Thread):
 				print("too few arguments")
 				return
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGLGIusername%eq!" + username + "!;password%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -738,11 +764,7 @@ class IO(Thread):
 				print("too few arguments")
 				return
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGCNDusername%eq!" + username + "!;code%eq!PM-" + code + "!;password%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!PM-" + code + "!;password%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -771,11 +793,7 @@ class IO(Thread):
 			if not username or not code:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGVERusername%eq!" + username + "!;code%eq!PM-" + code + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGVERusername%eq!" + username + "!;code%eq!PM-" + code + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -788,11 +806,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGLGO")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGLGO")
 		
 	def IOsudo(self,parameters):
 		try:
@@ -816,11 +830,7 @@ class IO(Thread):
 				print("too few arguments")
 				return
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGADMpassword%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGADMpassword%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -850,11 +860,7 @@ class IO(Thread):
 				print("too few arguments")
 				return
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGNADpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGNADpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -867,11 +873,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGAPR")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGAPR")
 		
 	def IOinitPwChange(self,parameters):
 		try:
@@ -881,11 +883,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGACRPWCmode%eq!PASSWORD_CHANGE!;")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGACRPWCmode%eq!PASSWORD_CHANGE!;")
 		
 	def IOinitDelAccount(self,parameters):
 		try:
@@ -895,11 +893,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGACRDELmode%eq!DELETE_ACCOUNT!;")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGACRDELmode%eq!DELETE_ACCOUNT!;")
 		
 	def IOcommitAdminPwChange(self,parameters):
 		try:
@@ -925,12 +919,8 @@ class IO(Thread):
 			if not password or not code:
 				print("too few arguments")
 				return
-			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32]) 
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGAPCpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
+			Network.SendEncrypted("MNGAPCpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -960,11 +950,7 @@ class IO(Thread):
 				print("too few arguments")
 				return
 			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGCPCpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGCPCpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -990,11 +976,7 @@ class IO(Thread):
 			if not code:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGDELcode%eq!PM-" + code + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGDELcode%eq!PM-" + code + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1023,11 +1005,7 @@ class IO(Thread):
 			if not duration or not ip:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGBANip%eq!" + ip + "!;duration%eq!" + duration + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGBANip%eq!" + ip + "!;duration%eq!" + duration + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1056,11 +1034,7 @@ class IO(Thread):
 			if not username or not duration:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGBNAusername%eq!" + username + "!;duration%eq!" + duration + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGBNAusername%eq!" + username + "!;duration%eq!" + duration + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1073,11 +1047,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGSHTSHUTDOWN")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGSHTSHUTDOWN")
 		
 	def IOreboot(self,parameters):
 		try:
@@ -1087,11 +1057,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGRBTREBOOT")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGRBTREBOOT")
 		
 	def IOstart(self,parameters):
 		try:
@@ -1136,11 +1102,7 @@ class IO(Thread):
 			if not username:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGPWHusername%eq!" + username + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGPWHusername%eq!" + username + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1169,11 +1131,7 @@ class IO(Thread):
 			if not username or not email:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGCEAusername%eq!" + username + "!;cookie%eq!" + ActiveConnection.cookie + "!;new_email%eq!" + email + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGCEAusername%eq!" + username + "!;cookie%eq!" + ActiveConnection.cookie + "!;new_email%eq!" + email + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1186,11 +1144,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		aesEncryptor = AESCipher(ActiveConnection.aesKey)
-		cryptmsg = aesEncryptor.encrypt("MNGGAA")
-		if ActiveConnection.debugging:
-			print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-		ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+		Network.SendEncrypted("MNGGAA")
 		
 	def IOresendCode(self,parameters):
 		try:
@@ -1219,11 +1173,7 @@ class IO(Thread):
 			if not username or not email or not name:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGRTCusername%eq!" + username + "!;email%eq!" + email + "!;name%eq!" + name + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGRTCusername%eq!" + username + "!;email%eq!" + email + "!;name%eq!" + name + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1249,11 +1199,7 @@ class IO(Thread):
 			if not name:
 				print("too few arguments")
 				return
-			aesEncryptor = AESCipher(ActiveConnection.aesKey)
-			cryptmsg = aesEncryptor.encrypt("MNGCHNnew_name%eq!" + name + "!;")
-			if ActiveConnection.debugging:
-				print("SENDING: E" + AESCipher(ActiveConnection.aesKey).decrypt(cryptmsg))
-			ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+			Network.SendEncrypted("MNGCHNnew_name%eq!" + name + "!;")
 		except Exception as e:
 			print(e)
 			print("typo in command \"" + " ".join(parameters) + "\"")
@@ -1262,9 +1208,12 @@ class ActiveConnection(Thread):
 	clientSocket = None
 	aesKey = None
 	nonce = None
+	hmac = None
 	foreignRsaKey = None
 	cookie = None
 	debugging = False
+	isDisconnected = False
+	
 	def run(self):
 		isDisconnected = False
 		isSocketError = False
@@ -1349,10 +1298,7 @@ class ActiveConnection(Thread):
 							print("received FIN")
 							isDisconnected = True
 							# JUMP TO FINALLY AND FINISH CONNECTION
-							try:
-								print("REASON: " + dataString[4:].split("%eq")[1].replace("!",""))
-							except:
-								pass
+							print("REASON: " + dataString[4:].split("%eq")[1].replace("!","").replace(";",""))
 							return
 						elif packetID == "KEY":
 							packetSID = dataString[4:7]
@@ -1379,18 +1325,19 @@ class ActiveConnection(Thread):
 							if not nonce == ActiveConnection.nonce:
 								return
 							ActiveConnection.aesKey = key
+							CryptoHelper.GenerateHMACkey(ActiveConnection.aesKey, ActiveConnection.nonce)
 							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow(10**50)), "utf-8")).hexdigest()
 							message = "nonce%eq!" + ActiveConnection.nonce + "!;"
-							aesEncryptor = AESCipher(ActiveConnection.aesKey)
-							cryptmsg = aesEncryptor.encrypt("KEXACK" + message)
-							ActiveConnection.clientSocket.send(b'\x01' + bytes("E" + cryptmsg, "utf-8") + b'\x04')
+							Network.SendEncrypted("KEXACK" + message)
 							if ActiveConnection.debugging:
 								print("AES Key: " + ActiveConnection.aesKey)
 					# CHECK IF PACKET IS AES ENCRYPTED
 					elif packetSpecifier == 'E':
-						# TODO: DECRYPT
+						if not CryptoHelper.VerifyHMAC(dataString[1:]):
+							print("SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM")
+							return
 						aesDecryptor = AESCipher(ActiveConnection.aesKey)
-						decryptedData = aesDecryptor.decrypt(dataString[1:])
+						decryptedData = aesDecryptor.decrypt(dataString[1:-44])
 						print("SERVER: " + decryptedData)
 						packetID = decryptedData[:3]
 						packetSID = decryptedData[3:6]
@@ -1444,6 +1391,7 @@ class ActiveConnection(Thread):
 				# RESET THE CONNECTION
 				self.clientSocket.close()
 				print("CLIENT <-x-  DISCONNECTED ERR  -x-> " + server)
+				ActiveConnection.isDisconnected = True
 			elif isTcpFin:
 				# GOT TCP FIN
 				try:
@@ -1453,6 +1401,7 @@ class ActiveConnection(Thread):
 				# CLOSE SOCKET
 				self.clientSocket.close()
 				print ("CLIENT <-x-  DISCONNECTED FIN  -x-> " + server)
+				ActiveConnection.isDisconnected = True
 			else:
 				if not isDisconnected:
 					# SEND CUSTOM FIN
@@ -1463,9 +1412,10 @@ class ActiveConnection(Thread):
 				# CLOSE SOCKET
 				self.clientSocket.close()
 				print ("CLIENT <-x-  DISCONNECTED  -x-> " + server)
+				ActiveConnection.isDisconnected = True
 
 os.system('cls' if os.name == 'nt' else 'clear')
-print('DEBUG CLIENT 0.11-8.18\n')
+print('DEBUG CLIENT 0.11-10.18\n')
 IOThread = IO()
 IOThread.start()
 try:
