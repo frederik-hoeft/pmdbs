@@ -1,33 +1,7 @@
 	DEBUG / ADMIN CLIENT TODO:
-  
-  FIX SECURITY ISSUES:
-			- add HMAC to prevent padding oracle attacks
-			- derive HMAC key from salted hash of AES key and Nonce:
-				--> a == HMAC_key[:Len(HMAC_key) / 2]
-				--> b == HMAC_key[Len(HMAC_key) / 2:]
-    - TEST ALL METHODS:
-      
-		- TESTED:
-      - register
-			- login
-			- insert
-			- update
-			- delete
-			- select
-			- sync
-			- changename
-			- getaccountactivity
-			- logout
-			- initdelaccount
-			- commitdelaccount
-			- changeemailaddress
-			- resendcode
-			- verify
-			- commitpwchange
-			- initpwchange
-			- clientlog
-			- listallusers
-			- listallclients
-			- masterpwrequest
-			- kick
-			- shutdown
+	
+    		- TEST ALL METHODS:
+			- TESTED:
+				- sudo()
+				- newAdminDevice()
+
