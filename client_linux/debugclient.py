@@ -1305,7 +1305,7 @@ class ActiveConnection(Thread):
 							if packetSID == "PEM":
 								ActiveConnection.foreignRsaKey = dataString[7:].split("!")[1]
 							# TODO: VALIDATE KEY
-							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow(10**50)), "utf-8")).hexdigest()
+							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow((2 ** 63) - 1)), "utf-8")).hexdigest()
 							encNonce = CryptoHelper.RSAEncrypt(ActiveConnection.nonce, ActiveConnection.foreignRsaKey)
 							message = "key%eq!" + IO.pemKey + "!;nonce%eq!" + encNonce + "!;"
 							ActiveConnection.clientSocket.send(b'\x01' + bytes("KCKE" + message, "utf-8") + b'\x04')
@@ -1326,7 +1326,7 @@ class ActiveConnection(Thread):
 								return
 							ActiveConnection.aesKey = key
 							CryptoHelper.GenerateHMACkey(ActiveConnection.aesKey, ActiveConnection.nonce)
-							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow(10**50)), "utf-8")).hexdigest()
+							ActiveConnection.nonce = hashlib.sha256(bytes(str(secrets.randbelow((2 ** 63) - 1)), "utf-8")).hexdigest()
 							message = "nonce%eq!" + ActiveConnection.nonce + "!;"
 							Network.SendEncrypted("KEXACK" + message)
 							if ActiveConnection.debugging:
