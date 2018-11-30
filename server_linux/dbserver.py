@@ -21,7 +21,7 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-10.18"
+VERSION = "0.11-11.18"
 BUILD = "development"
 DATE = "Nov 18 2018"
 TIME = "12:44:18"
@@ -3990,14 +3990,23 @@ class Server(Thread):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: " + sys.version.split(" ")[0] + ENDF)
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
-		if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT:
-			if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
-				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
+		try:
+			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS == None:
+				if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
+					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
+				else:
+					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Undefined variables in config file." + ENDF)
+				return
 			else:
-				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Undefined variables in config file." + ENDF)
+				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked global variables. " + ENDF)
+		except:
+			try:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
+			except NameError:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Invalid config file. Please download the config file for PMDBServer version " + VERSION + " ." + ENDF)
 			return
 		else:
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked global variables. " + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Config is valid. " + ENDF)
 		print(CWHITE + "         Checking version info ..." + ENDF)
 		if not CONFIG_VERSION == VERSION:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
@@ -4196,18 +4205,138 @@ class Server(Thread):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Enabled Geolocating." + ENDF)
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Enabled Geolocating." + ENDF)
-		print(CWHITE + "         Generating RSA keys ..." + ENDF)
-		try:
-			# GENERATE RSA KEY PAIR
-			keyPair = CryptoHelper.RSAKeyPairGenerator()
-			Server.serverPublicKey = keyPair[0]
-			Server.serverPrivateKey = keyPair[1]
-			Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-			Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
-		except:
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
-			return
-		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
+		if USE_PERSISTENT_RSA_KEYS:
+			rsaInitialized = False
+			while not rsaInitialized:
+				print(CWHITE + "         Checking for RSA private key file in " + os.getcwd() + "/keys ..." + ENDF)
+				if not os.path.isdir("keys"):
+					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Directory \"keys\" does not exist in " + os.getcwd() + "." + ENDF)
+					print(CWHITE + "         Creating directory \"keys\" ..." + ENDF)
+					os.mkdir("keys")
+					if os.path.isdir("keys"):
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Directory \"keys\" created successfully." + ENDF)
+					else:
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Fatal: could not create doirectory \"keys\ in " + os.getcwd() + "." + ENDF)
+						exit()
+				keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
+				if len(keyFiles) == 0:
+					selected = False
+					while not selected:
+						print(CWHITE + "         No key file found!" + ENDF)
+						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
+						print(CWHITE + "         [R] = Retry" + ENDF)
+						print(CWHITE + "         [G] = Generate new RSA Keys" + ENDF)
+						selectedOption = input(CWHITE + " > ")
+						if selectedOption.upper() == "G":
+							print(CWHITE + "         Generating RSA keys ..." + ENDF)
+							keyPair = CryptoHelper.RSAKeyPairGenerator()
+							print(CWHITE + "         Exporting private RSA key ..." + ENDF)
+							privateKey = keyPair[1].exportKey(format="PEM").decode("utf-8")
+							with open("keys/server.privatekey", "w") as out:
+								out.write(privateKey)
+								out.close()
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Private RSA key exported successfully." + ENDF)
+							print(CWHITE + "         Exporting public RSA key ..." + ENDF)
+							publicKey = keyPair[0].exportKey(format="PEM").decode("utf-8")
+							with open("keys/server.publicKey", "w") as out:
+								out.write(publicKey)
+								out.close()
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Public RSA key exported successfully." + ENDF)
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA key pair generated successfully." + ENDF)
+							print(CWHITE + "[ " + CCYAN + "INFO" + CWHITE + " ] You can find the new keys in the \"keys\" folder located in " + os.getcwd() + " ..." + ENDF)     
+							selected = True
+						elif selectedOption.upper() == "R":
+							selected = True
+						else:
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
+				elif len(keyFiles) == 1:
+					# GLOB RETURNS NAME + PATH --> REMOVE PATH
+					pathParts = keyFiles[0].split("/")
+					privateKey = pathParts[len(pathParts) - 1]
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found RSA private key \"" + privateKey + "\" in " + os.getcwd() + ENDF)
+					print(CWHITE + "         Autoselecting ..." + ENDF)
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
+					print(CWHITE + "         Checking for READ permission ..." + ENDF)
+					if os.access(keyFiles[0], os.R_OK):
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+					else:
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+						return
+					print(CWHITE + "         Reading private key ..." + ENDF)
+					with open(keyFiles[0], "rb") as f:
+						try:
+							rsaTmp = RSA.importKey(f.read())
+							Server.serverPrivateKey = rsaTmp
+							Server.serverPublicKey = rsaTmp.publickey()
+							Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+							Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+						except Exception as e:
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + str(e) + ENDF)
+						else:
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
+						f.close()
+					rsaInitialized = True
+				else:
+					selected = False
+					# LOOP IN CASE USER INPUT IS INVALID
+					while not selected:
+						iterator = 0
+						print(CWHITE + "         Found more than private key in " + os.getcwd() + "/keys" + ENDF)
+						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Which private key do you want to use? (enter index)" + ENDF)
+						cleanedPrivateKeys = []
+						# LIST AVAILABLE DATABASES
+						for keypath in keyFiles:
+							pathParts = keypath.split("/")
+							key = pathParts[len(pathParts) - 1]
+							print(CWHITE + "         [" + str(iterator) + "] " + key + ENDF)
+							cleanedPrivateKeys.append(key)
+							iterator += 1
+						# PROMPT USER INPUT
+						selectedKeyString = input(CWHITE + " > ")
+						# TRY TO SELECT DATABASE AT SELECTED INDEX
+						try:
+							selectedKey = int(selectedKeyString)
+							pathParts = keyFiles[selectedKey].split("/")
+							privateKey = pathParts[len(pathParts) - 1]
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
+							print(CWHITE + "         Checking for READ permission ..." + ENDF)
+							if os.access(keyFiles[selectedKey], os.R_OK):
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+							else:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+								return
+							with open(keyFiles[selectedKey], "rb") as f:
+								try:
+									rsaTmp = RSA.importKey(f.read())
+									Server.serverPrivateKey = rsaTmp
+									Server.serverPublicKey = rsaTmp.publickey()
+									Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+									Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+								except Exception as e:
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + e + ENDF)
+								else:
+									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
+									selected = True
+									rsaInitialized = True
+								f.close()
+						# INDEX WAS INVALID --> RETRY
+						except:
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
+		else:
+			print(CWHITE + "         Generating RSA keys ..." + ENDF)
+			try:
+				# GENERATE RSA KEY PAIR
+				keyPair = CryptoHelper.RSAKeyPairGenerator()
+				Server.serverPublicKey = keyPair[0]
+				Server.serverPrivateKey = keyPair[1]
+				Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+				Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+			except:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
+				return
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
 		
 		# CREATE SOCKET
 		portBlocked = True
