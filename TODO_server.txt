@@ -8,6 +8,7 @@
 			
 		- HIGH PRIORITY:
 			- Allow adding Custom RSA private keys in key file
+			- Standardize return values sent to client
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
