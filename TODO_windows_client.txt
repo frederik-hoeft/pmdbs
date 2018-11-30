@@ -1,5 +1,5 @@
 WINDOWS CLIENT TODO:
-    - Create UI
+    - Design / Create UI
     - Create DataBase Access Methods
     - Create Socket Related Methods
     - Implement HMAC
