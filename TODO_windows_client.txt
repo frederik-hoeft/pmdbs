@@ -1,5 +1,7 @@
 WINDOWS CLIENT TODO:
     - Design / Create UI
+        - Custom DataGridView:
+            - Includes Custom Controls with Logo of Host
     - Create DataBase Access Methods
     - Create Socket Related Methods
     - Implement HMAC
