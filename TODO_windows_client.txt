@@ -5,3 +5,4 @@ WINDOWS CLIENT TODO:
     - Create DataBase Access Methods
     - Create Socket Related Methods
     - Implement HMAC
+    - get Icons from websites to show in dataGridView
