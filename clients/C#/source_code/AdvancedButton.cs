@@ -12,6 +12,7 @@ namespace pmdbs
 {
     public partial class AdvancedButton : UserControl
     {
+        public event EventHandler<EventArgs> OnClick;
         public AdvancedButton()
         {
             InitializeComponent();
@@ -31,6 +32,7 @@ namespace pmdbs
             get { return label.TextAlign; }
             set { label.TextAlign = value; }
         }
+
         public Image ImageNormal
         {
             get { return NormalImage; }
@@ -132,6 +134,26 @@ namespace pmdbs
             this.label.Text = NormalText;
             this.label.Font = NormalFont;
             this.pictureBox.Image = NormalImage;
+        }
+
+        private void label_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void pictureBox_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void tableLayoutPanel_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void AdvancedButton_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
         }
     }
 }
