@@ -11,6 +11,7 @@ WINDOWS CLIENT TODO:
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
+        - Rename all variables to something meaningful
         
     - CREATE DATABASE ACCESS METHODS
     
