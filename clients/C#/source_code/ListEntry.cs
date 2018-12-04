@@ -12,6 +12,13 @@ namespace pmdbs
 {
     public partial class ListEntry : UserControl
     {
+        public event EventHandler<EventArgs> OnClick;
+        private int ID = -1;
+        public int id
+        {
+            get { return ID; }
+            set { ID = value; }
+        }
         public ListEntry() 
         {
             InitializeComponent();
@@ -70,6 +77,41 @@ namespace pmdbs
         {
             get { return label1.ForeColor; }
             set { label1.ForeColor = value; }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void tableLayoutPanel1_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
+        }
+
+        private void ListEntry_Click(object sender, EventArgs e)
+        {
+            OnClick(this, e);
         }
     }
 }

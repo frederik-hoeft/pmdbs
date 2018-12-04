@@ -44,6 +44,7 @@
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            this.pictureBox.Click += new System.EventHandler(this.pictureBox_Click);
             this.pictureBox.MouseEnter += new System.EventHandler(this.pictureBox_MouseEnter);
             this.pictureBox.MouseLeave += new System.EventHandler(this.pictureBox_MouseLeave);
             // 
@@ -57,6 +58,7 @@
             this.label.TabIndex = 1;
             this.label.Text = "Label";
             this.label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label.Click += new System.EventHandler(this.label_Click);
             this.label.MouseEnter += new System.EventHandler(this.label_MouseEnter);
             this.label.MouseLeave += new System.EventHandler(this.label_MouseLeave);
             // 
@@ -74,6 +76,7 @@
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(150, 150);
             this.tableLayoutPanel.TabIndex = 2;
+            this.tableLayoutPanel.Click += new System.EventHandler(this.tableLayoutPanel_Click);
             this.tableLayoutPanel.MouseEnter += new System.EventHandler(this.tableLayoutPanel_MouseEnter);
             this.tableLayoutPanel.MouseLeave += new System.EventHandler(this.tableLayoutPanel_MouseLeave);
             // 
@@ -83,6 +86,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel);
             this.Name = "AdvancedButton";
+            this.Click += new System.EventHandler(this.AdvancedButton_Click);
             this.MouseEnter += new System.EventHandler(this.AdvancedButton_MouseEnter);
             this.MouseLeave += new System.EventHandler(this.AdvancedButton_MouseLeave);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();

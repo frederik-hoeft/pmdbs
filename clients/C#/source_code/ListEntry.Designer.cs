@@ -47,6 +47,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // label1
             // 
@@ -57,6 +58,7 @@
             this.label1.Size = new System.Drawing.Size(80, 20);
             this.label1.TabIndex = 1;
             this.label1.Text = "hostname";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -67,6 +69,7 @@
             this.label2.Size = new System.Drawing.Size(80, 20);
             this.label2.TabIndex = 2;
             this.label2.Text = "username";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -78,6 +81,7 @@
             this.label3.TabIndex = 3;
             this.label3.Text = "timestamp";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // tableLayoutPanel1
             // 
@@ -95,6 +99,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 64F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(598, 64);
             this.tableLayoutPanel1.TabIndex = 4;
+            this.tableLayoutPanel1.Click += new System.EventHandler(this.tableLayoutPanel1_Click);
             // 
             // panel1
             // 
@@ -105,6 +110,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(261, 58);
             this.panel1.TabIndex = 1;
+            this.panel1.Click += new System.EventHandler(this.panel1_Click);
             // 
             // ListEntry
             // 
@@ -113,6 +119,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ListEntry";
             this.Size = new System.Drawing.Size(598, 64);
+            this.Click += new System.EventHandler(this.ListEntry_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
