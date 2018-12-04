@@ -1,8 +1,21 @@
 WINDOWS CLIENT TODO:
-    - Design / Create UI
-        - Custom DataGridView:
-            - Includes Custom Controls with Logo of Host
-    - Create DataBase Access Methods
-    - Create Socket Related Methods
-    - Implement HMAC
-    - get Icons from websites (urls) to show in dataGridView
+
+    - DESIGN / CREATE UI
+        - First, Previous, Next, Last Page Buttons for Data list
+        - Create Window Management
+        - Set up Details Window
+            - Change Properties to fixed size
+            - create design
+        - get Icons from websites (urls) to show in ListEntry
+            - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
+            
+    - CREATE CORE:
+        - In Settings: set sorting algorithm for ListEntrys
+        
+    - CREATE DATABASE ACCESS METHODS
+    
+    - CREATE SOCKET RELATED METHODS
+    
+    - IMPLEMENT SECURITY RELATED METHODS
+        - Implement HMAC
+    
