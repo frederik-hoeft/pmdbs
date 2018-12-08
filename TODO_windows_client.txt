@@ -6,7 +6,7 @@ WINDOWS CLIENT TODO:
             - Change Properties to fixed size
             - create design
             - Rework edit and remove icons (remove outer white space)
-            - for add, editand remove icon create colored icon for OnMouseHover event
+            - for add, edit and remove icon create colored icon for OnMouseHover event
             - create new Icon for Settings (template in folder)
         - get Icons from websites (urls) to show in ListEntry
             - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
