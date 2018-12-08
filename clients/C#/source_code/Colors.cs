@@ -26,5 +26,9 @@ namespace pmdbs
         {
             get { return Color.FromArgb(220, 220, 220); }
         }
+        public static Color LightOrange
+        {
+            get { return Color.FromArgb(255, 216, 204); }
+        }
     }
 }
