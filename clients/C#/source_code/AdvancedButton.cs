@@ -12,7 +12,7 @@ namespace pmdbs
 {
     public partial class AdvancedButton : UserControl
     {
-        public event EventHandler<EventArgs> OnClick;
+        public event EventHandler<EventArgs> OnClickEvent;
         public AdvancedButton()
         {
             InitializeComponent();
@@ -138,22 +138,22 @@ namespace pmdbs
 
         private void label_Click(object sender, EventArgs e)
         {
-            OnClick(this, e);
+            OnClickEvent(this, e);
         }
 
         private void pictureBox_Click(object sender, EventArgs e)
         {
-            OnClick(this, e);
+            OnClickEvent(this, e);
         }
 
         private void tableLayoutPanel_Click(object sender, EventArgs e)
         {
-            OnClick(this, e);
+            OnClickEvent(this, e);
         }
 
         private void AdvancedButton_Click(object sender, EventArgs e)
         {
-            OnClick(this, e);
+            OnClickEvent(this, e);
         }
     }
 }
