@@ -5,7 +5,6 @@ WINDOWS CLIENT TODO:
         - Set up Details Window
             - Change Properties to fixed size
             - create design
-            - Rework edit and remove icons (remove outer white space)
             - for add, edit and remove icon create colored icon for OnMouseHover event
             - create new Icon for Settings (template in folder)
         - get Icons from websites (urls) to show in ListEntry
