@@ -9,6 +9,7 @@ WINDOWS CLIENT TODO:
             - create new Icon for Settings (template in folder)
         - get Icons from websites (urls) to show in ListEntry
             - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
+            - https://i.olsh.me/ MAY BE BETTER
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
