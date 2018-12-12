@@ -1,0 +1,6 @@
+TODO
+
+  - methods for writing / reading Tbl_icon
+  - update listadapter (including icon)
+  - method for reading Tbl_commonPasswords, (IN: String, OUT: Bool)
+  - 
