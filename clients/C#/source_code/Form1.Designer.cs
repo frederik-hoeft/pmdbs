@@ -34,12 +34,18 @@
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.WindowIconPanel = new System.Windows.Forms.Panel();
+            this.ButtonMinimize = new pmdbs.WindowButton();
+            this.ButtonMaximize = new pmdbs.WindowButton();
+            this.ButtonClose = new pmdbs.WindowButton();
             this.DashboardPanel = new System.Windows.Forms.Panel();
+            this.advancedButton2 = new pmdbs.AdvancedButton();
+            this.advancedButton1 = new pmdbs.AdvancedButton();
             this.DataPanelMain = new System.Windows.Forms.Panel();
             this.DataTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelDetails = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.DataEditAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataRemoveAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.dynamicLink1 = new pmdbs.DynamicLink();
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -49,18 +55,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.DataTableLayoutPanelSubLeft = new System.Windows.Forms.TableLayoutPanel();
             this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
             this.DataPanelFooter = new System.Windows.Forms.Panel();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.dynamicLink1 = new pmdbs.DynamicLink();
-            this.advancedButton2 = new pmdbs.AdvancedButton();
-            this.advancedButton1 = new pmdbs.AdvancedButton();
-            this.ButtonMinimize = new pmdbs.WindowButton();
-            this.ButtonMaximize = new pmdbs.WindowButton();
-            this.ButtonClose = new pmdbs.WindowButton();
+            this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.WindowHeaderPanel.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -69,19 +69,14 @@
             this.DataPanelMain.SuspendLayout();
             this.DataTableLayoutPanelMain.SuspendLayout();
             this.DataPanelDetails.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).BeginInit();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.DataTableLayoutPanelSubLeft.SuspendLayout();
             this.DataPanelFooter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // WindowHeaderPanel
             // 
-            this.WindowHeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.WindowHeaderPanel.BackColor = System.Drawing.Color.Black;
             this.WindowHeaderPanel.Controls.Add(this.panel1);
             this.WindowHeaderPanel.Controls.Add(this.WindowIconPanel);
             this.WindowHeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -136,6 +131,39 @@
             this.WindowIconPanel.Size = new System.Drawing.Size(165, 55);
             this.WindowIconPanel.TabIndex = 8;
             // 
+            // ButtonMinimize
+            // 
+            this.ButtonMinimize.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ButtonMinimize.BackgroundColorNormal = System.Drawing.Color.Empty;
+            this.ButtonMinimize.ImageHover = ((System.Drawing.Image)(resources.GetObject("ButtonMinimize.ImageHover")));
+            this.ButtonMinimize.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ButtonMinimize.ImageNormal")));
+            this.ButtonMinimize.Location = new System.Drawing.Point(3, 3);
+            this.ButtonMinimize.Name = "ButtonMinimize";
+            this.ButtonMinimize.Size = new System.Drawing.Size(50, 50);
+            this.ButtonMinimize.TabIndex = 2;
+            // 
+            // ButtonMaximize
+            // 
+            this.ButtonMaximize.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.ButtonMaximize.BackgroundColorNormal = System.Drawing.Color.Empty;
+            this.ButtonMaximize.ImageHover = ((System.Drawing.Image)(resources.GetObject("ButtonMaximize.ImageHover")));
+            this.ButtonMaximize.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ButtonMaximize.ImageNormal")));
+            this.ButtonMaximize.Location = new System.Drawing.Point(59, 3);
+            this.ButtonMaximize.Name = "ButtonMaximize";
+            this.ButtonMaximize.Size = new System.Drawing.Size(50, 50);
+            this.ButtonMaximize.TabIndex = 1;
+            // 
+            // ButtonClose
+            // 
+            this.ButtonClose.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(71)))), ((int)(((byte)(71)))));
+            this.ButtonClose.BackgroundColorNormal = System.Drawing.Color.Empty;
+            this.ButtonClose.ImageHover = ((System.Drawing.Image)(resources.GetObject("ButtonClose.ImageHover")));
+            this.ButtonClose.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ButtonClose.ImageNormal")));
+            this.ButtonClose.Location = new System.Drawing.Point(115, 3);
+            this.ButtonClose.Name = "ButtonClose";
+            this.ButtonClose.Size = new System.Drawing.Size(50, 50);
+            this.ButtonClose.TabIndex = 0;
+            // 
             // DashboardPanel
             // 
             this.DashboardPanel.BackColor = System.Drawing.Color.White;
@@ -146,6 +174,40 @@
             this.DashboardPanel.Name = "DashboardPanel";
             this.DashboardPanel.Size = new System.Drawing.Size(107, 1025);
             this.DashboardPanel.TabIndex = 1;
+            // 
+            // advancedButton2
+            // 
+            this.advancedButton2.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedButton2.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.advancedButton2.FontHover = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.advancedButton2.FontNormal = new System.Drawing.Font("Century Gothic", 9F);
+            this.advancedButton2.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageHover")));
+            this.advancedButton2.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageNormal")));
+            this.advancedButton2.Location = new System.Drawing.Point(7, 150);
+            this.advancedButton2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.advancedButton2.Name = "advancedButton2";
+            this.advancedButton2.Size = new System.Drawing.Size(94, 123);
+            this.advancedButton2.TabIndex = 1;
+            this.advancedButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.advancedButton2.TextHover = "Settings";
+            this.advancedButton2.TextNormal = "Settings";
+            // 
+            // advancedButton1
+            // 
+            this.advancedButton1.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedButton1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.advancedButton1.FontHover = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.advancedButton1.FontNormal = new System.Drawing.Font("Century Gothic", 9F);
+            this.advancedButton1.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageHover")));
+            this.advancedButton1.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageNormal")));
+            this.advancedButton1.Location = new System.Drawing.Point(8, 24);
+            this.advancedButton1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.advancedButton1.Name = "advancedButton1";
+            this.advancedButton1.Size = new System.Drawing.Size(91, 118);
+            this.advancedButton1.TabIndex = 0;
+            this.advancedButton1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.advancedButton1.TextHover = "Home";
+            this.advancedButton1.TextNormal = "Home";
             // 
             // DataPanelMain
             // 
@@ -167,7 +229,7 @@
             this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
             this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.DataTableLayoutPanelMain.Controls.Add(this.DataPanelDetails, 3, 1);
-            this.DataTableLayoutPanelMain.Controls.Add(this.tableLayoutPanel1, 1, 1);
+            this.DataTableLayoutPanelMain.Controls.Add(this.DataTableLayoutPanelSubLeft, 1, 1);
             this.DataTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.DataTableLayoutPanelMain.Name = "DataTableLayoutPanelMain";
@@ -181,8 +243,8 @@
             // DataPanelDetails
             // 
             this.DataPanelDetails.BackColor = System.Drawing.Color.White;
-            this.DataPanelDetails.Controls.Add(this.pictureBox3);
-            this.DataPanelDetails.Controls.Add(this.pictureBox2);
+            this.DataPanelDetails.Controls.Add(this.DataEditAdvancedImageButton);
+            this.DataPanelDetails.Controls.Add(this.DataRemoveAdvancedImageButton);
             this.DataPanelDetails.Controls.Add(this.dynamicLink1);
             this.DataPanelDetails.Controls.Add(this.label7);
             this.DataPanelDetails.Controls.Add(this.label5);
@@ -199,25 +261,38 @@
             this.DataPanelDetails.Size = new System.Drawing.Size(694, 999);
             this.DataPanelDetails.TabIndex = 3;
             // 
-            // pictureBox3
+            // DataEditAdvancedImageButton
             // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(544, 909);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(70, 70);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 12;
-            this.pictureBox3.TabStop = false;
+            this.DataEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedImageButton.ImageHover")));
+            this.DataEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedImageButton.ImageNormal")));
+            this.DataEditAdvancedImageButton.Location = new System.Drawing.Point(535, 919);
+            this.DataEditAdvancedImageButton.Name = "DataEditAdvancedImageButton";
+            this.DataEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditAdvancedImageButton.TabIndex = 14;
             // 
-            // pictureBox2
+            // DataRemoveAdvancedImageButton
             // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(621, 909);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(70, 70);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 11;
-            this.pictureBox2.TabStop = false;
+            this.DataRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRemoveAdvancedImageButton.ImageHover")));
+            this.DataRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRemoveAdvancedImageButton.ImageNormal")));
+            this.DataRemoveAdvancedImageButton.Location = new System.Drawing.Point(613, 919);
+            this.DataRemoveAdvancedImageButton.Name = "DataRemoveAdvancedImageButton";
+            this.DataRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataRemoveAdvancedImageButton.TabIndex = 13;
+            // 
+            // dynamicLink1
+            // 
+            this.dynamicLink1.ActiveLinkColor = System.Drawing.Color.Red;
+            this.dynamicLink1.AutoSize = true;
+            this.dynamicLink1.LinkColor = System.Drawing.Color.Black;
+            this.dynamicLink1.LinkColorOnMouseHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.dynamicLink1.LinkFont = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dynamicLink1.LinkText = "https://mail.google.com";
+            this.dynamicLink1.LinkVisited = false;
+            this.dynamicLink1.Location = new System.Drawing.Point(19, 488);
+            this.dynamicLink1.Name = "dynamicLink1";
+            this.dynamicLink1.Size = new System.Drawing.Size(666, 45);
+            this.dynamicLink1.TabIndex = 10;
+            this.dynamicLink1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
             // 
             // label7
             // 
@@ -308,21 +383,21 @@
             this.DataPictureBoxDetailsLogo.TabIndex = 0;
             this.DataPictureBoxDetailsLogo.TabStop = false;
             // 
-            // tableLayoutPanel1
+            // DataTableLayoutPanelSubLeft
             // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.DataFlowLayoutPanelList, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.DataPanelFooter, 0, 2);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 13);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1077, 999);
-            this.tableLayoutPanel1.TabIndex = 4;
+            this.DataTableLayoutPanelSubLeft.ColumnCount = 1;
+            this.DataTableLayoutPanelSubLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelSubLeft.Controls.Add(this.DataFlowLayoutPanelList, 0, 0);
+            this.DataTableLayoutPanelSubLeft.Controls.Add(this.DataPanelFooter, 0, 2);
+            this.DataTableLayoutPanelSubLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTableLayoutPanelSubLeft.Location = new System.Drawing.Point(13, 13);
+            this.DataTableLayoutPanelSubLeft.Name = "DataTableLayoutPanelSubLeft";
+            this.DataTableLayoutPanelSubLeft.RowCount = 3;
+            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
+            this.DataTableLayoutPanelSubLeft.Size = new System.Drawing.Size(1077, 999);
+            this.DataTableLayoutPanelSubLeft.TabIndex = 4;
             // 
             // DataFlowLayoutPanelList
             // 
@@ -331,7 +406,7 @@
             this.DataFlowLayoutPanelList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataFlowLayoutPanelList.Location = new System.Drawing.Point(3, 3);
             this.DataFlowLayoutPanelList.Name = "DataFlowLayoutPanelList";
-            this.DataFlowLayoutPanelList.Size = new System.Drawing.Size(1071, 913);
+            this.DataFlowLayoutPanelList.Size = new System.Drawing.Size(1071, 899);
             this.DataFlowLayoutPanelList.TabIndex = 4;
             this.DataFlowLayoutPanelList.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
             this.DataFlowLayoutPanelList.Resize += new System.EventHandler(this.flowLayoutPanel1_Resize);
@@ -339,126 +414,41 @@
             // DataPanelFooter
             // 
             this.DataPanelFooter.BackColor = System.Drawing.Color.White;
-            this.DataPanelFooter.Controls.Add(this.pictureBox6);
-            this.DataPanelFooter.Controls.Add(this.pictureBox5);
-            this.DataPanelFooter.Controls.Add(this.pictureBox4);
+            this.DataPanelFooter.Controls.Add(this.DataRightAdvancedImageButton);
+            this.DataPanelFooter.Controls.Add(this.DataLeftAdvancedImageButton);
+            this.DataPanelFooter.Controls.Add(this.DataAddAdvancedImageButton);
             this.DataPanelFooter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataPanelFooter.Location = new System.Drawing.Point(3, 932);
+            this.DataPanelFooter.Location = new System.Drawing.Point(3, 918);
             this.DataPanelFooter.Name = "DataPanelFooter";
-            this.DataPanelFooter.Size = new System.Drawing.Size(1071, 64);
+            this.DataPanelFooter.Size = new System.Drawing.Size(1071, 78);
             this.DataPanelFooter.TabIndex = 0;
             // 
-            // pictureBox6
+            // DataAddAdvancedImageButton
             // 
-            this.pictureBox6.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox6.Image")));
-            this.pictureBox6.Location = new System.Drawing.Point(550, 9);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox6.TabIndex = 15;
-            this.pictureBox6.TabStop = false;
+            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
+            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
+            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(2, 3);
+            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
+            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataAddAdvancedImageButton.TabIndex = 15;
             // 
-            // pictureBox5
+            // DataLeftAdvancedImageButton
             // 
-            this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
-            this.pictureBox5.Location = new System.Drawing.Point(494, 9);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox5.TabIndex = 14;
-            this.pictureBox5.TabStop = false;
+            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
+            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
+            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(454, 3);
+            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
+            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataLeftAdvancedImageButton.TabIndex = 16;
             // 
-            // pictureBox4
+            // DataRightAdvancedImageButton
             // 
-            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
-            this.pictureBox4.Location = new System.Drawing.Point(3, 9);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox4.TabIndex = 13;
-            this.pictureBox4.TabStop = false;
-            // 
-            // dynamicLink1
-            // 
-            this.dynamicLink1.ActiveLinkColor = System.Drawing.Color.Red;
-            this.dynamicLink1.AutoSize = true;
-            this.dynamicLink1.LinkColor = System.Drawing.Color.Black;
-            this.dynamicLink1.LinkColorOnMouseHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.dynamicLink1.LinkFont = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dynamicLink1.LinkText = "https://mail.google.com";
-            this.dynamicLink1.LinkVisited = false;
-            this.dynamicLink1.Location = new System.Drawing.Point(19, 488);
-            this.dynamicLink1.Name = "dynamicLink1";
-            this.dynamicLink1.Size = new System.Drawing.Size(666, 45);
-            this.dynamicLink1.TabIndex = 10;
-            this.dynamicLink1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(0)))), ((int)(((byte)(128)))));
-            // 
-            // advancedButton2
-            // 
-            this.advancedButton2.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedButton2.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.advancedButton2.FontHover = new System.Drawing.Font("Century Gothic", 10F);
-            this.advancedButton2.FontNormal = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.advancedButton2.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageHover")));
-            this.advancedButton2.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageNormal")));
-            this.advancedButton2.Location = new System.Drawing.Point(5, 150);
-            this.advancedButton2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.advancedButton2.Name = "advancedButton2";
-            this.advancedButton2.Size = new System.Drawing.Size(94, 123);
-            this.advancedButton2.TabIndex = 1;
-            this.advancedButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.advancedButton2.TextHover = "Settings";
-            this.advancedButton2.TextNormal = "Settings";
-            // 
-            // advancedButton1
-            // 
-            this.advancedButton1.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedButton1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.advancedButton1.FontHover = new System.Drawing.Font("Century Gothic", 10F);
-            this.advancedButton1.FontNormal = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.advancedButton1.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageHover")));
-            this.advancedButton1.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageNormal")));
-            this.advancedButton1.Location = new System.Drawing.Point(8, 24);
-            this.advancedButton1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.advancedButton1.Name = "advancedButton1";
-            this.advancedButton1.Size = new System.Drawing.Size(91, 118);
-            this.advancedButton1.TabIndex = 0;
-            this.advancedButton1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.advancedButton1.TextHover = "Home";
-            this.advancedButton1.TextNormal = "Home";
-            // 
-            // ButtonMinimize
-            // 
-            this.ButtonMinimize.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ButtonMinimize.BackgroundColorNormal = System.Drawing.Color.Empty;
-            this.ButtonMinimize.ImageHover = ((System.Drawing.Image)(resources.GetObject("ButtonMinimize.ImageHover")));
-            this.ButtonMinimize.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ButtonMinimize.ImageNormal")));
-            this.ButtonMinimize.Location = new System.Drawing.Point(3, 3);
-            this.ButtonMinimize.Name = "ButtonMinimize";
-            this.ButtonMinimize.Size = new System.Drawing.Size(50, 50);
-            this.ButtonMinimize.TabIndex = 2;
-            // 
-            // ButtonMaximize
-            // 
-            this.ButtonMaximize.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ButtonMaximize.BackgroundColorNormal = System.Drawing.Color.Empty;
-            this.ButtonMaximize.ImageHover = ((System.Drawing.Image)(resources.GetObject("ButtonMaximize.ImageHover")));
-            this.ButtonMaximize.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ButtonMaximize.ImageNormal")));
-            this.ButtonMaximize.Location = new System.Drawing.Point(59, 3);
-            this.ButtonMaximize.Name = "ButtonMaximize";
-            this.ButtonMaximize.Size = new System.Drawing.Size(50, 50);
-            this.ButtonMaximize.TabIndex = 1;
-            // 
-            // ButtonClose
-            // 
-            this.ButtonClose.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(71)))), ((int)(((byte)(71)))));
-            this.ButtonClose.BackgroundColorNormal = System.Drawing.Color.Empty;
-            this.ButtonClose.ImageHover = ((System.Drawing.Image)(resources.GetObject("ButtonClose.ImageHover")));
-            this.ButtonClose.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ButtonClose.ImageNormal")));
-            this.ButtonClose.Location = new System.Drawing.Point(115, 3);
-            this.ButtonClose.Name = "ButtonClose";
-            this.ButtonClose.Size = new System.Drawing.Size(50, 50);
-            this.ButtonClose.TabIndex = 0;
+            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
+            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
+            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(532, 2);
+            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
+            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataRightAdvancedImageButton.TabIndex = 17;
             // 
             // Form1
             // 
@@ -481,14 +471,9 @@
             this.DataTableLayoutPanelMain.ResumeLayout(false);
             this.DataPanelDetails.ResumeLayout(false);
             this.DataPanelDetails.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).EndInit();
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.DataTableLayoutPanelSubLeft.ResumeLayout(false);
             this.DataPanelFooter.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -503,7 +488,7 @@
         private AdvancedButton advancedButton2;
         private System.Windows.Forms.Panel DataPanelDetails;
         private System.Windows.Forms.FlowLayoutPanel DataFlowLayoutPanelList;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel DataTableLayoutPanelSubLeft;
         private System.Windows.Forms.Panel DataPanelFooter;
         private System.Windows.Forms.Panel WindowIconPanel;
         private WindowButton ButtonMinimize;
@@ -522,11 +507,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private DynamicLink dynamicLink1;
-        private System.Windows.Forms.PictureBox pictureBox3;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox4;
-        private System.Windows.Forms.PictureBox pictureBox6;
-        private System.Windows.Forms.PictureBox pictureBox5;
+        private AdvancedImageButton DataEditAdvancedImageButton;
+        private AdvancedImageButton DataRemoveAdvancedImageButton;
+        private AdvancedImageButton DataAddAdvancedImageButton;
+        private AdvancedImageButton DataRightAdvancedImageButton;
+        private AdvancedImageButton DataLeftAdvancedImageButton;
     }
 }
 
