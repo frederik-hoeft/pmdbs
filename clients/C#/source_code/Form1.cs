@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MetroFramework;
 
 namespace pmdbs
 {
@@ -30,6 +31,11 @@ namespace pmdbs
             ButtonClose.OnClickEvent += ButtonClose_Click;
             ButtonMaximize.OnClickEvent += ButtonMaximize_Click;
             ButtonMinimize.OnClickEvent += ButtonMinimize_Click;
+            DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
+            DataRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
+            DataEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
+            DataLeftAdvancedImageButton.OnClickEvent += DataLeftAdvancedImageButton_Click;
+            DataRightAdvancedImageButton.OnClickEvent += DataRightAdvancedImageButton_Click;
         }
 
         private void ListEntry_Click(object sender, EventArgs e)
@@ -71,7 +77,7 @@ namespace pmdbs
                     UserNameFont = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
                     UserNameForeColor = SystemColors.ControlText,
                     ColorNormal = Color.White,
-                    ColorHover = Colors.Orange,
+                    ColorHover = Colors.LightGray,
                     BackgroundColor = Color.White,
                     id = i
                 };
@@ -91,8 +97,34 @@ namespace pmdbs
 
         private void advancedButton2_Click(object sender, EventArgs e)
         {
-            
+
         }
+
+        private void DataAddAdvancedImageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataEditAdvancedImageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataLeftAdvancedImageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataRightAdvancedImageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
 
         private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
         {

@@ -51,6 +51,7 @@ namespace pmdbs
             get { return ID; }
             set { ID = value; }
         }
+
         public ListEntry() 
         {
             InitializeComponent();
@@ -215,6 +216,8 @@ namespace pmdbs
         {
             OnLeaveEvent();
         }
+
+        
         //-------------------------------------------------------------------
         /*GraphicsPath GetRoundPath(RectangleF Rect, int radius)
         {
