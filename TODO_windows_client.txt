@@ -2,6 +2,7 @@ WINDOWS CLIENT TODO:
 
     - DESIGN / CREATE UI
         - First, Previous, Next, Last Page Buttons for Data list
+        - set minimum size for Form
         - Set up Details Window
             - Change Properties to fixed size
             - create design
