@@ -36,6 +36,10 @@ namespace pmdbs
             DataEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
             DataLeftAdvancedImageButton.OnClickEvent += DataLeftAdvancedImageButton_Click;
             DataRightAdvancedImageButton.OnClickEvent += DataRightAdvancedImageButton_Click;
+            DataDetailsEntryEmail.OnClickEvent += DataDetailsEntryEmail_Click;
+            DataDetailsEntryUsername.OnClickEvent += DataDetailsEntryUsername_Click;
+            DataDetailsEntryPassword.OnClickEvent += DataDetailsEntryPassword_Click;
+            DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
         }
 
         private void ListEntry_Click(object sender, EventArgs e)
@@ -125,6 +129,25 @@ namespace pmdbs
 
         }
 
+        private void DataDetailsEntryUsername_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(DataDetailsEntryUsername.Content);
+        }
+
+        private void DataDetailsEntryPassword_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(DataDetailsEntryPassword.Content);
+        }
+
+        private void DataDetailsEntryEmail_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(DataDetailsEntryEmail.Content);
+        }
+
+        private void DataDetailsEntryWebsite_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
+        }
 
         private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
         {
@@ -141,10 +164,21 @@ namespace pmdbs
             if (this.WindowState == FormWindowState.Maximized)
             {
                 this.WindowState = FormWindowState.Normal;
+                DataTableLayoutPanelMain.ColumnStyles[0].Width = 10;
+                DataTableLayoutPanelMain.ColumnStyles[2].Width = 10;
+                DataTableLayoutPanelMain.ColumnStyles[4].Width = 10;
+                DataTableLayoutPanelMain.RowStyles[0].Height = 10;
+                DataTableLayoutPanelMain.RowStyles[2].Height = 10;
             }
             else
             {
                 this.WindowState = FormWindowState.Maximized;
+                DataTableLayoutPanelMain.ColumnStyles[0].Width = 20;
+                DataTableLayoutPanelMain.ColumnStyles[2].Width = 20;
+                DataTableLayoutPanelMain.ColumnStyles[4].Width = 20;
+                DataTableLayoutPanelMain.RowStyles[0].Height = 20;
+                DataTableLayoutPanelMain.RowStyles[2].Height = 20;
+                
             }
             flowLayoutPanel1_Resize(this, null);
         }

@@ -126,7 +126,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "ListEntry";
             this.Size = new System.Drawing.Size(598, 64);
             this.Click += new System.EventHandler(this.ListEntry_Click);
