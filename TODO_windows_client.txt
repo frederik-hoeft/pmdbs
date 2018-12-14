@@ -1,18 +1,30 @@
 WINDOWS CLIENT TODO:
 
     - DESIGN / CREATE UI
-        - set minimum size for Form
-        - get Icons from websites (urls) to show in ListEntry
-            - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
-            - https://i.olsh.me/ MAY BE BETTER
+        - create Welcome screen
+        - create Login screen
+        - create Settings screen
+        - create Add panel
+        - create Edit panel
+        - create Loading screen
+        - create Credits screen (used way too much licensed things)
+        - create Account screen
+        - create Account_edit screen
+        
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
         - Rename all variables to something meaningful
+        - create method to get Icons from websites (urls) to show in ListEntry
+            - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
+            - https://i.olsh.me/ MAY BE BETTER
+        - allow switching between menu points
+        - allow using local certificate to validate server --> settings
+        
         
     - CREATE DATABASE ACCESS METHODS
     
-    - CREATE SOCKET RELATED METHODS
+    - CREATE SOCKET MANAGEMENT METHODS
     
     - IMPLEMENT SECURITY RELATED METHODS
         - Implement HMAC
