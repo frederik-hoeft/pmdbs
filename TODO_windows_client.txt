@@ -1,11 +1,13 @@
 WINDOWS CLIENT TODO:
 
     - DESIGN / CREATE UI
+        - create Data screen
+            - create Edit panel
+            - create NoSelection panel
         - create Welcome screen
         - create Login screen
         - create Settings screen
-        - create Add panel
-        - create Edit panel
+        - create Add screen/panel
         - create Loading screen
         - create Credits screen (used way too much licensed things)
         - create Account screen
