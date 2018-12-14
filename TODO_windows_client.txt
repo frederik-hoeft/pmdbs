@@ -1,13 +1,7 @@
 WINDOWS CLIENT TODO:
 
     - DESIGN / CREATE UI
-        - First, Previous, Next, Last Page Buttons for Data list
         - set minimum size for Form
-        - Set up Details Window
-            - Change Properties to fixed size
-            - create design
-            - for add, edit and remove icon create colored icon for OnMouseHover event
-            - create new Icon for Settings (template in folder)
         - get Icons from websites (urls) to show in ListEntry
             - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
             - https://i.olsh.me/ MAY BE BETTER
@@ -22,4 +16,3 @@ WINDOWS CLIENT TODO:
     
     - IMPLEMENT SECURITY RELATED METHODS
         - Implement HMAC
-    
