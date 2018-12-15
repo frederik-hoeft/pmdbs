@@ -12,5 +12,3 @@ TODO
               - back_button_click => updating datalist (remove update-button!!)
               
   - ask for quitting/closing app after pressing [BACK]-Button
-  
-  - "msg-method" for showing toasts in DataBaseHelper.java
