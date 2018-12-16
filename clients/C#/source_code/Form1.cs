@@ -32,14 +32,16 @@ namespace pmdbs
             ButtonMaximize.OnClickEvent += ButtonMaximize_Click;
             ButtonMinimize.OnClickEvent += ButtonMinimize_Click;
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
-            DataRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
-            DataEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
+            DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
+            DataDetailsEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
             DataLeftAdvancedImageButton.OnClickEvent += DataLeftAdvancedImageButton_Click;
             DataRightAdvancedImageButton.OnClickEvent += DataRightAdvancedImageButton_Click;
             DataDetailsEntryEmail.OnClickEvent += DataDetailsEntryEmail_Click;
             DataDetailsEntryUsername.OnClickEvent += DataDetailsEntryUsername_Click;
             DataDetailsEntryPassword.OnClickEvent += DataDetailsEntryPassword_Click;
             DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
+            DataEditSaveAdvancedImageButton.OnClickEvent += DataEditSave_Click;
+            DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
         }
 
         private void ListEntry_Click(object sender, EventArgs e)
@@ -109,9 +111,19 @@ namespace pmdbs
 
         }
 
+        private void DataEditSave_Click(object sender, EventArgs e)
+        {
+            DataPanelDetails.BringToFront();
+        }
+
+        private void DataEditCancel_Click(object sender, EventArgs e)
+        {
+            DataPanelDetails.BringToFront();
+        }
+
         private void DataEditAdvancedImageButton_Click(object sender, EventArgs e)
         {
-
+            DataPanelEdit.BringToFront();
         }
 
         private void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)

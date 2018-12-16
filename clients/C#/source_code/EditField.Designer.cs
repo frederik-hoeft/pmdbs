@@ -30,8 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.advancedTextBox1 = new pmdbs.AdvancedTextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.advancedTextBox1 = new pmdbs.AdvancedTextBox();
             this.advancedImageButton1 = new pmdbs.AdvancedImageButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -63,6 +63,20 @@
             this.panel1.Size = new System.Drawing.Size(436, 111);
             this.panel1.TabIndex = 0;
             // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.White;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(436, 19);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "TextTitle";
+            this.textBox1.SizeChanged += new System.EventHandler(this.textBox1_SizeChanged);
+            // 
             // advancedTextBox1
             // 
             this.advancedTextBox1.BackColor = System.Drawing.Color.White;
@@ -77,19 +91,6 @@
             this.advancedTextBox1.TabIndex = 1;
             this.advancedTextBox1.TextValue = "TextTextBox";
             this.advancedTextBox1.SizeChanged += new System.EventHandler(this.advancedTextBox1_SizeChanged);
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.White;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(436, 19);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "TextTitle";
-            this.textBox1.SizeChanged += new System.EventHandler(this.textBox1_SizeChanged);
             // 
             // advancedImageButton1
             // 
