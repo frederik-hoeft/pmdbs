@@ -2,7 +2,6 @@ WINDOWS CLIENT TODO:
 
     - DESIGN / CREATE UI
         - create Data screen
-            - create Edit panel
             - create NoSelection panel
         - create Welcome screen
         - create Login screen
