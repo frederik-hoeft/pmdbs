@@ -134,7 +134,7 @@ namespace pmdbs
             Graphics G = Graphics.FromImage(B);
             G.Clear(Color.Transparent);
 
-            G.DrawLine(new Pen(new SolidBrush(IsFocused ? NormalColor : NormalColor)), new Point(0, Height - 2), new Point(Width, Height - 2));
+            G.DrawLine(new Pen(new SolidBrush(NormalColor)), new Point(0, Height - 2), new Point(Width, Height - 2));
             if (this.Enabled)
             {
                 G.FillRectangle(new SolidBrush(ColorFocus), PointAnimation, (float)Height - 3, SizeAnimation, 2);
