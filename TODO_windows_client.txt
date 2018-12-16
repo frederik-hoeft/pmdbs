@@ -15,6 +15,7 @@ WINDOWS CLIENT TODO:
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
+        - remove unused libraries
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
