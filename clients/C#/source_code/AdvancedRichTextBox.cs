@@ -8,12 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
+using System.Windows.Forms.VisualStyles;
 
 namespace pmdbs
 {
-
-    public partial class AdvancedTextBox : UserControl
+    public partial class AdvancedRichTextBox : UserControl
     {
         [DllImport("user32.dll")]
         static extern bool CreateCaret(IntPtr hWnd, IntPtr hBitmap, int nWidth, int nHeight);
@@ -29,12 +28,12 @@ namespace pmdbs
         private Color FocusForeColor = Color.Black;
         private Boolean IsFocused = false;
         Timer AnimationTimer = new Timer { Interval = 1 };
-        public AdvancedTextBox()
+        VisualStyleRenderer renderer = new VisualStyleRenderer(VisualStyleElement.Button.PushButton.Normal);
+        public AdvancedRichTextBox()
         {
             InitializeComponent();
-            this.Height = textBox1.Height + 4;
-            this.textBox1.GotFocus += OnFocus;
-            this.textBox1.LostFocus += OnFocusLost;
+            this.richTextBox1.GotFocus += OnFocus;
+            this.richTextBox1.LostFocus += OnFocusLost;
             AnimationTimer.Tick += new EventHandler(AnimationTick);
             SizeInc_Dec = Width / 18;
             PointInc_Dec = Width / 36;
@@ -43,7 +42,7 @@ namespace pmdbs
         public Color ForeColorNormal
         {
             get { return NormalForeColor; }
-            set { NormalForeColor = value; textBox1.ForeColor = value; }
+            set { NormalForeColor = value; richTextBox1.ForeColor = value; }
         }
 
         public Color ForeColorFocus
@@ -54,8 +53,8 @@ namespace pmdbs
 
         public String TextValue
         {
-            get { return textBox1.Text; }
-            set { textBox1.Text = value; }
+            get { return richTextBox1.Text; }
+            set { richTextBox1.Text = value; }
         }
 
         public Color ColorNormal
@@ -72,33 +71,8 @@ namespace pmdbs
 
         public override Font Font
         {
-            get { return textBox1.Font; }
-            set { textBox1.Font = value; }
-        }
-
-        private void AdvancedTextBox_Paint(object sender, PaintEventArgs e)
-        {
-            Bitmap B = new Bitmap(Width, Height);
-            Graphics G = Graphics.FromImage(B);
-            G.Clear(Color.Transparent);
-
-            G.DrawLine(new Pen(new SolidBrush(NormalColor)), new Point(0, Height - 2), new Point(Width, Height - 2));
-            if (this.Enabled)
-            {
-                G.FillRectangle(new SolidBrush(ColorFocus), PointAnimation, (float)Height - 3, SizeAnimation, 2);
-            }
-
-            e.Graphics.DrawImage((Image)(B.Clone()), 0, 0);
-            G.Dispose();
-            B.Dispose();
-        }
-
-        private void textBox1_SizeChanged(object sender, EventArgs e)
-        {
-            this.Height = textBox1.Height + 4;
-            SizeInc_Dec = Width / 18;
-            PointInc_Dec = Width / 36;
-            PointAnimation = Width / 2;
+            get { return richTextBox1.Font; }
+            set { richTextBox1.Font = value; }
         }
 
         private void OnFocus(object sender, EventArgs e)
@@ -107,18 +81,18 @@ namespace pmdbs
             this.Invalidate();
             Bitmap bmp = new Bitmap(1, 1);
             bmp.SetPixel(0, 0, ColorExtensions.GetContrast(FocusColor, true));
-            bmp = new Bitmap(bmp, 2, textBox1.Height);
-            CreateCaret(textBox1.Handle, bmp.GetHbitmap(FocusColor), 2, textBox1.Height);
-            ShowCaret(textBox1.Handle);
+            bmp = new Bitmap(bmp, 2, richTextBox1.Height);
+            CreateCaret(richTextBox1.Handle, bmp.GetHbitmap(FocusColor), 2, richTextBox1.Height);
+            ShowCaret(richTextBox1.Handle);
             AnimationTimer.Start();
-            textBox1.ForeColor = FocusForeColor;
+            richTextBox1.ForeColor = FocusForeColor;
         }
 
         private void OnFocusLost(object sender, EventArgs e)
         {
             IsFocused = false;
             AnimationTimer.Start();
-            textBox1.ForeColor = NormalForeColor;
+            richTextBox1.ForeColor = NormalForeColor;
             this.Invalidate();
         }
 
@@ -152,6 +126,31 @@ namespace pmdbs
                     this.Invalidate();
                 }
             }
+        }
+
+        private void AdvancedRichTextBox_Paint(object sender, PaintEventArgs e)
+        {
+            Bitmap B = new Bitmap(Width, Height);
+            Graphics G = Graphics.FromImage(B);
+            G.Clear(Color.Transparent);
+
+            G.DrawLine(new Pen(new SolidBrush(IsFocused ? NormalColor : NormalColor)), new Point(0, Height - 2), new Point(Width, Height - 2));
+            if (this.Enabled)
+            {
+                G.FillRectangle(new SolidBrush(ColorFocus), PointAnimation, (float)Height - 3, SizeAnimation, 2);
+            }
+
+            e.Graphics.DrawImage((Image)(B.Clone()), 0, 0);
+            G.Dispose();
+            B.Dispose();
+        }
+
+        private void AdvancedRichTextBox_SizeChanged(object sender, EventArgs e)
+        {
+            richTextBox1.Height = this.Height - 4;
+            SizeInc_Dec = Width / 18;
+            PointInc_Dec = Width / 36;
+            PointAnimation = Width / 2;
         }
     }
 }
