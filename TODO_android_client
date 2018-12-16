@@ -1,9 +1,5 @@
 TODO
 
-  - methods for writing / reading Tbl_icon
-  
-  - update listadapter (including icon)
-    
   - dialogs for "welcome screen"
       - (1)=> first App start? (first usage = true) => register / syncing with online database
       - (2)=> account existing => typing in masterPW / sincing with online database
