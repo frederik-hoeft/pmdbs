@@ -24,6 +24,9 @@ namespace pmdbs
         private Timer AnimationTimer = new Timer { Interval = 1 };
         private Boolean IsFocused = false;
         private int SizeInc_Dec;
+        private int R;
+        private int G;
+        private int B;
 
         public MenuEntry()
         {
@@ -35,6 +38,9 @@ namespace pmdbs
             tableLayoutPanel1.ColumnStyles[1].Width = 0;
             label1.Visible = false;
             SizeInc_Dec = (tableLayoutPanel1.Width) / 18;
+            R = (NormalColor.R - HoverColor.R) / 18;
+            G = (NormalColor.G - HoverColor.G) / 18;
+            B = (NormalColor.B - HoverColor.B) / 18;
         }
 
         #region getters/setters
@@ -53,13 +59,22 @@ namespace pmdbs
         public Color ColorNormal
         {
             get { return NormalColor; }
-            set { NormalColor = value; tableLayoutPanel1.BackColor = value; }
+            set { NormalColor = value;
+                tableLayoutPanel1.BackColor = value;
+                R = (NormalColor.R - HoverColor.R) / 18;
+                G = (NormalColor.G - HoverColor.G) / 18;
+                B = (NormalColor.B - HoverColor.B) / 18;
+            }
         }
 
         public Color ColorHover
         {
             get { return HoverColor; }
-            set { HoverColor = value; }
+            set { HoverColor = value;
+                R = (NormalColor.R - HoverColor.R) / 18;
+                G = (NormalColor.G - HoverColor.G) / 18;
+                B = (NormalColor.B - HoverColor.B) / 18;
+            }
         }
 
         public Font FontTitle
@@ -103,7 +118,6 @@ namespace pmdbs
         {
             IsFocused = true;
             AnimationTimer.Start();
-            tableLayoutPanel1.BackColor = HoverColor;
             pictureBox1.Image = HoverImage;
             this.Padding = HoverPadding;
             this.BackColor = BorderColorHover;
@@ -113,7 +127,6 @@ namespace pmdbs
         {
             IsFocused = false;
             AnimationTimer.Start();
-            tableLayoutPanel1.BackColor = NormalColor;
             pictureBox1.Image = NormalImage;
             this.Padding = NormalPadding;
             this.BackColor = BorderColorNormal;
@@ -127,6 +140,7 @@ namespace pmdbs
                 {
                     tableLayoutPanel1.ColumnStyles[0].Width -= SizeInc_Dec;
                     tableLayoutPanel1.ColumnStyles[1].Width += SizeInc_Dec;
+                    tableLayoutPanel1.BackColor = Color.FromArgb(tableLayoutPanel1.BackColor.R - R, tableLayoutPanel1.BackColor.G - G, tableLayoutPanel1.BackColor.B - B);
                 }
                 else
                 {
@@ -145,6 +159,7 @@ namespace pmdbs
                 {
                     tableLayoutPanel1.ColumnStyles[0].Width += SizeInc_Dec;
                     tableLayoutPanel1.ColumnStyles[1].Width -= SizeInc_Dec;
+                    tableLayoutPanel1.BackColor = Color.FromArgb(tableLayoutPanel1.BackColor.R + R, tableLayoutPanel1.BackColor.G + G, tableLayoutPanel1.BackColor.B + B);
                 }
 
                 if (tableLayoutPanel1.ColumnStyles[1].Width - SizeInc_Dec < 0)
@@ -203,6 +218,27 @@ namespace pmdbs
         {
             OnMouseLeave();
         }
+
+        private void MenuEntry_Click(object sender, EventArgs e)
+        {
+            OnClickEvent(this, e);
+        }
+
+        private void tableLayoutPanel1_Click(object sender, EventArgs e)
+        {
+            OnClickEvent(this, e);
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            OnClickEvent(this, e);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            OnClickEvent(this, e);
+        }
+
         #endregion
     }
 }
