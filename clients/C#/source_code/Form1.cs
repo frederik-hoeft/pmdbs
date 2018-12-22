@@ -33,6 +33,8 @@ namespace pmdbs
             DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
             DataEditSaveAdvancedImageButton.OnClickEvent += DataEditSave_Click;
             DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
+            DashboardMenuEntryHome.OnClickEvent += DashboardMenuEntryHome_Click;
+            DashboardMenuEntrySettings.OnClickEvent += DashboardMenuEntrySettings_Click;
         }
         #region FUNCTIONALITY_METHODS
         public const int WM_NCLBUTTONDOWN = 0xA1;
@@ -183,6 +185,19 @@ namespace pmdbs
             int index = senderObject.id;
             MessageBox.Show("INDEX: " + index.ToString(), "finally...", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+        #region Dashboard
+        private void DashboardMenuEntryHome_Click(object sender, EventArgs e)
+        {
+            DashboardPanelHomeIndicator.BackColor = Colors.Orange;
+            DashboardPanelSettingsIndicator.BackColor = Color.White;
+        }
+
+        private void DashboardMenuEntrySettings_Click(object sender, EventArgs e)
+        {
+            DashboardPanelHomeIndicator.BackColor = Color.White;
+            DashboardPanelSettingsIndicator.BackColor = Colors.Orange;
+        }
+        #endregion
 
         private void Populate()
         {
