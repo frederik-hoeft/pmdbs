@@ -27,6 +27,7 @@ namespace pmdbs
             DataDetailsEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
             DataLeftAdvancedImageButton.OnClickEvent += DataLeftAdvancedImageButton_Click;
             DataRightAdvancedImageButton.OnClickEvent += DataRightAdvancedImageButton_Click;
+            DataSyncAdvancedImageButton.OnClickEvent += DataSyncAdvancedImageButton_Click;
             DataDetailsEntryEmail.OnClickEvent += DataDetailsEntryEmail_Click;
             DataDetailsEntryUsername.OnClickEvent += DataDetailsEntryUsername_Click;
             DataDetailsEntryPassword.OnClickEvent += DataDetailsEntryPassword_Click;
@@ -188,7 +189,9 @@ namespace pmdbs
             int index = senderObject.id;
             MessageBox.Show("INDEX: " + index.ToString(), "finally...", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
         #region Dashboard
+
         private void DashboardMenuEntryHome_Click(object sender, EventArgs e)
         {
             DashboardPanelHomeIndicator.BackColor = Colors.Orange;
@@ -208,6 +211,7 @@ namespace pmdbs
             DashboardPanelHomeIndicator.BackColor = Color.White;
             DashboardPanelSettingsIndicator.BackColor = Color.White;
             DashboardPanelPasswordsIndicator.BackColor = Colors.Orange;
+            Populate();
         }
         #endregion
 
@@ -248,7 +252,7 @@ namespace pmdbs
 
         private void advancedButton1_Click(object sender, EventArgs e)
         {
-            Populate();
+            
         }
 
         private void advancedButton2_Click(object sender, EventArgs e)
@@ -287,6 +291,11 @@ namespace pmdbs
         }
 
         private void DataRightAdvancedImageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
 
         }
