@@ -35,7 +35,9 @@ namespace pmdbs
             DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
             DashboardMenuEntryHome.OnClickEvent += DashboardMenuEntryHome_Click;
             DashboardMenuEntrySettings.OnClickEvent += DashboardMenuEntrySettings_Click;
+            DashboardMenuEntryPasswords.OnClickEvent += DashboardMenuEntryPasswords_Click;
         }
+
         #region FUNCTIONALITY_METHODS
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
@@ -178,6 +180,7 @@ namespace pmdbs
             B.Dispose();
         }
         #endregion
+
         private void ListEntry_Click(object sender, EventArgs e)
         {
             DataPanelDetails.BringToFront();
@@ -190,12 +193,21 @@ namespace pmdbs
         {
             DashboardPanelHomeIndicator.BackColor = Colors.Orange;
             DashboardPanelSettingsIndicator.BackColor = Color.White;
+            DashboardPanelPasswordsIndicator.BackColor = Color.White;
         }
 
         private void DashboardMenuEntrySettings_Click(object sender, EventArgs e)
         {
             DashboardPanelHomeIndicator.BackColor = Color.White;
             DashboardPanelSettingsIndicator.BackColor = Colors.Orange;
+            DashboardPanelPasswordsIndicator.BackColor = Color.White;
+        }
+
+        private void DashboardMenuEntryPasswords_Click(object sender, EventArgs e)
+        {
+            DashboardPanelHomeIndicator.BackColor = Color.White;
+            DashboardPanelSettingsIndicator.BackColor = Color.White;
+            DashboardPanelPasswordsIndicator.BackColor = Colors.Orange;
         }
         #endregion
 

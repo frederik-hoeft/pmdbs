@@ -34,6 +34,9 @@
             this.DashboardPanelHome = new System.Windows.Forms.Panel();
             this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
             this.DashboardPanelHomeIndicator = new System.Windows.Forms.Panel();
+            this.DashboardPanelPasswords = new System.Windows.Forms.Panel();
+            this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
+            this.DashboardPanelPasswordsIndicator = new System.Windows.Forms.Panel();
             this.DashboardPanelSettings = new System.Windows.Forms.Panel();
             this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
             this.DashboardPanelSettingsIndicator = new System.Windows.Forms.Panel();
@@ -87,6 +90,7 @@
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
+            this.DashboardPanelPasswords.SuspendLayout();
             this.DashboardPanelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBox)).BeginInit();
             this.DataPanelMain.SuspendLayout();
@@ -119,6 +123,7 @@
             this.DashboardPanel.Location = new System.Drawing.Point(20, 174);
             this.DashboardPanel.Margin = new System.Windows.Forms.Padding(1);
             this.DashboardPanel.Name = "DashboardPanel";
+            this.DashboardPanel.Padding = new System.Windows.Forms.Padding(0, 1, 0, 0);
             this.DashboardPanel.Size = new System.Drawing.Size(265, 998);
             this.DashboardPanel.TabIndex = 1;
             this.DashboardPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.DashboardPanel_Paint);
@@ -126,12 +131,13 @@
             // DashboardFlowLayoutPanel
             // 
             this.DashboardFlowLayoutPanel.Controls.Add(this.DashboardPanelHome);
+            this.DashboardFlowLayoutPanel.Controls.Add(this.DashboardPanelPasswords);
             this.DashboardFlowLayoutPanel.Controls.Add(this.DashboardPanelSettings);
             this.DashboardFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DashboardFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.DashboardFlowLayoutPanel.Location = new System.Drawing.Point(0, 1);
             this.DashboardFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.DashboardFlowLayoutPanel.Name = "DashboardFlowLayoutPanel";
-            this.DashboardFlowLayoutPanel.Size = new System.Drawing.Size(265, 735);
+            this.DashboardFlowLayoutPanel.Size = new System.Drawing.Size(265, 734);
             this.DashboardFlowLayoutPanel.TabIndex = 3;
             // 
             // DashboardPanelHome
@@ -176,12 +182,54 @@
             this.DashboardPanelHomeIndicator.Size = new System.Drawing.Size(39, 74);
             this.DashboardPanelHomeIndicator.TabIndex = 6;
             // 
+            // DashboardPanelPasswords
+            // 
+            this.DashboardPanelPasswords.BackColor = System.Drawing.Color.Black;
+            this.DashboardPanelPasswords.Controls.Add(this.DashboardMenuEntryPasswords);
+            this.DashboardPanelPasswords.Controls.Add(this.DashboardPanelPasswordsIndicator);
+            this.DashboardPanelPasswords.Location = new System.Drawing.Point(0, 75);
+            this.DashboardPanelPasswords.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardPanelPasswords.Name = "DashboardPanelPasswords";
+            this.DashboardPanelPasswords.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
+            this.DashboardPanelPasswords.Size = new System.Drawing.Size(269, 75);
+            this.DashboardPanelPasswords.TabIndex = 8;
+            // 
+            // DashboardMenuEntryPasswords
+            // 
+            this.DashboardMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntryPasswords.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageHover")));
+            this.DashboardMenuEntryPasswords.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageNormal")));
+            this.DashboardMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.Name = "DashboardMenuEntryPasswords";
+            this.DashboardMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntryPasswords.TabIndex = 5;
+            this.DashboardMenuEntryPasswords.TextTitle = "Passwords";
+            // 
+            // DashboardPanelPasswordsIndicator
+            // 
+            this.DashboardPanelPasswordsIndicator.BackColor = System.Drawing.Color.White;
+            this.DashboardPanelPasswordsIndicator.Dock = System.Windows.Forms.DockStyle.Left;
+            this.DashboardPanelPasswordsIndicator.Location = new System.Drawing.Point(0, 0);
+            this.DashboardPanelPasswordsIndicator.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardPanelPasswordsIndicator.Name = "DashboardPanelPasswordsIndicator";
+            this.DashboardPanelPasswordsIndicator.Size = new System.Drawing.Size(39, 74);
+            this.DashboardPanelPasswordsIndicator.TabIndex = 6;
+            // 
             // DashboardPanelSettings
             // 
             this.DashboardPanelSettings.BackColor = System.Drawing.Color.Black;
             this.DashboardPanelSettings.Controls.Add(this.DashboardMenuEntrySettings);
             this.DashboardPanelSettings.Controls.Add(this.DashboardPanelSettingsIndicator);
-            this.DashboardPanelSettings.Location = new System.Drawing.Point(0, 75);
+            this.DashboardPanelSettings.Location = new System.Drawing.Point(0, 150);
             this.DashboardPanelSettings.Margin = new System.Windows.Forms.Padding(0);
             this.DashboardPanelSettings.Name = "DashboardPanelSettings";
             this.DashboardPanelSettings.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
@@ -782,7 +830,7 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 265F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 267F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1765F));
             this.tableLayoutPanel1.Controls.Add(this.WindowPictureBoxIcon, 0, 0);
@@ -805,7 +853,7 @@
             this.WindowPictureBoxIcon.Location = new System.Drawing.Point(0, 1);
             this.WindowPictureBoxIcon.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
             this.WindowPictureBoxIcon.Name = "WindowPictureBoxIcon";
-            this.WindowPictureBoxIcon.Size = new System.Drawing.Size(264, 102);
+            this.WindowPictureBoxIcon.Size = new System.Drawing.Size(266, 102);
             this.WindowPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.WindowPictureBoxIcon.TabIndex = 10;
             this.WindowPictureBoxIcon.TabStop = false;
@@ -816,7 +864,7 @@
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(275, 1);
+            this.panel1.Location = new System.Drawing.Point(277, 1);
             this.panel1.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1765, 102);
@@ -851,6 +899,7 @@
             this.DashboardPanel.ResumeLayout(false);
             this.DashboardFlowLayoutPanel.ResumeLayout(false);
             this.DashboardPanelHome.ResumeLayout(false);
+            this.DashboardPanelPasswords.ResumeLayout(false);
             this.DashboardPanelSettings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBox)).EndInit();
             this.DataPanelMain.ResumeLayout(false);
@@ -937,6 +986,9 @@
         private System.Windows.Forms.Panel DashboardPanelSettings;
         private MenuEntry DashboardMenuEntrySettings;
         private System.Windows.Forms.Panel DashboardPanelSettingsIndicator;
+        private System.Windows.Forms.Panel DashboardPanelPasswords;
+        private MenuEntry DashboardMenuEntryPasswords;
+        private System.Windows.Forms.Panel DashboardPanelPasswordsIndicator;
     }
 }
 
