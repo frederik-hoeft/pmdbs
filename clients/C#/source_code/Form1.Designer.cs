@@ -87,6 +87,7 @@
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
+            this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -357,6 +358,7 @@
             // DataPanelFooterRight
             // 
             this.DataPanelFooterRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DataPanelFooterRight.Controls.Add(this.DataSyncAdvancedImageButton);
             this.DataPanelFooterRight.Controls.Add(this.DataRightAdvancedImageButton);
             this.DataPanelFooterRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelFooterRight.Location = new System.Drawing.Point(446, 0);
@@ -881,6 +883,16 @@
             this.label4.TabIndex = 10;
             this.label4.Text = "Some headline";
             // 
+            // DataSyncAdvancedImageButton
+            // 
+            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
+            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
+            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
+            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
+            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataSyncAdvancedImageButton.TabIndex = 17;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -989,6 +1001,7 @@
         private System.Windows.Forms.Panel DashboardPanelPasswords;
         private MenuEntry DashboardMenuEntryPasswords;
         private System.Windows.Forms.Panel DashboardPanelPasswordsIndicator;
+        private AdvancedImageButton DataSyncAdvancedImageButton;
     }
 }
 
