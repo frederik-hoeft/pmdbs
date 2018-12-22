@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.DashboardPanel = new System.Windows.Forms.Panel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.DataPanelMain = new System.Windows.Forms.Panel();
             this.DataTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -60,7 +61,10 @@
             this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.menuEntry1 = new pmdbs.MenuEntry();
+            this.advancedButton2 = new pmdbs.AdvancedButton();
+            this.advancedButton1 = new pmdbs.AdvancedButton();
+            this.menuEntry4 = new pmdbs.MenuEntry();
+            this.menuEntry2 = new pmdbs.MenuEntry();
             this.DataCustomLabelNotes = new pmdbs.CustomLabel();
             this.DataDetailsEntryUsername = new pmdbs.DetailsEntry();
             this.DataDetailsEntryPassword = new pmdbs.DetailsEntry();
@@ -76,11 +80,10 @@
             this.editField3 = new pmdbs.EditField();
             this.editField2 = new pmdbs.EditField();
             this.editField1 = new pmdbs.EditField();
-            this.advancedButton2 = new pmdbs.AdvancedButton();
-            this.advancedButton1 = new pmdbs.AdvancedButton();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.menuEntry1 = new pmdbs.MenuEntry();
             this.menuEntry3 = new pmdbs.MenuEntry();
             this.DashboardPanel.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.DataPanelMain.SuspendLayout();
             this.DataTableLayoutPanelMain.SuspendLayout();
@@ -101,7 +104,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).BeginInit();
             this.panel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -116,6 +118,17 @@
             this.DashboardPanel.Size = new System.Drawing.Size(265, 998);
             this.DashboardPanel.TabIndex = 1;
             this.DashboardPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.DashboardPanel_Paint);
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.menuEntry1);
+            this.flowLayoutPanel1.Controls.Add(this.menuEntry3);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(265, 735);
+            this.flowLayoutPanel1.TabIndex = 3;
             // 
             // pictureBox2
             // 
@@ -289,6 +302,8 @@
             // 
             this.DataPanelNoSel.Controls.Add(this.advancedButton2);
             this.DataPanelNoSel.Controls.Add(this.advancedButton1);
+            this.DataPanelNoSel.Controls.Add(this.menuEntry4);
+            this.DataPanelNoSel.Controls.Add(this.menuEntry2);
             this.DataPanelNoSel.Controls.Add(this.label3);
             this.DataPanelNoSel.Controls.Add(this.label2);
             this.DataPanelNoSel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -506,26 +521,79 @@
             this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
             this.DataLeftAdvancedImageButton.TabIndex = 16;
             // 
-            // menuEntry1
+            // advancedButton2
             // 
-            this.menuEntry1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.menuEntry1.BorderColorHover = System.Drawing.Color.Black;
-            this.menuEntry1.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.menuEntry1.BorderSizeHover = new System.Windows.Forms.Padding(0, 1, 1, 1);
-            this.menuEntry1.BorderSizeNormal = new System.Windows.Forms.Padding(0, 1, 1, 1);
-            this.menuEntry1.ColorActive = System.Drawing.Color.White;
-            this.menuEntry1.ColorHover = System.Drawing.Color.White;
-            this.menuEntry1.ColorNormal = System.Drawing.Color.White;
-            this.menuEntry1.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.menuEntry1.ImageHover = ((System.Drawing.Image)(resources.GetObject("menuEntry1.ImageHover")));
-            this.menuEntry1.ImageNormal = ((System.Drawing.Image)(resources.GetObject("menuEntry1.ImageNormal")));
-            this.menuEntry1.Location = new System.Drawing.Point(0, 0);
-            this.menuEntry1.Margin = new System.Windows.Forms.Padding(0);
-            this.menuEntry1.Name = "menuEntry1";
-            this.menuEntry1.Padding = new System.Windows.Forms.Padding(0, 1, 1, 1);
-            this.menuEntry1.Size = new System.Drawing.Size(269, 75);
-            this.menuEntry1.TabIndex = 2;
-            this.menuEntry1.TextTitle = "Home";
+            this.advancedButton2.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedButton2.ColorNormal = System.Drawing.Color.Black;
+            this.advancedButton2.FontHover = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.advancedButton2.FontNormal = new System.Drawing.Font("Century Gothic", 9F);
+            this.advancedButton2.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageHover")));
+            this.advancedButton2.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageNormal")));
+            this.advancedButton2.Location = new System.Drawing.Point(485, 517);
+            this.advancedButton2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.advancedButton2.Name = "advancedButton2";
+            this.advancedButton2.Size = new System.Drawing.Size(94, 123);
+            this.advancedButton2.TabIndex = 1;
+            this.advancedButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.advancedButton2.TextHover = "Settings";
+            this.advancedButton2.TextNormal = "Settings";
+            // 
+            // advancedButton1
+            // 
+            this.advancedButton1.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedButton1.ColorNormal = System.Drawing.Color.Black;
+            this.advancedButton1.FontHover = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.advancedButton1.FontNormal = new System.Drawing.Font("Century Gothic", 9F);
+            this.advancedButton1.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageHover")));
+            this.advancedButton1.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageNormal")));
+            this.advancedButton1.Location = new System.Drawing.Point(486, 391);
+            this.advancedButton1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.advancedButton1.Name = "advancedButton1";
+            this.advancedButton1.Size = new System.Drawing.Size(91, 118);
+            this.advancedButton1.TabIndex = 0;
+            this.advancedButton1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.advancedButton1.TextHover = "Home";
+            this.advancedButton1.TextNormal = "Home";
+            // 
+            // menuEntry4
+            // 
+            this.menuEntry4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.menuEntry4.BorderColorHover = System.Drawing.Color.Black;
+            this.menuEntry4.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.menuEntry4.BorderSizeHover = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry4.BorderSizeNormal = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry4.ColorHover = System.Drawing.Color.White;
+            this.menuEntry4.ColorNormal = System.Drawing.Color.White;
+            this.menuEntry4.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuEntry4.ImageHover = ((System.Drawing.Image)(resources.GetObject("menuEntry4.ImageHover")));
+            this.menuEntry4.ImageNormal = ((System.Drawing.Image)(resources.GetObject("menuEntry4.ImageNormal")));
+            this.menuEntry4.Location = new System.Drawing.Point(135, 640);
+            this.menuEntry4.Margin = new System.Windows.Forms.Padding(0);
+            this.menuEntry4.Name = "menuEntry4";
+            this.menuEntry4.Padding = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry4.Size = new System.Drawing.Size(269, 75);
+            this.menuEntry4.TabIndex = 5;
+            this.menuEntry4.TextTitle = "Settings";
+            // 
+            // menuEntry2
+            // 
+            this.menuEntry2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.menuEntry2.BorderColorHover = System.Drawing.Color.Black;
+            this.menuEntry2.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.menuEntry2.BorderSizeHover = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry2.BorderSizeNormal = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry2.ColorHover = System.Drawing.Color.White;
+            this.menuEntry2.ColorNormal = System.Drawing.Color.White;
+            this.menuEntry2.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuEntry2.ImageHover = ((System.Drawing.Image)(resources.GetObject("menuEntry2.ImageHover")));
+            this.menuEntry2.ImageNormal = ((System.Drawing.Image)(resources.GetObject("menuEntry2.ImageNormal")));
+            this.menuEntry2.Location = new System.Drawing.Point(135, 718);
+            this.menuEntry2.Margin = new System.Windows.Forms.Padding(0);
+            this.menuEntry2.Name = "menuEntry2";
+            this.menuEntry2.Padding = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry2.Size = new System.Drawing.Size(313, 75);
+            this.menuEntry2.TabIndex = 5;
+            this.menuEntry2.TextTitle = "Home";
             // 
             // DataCustomLabelNotes
             // 
@@ -719,50 +787,25 @@
             this.editField1.TextTextBox = "Gmail";
             this.editField1.TextTitle = "Hostname:";
             // 
-            // advancedButton2
+            // menuEntry1
             // 
-            this.advancedButton2.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedButton2.ColorNormal = System.Drawing.Color.Black;
-            this.advancedButton2.FontHover = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.advancedButton2.FontNormal = new System.Drawing.Font("Century Gothic", 9F);
-            this.advancedButton2.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageHover")));
-            this.advancedButton2.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton2.ImageNormal")));
-            this.advancedButton2.Location = new System.Drawing.Point(485, 517);
-            this.advancedButton2.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.advancedButton2.Name = "advancedButton2";
-            this.advancedButton2.Size = new System.Drawing.Size(94, 123);
-            this.advancedButton2.TabIndex = 1;
-            this.advancedButton2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.advancedButton2.TextHover = "Settings";
-            this.advancedButton2.TextNormal = "Settings";
-            // 
-            // advancedButton1
-            // 
-            this.advancedButton1.ColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedButton1.ColorNormal = System.Drawing.Color.Black;
-            this.advancedButton1.FontHover = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.advancedButton1.FontNormal = new System.Drawing.Font("Century Gothic", 9F);
-            this.advancedButton1.ImageHover = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageHover")));
-            this.advancedButton1.ImageNormal = ((System.Drawing.Image)(resources.GetObject("advancedButton1.ImageNormal")));
-            this.advancedButton1.Location = new System.Drawing.Point(486, 391);
-            this.advancedButton1.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.advancedButton1.Name = "advancedButton1";
-            this.advancedButton1.Size = new System.Drawing.Size(91, 118);
-            this.advancedButton1.TabIndex = 0;
-            this.advancedButton1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.advancedButton1.TextHover = "Home";
-            this.advancedButton1.TextNormal = "Home";
-            // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.menuEntry1);
-            this.flowLayoutPanel1.Controls.Add(this.menuEntry3);
-            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(265, 735);
-            this.flowLayoutPanel1.TabIndex = 3;
+            this.menuEntry1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.menuEntry1.BorderColorHover = System.Drawing.Color.Black;
+            this.menuEntry1.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.menuEntry1.BorderSizeHover = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry1.BorderSizeNormal = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry1.ColorHover = System.Drawing.Color.White;
+            this.menuEntry1.ColorNormal = System.Drawing.Color.White;
+            this.menuEntry1.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.menuEntry1.ImageHover = ((System.Drawing.Image)(resources.GetObject("menuEntry1.ImageHover")));
+            this.menuEntry1.ImageNormal = ((System.Drawing.Image)(resources.GetObject("menuEntry1.ImageNormal")));
+            this.menuEntry1.Location = new System.Drawing.Point(0, 0);
+            this.menuEntry1.Margin = new System.Windows.Forms.Padding(0);
+            this.menuEntry1.Name = "menuEntry1";
+            this.menuEntry1.Padding = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.menuEntry1.Size = new System.Drawing.Size(269, 75);
+            this.menuEntry1.TabIndex = 2;
+            this.menuEntry1.TextTitle = "Home";
             // 
             // menuEntry3
             // 
@@ -771,7 +814,6 @@
             this.menuEntry3.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.menuEntry3.BorderSizeHover = new System.Windows.Forms.Padding(0, 1, 1, 1);
             this.menuEntry3.BorderSizeNormal = new System.Windows.Forms.Padding(0, 1, 1, 1);
-            this.menuEntry3.ColorActive = System.Drawing.Color.White;
             this.menuEntry3.ColorHover = System.Drawing.Color.White;
             this.menuEntry3.ColorNormal = System.Drawing.Color.White;
             this.menuEntry3.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -801,6 +843,7 @@
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.DashboardPanel.ResumeLayout(false);
+            this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.DataPanelMain.ResumeLayout(false);
             this.DataTableLayoutPanelMain.ResumeLayout(false);
@@ -825,7 +868,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -883,6 +925,8 @@
         private MenuEntry menuEntry1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private MenuEntry menuEntry3;
+        private MenuEntry menuEntry2;
+        private MenuEntry menuEntry4;
     }
 }
 

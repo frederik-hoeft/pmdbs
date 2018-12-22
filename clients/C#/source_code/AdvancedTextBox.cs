@@ -23,7 +23,7 @@ namespace pmdbs
         float PointAnimation;
         float SizeInc_Dec;
         float PointInc_Dec;
-        private Color NormalColor = Color.FromArgb(33, 33, 33);
+        private Color NormalColor = Color.FromArgb(255,255,255);
         private Color FocusColor = Color.FromArgb(255, 96, 49);
         private Color NormalForeColor = Color.FromArgb(33, 33, 33);
         private Color FocusForeColor = Color.Black;
