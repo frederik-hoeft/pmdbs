@@ -31,11 +31,8 @@ namespace pmdbs
             AnimationTimer.Tick += new EventHandler(AnimationTick);
             tableLayoutPanel1.ColumnStyles[0].SizeType = SizeType.Absolute;
             tableLayoutPanel1.ColumnStyles[1].SizeType = SizeType.Absolute;
-            tableLayoutPanel1.ColumnStyles[2].SizeType = SizeType.Absolute;
-            tableLayoutPanel1.ColumnStyles[0].Width = 0;
-            tableLayoutPanel1.ColumnStyles[1].Width = tableLayoutPanel1.Width;
-            tableLayoutPanel1.ColumnStyles[2].Width = 0;
-            PanelIndicator.BackColor = NormalColor;
+            tableLayoutPanel1.ColumnStyles[0].Width = tableLayoutPanel1.Width;
+            tableLayoutPanel1.ColumnStyles[1].Width = 0;
             label1.Visible = false;
             SizeInc_Dec = (tableLayoutPanel1.Width) / 18;
         }
@@ -51,12 +48,6 @@ namespace pmdbs
         {
             get { return HoverImage; }
             set { HoverImage = value; }
-        }
-
-        public Color ColorActive
-        {
-            get { return PanelIndicator.BackColor; }
-            set { PanelIndicator.BackColor = value; }
         }
 
         public Color ColorNormal
@@ -132,10 +123,10 @@ namespace pmdbs
         {
             if (IsFocused)
             {
-                if (tableLayoutPanel1.ColumnStyles[1].Width - SizeInc_Dec >= pictureBox1.Height)
+                if (tableLayoutPanel1.ColumnStyles[0].Width - SizeInc_Dec >= pictureBox1.Height)
                 {
-                    tableLayoutPanel1.ColumnStyles[1].Width -= SizeInc_Dec;
-                    tableLayoutPanel1.ColumnStyles[2].Width += SizeInc_Dec;
+                    tableLayoutPanel1.ColumnStyles[0].Width -= SizeInc_Dec;
+                    tableLayoutPanel1.ColumnStyles[1].Width += SizeInc_Dec;
                 }
                 else
                 {
@@ -145,18 +136,18 @@ namespace pmdbs
             }
             else
             {
-                if (tableLayoutPanel1.ColumnStyles[1].Width - SizeInc_Dec < pictureBox1.Height)
+                if (tableLayoutPanel1.ColumnStyles[0].Width - SizeInc_Dec < pictureBox1.Height)
                 {
                     label1.Visible = false;
                 }
 
-                if (tableLayoutPanel1.ColumnStyles[1].Width + SizeInc_Dec <= tableLayoutPanel1.Width)
+                if (tableLayoutPanel1.ColumnStyles[0].Width + SizeInc_Dec <= tableLayoutPanel1.Width)
                 {
-                    tableLayoutPanel1.ColumnStyles[1].Width += SizeInc_Dec;
-                    tableLayoutPanel1.ColumnStyles[2].Width -= SizeInc_Dec;
+                    tableLayoutPanel1.ColumnStyles[0].Width += SizeInc_Dec;
+                    tableLayoutPanel1.ColumnStyles[1].Width -= SizeInc_Dec;
                 }
 
-                if (tableLayoutPanel1.ColumnStyles[2].Width - SizeInc_Dec < 0)
+                if (tableLayoutPanel1.ColumnStyles[1].Width - SizeInc_Dec < 0)
                 {
                     AnimationTimer.Stop();
                 }
