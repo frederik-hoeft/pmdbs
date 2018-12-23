@@ -11,6 +11,10 @@ WINDOWS CLIENT TODO:
                 - custom scrollbars
             - create password generator
                 - cryptographicly random
+            - add Save / Abort button
+            - link to data view
+            - too much free space when maximized --> fill empty space
+            - create better icons for AdvancedNumericUpDown
         - create Loading screen
         - create Credits screen (used way too much licensed crap)
         - create Account screen
