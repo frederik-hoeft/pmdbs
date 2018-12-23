@@ -40,6 +40,14 @@ namespace pmdbs
             PointInc_Dec = Width / 36;
         }
 
+        #region getters/setters
+
+        public HorizontalAlignment TextAlign
+        {
+            get { return textBox1.TextAlign; }
+            set { textBox1.TextAlign = value; }
+        }
+
         public Color ForeColorNormal
         {
             get { return NormalForeColor; }
@@ -76,6 +84,7 @@ namespace pmdbs
             set { textBox1.Font = value; }
         }
 
+        #endregion
         private void AdvancedTextBox_Paint(object sender, PaintEventArgs e)
         {
             Bitmap B = new Bitmap(Width, Height);

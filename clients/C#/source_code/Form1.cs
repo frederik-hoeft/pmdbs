@@ -20,8 +20,6 @@ namespace pmdbs
         public Form1()
         {
             InitializeComponent();
-            advancedButton1.OnClickEvent += advancedButton1_Click;
-            advancedButton2.OnClickEvent += advancedButton2_Click;
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
             DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
             DataDetailsEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
@@ -318,6 +316,11 @@ namespace pmdbs
         private void DataDetailsEntryWebsite_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            numericUpDown1.Controls.RemoveAt(0);
         }
     }
 }
