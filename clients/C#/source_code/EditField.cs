@@ -15,7 +15,7 @@ namespace pmdbs
         public EditField()
         {
             InitializeComponent();
-            advancedImageButton1.OnClickEvent += advancedImageButton1_Click;
+            advancedImageButton1.OnClickEvent += AdvancedImageButton1_Click;
             OnResized();
         }
 
@@ -67,12 +67,12 @@ namespace pmdbs
             set { advancedTextBox1.ColorFocus = value; }
         }
 
-        private void advancedTextBox1_SizeChanged(object sender, EventArgs e)
+        private void AdvancedTextBox1_SizeChanged(object sender, EventArgs e)
         {
             OnResized();
         }
 
-        private void textBox1_SizeChanged(object sender, EventArgs e)
+        private void TextBox1_SizeChanged(object sender, EventArgs e)
         {
             OnResized();
         }
@@ -84,7 +84,7 @@ namespace pmdbs
             advancedImageButton1.Size = new Size(advancedTextBox1.Height, advancedTextBox1.Height);
         }
 
-        private void advancedImageButton1_Click(object sender, EventArgs e)
+        private void AdvancedImageButton1_Click(object sender, EventArgs e)
         {
             advancedTextBox1.TextValue = "";
             OnResized();
