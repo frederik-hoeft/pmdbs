@@ -75,7 +75,7 @@
             this.textBox1.Size = new System.Drawing.Size(436, 19);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "TextTitle";
-            this.textBox1.SizeChanged += new System.EventHandler(this.textBox1_SizeChanged);
+            this.textBox1.SizeChanged += new System.EventHandler(this.TextBox1_SizeChanged);
             // 
             // advancedTextBox1
             // 
@@ -90,7 +90,7 @@
             this.advancedTextBox1.Size = new System.Drawing.Size(436, 34);
             this.advancedTextBox1.TabIndex = 1;
             this.advancedTextBox1.TextValue = "TextTextBox";
-            this.advancedTextBox1.SizeChanged += new System.EventHandler(this.advancedTextBox1_SizeChanged);
+            this.advancedTextBox1.SizeChanged += new System.EventHandler(this.AdvancedTextBox1_SizeChanged);
             // 
             // advancedImageButton1
             // 
