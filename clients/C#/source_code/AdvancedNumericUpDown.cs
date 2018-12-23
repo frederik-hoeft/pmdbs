@@ -13,10 +13,7 @@ namespace pmdbs
 {
     public partial class AdvancedNumericUpDown : UserControl
     {
-        private Color NormalColor = Color.FromArgb(255, 255, 255);
-        private Color FocusColor = Color.FromArgb(255, 96, 49);
-        private Color NormalForeColor = Color.FromArgb(33, 33, 33);
-        private Color FocusForeColor = Color.Black;
+        private Color NormalColor;
         private Image NormalIncImage;
         private Image HoverIncImage;
         private Image NormalDecImage;
@@ -50,14 +47,8 @@ namespace pmdbs
 
         public Color ForeColorNormal
         {
-            get { return NormalForeColor; }
-            set { NormalForeColor = value; textBox1.ForeColor = value; }
-        }
-
-        public Color ForeColorFocus
-        {
-            get { return FocusForeColor; }
-            set { FocusForeColor = value; }
+            get { return textBox1.ForeColor; }
+            set { textBox1.ForeColor = value; }
         }
 
         public String TextValue
@@ -81,16 +72,16 @@ namespace pmdbs
             }
         }
 
+        public Color BorderColor
+        {
+            get { return this.BackColor; }
+            set { this.BackColor = value; }
+        }
+
         public Color ColorNormal
         {
             get { return NormalColor; }
-            set { NormalColor = value; this.Invalidate(); }
-        }
-
-        public Color ColorFocus
-        {
-            get { return FocusColor; }
-            set { FocusColor = value; }
+            set { NormalColor = value; textBox1.BackColor = value; panel1.BackColor = value; pictureBox1.BackColor = value; pictureBox2.BackColor = value; }
         }
 
         [Browsable(false)]
@@ -137,27 +128,27 @@ namespace pmdbs
             tableLayoutPanel1.ColumnStyles[2].Width = this.Height - 2;
         }
 
-        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        private void PictureBox1_MouseEnter(object sender, EventArgs e)
         {
             pictureBox1.Image = HoverDecImage;
         }
 
-        private void pictureBox2_MouseEnter(object sender, EventArgs e)
+        private void PictureBox2_MouseEnter(object sender, EventArgs e)
         {
             pictureBox2.Image = HoverIncImage;
         }
 
-        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        private void PictureBox1_MouseLeave(object sender, EventArgs e)
         {
             pictureBox1.Image = NormalDecImage;
         }
 
-        private void pictureBox2_MouseLeave(object sender, EventArgs e)
+        private void PictureBox2_MouseLeave(object sender, EventArgs e)
         {
             pictureBox2.Image = NormalIncImage;
         }
 
-        private void pictureBox1_Click(object sender, EventArgs e)
+        private void PictureBox1_Click(object sender, EventArgs e)
         {
             int Value = Convert.ToInt32(textBox1.Text);
             Value -= 5;
@@ -168,7 +159,7 @@ namespace pmdbs
             textBox1.Text = Value.ToString();
         }
 
-        private void pictureBox2_Click(object sender, EventArgs e)
+        private void PictureBox2_Click(object sender, EventArgs e)
         {
             int Value = Convert.ToInt32(textBox1.Text);
             Value += 5;
@@ -179,7 +170,7 @@ namespace pmdbs
             textBox1.Text = Value.ToString();
         }
 
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void TextBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
