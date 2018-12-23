@@ -63,7 +63,6 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.materialCheckBox1 = new MaterialSkin.Controls.MaterialCheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.AddPanelMain = new System.Windows.Forms.Panel();
@@ -74,8 +73,11 @@
             this.AddTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
             this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
+            this.advancedCheckBox1 = new pmdbs.AdvancedCheckBox();
+            this.advancedNumericUpDown1 = new pmdbs.AdvancedNumericUpDown();
             this.editField10 = new pmdbs.EditField();
             this.editField6 = new pmdbs.EditField();
             this.editField9 = new pmdbs.EditField();
@@ -104,7 +106,6 @@
             this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
             this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
             this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
-            this.advancedNumericUpDown1 = new pmdbs.AdvancedNumericUpDown();
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -139,6 +140,7 @@
             this.AddTableLayoutPanelCenter.SuspendLayout();
             this.AddFlowLayoutPanelCenter.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -301,8 +303,8 @@
             this.DataFlowLayoutPanelList.Name = "DataFlowLayoutPanelList";
             this.DataFlowLayoutPanelList.Size = new System.Drawing.Size(894, 904);
             this.DataFlowLayoutPanelList.TabIndex = 4;
-            this.DataFlowLayoutPanelList.MouseEnter += new System.EventHandler(this.flowLayoutPanel1_MouseEnter);
-            this.DataFlowLayoutPanelList.Resize += new System.EventHandler(this.flowLayoutPanel1_Resize);
+            this.DataFlowLayoutPanelList.MouseEnter += new System.EventHandler(this.FlowLayoutPanel1_MouseEnter);
+            this.DataFlowLayoutPanelList.Resize += new System.EventHandler(this.FlowLayoutPanel1_Resize);
             // 
             // DataTableLayoutPanelFooter
             // 
@@ -567,13 +569,11 @@
             this.WindowPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.WindowPictureBoxIcon.TabIndex = 10;
             this.WindowPictureBoxIcon.TabStop = false;
-            this.WindowPictureBoxIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            this.WindowPictureBoxIcon.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PictureBox1_MouseDown);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.advancedNumericUpDown1);
-            this.panel1.Controls.Add(this.materialCheckBox1);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(277, 1);
@@ -581,22 +581,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1765, 102);
             this.panel1.TabIndex = 11;
-            // 
-            // materialCheckBox1
-            // 
-            this.materialCheckBox1.AutoSize = true;
-            this.materialCheckBox1.Depth = 0;
-            this.materialCheckBox1.Font = new System.Drawing.Font("Roboto", 10F);
-            this.materialCheckBox1.Location = new System.Drawing.Point(547, 35);
-            this.materialCheckBox1.Margin = new System.Windows.Forms.Padding(0);
-            this.materialCheckBox1.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.materialCheckBox1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialCheckBox1.Name = "materialCheckBox1";
-            this.materialCheckBox1.Ripple = true;
-            this.materialCheckBox1.Size = new System.Drawing.Size(212, 30);
-            this.materialCheckBox1.TabIndex = 11;
-            this.materialCheckBox1.Text = "materialCheckBox1";
-            this.materialCheckBox1.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -679,7 +663,6 @@
             // 
             // AddPanelCenter
             // 
-            this.AddPanelCenter.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddPanelCenter.BackgroundImage")));
             this.AddPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.AddPanelCenter.Controls.Add(this.AddTableLayoutPanelCenter);
             this.AddPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -691,7 +674,9 @@
             // 
             // AddTableLayoutPanelCenter
             // 
-            this.AddTableLayoutPanelCenter.BackColor = System.Drawing.Color.Transparent;
+            this.AddTableLayoutPanelCenter.BackColor = System.Drawing.Color.White;
+            this.AddTableLayoutPanelCenter.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddTableLayoutPanelCenter.BackgroundImage")));
+            this.AddTableLayoutPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.AddTableLayoutPanelCenter.ColumnCount = 3;
             this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
@@ -721,7 +706,8 @@
             // 
             // panel2
             // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
+            this.panel2.BackColor = System.Drawing.Color.White;
+            this.panel2.Controls.Add(this.panel3);
             this.panel2.Controls.Add(this.editField10);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.editField6);
@@ -731,13 +717,23 @@
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(673, 750);
+            this.panel2.Size = new System.Drawing.Size(673, 819);
             this.panel2.TabIndex = 10;
+            // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel3.Controls.Add(this.advancedCheckBox1);
+            this.panel3.Controls.Add(this.advancedNumericUpDown1);
+            this.panel3.Location = new System.Drawing.Point(3, 436);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(659, 100);
+            this.panel3.TabIndex = 8;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.BackColor = System.Drawing.Color.White;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(1, 76);
             this.label5.Name = "label5";
@@ -755,10 +751,50 @@
             this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
             this.AddPanelSeperator.TabIndex = 3;
             // 
+            // advancedCheckBox1
+            // 
+            this.advancedCheckBox1.AutoSize = true;
+            this.advancedCheckBox1.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedCheckBox1.Depth = 0;
+            this.advancedCheckBox1.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.advancedCheckBox1.FontText = new System.Drawing.Font("Century Gothic", 12F);
+            this.advancedCheckBox1.ForegroundColor = System.Drawing.Color.Black;
+            this.advancedCheckBox1.Location = new System.Drawing.Point(27, 48);
+            this.advancedCheckBox1.Margin = new System.Windows.Forms.Padding(0);
+            this.advancedCheckBox1.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.advancedCheckBox1.MouseState = pmdbs.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.advancedCheckBox1.Name = "advancedCheckBox1";
+            this.advancedCheckBox1.Ripple = true;
+            this.advancedCheckBox1.Size = new System.Drawing.Size(304, 30);
+            this.advancedCheckBox1.TabIndex = 13;
+            this.advancedCheckBox1.Text = "Use special characters";
+            this.advancedCheckBox1.UseVisualStyleBackColor = true;
+            // 
+            // advancedNumericUpDown1
+            // 
+            this.advancedNumericUpDown1.BackColor = System.Drawing.Color.Black;
+            this.advancedNumericUpDown1.BorderColor = System.Drawing.Color.Black;
+            this.advancedNumericUpDown1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.advancedNumericUpDown1.FontStyle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.advancedNumericUpDown1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.advancedNumericUpDown1.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageDecreaseHover")));
+            this.advancedNumericUpDown1.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageDecreaseNormal")));
+            this.advancedNumericUpDown1.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageIncreaseHover")));
+            this.advancedNumericUpDown1.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageIncreaseNormal")));
+            this.advancedNumericUpDown1.Location = new System.Drawing.Point(442, 48);
+            this.advancedNumericUpDown1.Maximum = "128";
+            this.advancedNumericUpDown1.Minimum = "8";
+            this.advancedNumericUpDown1.Name = "advancedNumericUpDown1";
+            this.advancedNumericUpDown1.Padding = new System.Windows.Forms.Padding(1);
+            this.advancedNumericUpDown1.Size = new System.Drawing.Size(130, 30);
+            this.advancedNumericUpDown1.TabIndex = 12;
+            this.advancedNumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.advancedNumericUpDown1.TextValue = "15";
+            // 
             // editField10
             // 
             this.editField10.AutoSize = true;
-            this.editField10.BackColor = System.Drawing.Color.Transparent;
+            this.editField10.BackColor = System.Drawing.Color.White;
             this.editField10.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.editField10.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.editField10.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -775,7 +811,7 @@
             // editField6
             // 
             this.editField6.AutoSize = true;
-            this.editField6.BackColor = System.Drawing.Color.Transparent;
+            this.editField6.BackColor = System.Drawing.Color.White;
             this.editField6.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.editField6.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.editField6.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -792,7 +828,7 @@
             // editField9
             // 
             this.editField9.AutoSize = true;
-            this.editField9.BackColor = System.Drawing.Color.Transparent;
+            this.editField9.BackColor = System.Drawing.Color.White;
             this.editField9.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.editField9.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.editField9.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -809,7 +845,7 @@
             // editField7
             // 
             this.editField7.AutoSize = true;
-            this.editField7.BackColor = System.Drawing.Color.Transparent;
+            this.editField7.BackColor = System.Drawing.Color.White;
             this.editField7.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.editField7.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.editField7.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -826,7 +862,7 @@
             // editField8
             // 
             this.editField8.AutoSize = true;
-            this.editField8.BackColor = System.Drawing.Color.Transparent;
+            this.editField8.BackColor = System.Drawing.Color.White;
             this.editField8.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.editField8.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.editField8.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -842,14 +878,14 @@
             // 
             // advancedRichTextBox2
             // 
-            this.advancedRichTextBox2.BackColor = System.Drawing.Color.Transparent;
+            this.advancedRichTextBox2.BackColor = System.Drawing.Color.White;
             this.advancedRichTextBox2.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.advancedRichTextBox2.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.advancedRichTextBox2.ForeColorFocus = System.Drawing.Color.Black;
             this.advancedRichTextBox2.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedRichTextBox2.Location = new System.Drawing.Point(3, 753);
+            this.advancedRichTextBox2.Location = new System.Drawing.Point(3, 822);
             this.advancedRichTextBox2.Name = "advancedRichTextBox2";
-            this.advancedRichTextBox2.Size = new System.Drawing.Size(652, 214);
+            this.advancedRichTextBox2.Size = new System.Drawing.Size(660, 214);
             this.advancedRichTextBox2.TabIndex = 8;
             this.advancedRichTextBox2.TextValue = "";
             // 
@@ -1145,28 +1181,6 @@
             this.DashboardMenuEntrySettings.TabIndex = 5;
             this.DashboardMenuEntrySettings.TextTitle = "Settings";
             // 
-            // advancedNumericUpDown1
-            // 
-            this.advancedNumericUpDown1.BackColor = System.Drawing.Color.Black;
-            this.advancedNumericUpDown1.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedNumericUpDown1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.advancedNumericUpDown1.FontStyle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.advancedNumericUpDown1.ForeColorFocus = System.Drawing.Color.Black;
-            this.advancedNumericUpDown1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedNumericUpDown1.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageDecreaseHover")));
-            this.advancedNumericUpDown1.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageDecreaseNormal")));
-            this.advancedNumericUpDown1.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageIncreaseHover")));
-            this.advancedNumericUpDown1.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("advancedNumericUpDown1.ImageIncreaseNormal")));
-            this.advancedNumericUpDown1.Location = new System.Drawing.Point(1006, 35);
-            this.advancedNumericUpDown1.Maximum = "50";
-            this.advancedNumericUpDown1.Minimum = "10";
-            this.advancedNumericUpDown1.Name = "advancedNumericUpDown1";
-            this.advancedNumericUpDown1.Padding = new System.Windows.Forms.Padding(1);
-            this.advancedNumericUpDown1.Size = new System.Drawing.Size(134, 35);
-            this.advancedNumericUpDown1.TabIndex = 12;
-            this.advancedNumericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.advancedNumericUpDown1.TextValue = "15";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1219,6 +1233,8 @@
             this.AddFlowLayoutPanelCenter.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1299,8 +1315,9 @@
         private AdvancedRichTextBox advancedRichTextBox2;
         private System.Windows.Forms.FlowLayoutPanel AddFlowLayoutPanelCenter;
         private System.Windows.Forms.Panel AddPanelSeperator;
-        private MaterialSkin.Controls.MaterialCheckBox materialCheckBox1;
         private AdvancedNumericUpDown advancedNumericUpDown1;
+        private System.Windows.Forms.Panel panel3;
+        private AdvancedCheckBox advancedCheckBox1;
     }
 }
 

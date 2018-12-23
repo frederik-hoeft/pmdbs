@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
+using MaterialSkin;
 
 namespace pmdbs
 {
@@ -46,7 +47,7 @@ namespace pmdbs
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
-        private void flowLayoutPanel1_MouseEnter(object sender, EventArgs e)
+        private void FlowLayoutPanel1_MouseEnter(object sender, EventArgs e)
         {
             DataFlowLayoutPanelList.Focus();
         }
@@ -77,7 +78,7 @@ namespace pmdbs
                 DataTableLayoutPanelMain.RowStyles[2].Height = 20;
 
             }
-            flowLayoutPanel1_Resize(this, null);
+            FlowLayoutPanel1_Resize(this, null);
         }
 
         private void ButtonMinimize_Click(object sender, EventArgs e)
@@ -141,7 +142,7 @@ namespace pmdbs
             }
         }
 
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        private void Panel1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -150,7 +151,7 @@ namespace pmdbs
             }
         }
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
@@ -159,7 +160,7 @@ namespace pmdbs
             }
         }
 
-        private void flowLayoutPanel1_Resize(object sender, EventArgs e)
+        private void FlowLayoutPanel1_Resize(object sender, EventArgs e)
         {
             foreach (ListEntry entry in DataFlowLayoutPanelList.Controls)
             {
@@ -244,16 +245,16 @@ namespace pmdbs
                 listEntry.OnClickEvent += ListEntry_Click;
                 DataFlowLayoutPanelList.SetFlowBreak(listEntry,true);
             }
-            flowLayoutPanel1_Resize(this, null);
+            FlowLayoutPanel1_Resize(this, null);
             DataPictureBoxDetailsLogo.Image = Image.FromFile("favicon.ico");
         }
 
-        private void advancedButton1_Click(object sender, EventArgs e)
+        private void AdvancedButton1_Click(object sender, EventArgs e)
         {
             
         }
 
-        private void advancedButton2_Click(object sender, EventArgs e)
+        private void AdvancedButton2_Click(object sender, EventArgs e)
         {
 
         }
@@ -316,11 +317,6 @@ namespace pmdbs
         private void DataDetailsEntryWebsite_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
-        }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            numericUpDown1.Controls.RemoveAt(0);
         }
     }
 }
