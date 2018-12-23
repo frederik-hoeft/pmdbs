@@ -10,12 +10,16 @@ WINDOWS CLIENT TODO:
             - use scrollview (flowlayoutpanel)
                 - custom scrollbars
             - create password generator
-                - design
                 - cryptographicly random
         - create Loading screen
         - create Credits screen (used way too much licensed crap)
         - create Account screen
         - create Account_edit screen
+    
+    - TWEAKS / FIXES
+        - allow EditFields to have default text prompt
+            - deletes on focus
+            - appears if AdvancedTextBox is empty
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
