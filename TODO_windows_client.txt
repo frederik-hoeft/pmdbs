@@ -7,6 +7,11 @@ WINDOWS CLIENT TODO:
         - create Login screen
         - create Settings screen
         - create Add screen/panel
+            - use scrollview (flowlayoutpanel)
+                - custom scrollbars
+            - create password generator
+                - design
+                - cryptographicly random
         - create Loading screen
         - create Credits screen (used way too much licensed crap)
         - create Account screen
