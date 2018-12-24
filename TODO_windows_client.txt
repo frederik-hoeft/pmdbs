@@ -4,6 +4,7 @@ WINDOWS CLIENT TODO:
         - create Data screen
             - create NoSelection panel
         - create Welcome screen
+            - some sort of dashboard
         - create Login screen
         - create Settings screen
         - create Add screen/panel
