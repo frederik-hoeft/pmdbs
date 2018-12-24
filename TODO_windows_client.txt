@@ -25,6 +25,8 @@ WINDOWS CLIENT TODO:
         - allow EditFields to have default text prompt
             - deletes on focus
             - appears if AdvancedTextBox is empty
+        - menu bar
+            - slightly decrease size of icons
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
