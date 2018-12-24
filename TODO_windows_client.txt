@@ -10,10 +10,6 @@ WINDOWS CLIENT TODO:
         - create Add screen/panel
             - use scrollview (flowlayoutpanel)
                 - custom scrollbars
-            - create password generator
-                - cryptographicly random
-            - add Save / Abort button
-            - link to data view
             - too much free space when maximized --> fill empty space
             - create better icons for AdvancedNumericUpDown
         - create Loading screen
@@ -29,7 +25,9 @@ WINDOWS CLIENT TODO:
             - slightly decrease size of icons
         - AddPanel
             - add descriptions
-            
+            - custom scrollbars
+        - EditPanel
+            - add password generator (copypasta)
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
