@@ -15,29 +15,13 @@ namespace pmdbs
 {
     public partial class Form1 : MetroFramework.Forms.MetroForm
     {
+        #region DECLARATIONS
         private List<ListEntry> entryList = new List<ListEntry>();
-        
-        public Form1()
-        {
-            InitializeComponent();
-            DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
-            DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
-            DataDetailsEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
-            DataLeftAdvancedImageButton.OnClickEvent += DataLeftAdvancedImageButton_Click;
-            DataRightAdvancedImageButton.OnClickEvent += DataRightAdvancedImageButton_Click;
-            DataSyncAdvancedImageButton.OnClickEvent += DataSyncAdvancedImageButton_Click;
-            DataDetailsEntryEmail.OnClickEvent += DataDetailsEntryEmail_Click;
-            DataDetailsEntryUsername.OnClickEvent += DataDetailsEntryUsername_Click;
-            DataDetailsEntryPassword.OnClickEvent += DataDetailsEntryPassword_Click;
-            DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
-            DataEditSaveAdvancedImageButton.OnClickEvent += DataEditSave_Click;
-            DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
-            DashboardMenuEntryHome.OnClickEvent += DashboardMenuEntryHome_Click;
-            DashboardMenuEntrySettings.OnClickEvent += DashboardMenuEntrySettings_Click;
-            DashboardMenuEntryPasswords.OnClickEvent += DashboardMenuEntryPasswords_Click;
-        }
+        private char[] passwordSpecialCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '-', '$', '%', '&', '/', '(', ')', '=', '?', '{', '[', ']', '}', '\\', '+', '*', '#', ',', '.', '<', '>', '|', '@', '!', '~', ';', ':', '"' };
+        private char[] passwordCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+        #endregion
 
-        #region FUNCTIONALITY_METHODS
+        #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
@@ -51,38 +35,9 @@ namespace pmdbs
             DataFlowLayoutPanelList.Focus();
         }
 
-        private void ButtonClose_Click(object sender, EventArgs e)
+        private void AddFlowLayoutPanelCenter_MouseEnter(object sender, EventArgs e)
         {
-            Application.Exit();
-        }
-
-        private void ButtonMaximize_Click(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Maximized)
-            {
-                this.WindowState = FormWindowState.Normal;
-                DataTableLayoutPanelMain.ColumnStyles[0].Width = 10;
-                DataTableLayoutPanelMain.ColumnStyles[2].Width = 10;
-                DataTableLayoutPanelMain.ColumnStyles[4].Width = 10;
-                DataTableLayoutPanelMain.RowStyles[0].Height = 10;
-                DataTableLayoutPanelMain.RowStyles[2].Height = 10;
-            }
-            else
-            {
-                this.WindowState = FormWindowState.Maximized;
-                DataTableLayoutPanelMain.ColumnStyles[0].Width = 20;
-                DataTableLayoutPanelMain.ColumnStyles[2].Width = 20;
-                DataTableLayoutPanelMain.ColumnStyles[4].Width = 20;
-                DataTableLayoutPanelMain.RowStyles[0].Height = 20;
-                DataTableLayoutPanelMain.RowStyles[2].Height = 20;
-
-            }
-            FlowLayoutPanel1_Resize(this, null);
-        }
-
-        private void ButtonMinimize_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
+            AddFlowLayoutPanelCenter.Focus();
         }
 
         private void WindowHeaderPanel_MouseDown(object sender, MouseEventArgs e)
@@ -141,24 +96,6 @@ namespace pmdbs
             }
         }
 
-        private void Panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
-
-        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                ReleaseCapture();
-                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-            }
-        }
-
         private void FlowLayoutPanel1_Resize(object sender, EventArgs e)
         {
             foreach (ListEntry entry in DataFlowLayoutPanelList.Controls)
@@ -180,14 +117,29 @@ namespace pmdbs
         }
         #endregion
 
-        private void ListEntry_Click(object sender, EventArgs e)
+        public Form1()
         {
-            DataPanelDetails.BringToFront();
-            ListEntry senderObject = (ListEntry)sender;
-            int index = senderObject.id;
-            MessageBox.Show("INDEX: " + index.ToString(), "finally...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            InitializeComponent();
+            #region ADD_EVENTHANDLERS
+            DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
+            DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
+            DataDetailsEditAdvancedImageButton.OnClickEvent += DataEditAdvancedImageButton_Click;
+            DataLeftAdvancedImageButton.OnClickEvent += DataLeftAdvancedImageButton_Click;
+            DataRightAdvancedImageButton.OnClickEvent += DataRightAdvancedImageButton_Click;
+            DataSyncAdvancedImageButton.OnClickEvent += DataSyncAdvancedImageButton_Click;
+            DataDetailsEntryEmail.OnClickEvent += DataDetailsEntryEmail_Click;
+            DataDetailsEntryUsername.OnClickEvent += DataDetailsEntryUsername_Click;
+            DataDetailsEntryPassword.OnClickEvent += DataDetailsEntryPassword_Click;
+            DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
+            DataEditSaveAdvancedImageButton.OnClickEvent += DataEditSave_Click;
+            DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
+            DashboardMenuEntryHome.OnClickEvent += DashboardMenuEntryHome_Click;
+            DashboardMenuEntrySettings.OnClickEvent += DashboardMenuEntrySettings_Click;
+            DashboardMenuEntryPasswords.OnClickEvent += DashboardMenuEntryPasswords_Click;
+            AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
+            AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
+            #endregion
         }
-
         #region Dashboard
 
         private void DashboardMenuEntryHome_Click(object sender, EventArgs e)
@@ -213,8 +165,10 @@ namespace pmdbs
         }
         #endregion
 
+        #region DataPanel
         private void Populate()
         {
+            DataFlowLayoutPanelList.SuspendLayout();
             for (int i = 0; i < 7; i++)
             {
                 ListEntry listEntry = new ListEntry
@@ -242,40 +196,47 @@ namespace pmdbs
                 DataFlowLayoutPanelList.Controls.Add(listEntry);
                 entryList.Add(listEntry);
                 listEntry.OnClickEvent += ListEntry_Click;
-                DataFlowLayoutPanelList.SetFlowBreak(listEntry,true);
+                DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
             }
+            DataFlowLayoutPanelList.ResumeLayout();
             FlowLayoutPanel1_Resize(this, null);
             DataPictureBoxDetailsLogo.Image = Image.FromFile("favicon.ico");
         }
 
-        private void AdvancedButton1_Click(object sender, EventArgs e)
+        private void ListEntry_Click(object sender, EventArgs e)
         {
-            
-        }
-
-        private void AdvancedButton2_Click(object sender, EventArgs e)
-        {
-
+            DataPanelDetails.BringToFront();
+            ListEntry senderObject = (ListEntry)sender;
+            int index = senderObject.id;
+            MessageBox.Show("INDEX: " + index.ToString(), "finally...", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void DataAddAdvancedImageButton_Click(object sender, EventArgs e)
         {
-
+            DataPanelMain.SuspendLayout();
+            AddPanelMain.BringToFront();
+            AddPanelMain.ResumeLayout();
         }
 
         private void DataEditSave_Click(object sender, EventArgs e)
         {
+            DataPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
+            DataPanelDetails.ResumeLayout();
         }
 
         private void DataEditCancel_Click(object sender, EventArgs e)
         {
+            DataPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
+            DataPanelDetails.ResumeLayout();
         }
 
         private void DataEditAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            DataPanelDetails.SuspendLayout();
             DataPanelEdit.BringToFront();
+            DataPanelEdit.ResumeLayout();
         }
 
         private void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
@@ -317,5 +278,68 @@ namespace pmdbs
         {
             System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
         }
+        #endregion
+
+        #region AddPanel
+        private void AddPanelGeneratePasswordAnimatedButtonGenerate_Click(object sender, EventArgs e)
+        {
+            char[] characterSet;
+            int passwordLength = Convert.ToInt32(AddPanelGeneratePasswordeAdvancedNumericUpDown.TextValue);
+            bool specialCharactersEnabled = AddPanelGeneratePasswordAdvancedCheckBox.Checked;
+            string randomizedPassword = string.Empty;
+            if (specialCharactersEnabled)
+            {
+                characterSet = passwordSpecialCharacters;
+            }
+            else
+            {
+                characterSet = passwordCharacters;
+            }
+            using (System.Security.Cryptography.RNGCryptoServiceProvider rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
+            {
+                // INITIALIZE 4 BYTE BUFFER
+                byte[] buffer = new byte[4];
+
+                for (int i = 0; i < passwordLength; i++)
+                {
+                    // FILL BUFFER.
+                    rng.GetBytes(buffer);
+
+                    // CONVERT TO Int32 AND USE ABSOLUTE VALUE.
+                    int value = Math.Abs(BitConverter.ToInt32(buffer, 0));
+                    // USE MODULO TO MAP 32 BIT INTEGER TO CHARACTER RANGE
+                    randomizedPassword += characterSet[value % characterSet.Length];
+                }
+            }
+            AddEditFieldPassword.TextTextBox = randomizedPassword;
+        }
+
+        private void ResetFields()
+        {
+            AddPanelNotesAdvancedRichTextBox.TextValue = "";
+            AddEditFieldEmail.TextTextBox = "";
+            AddEditFieldHostname.TextTextBox = "";
+            AddEditFieldPassword.TextTextBox = "";
+            AddEditFieldUsername.TextTextBox = "";
+            AddEditFieldWebsite.TextTextBox = "";
+        }
+
+        private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
+        {
+            AddPanelMain.SuspendLayout();
+            DataPanelMain.BringToFront();
+            DataPanelMain.ResumeLayout();
+            ResetFields();
+        }
+
+        private void AddPanelAdvancedImageButtonAbort_Click(object sender, EventArgs e)
+        {
+            AddPanelMain.SuspendLayout();
+            DataPanelMain.BringToFront();
+            DataPanelMain.ResumeLayout();
+            ResetFields();
+        }
+
+        #endregion
     }
 }

@@ -41,6 +41,37 @@ namespace pmdbs
             rgb = ConvertToRGB(hsb);
             return Color.FromArgb((int)sourceAlphaValue, (int)rgb.R, (int)rgb.G, (int)rgb.B);
         }
+        /// <summary>
+        /// Convert an integer number to a Color.
+        /// </summary>
+        /// <returns></returns>
+        public static Color ToColor(this int argb)
+        {
+            return Color.FromArgb(
+                (argb & 0xff0000) >> 16,
+                (argb & 0xff00) >> 8,
+                 argb & 0xff);
+        }
+
+        /// <summary>
+        /// Removes the alpha component of a color.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static Color RemoveAlpha(this Color color)
+        {
+            return Color.FromArgb(color.R, color.G, color.B);
+        }
+
+        /// <summary>
+        /// Converts a 0-100 integer to a 0-255 color component.
+        /// </summary>
+        /// <param name="percentage"></param>
+        /// <returns></returns>
+        public static int PercentageToColorComponent(this int percentage)
+        {
+            return (int)((percentage / 100d) * 255d);
+        }
 
         #region Code from MSDN
         internal static RGB ConvertToRGB(HSB hsb)
