@@ -33,7 +33,9 @@ WINDOWS CLIENT TODO:
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
-        - remove unused libraries
+        - performance optimization
+            - suspend layout for hidden panels
+            - disable hidden controls
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
