@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.DashboardPanel = new System.Windows.Forms.Panel();
             this.DashboardFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -82,6 +83,8 @@
             this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
             this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
+            this.PanelLogin = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.AddPanelGeneratePasswordAnimatedButtonGenerate = new pmdbs.AnimatedButton();
             this.AddPanelGeneratePasswordAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
@@ -115,7 +118,7 @@
             this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
             this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
             this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
-            this.PanelLogin = new System.Windows.Forms.Panel();
+            this.advancedPanel1 = new pmdbs.AdvancedPanel(this.components);
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -153,6 +156,8 @@
             this.AddPanelGeneratePassword.SuspendLayout();
             this.AddPanelNotes.SuspendLayout();
             this.AddPanelBottomMenu.SuspendLayout();
+            this.PanelLogin.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -831,6 +836,36 @@
             this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
             this.AddPanelSeperator.TabIndex = 3;
             // 
+            // PanelLogin
+            // 
+            this.PanelLogin.Controls.Add(this.tableLayoutPanel1);
+            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
+            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
+            this.PanelLogin.Name = "PanelLogin";
+            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
+            this.PanelLogin.TabIndex = 11;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tableLayoutPanel1.BackgroundImage")));
+            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.advancedPanel1, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 850F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1880, 1112);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
             // AddPanelGeneratePasswordAnimatedButtonGenerate
             // 
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.AutoSize = true;
@@ -1295,19 +1330,20 @@
             this.DashboardMenuEntrySettings.TabIndex = 5;
             this.DashboardMenuEntrySettings.TextTitle = "Settings";
             // 
-            // PanelLogin
+            // advancedPanel1
             // 
-            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
-            this.PanelLogin.Name = "PanelLogin";
-            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
-            this.PanelLogin.TabIndex = 11;
+            this.advancedPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.advancedPanel1.Location = new System.Drawing.Point(615, 131);
+            this.advancedPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.advancedPanel1.Name = "advancedPanel1";
+            this.advancedPanel1.Opacity = 90;
+            this.advancedPanel1.Size = new System.Drawing.Size(650, 850);
+            this.advancedPanel1.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackImage = ((System.Drawing.Image)(resources.GetObject("$this.BackImage")));
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.PanelMain);
@@ -1361,6 +1397,8 @@
             this.AddPanelNotes.ResumeLayout(false);
             this.AddPanelNotes.PerformLayout();
             this.AddPanelBottomMenu.ResumeLayout(false);
+            this.PanelLogin.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1454,6 +1492,8 @@
         private AdvancedImageButton AddPanelAdvancedImageButtonSave;
         private AdvancedImageButton AddPanelAdvancedImageButtonAbort;
         private System.Windows.Forms.Panel PanelLogin;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private AdvancedPanel advancedPanel1;
     }
 }
 
