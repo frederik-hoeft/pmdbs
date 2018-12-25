@@ -121,6 +121,7 @@ namespace pmdbs
         public Form1()
         {
             InitializeComponent();
+            InitializeTransparency();
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
             DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
@@ -343,10 +344,17 @@ namespace pmdbs
 
         #endregion
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        #region LoginPanel
+        private void InitializeTransparency()
         {
-            var sb = new SolidBrush(Color.FromArgb(100, 100, 100, 100));
-            e.Graphics.FillRectangle(sb, this.DisplayRectangle);
+            Bitmap bmp = new Bitmap(pictureBox3.Width, pictureBox3.Height);
+            using (Graphics graph = Graphics.FromImage(bmp))
+            {
+                Rectangle ImageSize = new Rectangle(0, 0, pictureBox3.Width, pictureBox3.Height);
+                graph.FillRectangle(new SolidBrush(Color.FromArgb(220, 17, 17, 17)), ImageSize);
+            }
+            this.pictureBox3.Image = bmp;
         }
+        #endregion
     }
 }

@@ -61,7 +61,6 @@ namespace pmdbs
             _animationManager.OnAnimationProgress += sender => Invalidate();
 
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            AutoSize = true;
             Margin = new Padding(4, 6, 4, 6);
             Padding = new Padding(0);
         }

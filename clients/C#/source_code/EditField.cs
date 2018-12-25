@@ -12,11 +12,18 @@ namespace pmdbs
 {
     public partial class EditField : UserControl
     {
+        private Color bgColor = Color.White;
         public EditField()
         {
             InitializeComponent();
             advancedImageButton1.OnClickEvent += AdvancedImageButton1_Click;
             OnResized();
+        }
+
+        public Boolean UseColoredCaret
+        {
+            get { return advancedTextBox1.UseColoredCaret; }
+            set { advancedTextBox1.UseColoredCaret = value; }
         }
 
         public Image ImageClearNormal
@@ -65,6 +72,36 @@ namespace pmdbs
         {
             get { return advancedTextBox1.ColorFocus; }
             set { advancedTextBox1.ColorFocus = value; }
+        }
+
+        public Color ColorTitle
+        {
+            get { return textBox1.ForeColor; }
+            set { textBox1.ForeColor = value; }
+        }
+
+        public Color ForeColorTextBoxNormal
+        {
+            get { return advancedTextBox1.ForeColorNormal; }
+            set { advancedTextBox1.ForeColorNormal = value; }
+        }
+
+        public Color ForeColorTextBoxFocus
+        {
+            get { return advancedTextBox1.ForeColorFocus; }
+            set { advancedTextBox1.ForeColorFocus = value; }
+        }
+
+        public Color BackGroundColor
+        {
+            get { return bgColor; }
+            set {
+                bgColor = value;
+                this.BackColor = value;
+                textBox1.BackColor = value;
+                advancedImageButton1.BackColor = value;
+                advancedTextBox1.BackgroundColor = value;
+            }
         }
 
         private void AdvancedTextBox1_SizeChanged(object sender, EventArgs e)

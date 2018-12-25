@@ -27,7 +27,9 @@ namespace pmdbs
         private Color FocusColor = Color.FromArgb(255, 96, 49);
         private Color NormalForeColor = Color.FromArgb(33, 33, 33);
         private Color FocusForeColor = Color.Black;
+        private Color bgColor = Color.White;
         private Boolean IsFocused = false;
+        private Boolean UseCaret = true;
         Timer AnimationTimer = new Timer { Interval = 1 };
         public AdvancedTextBox()
         {
@@ -46,6 +48,18 @@ namespace pmdbs
         {
             get { return textBox1.TextAlign; }
             set { textBox1.TextAlign = value; }
+        }
+
+        public Boolean UseColoredCaret
+        {
+            get { return UseCaret; }
+            set { UseCaret = value; }
+        }
+
+        public Color BackgroundColor
+        {
+            get { return bgColor; }
+            set { bgColor = value; this.BackColor = value; textBox1.BackColor = value; }
         }
 
         public Color ForeColorNormal
@@ -114,11 +128,14 @@ namespace pmdbs
         {
             IsFocused = true;
             this.Invalidate();
-            Bitmap bmp = new Bitmap(1, 1);
-            bmp.SetPixel(0, 0, ColorExtensions.GetContrast(FocusColor, true));
-            bmp = new Bitmap(bmp, 2, textBox1.Height);
-            CreateCaret(textBox1.Handle, bmp.GetHbitmap(FocusColor), 2, textBox1.Height);
-            ShowCaret(textBox1.Handle);
+            if (UseCaret)
+            {
+                Bitmap bmp = new Bitmap(1, 1);
+                bmp.SetPixel(0, 0, ColorExtensions.GetContrast(FocusColor, true));
+                bmp = new Bitmap(bmp, 2, textBox1.Height);
+                CreateCaret(textBox1.Handle, bmp.GetHbitmap(FocusColor), 2, textBox1.Height);
+                ShowCaret(textBox1.Handle);
+            }
             AnimationTimer.Start();
             textBox1.ForeColor = FocusForeColor;
         }
