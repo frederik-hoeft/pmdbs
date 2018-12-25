@@ -6,6 +6,10 @@ WINDOWS CLIENT TODO:
         - create Welcome screen
             - some sort of dashboard
         - create Login screen
+            - TRANSPARENCY ISSUE APPROACH:
+                - exchange semi-transparent panel with picture box
+                - use gray bitmap image for picturebox with A of 150 or so (hopefully resulting in a semi transparent panel)
+                - use BackColor = Color.Transparent for all Child Coltrols and set Parent to picture box
         - create Settings screen
         - create Add screen/panel
             - use scrollview (flowlayoutpanel)
