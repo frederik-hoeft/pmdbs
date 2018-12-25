@@ -28,15 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.DashboardPanel = new System.Windows.Forms.Panel();
             this.DashboardFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.DashboardPanelHome = new System.Windows.Forms.Panel();
+            this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
             this.DashboardPanelHomeIndicator = new System.Windows.Forms.Panel();
             this.DashboardPanelPasswords = new System.Windows.Forms.Panel();
+            this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
             this.DashboardPanelPasswordsIndicator = new System.Windows.Forms.Panel();
             this.DashboardPanelSettings = new System.Windows.Forms.Panel();
+            this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
             this.DashboardPanelSettingsIndicator = new System.Windows.Forms.Panel();
             this.DashboardPictureBox = new System.Windows.Forms.PictureBox();
             this.DataPanelMain = new System.Windows.Forms.Panel();
@@ -45,7 +47,11 @@
             this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
             this.DataTableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelFooterRight = new System.Windows.Forms.Panel();
+            this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataPanelFooterLeft = new System.Windows.Forms.Panel();
+            this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
             this.DataPictureBoxBackgroundTop = new System.Windows.Forms.PictureBox();
             this.DataPictureBoxBackgroundBottom = new System.Windows.Forms.PictureBox();
@@ -54,10 +60,25 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.DataPanelDetails = new System.Windows.Forms.Panel();
+            this.DataCustomLabelNotes = new pmdbs.CustomLabel();
+            this.DataDetailsEntryUsername = new pmdbs.DetailsEntry();
+            this.DataDetailsEntryPassword = new pmdbs.DetailsEntry();
+            this.DataDetailsEditAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataDetailsRemoveAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
+            this.DataDetailsEntryEmail = new pmdbs.DetailsEntry();
+            this.DataDetailsEntryWebsite = new pmdbs.DetailsEntry();
             this.DataPanelEdit = new System.Windows.Forms.Panel();
+            this.DataEditSaveAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataEditCancelAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.advancedRichTextBox1 = new pmdbs.AdvancedRichTextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.editField5 = new pmdbs.EditField();
+            this.editField4 = new pmdbs.EditField();
+            this.editField3 = new pmdbs.EditField();
+            this.editField2 = new pmdbs.EditField();
+            this.editField1 = new pmdbs.EditField();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.WindowHeaderPanel = new System.Windows.Forms.Panel();
@@ -75,50 +96,34 @@
             this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
             this.AddPanelContent = new System.Windows.Forms.Panel();
             this.AddPanelGeneratePassword = new System.Windows.Forms.Panel();
-            this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
-            this.AddLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelNotes = new System.Windows.Forms.Panel();
-            this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
-            this.AddPanelSeperator = new System.Windows.Forms.Panel();
-            this.PanelLogin = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.AddPanelGeneratePasswordAnimatedButtonGenerate = new pmdbs.AnimatedButton();
+            this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
             this.AddPanelGeneratePasswordAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
+            this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
+            this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
             this.AddEditFieldEmail = new pmdbs.EditField();
+            this.AddLabelTitle = new System.Windows.Forms.Label();
             this.AddEditFieldHostname = new pmdbs.EditField();
             this.AddEditFieldWebsite = new pmdbs.EditField();
             this.AddEditFieldUsername = new pmdbs.EditField();
             this.AddEditFieldPassword = new pmdbs.EditField();
+            this.AddPanelNotes = new System.Windows.Forms.Panel();
             this.AddPanelNotesAdvancedRichTextBox = new pmdbs.AdvancedRichTextBox();
+            this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
+            this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
             this.AddPanelAdvancedImageButtonAbort = new pmdbs.AdvancedImageButton();
             this.AddPanelAdvancedImageButtonSave = new pmdbs.AdvancedImageButton();
-            this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataCustomLabelNotes = new pmdbs.CustomLabel();
-            this.DataDetailsEntryUsername = new pmdbs.DetailsEntry();
-            this.DataDetailsEntryPassword = new pmdbs.DetailsEntry();
-            this.DataDetailsEditAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataDetailsRemoveAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataDetailsEntryEmail = new pmdbs.DetailsEntry();
-            this.DataDetailsEntryWebsite = new pmdbs.DetailsEntry();
-            this.DataEditSaveAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataEditCancelAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.advancedRichTextBox1 = new pmdbs.AdvancedRichTextBox();
-            this.editField5 = new pmdbs.EditField();
-            this.editField4 = new pmdbs.EditField();
-            this.editField3 = new pmdbs.EditField();
-            this.editField2 = new pmdbs.EditField();
-            this.editField1 = new pmdbs.EditField();
-            this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
-            this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
-            this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
-            this.advancedPanel1 = new pmdbs.AdvancedPanel(this.components);
+            this.AddPanelSeperator = new System.Windows.Forms.Panel();
+            this.PanelLogin = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.animatedButton1 = new pmdbs.AnimatedButton();
+            this.label4 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.editField7 = new pmdbs.EditField();
+            this.editField6 = new pmdbs.EditField();
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -158,6 +163,10 @@
             this.AddPanelBottomMenu.SuspendLayout();
             this.PanelLogin.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.pictureBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -198,6 +207,26 @@
             this.DashboardPanelHome.Size = new System.Drawing.Size(269, 75);
             this.DashboardPanelHome.TabIndex = 7;
             // 
+            // DashboardMenuEntryHome
+            // 
+            this.DashboardMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryHome.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntryHome.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntryHome.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageHover")));
+            this.DashboardMenuEntryHome.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageNormal")));
+            this.DashboardMenuEntryHome.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryHome.Name = "DashboardMenuEntryHome";
+            this.DashboardMenuEntryHome.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntryHome.TabIndex = 5;
+            this.DashboardMenuEntryHome.TextTitle = "Home";
+            // 
             // DashboardPanelHomeIndicator
             // 
             this.DashboardPanelHomeIndicator.BackColor = System.Drawing.Color.White;
@@ -220,6 +249,26 @@
             this.DashboardPanelPasswords.Size = new System.Drawing.Size(269, 75);
             this.DashboardPanelPasswords.TabIndex = 8;
             // 
+            // DashboardMenuEntryPasswords
+            // 
+            this.DashboardMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntryPasswords.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageHover")));
+            this.DashboardMenuEntryPasswords.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageNormal")));
+            this.DashboardMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.Name = "DashboardMenuEntryPasswords";
+            this.DashboardMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntryPasswords.TabIndex = 5;
+            this.DashboardMenuEntryPasswords.TextTitle = "Passwords";
+            // 
             // DashboardPanelPasswordsIndicator
             // 
             this.DashboardPanelPasswordsIndicator.BackColor = System.Drawing.Color.White;
@@ -241,6 +290,26 @@
             this.DashboardPanelSettings.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
             this.DashboardPanelSettings.Size = new System.Drawing.Size(269, 75);
             this.DashboardPanelSettings.TabIndex = 8;
+            // 
+            // DashboardMenuEntrySettings
+            // 
+            this.DashboardMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntrySettings.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntrySettings.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageHover")));
+            this.DashboardMenuEntrySettings.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageNormal")));
+            this.DashboardMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntrySettings.Name = "DashboardMenuEntrySettings";
+            this.DashboardMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntrySettings.TabIndex = 5;
+            this.DashboardMenuEntrySettings.TextTitle = "Settings";
             // 
             // DashboardPanelSettingsIndicator
             // 
@@ -352,6 +421,26 @@
             this.DataPanelFooterRight.Size = new System.Drawing.Size(447, 82);
             this.DataPanelFooterRight.TabIndex = 1;
             // 
+            // DataSyncAdvancedImageButton
+            // 
+            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
+            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
+            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
+            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
+            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataSyncAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataRightAdvancedImageButton
+            // 
+            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
+            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
+            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
+            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataRightAdvancedImageButton.TabIndex = 17;
+            // 
             // DataPanelFooterLeft
             // 
             this.DataPanelFooterLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
@@ -364,6 +453,26 @@
             this.DataPanelFooterLeft.Name = "DataPanelFooterLeft";
             this.DataPanelFooterLeft.Size = new System.Drawing.Size(446, 82);
             this.DataPanelFooterLeft.TabIndex = 0;
+            // 
+            // DataAddAdvancedImageButton
+            // 
+            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
+            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
+            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
+            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataAddAdvancedImageButton.TabIndex = 15;
+            // 
+            // DataLeftAdvancedImageButton
+            // 
+            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
+            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
+            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
+            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
+            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataLeftAdvancedImageButton.TabIndex = 16;
             // 
             // DataTableLayoutPanelSubRight
             // 
@@ -473,6 +582,60 @@
             this.DataPanelDetails.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelDetails.TabIndex = 3;
             // 
+            // DataCustomLabelNotes
+            // 
+            this.DataCustomLabelNotes.Content = "Some  generic notes";
+            this.DataCustomLabelNotes.Header = "Notes:";
+            this.DataCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
+            this.DataCustomLabelNotes.Name = "DataCustomLabelNotes";
+            this.DataCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
+            this.DataCustomLabelNotes.TabIndex = 23;
+            // 
+            // DataDetailsEntryUsername
+            // 
+            this.DataDetailsEntryUsername.Content = "Us3r123";
+            this.DataDetailsEntryUsername.Header = "Your Username:";
+            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
+            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
+            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
+            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
+            this.DataDetailsEntryUsername.RawText = null;
+            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryUsername.TabIndex = 22;
+            // 
+            // DataDetailsEntryPassword
+            // 
+            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.DataDetailsEntryPassword.Header = "Your Password:";
+            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
+            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
+            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
+            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
+            this.DataDetailsEntryPassword.RawText = null;
+            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryPassword.TabIndex = 21;
+            // 
+            // DataDetailsEditAdvancedImageButton
+            // 
+            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
+            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
+            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
+            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
+            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
+            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
+            // 
+            // DataDetailsRemoveAdvancedImageButton
+            // 
+            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
+            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
+            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
+            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
+            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
+            // 
             // DataLabelDetailsHostname
             // 
             this.DataLabelDetailsHostname.AutoSize = true;
@@ -492,6 +655,34 @@
             this.DataPictureBoxDetailsLogo.TabIndex = 0;
             this.DataPictureBoxDetailsLogo.TabStop = false;
             // 
+            // DataDetailsEntryEmail
+            // 
+            this.DataDetailsEntryEmail.Content = "example@gmail.com";
+            this.DataDetailsEntryEmail.Header = "Your Email:";
+            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
+            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
+            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
+            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
+            this.DataDetailsEntryEmail.RawText = null;
+            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryEmail.TabIndex = 20;
+            // 
+            // DataDetailsEntryWebsite
+            // 
+            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
+            this.DataDetailsEntryWebsite.Header = "Website:";
+            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
+            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
+            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
+            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
+            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
+    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
+    "iceLogin";
+            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryWebsite.TabIndex = 19;
+            // 
             // DataPanelEdit
             // 
             this.DataPanelEdit.Controls.Add(this.DataEditSaveAdvancedImageButton);
@@ -510,6 +701,36 @@
             this.DataPanelEdit.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelEdit.TabIndex = 4;
             // 
+            // DataEditSaveAdvancedImageButton
+            // 
+            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
+            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
+            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
+            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
+            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
+            // 
+            // DataEditCancelAdvancedImageButton
+            // 
+            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
+            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
+            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
+            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
+            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
+            // 
+            // advancedRichTextBox1
+            // 
+            this.advancedRichTextBox1.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedRichTextBox1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.advancedRichTextBox1.ForeColorFocus = System.Drawing.Color.Black;
+            this.advancedRichTextBox1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.advancedRichTextBox1.Location = new System.Drawing.Point(8, 718);
+            this.advancedRichTextBox1.Name = "advancedRichTextBox1";
+            this.advancedRichTextBox1.Size = new System.Drawing.Size(643, 266);
+            this.advancedRichTextBox1.TabIndex = 31;
+            this.advancedRichTextBox1.TextValue = "";
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -520,6 +741,116 @@
             this.label1.Size = new System.Drawing.Size(79, 25);
             this.label1.TabIndex = 30;
             this.label1.Text = "Notes:";
+            // 
+            // editField5
+            // 
+            this.editField5.AutoSize = true;
+            this.editField5.BackColor = System.Drawing.Color.White;
+            this.editField5.BackGroundColor = System.Drawing.Color.White;
+            this.editField5.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField5.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField5.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField5.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField5.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField5.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField5.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField5.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearHover")));
+            this.editField5.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearNormal")));
+            this.editField5.Location = new System.Drawing.Point(8, 572);
+            this.editField5.Name = "editField5";
+            this.editField5.Size = new System.Drawing.Size(680, 96);
+            this.editField5.TabIndex = 29;
+            this.editField5.TextTextBox = "https://mail.google.com";
+            this.editField5.TextTitle = "Website:";
+            this.editField5.UseColoredCaret = true;
+            // 
+            // editField4
+            // 
+            this.editField4.AutoSize = true;
+            this.editField4.BackColor = System.Drawing.Color.White;
+            this.editField4.BackGroundColor = System.Drawing.Color.White;
+            this.editField4.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField4.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField4.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField4.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField4.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField4.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField4.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField4.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearHover")));
+            this.editField4.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearNormal")));
+            this.editField4.Location = new System.Drawing.Point(8, 470);
+            this.editField4.Name = "editField4";
+            this.editField4.Size = new System.Drawing.Size(680, 96);
+            this.editField4.TabIndex = 28;
+            this.editField4.TextTextBox = "example@gmail.com";
+            this.editField4.TextTitle = "Email:";
+            this.editField4.UseColoredCaret = true;
+            // 
+            // editField3
+            // 
+            this.editField3.AutoSize = true;
+            this.editField3.BackColor = System.Drawing.Color.White;
+            this.editField3.BackGroundColor = System.Drawing.Color.White;
+            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField3.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField3.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField3.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
+            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
+            this.editField3.Location = new System.Drawing.Point(8, 368);
+            this.editField3.Name = "editField3";
+            this.editField3.Size = new System.Drawing.Size(680, 96);
+            this.editField3.TabIndex = 27;
+            this.editField3.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.editField3.TextTitle = "Password:";
+            this.editField3.UseColoredCaret = true;
+            // 
+            // editField2
+            // 
+            this.editField2.AutoSize = true;
+            this.editField2.BackColor = System.Drawing.Color.White;
+            this.editField2.BackGroundColor = System.Drawing.Color.White;
+            this.editField2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField2.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField2.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField2.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField2.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField2.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField2.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearHover")));
+            this.editField2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearNormal")));
+            this.editField2.Location = new System.Drawing.Point(8, 266);
+            this.editField2.Name = "editField2";
+            this.editField2.Size = new System.Drawing.Size(680, 96);
+            this.editField2.TabIndex = 26;
+            this.editField2.TextTextBox = "Us3r123";
+            this.editField2.TextTitle = "Username:";
+            this.editField2.UseColoredCaret = true;
+            // 
+            // editField1
+            // 
+            this.editField1.AutoSize = true;
+            this.editField1.BackColor = System.Drawing.Color.White;
+            this.editField1.BackGroundColor = System.Drawing.Color.White;
+            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField1.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField1.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearHover")));
+            this.editField1.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearNormal")));
+            this.editField1.Location = new System.Drawing.Point(8, 164);
+            this.editField1.Name = "editField1";
+            this.editField1.Size = new System.Drawing.Size(680, 96);
+            this.editField1.TabIndex = 25;
+            this.editField1.TextTextBox = "Gmail";
+            this.editField1.TextTitle = "Hostname:";
+            this.editField1.UseColoredCaret = true;
             // 
             // pictureBox1
             // 
@@ -612,8 +943,8 @@
             // PanelMain
             // 
             this.PanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.PanelMain.Controls.Add(this.AddPanelMain);
             this.PanelMain.Controls.Add(this.DataPanelMain);
+            this.PanelMain.Controls.Add(this.AddPanelMain);
             this.PanelMain.Controls.Add(this.DashboardPanel);
             this.PanelMain.Controls.Add(this.WindowHeaderPanel);
             this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -752,120 +1083,6 @@
             this.AddPanelGeneratePassword.Size = new System.Drawing.Size(660, 197);
             this.AddPanelGeneratePassword.TabIndex = 8;
             // 
-            // AddPanelGeneratePasswordLabelTitle
-            // 
-            this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.AddPanelGeneratePasswordLabelTitle.Location = new System.Drawing.Point(3, 3);
-            this.AddPanelGeneratePasswordLabelTitle.Name = "AddPanelGeneratePasswordLabelTitle";
-            this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(394, 34);
-            this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
-            this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
-            // 
-            // AddPanelGeneratePasswordLabelLength
-            // 
-            this.AddPanelGeneratePasswordLabelLength.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelLength.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordLabelLength.Location = new System.Drawing.Point(323, 121);
-            this.AddPanelGeneratePasswordLabelLength.Name = "AddPanelGeneratePasswordLabelLength";
-            this.AddPanelGeneratePasswordLabelLength.Size = new System.Drawing.Size(94, 30);
-            this.AddPanelGeneratePasswordLabelLength.TabIndex = 17;
-            this.AddPanelGeneratePasswordLabelLength.Text = "Length";
-            // 
-            // AddPanelGeneratePasswordLabelDescription
-            // 
-            this.AddPanelGeneratePasswordLabelDescription.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordLabelDescription.Location = new System.Drawing.Point(9, 48);
-            this.AddPanelGeneratePasswordLabelDescription.Name = "AddPanelGeneratePasswordLabelDescription";
-            this.AddPanelGeneratePasswordLabelDescription.Size = new System.Drawing.Size(615, 63);
-            this.AddPanelGeneratePasswordLabelDescription.TabIndex = 16;
-            this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
-    "s as well as special characters and are at least 16\r\ncharacters long.";
-            // 
-            // AddLabelTitle
-            // 
-            this.AddLabelTitle.AutoSize = true;
-            this.AddLabelTitle.BackColor = System.Drawing.Color.White;
-            this.AddLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddLabelTitle.Location = new System.Drawing.Point(3, 67);
-            this.AddLabelTitle.Name = "AddLabelTitle";
-            this.AddLabelTitle.Size = new System.Drawing.Size(224, 38);
-            this.AddLabelTitle.TabIndex = 0;
-            this.AddLabelTitle.Text = "Add Account";
-            // 
-            // AddPanelNotes
-            // 
-            this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
-            this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
-            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
-            this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelNotes.Name = "AddPanelNotes";
-            this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
-            this.AddPanelNotes.TabIndex = 11;
-            // 
-            // AddPanelNotesLabelTitle
-            // 
-            this.AddPanelNotesLabelTitle.AutoSize = true;
-            this.AddPanelNotesLabelTitle.Font = new System.Drawing.Font("Century Gothic", 8F);
-            this.AddPanelNotesLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.AddPanelNotesLabelTitle.Location = new System.Drawing.Point(2, 9);
-            this.AddPanelNotesLabelTitle.Name = "AddPanelNotesLabelTitle";
-            this.AddPanelNotesLabelTitle.Size = new System.Drawing.Size(55, 21);
-            this.AddPanelNotesLabelTitle.TabIndex = 0;
-            this.AddPanelNotesLabelTitle.Text = "Notes";
-            // 
-            // AddPanelBottomMenu
-            // 
-            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonAbort);
-            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonSave);
-            this.AddPanelBottomMenu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelBottomMenu.Location = new System.Drawing.Point(152, 898);
-            this.AddPanelBottomMenu.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
-            this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
-            this.AddPanelBottomMenu.TabIndex = 12;
-            // 
-            // AddPanelSeperator
-            // 
-            this.AddPanelSeperator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.AddPanelSeperator.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelSeperator.Location = new System.Drawing.Point(0, 0);
-            this.AddPanelSeperator.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelSeperator.Name = "AddPanelSeperator";
-            this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
-            this.AddPanelSeperator.TabIndex = 3;
-            // 
-            // PanelLogin
-            // 
-            this.PanelLogin.Controls.Add(this.tableLayoutPanel1);
-            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
-            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
-            this.PanelLogin.Name = "PanelLogin";
-            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
-            this.PanelLogin.TabIndex = 11;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tableLayoutPanel1.BackgroundImage")));
-            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.tableLayoutPanel1.ColumnCount = 3;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.advancedPanel1, 1, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 850F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1880, 1112);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
             // AddPanelGeneratePasswordAnimatedButtonGenerate
             // 
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.AutoSize = true;
@@ -882,6 +1099,16 @@
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Text = "GENERATE";
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.UseVisualStyleBackColor = true;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Click += new System.EventHandler(this.AddPanelGeneratePasswordAnimatedButtonGenerate_Click);
+            // 
+            // AddPanelGeneratePasswordLabelTitle
+            // 
+            this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.AddPanelGeneratePasswordLabelTitle.Location = new System.Drawing.Point(3, 3);
+            this.AddPanelGeneratePasswordLabelTitle.Name = "AddPanelGeneratePasswordLabelTitle";
+            this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(394, 34);
+            this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
+            this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
             // 
             // AddPanelGeneratePasswordAdvancedCheckBox
             // 
@@ -923,14 +1150,39 @@
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextValue = "15";
             // 
+            // AddPanelGeneratePasswordLabelLength
+            // 
+            this.AddPanelGeneratePasswordLabelLength.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelLength.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordLabelLength.Location = new System.Drawing.Point(323, 121);
+            this.AddPanelGeneratePasswordLabelLength.Name = "AddPanelGeneratePasswordLabelLength";
+            this.AddPanelGeneratePasswordLabelLength.Size = new System.Drawing.Size(94, 30);
+            this.AddPanelGeneratePasswordLabelLength.TabIndex = 17;
+            this.AddPanelGeneratePasswordLabelLength.Text = "Length";
+            // 
+            // AddPanelGeneratePasswordLabelDescription
+            // 
+            this.AddPanelGeneratePasswordLabelDescription.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordLabelDescription.Location = new System.Drawing.Point(9, 48);
+            this.AddPanelGeneratePasswordLabelDescription.Name = "AddPanelGeneratePasswordLabelDescription";
+            this.AddPanelGeneratePasswordLabelDescription.Size = new System.Drawing.Size(615, 63);
+            this.AddPanelGeneratePasswordLabelDescription.TabIndex = 16;
+            this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
+    "s as well as special characters and are at least 16\r\ncharacters long.";
+            // 
             // AddEditFieldEmail
             // 
             this.AddEditFieldEmail.AutoSize = true;
             this.AddEditFieldEmail.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
             this.AddEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
             this.AddEditFieldEmail.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddEditFieldEmail.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearHover")));
             this.AddEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearNormal")));
             this.AddEditFieldEmail.Location = new System.Drawing.Point(6, 652);
@@ -939,15 +1191,31 @@
             this.AddEditFieldEmail.TabIndex = 6;
             this.AddEditFieldEmail.TextTextBox = "";
             this.AddEditFieldEmail.TextTitle = "Email";
+            this.AddEditFieldEmail.UseColoredCaret = true;
+            // 
+            // AddLabelTitle
+            // 
+            this.AddLabelTitle.AutoSize = true;
+            this.AddLabelTitle.BackColor = System.Drawing.Color.White;
+            this.AddLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddLabelTitle.Location = new System.Drawing.Point(3, 67);
+            this.AddLabelTitle.Name = "AddLabelTitle";
+            this.AddLabelTitle.Size = new System.Drawing.Size(224, 38);
+            this.AddLabelTitle.TabIndex = 0;
+            this.AddLabelTitle.Text = "Add Account";
             // 
             // AddEditFieldHostname
             // 
             this.AddEditFieldHostname.AutoSize = true;
             this.AddEditFieldHostname.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
             this.AddEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
             this.AddEditFieldHostname.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddEditFieldHostname.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldHostname.ImageClearHover")));
             this.AddEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldHostname.ImageClearNormal")));
             this.AddEditFieldHostname.Location = new System.Drawing.Point(6, 127);
@@ -956,15 +1224,20 @@
             this.AddEditFieldHostname.TabIndex = 2;
             this.AddEditFieldHostname.TextTextBox = "";
             this.AddEditFieldHostname.TextTitle = "Hostname*";
+            this.AddEditFieldHostname.UseColoredCaret = true;
             // 
             // AddEditFieldWebsite
             // 
             this.AddEditFieldWebsite.AutoSize = true;
             this.AddEditFieldWebsite.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
             this.AddEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
             this.AddEditFieldWebsite.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddEditFieldWebsite.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearHover")));
             this.AddEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearNormal")));
             this.AddEditFieldWebsite.Location = new System.Drawing.Point(6, 755);
@@ -973,15 +1246,20 @@
             this.AddEditFieldWebsite.TabIndex = 7;
             this.AddEditFieldWebsite.TextTextBox = "";
             this.AddEditFieldWebsite.TextTitle = "Url";
+            this.AddEditFieldWebsite.UseColoredCaret = true;
             // 
             // AddEditFieldUsername
             // 
             this.AddEditFieldUsername.AutoSize = true;
             this.AddEditFieldUsername.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
             this.AddEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
             this.AddEditFieldUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddEditFieldUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearHover")));
             this.AddEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearNormal")));
             this.AddEditFieldUsername.Location = new System.Drawing.Point(6, 230);
@@ -990,15 +1268,20 @@
             this.AddEditFieldUsername.TabIndex = 3;
             this.AddEditFieldUsername.TextTextBox = "";
             this.AddEditFieldUsername.TextTitle = "Username";
+            this.AddEditFieldUsername.UseColoredCaret = true;
             // 
             // AddEditFieldPassword
             // 
             this.AddEditFieldPassword.AutoSize = true;
             this.AddEditFieldPassword.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
             this.AddEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
             this.AddEditFieldPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddEditFieldPassword.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearHover")));
             this.AddEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearNormal")));
             this.AddEditFieldPassword.Location = new System.Drawing.Point(6, 333);
@@ -1007,6 +1290,17 @@
             this.AddEditFieldPassword.TabIndex = 4;
             this.AddEditFieldPassword.TextTextBox = "";
             this.AddEditFieldPassword.TextTitle = "Password*";
+            this.AddEditFieldPassword.UseColoredCaret = true;
+            // 
+            // AddPanelNotes
+            // 
+            this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
+            this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
+            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
+            this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelNotes.Name = "AddPanelNotes";
+            this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
+            this.AddPanelNotes.TabIndex = 11;
             // 
             // AddPanelNotesAdvancedRichTextBox
             // 
@@ -1019,6 +1313,28 @@
             this.AddPanelNotesAdvancedRichTextBox.Size = new System.Drawing.Size(660, 143);
             this.AddPanelNotesAdvancedRichTextBox.TabIndex = 1;
             this.AddPanelNotesAdvancedRichTextBox.TextValue = "";
+            // 
+            // AddPanelNotesLabelTitle
+            // 
+            this.AddPanelNotesLabelTitle.AutoSize = true;
+            this.AddPanelNotesLabelTitle.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddPanelNotesLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.AddPanelNotesLabelTitle.Location = new System.Drawing.Point(2, 9);
+            this.AddPanelNotesLabelTitle.Name = "AddPanelNotesLabelTitle";
+            this.AddPanelNotesLabelTitle.Size = new System.Drawing.Size(55, 21);
+            this.AddPanelNotesLabelTitle.TabIndex = 0;
+            this.AddPanelNotesLabelTitle.Text = "Notes";
+            // 
+            // AddPanelBottomMenu
+            // 
+            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonAbort);
+            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonSave);
+            this.AddPanelBottomMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelBottomMenu.Location = new System.Drawing.Point(152, 898);
+            this.AddPanelBottomMenu.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
+            this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
+            this.AddPanelBottomMenu.TabIndex = 12;
             // 
             // AddPanelAdvancedImageButtonAbort
             // 
@@ -1038,307 +1354,151 @@
             this.AddPanelAdvancedImageButtonSave.Size = new System.Drawing.Size(72, 72);
             this.AddPanelAdvancedImageButtonSave.TabIndex = 0;
             // 
-            // DataSyncAdvancedImageButton
+            // AddPanelSeperator
             // 
-            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
-            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
-            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
-            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
-            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataSyncAdvancedImageButton.TabIndex = 17;
+            this.AddPanelSeperator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.AddPanelSeperator.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelSeperator.Location = new System.Drawing.Point(0, 0);
+            this.AddPanelSeperator.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelSeperator.Name = "AddPanelSeperator";
+            this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
+            this.AddPanelSeperator.TabIndex = 3;
             // 
-            // DataRightAdvancedImageButton
+            // PanelLogin
             // 
-            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
-            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
-            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
-            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataRightAdvancedImageButton.TabIndex = 17;
+            this.PanelLogin.Controls.Add(this.tableLayoutPanel1);
+            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
+            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
+            this.PanelLogin.Name = "PanelLogin";
+            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
+            this.PanelLogin.TabIndex = 11;
             // 
-            // DataAddAdvancedImageButton
+            // tableLayoutPanel1
             // 
-            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
-            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
-            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
-            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataAddAdvancedImageButton.TabIndex = 15;
+            this.tableLayoutPanel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tableLayoutPanel1.BackgroundImage")));
+            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.tableLayoutPanel1.ColumnCount = 3;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox3, 1, 1);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 850F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1880, 1112);
+            this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // DataLeftAdvancedImageButton
+            // pictureBox3
             // 
-            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
-            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
-            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
-            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
-            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataLeftAdvancedImageButton.TabIndex = 16;
+            this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox3.Controls.Add(this.pictureBox2);
+            this.pictureBox3.Controls.Add(this.animatedButton1);
+            this.pictureBox3.Controls.Add(this.label4);
+            this.pictureBox3.Controls.Add(this.panel1);
+            this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox3.Location = new System.Drawing.Point(618, 134);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(644, 844);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox3.TabIndex = 1;
+            this.pictureBox3.TabStop = false;
             // 
-            // DataCustomLabelNotes
+            // pictureBox2
             // 
-            this.DataCustomLabelNotes.Content = "Some  generic notes";
-            this.DataCustomLabelNotes.Header = "Notes:";
-            this.DataCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
-            this.DataCustomLabelNotes.Name = "DataCustomLabelNotes";
-            this.DataCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
-            this.DataCustomLabelNotes.TabIndex = 23;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(241, 77);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(175, 175);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 5;
+            this.pictureBox2.TabStop = false;
             // 
-            // DataDetailsEntryUsername
+            // animatedButton1
             // 
-            this.DataDetailsEntryUsername.Content = "Us3r123";
-            this.DataDetailsEntryUsername.Header = "Your Username:";
-            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
-            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
-            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
-            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
-            this.DataDetailsEntryUsername.RawText = null;
-            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryUsername.TabIndex = 22;
+            this.animatedButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.animatedButton1.Depth = 0;
+            this.animatedButton1.Icon = null;
+            this.animatedButton1.Location = new System.Drawing.Point(223, 658);
+            this.animatedButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.animatedButton1.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButton1.Name = "animatedButton1";
+            this.animatedButton1.Primary = false;
+            this.animatedButton1.Size = new System.Drawing.Size(211, 71);
+            this.animatedButton1.TabIndex = 4;
+            this.animatedButton1.Text = "Sign in";
+            this.animatedButton1.UseVisualStyleBackColor = true;
             // 
-            // DataDetailsEntryPassword
+            // label4
             // 
-            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.DataDetailsEntryPassword.Header = "Your Password:";
-            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
-            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
-            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
-            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
-            this.DataDetailsEntryPassword.RawText = null;
-            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryPassword.TabIndex = 21;
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(202, 282);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(253, 39);
+            this.label4.TabIndex = 2;
+            this.label4.Text = "Welcome Back";
             // 
-            // DataDetailsEditAdvancedImageButton
+            // panel1
             // 
-            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
-            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
-            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
-            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
-            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
-            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.panel1.Controls.Add(this.editField7);
+            this.panel1.Controls.Add(this.editField6);
+            this.panel1.Location = new System.Drawing.Point(52, 353);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(523, 253);
+            this.panel1.TabIndex = 1;
             // 
-            // DataDetailsRemoveAdvancedImageButton
+            // editField7
             // 
-            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
-            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
-            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
-            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
-            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
+            this.editField7.AutoSize = true;
+            this.editField7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.editField7.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.editField7.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField7.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.editField7.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField7.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField7.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField7.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.editField7.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.editField7.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField7.ImageClearHover")));
+            this.editField7.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField7.ImageClearNormal")));
+            this.editField7.Location = new System.Drawing.Point(41, 141);
+            this.editField7.Name = "editField7";
+            this.editField7.Size = new System.Drawing.Size(476, 89);
+            this.editField7.TabIndex = 1;
+            this.editField7.TextTextBox = "";
+            this.editField7.TextTitle = "Password";
+            this.editField7.UseColoredCaret = false;
             // 
-            // DataDetailsEntryEmail
+            // editField6
             // 
-            this.DataDetailsEntryEmail.Content = "example@gmail.com";
-            this.DataDetailsEntryEmail.Header = "Your Email:";
-            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
-            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
-            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
-            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
-            this.DataDetailsEntryEmail.RawText = null;
-            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryEmail.TabIndex = 20;
-            // 
-            // DataDetailsEntryWebsite
-            // 
-            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
-            this.DataDetailsEntryWebsite.Header = "Website:";
-            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
-            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
-            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
-            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
-            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
-    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
-    "iceLogin";
-            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryWebsite.TabIndex = 19;
-            // 
-            // DataEditSaveAdvancedImageButton
-            // 
-            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
-            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
-            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
-            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
-            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
-            // 
-            // DataEditCancelAdvancedImageButton
-            // 
-            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
-            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
-            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
-            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
-            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
-            // 
-            // advancedRichTextBox1
-            // 
-            this.advancedRichTextBox1.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedRichTextBox1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedRichTextBox1.ForeColorFocus = System.Drawing.Color.Black;
-            this.advancedRichTextBox1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedRichTextBox1.Location = new System.Drawing.Point(8, 718);
-            this.advancedRichTextBox1.Name = "advancedRichTextBox1";
-            this.advancedRichTextBox1.Size = new System.Drawing.Size(643, 266);
-            this.advancedRichTextBox1.TabIndex = 31;
-            this.advancedRichTextBox1.TextValue = "";
-            // 
-            // editField5
-            // 
-            this.editField5.AutoSize = true;
-            this.editField5.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField5.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField5.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField5.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField5.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearHover")));
-            this.editField5.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearNormal")));
-            this.editField5.Location = new System.Drawing.Point(8, 572);
-            this.editField5.Name = "editField5";
-            this.editField5.Size = new System.Drawing.Size(680, 96);
-            this.editField5.TabIndex = 29;
-            this.editField5.TextTextBox = "https://mail.google.com";
-            this.editField5.TextTitle = "Website:";
-            // 
-            // editField4
-            // 
-            this.editField4.AutoSize = true;
-            this.editField4.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField4.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField4.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField4.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField4.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearHover")));
-            this.editField4.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearNormal")));
-            this.editField4.Location = new System.Drawing.Point(8, 470);
-            this.editField4.Name = "editField4";
-            this.editField4.Size = new System.Drawing.Size(680, 96);
-            this.editField4.TabIndex = 28;
-            this.editField4.TextTextBox = "example@gmail.com";
-            this.editField4.TextTitle = "Email:";
-            // 
-            // editField3
-            // 
-            this.editField3.AutoSize = true;
-            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
-            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
-            this.editField3.Location = new System.Drawing.Point(8, 368);
-            this.editField3.Name = "editField3";
-            this.editField3.Size = new System.Drawing.Size(680, 96);
-            this.editField3.TabIndex = 27;
-            this.editField3.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.editField3.TextTitle = "Password:";
-            // 
-            // editField2
-            // 
-            this.editField2.AutoSize = true;
-            this.editField2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField2.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField2.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField2.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearHover")));
-            this.editField2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearNormal")));
-            this.editField2.Location = new System.Drawing.Point(8, 266);
-            this.editField2.Name = "editField2";
-            this.editField2.Size = new System.Drawing.Size(680, 96);
-            this.editField2.TabIndex = 26;
-            this.editField2.TextTextBox = "Us3r123";
-            this.editField2.TextTitle = "Username:";
-            // 
-            // editField1
-            // 
-            this.editField1.AutoSize = true;
-            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField1.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField1.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearHover")));
-            this.editField1.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearNormal")));
-            this.editField1.Location = new System.Drawing.Point(8, 164);
-            this.editField1.Name = "editField1";
-            this.editField1.Size = new System.Drawing.Size(680, 96);
-            this.editField1.TabIndex = 25;
-            this.editField1.TextTextBox = "Gmail";
-            this.editField1.TextTitle = "Hostname:";
-            // 
-            // DashboardMenuEntryHome
-            // 
-            this.DashboardMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
-            this.DashboardMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryHome.ColorHover = System.Drawing.Color.White;
-            this.DashboardMenuEntryHome.ColorNormal = System.Drawing.Color.White;
-            this.DashboardMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DashboardMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DashboardMenuEntryHome.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageHover")));
-            this.DashboardMenuEntryHome.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageNormal")));
-            this.DashboardMenuEntryHome.Location = new System.Drawing.Point(13, 0);
-            this.DashboardMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryHome.Name = "DashboardMenuEntryHome";
-            this.DashboardMenuEntryHome.Size = new System.Drawing.Size(255, 74);
-            this.DashboardMenuEntryHome.TabIndex = 5;
-            this.DashboardMenuEntryHome.TextTitle = "Home";
-            // 
-            // DashboardMenuEntryPasswords
-            // 
-            this.DashboardMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
-            this.DashboardMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
-            this.DashboardMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
-            this.DashboardMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DashboardMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DashboardMenuEntryPasswords.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageHover")));
-            this.DashboardMenuEntryPasswords.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageNormal")));
-            this.DashboardMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
-            this.DashboardMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryPasswords.Name = "DashboardMenuEntryPasswords";
-            this.DashboardMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
-            this.DashboardMenuEntryPasswords.TabIndex = 5;
-            this.DashboardMenuEntryPasswords.TextTitle = "Passwords";
-            // 
-            // DashboardMenuEntrySettings
-            // 
-            this.DashboardMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
-            this.DashboardMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntrySettings.ColorHover = System.Drawing.Color.White;
-            this.DashboardMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
-            this.DashboardMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DashboardMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DashboardMenuEntrySettings.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageHover")));
-            this.DashboardMenuEntrySettings.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageNormal")));
-            this.DashboardMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
-            this.DashboardMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntrySettings.Name = "DashboardMenuEntrySettings";
-            this.DashboardMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
-            this.DashboardMenuEntrySettings.TabIndex = 5;
-            this.DashboardMenuEntrySettings.TextTitle = "Settings";
-            // 
-            // advancedPanel1
-            // 
-            this.advancedPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.advancedPanel1.Location = new System.Drawing.Point(615, 131);
-            this.advancedPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.advancedPanel1.Name = "advancedPanel1";
-            this.advancedPanel1.Opacity = 90;
-            this.advancedPanel1.Size = new System.Drawing.Size(650, 850);
-            this.advancedPanel1.TabIndex = 0;
+            this.editField6.AutoSize = true;
+            this.editField6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.editField6.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.editField6.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField6.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.editField6.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField6.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField6.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField6.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.editField6.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.editField6.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField6.ImageClearHover")));
+            this.editField6.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField6.ImageClearNormal")));
+            this.editField6.Location = new System.Drawing.Point(42, 34);
+            this.editField6.Name = "editField6";
+            this.editField6.Size = new System.Drawing.Size(476, 89);
+            this.editField6.TabIndex = 0;
+            this.editField6.TextTextBox = "";
+            this.editField6.TextTitle = "Username";
+            this.editField6.UseColoredCaret = false;
             // 
             // Form1
             // 
@@ -1399,6 +1559,12 @@
             this.AddPanelBottomMenu.ResumeLayout(false);
             this.PanelLogin.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.pictureBox3.ResumeLayout(false);
+            this.pictureBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1493,7 +1659,13 @@
         private AdvancedImageButton AddPanelAdvancedImageButtonAbort;
         private System.Windows.Forms.Panel PanelLogin;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private AdvancedPanel advancedPanel1;
+        private EditField editField6;
+        private System.Windows.Forms.Panel panel1;
+        private EditField editField7;
+        private System.Windows.Forms.Label label4;
+        private AnimatedButton animatedButton1;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox3;
     }
 }
 
