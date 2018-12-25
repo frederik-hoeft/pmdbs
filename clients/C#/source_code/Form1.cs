@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
+using System.Drawing.Drawing2D;
 
 namespace pmdbs
 {
@@ -341,5 +342,11 @@ namespace pmdbs
         }
 
         #endregion
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            var sb = new SolidBrush(Color.FromArgb(100, 100, 100, 100));
+            e.Graphics.FillRectangle(sb, this.DisplayRectangle);
+        }
     }
 }
