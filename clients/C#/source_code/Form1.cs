@@ -122,6 +122,10 @@ namespace pmdbs
         {
             InitializeComponent();
             InitializeTransparency();
+            LoginPictureBoxOnlineMain.SuspendLayout();
+            LoginPictureBoxOfflineMain.SuspendLayout();
+            LoginPictureBoxRegisterMain.BringToFront();
+            timer1.Start();
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
             DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
@@ -347,14 +351,62 @@ namespace pmdbs
         #region LoginPanel
         private void InitializeTransparency()
         {
-            Bitmap bmp = new Bitmap(pictureBox3.Width, pictureBox3.Height);
+            Bitmap bmp = new Bitmap(LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
             using (Graphics graph = Graphics.FromImage(bmp))
             {
-                Rectangle ImageSize = new Rectangle(0, 0, pictureBox3.Width, pictureBox3.Height);
+                Rectangle ImageSize = new Rectangle(0, 0, LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
                 graph.FillRectangle(new SolidBrush(Color.FromArgb(220, 17, 17, 17)), ImageSize);
             }
-            this.pictureBox3.Image = bmp;
+            this.LoginPictureBoxOnlineMain.Image = bmp;
+            this.LoginPictureBoxRegisterMain.Image = bmp;
+            this.LoginPictureBoxOfflineMain.Image = bmp;
         }
         #endregion
+
+        private void LoginLabelOnlineRegister_Click(object sender, EventArgs e)
+        {
+            LoginPictureBoxOnlineMain.SuspendLayout();
+            LoginPictureBoxRegisterMain.BringToFront();
+            LoginPictureBoxRegisterMain.ResumeLayout();
+        }
+
+        private void LoginLabelRegisterSignIn_Click(object sender, EventArgs e)
+        {
+            LoginPictureBoxRegisterMain.SuspendLayout();
+            LoginPictureBoxOnlineMain.BringToFront();
+            LoginPictureBoxOnlineMain.ResumeLayout();
+        }
+
+        private void LoginAnimatedButtonOnlineLogin_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoginAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
+        {
+
+        }
+        
+        private void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            Random rng = new Random();
+            metroProgressBar3.Step = rng.Next(0, 6);
+            metroProgressBar4.Step = rng.Next(0, 6);
+            metroProgressBar4.PerformStep();
+            metroProgressBar3.PerformStep();
+            if (metroProgressBar3.Value >= 100)
+            {
+                metroProgressBar3.Value = 0;
+            }
+            if (metroProgressBar4.Value >= 100)
+            {
+                metroProgressBar4.Value = 0;
+            }
+        }
     }
 }
