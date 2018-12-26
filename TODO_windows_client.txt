@@ -5,15 +5,8 @@ WINDOWS CLIENT TODO:
             - create NoSelection panel
         - create Welcome screen
             - some sort of dashboard
-        - create Login screen
-            - TRANSPARENCY ISSUE APPROACH:
-                - exchange semi-transparent panel with picture box
-                - use gray bitmap image for picturebox with A of 150 or so (hopefully resulting in a semi transparent panel)
-                - use BackColor = Color.Transparent for all Child Coltrols and set Parent to picture box
         - create Settings screen
         - create Add screen/panel
-            - use scrollview (flowlayoutpanel)
-                - custom scrollbars
             - too much free space when maximized --> fill empty space
             - create better icons for AdvancedNumericUpDown
         - create Loading screen
@@ -25,6 +18,7 @@ WINDOWS CLIENT TODO:
         - allow EditFields to have default text prompt
             - deletes on focus
             - appears if AdvancedTextBox is empty
+        - generate getters/setters for password properties of AdvancedTextbox
         - menu bar
             - slightly decrease size of icons
         - AddPanel
@@ -32,12 +26,16 @@ WINDOWS CLIENT TODO:
             - custom scrollbars
         - EditPanel
             - add password generator (copypasta)
+        - LoginScreen
+            - prevent form to be maximized during login (buggy af)
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
         - performance optimization
             - suspend layout for hidden panels
             - disable hidden controls
+            - dispose login controls (LoginPanelMain) after successful login
+            - load main ui only after successful login 
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
