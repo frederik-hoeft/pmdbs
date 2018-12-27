@@ -5,6 +5,7 @@
 			
 		- OPTIMIZATION:
 			- use C Wrapper for Scrypt implementation (instead of pure python)
+				- https://github.com/p2pool/p2pool
 			
 		- HIGH PRIORITY:
 			- Standardize return values sent to client
