@@ -124,8 +124,8 @@ namespace pmdbs
             InitializeTransparency();
             LoginPictureBoxOnlineMain.SuspendLayout();
             LoginPictureBoxOfflineMain.SuspendLayout();
-            LoginPictureBoxRegisterMain.SuspendLayout();
-            LoginPictureBoxLoadingMain.BringToFront();
+            LoginPictureBoxRegisterMain.BringToFront();
+            LoginPictureBoxLoadingMain.SuspendLayout();
             timer1.Start();
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
@@ -389,9 +389,10 @@ namespace pmdbs
 
         }
         
-        private void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
+        private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
-
+            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash("test", "test"));
+            LoginEditFieldRegisterPassword2.TextTextBox = await ScryptTask;
         }
 
         private void Timer1_Tick(object sender, EventArgs e)
