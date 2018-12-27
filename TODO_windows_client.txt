@@ -27,6 +27,23 @@ WINDOWS CLIENT TODO:
             - add password generator (copypasta)
         - LoginScreen
             - prevent form to be maximized during login (buggy af)
+            
+            LOADING STEPS with ONLINE_MODE = false
+                - user enters password
+                - compute hash of password
+                - check passwords
+                - decrypt data
+                - loading complete
+            LOADING STEPS with ONLINE_MODE = true
+                - user enters password
+                - check online for password changes
+                - compute hash of password
+                - check passwords
+                - online login
+                - sync databases
+                - download any updates
+                - decrypt data
+                - loading complete
         
     - CODE OPTIMIZATION:
         - never heard of it --> total mess
