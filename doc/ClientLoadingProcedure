@@ -1,0 +1,37 @@
+BACKGROUND TASKS DURING LOADING PROCEDURE (ANDROID / WINDOWS CLIENT)
+
+    LOADING STEPS with ONLINE_MODE = false (local only)
+        - user enters password
+        - compute hash of password
+        - check passwords
+        - decrypt data
+        - loading complete
+        
+    LOADING STEPS with ONLINE_MODE = true (autoupdate / multiple devices)
+        - user enters password
+        - check online for password changes
+        - compute hash of password
+        - check passwords
+        - online login
+        - sync databases
+        - download any updates
+        - decrypt data
+        - loading complete
+        
+    LOADING STEPS on REGISTER (ONLINE_MODE = false) --> new User / new device
+        - user enters password
+        - compute hash of password
+        - initialize local database
+        - save password hash
+        - loading complete
+        
+    LOADING STEPS on SIGN INTO EXISTING ACCOUNT / REGISTER (ONLINE_MODE = true) --> existing User / new device
+        - user enters password
+        - compute hash of password
+        - online login
+        - initialize local database
+        - save password hash locally 
+        - sync databases
+        - download all data
+        - decrypt data
+        - loading complete
