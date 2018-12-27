@@ -10,6 +10,8 @@
 			- Standardize return values sent to client
 			- Check client's version during handshake
 			- Fix password leak ("password update check") --> try signing in instead
+			- Create Online CredentialCheck() - Method --> Only return Bool to client
+				- can be used in case of password change without compromizing security
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
