@@ -4,12 +4,12 @@
 			Nothing :)
 			
 		- OPTIMIZATION:
-			- use C Wrapper for Scrypt implementation (instead of pure python)
-				- https://github.com/p2pool/p2pool
+			Nothing :)
 			
 		- HIGH PRIORITY:
 			- Standardize return values sent to client
 			- Check client's version during handshake
+			- Fix password leak ("password update check") --> try signing in instead
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
