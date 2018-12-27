@@ -119,6 +119,12 @@
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.LoginPictureBoxMain = new System.Windows.Forms.PictureBox();
+            this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.advancedProgressSpinner1 = new pmdbs.AdvancedProgressSpinner();
             this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
             this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
@@ -148,19 +154,6 @@
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
             this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
             this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.advancedProgressSpinner1 = new pmdbs.AdvancedProgressSpinner();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.metroProgressBar4 = new MetroFramework.Controls.MetroProgressBar();
-            this.metroProgressBar3 = new MetroFramework.Controls.MetroProgressBar();
-            this.metroProgressSpinner2 = new MetroFramework.Controls.MetroProgressSpinner();
-            this.metroProgressBar2 = new MetroFramework.Controls.MetroProgressBar();
-            this.metroProgressBar1 = new MetroFramework.Controls.MetroProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
@@ -203,6 +196,10 @@
             this.LoginTableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).BeginInit();
             this.LoginPictureBoxMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).BeginInit();
+            this.LoginPictureBoxLoadingMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).BeginInit();
             this.LoginPictureBoxOfflineMain.SuspendLayout();
             this.LoginPanelOfflineCredentials.SuspendLayout();
@@ -215,7 +212,6 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -1431,8 +1427,7 @@
             this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
             this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoginTableLayoutPanelMain.Controls.Add(this.LoginPictureBoxMain, 0, 1);
-            this.LoginTableLayoutPanelMain.Controls.Add(this.panel1, 1, 1);
+            this.LoginTableLayoutPanelMain.Controls.Add(this.LoginPictureBoxMain, 1, 1);
             this.LoginTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoginTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.LoginTableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
@@ -1447,16 +1442,86 @@
             // LoginPictureBoxMain
             // 
             this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
             this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxMain.Location = new System.Drawing.Point(0, 131);
+            this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
             this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
             this.LoginPictureBoxMain.Name = "LoginPictureBoxMain";
-            this.LoginPictureBoxMain.Size = new System.Drawing.Size(615, 850);
+            this.LoginPictureBoxMain.Size = new System.Drawing.Size(650, 850);
             this.LoginPictureBoxMain.TabIndex = 2;
             this.LoginPictureBoxMain.TabStop = false;
+            // 
+            // LoginPictureBoxLoadingMain
+            // 
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.pictureBox2);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.label5);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.panel2);
+            this.LoginPictureBoxLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxLoadingMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxLoadingMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxLoadingMain.Name = "LoginPictureBoxLoadingMain";
+            this.LoginPictureBoxLoadingMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxLoadingMain.TabIndex = 3;
+            this.LoginPictureBoxLoadingMain.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(243, 77);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(175, 175);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 7;
+            this.pictureBox2.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.Color.White;
+            this.label5.Location = new System.Drawing.Point(241, 338);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(173, 39);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Loading...";
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.panel2.Controls.Add(this.label4);
+            this.panel2.Controls.Add(this.advancedProgressSpinner1);
+            this.panel2.Location = new System.Drawing.Point(69, 423);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(523, 186);
+            this.panel2.TabIndex = 5;
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.label4.ForeColor = System.Drawing.Color.White;
+            this.label4.Location = new System.Drawing.Point(3, 131);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(517, 30);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "performing handshake with host... 47%";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // advancedProgressSpinner1
+            // 
+            this.advancedProgressSpinner1.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.advancedProgressSpinner1.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedProgressSpinner1.Location = new System.Drawing.Point(207, 18);
+            this.advancedProgressSpinner1.Maximum = 100;
+            this.advancedProgressSpinner1.Name = "advancedProgressSpinner1";
+            this.advancedProgressSpinner1.Size = new System.Drawing.Size(100, 100);
+            this.advancedProgressSpinner1.Speed = 2.5F;
+            this.advancedProgressSpinner1.TabIndex = 12;
+            this.advancedProgressSpinner1.Text = "advancedProgressSpinner1";
+            this.advancedProgressSpinner1.TimerInterval = 40;
             // 
             // LoginPictureBoxOfflineMain
             // 
@@ -1470,7 +1535,7 @@
             this.LoginPictureBoxOfflineMain.Location = new System.Drawing.Point(0, 0);
             this.LoginPictureBoxOfflineMain.Margin = new System.Windows.Forms.Padding(0);
             this.LoginPictureBoxOfflineMain.Name = "LoginPictureBoxOfflineMain";
-            this.LoginPictureBoxOfflineMain.Size = new System.Drawing.Size(615, 850);
+            this.LoginPictureBoxOfflineMain.Size = new System.Drawing.Size(650, 850);
             this.LoginPictureBoxOfflineMain.TabIndex = 7;
             this.LoginPictureBoxOfflineMain.TabStop = false;
             // 
@@ -1578,7 +1643,7 @@
             this.LoginPictureBoxRegisterMain.Location = new System.Drawing.Point(0, 0);
             this.LoginPictureBoxRegisterMain.Margin = new System.Windows.Forms.Padding(0);
             this.LoginPictureBoxRegisterMain.Name = "LoginPictureBoxRegisterMain";
-            this.LoginPictureBoxRegisterMain.Size = new System.Drawing.Size(615, 850);
+            this.LoginPictureBoxRegisterMain.Size = new System.Drawing.Size(650, 850);
             this.LoginPictureBoxRegisterMain.TabIndex = 10;
             this.LoginPictureBoxRegisterMain.TabStop = false;
             // 
@@ -1737,7 +1802,7 @@
             this.LoginPictureBoxOnlineMain.Location = new System.Drawing.Point(0, 0);
             this.LoginPictureBoxOnlineMain.Margin = new System.Windows.Forms.Padding(0);
             this.LoginPictureBoxOnlineMain.Name = "LoginPictureBoxOnlineMain";
-            this.LoginPictureBoxOnlineMain.Size = new System.Drawing.Size(615, 850);
+            this.LoginPictureBoxOnlineMain.Size = new System.Drawing.Size(650, 850);
             this.LoginPictureBoxOnlineMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.LoginPictureBoxOnlineMain.TabIndex = 1;
             this.LoginPictureBoxOnlineMain.TabStop = false;
@@ -1871,157 +1936,9 @@
             this.LoginEditFieldOnlineUsername.TextTitle = "Username";
             this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.advancedProgressSpinner1);
-            this.panel1.Controls.Add(this.label9);
-            this.panel1.Controls.Add(this.label8);
-            this.panel1.Controls.Add(this.label7);
-            this.panel1.Controls.Add(this.label6);
-            this.panel1.Controls.Add(this.label5);
-            this.panel1.Controls.Add(this.label4);
-            this.panel1.Controls.Add(this.metroProgressBar4);
-            this.panel1.Controls.Add(this.metroProgressBar3);
-            this.panel1.Controls.Add(this.metroProgressSpinner2);
-            this.panel1.Controls.Add(this.metroProgressBar2);
-            this.panel1.Controls.Add(this.metroProgressBar1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(615, 131);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(650, 850);
-            this.panel1.TabIndex = 3;
-            // 
-            // advancedProgressSpinner1
-            // 
-            this.advancedProgressSpinner1.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.advancedProgressSpinner1.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedProgressSpinner1.Location = new System.Drawing.Point(185, 267);
-            this.advancedProgressSpinner1.Maximum = 100;
-            this.advancedProgressSpinner1.Name = "advancedProgressSpinner1";
-            this.advancedProgressSpinner1.Size = new System.Drawing.Size(100, 100);
-            this.advancedProgressSpinner1.TabIndex = 12;
-            this.advancedProgressSpinner1.Text = "advancedProgressSpinner1";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(21, 748);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(631, 30);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "6: Custom, was am ende hoffentlich besser aussieht";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(82, 620);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(26, 30);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "5";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.label7.ForeColor = System.Drawing.Color.White;
-            this.label7.Location = new System.Drawing.Point(79, 533);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(26, 30);
-            this.label7.TabIndex = 9;
-            this.label7.Text = "4";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.label6.ForeColor = System.Drawing.Color.White;
-            this.label6.Location = new System.Drawing.Point(79, 494);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(26, 30);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "3";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(396, 177);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(26, 30);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "2";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(213, 177);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(26, 30);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "1";
-            // 
-            // metroProgressBar4
-            // 
-            this.metroProgressBar4.Location = new System.Drawing.Point(132, 662);
-            this.metroProgressBar4.Name = "metroProgressBar4";
-            this.metroProgressBar4.Size = new System.Drawing.Size(399, 19);
-            this.metroProgressBar4.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroProgressBar4.TabIndex = 5;
-            this.metroProgressBar4.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // metroProgressBar3
-            // 
-            this.metroProgressBar3.Location = new System.Drawing.Point(132, 589);
-            this.metroProgressBar3.Name = "metroProgressBar3";
-            this.metroProgressBar3.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Blocks;
-            this.metroProgressBar3.Size = new System.Drawing.Size(399, 19);
-            this.metroProgressBar3.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroProgressBar3.TabIndex = 4;
-            this.metroProgressBar3.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // metroProgressSpinner2
-            // 
-            this.metroProgressSpinner2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.metroProgressSpinner2.Location = new System.Drawing.Point(341, 225);
-            this.metroProgressSpinner2.Maximum = 100;
-            this.metroProgressSpinner2.Name = "metroProgressSpinner2";
-            this.metroProgressSpinner2.Size = new System.Drawing.Size(175, 175);
-            this.metroProgressSpinner2.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroProgressSpinner2.TabIndex = 3;
-            this.metroProgressSpinner2.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.metroProgressSpinner2.UseSelectable = true;
-            this.metroProgressSpinner2.UseStyleColors = true;
-            // 
-            // metroProgressBar2
-            // 
-            this.metroProgressBar2.Location = new System.Drawing.Point(132, 533);
-            this.metroProgressBar2.Name = "metroProgressBar2";
-            this.metroProgressBar2.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.metroProgressBar2.Size = new System.Drawing.Size(399, 19);
-            this.metroProgressBar2.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroProgressBar2.TabIndex = 2;
-            this.metroProgressBar2.Theme = MetroFramework.MetroThemeStyle.Dark;
-            // 
-            // metroProgressBar1
-            // 
-            this.metroProgressBar1.Location = new System.Drawing.Point(132, 494);
-            this.metroProgressBar1.Name = "metroProgressBar1";
-            this.metroProgressBar1.ProgressBarStyle = System.Windows.Forms.ProgressBarStyle.Marquee;
-            this.metroProgressBar1.Size = new System.Drawing.Size(399, 19);
-            this.metroProgressBar1.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroProgressBar1.TabIndex = 1;
-            // 
             // timer1
             // 
+            this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // Form1
@@ -2085,6 +2002,11 @@
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).EndInit();
             this.LoginPictureBoxMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).EndInit();
+            this.LoginPictureBoxLoadingMain.ResumeLayout(false);
+            this.LoginPictureBoxLoadingMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).EndInit();
             this.LoginPictureBoxOfflineMain.ResumeLayout(false);
             this.LoginPictureBoxOfflineMain.PerformLayout();
@@ -2103,8 +2025,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2229,20 +2149,13 @@
         private System.Windows.Forms.PictureBox LoginPictureBoxRegisterLogo;
         private System.Windows.Forms.Label LoginLabelRegisterSignIn;
         private System.Windows.Forms.Label LoginLabelOnlineRegister;
-        private System.Windows.Forms.Panel panel1;
-        private MetroFramework.Controls.MetroProgressBar metroProgressBar1;
-        private MetroFramework.Controls.MetroProgressSpinner metroProgressSpinner2;
-        private MetroFramework.Controls.MetroProgressBar metroProgressBar2;
-        private MetroFramework.Controls.MetroProgressBar metroProgressBar4;
-        private System.Windows.Forms.Timer timer1;
-        private MetroFramework.Controls.MetroProgressBar metroProgressBar3;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.PictureBox LoginPictureBoxLoadingMain;
         private AdvancedProgressSpinner advancedProgressSpinner1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

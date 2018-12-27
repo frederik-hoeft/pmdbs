@@ -124,7 +124,8 @@ namespace pmdbs
             InitializeTransparency();
             LoginPictureBoxOnlineMain.SuspendLayout();
             LoginPictureBoxOfflineMain.SuspendLayout();
-            LoginPictureBoxRegisterMain.BringToFront();
+            LoginPictureBoxRegisterMain.SuspendLayout();
+            LoginPictureBoxLoadingMain.BringToFront();
             timer1.Start();
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
@@ -360,6 +361,7 @@ namespace pmdbs
             this.LoginPictureBoxOnlineMain.Image = bmp;
             this.LoginPictureBoxRegisterMain.Image = bmp;
             this.LoginPictureBoxOfflineMain.Image = bmp;
+            this.LoginPictureBoxLoadingMain.Image = bmp;
         }
         #endregion
 
@@ -395,17 +397,18 @@ namespace pmdbs
         private void Timer1_Tick(object sender, EventArgs e)
         {
             Random rng = new Random();
-            metroProgressBar3.Step = rng.Next(0, 6);
-            metroProgressBar4.Step = rng.Next(0, 6);
-            metroProgressBar4.PerformStep();
-            metroProgressBar3.PerformStep();
-            if (metroProgressBar3.Value >= 100)
+            if (rng.Next(0,10) > 4)
             {
-                metroProgressBar3.Value = 0;
-            }
-            if (metroProgressBar4.Value >= 100)
-            {
-                metroProgressBar4.Value = 0;
+                List<String> test = new List<String>
+                {
+                    "Something is happening...",
+                    "Almost there...",
+                    "Logging in...",
+                    "Installing keylogger...",
+                    "Re-writing registry entries...",
+                    "Initializing Randomware..."
+                };
+                label4.Text = test[rng.Next(0, test.Count - 1)];
             }
         }
     }

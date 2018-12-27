@@ -67,6 +67,14 @@ namespace pmdbs
         private float angle = 270;
         private Color foreColor = Color.FromArgb(255, 96, 49);
         private Color backColor = Color.FromArgb(17, 17, 17);
+        private Boolean drawBorder = false;
+        private int timerInterval = 40;
+
+        public int TimerInterval
+        {
+            get { return timerInterval; }
+            set { timerInterval = value; }
+        }
 
         public Color ColorBackground
         {
@@ -142,7 +150,7 @@ namespace pmdbs
             set { ensureVisible = value; Refresh(); }
         }
 
-        private float speed;
+        private float speed = 1;
         [DefaultValue(1f)]
         public float Speed
         {
@@ -172,14 +180,12 @@ namespace pmdbs
         {
             timer = new Timer
             {
-                Interval = 20
+                Interval = timerInterval
             };
             timer.Tick += Timer_Tick;
             timer.Enabled = true;
-
             Width = 16;
             Height = 16;
-            speed = 1;
             DoubleBuffered = true;
         }
 
@@ -202,7 +208,7 @@ namespace pmdbs
         {
             if (!DesignMode)
             {
-                angle += 3f * speed * (backwards ? -1 : 1);
+                angle += 4f * speed * (backwards ? -1 : 1);
                 Refresh();
             }
         }
@@ -254,7 +260,7 @@ namespace pmdbs
 
         protected virtual void OnPaintForeground(PaintEventArgs e)
         {
-            using (Pen backPen = new Pen(backColor, (float)Width / 5))
+            using (Pen backPen = new Pen(backColor, (float)Width / 5 + 4))
             using (Pen forePen = new Pen(foreColor, (float)Width / 5))
             {
                 int padding = (int)Math.Ceiling((float)Width / 10);
@@ -265,7 +271,7 @@ namespace pmdbs
                 {
                     float sweepAngle;
                     float progFrac = (float)(progress - minimum) / (float)(maximum - minimum);
-                    ArcSaver += 3f;
+                    ArcSaver += 8f * speed;
                     if (ArcSaver >= 357)
                     {
                         ArcSaver = 0;
@@ -294,8 +300,11 @@ namespace pmdbs
                         e.Graphics.DrawArc(forePen, padding, padding, Width - 2 * padding - 1, Height - 2 * padding - 1, 0, 360);
                         e.Graphics.DrawArc(backPen, padding, padding, Width - 2 * padding - 1, Height - 2 * padding - 1, angle, sweepAngle);
                     }
-                    e.Graphics.DrawArc(new Pen(foreColor, 2), padding - ((float)Width / 10), padding - ((float)Width / 10), (Width - 2 * padding - 1) + ((float)Width / 5), (Height - 2 * padding - 1) + ((float)Width / 5), 0, 360);
-                    e.Graphics.DrawArc(new Pen(foreColor, 2), padding + ((float)Width / 10), padding + ((float)Width / 10), (Width - 2 * padding - 1) - ((float)Width / 5), (Height - 2 * padding - 1) - ((float)Width / 5), 0, 360);
+                    if (drawBorder)
+                    {
+                        e.Graphics.DrawArc(new Pen(foreColor, 2), padding - ((float)Width / 10), padding - ((float)Width / 10), (Width - 2 * padding - 1) + ((float)Width / 5), (Height - 2 * padding - 1) + ((float)Width / 5), 0, 360);
+                        e.Graphics.DrawArc(new Pen(foreColor, 2), padding + ((float)Width / 10), padding + ((float)Width / 10), (Width - 2 * padding - 1) - ((float)Width / 5), (Height - 2 * padding - 1) - ((float)Width / 5), 0, 360);
+                    }
                 }
                 else
                 {
