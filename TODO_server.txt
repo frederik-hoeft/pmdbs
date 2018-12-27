@@ -4,7 +4,7 @@
 			Nothing :)
 			
 		- OPTIMIZATION:
-			Nothing :)
+			- use C Wrapper for Scrypt implementation (instead of pure python)
 			
 		- HIGH PRIORITY:
 			- Standardize return values sent to client
