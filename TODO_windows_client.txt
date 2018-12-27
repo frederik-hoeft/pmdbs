@@ -9,7 +9,6 @@ WINDOWS CLIENT TODO:
         - create Add screen/panel
             - too much free space when maximized --> fill empty space
             - create better icons for AdvancedNumericUpDown
-        - create Loading screen
         - create Credits screen (used way too much licensed crap)
         - create Account screen
         - create Account_edit screen
