@@ -1442,10 +1442,10 @@
             // LoginPictureBoxMain
             // 
             this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
             this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
