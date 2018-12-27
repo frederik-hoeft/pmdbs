@@ -21,11 +21,11 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.11-11.18"
+VERSION = "0.12-1.18"
 BUILD = "development"
-DATE = "Nov 18 2018"
-TIME = "12:44:18"
-PYTHON = "Python 3.6.6 / 3.6.7 - LINUX"
+DATE = "Dec 27 2018"
+TIME = "16:29:38"
+
 
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
@@ -62,7 +62,7 @@ try:
 	from os.path import basename, exists
 	from xml.dom import minidom
 	import ast
-	import pyscrypt
+	import scrypt
 	import sqlite3
 	import base64
 	import argparse
@@ -153,7 +153,7 @@ class CryptoHelper():
 		
 	# RETURNS SCRYPT SALTED HASH OF PLAINTEXT (SLOW & UNCRACKABLE)
 	def Scrypt(plaintext, salt):
-		return pyscrypt.hash(password = bytes(plaintext, "utf-8"), salt = bytes(salt, "utf-8"), N = 4096, r = 2, p = 1, dkLen = 128).hex()
+		return scrypt.hash(plaintext, salt, 262144, 8, 1, 128).hex()
 		
 	# GENERATES RSA KEY PAIR
 	def RSAKeyPairGenerator():
@@ -3984,14 +3984,14 @@ class Server(Thread):
 		print(CWHITE + "         Initializing boot sequence ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Boot sequence initialized." + ENDF)
 		print(CWHITE + "         Checking python version ..." + ENDF)
-		if not sys.version.split(" ")[0] in ["3.6.6","3.6.7"]:
+		if not sys.version.split(" ")[0] in PYTHON_VERSIONS:
 			print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Not tested on python " + sys.version.split(" ")[0] + ENDF)
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: " + sys.version.split(" ")[0] + ENDF)
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
 		try:
-			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS == None:
+			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS == None or not PYTHON_VERSIONS:
 				if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 				else:
@@ -4019,6 +4019,7 @@ class Server(Thread):
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked build info. Current build: " + BUILD + "-build. " + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked config. " + ENDF)
+		PYTHON = "Python " + " / ".join(PYTHON_VERSIONS) + " - LINUX"
 		# GET ANY DATABASES IN CURRENT WORKING DIRECTORY
 		print(CWHITE + "         Checking for database in " + os.getcwd() + " ..." + ENDF)
 		dataBases = glob.glob(os.getcwd() + "/*.db")
