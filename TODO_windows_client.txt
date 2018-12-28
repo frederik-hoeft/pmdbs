@@ -14,7 +14,7 @@ WINDOWS CLIENT TODO:
         - allow EditFields to have default text prompt
             - deletes on focus
             - appears if AdvancedTextBox is empty
-        - generate getters/setters for password properties of AdvancedTextbox
+        - generate getters/setters for passwordMasque properties of AdvancedTextbox
         - menu bar
             - slightly decrease size of icons
         - AddPanel
@@ -26,6 +26,8 @@ WINDOWS CLIENT TODO:
             - add password generator (copypasta)
         - LoginScreen
             - prevent form to be maximized during login (buggy af)
+            - Set Starting PictureBox according to Database state
+            - RegisterButton --> More password checks
             
             LOADING STEPS with ONLINE_MODE = false (local only)
                 - user enters password
