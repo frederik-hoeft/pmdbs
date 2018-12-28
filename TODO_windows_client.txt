@@ -45,12 +45,6 @@ WINDOWS CLIENT TODO:
                 - download any updates
                 - decrypt data
                 - loading complete
-            LOADING STEPS on REGISTER (ONLINE_MODE = false) --> new User / new device
-                - user enters password
-                - compute hash of password
-                - initialize local database
-                - save password hash
-                - loading complete
             LOADING STEPS on SIGN INTO EXISTING ACCOUNT / REGISTER (ONLINE_MODE = true) --> existing User / new device
                 - user enters password
                 - compute hash of password
