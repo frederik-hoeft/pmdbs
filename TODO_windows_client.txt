@@ -6,9 +6,6 @@ WINDOWS CLIENT TODO:
         - create Welcome screen
             - some sort of dashboard
         - create Settings screen
-        - create Add screen/panel
-            - too much free space when maximized --> fill empty space
-            - create better icons for AdvancedNumericUpDown
         - create Credits screen (used way too much licensed crap)
         - create Account screen
         - create Account_edit screen
@@ -23,6 +20,8 @@ WINDOWS CLIENT TODO:
         - AddPanel
             - add descriptions
             - custom scrollbars
+            - too much free space when maximized --> fill empty space
+            - create better icons for AdvancedNumericUpDown
         - EditPanel
             - add password generator (copypasta)
         - LoginScreen
