@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.DashboardPanel = new System.Windows.Forms.Panel();
             this.DashboardFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
@@ -119,20 +118,6 @@
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.LoginPictureBoxMain = new System.Windows.Forms.PictureBox();
-            this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.advancedProgressSpinner1 = new pmdbs.AdvancedProgressSpinner();
-            this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
-            this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
-            this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
-            this.LoginLabelOfflineError = new System.Windows.Forms.Label();
-            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
-            this.LoginLabelOfflineMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
-            this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
             this.LoginPictureBoxRegisterMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelRegisterSignIn = new System.Windows.Forms.Label();
             this.LoginPanelRegisterCredentials = new System.Windows.Forms.Panel();
@@ -154,7 +139,20 @@
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
             this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
             this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
+            this.LoginLoadingPictureBoxLogo = new System.Windows.Forms.PictureBox();
+            this.LoginLoadingLabelMain = new System.Windows.Forms.Label();
+            this.LoginLoadingPanelMain = new System.Windows.Forms.Panel();
+            this.LoginLoadingLabelDetails = new System.Windows.Forms.Label();
+            this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
+            this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
+            this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
+            this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
+            this.LoginLabelOfflineError = new System.Windows.Forms.Label();
+            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
+            this.LoginLabelOfflineMain = new System.Windows.Forms.Label();
+            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -196,14 +194,6 @@
             this.LoginTableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).BeginInit();
             this.LoginPictureBoxMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).BeginInit();
-            this.LoginPictureBoxLoadingMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).BeginInit();
-            this.LoginPictureBoxOfflineMain.SuspendLayout();
-            this.LoginPanelOfflineCredentials.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxRegisterMain)).BeginInit();
             this.LoginPictureBoxRegisterMain.SuspendLayout();
             this.LoginPanelRegisterCredentials.SuspendLayout();
@@ -212,6 +202,14 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).BeginInit();
+            this.LoginPictureBoxLoadingMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginLoadingPictureBoxLogo)).BeginInit();
+            this.LoginLoadingPanelMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).BeginInit();
+            this.LoginPictureBoxOfflineMain.SuspendLayout();
+            this.LoginPanelOfflineCredentials.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -1454,183 +1452,6 @@
             this.LoginPictureBoxMain.TabIndex = 2;
             this.LoginPictureBoxMain.TabStop = false;
             // 
-            // LoginPictureBoxLoadingMain
-            // 
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.pictureBox2);
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.label5);
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.panel2);
-            this.LoginPictureBoxLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxLoadingMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxLoadingMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxLoadingMain.Name = "LoginPictureBoxLoadingMain";
-            this.LoginPictureBoxLoadingMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxLoadingMain.TabIndex = 3;
-            this.LoginPictureBoxLoadingMain.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(243, 77);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(175, 175);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 7;
-            this.pictureBox2.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.Transparent;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(241, 338);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(173, 39);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Loading...";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.panel2.Controls.Add(this.label4);
-            this.panel2.Controls.Add(this.advancedProgressSpinner1);
-            this.panel2.Location = new System.Drawing.Point(69, 423);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(523, 186);
-            this.panel2.TabIndex = 5;
-            // 
-            // label4
-            // 
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 9F);
-            this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(3, 131);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(517, 30);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "performing handshake with host... 47%";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // advancedProgressSpinner1
-            // 
-            this.advancedProgressSpinner1.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.advancedProgressSpinner1.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedProgressSpinner1.Location = new System.Drawing.Point(207, 18);
-            this.advancedProgressSpinner1.Maximum = 100;
-            this.advancedProgressSpinner1.Name = "advancedProgressSpinner1";
-            this.advancedProgressSpinner1.Size = new System.Drawing.Size(100, 100);
-            this.advancedProgressSpinner1.Speed = 2.5F;
-            this.advancedProgressSpinner1.TabIndex = 12;
-            this.advancedProgressSpinner1.Text = "advancedProgressSpinner1";
-            this.advancedProgressSpinner1.TimerInterval = 40;
-            // 
-            // LoginPictureBoxOfflineMain
-            // 
-            this.LoginPictureBoxOfflineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineUsername);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPanelOfflineCredentials);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineMain);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginAnimatedButtonOfflineLogin);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPictureBoxOfflineLogo);
-            this.LoginPictureBoxOfflineMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxOfflineMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxOfflineMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxOfflineMain.Name = "LoginPictureBoxOfflineMain";
-            this.LoginPictureBoxOfflineMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxOfflineMain.TabIndex = 7;
-            this.LoginPictureBoxOfflineMain.TabStop = false;
-            // 
-            // LoginLabelOfflineUsername
-            // 
-            this.LoginLabelOfflineUsername.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineUsername.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOfflineUsername.Location = new System.Drawing.Point(86, 323);
-            this.LoginLabelOfflineUsername.Name = "LoginLabelOfflineUsername";
-            this.LoginLabelOfflineUsername.Size = new System.Drawing.Size(473, 54);
-            this.LoginLabelOfflineUsername.TabIndex = 9;
-            this.LoginLabelOfflineUsername.Text = "<username>";
-            this.LoginLabelOfflineUsername.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // LoginPanelOfflineCredentials
-            // 
-            this.LoginPanelOfflineCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginLabelOfflineError);
-            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginEditFieldOfflinePassword);
-            this.LoginPanelOfflineCredentials.Location = new System.Drawing.Point(61, 410);
-            this.LoginPanelOfflineCredentials.Name = "LoginPanelOfflineCredentials";
-            this.LoginPanelOfflineCredentials.Size = new System.Drawing.Size(523, 186);
-            this.LoginPanelOfflineCredentials.TabIndex = 2;
-            // 
-            // LoginLabelOfflineError
-            // 
-            this.LoginLabelOfflineError.AutoSize = true;
-            this.LoginLabelOfflineError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineError.ForeColor = System.Drawing.Color.Firebrick;
-            this.LoginLabelOfflineError.Location = new System.Drawing.Point(39, 144);
-            this.LoginLabelOfflineError.Name = "LoginLabelOfflineError";
-            this.LoginLabelOfflineError.Size = new System.Drawing.Size(211, 30);
-            this.LoginLabelOfflineError.TabIndex = 4;
-            this.LoginLabelOfflineError.Text = "Invalid password";
-            // 
-            // LoginEditFieldOfflinePassword
-            // 
-            this.LoginEditFieldOfflinePassword.AutoSize = true;
-            this.LoginEditFieldOfflinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOfflinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOfflinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOfflinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOfflinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOfflinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOfflinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOfflinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOfflinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOfflinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearHover")));
-            this.LoginEditFieldOfflinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearNormal")));
-            this.LoginEditFieldOfflinePassword.Location = new System.Drawing.Point(44, 37);
-            this.LoginEditFieldOfflinePassword.Name = "LoginEditFieldOfflinePassword";
-            this.LoginEditFieldOfflinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOfflinePassword.TabIndex = 1;
-            this.LoginEditFieldOfflinePassword.TextTextBox = "";
-            this.LoginEditFieldOfflinePassword.TextTitle = "Password";
-            this.LoginEditFieldOfflinePassword.UseColoredCaret = false;
-            // 
-            // LoginLabelOfflineMain
-            // 
-            this.LoginLabelOfflineMain.AutoSize = true;
-            this.LoginLabelOfflineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelOfflineMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOfflineMain.Location = new System.Drawing.Point(196, 275);
-            this.LoginLabelOfflineMain.Name = "LoginLabelOfflineMain";
-            this.LoginLabelOfflineMain.Size = new System.Drawing.Size(253, 39);
-            this.LoginLabelOfflineMain.TabIndex = 8;
-            this.LoginLabelOfflineMain.Text = "Welcome Back";
-            // 
-            // LoginAnimatedButtonOfflineLogin
-            // 
-            this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOfflineLogin.Depth = 0;
-            this.LoginAnimatedButtonOfflineLogin.Icon = null;
-            this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(217, 684);
-            this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
-            this.LoginAnimatedButtonOfflineLogin.Primary = false;
-            this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
-            this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
-            // 
-            // LoginPictureBoxOfflineLogo
-            // 
-            this.LoginPictureBoxOfflineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOfflineLogo.Image")));
-            this.LoginPictureBoxOfflineLogo.Location = new System.Drawing.Point(235, 77);
-            this.LoginPictureBoxOfflineLogo.Name = "LoginPictureBoxOfflineLogo";
-            this.LoginPictureBoxOfflineLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxOfflineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxOfflineLogo.TabIndex = 6;
-            this.LoginPictureBoxOfflineLogo.TabStop = false;
-            // 
             // LoginPictureBoxRegisterMain
             // 
             this.LoginPictureBoxRegisterMain.BackColor = System.Drawing.Color.Transparent;
@@ -1936,10 +1757,182 @@
             this.LoginEditFieldOnlineUsername.TextTitle = "Username";
             this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
             // 
-            // timer1
+            // LoginPictureBoxLoadingMain
             // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPictureBoxLogo);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingLabelMain);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPanelMain);
+            this.LoginPictureBoxLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxLoadingMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxLoadingMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxLoadingMain.Name = "LoginPictureBoxLoadingMain";
+            this.LoginPictureBoxLoadingMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxLoadingMain.TabIndex = 3;
+            this.LoginPictureBoxLoadingMain.TabStop = false;
+            // 
+            // LoginLoadingPictureBoxLogo
+            // 
+            this.LoginLoadingPictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginLoadingPictureBoxLogo.Image")));
+            this.LoginLoadingPictureBoxLogo.Location = new System.Drawing.Point(243, 77);
+            this.LoginLoadingPictureBoxLogo.Name = "LoginLoadingPictureBoxLogo";
+            this.LoginLoadingPictureBoxLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginLoadingPictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginLoadingPictureBoxLogo.TabIndex = 7;
+            this.LoginLoadingPictureBoxLogo.TabStop = false;
+            // 
+            // LoginLoadingLabelMain
+            // 
+            this.LoginLoadingLabelMain.AutoSize = true;
+            this.LoginLoadingLabelMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLoadingLabelMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLoadingLabelMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLoadingLabelMain.Location = new System.Drawing.Point(241, 338);
+            this.LoginLoadingLabelMain.Name = "LoginLoadingLabelMain";
+            this.LoginLoadingLabelMain.Size = new System.Drawing.Size(173, 39);
+            this.LoginLoadingLabelMain.TabIndex = 9;
+            this.LoginLoadingLabelMain.Text = "Loading...";
+            // 
+            // LoginLoadingPanelMain
+            // 
+            this.LoginLoadingPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingLabelDetails);
+            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingAdvancedProgressSpinner);
+            this.LoginLoadingPanelMain.Location = new System.Drawing.Point(69, 423);
+            this.LoginLoadingPanelMain.Name = "LoginLoadingPanelMain";
+            this.LoginLoadingPanelMain.Size = new System.Drawing.Size(523, 186);
+            this.LoginLoadingPanelMain.TabIndex = 5;
+            // 
+            // LoginLoadingLabelDetails
+            // 
+            this.LoginLoadingLabelDetails.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.LoginLoadingLabelDetails.ForeColor = System.Drawing.Color.White;
+            this.LoginLoadingLabelDetails.Location = new System.Drawing.Point(3, 131);
+            this.LoginLoadingLabelDetails.Name = "LoginLoadingLabelDetails";
+            this.LoginLoadingLabelDetails.Size = new System.Drawing.Size(517, 30);
+            this.LoginLoadingLabelDetails.TabIndex = 4;
+            this.LoginLoadingLabelDetails.Text = "performing handshake with host... 47%";
+            this.LoginLoadingLabelDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LoginLoadingAdvancedProgressSpinner
+            // 
+            this.LoginLoadingAdvancedProgressSpinner.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLoadingAdvancedProgressSpinner.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginLoadingAdvancedProgressSpinner.Location = new System.Drawing.Point(207, 18);
+            this.LoginLoadingAdvancedProgressSpinner.Maximum = 100;
+            this.LoginLoadingAdvancedProgressSpinner.Name = "LoginLoadingAdvancedProgressSpinner";
+            this.LoginLoadingAdvancedProgressSpinner.Size = new System.Drawing.Size(100, 100);
+            this.LoginLoadingAdvancedProgressSpinner.Speed = 2.5F;
+            this.LoginLoadingAdvancedProgressSpinner.TabIndex = 12;
+            this.LoginLoadingAdvancedProgressSpinner.Text = "advancedProgressSpinner1";
+            this.LoginLoadingAdvancedProgressSpinner.TimerInterval = 40;
+            // 
+            // LoginPictureBoxOfflineMain
+            // 
+            this.LoginPictureBoxOfflineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineUsername);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPanelOfflineCredentials);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineMain);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginAnimatedButtonOfflineLogin);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPictureBoxOfflineLogo);
+            this.LoginPictureBoxOfflineMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxOfflineMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxOfflineMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxOfflineMain.Name = "LoginPictureBoxOfflineMain";
+            this.LoginPictureBoxOfflineMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxOfflineMain.TabIndex = 7;
+            this.LoginPictureBoxOfflineMain.TabStop = false;
+            // 
+            // LoginLabelOfflineUsername
+            // 
+            this.LoginLabelOfflineUsername.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineUsername.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOfflineUsername.Location = new System.Drawing.Point(86, 323);
+            this.LoginLabelOfflineUsername.Name = "LoginLabelOfflineUsername";
+            this.LoginLabelOfflineUsername.Size = new System.Drawing.Size(473, 54);
+            this.LoginLabelOfflineUsername.TabIndex = 9;
+            this.LoginLabelOfflineUsername.Text = "<username>";
+            this.LoginLabelOfflineUsername.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // LoginPanelOfflineCredentials
+            // 
+            this.LoginPanelOfflineCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginLabelOfflineError);
+            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginEditFieldOfflinePassword);
+            this.LoginPanelOfflineCredentials.Location = new System.Drawing.Point(61, 410);
+            this.LoginPanelOfflineCredentials.Name = "LoginPanelOfflineCredentials";
+            this.LoginPanelOfflineCredentials.Size = new System.Drawing.Size(523, 186);
+            this.LoginPanelOfflineCredentials.TabIndex = 2;
+            // 
+            // LoginLabelOfflineError
+            // 
+            this.LoginLabelOfflineError.AutoSize = true;
+            this.LoginLabelOfflineError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineError.ForeColor = System.Drawing.Color.Firebrick;
+            this.LoginLabelOfflineError.Location = new System.Drawing.Point(39, 144);
+            this.LoginLabelOfflineError.Name = "LoginLabelOfflineError";
+            this.LoginLabelOfflineError.Size = new System.Drawing.Size(211, 30);
+            this.LoginLabelOfflineError.TabIndex = 4;
+            this.LoginLabelOfflineError.Text = "Invalid password";
+            // 
+            // LoginEditFieldOfflinePassword
+            // 
+            this.LoginEditFieldOfflinePassword.AutoSize = true;
+            this.LoginEditFieldOfflinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOfflinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOfflinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOfflinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOfflinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOfflinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOfflinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOfflinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOfflinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOfflinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearHover")));
+            this.LoginEditFieldOfflinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearNormal")));
+            this.LoginEditFieldOfflinePassword.Location = new System.Drawing.Point(44, 37);
+            this.LoginEditFieldOfflinePassword.Name = "LoginEditFieldOfflinePassword";
+            this.LoginEditFieldOfflinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOfflinePassword.TabIndex = 1;
+            this.LoginEditFieldOfflinePassword.TextTextBox = "";
+            this.LoginEditFieldOfflinePassword.TextTitle = "Password";
+            this.LoginEditFieldOfflinePassword.UseColoredCaret = false;
+            // 
+            // LoginLabelOfflineMain
+            // 
+            this.LoginLabelOfflineMain.AutoSize = true;
+            this.LoginLabelOfflineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelOfflineMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOfflineMain.Location = new System.Drawing.Point(196, 275);
+            this.LoginLabelOfflineMain.Name = "LoginLabelOfflineMain";
+            this.LoginLabelOfflineMain.Size = new System.Drawing.Size(253, 39);
+            this.LoginLabelOfflineMain.TabIndex = 8;
+            this.LoginLabelOfflineMain.Text = "Welcome Back";
+            // 
+            // LoginAnimatedButtonOfflineLogin
+            // 
+            this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOfflineLogin.Depth = 0;
+            this.LoginAnimatedButtonOfflineLogin.Icon = null;
+            this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(217, 684);
+            this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
+            this.LoginAnimatedButtonOfflineLogin.Primary = false;
+            this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
+            this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
+            // 
+            // LoginPictureBoxOfflineLogo
+            // 
+            this.LoginPictureBoxOfflineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOfflineLogo.Image")));
+            this.LoginPictureBoxOfflineLogo.Location = new System.Drawing.Point(235, 77);
+            this.LoginPictureBoxOfflineLogo.Name = "LoginPictureBoxOfflineLogo";
+            this.LoginPictureBoxOfflineLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxOfflineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxOfflineLogo.TabIndex = 6;
+            this.LoginPictureBoxOfflineLogo.TabStop = false;
             // 
             // Form1
             // 
@@ -2002,17 +1995,6 @@
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).EndInit();
             this.LoginPictureBoxMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).EndInit();
-            this.LoginPictureBoxLoadingMain.ResumeLayout(false);
-            this.LoginPictureBoxLoadingMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).EndInit();
-            this.LoginPictureBoxOfflineMain.ResumeLayout(false);
-            this.LoginPictureBoxOfflineMain.PerformLayout();
-            this.LoginPanelOfflineCredentials.ResumeLayout(false);
-            this.LoginPanelOfflineCredentials.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxRegisterMain)).EndInit();
             this.LoginPictureBoxRegisterMain.ResumeLayout(false);
             this.LoginPictureBoxRegisterMain.PerformLayout();
@@ -2025,6 +2007,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).EndInit();
+            this.LoginPictureBoxLoadingMain.ResumeLayout(false);
+            this.LoginPictureBoxLoadingMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginLoadingPictureBoxLogo)).EndInit();
+            this.LoginLoadingPanelMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).EndInit();
+            this.LoginPictureBoxOfflineMain.ResumeLayout(false);
+            this.LoginPictureBoxOfflineMain.PerformLayout();
+            this.LoginPanelOfflineCredentials.ResumeLayout(false);
+            this.LoginPanelOfflineCredentials.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2150,12 +2143,11 @@
         private System.Windows.Forms.Label LoginLabelRegisterSignIn;
         private System.Windows.Forms.Label LoginLabelOnlineRegister;
         private System.Windows.Forms.PictureBox LoginPictureBoxLoadingMain;
-        private AdvancedProgressSpinner advancedProgressSpinner1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Timer timer1;
+        private AdvancedProgressSpinner LoginLoadingAdvancedProgressSpinner;
+        private System.Windows.Forms.Label LoginLoadingLabelMain;
+        private System.Windows.Forms.Panel LoginLoadingPanelMain;
+        private System.Windows.Forms.Label LoginLoadingLabelDetails;
+        private System.Windows.Forms.PictureBox LoginLoadingPictureBoxLogo;
     }
 }
 

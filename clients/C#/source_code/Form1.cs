@@ -126,7 +126,6 @@ namespace pmdbs
             LoginPictureBoxOfflineMain.SuspendLayout();
             LoginPictureBoxRegisterMain.BringToFront();
             LoginPictureBoxLoadingMain.SuspendLayout();
-            timer1.Start();
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
             DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
@@ -391,26 +390,37 @@ namespace pmdbs
         
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash("test", "test"));
-            LoginEditFieldRegisterPassword2.TextTextBox = await ScryptTask;
-        }
-
-        private void Timer1_Tick(object sender, EventArgs e)
-        {
-            Random rng = new Random();
-            if (rng.Next(0,10) > 4)
+            LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
+            string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
+            string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
+            if (!Password1.Equals(Password2))
             {
-                List<String> test = new List<String>
-                {
-                    "Something is happening...",
-                    "Almost there...",
-                    "Logging in...",
-                    "Installing keylogger...",
-                    "Re-writing registry entries...",
-                    "Initializing Randomware..."
-                };
-                label4.Text = test[rng.Next(0, test.Count - 1)];
+                LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                LoginLabelRegisterError.Text = "These passwords don't match!";
+                return;
             }
+            if (Password1.Length < 16)
+            {
+                LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                LoginLabelRegisterError.Text = "Password too short (< 16 characters)!";
+                return;
+            }
+            // TODO: CHECK FOR COMMON PASSWORDS AND SPECIAL CHARACTERS
+            LoginPictureBoxLoadingMain.ResumeLayout();
+            LoginPictureBoxLoadingMain.BringToFront();
+            LoginPictureBoxRegisterMain.SuspendLayout();
+            LoginLoadingLabelDetails.Text = "Hashing Password...";
+            string FirstUsage = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Password1, FirstUsage));
+            string HashedPassword = await ScryptTask;
+            LoginLoadingLabelDetails.Text = "Initializing Database...";
+            Task SetupDatabase = DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + HashedPassword + "\", 0, \"" + FirstUsage + "\");");
+            await Task.WhenAll(SetupDatabase);
+            LoginPictureBoxOnlineMain.Dispose();
+            LoginPictureBoxOfflineMain.Dispose();
+            LoginPictureBoxRegisterMain.Dispose();
+            PanelMain.BringToFront();
+            PanelLogin.Dispose();
         }
     }
 }
