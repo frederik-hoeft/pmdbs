@@ -61,8 +61,6 @@ WINDOWS CLIENT TODO:
         - performance optimization
             - suspend layout for hidden panels
             - disable hidden controls
-            - dispose login controls (LoginPanelMain) after successful login
-            - load main ui only after successful login 
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
