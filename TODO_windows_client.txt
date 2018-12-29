@@ -27,7 +27,7 @@ WINDOWS CLIENT TODO:
         - LoginScreen
             - prevent form to be maximized during login (buggy af)
             - Set Starting PictureBox according to Database state
-            - RegisterButton --> More password checks
+            - RegisterButton --> Dictionary based password check
             
             LOADING STEPS with ONLINE_MODE = false (local only)
                 - user enters password
