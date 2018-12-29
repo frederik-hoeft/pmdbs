@@ -349,6 +349,7 @@ namespace pmdbs
         #endregion
 
         #region LoginPanel
+        private bool RegisterButtonDisabled = false;
         private void InitializeTransparency()
         {
             Bitmap bmp = new Bitmap(LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
@@ -390,6 +391,11 @@ namespace pmdbs
         
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
+            if (RegisterButtonDisabled)
+            {
+                return;
+            }
+            RegisterButtonDisabled = true;
             LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
@@ -397,15 +403,35 @@ namespace pmdbs
             {
                 LoginLabelRegisterError.ForeColor = Color.Firebrick;
                 LoginLabelRegisterError.Text = "These passwords don't match!";
+                RegisterButtonDisabled = false;
                 return;
             }
-            if (Password1.Length < 16)
+            LoginLabelRegisterError.ForeColor = Color.Firebrick;
+            List<object> PasswordStrength = PasswordChecker.chkPass(Password1);
+            int score = (int)PasswordStrength[0];
+            string meaning = (string)PasswordStrength[1];
+            LoginLabelRegisterError.Text = meaning + " (" + score.ToString() + " points)";
+            RegisterButtonDisabled = false;
+            return;
+            PasswordScore Strength = PasswordAdvisor.CheckStrength(Password1);
+            switch (Strength)
             {
-                LoginLabelRegisterError.ForeColor = Color.Firebrick;
-                LoginLabelRegisterError.Text = "Password too short (< 16 characters)!";
-                return;
+                case PasswordScore.Blank:
+                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                    LoginLabelRegisterError.Text = "Password too weak.";
+                    RegisterButtonDisabled = false;
+                    return;
+                case PasswordScore.VeryWeak:
+                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                    LoginLabelRegisterError.Text = "Password too weak.";
+                    RegisterButtonDisabled = false;
+                    return;
+                case PasswordScore.Weak:
+                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                    LoginLabelRegisterError.Text = "Password too weak.";
+                    RegisterButtonDisabled = false;
+                    return;
             }
-            // TODO: CHECK FOR COMMON PASSWORDS AND SPECIAL CHARACTERS
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxRegisterMain.SuspendLayout();
