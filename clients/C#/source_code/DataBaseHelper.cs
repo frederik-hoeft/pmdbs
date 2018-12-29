@@ -24,12 +24,44 @@ namespace pmdbs
             sql_con.Open();
         }
         /// <summary>
+        /// Returns result of SQLite database query as List<String> Object.
+        /// </summary>
+        /// <param name="query">SQLite query to be executed.</param>
+        /// <param name="columns">Number of by query returned columns.</param>
+        /// <returns></returns>
+        public static async Task<List<String>> GetDataAsList(string query, int columns)
+        {
+            SetConnection();
+            sql_cmd = sql_con.CreateCommand();
+            sql_cmd.CommandText = query;
+            await sql_cmd.ExecuteNonQueryAsync();
+            SQLiteDataReader reader = sql_cmd.ExecuteReader();
+            List<String> DataList = new List<string>();
+            while (reader.Read())
+            {
+                try
+                {
+                    for (int i = 0; i < columns; i++)
+                    {
+                        DataList.Add(reader[i].ToString());
+                    }
+                }
+                catch (Exception  outOfRange)
+                {
+                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                }
+            }
+            sql_con.Close();
+            sql_con.Dispose();
+            return DataList;
+        }
+        /// <summary>
         /// Returns result of SQLite database query as List<List<String>> Object.
         /// </summary>
         /// <param name="query">SQLite query to be executed.</param>
         /// <param name="columns">Number of by query returned columns.</param>
         /// <returns></returns>
-        public static async Task<List<List<String>>> GetDataAsList(string query, int columns)
+        public static async Task<List<List<String>>> GetDataAs2DList(string query, int columns)
         {
             SetConnection();
             sql_cmd = sql_con.CreateCommand();
