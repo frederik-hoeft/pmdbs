@@ -167,7 +167,7 @@ namespace pmdbs
             return plainText;
         }
         #endregion
-
+        #region SCrypt
         public static String SCryptHash(string password, string salt)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
@@ -178,5 +178,20 @@ namespace pmdbs
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
         }
+        #endregion
+        #region SHA256
+        public static string SHA256Hash(string plainPassword)
+        {
+            SHA256Cng ShaHashFunction = new SHA256Cng();
+            byte[] plainBytes = Encoding.UTF8.GetBytes(plainPassword);
+            byte[] hashedBytes = ShaHashFunction.ComputeHash(plainBytes);
+            string cryptedPassword = string.Empty;
+            foreach (byte b in hashedBytes)
+            {
+                cryptedPassword += string.Format("{0:x2}", b);
+            }
+            return cryptedPassword;
+        }
+        #endregion
     }
 }

@@ -28,7 +28,7 @@ namespace pmdbs
         /// </summary>
         /// <param name="query">SQLite query to be executed.</param>
         /// <param name="columns">Number of by query returned columns.</param>
-        /// <returns></returns>
+        /// <returns></returns
         public static async Task<List<String>> GetDataAsList(string query, int columns)
         {
             SetConnection();
