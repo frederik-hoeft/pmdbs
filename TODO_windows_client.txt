@@ -22,6 +22,8 @@ WINDOWS CLIENT TODO:
             - custom scrollbars
             - too much free space when maximized --> fill empty space
             - create better icons for AdvancedNumericUpDown
+            - Create RefreshUserData Method (Sorting & Managing DataTable "UserData")
+            - Create Error Messages if Required Information is not set
         - EditPanel
             - add password generator (copypasta)
         - LoginScreen
@@ -29,12 +31,6 @@ WINDOWS CLIENT TODO:
             - Set Starting PictureBox according to Database state
             - RegisterButton --> Dictionary based password check
             
-            LOADING STEPS with ONLINE_MODE = false (local only)
-                - user enters password
-                - compute hash of password
-                - check passwords
-                - decrypt data
-                - loading complete
             LOADING STEPS with ONLINE_MODE = true (autoupdate / multiple devices)
                 - user enters password
                 - check online for password changes
