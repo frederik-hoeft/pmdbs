@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MetroFramework;
 using System.Drawing.Drawing2D;
+using System.Threading;
 
 namespace pmdbs
 {
@@ -20,6 +21,13 @@ namespace pmdbs
         private List<ListEntry> entryList = new List<ListEntry>();
         private char[] passwordSpecialCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '-', '$', '%', '&', '/', '(', ')', '=', '?', '{', '[', ']', '}', '\\', '+', '*', '#', ',', '.', '<', '>', '|', '@', '!', '~', ';', ':', '"' };
         private char[] passwordCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+        private string MasterPassword;
+        private bool GuiLoaded = false;
+        private Size MaxSize;
+        private Size MinSize;
+        private string LocalAESkey;
+        private string GlobalAESkey;
+        private string NickName;
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -116,16 +124,73 @@ namespace pmdbs
             G.Dispose();
             B.Dispose();
         }
-        #endregion
 
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+
+            if (GuiLoaded)
+            {
+                return;
+            }
+            this.Hide();
+
+            ThreadPool.QueueUserWorkItem((x) =>
+            {
+                using (var splashForm = new SplashForm())
+                {
+                    splashForm.Show();
+                    while (!GuiLoaded)
+                        Application.DoEvents();
+                    splashForm.Close();
+                    this.Invoke((MethodInvoker)delegate {
+                        // this code runs on the UI thread!
+                        this.Show();
+                        this.Activate();
+                    });
+
+                }
+            });
+            Task<List<String>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
+            List<String> Result = await Initialize;
+            try
+            {
+                if (Result[0].Equals("1"))
+                {
+                    //TODO: Check for Password Changes
+                }
+                NickName = Result[1];
+                LoginPictureBoxOnlineMain.SuspendLayout();
+                LoginPictureBoxOfflineMain.BringToFront();
+                LoginPictureBoxRegisterMain.SuspendLayout();
+                LoginPictureBoxLoadingMain.SuspendLayout();
+                if (!NickName.Equals("User"))
+                {
+                    LoginLabelOfflineUsername.Text = NickName;
+                }
+            }
+            catch
+            {
+                LoginPictureBoxOnlineMain.SuspendLayout();
+                LoginPictureBoxOfflineMain.SuspendLayout();
+                LoginPictureBoxRegisterMain.BringToFront();
+                LoginPictureBoxLoadingMain.SuspendLayout();
+            }
+            Thread.Sleep(1500); // Emulate hardwork
+            GuiLoaded = true;
+
+        }
+        #endregion
         public Form1()
         {
             InitializeComponent();
+            #region LOAD
             InitializeTransparency();
-            LoginPictureBoxOnlineMain.SuspendLayout();
-            LoginPictureBoxOfflineMain.SuspendLayout();
-            LoginPictureBoxRegisterMain.BringToFront();
-            LoginPictureBoxLoadingMain.SuspendLayout();
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            MaxSize = this.MaximumSize;
+            MinSize = this.MinimumSize;
+            this.MinimumSize = this.Size;
+            this.MaximumSize = this.Size;
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
             DataDetailsRemoveAdvancedImageButton.OnClickEvent += DataRemoveAdvancedImageButton_Click;
@@ -144,6 +209,7 @@ namespace pmdbs
             DashboardMenuEntryPasswords.OnClickEvent += DashboardMenuEntryPasswords_Click;
             AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
             AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
+            #endregion
             #endregion
         }
         #region Dashboard
@@ -330,12 +396,65 @@ namespace pmdbs
             AddEditFieldWebsite.TextTextBox = "";
         }
 
-        private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
+        private async void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
         {
+            string Hostname = AddEditFieldHostname.TextTextBox;
+            string Username = AddEditFieldUsername.TextTextBox;
+            string Password = AddEditFieldPassword.TextTextBox;
+            string Email = AddEditFieldEmail.TextTextBox;
+            string Website = AddEditFieldWebsite.TextTextBox;
+            string Notes = AddPanelNotesAdvancedRichTextBox.TextValue;
+            string[] Values = new string[]
+            {
+                Hostname,
+                Username,
+                Password,
+                Email,
+                Website,
+                Notes
+            };
+            string[] Columns = new string[]
+            {
+                "D_host",
+                "D_uname",
+                "D_password",
+                "D_email",
+                "D_url",
+                "D_notes"
+            };
+            if (Password.Equals("") || Hostname.Equals(""))
+            {
+                return;
+            }
+            for (int i = 0; i < Values.Length; i++)
+            {
+                if (Values[i].Equals(""))
+                {
+                    Values[i] = "\x01";
+                }
+                else
+                {
+                    Values[i] = CryptoHelper.AESEncrypt(Values[i], LocalAESkey);
+                }
+            }
+            string Query = "INSERT INTO Tbl_data (D_datetime";
+            for (int i = 0; i < Columns.Count(); i++)
+            {
+                Query += ", " + Columns[i];
+            }
+            Query += ") VALUES (\"" + DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + "\"";
+            for (int i = 0; i < Values.Count(); i++)
+            {
+                Query += ", \"" + Values[i] + "\"";
+            }
+            Query += ");";
+            Task InsertData = DataBaseHelper.ModifyData(Query);
+            await Task.WhenAll(InsertData);
             AddPanelMain.SuspendLayout();
             DataPanelMain.BringToFront();
             DataPanelMain.ResumeLayout();
             ResetFields();
+            RefreshUserData();
         }
 
         private void AddPanelAdvancedImageButtonAbort_Click(object sender, EventArgs e)
@@ -346,10 +465,16 @@ namespace pmdbs
             ResetFields();
         }
 
+        private void RefreshUserData()
+        {
+
+        }
+
         #endregion
 
         #region LoginPanel
-        private bool RegisterButtonDisabled = false;
+
+        private bool LoginButtonDisabled = false;
         private void InitializeTransparency()
         {
             Bitmap bmp = new Bitmap(LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
@@ -363,8 +488,6 @@ namespace pmdbs
             this.LoginPictureBoxOfflineMain.Image = bmp;
             this.LoginPictureBoxLoadingMain.Image = bmp;
         }
-        #endregion
-
         private void LoginLabelOnlineRegister_Click(object sender, EventArgs e)
         {
             LoginPictureBoxOnlineMain.SuspendLayout();
@@ -384,18 +507,88 @@ namespace pmdbs
 
         }
 
-        private void LoginAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
+        private async void LoginAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
         {
-
-        }
-        
-        private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
-        {
-            if (RegisterButtonDisabled)
+            if (LoginButtonDisabled)
             {
                 return;
             }
-            RegisterButtonDisabled = true;
+            LoginButtonDisabled = true;
+            LoginLabelOfflineError.ForeColor = Color.FromArgb(17, 17, 17);
+            string Password = LoginEditFieldOfflinePassword.TextTextBox;
+            if (Password.Equals(""))
+            {
+                LoginLabelOfflineError.ForeColor = Color.Firebrick;
+                LoginLabelOfflineError.Text = "Please enter a password!";
+                LoginButtonDisabled = false;
+                return;
+            }
+            LoginPictureBoxLoadingMain.ResumeLayout();
+            LoginPictureBoxLoadingMain.BringToFront();
+            LoginPictureBoxOfflineMain.SuspendLayout();
+            LoginLoadingLabelDetails.Text = "Loading Saved Hash...";
+            Task<List<String>> GetSavedHash = DataBaseHelper.GetDataAsList("SELECT U_password, U_firstUsage FROM Tbl_user ORDER BY U_id ASC LIMIT 1;", 2);
+            List<String> TrueHashList = await GetSavedHash;
+            string TrueHash = TrueHashList[0];
+            string FirstUsage = TrueHashList[1];
+            LoginLoadingLabelDetails.Text = "Hashing Password...";
+            string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
+            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            string Stage2PasswordHash = await ScryptTask;
+            LoginLoadingLabelDetails.Text = "Checking Password...";
+            if (!Stage2PasswordHash.Equals(TrueHash))
+            {
+                LoginLabelOfflineError.ForeColor = Color.Firebrick;
+                LoginLabelOfflineError.Text = "Wrong Password!";
+                LoginButtonDisabled = false;
+                LoginPictureBoxOfflineMain.ResumeLayout();
+                LoginPictureBoxOfflineMain.BringToFront();
+                LoginPictureBoxLoadingMain.SuspendLayout();
+                return;
+            }
+            MasterPassword = Stage1PasswordHash;
+            LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
+            GlobalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            DataTable UserData = await GetData;
+            int Columns = UserData.Columns.Count;
+            int RowCounter = 0;
+            int Fields = (Columns - 3) * UserData.Rows.Count;
+            foreach (DataRow Row in UserData.Rows)
+            {
+                for (int i = 3; i < Columns; i++)
+                {
+                    string FieldValue = Row[i].ToString();
+                    if (!FieldValue.Equals("\x01"))
+                    {
+                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, LocalAESkey);
+                        Row.BeginEdit();
+                        Row.SetField(i, decryptedData);
+                        Row.EndEdit();
+                    }
+                    double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
+                    double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
+                    LoginLoadingLabelDetails.Text = "Decrypting Your Data... " + FinalPercentage.ToString() + "%";
+                }
+                RowCounter++;
+            }
+            LoginPictureBoxOnlineMain.Dispose();
+            LoginPictureBoxOfflineMain.Dispose();
+            LoginPictureBoxRegisterMain.Dispose();
+            PanelMain.BringToFront();
+            PanelLogin.Dispose();
+            this.MinimumSize = MinSize;
+            this.MaximumSize = MaxSize;
+        }
+
+        private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
+        {
+            if (LoginButtonDisabled)
+            {
+                return;
+            }
+            LoginButtonDisabled = true;
             LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
@@ -403,7 +596,7 @@ namespace pmdbs
             {
                 LoginLabelRegisterError.ForeColor = Color.Firebrick;
                 LoginLabelRegisterError.Text = "These passwords don't match!";
-                RegisterButtonDisabled = false;
+                LoginButtonDisabled = false;
                 return;
             }
             LoginLabelRegisterError.ForeColor = Color.Firebrick;
@@ -411,42 +604,47 @@ namespace pmdbs
             int score = (int)PasswordStrength[0];
             string meaning = (string)PasswordStrength[1];
             LoginLabelRegisterError.Text = meaning + " (" + score.ToString() + " points)";
-            RegisterButtonDisabled = false;
-            return;
             PasswordScore Strength = PasswordAdvisor.CheckStrength(Password1);
             switch (Strength)
             {
                 case PasswordScore.Blank:
                     LoginLabelRegisterError.ForeColor = Color.Firebrick;
                     LoginLabelRegisterError.Text = "Password too weak.";
-                    RegisterButtonDisabled = false;
+                    LoginButtonDisabled = false;
                     return;
                 case PasswordScore.VeryWeak:
                     LoginLabelRegisterError.ForeColor = Color.Firebrick;
                     LoginLabelRegisterError.Text = "Password too weak.";
-                    RegisterButtonDisabled = false;
+                    LoginButtonDisabled = false;
                     return;
                 case PasswordScore.Weak:
                     LoginLabelRegisterError.ForeColor = Color.Firebrick;
                     LoginLabelRegisterError.Text = "Password too weak.";
-                    RegisterButtonDisabled = false;
+                    LoginButtonDisabled = false;
                     return;
             }
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxRegisterMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Hashing Password...";
+            string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
             string FirstUsage = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Password1, FirstUsage));
-            string HashedPassword = await ScryptTask;
+            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
-            Task SetupDatabase = DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + HashedPassword + "\", 0, \"" + FirstUsage + "\");");
+            Task SetupDatabase = DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
             await Task.WhenAll(SetupDatabase);
+            MasterPassword = Stage1PasswordHash;
+            LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
+            GlobalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginPictureBoxOnlineMain.Dispose();
             LoginPictureBoxOfflineMain.Dispose();
             LoginPictureBoxRegisterMain.Dispose();
             PanelMain.BringToFront();
             PanelLogin.Dispose();
+            this.MinimumSize = MinSize;
+            this.MaximumSize = MaxSize;
         }
+        #endregion
     }
 }

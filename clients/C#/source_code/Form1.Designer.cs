@@ -32,13 +32,10 @@
             this.DashboardPanel = new System.Windows.Forms.Panel();
             this.DashboardFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.DashboardPanelHome = new System.Windows.Forms.Panel();
-            this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
             this.DashboardPanelHomeIndicator = new System.Windows.Forms.Panel();
             this.DashboardPanelPasswords = new System.Windows.Forms.Panel();
-            this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
             this.DashboardPanelPasswordsIndicator = new System.Windows.Forms.Panel();
             this.DashboardPanelSettings = new System.Windows.Forms.Panel();
-            this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
             this.DashboardPanelSettingsIndicator = new System.Windows.Forms.Panel();
             this.DashboardPictureBox = new System.Windows.Forms.PictureBox();
             this.DataPanelMain = new System.Windows.Forms.Panel();
@@ -47,11 +44,7 @@
             this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
             this.DataTableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelFooterRight = new System.Windows.Forms.Panel();
-            this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataPanelFooterLeft = new System.Windows.Forms.Panel();
-            this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
             this.DataPictureBoxBackgroundTop = new System.Windows.Forms.PictureBox();
             this.DataPictureBoxBackgroundBottom = new System.Windows.Forms.PictureBox();
@@ -60,25 +53,10 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.DataPanelDetails = new System.Windows.Forms.Panel();
-            this.DataCustomLabelNotes = new pmdbs.CustomLabel();
-            this.DataDetailsEntryUsername = new pmdbs.DetailsEntry();
-            this.DataDetailsEntryPassword = new pmdbs.DetailsEntry();
-            this.DataDetailsEditAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataDetailsRemoveAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
-            this.DataDetailsEntryEmail = new pmdbs.DetailsEntry();
-            this.DataDetailsEntryWebsite = new pmdbs.DetailsEntry();
             this.DataPanelEdit = new System.Windows.Forms.Panel();
-            this.DataEditSaveAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataEditCancelAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.advancedRichTextBox1 = new pmdbs.AdvancedRichTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.editField5 = new pmdbs.EditField();
-            this.editField4 = new pmdbs.EditField();
-            this.editField3 = new pmdbs.EditField();
-            this.editField2 = new pmdbs.EditField();
-            this.editField1 = new pmdbs.EditField();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.WindowHeaderPanel = new System.Windows.Forms.Panel();
@@ -96,24 +74,13 @@
             this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
             this.AddPanelContent = new System.Windows.Forms.Panel();
             this.AddPanelGeneratePassword = new System.Windows.Forms.Panel();
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate = new pmdbs.AnimatedButton();
             this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
             this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
             this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
-            this.AddEditFieldEmail = new pmdbs.EditField();
             this.AddLabelTitle = new System.Windows.Forms.Label();
-            this.AddEditFieldHostname = new pmdbs.EditField();
-            this.AddEditFieldWebsite = new pmdbs.EditField();
-            this.AddEditFieldUsername = new pmdbs.EditField();
-            this.AddEditFieldPassword = new pmdbs.EditField();
             this.AddPanelNotes = new System.Windows.Forms.Panel();
-            this.AddPanelNotesAdvancedRichTextBox = new pmdbs.AdvancedRichTextBox();
             this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
             this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
-            this.AddPanelAdvancedImageButtonAbort = new pmdbs.AdvancedImageButton();
-            this.AddPanelAdvancedImageButtonSave = new pmdbs.AdvancedImageButton();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -124,35 +91,68 @@
             this.LoginLabelREgisterDescription = new System.Windows.Forms.Label();
             this.LoginLabelRegisterError = new System.Windows.Forms.Label();
             this.LoginLabelRegisterTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldRegisterPassword2 = new pmdbs.EditField();
-            this.LoginEditFieldRegisterPassword = new pmdbs.EditField();
             this.LoginLabelRegisterMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonRegister = new pmdbs.AnimatedButton();
             this.LoginPictureBoxRegisterLogo = new System.Windows.Forms.PictureBox();
             this.LoginPictureBoxOnlineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOnlineRegister = new System.Windows.Forms.Label();
             this.LoginPictureBoxOnlineLogo = new System.Windows.Forms.PictureBox();
-            this.LoginAnimatedButtonOnlineLogin = new pmdbs.AnimatedButton();
             this.LoginLabelOnlineMain = new System.Windows.Forms.Label();
             this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOnlineError = new System.Windows.Forms.Label();
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
-            this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
             this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
             this.LoginLoadingPictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.LoginLoadingLabelMain = new System.Windows.Forms.Label();
             this.LoginLoadingPanelMain = new System.Windows.Forms.Panel();
             this.LoginLoadingLabelDetails = new System.Windows.Forms.Label();
-            this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
             this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
             this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOfflineError = new System.Windows.Forms.Label();
-            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
             this.LoginLabelOfflineMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
             this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
+            this.LoginEditFieldRegisterPassword2 = new pmdbs.EditField();
+            this.LoginEditFieldRegisterPassword = new pmdbs.EditField();
+            this.LoginAnimatedButtonRegister = new pmdbs.AnimatedButton();
+            this.LoginAnimatedButtonOnlineLogin = new pmdbs.AnimatedButton();
+            this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
+            this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
+            this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
+            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
+            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataCustomLabelNotes = new pmdbs.CustomLabel();
+            this.DataDetailsEntryUsername = new pmdbs.DetailsEntry();
+            this.DataDetailsEntryPassword = new pmdbs.DetailsEntry();
+            this.DataDetailsEditAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataDetailsRemoveAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataDetailsEntryEmail = new pmdbs.DetailsEntry();
+            this.DataDetailsEntryWebsite = new pmdbs.DetailsEntry();
+            this.DataEditSaveAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataEditCancelAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.advancedRichTextBox1 = new pmdbs.AdvancedRichTextBox();
+            this.editField5 = new pmdbs.EditField();
+            this.editField4 = new pmdbs.EditField();
+            this.editField3 = new pmdbs.EditField();
+            this.editField2 = new pmdbs.EditField();
+            this.editField1 = new pmdbs.EditField();
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate = new pmdbs.AnimatedButton();
+            this.AddPanelGeneratePasswordAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
+            this.AddEditFieldEmail = new pmdbs.EditField();
+            this.AddEditFieldHostname = new pmdbs.EditField();
+            this.AddEditFieldWebsite = new pmdbs.EditField();
+            this.AddEditFieldUsername = new pmdbs.EditField();
+            this.AddEditFieldPassword = new pmdbs.EditField();
+            this.AddPanelNotesAdvancedRichTextBox = new pmdbs.AdvancedRichTextBox();
+            this.AddPanelAdvancedImageButtonAbort = new pmdbs.AdvancedImageButton();
+            this.AddPanelAdvancedImageButtonSave = new pmdbs.AdvancedImageButton();
+            this.DashboardMenuEntryHome = new pmdbs.MenuEntry();
+            this.DashboardMenuEntryPasswords = new pmdbs.MenuEntry();
+            this.DashboardMenuEntrySettings = new pmdbs.MenuEntry();
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -250,26 +250,6 @@
             this.DashboardPanelHome.Size = new System.Drawing.Size(269, 75);
             this.DashboardPanelHome.TabIndex = 7;
             // 
-            // DashboardMenuEntryHome
-            // 
-            this.DashboardMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
-            this.DashboardMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryHome.ColorHover = System.Drawing.Color.White;
-            this.DashboardMenuEntryHome.ColorNormal = System.Drawing.Color.White;
-            this.DashboardMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DashboardMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DashboardMenuEntryHome.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageHover")));
-            this.DashboardMenuEntryHome.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageNormal")));
-            this.DashboardMenuEntryHome.Location = new System.Drawing.Point(13, 0);
-            this.DashboardMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryHome.Name = "DashboardMenuEntryHome";
-            this.DashboardMenuEntryHome.Size = new System.Drawing.Size(255, 74);
-            this.DashboardMenuEntryHome.TabIndex = 5;
-            this.DashboardMenuEntryHome.TextTitle = "Home";
-            // 
             // DashboardPanelHomeIndicator
             // 
             this.DashboardPanelHomeIndicator.BackColor = System.Drawing.Color.White;
@@ -292,26 +272,6 @@
             this.DashboardPanelPasswords.Size = new System.Drawing.Size(269, 75);
             this.DashboardPanelPasswords.TabIndex = 8;
             // 
-            // DashboardMenuEntryPasswords
-            // 
-            this.DashboardMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
-            this.DashboardMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
-            this.DashboardMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
-            this.DashboardMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DashboardMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DashboardMenuEntryPasswords.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageHover")));
-            this.DashboardMenuEntryPasswords.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageNormal")));
-            this.DashboardMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
-            this.DashboardMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntryPasswords.Name = "DashboardMenuEntryPasswords";
-            this.DashboardMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
-            this.DashboardMenuEntryPasswords.TabIndex = 5;
-            this.DashboardMenuEntryPasswords.TextTitle = "Passwords";
-            // 
             // DashboardPanelPasswordsIndicator
             // 
             this.DashboardPanelPasswordsIndicator.BackColor = System.Drawing.Color.White;
@@ -333,26 +293,6 @@
             this.DashboardPanelSettings.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
             this.DashboardPanelSettings.Size = new System.Drawing.Size(269, 75);
             this.DashboardPanelSettings.TabIndex = 8;
-            // 
-            // DashboardMenuEntrySettings
-            // 
-            this.DashboardMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
-            this.DashboardMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntrySettings.ColorHover = System.Drawing.Color.White;
-            this.DashboardMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
-            this.DashboardMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
-            this.DashboardMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DashboardMenuEntrySettings.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageHover")));
-            this.DashboardMenuEntrySettings.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageNormal")));
-            this.DashboardMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
-            this.DashboardMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardMenuEntrySettings.Name = "DashboardMenuEntrySettings";
-            this.DashboardMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
-            this.DashboardMenuEntrySettings.TabIndex = 5;
-            this.DashboardMenuEntrySettings.TextTitle = "Settings";
             // 
             // DashboardPanelSettingsIndicator
             // 
@@ -464,26 +404,6 @@
             this.DataPanelFooterRight.Size = new System.Drawing.Size(447, 82);
             this.DataPanelFooterRight.TabIndex = 1;
             // 
-            // DataSyncAdvancedImageButton
-            // 
-            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
-            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
-            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
-            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
-            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataSyncAdvancedImageButton.TabIndex = 17;
-            // 
-            // DataRightAdvancedImageButton
-            // 
-            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
-            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
-            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
-            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataRightAdvancedImageButton.TabIndex = 17;
-            // 
             // DataPanelFooterLeft
             // 
             this.DataPanelFooterLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
@@ -496,26 +416,6 @@
             this.DataPanelFooterLeft.Name = "DataPanelFooterLeft";
             this.DataPanelFooterLeft.Size = new System.Drawing.Size(446, 82);
             this.DataPanelFooterLeft.TabIndex = 0;
-            // 
-            // DataAddAdvancedImageButton
-            // 
-            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
-            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
-            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
-            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataAddAdvancedImageButton.TabIndex = 15;
-            // 
-            // DataLeftAdvancedImageButton
-            // 
-            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
-            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
-            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
-            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
-            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataLeftAdvancedImageButton.TabIndex = 16;
             // 
             // DataTableLayoutPanelSubRight
             // 
@@ -563,8 +463,8 @@
             // 
             // DataPanelSubRightMain
             // 
-            this.DataPanelSubRightMain.Controls.Add(this.DataPanelNoSel);
             this.DataPanelSubRightMain.Controls.Add(this.DataPanelDetails);
+            this.DataPanelSubRightMain.Controls.Add(this.DataPanelNoSel);
             this.DataPanelSubRightMain.Controls.Add(this.DataPanelEdit);
             this.DataPanelSubRightMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelSubRightMain.Location = new System.Drawing.Point(0, -1);
@@ -625,60 +525,6 @@
             this.DataPanelDetails.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelDetails.TabIndex = 3;
             // 
-            // DataCustomLabelNotes
-            // 
-            this.DataCustomLabelNotes.Content = "Some  generic notes";
-            this.DataCustomLabelNotes.Header = "Notes:";
-            this.DataCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
-            this.DataCustomLabelNotes.Name = "DataCustomLabelNotes";
-            this.DataCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
-            this.DataCustomLabelNotes.TabIndex = 23;
-            // 
-            // DataDetailsEntryUsername
-            // 
-            this.DataDetailsEntryUsername.Content = "Us3r123";
-            this.DataDetailsEntryUsername.Header = "Your Username:";
-            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
-            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
-            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
-            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
-            this.DataDetailsEntryUsername.RawText = null;
-            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryUsername.TabIndex = 22;
-            // 
-            // DataDetailsEntryPassword
-            // 
-            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.DataDetailsEntryPassword.Header = "Your Password:";
-            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
-            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
-            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
-            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
-            this.DataDetailsEntryPassword.RawText = null;
-            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryPassword.TabIndex = 21;
-            // 
-            // DataDetailsEditAdvancedImageButton
-            // 
-            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
-            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
-            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
-            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
-            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
-            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
-            // 
-            // DataDetailsRemoveAdvancedImageButton
-            // 
-            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
-            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
-            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
-            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
-            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
-            // 
             // DataLabelDetailsHostname
             // 
             this.DataLabelDetailsHostname.AutoSize = true;
@@ -698,34 +544,6 @@
             this.DataPictureBoxDetailsLogo.TabIndex = 0;
             this.DataPictureBoxDetailsLogo.TabStop = false;
             // 
-            // DataDetailsEntryEmail
-            // 
-            this.DataDetailsEntryEmail.Content = "example@gmail.com";
-            this.DataDetailsEntryEmail.Header = "Your Email:";
-            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
-            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
-            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
-            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
-            this.DataDetailsEntryEmail.RawText = null;
-            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryEmail.TabIndex = 20;
-            // 
-            // DataDetailsEntryWebsite
-            // 
-            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
-            this.DataDetailsEntryWebsite.Header = "Website:";
-            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
-            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
-            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
-            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
-            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
-    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
-    "iceLogin";
-            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryWebsite.TabIndex = 19;
-            // 
             // DataPanelEdit
             // 
             this.DataPanelEdit.Controls.Add(this.DataEditSaveAdvancedImageButton);
@@ -744,36 +562,6 @@
             this.DataPanelEdit.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelEdit.TabIndex = 4;
             // 
-            // DataEditSaveAdvancedImageButton
-            // 
-            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
-            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
-            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
-            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
-            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
-            // 
-            // DataEditCancelAdvancedImageButton
-            // 
-            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
-            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
-            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
-            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
-            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
-            // 
-            // advancedRichTextBox1
-            // 
-            this.advancedRichTextBox1.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.advancedRichTextBox1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedRichTextBox1.ForeColorFocus = System.Drawing.Color.Black;
-            this.advancedRichTextBox1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedRichTextBox1.Location = new System.Drawing.Point(8, 718);
-            this.advancedRichTextBox1.Name = "advancedRichTextBox1";
-            this.advancedRichTextBox1.Size = new System.Drawing.Size(643, 266);
-            this.advancedRichTextBox1.TabIndex = 31;
-            this.advancedRichTextBox1.TextValue = "";
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -784,116 +572,6 @@
             this.label1.Size = new System.Drawing.Size(79, 25);
             this.label1.TabIndex = 30;
             this.label1.Text = "Notes:";
-            // 
-            // editField5
-            // 
-            this.editField5.AutoSize = true;
-            this.editField5.BackColor = System.Drawing.Color.White;
-            this.editField5.BackGroundColor = System.Drawing.Color.White;
-            this.editField5.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField5.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField5.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField5.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField5.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField5.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField5.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField5.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearHover")));
-            this.editField5.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearNormal")));
-            this.editField5.Location = new System.Drawing.Point(8, 572);
-            this.editField5.Name = "editField5";
-            this.editField5.Size = new System.Drawing.Size(680, 96);
-            this.editField5.TabIndex = 29;
-            this.editField5.TextTextBox = "https://mail.google.com";
-            this.editField5.TextTitle = "Website:";
-            this.editField5.UseColoredCaret = true;
-            // 
-            // editField4
-            // 
-            this.editField4.AutoSize = true;
-            this.editField4.BackColor = System.Drawing.Color.White;
-            this.editField4.BackGroundColor = System.Drawing.Color.White;
-            this.editField4.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField4.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField4.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField4.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField4.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField4.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField4.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField4.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearHover")));
-            this.editField4.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearNormal")));
-            this.editField4.Location = new System.Drawing.Point(8, 470);
-            this.editField4.Name = "editField4";
-            this.editField4.Size = new System.Drawing.Size(680, 96);
-            this.editField4.TabIndex = 28;
-            this.editField4.TextTextBox = "example@gmail.com";
-            this.editField4.TextTitle = "Email:";
-            this.editField4.UseColoredCaret = true;
-            // 
-            // editField3
-            // 
-            this.editField3.AutoSize = true;
-            this.editField3.BackColor = System.Drawing.Color.White;
-            this.editField3.BackGroundColor = System.Drawing.Color.White;
-            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField3.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField3.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
-            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
-            this.editField3.Location = new System.Drawing.Point(8, 368);
-            this.editField3.Name = "editField3";
-            this.editField3.Size = new System.Drawing.Size(680, 96);
-            this.editField3.TabIndex = 27;
-            this.editField3.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.editField3.TextTitle = "Password:";
-            this.editField3.UseColoredCaret = true;
-            // 
-            // editField2
-            // 
-            this.editField2.AutoSize = true;
-            this.editField2.BackColor = System.Drawing.Color.White;
-            this.editField2.BackGroundColor = System.Drawing.Color.White;
-            this.editField2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField2.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField2.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField2.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField2.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField2.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField2.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearHover")));
-            this.editField2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearNormal")));
-            this.editField2.Location = new System.Drawing.Point(8, 266);
-            this.editField2.Name = "editField2";
-            this.editField2.Size = new System.Drawing.Size(680, 96);
-            this.editField2.TabIndex = 26;
-            this.editField2.TextTextBox = "Us3r123";
-            this.editField2.TextTitle = "Username:";
-            this.editField2.UseColoredCaret = true;
-            // 
-            // editField1
-            // 
-            this.editField1.AutoSize = true;
-            this.editField1.BackColor = System.Drawing.Color.White;
-            this.editField1.BackGroundColor = System.Drawing.Color.White;
-            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField1.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.editField1.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearHover")));
-            this.editField1.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearNormal")));
-            this.editField1.Location = new System.Drawing.Point(8, 164);
-            this.editField1.Name = "editField1";
-            this.editField1.Size = new System.Drawing.Size(680, 96);
-            this.editField1.TabIndex = 25;
-            this.editField1.TextTextBox = "Gmail";
-            this.editField1.TextTitle = "Hostname:";
-            this.editField1.UseColoredCaret = true;
             // 
             // pictureBox1
             // 
@@ -1126,6 +804,878 @@
             this.AddPanelGeneratePassword.Size = new System.Drawing.Size(660, 197);
             this.AddPanelGeneratePassword.TabIndex = 8;
             // 
+            // AddPanelGeneratePasswordLabelTitle
+            // 
+            this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.AddPanelGeneratePasswordLabelTitle.Location = new System.Drawing.Point(3, 3);
+            this.AddPanelGeneratePasswordLabelTitle.Name = "AddPanelGeneratePasswordLabelTitle";
+            this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(394, 34);
+            this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
+            this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
+            // 
+            // AddPanelGeneratePasswordLabelLength
+            // 
+            this.AddPanelGeneratePasswordLabelLength.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelLength.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordLabelLength.Location = new System.Drawing.Point(323, 121);
+            this.AddPanelGeneratePasswordLabelLength.Name = "AddPanelGeneratePasswordLabelLength";
+            this.AddPanelGeneratePasswordLabelLength.Size = new System.Drawing.Size(94, 30);
+            this.AddPanelGeneratePasswordLabelLength.TabIndex = 17;
+            this.AddPanelGeneratePasswordLabelLength.Text = "Length";
+            // 
+            // AddPanelGeneratePasswordLabelDescription
+            // 
+            this.AddPanelGeneratePasswordLabelDescription.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordLabelDescription.Location = new System.Drawing.Point(9, 48);
+            this.AddPanelGeneratePasswordLabelDescription.Name = "AddPanelGeneratePasswordLabelDescription";
+            this.AddPanelGeneratePasswordLabelDescription.Size = new System.Drawing.Size(615, 63);
+            this.AddPanelGeneratePasswordLabelDescription.TabIndex = 16;
+            this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
+    "s as well as special characters and are at least 16\r\ncharacters long.";
+            // 
+            // AddLabelTitle
+            // 
+            this.AddLabelTitle.AutoSize = true;
+            this.AddLabelTitle.BackColor = System.Drawing.Color.White;
+            this.AddLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddLabelTitle.Location = new System.Drawing.Point(3, 67);
+            this.AddLabelTitle.Name = "AddLabelTitle";
+            this.AddLabelTitle.Size = new System.Drawing.Size(224, 38);
+            this.AddLabelTitle.TabIndex = 0;
+            this.AddLabelTitle.Text = "Add Account";
+            // 
+            // AddPanelNotes
+            // 
+            this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
+            this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
+            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
+            this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelNotes.Name = "AddPanelNotes";
+            this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
+            this.AddPanelNotes.TabIndex = 11;
+            // 
+            // AddPanelNotesLabelTitle
+            // 
+            this.AddPanelNotesLabelTitle.AutoSize = true;
+            this.AddPanelNotesLabelTitle.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddPanelNotesLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.AddPanelNotesLabelTitle.Location = new System.Drawing.Point(2, 9);
+            this.AddPanelNotesLabelTitle.Name = "AddPanelNotesLabelTitle";
+            this.AddPanelNotesLabelTitle.Size = new System.Drawing.Size(55, 21);
+            this.AddPanelNotesLabelTitle.TabIndex = 0;
+            this.AddPanelNotesLabelTitle.Text = "Notes";
+            // 
+            // AddPanelBottomMenu
+            // 
+            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonAbort);
+            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonSave);
+            this.AddPanelBottomMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelBottomMenu.Location = new System.Drawing.Point(152, 898);
+            this.AddPanelBottomMenu.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
+            this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
+            this.AddPanelBottomMenu.TabIndex = 12;
+            // 
+            // AddPanelSeperator
+            // 
+            this.AddPanelSeperator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.AddPanelSeperator.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelSeperator.Location = new System.Drawing.Point(0, 0);
+            this.AddPanelSeperator.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelSeperator.Name = "AddPanelSeperator";
+            this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
+            this.AddPanelSeperator.TabIndex = 3;
+            // 
+            // PanelLogin
+            // 
+            this.PanelLogin.Controls.Add(this.LoginTableLayoutPanelMain);
+            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
+            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
+            this.PanelLogin.Name = "PanelLogin";
+            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
+            this.PanelLogin.TabIndex = 11;
+            // 
+            // LoginTableLayoutPanelMain
+            // 
+            this.LoginTableLayoutPanelMain.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LoginTableLayoutPanelMain.BackgroundImage")));
+            this.LoginTableLayoutPanelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LoginTableLayoutPanelMain.ColumnCount = 3;
+            this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
+            this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoginTableLayoutPanelMain.Controls.Add(this.LoginPictureBoxMain, 1, 1);
+            this.LoginTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginTableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginTableLayoutPanelMain.Name = "LoginTableLayoutPanelMain";
+            this.LoginTableLayoutPanelMain.RowCount = 3;
+            this.LoginTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoginTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 850F));
+            this.LoginTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoginTableLayoutPanelMain.Size = new System.Drawing.Size(1880, 1112);
+            this.LoginTableLayoutPanelMain.TabIndex = 0;
+            // 
+            // LoginPictureBoxMain
+            // 
+            this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
+            this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
+            this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxMain.Name = "LoginPictureBoxMain";
+            this.LoginPictureBoxMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxMain.TabIndex = 2;
+            this.LoginPictureBoxMain.TabStop = false;
+            // 
+            // LoginPictureBoxRegisterMain
+            // 
+            this.LoginPictureBoxRegisterMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginLabelRegisterSignIn);
+            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginPanelRegisterCredentials);
+            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginLabelRegisterMain);
+            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginAnimatedButtonRegister);
+            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginPictureBoxRegisterLogo);
+            this.LoginPictureBoxRegisterMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxRegisterMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxRegisterMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxRegisterMain.Name = "LoginPictureBoxRegisterMain";
+            this.LoginPictureBoxRegisterMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxRegisterMain.TabIndex = 10;
+            this.LoginPictureBoxRegisterMain.TabStop = false;
+            // 
+            // LoginLabelRegisterSignIn
+            // 
+            this.LoginLabelRegisterSignIn.AutoSize = true;
+            this.LoginLabelRegisterSignIn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoginLabelRegisterSignIn.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.LoginLabelRegisterSignIn.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelRegisterSignIn.Location = new System.Drawing.Point(230, 805);
+            this.LoginLabelRegisterSignIn.Name = "LoginLabelRegisterSignIn";
+            this.LoginLabelRegisterSignIn.Size = new System.Drawing.Size(184, 30);
+            this.LoginLabelRegisterSignIn.TabIndex = 5;
+            this.LoginLabelRegisterSignIn.Text = "Sign in instead";
+            this.LoginLabelRegisterSignIn.Click += new System.EventHandler(this.LoginLabelRegisterSignIn_Click);
+            // 
+            // LoginPanelRegisterCredentials
+            // 
+            this.LoginPanelRegisterCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelREgisterDescription);
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterError);
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterTitle);
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword2);
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword);
+            this.LoginPanelRegisterCredentials.Location = new System.Drawing.Point(61, 282);
+            this.LoginPanelRegisterCredentials.Name = "LoginPanelRegisterCredentials";
+            this.LoginPanelRegisterCredentials.Size = new System.Drawing.Size(523, 426);
+            this.LoginPanelRegisterCredentials.TabIndex = 4;
+            // 
+            // LoginLabelREgisterDescription
+            // 
+            this.LoginLabelREgisterDescription.AutoSize = true;
+            this.LoginLabelREgisterDescription.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.LoginLabelREgisterDescription.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelREgisterDescription.Location = new System.Drawing.Point(29, 64);
+            this.LoginLabelREgisterDescription.Name = "LoginLabelREgisterDescription";
+            this.LoginLabelREgisterDescription.Size = new System.Drawing.Size(491, 84);
+            this.LoginLabelREgisterDescription.TabIndex = 4;
+            this.LoginLabelREgisterDescription.Text = "The Master Password is needed everytime you log into \r\npmdbs. It can be changed o" +
+    "nce signed in, but it can \r\nnot be recovered! Choose a strong password as this \r" +
+    "\nprotects all your data!";
+            // 
+            // LoginLabelRegisterError
+            // 
+            this.LoginLabelRegisterError.AutoSize = true;
+            this.LoginLabelRegisterError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelRegisterError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLabelRegisterError.Location = new System.Drawing.Point(29, 388);
+            this.LoginLabelRegisterError.Name = "LoginLabelRegisterError";
+            this.LoginLabelRegisterError.Size = new System.Drawing.Size(211, 30);
+            this.LoginLabelRegisterError.TabIndex = 3;
+            this.LoginLabelRegisterError.Text = "Invalid password";
+            // 
+            // LoginLabelRegisterTitle
+            // 
+            this.LoginLabelRegisterTitle.AutoSize = true;
+            this.LoginLabelRegisterTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.LoginLabelRegisterTitle.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelRegisterTitle.Location = new System.Drawing.Point(29, 11);
+            this.LoginLabelRegisterTitle.Name = "LoginLabelRegisterTitle";
+            this.LoginLabelRegisterTitle.Size = new System.Drawing.Size(248, 28);
+            this.LoginLabelRegisterTitle.TabIndex = 2;
+            this.LoginLabelRegisterTitle.Text = "Set Master Password";
+            // 
+            // LoginLabelRegisterMain
+            // 
+            this.LoginLabelRegisterMain.AutoSize = true;
+            this.LoginLabelRegisterMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelRegisterMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelRegisterMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelRegisterMain.Location = new System.Drawing.Point(235, 223);
+            this.LoginLabelRegisterMain.Name = "LoginLabelRegisterMain";
+            this.LoginLabelRegisterMain.Size = new System.Drawing.Size(177, 39);
+            this.LoginLabelRegisterMain.TabIndex = 8;
+            this.LoginLabelRegisterMain.Text = "Welcome!";
+            // 
+            // LoginPictureBoxRegisterLogo
+            // 
+            this.LoginPictureBoxRegisterLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxRegisterLogo.Image")));
+            this.LoginPictureBoxRegisterLogo.Location = new System.Drawing.Point(236, 29);
+            this.LoginPictureBoxRegisterLogo.Name = "LoginPictureBoxRegisterLogo";
+            this.LoginPictureBoxRegisterLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxRegisterLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxRegisterLogo.TabIndex = 6;
+            this.LoginPictureBoxRegisterLogo.TabStop = false;
+            // 
+            // LoginPictureBoxOnlineMain
+            // 
+            this.LoginPictureBoxOnlineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineRegister);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPictureBoxOnlineLogo);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginAnimatedButtonOnlineLogin);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineMain);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPanelOnlineCredentials);
+            this.LoginPictureBoxOnlineMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxOnlineMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxOnlineMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxOnlineMain.Name = "LoginPictureBoxOnlineMain";
+            this.LoginPictureBoxOnlineMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxOnlineMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.LoginPictureBoxOnlineMain.TabIndex = 1;
+            this.LoginPictureBoxOnlineMain.TabStop = false;
+            // 
+            // LoginLabelOnlineRegister
+            // 
+            this.LoginLabelOnlineRegister.AutoSize = true;
+            this.LoginLabelOnlineRegister.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoginLabelOnlineRegister.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.LoginLabelOnlineRegister.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOnlineRegister.Location = new System.Drawing.Point(269, 805);
+            this.LoginLabelOnlineRegister.Name = "LoginLabelOnlineRegister";
+            this.LoginLabelOnlineRegister.Size = new System.Drawing.Size(107, 30);
+            this.LoginLabelOnlineRegister.TabIndex = 6;
+            this.LoginLabelOnlineRegister.Text = "Register";
+            this.LoginLabelOnlineRegister.Click += new System.EventHandler(this.LoginLabelOnlineRegister_Click);
+            // 
+            // LoginPictureBoxOnlineLogo
+            // 
+            this.LoginPictureBoxOnlineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOnlineLogo.Image")));
+            this.LoginPictureBoxOnlineLogo.Location = new System.Drawing.Point(235, 77);
+            this.LoginPictureBoxOnlineLogo.Name = "LoginPictureBoxOnlineLogo";
+            this.LoginPictureBoxOnlineLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxOnlineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxOnlineLogo.TabIndex = 5;
+            this.LoginPictureBoxOnlineLogo.TabStop = false;
+            // 
+            // LoginLabelOnlineMain
+            // 
+            this.LoginLabelOnlineMain.AutoSize = true;
+            this.LoginLabelOnlineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelOnlineMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOnlineMain.Location = new System.Drawing.Point(196, 275);
+            this.LoginLabelOnlineMain.Name = "LoginLabelOnlineMain";
+            this.LoginLabelOnlineMain.Size = new System.Drawing.Size(253, 39);
+            this.LoginLabelOnlineMain.TabIndex = 2;
+            this.LoginLabelOnlineMain.Text = "Welcome Back";
+            // 
+            // LoginPanelOnlineCredentials
+            // 
+            this.LoginPanelOnlineCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginLabelOnlineError);
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginLabelOnlineTitle);
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlinePassword);
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlineUsername);
+            this.LoginPanelOnlineCredentials.Location = new System.Drawing.Point(61, 337);
+            this.LoginPanelOnlineCredentials.Name = "LoginPanelOnlineCredentials";
+            this.LoginPanelOnlineCredentials.Size = new System.Drawing.Size(523, 324);
+            this.LoginPanelOnlineCredentials.TabIndex = 1;
+            // 
+            // LoginLabelOnlineError
+            // 
+            this.LoginLabelOnlineError.AutoSize = true;
+            this.LoginLabelOnlineError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineError.ForeColor = System.Drawing.Color.Firebrick;
+            this.LoginLabelOnlineError.Location = new System.Drawing.Point(38, 279);
+            this.LoginLabelOnlineError.Name = "LoginLabelOnlineError";
+            this.LoginLabelOnlineError.Size = new System.Drawing.Size(367, 30);
+            this.LoginLabelOnlineError.TabIndex = 3;
+            this.LoginLabelOnlineError.Text = "Invalid username or password";
+            // 
+            // LoginLabelOnlineTitle
+            // 
+            this.LoginLabelOnlineTitle.AutoSize = true;
+            this.LoginLabelOnlineTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineTitle.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOnlineTitle.Location = new System.Drawing.Point(38, 24);
+            this.LoginLabelOnlineTitle.Name = "LoginLabelOnlineTitle";
+            this.LoginLabelOnlineTitle.Size = new System.Drawing.Size(163, 30);
+            this.LoginLabelOnlineTitle.TabIndex = 2;
+            this.LoginLabelOnlineTitle.Text = "Online Login";
+            // 
+            // LoginPictureBoxLoadingMain
+            // 
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPictureBoxLogo);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingLabelMain);
+            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPanelMain);
+            this.LoginPictureBoxLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxLoadingMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxLoadingMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxLoadingMain.Name = "LoginPictureBoxLoadingMain";
+            this.LoginPictureBoxLoadingMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxLoadingMain.TabIndex = 3;
+            this.LoginPictureBoxLoadingMain.TabStop = false;
+            // 
+            // LoginLoadingPictureBoxLogo
+            // 
+            this.LoginLoadingPictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginLoadingPictureBoxLogo.Image")));
+            this.LoginLoadingPictureBoxLogo.Location = new System.Drawing.Point(243, 77);
+            this.LoginLoadingPictureBoxLogo.Name = "LoginLoadingPictureBoxLogo";
+            this.LoginLoadingPictureBoxLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginLoadingPictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginLoadingPictureBoxLogo.TabIndex = 7;
+            this.LoginLoadingPictureBoxLogo.TabStop = false;
+            // 
+            // LoginLoadingLabelMain
+            // 
+            this.LoginLoadingLabelMain.AutoSize = true;
+            this.LoginLoadingLabelMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLoadingLabelMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLoadingLabelMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLoadingLabelMain.Location = new System.Drawing.Point(241, 338);
+            this.LoginLoadingLabelMain.Name = "LoginLoadingLabelMain";
+            this.LoginLoadingLabelMain.Size = new System.Drawing.Size(173, 39);
+            this.LoginLoadingLabelMain.TabIndex = 9;
+            this.LoginLoadingLabelMain.Text = "Loading...";
+            // 
+            // LoginLoadingPanelMain
+            // 
+            this.LoginLoadingPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingLabelDetails);
+            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingAdvancedProgressSpinner);
+            this.LoginLoadingPanelMain.Location = new System.Drawing.Point(69, 423);
+            this.LoginLoadingPanelMain.Name = "LoginLoadingPanelMain";
+            this.LoginLoadingPanelMain.Size = new System.Drawing.Size(523, 186);
+            this.LoginLoadingPanelMain.TabIndex = 5;
+            // 
+            // LoginLoadingLabelDetails
+            // 
+            this.LoginLoadingLabelDetails.Font = new System.Drawing.Font("Century Gothic", 9F);
+            this.LoginLoadingLabelDetails.ForeColor = System.Drawing.Color.White;
+            this.LoginLoadingLabelDetails.Location = new System.Drawing.Point(3, 131);
+            this.LoginLoadingLabelDetails.Name = "LoginLoadingLabelDetails";
+            this.LoginLoadingLabelDetails.Size = new System.Drawing.Size(517, 30);
+            this.LoginLoadingLabelDetails.TabIndex = 4;
+            this.LoginLoadingLabelDetails.Text = "performing handshake with host... 47%";
+            this.LoginLoadingLabelDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LoginPictureBoxOfflineMain
+            // 
+            this.LoginPictureBoxOfflineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineUsername);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPanelOfflineCredentials);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineMain);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginAnimatedButtonOfflineLogin);
+            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPictureBoxOfflineLogo);
+            this.LoginPictureBoxOfflineMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxOfflineMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxOfflineMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxOfflineMain.Name = "LoginPictureBoxOfflineMain";
+            this.LoginPictureBoxOfflineMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxOfflineMain.TabIndex = 7;
+            this.LoginPictureBoxOfflineMain.TabStop = false;
+            // 
+            // LoginLabelOfflineUsername
+            // 
+            this.LoginLabelOfflineUsername.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineUsername.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOfflineUsername.Location = new System.Drawing.Point(86, 323);
+            this.LoginLabelOfflineUsername.Name = "LoginLabelOfflineUsername";
+            this.LoginLabelOfflineUsername.Size = new System.Drawing.Size(473, 54);
+            this.LoginLabelOfflineUsername.TabIndex = 9;
+            this.LoginLabelOfflineUsername.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // LoginPanelOfflineCredentials
+            // 
+            this.LoginPanelOfflineCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginLabelOfflineError);
+            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginEditFieldOfflinePassword);
+            this.LoginPanelOfflineCredentials.Location = new System.Drawing.Point(61, 410);
+            this.LoginPanelOfflineCredentials.Name = "LoginPanelOfflineCredentials";
+            this.LoginPanelOfflineCredentials.Size = new System.Drawing.Size(523, 186);
+            this.LoginPanelOfflineCredentials.TabIndex = 2;
+            // 
+            // LoginLabelOfflineError
+            // 
+            this.LoginLabelOfflineError.AutoSize = true;
+            this.LoginLabelOfflineError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLabelOfflineError.Location = new System.Drawing.Point(39, 144);
+            this.LoginLabelOfflineError.Name = "LoginLabelOfflineError";
+            this.LoginLabelOfflineError.Size = new System.Drawing.Size(211, 30);
+            this.LoginLabelOfflineError.TabIndex = 4;
+            this.LoginLabelOfflineError.Text = "Invalid password";
+            // 
+            // LoginLabelOfflineMain
+            // 
+            this.LoginLabelOfflineMain.AutoSize = true;
+            this.LoginLabelOfflineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelOfflineMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOfflineMain.Location = new System.Drawing.Point(196, 275);
+            this.LoginLabelOfflineMain.Name = "LoginLabelOfflineMain";
+            this.LoginLabelOfflineMain.Size = new System.Drawing.Size(253, 39);
+            this.LoginLabelOfflineMain.TabIndex = 8;
+            this.LoginLabelOfflineMain.Text = "Welcome Back";
+            // 
+            // LoginPictureBoxOfflineLogo
+            // 
+            this.LoginPictureBoxOfflineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOfflineLogo.Image")));
+            this.LoginPictureBoxOfflineLogo.Location = new System.Drawing.Point(235, 77);
+            this.LoginPictureBoxOfflineLogo.Name = "LoginPictureBoxOfflineLogo";
+            this.LoginPictureBoxOfflineLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxOfflineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxOfflineLogo.TabIndex = 6;
+            this.LoginPictureBoxOfflineLogo.TabStop = false;
+            // 
+            // LoginEditFieldRegisterPassword2
+            // 
+            this.LoginEditFieldRegisterPassword2.AutoSize = true;
+            this.LoginEditFieldRegisterPassword2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword2.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldRegisterPassword2.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword2.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldRegisterPassword2.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword2.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
+            this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
+            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 292);
+            this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
+            this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldRegisterPassword2.TabIndex = 1;
+            this.LoginEditFieldRegisterPassword2.TextTextBox = "";
+            this.LoginEditFieldRegisterPassword2.TextTitle = "Re-enter Master Password";
+            this.LoginEditFieldRegisterPassword2.UseColoredCaret = false;
+            // 
+            // LoginEditFieldRegisterPassword
+            // 
+            this.LoginEditFieldRegisterPassword.AutoSize = true;
+            this.LoginEditFieldRegisterPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldRegisterPassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldRegisterPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
+            this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
+            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 197);
+            this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
+            this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldRegisterPassword.TabIndex = 0;
+            this.LoginEditFieldRegisterPassword.TextTextBox = "";
+            this.LoginEditFieldRegisterPassword.TextTitle = "Master Password";
+            this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
+            // 
+            // LoginAnimatedButtonRegister
+            // 
+            this.LoginAnimatedButtonRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonRegister.Depth = 0;
+            this.LoginAnimatedButtonRegister.Icon = null;
+            this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(217, 728);
+            this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
+            this.LoginAnimatedButtonRegister.Primary = false;
+            this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonRegister.TabIndex = 8;
+            this.LoginAnimatedButtonRegister.Text = "Register";
+            this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
+            // 
+            // LoginAnimatedButtonOnlineLogin
+            // 
+            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
+            this.LoginAnimatedButtonOnlineLogin.Icon = null;
+            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(217, 728);
+            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOnlineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
+            this.LoginAnimatedButtonOnlineLogin.Primary = false;
+            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
+            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
+            // 
+            // LoginEditFieldOnlinePassword
+            // 
+            this.LoginEditFieldOnlinePassword.AutoSize = true;
+            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOnlinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearHover")));
+            this.LoginEditFieldOnlinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearNormal")));
+            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 179);
+            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
+            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlinePassword.TabIndex = 1;
+            this.LoginEditFieldOnlinePassword.TextTextBox = "";
+            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
+            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
+            // 
+            // LoginEditFieldOnlineUsername
+            // 
+            this.LoginEditFieldOnlineUsername.AutoSize = true;
+            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOnlineUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearHover")));
+            this.LoginEditFieldOnlineUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearNormal")));
+            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 72);
+            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
+            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlineUsername.TabIndex = 0;
+            this.LoginEditFieldOnlineUsername.TextTextBox = "";
+            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
+            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
+            // 
+            // LoginLoadingAdvancedProgressSpinner
+            // 
+            this.LoginLoadingAdvancedProgressSpinner.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLoadingAdvancedProgressSpinner.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginLoadingAdvancedProgressSpinner.Location = new System.Drawing.Point(207, 18);
+            this.LoginLoadingAdvancedProgressSpinner.Maximum = 100;
+            this.LoginLoadingAdvancedProgressSpinner.Name = "LoginLoadingAdvancedProgressSpinner";
+            this.LoginLoadingAdvancedProgressSpinner.Size = new System.Drawing.Size(100, 100);
+            this.LoginLoadingAdvancedProgressSpinner.Speed = 2.5F;
+            this.LoginLoadingAdvancedProgressSpinner.TabIndex = 12;
+            this.LoginLoadingAdvancedProgressSpinner.Text = "advancedProgressSpinner1";
+            this.LoginLoadingAdvancedProgressSpinner.TimerInterval = 40;
+            // 
+            // LoginEditFieldOfflinePassword
+            // 
+            this.LoginEditFieldOfflinePassword.AutoSize = true;
+            this.LoginEditFieldOfflinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOfflinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOfflinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOfflinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOfflinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOfflinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOfflinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOfflinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOfflinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOfflinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearHover")));
+            this.LoginEditFieldOfflinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearNormal")));
+            this.LoginEditFieldOfflinePassword.Location = new System.Drawing.Point(44, 37);
+            this.LoginEditFieldOfflinePassword.Name = "LoginEditFieldOfflinePassword";
+            this.LoginEditFieldOfflinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOfflinePassword.TabIndex = 1;
+            this.LoginEditFieldOfflinePassword.TextTextBox = "";
+            this.LoginEditFieldOfflinePassword.TextTitle = "Password";
+            this.LoginEditFieldOfflinePassword.UseColoredCaret = false;
+            // 
+            // LoginAnimatedButtonOfflineLogin
+            // 
+            this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOfflineLogin.Depth = 0;
+            this.LoginAnimatedButtonOfflineLogin.Icon = null;
+            this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(217, 684);
+            this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
+            this.LoginAnimatedButtonOfflineLogin.Primary = false;
+            this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
+            this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
+            // 
+            // DataSyncAdvancedImageButton
+            // 
+            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
+            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
+            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
+            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
+            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataSyncAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataRightAdvancedImageButton
+            // 
+            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
+            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
+            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
+            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataRightAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataAddAdvancedImageButton
+            // 
+            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
+            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
+            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
+            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataAddAdvancedImageButton.TabIndex = 15;
+            // 
+            // DataLeftAdvancedImageButton
+            // 
+            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
+            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
+            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
+            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
+            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataLeftAdvancedImageButton.TabIndex = 16;
+            // 
+            // DataCustomLabelNotes
+            // 
+            this.DataCustomLabelNotes.Content = "Some  generic notes";
+            this.DataCustomLabelNotes.Header = "Notes:";
+            this.DataCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
+            this.DataCustomLabelNotes.Name = "DataCustomLabelNotes";
+            this.DataCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
+            this.DataCustomLabelNotes.TabIndex = 23;
+            // 
+            // DataDetailsEntryUsername
+            // 
+            this.DataDetailsEntryUsername.Content = "-";
+            this.DataDetailsEntryUsername.Header = "Your Username:";
+            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
+            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
+            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
+            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
+            this.DataDetailsEntryUsername.RawText = null;
+            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryUsername.TabIndex = 22;
+            // 
+            // DataDetailsEntryPassword
+            // 
+            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.DataDetailsEntryPassword.Header = "Your Password:";
+            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
+            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
+            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
+            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
+            this.DataDetailsEntryPassword.RawText = null;
+            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryPassword.TabIndex = 21;
+            // 
+            // DataDetailsEditAdvancedImageButton
+            // 
+            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
+            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
+            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
+            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
+            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
+            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
+            // 
+            // DataDetailsRemoveAdvancedImageButton
+            // 
+            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
+            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
+            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
+            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
+            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
+            // 
+            // DataDetailsEntryEmail
+            // 
+            this.DataDetailsEntryEmail.Content = "example@gmail.com";
+            this.DataDetailsEntryEmail.Header = "Your Email:";
+            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
+            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
+            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
+            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
+            this.DataDetailsEntryEmail.RawText = null;
+            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryEmail.TabIndex = 20;
+            // 
+            // DataDetailsEntryWebsite
+            // 
+            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
+            this.DataDetailsEntryWebsite.Header = "Website:";
+            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
+            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
+            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
+            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
+            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
+    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
+    "iceLogin";
+            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryWebsite.TabIndex = 19;
+            // 
+            // DataEditSaveAdvancedImageButton
+            // 
+            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
+            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
+            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(534, 47);
+            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
+            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
+            // 
+            // DataEditCancelAdvancedImageButton
+            // 
+            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
+            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
+            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(612, 47);
+            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
+            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
+            // 
+            // advancedRichTextBox1
+            // 
+            this.advancedRichTextBox1.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedRichTextBox1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.advancedRichTextBox1.ForeColorFocus = System.Drawing.Color.Black;
+            this.advancedRichTextBox1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.advancedRichTextBox1.Location = new System.Drawing.Point(8, 718);
+            this.advancedRichTextBox1.Name = "advancedRichTextBox1";
+            this.advancedRichTextBox1.Size = new System.Drawing.Size(643, 266);
+            this.advancedRichTextBox1.TabIndex = 31;
+            this.advancedRichTextBox1.TextValue = "";
+            // 
+            // editField5
+            // 
+            this.editField5.AutoSize = true;
+            this.editField5.BackColor = System.Drawing.Color.White;
+            this.editField5.BackGroundColor = System.Drawing.Color.White;
+            this.editField5.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField5.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField5.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField5.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField5.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField5.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField5.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField5.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearHover")));
+            this.editField5.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField5.ImageClearNormal")));
+            this.editField5.Location = new System.Drawing.Point(8, 572);
+            this.editField5.Name = "editField5";
+            this.editField5.Size = new System.Drawing.Size(680, 96);
+            this.editField5.TabIndex = 29;
+            this.editField5.TextTextBox = "https://mail.google.com";
+            this.editField5.TextTitle = "Website:";
+            this.editField5.UseColoredCaret = true;
+            // 
+            // editField4
+            // 
+            this.editField4.AutoSize = true;
+            this.editField4.BackColor = System.Drawing.Color.White;
+            this.editField4.BackGroundColor = System.Drawing.Color.White;
+            this.editField4.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField4.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField4.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField4.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField4.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField4.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField4.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField4.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearHover")));
+            this.editField4.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField4.ImageClearNormal")));
+            this.editField4.Location = new System.Drawing.Point(8, 470);
+            this.editField4.Name = "editField4";
+            this.editField4.Size = new System.Drawing.Size(680, 96);
+            this.editField4.TabIndex = 28;
+            this.editField4.TextTextBox = "example@gmail.com";
+            this.editField4.TextTitle = "Email:";
+            this.editField4.UseColoredCaret = true;
+            // 
+            // editField3
+            // 
+            this.editField3.AutoSize = true;
+            this.editField3.BackColor = System.Drawing.Color.White;
+            this.editField3.BackGroundColor = System.Drawing.Color.White;
+            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField3.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField3.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField3.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
+            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
+            this.editField3.Location = new System.Drawing.Point(8, 368);
+            this.editField3.Name = "editField3";
+            this.editField3.Size = new System.Drawing.Size(680, 96);
+            this.editField3.TabIndex = 27;
+            this.editField3.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.editField3.TextTitle = "Password:";
+            this.editField3.UseColoredCaret = true;
+            // 
+            // editField2
+            // 
+            this.editField2.AutoSize = true;
+            this.editField2.BackColor = System.Drawing.Color.White;
+            this.editField2.BackGroundColor = System.Drawing.Color.White;
+            this.editField2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField2.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField2.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField2.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField2.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField2.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField2.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearHover")));
+            this.editField2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearNormal")));
+            this.editField2.Location = new System.Drawing.Point(8, 266);
+            this.editField2.Name = "editField2";
+            this.editField2.Size = new System.Drawing.Size(680, 96);
+            this.editField2.TabIndex = 26;
+            this.editField2.TextTextBox = "Us3r123";
+            this.editField2.TextTitle = "Username:";
+            this.editField2.UseColoredCaret = true;
+            // 
+            // editField1
+            // 
+            this.editField1.AutoSize = true;
+            this.editField1.BackColor = System.Drawing.Color.White;
+            this.editField1.BackGroundColor = System.Drawing.Color.White;
+            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField1.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.editField1.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearHover")));
+            this.editField1.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearNormal")));
+            this.editField1.Location = new System.Drawing.Point(8, 164);
+            this.editField1.Name = "editField1";
+            this.editField1.Size = new System.Drawing.Size(680, 96);
+            this.editField1.TabIndex = 25;
+            this.editField1.TextTextBox = "Gmail";
+            this.editField1.TextTitle = "Hostname:";
+            this.editField1.UseColoredCaret = true;
+            // 
             // AddPanelGeneratePasswordAnimatedButtonGenerate
             // 
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.AutoSize = true;
@@ -1142,16 +1692,6 @@
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Text = "GENERATE";
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.UseVisualStyleBackColor = true;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Click += new System.EventHandler(this.AddPanelGeneratePasswordAnimatedButtonGenerate_Click);
-            // 
-            // AddPanelGeneratePasswordLabelTitle
-            // 
-            this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.AddPanelGeneratePasswordLabelTitle.Location = new System.Drawing.Point(3, 3);
-            this.AddPanelGeneratePasswordLabelTitle.Name = "AddPanelGeneratePasswordLabelTitle";
-            this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(394, 34);
-            this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
-            this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
             // 
             // AddPanelGeneratePasswordAdvancedCheckBox
             // 
@@ -1193,27 +1733,6 @@
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextValue = "15";
             // 
-            // AddPanelGeneratePasswordLabelLength
-            // 
-            this.AddPanelGeneratePasswordLabelLength.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelLength.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordLabelLength.Location = new System.Drawing.Point(323, 121);
-            this.AddPanelGeneratePasswordLabelLength.Name = "AddPanelGeneratePasswordLabelLength";
-            this.AddPanelGeneratePasswordLabelLength.Size = new System.Drawing.Size(94, 30);
-            this.AddPanelGeneratePasswordLabelLength.TabIndex = 17;
-            this.AddPanelGeneratePasswordLabelLength.Text = "Length";
-            // 
-            // AddPanelGeneratePasswordLabelDescription
-            // 
-            this.AddPanelGeneratePasswordLabelDescription.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordLabelDescription.Location = new System.Drawing.Point(9, 48);
-            this.AddPanelGeneratePasswordLabelDescription.Name = "AddPanelGeneratePasswordLabelDescription";
-            this.AddPanelGeneratePasswordLabelDescription.Size = new System.Drawing.Size(615, 63);
-            this.AddPanelGeneratePasswordLabelDescription.TabIndex = 16;
-            this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
-    "s as well as special characters and are at least 16\r\ncharacters long.";
-            // 
             // AddEditFieldEmail
             // 
             this.AddEditFieldEmail.AutoSize = true;
@@ -1235,17 +1754,6 @@
             this.AddEditFieldEmail.TextTextBox = "";
             this.AddEditFieldEmail.TextTitle = "Email";
             this.AddEditFieldEmail.UseColoredCaret = true;
-            // 
-            // AddLabelTitle
-            // 
-            this.AddLabelTitle.AutoSize = true;
-            this.AddLabelTitle.BackColor = System.Drawing.Color.White;
-            this.AddLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddLabelTitle.Location = new System.Drawing.Point(3, 67);
-            this.AddLabelTitle.Name = "AddLabelTitle";
-            this.AddLabelTitle.Size = new System.Drawing.Size(224, 38);
-            this.AddLabelTitle.TabIndex = 0;
-            this.AddLabelTitle.Text = "Add Account";
             // 
             // AddEditFieldHostname
             // 
@@ -1335,16 +1843,6 @@
             this.AddEditFieldPassword.TextTitle = "Password*";
             this.AddEditFieldPassword.UseColoredCaret = true;
             // 
-            // AddPanelNotes
-            // 
-            this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
-            this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
-            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
-            this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelNotes.Name = "AddPanelNotes";
-            this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
-            this.AddPanelNotes.TabIndex = 11;
-            // 
             // AddPanelNotesAdvancedRichTextBox
             // 
             this.AddPanelNotesAdvancedRichTextBox.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
@@ -1356,28 +1854,6 @@
             this.AddPanelNotesAdvancedRichTextBox.Size = new System.Drawing.Size(660, 143);
             this.AddPanelNotesAdvancedRichTextBox.TabIndex = 1;
             this.AddPanelNotesAdvancedRichTextBox.TextValue = "";
-            // 
-            // AddPanelNotesLabelTitle
-            // 
-            this.AddPanelNotesLabelTitle.AutoSize = true;
-            this.AddPanelNotesLabelTitle.Font = new System.Drawing.Font("Century Gothic", 8F);
-            this.AddPanelNotesLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.AddPanelNotesLabelTitle.Location = new System.Drawing.Point(2, 9);
-            this.AddPanelNotesLabelTitle.Name = "AddPanelNotesLabelTitle";
-            this.AddPanelNotesLabelTitle.Size = new System.Drawing.Size(55, 21);
-            this.AddPanelNotesLabelTitle.TabIndex = 0;
-            this.AddPanelNotesLabelTitle.Text = "Notes";
-            // 
-            // AddPanelBottomMenu
-            // 
-            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonAbort);
-            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonSave);
-            this.AddPanelBottomMenu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelBottomMenu.Location = new System.Drawing.Point(152, 898);
-            this.AddPanelBottomMenu.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
-            this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
-            this.AddPanelBottomMenu.TabIndex = 12;
             // 
             // AddPanelAdvancedImageButtonAbort
             // 
@@ -1397,542 +1873,65 @@
             this.AddPanelAdvancedImageButtonSave.Size = new System.Drawing.Size(72, 72);
             this.AddPanelAdvancedImageButtonSave.TabIndex = 0;
             // 
-            // AddPanelSeperator
-            // 
-            this.AddPanelSeperator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.AddPanelSeperator.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelSeperator.Location = new System.Drawing.Point(0, 0);
-            this.AddPanelSeperator.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelSeperator.Name = "AddPanelSeperator";
-            this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
-            this.AddPanelSeperator.TabIndex = 3;
-            // 
-            // PanelLogin
-            // 
-            this.PanelLogin.Controls.Add(this.LoginTableLayoutPanelMain);
-            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
-            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
-            this.PanelLogin.Name = "PanelLogin";
-            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
-            this.PanelLogin.TabIndex = 11;
-            // 
-            // LoginTableLayoutPanelMain
-            // 
-            this.LoginTableLayoutPanelMain.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LoginTableLayoutPanelMain.BackgroundImage")));
-            this.LoginTableLayoutPanelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.LoginTableLayoutPanelMain.ColumnCount = 3;
-            this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
-            this.LoginTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoginTableLayoutPanelMain.Controls.Add(this.LoginPictureBoxMain, 1, 1);
-            this.LoginTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginTableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginTableLayoutPanelMain.Name = "LoginTableLayoutPanelMain";
-            this.LoginTableLayoutPanelMain.RowCount = 3;
-            this.LoginTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoginTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 850F));
-            this.LoginTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.LoginTableLayoutPanelMain.Size = new System.Drawing.Size(1880, 1112);
-            this.LoginTableLayoutPanelMain.TabIndex = 0;
-            // 
-            // LoginPictureBoxMain
-            // 
-            this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
-            this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
-            this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxMain.Name = "LoginPictureBoxMain";
-            this.LoginPictureBoxMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxMain.TabIndex = 2;
-            this.LoginPictureBoxMain.TabStop = false;
-            // 
-            // LoginPictureBoxRegisterMain
-            // 
-            this.LoginPictureBoxRegisterMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginLabelRegisterSignIn);
-            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginPanelRegisterCredentials);
-            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginLabelRegisterMain);
-            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginAnimatedButtonRegister);
-            this.LoginPictureBoxRegisterMain.Controls.Add(this.LoginPictureBoxRegisterLogo);
-            this.LoginPictureBoxRegisterMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxRegisterMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxRegisterMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxRegisterMain.Name = "LoginPictureBoxRegisterMain";
-            this.LoginPictureBoxRegisterMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxRegisterMain.TabIndex = 10;
-            this.LoginPictureBoxRegisterMain.TabStop = false;
-            // 
-            // LoginLabelRegisterSignIn
-            // 
-            this.LoginLabelRegisterSignIn.AutoSize = true;
-            this.LoginLabelRegisterSignIn.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoginLabelRegisterSignIn.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.LoginLabelRegisterSignIn.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterSignIn.Location = new System.Drawing.Point(230, 805);
-            this.LoginLabelRegisterSignIn.Name = "LoginLabelRegisterSignIn";
-            this.LoginLabelRegisterSignIn.Size = new System.Drawing.Size(184, 30);
-            this.LoginLabelRegisterSignIn.TabIndex = 5;
-            this.LoginLabelRegisterSignIn.Text = "Sign in instead";
-            this.LoginLabelRegisterSignIn.Click += new System.EventHandler(this.LoginLabelRegisterSignIn_Click);
-            // 
-            // LoginPanelRegisterCredentials
-            // 
-            this.LoginPanelRegisterCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelREgisterDescription);
-            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterError);
-            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterTitle);
-            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword2);
-            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword);
-            this.LoginPanelRegisterCredentials.Location = new System.Drawing.Point(61, 282);
-            this.LoginPanelRegisterCredentials.Name = "LoginPanelRegisterCredentials";
-            this.LoginPanelRegisterCredentials.Size = new System.Drawing.Size(523, 426);
-            this.LoginPanelRegisterCredentials.TabIndex = 4;
-            // 
-            // LoginLabelREgisterDescription
-            // 
-            this.LoginLabelREgisterDescription.AutoSize = true;
-            this.LoginLabelREgisterDescription.Font = new System.Drawing.Font("Century Gothic", 9F);
-            this.LoginLabelREgisterDescription.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelREgisterDescription.Location = new System.Drawing.Point(29, 64);
-            this.LoginLabelREgisterDescription.Name = "LoginLabelREgisterDescription";
-            this.LoginLabelREgisterDescription.Size = new System.Drawing.Size(491, 84);
-            this.LoginLabelREgisterDescription.TabIndex = 4;
-            this.LoginLabelREgisterDescription.Text = "The Master Password is needed everytime you log into \r\npmdbs. It can be changed o" +
-    "nce signed in, but it can \r\nnot be recovered! Choose a strong password as this \r" +
-    "\nprotects all your data!";
-            // 
-            // LoginLabelRegisterError
-            // 
-            this.LoginLabelRegisterError.AutoSize = true;
-            this.LoginLabelRegisterError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelRegisterError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginLabelRegisterError.Location = new System.Drawing.Point(29, 388);
-            this.LoginLabelRegisterError.Name = "LoginLabelRegisterError";
-            this.LoginLabelRegisterError.Size = new System.Drawing.Size(211, 30);
-            this.LoginLabelRegisterError.TabIndex = 3;
-            this.LoginLabelRegisterError.Text = "Invalid password";
-            // 
-            // LoginLabelRegisterTitle
-            // 
-            this.LoginLabelRegisterTitle.AutoSize = true;
-            this.LoginLabelRegisterTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.LoginLabelRegisterTitle.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterTitle.Location = new System.Drawing.Point(29, 11);
-            this.LoginLabelRegisterTitle.Name = "LoginLabelRegisterTitle";
-            this.LoginLabelRegisterTitle.Size = new System.Drawing.Size(248, 28);
-            this.LoginLabelRegisterTitle.TabIndex = 2;
-            this.LoginLabelRegisterTitle.Text = "Set Master Password";
-            // 
-            // LoginEditFieldRegisterPassword2
-            // 
-            this.LoginEditFieldRegisterPassword2.AutoSize = true;
-            this.LoginEditFieldRegisterPassword2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword2.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldRegisterPassword2.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword2.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldRegisterPassword2.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword2.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
-            this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 292);
-            this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
-            this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldRegisterPassword2.TabIndex = 1;
-            this.LoginEditFieldRegisterPassword2.TextTextBox = "";
-            this.LoginEditFieldRegisterPassword2.TextTitle = "Re-enter Master Password";
-            this.LoginEditFieldRegisterPassword2.UseColoredCaret = false;
-            // 
-            // LoginEditFieldRegisterPassword
-            // 
-            this.LoginEditFieldRegisterPassword.AutoSize = true;
-            this.LoginEditFieldRegisterPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldRegisterPassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldRegisterPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
-            this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 197);
-            this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
-            this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldRegisterPassword.TabIndex = 0;
-            this.LoginEditFieldRegisterPassword.TextTextBox = "";
-            this.LoginEditFieldRegisterPassword.TextTitle = "Master Password";
-            this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
-            // 
-            // LoginLabelRegisterMain
-            // 
-            this.LoginLabelRegisterMain.AutoSize = true;
-            this.LoginLabelRegisterMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelRegisterMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelRegisterMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterMain.Location = new System.Drawing.Point(235, 223);
-            this.LoginLabelRegisterMain.Name = "LoginLabelRegisterMain";
-            this.LoginLabelRegisterMain.Size = new System.Drawing.Size(177, 39);
-            this.LoginLabelRegisterMain.TabIndex = 8;
-            this.LoginLabelRegisterMain.Text = "Welcome!";
-            // 
-            // LoginAnimatedButtonRegister
-            // 
-            this.LoginAnimatedButtonRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonRegister.Depth = 0;
-            this.LoginAnimatedButtonRegister.Icon = null;
-            this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(217, 728);
-            this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
-            this.LoginAnimatedButtonRegister.Primary = false;
-            this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonRegister.TabIndex = 8;
-            this.LoginAnimatedButtonRegister.Text = "Register";
-            this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
-            // 
-            // LoginPictureBoxRegisterLogo
-            // 
-            this.LoginPictureBoxRegisterLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxRegisterLogo.Image")));
-            this.LoginPictureBoxRegisterLogo.Location = new System.Drawing.Point(236, 29);
-            this.LoginPictureBoxRegisterLogo.Name = "LoginPictureBoxRegisterLogo";
-            this.LoginPictureBoxRegisterLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxRegisterLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxRegisterLogo.TabIndex = 6;
-            this.LoginPictureBoxRegisterLogo.TabStop = false;
-            // 
-            // LoginPictureBoxOnlineMain
-            // 
-            this.LoginPictureBoxOnlineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineRegister);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPictureBoxOnlineLogo);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginAnimatedButtonOnlineLogin);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineMain);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPanelOnlineCredentials);
-            this.LoginPictureBoxOnlineMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxOnlineMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxOnlineMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxOnlineMain.Name = "LoginPictureBoxOnlineMain";
-            this.LoginPictureBoxOnlineMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxOnlineMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.LoginPictureBoxOnlineMain.TabIndex = 1;
-            this.LoginPictureBoxOnlineMain.TabStop = false;
-            // 
-            // LoginLabelOnlineRegister
-            // 
-            this.LoginLabelOnlineRegister.AutoSize = true;
-            this.LoginLabelOnlineRegister.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoginLabelOnlineRegister.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.LoginLabelOnlineRegister.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOnlineRegister.Location = new System.Drawing.Point(269, 805);
-            this.LoginLabelOnlineRegister.Name = "LoginLabelOnlineRegister";
-            this.LoginLabelOnlineRegister.Size = new System.Drawing.Size(107, 30);
-            this.LoginLabelOnlineRegister.TabIndex = 6;
-            this.LoginLabelOnlineRegister.Text = "Register";
-            this.LoginLabelOnlineRegister.Click += new System.EventHandler(this.LoginLabelOnlineRegister_Click);
-            // 
-            // LoginPictureBoxOnlineLogo
-            // 
-            this.LoginPictureBoxOnlineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOnlineLogo.Image")));
-            this.LoginPictureBoxOnlineLogo.Location = new System.Drawing.Point(235, 77);
-            this.LoginPictureBoxOnlineLogo.Name = "LoginPictureBoxOnlineLogo";
-            this.LoginPictureBoxOnlineLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxOnlineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxOnlineLogo.TabIndex = 5;
-            this.LoginPictureBoxOnlineLogo.TabStop = false;
-            // 
-            // LoginAnimatedButtonOnlineLogin
-            // 
-            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
-            this.LoginAnimatedButtonOnlineLogin.Icon = null;
-            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(217, 728);
-            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOnlineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
-            this.LoginAnimatedButtonOnlineLogin.Primary = false;
-            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
-            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
-            // 
-            // LoginLabelOnlineMain
-            // 
-            this.LoginLabelOnlineMain.AutoSize = true;
-            this.LoginLabelOnlineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelOnlineMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOnlineMain.Location = new System.Drawing.Point(196, 275);
-            this.LoginLabelOnlineMain.Name = "LoginLabelOnlineMain";
-            this.LoginLabelOnlineMain.Size = new System.Drawing.Size(253, 39);
-            this.LoginLabelOnlineMain.TabIndex = 2;
-            this.LoginLabelOnlineMain.Text = "Welcome Back";
-            // 
-            // LoginPanelOnlineCredentials
-            // 
-            this.LoginPanelOnlineCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginLabelOnlineError);
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginLabelOnlineTitle);
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlinePassword);
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlineUsername);
-            this.LoginPanelOnlineCredentials.Location = new System.Drawing.Point(61, 337);
-            this.LoginPanelOnlineCredentials.Name = "LoginPanelOnlineCredentials";
-            this.LoginPanelOnlineCredentials.Size = new System.Drawing.Size(523, 324);
-            this.LoginPanelOnlineCredentials.TabIndex = 1;
-            // 
-            // LoginLabelOnlineError
-            // 
-            this.LoginLabelOnlineError.AutoSize = true;
-            this.LoginLabelOnlineError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineError.ForeColor = System.Drawing.Color.Firebrick;
-            this.LoginLabelOnlineError.Location = new System.Drawing.Point(38, 279);
-            this.LoginLabelOnlineError.Name = "LoginLabelOnlineError";
-            this.LoginLabelOnlineError.Size = new System.Drawing.Size(367, 30);
-            this.LoginLabelOnlineError.TabIndex = 3;
-            this.LoginLabelOnlineError.Text = "Invalid username or password";
-            // 
-            // LoginLabelOnlineTitle
-            // 
-            this.LoginLabelOnlineTitle.AutoSize = true;
-            this.LoginLabelOnlineTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineTitle.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOnlineTitle.Location = new System.Drawing.Point(38, 24);
-            this.LoginLabelOnlineTitle.Name = "LoginLabelOnlineTitle";
-            this.LoginLabelOnlineTitle.Size = new System.Drawing.Size(163, 30);
-            this.LoginLabelOnlineTitle.TabIndex = 2;
-            this.LoginLabelOnlineTitle.Text = "Online Login";
-            // 
-            // LoginEditFieldOnlinePassword
-            // 
-            this.LoginEditFieldOnlinePassword.AutoSize = true;
-            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOnlinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearHover")));
-            this.LoginEditFieldOnlinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearNormal")));
-            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 179);
-            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
-            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlinePassword.TabIndex = 1;
-            this.LoginEditFieldOnlinePassword.TextTextBox = "";
-            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
-            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
-            // 
-            // LoginEditFieldOnlineUsername
-            // 
-            this.LoginEditFieldOnlineUsername.AutoSize = true;
-            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOnlineUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearHover")));
-            this.LoginEditFieldOnlineUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearNormal")));
-            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 72);
-            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
-            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlineUsername.TabIndex = 0;
-            this.LoginEditFieldOnlineUsername.TextTextBox = "";
-            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
-            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
-            // 
-            // LoginPictureBoxLoadingMain
-            // 
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPictureBoxLogo);
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingLabelMain);
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPanelMain);
-            this.LoginPictureBoxLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxLoadingMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxLoadingMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxLoadingMain.Name = "LoginPictureBoxLoadingMain";
-            this.LoginPictureBoxLoadingMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxLoadingMain.TabIndex = 3;
-            this.LoginPictureBoxLoadingMain.TabStop = false;
-            // 
-            // LoginLoadingPictureBoxLogo
-            // 
-            this.LoginLoadingPictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginLoadingPictureBoxLogo.Image")));
-            this.LoginLoadingPictureBoxLogo.Location = new System.Drawing.Point(243, 77);
-            this.LoginLoadingPictureBoxLogo.Name = "LoginLoadingPictureBoxLogo";
-            this.LoginLoadingPictureBoxLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginLoadingPictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginLoadingPictureBoxLogo.TabIndex = 7;
-            this.LoginLoadingPictureBoxLogo.TabStop = false;
-            // 
-            // LoginLoadingLabelMain
-            // 
-            this.LoginLoadingLabelMain.AutoSize = true;
-            this.LoginLoadingLabelMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLoadingLabelMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLoadingLabelMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLoadingLabelMain.Location = new System.Drawing.Point(241, 338);
-            this.LoginLoadingLabelMain.Name = "LoginLoadingLabelMain";
-            this.LoginLoadingLabelMain.Size = new System.Drawing.Size(173, 39);
-            this.LoginLoadingLabelMain.TabIndex = 9;
-            this.LoginLoadingLabelMain.Text = "Loading...";
-            // 
-            // LoginLoadingPanelMain
-            // 
-            this.LoginLoadingPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingLabelDetails);
-            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingAdvancedProgressSpinner);
-            this.LoginLoadingPanelMain.Location = new System.Drawing.Point(69, 423);
-            this.LoginLoadingPanelMain.Name = "LoginLoadingPanelMain";
-            this.LoginLoadingPanelMain.Size = new System.Drawing.Size(523, 186);
-            this.LoginLoadingPanelMain.TabIndex = 5;
-            // 
-            // LoginLoadingLabelDetails
-            // 
-            this.LoginLoadingLabelDetails.Font = new System.Drawing.Font("Century Gothic", 9F);
-            this.LoginLoadingLabelDetails.ForeColor = System.Drawing.Color.White;
-            this.LoginLoadingLabelDetails.Location = new System.Drawing.Point(3, 131);
-            this.LoginLoadingLabelDetails.Name = "LoginLoadingLabelDetails";
-            this.LoginLoadingLabelDetails.Size = new System.Drawing.Size(517, 30);
-            this.LoginLoadingLabelDetails.TabIndex = 4;
-            this.LoginLoadingLabelDetails.Text = "performing handshake with host... 47%";
-            this.LoginLoadingLabelDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // LoginLoadingAdvancedProgressSpinner
-            // 
-            this.LoginLoadingAdvancedProgressSpinner.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginLoadingAdvancedProgressSpinner.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginLoadingAdvancedProgressSpinner.Location = new System.Drawing.Point(207, 18);
-            this.LoginLoadingAdvancedProgressSpinner.Maximum = 100;
-            this.LoginLoadingAdvancedProgressSpinner.Name = "LoginLoadingAdvancedProgressSpinner";
-            this.LoginLoadingAdvancedProgressSpinner.Size = new System.Drawing.Size(100, 100);
-            this.LoginLoadingAdvancedProgressSpinner.Speed = 2.5F;
-            this.LoginLoadingAdvancedProgressSpinner.TabIndex = 12;
-            this.LoginLoadingAdvancedProgressSpinner.Text = "advancedProgressSpinner1";
-            this.LoginLoadingAdvancedProgressSpinner.TimerInterval = 40;
-            // 
-            // LoginPictureBoxOfflineMain
-            // 
-            this.LoginPictureBoxOfflineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineUsername);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPanelOfflineCredentials);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginLabelOfflineMain);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginAnimatedButtonOfflineLogin);
-            this.LoginPictureBoxOfflineMain.Controls.Add(this.LoginPictureBoxOfflineLogo);
-            this.LoginPictureBoxOfflineMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxOfflineMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxOfflineMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxOfflineMain.Name = "LoginPictureBoxOfflineMain";
-            this.LoginPictureBoxOfflineMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxOfflineMain.TabIndex = 7;
-            this.LoginPictureBoxOfflineMain.TabStop = false;
-            // 
-            // LoginLabelOfflineUsername
-            // 
-            this.LoginLabelOfflineUsername.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineUsername.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOfflineUsername.Location = new System.Drawing.Point(86, 323);
-            this.LoginLabelOfflineUsername.Name = "LoginLabelOfflineUsername";
-            this.LoginLabelOfflineUsername.Size = new System.Drawing.Size(473, 54);
-            this.LoginLabelOfflineUsername.TabIndex = 9;
-            this.LoginLabelOfflineUsername.Text = "<username>";
-            this.LoginLabelOfflineUsername.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // LoginPanelOfflineCredentials
-            // 
-            this.LoginPanelOfflineCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginLabelOfflineError);
-            this.LoginPanelOfflineCredentials.Controls.Add(this.LoginEditFieldOfflinePassword);
-            this.LoginPanelOfflineCredentials.Location = new System.Drawing.Point(61, 410);
-            this.LoginPanelOfflineCredentials.Name = "LoginPanelOfflineCredentials";
-            this.LoginPanelOfflineCredentials.Size = new System.Drawing.Size(523, 186);
-            this.LoginPanelOfflineCredentials.TabIndex = 2;
-            // 
-            // LoginLabelOfflineError
-            // 
-            this.LoginLabelOfflineError.AutoSize = true;
-            this.LoginLabelOfflineError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineError.ForeColor = System.Drawing.Color.Firebrick;
-            this.LoginLabelOfflineError.Location = new System.Drawing.Point(39, 144);
-            this.LoginLabelOfflineError.Name = "LoginLabelOfflineError";
-            this.LoginLabelOfflineError.Size = new System.Drawing.Size(211, 30);
-            this.LoginLabelOfflineError.TabIndex = 4;
-            this.LoginLabelOfflineError.Text = "Invalid password";
-            // 
-            // LoginEditFieldOfflinePassword
-            // 
-            this.LoginEditFieldOfflinePassword.AutoSize = true;
-            this.LoginEditFieldOfflinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOfflinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOfflinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOfflinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOfflinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOfflinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOfflinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOfflinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOfflinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOfflinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearHover")));
-            this.LoginEditFieldOfflinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearNormal")));
-            this.LoginEditFieldOfflinePassword.Location = new System.Drawing.Point(44, 37);
-            this.LoginEditFieldOfflinePassword.Name = "LoginEditFieldOfflinePassword";
-            this.LoginEditFieldOfflinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOfflinePassword.TabIndex = 1;
-            this.LoginEditFieldOfflinePassword.TextTextBox = "";
-            this.LoginEditFieldOfflinePassword.TextTitle = "Password";
-            this.LoginEditFieldOfflinePassword.UseColoredCaret = false;
-            // 
-            // LoginLabelOfflineMain
-            // 
-            this.LoginLabelOfflineMain.AutoSize = true;
-            this.LoginLabelOfflineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelOfflineMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOfflineMain.Location = new System.Drawing.Point(196, 275);
-            this.LoginLabelOfflineMain.Name = "LoginLabelOfflineMain";
-            this.LoginLabelOfflineMain.Size = new System.Drawing.Size(253, 39);
-            this.LoginLabelOfflineMain.TabIndex = 8;
-            this.LoginLabelOfflineMain.Text = "Welcome Back";
-            // 
-            // LoginAnimatedButtonOfflineLogin
-            // 
-            this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOfflineLogin.Depth = 0;
-            this.LoginAnimatedButtonOfflineLogin.Icon = null;
-            this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(217, 684);
-            this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
-            this.LoginAnimatedButtonOfflineLogin.Primary = false;
-            this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
-            this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
-            // 
-            // LoginPictureBoxOfflineLogo
-            // 
-            this.LoginPictureBoxOfflineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOfflineLogo.Image")));
-            this.LoginPictureBoxOfflineLogo.Location = new System.Drawing.Point(235, 77);
-            this.LoginPictureBoxOfflineLogo.Name = "LoginPictureBoxOfflineLogo";
-            this.LoginPictureBoxOfflineLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxOfflineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxOfflineLogo.TabIndex = 6;
-            this.LoginPictureBoxOfflineLogo.TabStop = false;
+            // DashboardMenuEntryHome
+            // 
+            this.DashboardMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryHome.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntryHome.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntryHome.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageHover")));
+            this.DashboardMenuEntryHome.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryHome.ImageNormal")));
+            this.DashboardMenuEntryHome.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryHome.Name = "DashboardMenuEntryHome";
+            this.DashboardMenuEntryHome.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntryHome.TabIndex = 5;
+            this.DashboardMenuEntryHome.TextTitle = "Home";
+            // 
+            // DashboardMenuEntryPasswords
+            // 
+            this.DashboardMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntryPasswords.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageHover")));
+            this.DashboardMenuEntryPasswords.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntryPasswords.ImageNormal")));
+            this.DashboardMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntryPasswords.Name = "DashboardMenuEntryPasswords";
+            this.DashboardMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntryPasswords.TabIndex = 5;
+            this.DashboardMenuEntryPasswords.TextTitle = "Passwords";
+            // 
+            // DashboardMenuEntrySettings
+            // 
+            this.DashboardMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
+            this.DashboardMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntrySettings.ColorHover = System.Drawing.Color.White;
+            this.DashboardMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
+            this.DashboardMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
+            this.DashboardMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DashboardMenuEntrySettings.ImageHover = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageHover")));
+            this.DashboardMenuEntrySettings.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DashboardMenuEntrySettings.ImageNormal")));
+            this.DashboardMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
+            this.DashboardMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardMenuEntrySettings.Name = "DashboardMenuEntrySettings";
+            this.DashboardMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
+            this.DashboardMenuEntrySettings.TabIndex = 5;
+            this.DashboardMenuEntrySettings.TextTitle = "Settings";
             // 
             // Form1
             // 
@@ -1947,6 +1946,7 @@
             this.Name = "Form1";
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.DashboardPanel.ResumeLayout(false);
             this.DashboardFlowLayoutPanel.ResumeLayout(false);
             this.DashboardPanelHome.ResumeLayout(false);
