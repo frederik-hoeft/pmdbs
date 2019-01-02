@@ -27,8 +27,6 @@ WINDOWS CLIENT TODO:
         - EditPanel
             - add password generator (copypasta)
         - LoginScreen
-            - prevent form to be maximized during login (buggy af)
-            - Set Starting PictureBox according to Database state
             - RegisterButton --> Dictionary based password check
             
             LOADING STEPS with ONLINE_MODE = true (autoupdate / multiple devices)
@@ -53,6 +51,7 @@ WINDOWS CLIENT TODO:
                 - loading complete
         
     - CODE OPTIMIZATION:
+        - Check for TODOs in source code
         - never heard of it --> total mess
         - performance optimization
             - suspend layout for hidden panels
@@ -66,9 +65,6 @@ WINDOWS CLIENT TODO:
             - https://i.olsh.me/ MAY BE BETTER
         - allow switching between menu points
         - allow using local certificate to validate server --> settings
-        
-        
-    - CREATE DATABASE ACCESS METHODS
     
     - CREATE SOCKET MANAGEMENT METHODS
     
