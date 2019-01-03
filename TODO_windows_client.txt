@@ -12,7 +12,11 @@ WINDOWS CLIENT TODO:
     
     - TWEAKS / FIXES
         - DATA PANEL
-            - RefreshUserData() needs to check for max data per page
+            - RefreshUserData()
+                - needs to check for max data per page
+                - needs to convert Unix time to actually understandable datetime
+                - "Open external link" - button needs to check if there is a valid link to open 
+            - Deleting an item should prompt for confirmation
         - allow EditFields to have default text prompt
             - deletes on focus
             - appears if AdvancedTextBox is empty
@@ -30,6 +34,7 @@ WINDOWS CLIENT TODO:
             - add password generator (copypasta)
         - LoginScreen
             - RegisterButton --> Dictionary based password check
+            - Minimize / Maximize Buttons are not appearing after successful login
             
             LOADING STEPS with ONLINE_MODE = true (autoupdate / multiple devices)
                 - user enters password
