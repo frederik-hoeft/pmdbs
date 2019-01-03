@@ -11,6 +11,8 @@ WINDOWS CLIENT TODO:
         - create Account_edit screen
     
     - TWEAKS / FIXES
+        - DATA PANEL
+            - RefreshUserData() needs to check for max data per page
         - allow EditFields to have default text prompt
             - deletes on focus
             - appears if AdvancedTextBox is empty
@@ -22,7 +24,7 @@ WINDOWS CLIENT TODO:
             - custom scrollbars
             - too much free space when maximized --> fill empty space
             - create better icons for AdvancedNumericUpDown
-            - Create RefreshUserData Method (Sorting & Managing DataTable "UserData")
+            - Update RefreshUserData Method (Sorting DataTable "UserData")
             - Create Error Messages if Required Information is not set
         - EditPanel
             - add password generator (copypasta)
