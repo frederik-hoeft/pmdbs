@@ -20,6 +20,35 @@ namespace pmdbs
             OnResized();
         }
 
+        public Boolean IsEmpty
+        {
+            get { return advancedTextBox1.IsEmpty; }
+        }
+
+        public Boolean UseDefaultValue
+        {
+            get { return advancedTextBox1.UseDefaultValue; }
+            set { advancedTextBox1.UseDefaultValue = value; }
+        }
+
+        public string DefaultValue
+        {
+            get { return advancedTextBox1.DefaultValue; }
+            set { advancedTextBox1.DefaultValue = value; }
+        }
+
+        /*public char PasswordChar
+        {
+            get { return advancedTextBox1.PasswordChar; }
+            set { advancedTextBox1.PasswordChar = value; }
+        }*/
+
+        public Boolean UseSystemPasswordChar
+        {
+            get { return advancedTextBox1.UseSystemPasswordChar; }
+            set { advancedTextBox1.UseSystemPasswordChar = value; }
+        }
+
         public Boolean UseColoredCaret
         {
             get { return advancedTextBox1.UseColoredCaret; }

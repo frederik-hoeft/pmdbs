@@ -31,6 +31,9 @@ namespace pmdbs
         private Boolean IsFocused = false;
         private Boolean UseCaret = true;
         Timer AnimationTimer = new Timer { Interval = 1 };
+        private string defaultValue = "Enter some text...";
+        private Boolean isEmpty = false;
+        private Boolean useDefaultValue = true;
         public AdvancedTextBox()
         {
             InitializeComponent();
@@ -40,9 +43,46 @@ namespace pmdbs
             AnimationTimer.Tick += new EventHandler(AnimationTick);
             SizeInc_Dec = Width / 18;
             PointInc_Dec = Width / 36;
+            if (useDefaultValue)
+            {
+                if (textBox1.Text.Equals(""))
+                {
+                    isEmpty = true;
+                    textBox1.Text = defaultValue;
+                }
+            }
         }
 
         #region getters/setters
+
+        public Boolean IsEmpty
+        {
+            get { return isEmpty; }
+        }
+
+        public Boolean UseDefaultValue
+        {
+            get { return useDefaultValue; }
+            set { useDefaultValue = value; }
+        }
+
+        public string DefaultValue
+        {
+            get { return defaultValue; }
+            set { defaultValue = value; }
+        }
+
+        /*public char PasswordChar
+        {
+            get { return textBox1.PasswordChar; }
+            set { textBox1.PasswordChar = value; }
+        }*/
+
+        public Boolean UseSystemPasswordChar
+        {
+            get { return textBox1.UseSystemPasswordChar; }
+            set { textBox1.UseSystemPasswordChar = value; }
+        }
 
         public HorizontalAlignment TextAlign
         {
@@ -126,6 +166,10 @@ namespace pmdbs
 
         private void OnFocus(object sender, EventArgs e)
         {
+            if (useDefaultValue && isEmpty && textBox1.Text.Equals(defaultValue))
+            {
+                textBox1.Text = "";
+            }
             IsFocused = true;
             this.Invalidate();
             if (UseCaret)
@@ -142,6 +186,18 @@ namespace pmdbs
 
         private void OnFocusLost(object sender, EventArgs e)
         {
+            if (useDefaultValue)
+            {
+                if (textBox1.Text.Equals(""))
+                {
+                    isEmpty = true;
+                    textBox1.Text = defaultValue;
+                }
+                else
+                {
+                    isEmpty = false;
+                }
+            }
             IsFocused = false;
             AnimationTimer.Start();
             textBox1.ForeColor = NormalForeColor;
