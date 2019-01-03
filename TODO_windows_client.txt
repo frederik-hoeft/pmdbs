@@ -17,6 +17,7 @@ WINDOWS CLIENT TODO:
                 - needs to convert Unix time to actually understandable datetime
                 - "Open external link" - button needs to check if there is a valid link to open 
             - Deleting an item should prompt for confirmation
+            - Create Background methods for Save button on edit
         - menu bar
             - slightly decrease size of icons
         - AddPanel
