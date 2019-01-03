@@ -28,6 +28,8 @@ namespace pmdbs
         private string LocalAESkey;
         private string GlobalAESkey;
         private string NickName;
+        private DataTable UserData;
+        private string DataDetailsID;
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -233,37 +235,43 @@ namespace pmdbs
             DashboardPanelHomeIndicator.BackColor = Color.White;
             DashboardPanelSettingsIndicator.BackColor = Color.White;
             DashboardPanelPasswordsIndicator.BackColor = Colors.Orange;
-            Populate();
+            //Populate();
         }
         #endregion
 
         #region DataPanel
-        private void Populate()
+
+        private void RefreshUserData()
         {
+            //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataFlowLayoutPanelList.SuspendLayout();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < entryList.Count; i++)
+            {
+                entryList[i].Dispose();
+            }
+            for (int i = 0; i < UserData.Rows.Count; i++)
             {
                 ListEntry listEntry = new ListEntry
                 {
                     BackColor = Color.White,
                     // FOR ICON DOWNLOAD: http://icons.duckduckgo.com/ip2/www.bbs-me.org.ico  --> Better quality than google
                     FavIcon = Image.FromFile("favicon.ico"),
-                    HostName = "Google",
+                    HostName = UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : UserData.Rows[i]["3"].ToString(),
                     HostNameFont = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
                     HostNameForeColor = SystemColors.ControlText,
                     Name = "listEntry",
                     Size = new Size(1041, 52),
                     TabIndex = 14,
-                    TimeStamp = "2018-12-03 18:05",
+                    TimeStamp = UserData.Rows[i]["2"].ToString(),
                     TimeStampFont = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
                     TimeStampForeColor = SystemColors.ControlText,
-                    UserName = "MyUsername",
+                    UserName = UserData.Rows[i]["4"].ToString(),
                     UserNameFont = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
                     UserNameForeColor = SystemColors.ControlText,
                     ColorNormal = Color.White,
                     ColorHover = Colors.LightGray,
                     BackgroundColor = Color.White,
-                    id = i
+                    id = Convert.ToInt32(UserData.Rows[i]["0"])
                 };
                 DataFlowLayoutPanelList.Controls.Add(listEntry);
                 entryList.Add(listEntry);
@@ -275,12 +283,25 @@ namespace pmdbs
             DataPictureBoxDetailsLogo.Image = Image.FromFile("favicon.ico");
         }
 
+        private void Populate()
+        {
+
+        }
+
         private void ListEntry_Click(object sender, EventArgs e)
         {
+            //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataPanelDetails.BringToFront();
-            ListEntry senderObject = (ListEntry)sender;
-            int index = senderObject.id;
-            MessageBox.Show("INDEX: " + index.ToString(), "finally...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ListEntry SenderObject = (ListEntry)sender;
+            int index = SenderObject.id;
+            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(index.ToString()));
+            DataLabelDetailsHostname.Text = LinkedRow["3"].ToString();
+            DataDetailsEntryUsername.Content = LinkedRow["4"].ToString().Equals("\x01") ? "-" : LinkedRow["4"].ToString();
+            DataDetailsEntryPassword.Content = LinkedRow["5"].ToString().Equals("\x01") ? "-" : LinkedRow["5"].ToString();
+            DataDetailsEntryWebsite.Content = LinkedRow["6"].ToString().Equals("\x01") ? "-" : LinkedRow["6"].ToString();
+            DataDetailsEntryEmail.Content = LinkedRow["7"].ToString().Equals("\x01") ? "-" : LinkedRow["7"].ToString();
+            DataDetailsCustomLabelNotes.Content = LinkedRow["8"].ToString().Equals("\x01") ? "-" : LinkedRow["8"].ToString();
+            DataDetailsID = index.ToString();
         }
 
         private void DataAddAdvancedImageButton_Click(object sender, EventArgs e)
@@ -311,9 +332,16 @@ namespace pmdbs
             DataPanelEdit.ResumeLayout();
         }
 
-        private void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
+        private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
-
+            Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
+            await Task.WhenAll(DeleteItem);
+            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
+            UserData.Rows.Remove(LinkedRow);
+            DataPanelDetails.SuspendLayout();
+            DataPanelNoSel.BringToFront();
+            DataPanelNoSel.ResumeLayout();
+            RefreshUserData();
         }
 
         private void DataLeftAdvancedImageButton_Click(object sender, EventArgs e)
@@ -404,6 +432,7 @@ namespace pmdbs
             string Email = AddEditFieldEmail.TextTextBox;
             string Website = AddEditFieldWebsite.TextTextBox;
             string Notes = AddPanelNotesAdvancedRichTextBox.TextValue;
+            string DateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
             string[] Values = new string[]
             {
                 Hostname,
@@ -442,7 +471,7 @@ namespace pmdbs
             {
                 Query += ", " + Columns[i];
             }
-            Query += ") VALUES (\"" + DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + "\"";
+            Query += ") VALUES (\"" + DateTime + "\"";
             for (int i = 0; i < Values.Count(); i++)
             {
                 Query += ", \"" + Values[i] + "\"";
@@ -450,11 +479,32 @@ namespace pmdbs
             Query += ");";
             Task InsertData = DataBaseHelper.ModifyData(Query);
             await Task.WhenAll(InsertData);
+            if (UserData == null)
+            {
+                UserData = new DataTable();
+                for (int i = 0; i < (int)ColumnCount.Tbl_data; i++)
+                {
+                    UserData.Columns.Add(i.ToString(), typeof(string));
+                }
+            }
+            //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
+            Task<List<String>> GetId = DataBaseHelper.GetDataAsList("SELECT D_id FROM Tbl_data ORDER BY D_id DESC LIMIT 1;", (int)ColumnCount.SingleColumn);
+            List<String> IdList = await GetId;
+            DataRow NewRow = UserData.Rows.Add();
+            NewRow["0"] = IdList[0];
+            NewRow["1"] = "EMPTY";
+            NewRow["2"] = DateTime;
+            NewRow["3"] = Hostname.Equals("") ? "\x01" : Hostname;
+            NewRow["4"] = Username.Equals("") ? "\x01" : Username;
+            NewRow["5"] = Password.Equals("") ? "\x01" : Password;
+            NewRow["6"] = Website.Equals("") ? "\x01" : Website;
+            NewRow["7"] = Email.Equals("") ? "\x01" : Email;
+            NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
+            RefreshUserData();
             AddPanelMain.SuspendLayout();
             DataPanelMain.BringToFront();
             DataPanelMain.ResumeLayout();
             ResetFields();
-            RefreshUserData();
         }
 
         private void AddPanelAdvancedImageButtonAbort_Click(object sender, EventArgs e)
@@ -465,10 +515,6 @@ namespace pmdbs
             ResetFields();
         }
 
-        private void RefreshUserData()
-        {
-
-        }
 
         #endregion
 
@@ -551,7 +597,7 @@ namespace pmdbs
             GlobalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes FROM Tbl_data;", (int)ColumnCount.Tbl_data);
-            DataTable UserData = await GetData;
+            UserData = await GetData;
             int Columns = UserData.Columns.Count;
             int RowCounter = 0;
             int Fields = (Columns - 3) * UserData.Rows.Count;
@@ -580,6 +626,9 @@ namespace pmdbs
             PanelLogin.Dispose();
             this.MinimumSize = MinSize;
             this.MaximumSize = MaxSize;
+            this.MaximizeBox = true;
+            this.MinimizeBox = true;
+            RefreshUserData();
         }
 
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
