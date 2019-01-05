@@ -24,9 +24,15 @@ WINDOWS CLIENT TODO:
             - add descriptions
             - custom scrollbars
             - too much free space when maximized --> fill empty space
-            - create better icons for AdvancedNumericUpDown
             - Update RefreshUserData Method (Sorting DataTable "UserData")
             - Create Error Messages if Required Information is not set
+        - AdvancedNumericUpDown
+            - create better icons for +/-
+                - orange instead of ugly red / blue?
+            - tweak design
+                - slightly rounded edges?
+                - remove black border?
+                - maybe gray background?
         - EditPanel
             - add password generator (copypasta)
         - LoginScreen
