@@ -51,6 +51,11 @@ namespace pmdbs
             AddFlowLayoutPanelCenter.Focus();
         }
 
+        private void DataFlowLayoutPanelEdit_MouseEnter(object sender, EventArgs e)
+        {
+            DataFlowLayoutPanelEdit.Focus();
+        }
+
         private void WindowHeaderPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -283,11 +288,6 @@ namespace pmdbs
             DataPictureBoxDetailsLogo.Image = Image.FromFile("favicon.ico");
         }
 
-        private void Populate()
-        {
-
-        }
-
         private void ListEntry_Click(object sender, EventArgs e)
         {
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
@@ -306,30 +306,128 @@ namespace pmdbs
 
         private void DataAddAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            DataPanelMain.SuspendLayout();
+            DataTableLayoutPanelMain.SuspendLayout();
             AddPanelMain.BringToFront();
             AddPanelMain.ResumeLayout();
         }
 
-        private void DataEditSave_Click(object sender, EventArgs e)
+        private async void DataEditSave_Click(object sender, EventArgs e)
         {
-            DataPanelEdit.SuspendLayout();
+            //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
+            string Hostname = DataEditEditFieldHostname.TextTextBox;
+            string Username = DataEditEditFieldUsername.TextTextBox;
+            string Password = DataEditEditFieldPassword.TextTextBox;
+            string Email = DataEditEditFieldEmail.TextTextBox;
+            string Website = DataEditEditFieldWebsite.TextTextBox;
+            string Notes = DataEditAdvancedRichTextBoxNotes.TextValue;
+            string DateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string[] Values = new string[]
+            {
+                Hostname,
+                Username,
+                Password,
+                Website,
+                Email,
+                Notes
+            };
+            string[] RawValues = new string[Values.Length];
+            Array.Copy(Values, RawValues, Values.Length);
+            string[] Columns = new string[]
+            {
+                "D_host",
+                "D_uname",
+                "D_password",
+                "D_url",
+                "D_email",
+                "D_notes"
+            };
+            if (Password.Equals("") || Hostname.Equals(""))
+            {
+                return;
+            }
+            for (int i = 0; i < Values.Length; i++)
+            {
+                if (Values[i].Equals(""))
+                {
+                    Values[i] = "\x01";
+                }
+                else
+                {
+                    Values[i] = CryptoHelper.AESEncrypt(Values[i], LocalAESkey);
+                }
+            }
+            string Query = "UPDATE Tbl_data SET D_datetime = \"" + DateTime + "\"";
+            for (int i = 0; i < Columns.Length; i++)
+            {
+                Query += ", " + Columns[i] + " = \"" + Values[i] + "\"";
+            }
+            Query += " WHERE D_id = " + DataDetailsID + ";";
+            Task UpdateData = DataBaseHelper.ModifyData(Query);
+            await Task.WhenAll(UpdateData);
+            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
+            for (int i = 3; i < (int)ColumnCount.Tbl_data - 1; i++)
+            {
+                LinkedRow[i.ToString()] = RawValues[i - 3].Equals("") ? "\x01" : RawValues[i - 3];
+            }
+            LinkedRow["2"] = DateTime;
+            RefreshUserData();
+            DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
         }
 
         private void DataEditCancel_Click(object sender, EventArgs e)
         {
-            DataPanelEdit.SuspendLayout();
+            DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
         }
 
         private void DataEditAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
+            DataEditEditFieldHostname.TextTextBox = LinkedRow["3"].ToString();
+            DataEditEditFieldUsername.TextTextBox = LinkedRow["4"].ToString().Equals("\x01") ? "" : LinkedRow["4"].ToString();
+            DataEditEditFieldPassword.TextTextBox = LinkedRow["5"].ToString().Equals("\x01") ? "" : LinkedRow["5"].ToString();
+            DataEditEditFieldWebsite.TextTextBox = LinkedRow["6"].ToString().Equals("\x01") ? "" : LinkedRow["6"].ToString();
+            DataEditEditFieldEmail.TextTextBox = LinkedRow["7"].ToString().Equals("\x01") ? "" : LinkedRow["7"].ToString();
+            DataEditAdvancedRichTextBoxNotes.TextValue = LinkedRow["8"].ToString().Equals("\x01") ? "" : LinkedRow["8"].ToString();
             DataPanelDetails.SuspendLayout();
-            DataPanelEdit.BringToFront();
-            DataPanelEdit.ResumeLayout();
+            DataFlowLayoutPanelEdit.BringToFront();
+            DataFlowLayoutPanelEdit.ResumeLayout();
+        }
+
+        private void DataEditAnimatedButtonGeneratePassword_Click(object sender, EventArgs e)
+        {
+            char[] characterSet;
+            int passwordLength = Convert.ToInt32(DataEditAdvancedNumericUpDown.TextValue);
+            bool specialCharactersEnabled = DataEditAdvancedCheckBox.Checked;
+            string randomizedPassword = string.Empty;
+            if (specialCharactersEnabled)
+            {
+                characterSet = passwordSpecialCharacters;
+            }
+            else
+            {
+                characterSet = passwordCharacters;
+            }
+            using (System.Security.Cryptography.RNGCryptoServiceProvider rng = new System.Security.Cryptography.RNGCryptoServiceProvider())
+            {
+                // INITIALIZE 4 BYTE BUFFER
+                byte[] buffer = new byte[4];
+
+                for (int i = 0; i < passwordLength; i++)
+                {
+                    // FILL BUFFER.
+                    rng.GetBytes(buffer);
+
+                    // CONVERT TO Int32 AND USE ABSOLUTE VALUE.
+                    int value = Math.Abs(BitConverter.ToInt32(buffer, 0));
+                    // USE MODULO TO MAP 32 BIT INTEGER TO CHARACTER RANGE
+                    randomizedPassword += characterSet[value % characterSet.Length];
+                }
+            }
+            DataEditEditFieldPassword.TextTextBox = randomizedPassword;
         }
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
@@ -502,16 +600,16 @@ namespace pmdbs
             NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
             RefreshUserData();
             AddPanelMain.SuspendLayout();
-            DataPanelMain.BringToFront();
-            DataPanelMain.ResumeLayout();
+            DataTableLayoutPanelMain.BringToFront();
+            DataTableLayoutPanelMain.ResumeLayout();
             ResetFields();
         }
 
         private void AddPanelAdvancedImageButtonAbort_Click(object sender, EventArgs e)
         {
             AddPanelMain.SuspendLayout();
-            DataPanelMain.BringToFront();
-            DataPanelMain.ResumeLayout();
+            DataTableLayoutPanelMain.BringToFront();
+            DataTableLayoutPanelMain.ResumeLayout();
             ResetFields();
         }
 
@@ -694,6 +792,8 @@ namespace pmdbs
             this.MinimumSize = MinSize;
             this.MaximumSize = MaxSize;
         }
+
+
         #endregion
     }
 }
