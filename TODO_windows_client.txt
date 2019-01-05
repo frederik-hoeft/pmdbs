@@ -15,9 +15,8 @@ WINDOWS CLIENT TODO:
             - RefreshUserData()
                 - needs to check for max data per page
                 - needs to convert Unix time to actually understandable datetime
-                - "Open external link" - button needs to check if there is a valid link to open 
+                - "Open external link" - button needs to check if there is a valid link to open --> currently hardcoded (RawData - Value)
             - Deleting an item should prompt for confirmation
-            - Create Background methods for Save button on edit
         - menu bar
             - slightly decrease size of icons
         - AddPanel
@@ -33,8 +32,6 @@ WINDOWS CLIENT TODO:
                 - slightly rounded edges?
                 - remove black border?
                 - maybe gray background?
-        - EditPanel
-            - add password generator (copypasta)
         - LoginScreen
             - RegisterButton --> Dictionary based password check
             - Minimize / Maximize Buttons are not appearing after successful login
@@ -62,14 +59,12 @@ WINDOWS CLIENT TODO:
         
     - CODE OPTIMIZATION:
         - Check for TODOs in source code
-        - never heard of it --> total mess
         - performance optimization
             - suspend layout for hidden panels
             - disable hidden controls
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
-        - Rename all variables to something meaningful
         - create method to get Icons from websites (urls) to show in ListEntry
             - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
             - https://i.olsh.me/ MAY BE BETTER
