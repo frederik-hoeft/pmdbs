@@ -14,7 +14,6 @@ WINDOWS CLIENT TODO:
         - DATA PANEL
             - RefreshUserData()
                 - needs to check for max data per page
-                - needs to convert Unix time to actually understandable datetime
                 - "Open external link" - button needs to check if there is a valid link to open --> currently hardcoded (RawData - Value)
             - Deleting an item should prompt for confirmation
         - menu bar
