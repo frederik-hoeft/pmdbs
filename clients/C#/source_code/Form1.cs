@@ -267,7 +267,7 @@ namespace pmdbs
                     Name = "listEntry",
                     Size = new Size(1041, 52),
                     TabIndex = 14,
-                    TimeStamp = UserData.Rows[i]["2"].ToString(),
+                    TimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(UserData.Rows[i]["2"].ToString())).ToString("u"),
                     TimeStampFont = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
                     TimeStampForeColor = SystemColors.ControlText,
                     UserName = UserData.Rows[i]["4"].ToString(),
