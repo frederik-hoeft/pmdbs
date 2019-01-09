@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.12-1.18"
+VERSION = "0.1-1.19"
 BUILD = "development"
-DATE = "Dec 27 2018"
-TIME = "16:29:38"
+DATE = "Jan 09 2019"
+TIME = "14:33:49"
 
 
 ################################################################################
@@ -1083,6 +1083,113 @@ class Handle():
 		
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
+	
+	# GET USERNAME AND PASSWORD AND CHECK IF CREDENTIALS ARE VALID --> RETURN BOOL TO CLIENT
+	def CredentialCheckProvider(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "username%eq!username!;password%eq!password!;cookie%eq!cookie!;"
+		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+		creds = command.split(";")
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
+		username = None
+		password = None
+		cookie = None
+		# GET THE CREDENTIALS FROM ARRAY
+		try:
+			for credential in creds:
+				if credential:
+					if "username" in credential:
+						username = credential.split("!")[1]
+					elif "password" in credential:
+						password = credential.split("!")[1]
+					elif "cookie" in credential:
+						cookie = credential.split("!")[1]
+					elif len(credential) == 0:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+		except Exception as e:
+			# COMMAND CONTAINS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if not username or not password or not cookie:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		userExists = 0
+		cookieExists = 0
+		isNewDevice = 1
+		try:
+			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\") UNION ALL SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");")
+			data = cursor.fetchall()
+			cookieExists = data[0][0]
+			isNewDevice = data[1][0]
+			userExists = data[2][0]
+		except Exception as e:
+			# SQL ERROR 
+			connection.close()
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		if userExists == 0:
+			connection.close()
+			Handle.Error("UDNE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		if cookieExists == 0:
+			# HANDLE INVALID COOKIES
+			connection.close()
+			Handle.Error("CDNE", None, clientAddress, clientSocket, aesKey, True)
+			return
+		if isNewDevice == 1:
+			# ABORT IF DEVICE NOT AFFILIATED TO ACCOUNT --> PREVENT BRUTEFORCE
+			connection.close()
+			Handle.Error("CRED", "DEVICE_NOT_CONNECTED_TO_ACCOUNT", clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK CREDENTIALS
+		# HASH PASSWORD
+		hashedUsername = CryptoHelper.SHA256(username)
+		salt = CryptoHelper.SHA256(hashedUsername + password)
+		hashedPassword = CryptoHelper.Scrypt(password, salt)
+		credentialsValid = 0
+		try:
+			# CHECK IF CREDENTIALS ARE VALID
+			# QUERY FOR USER ID
+			cursor.execute("SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";")
+			# FETCH DATA
+			data = cursor.fetchall()
+			# GET USER ID
+			credentialsValid = 0 = data[0][0]
+		except:
+			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
+			# RETURN ERROR MESSAGE TO CLIENT
+			Handle.Error("CRED", None, clientAddress, clientSocket, aesKey, True)
+			return
+		finally:
+			connection.close()
+		if credentialsValid == 0:
+			# CREDENTIAL CHECK FAILED
+			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
+			returnData = "INFRETCREDENTIAL_CHECK_FAILED"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
+			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK FAILED    ---> " + clientAddress)
+			return
+		else:
+			# CREDENTIAL CHECK PASSED
+			Log.ClientEventLog("CREDENTIAL_CHECK_SUCCESSFUL", clientSocket)
+			returnData = "INFRETCREDENTIAL_CHECK_SUCCESSFUL"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncrypted(clientSocket, aesKey, returnData)
+			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK SUCCESS   ---> " + clientAddress)
+			
 	
 	# CHANGES THE USERS NAME THAT IS USED TO PERSONALIZE MESSAGES
 	def ChangeName(command, clientAddress, clientSocket, aesKey):
@@ -2530,7 +2637,7 @@ class Management():
 		finally:
 			connection.close()
 	
-	# HANDLES REQUESTS FOR CHANGED MASTER PASSWORDS
+	# (!!!DEPRECATED!!!) HANDLES REQUESTS FOR CHANGED MASTER PASSWORDS
 	def MasterPasswordRequest(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
 		# username%eq!testuser1!;
@@ -4799,10 +4906,10 @@ class ClientHandler():
 									mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# REQUEST MASTER-PASSWORD HASH
-								elif packetSID == "PWH":
-									PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
-									mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-									mgmtThread.start()
+								#elif packetSID == "PWH":
+								#	PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
+								#	mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+								#	mgmtThread.start()
 								# CHANGE EMAIL ADDRESS (ONLY IF ACCOUNT IS NOT YET ACTIVATED)
 								elif packetSID == "CEA":
 									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
@@ -4822,6 +4929,11 @@ class ClientHandler():
 								elif packetSID == "CHN":
 									PrintSendToAdmin("SERVER <--- REQUEST NAME CHANGE        <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.ChangeName, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHECK CREDENTIALS IN CASE OF PASSWORD CHANGES
+								elif packetSID == "CCR":
+									PrintSendToAdmin("SERVER <--- CREDENTIAL CHECK REQUEST   <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.CredentialCheckProvider, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
