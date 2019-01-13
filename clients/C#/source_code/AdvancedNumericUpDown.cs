@@ -75,7 +75,7 @@ namespace pmdbs
         public Color BorderColor
         {
             get { return this.BackColor; }
-            set { this.BackColor = value; }
+            set { this.BackColor = value; tableLayoutPanel1.BackColor = value; }
         }
 
         public Color ColorNormal

@@ -56,6 +56,11 @@ namespace pmdbs
             DataFlowLayoutPanelEdit.Focus();
         }
 
+        private void WindowButtonClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
         private void WindowHeaderPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -216,6 +221,7 @@ namespace pmdbs
             DashboardMenuEntryPasswords.OnClickEvent += DashboardMenuEntryPasswords_Click;
             AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
             AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
+            windowButtonClose.OnClickEvent += WindowButtonClose_Click;
             #endregion
             #endregion
         }
@@ -256,6 +262,8 @@ namespace pmdbs
             }
             for (int i = 0; i < UserData.Rows.Count; i++)
             {
+                string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(UserData.Rows[i]["2"].ToString())).ToString("u");
+                strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
                 ListEntry listEntry = new ListEntry
                 {
                     BackColor = Color.White,
@@ -265,9 +273,9 @@ namespace pmdbs
                     HostNameFont = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
                     HostNameForeColor = SystemColors.ControlText,
                     Name = "listEntry",
-                    Size = new Size(1041, 52),
+                    Size = new Size(1041, 75),
                     TabIndex = 14,
-                    TimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(UserData.Rows[i]["2"].ToString())).ToString("u"),
+                    TimeStamp = strTimeStamp,
                     TimeStampFont = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
                     TimeStampForeColor = SystemColors.ControlText,
                     UserName = UserData.Rows[i]["4"].ToString(),
