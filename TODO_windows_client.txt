@@ -11,6 +11,8 @@ WINDOWS CLIENT TODO:
         - create Account_edit screen
     
     - TWEAKS / FIXES
+        - Window Panel
+            - Use Custom Minimize / Maximize Buttons
         - DATA PANEL
             - RefreshUserData()
                 - needs to check for max data per page
@@ -24,16 +26,8 @@ WINDOWS CLIENT TODO:
             - too much free space when maximized --> fill empty space
             - Update RefreshUserData Method (Sorting DataTable "UserData")
             - Create Error Messages if Required Information is not set
-        - AdvancedNumericUpDown
-            - create better icons for +/-
-                - orange instead of ugly red / blue?
-            - tweak design
-                - slightly rounded edges?
-                - remove black border?
-                - maybe gray background?
         - LoginScreen
             - RegisterButton --> Dictionary based password check
-            - Minimize / Maximize Buttons are not appearing after successful login
             
             LOADING STEPS with ONLINE_MODE = true (autoupdate / multiple devices)
                 - user enters password
@@ -59,7 +53,6 @@ WINDOWS CLIENT TODO:
     - CODE OPTIMIZATION:
         - Check for TODOs in source code
         - performance optimization
-            - suspend layout for hidden panels
             - disable hidden controls
             
     - CREATE CORE:
