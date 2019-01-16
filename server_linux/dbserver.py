@@ -938,6 +938,7 @@ class Handle():
 		# [ERRNO 29] ADEL				--> ACCOUNT DELETED
 		# [ERRNO 30] E2RE				--> EXPIRED 2FA REQUEST
 		# [ERRNO 31] IMAC				--> INVALID MESSAGE AUTHENTICATION CODE
+		# [ERRNO 32] MAIL				--> ERROR OCCURED DURING SendMail()
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -1069,11 +1070,18 @@ class Handle():
 			errorNo = "31"
 			if not message:
 				message = "INVALID_MESSAGE_AUTHENTICATION_CODE"
+		elif errorID == "MAIL":
+			errorNo = "32"
+			if not message:
+				message = "SEND_MAIL_FAILED"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
 		Log.ServerEventLog("ERROR", info)
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
+		if not clientSocket:
+			PrintSendToAdmin("ERROR MESSAGE: " + info)
+			return
 		if not isEncrypted:
 			Network.Send(clientSocket, "INFERR" + info)
 			return
@@ -1166,7 +1174,7 @@ class Management():
 			# FETCH DATA
 			data = cursor.fetchall()
 			# GET USER ID
-			credentialsValid = 0 = data[0][0]
+			credentialsValid = data[0][0]
 		except:
 			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
 			# RETURN ERROR MESSAGE TO CLIENT
@@ -2934,7 +2942,11 @@ class Management():
 		# CONNECT TO SMTP SERVER (SSL)
 		server = smtplib.SMTP_SSL(host = SUPPORT_EMAIL_HOST, port = SUPPORT_EMAIL_SSL_PORT)
 		# LOGIN
-		server.login(SUPPORT_EMAIL_ADDRESS, SUPPORT_EMAIL_PASSWORD)
+		try:
+			server.login(SUPPORT_EMAIL_ADDRESS, SUPPORT_EMAIL_PASSWORD)
+		except Exception as e:
+			Handle.Error("MAIL", e, clientAddress, None, None, False)
+			return
 		message = MIMEMultipart("alternative")
 		# SET EMAIL RELATED VARIABLES
 		message["Subject"] = subject
@@ -2954,7 +2966,11 @@ class Management():
 		message.attach(part1)
 		message.attach(part2)
 		# SEND THE EMAIL
-		server.sendmail(From, To, message.as_string())
+		try:
+			server.sendmail(From, To, message.as_string()) 
+		except Exception as e:
+			Handle.Error("MAIL", e, clientAddress, None, None, False)
+			return
 		# DISCONNECT
 		server.quit()
 		PrintSendToAdmin("SERVER ---> VERIFICATION MAIL SENT     ---> " + clientAddress)
