@@ -57,9 +57,6 @@ WINDOWS CLIENT TODO:
             
     - CREATE CORE:
         - In Settings: set sorting algorithm for ListEntrys
-        - create method to get Icons from websites (urls) to show in ListEntry
-            - use http://icons.duckduckgo.com/ip2/www.github.com.ico to get icons
-            - https://i.olsh.me/ MAY BE BETTER
         - allow switching between menu points
         - allow using local certificate to validate server --> settings
     
