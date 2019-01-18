@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using MetroFramework;
 using System.Drawing.Drawing2D;
 using System.Threading;
+using System.Net;
+using System.IO;
 
 namespace pmdbs
 {
@@ -621,6 +623,24 @@ namespace pmdbs
             ResetFields();
         }
 
+        private void animatedButton1_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(AddEditFieldWebsite.TextTextBox))
+            {
+                return;
+            }
+            string Url = AddEditFieldWebsite.TextTextBox;
+            new Thread(delegate () {
+                Image favIcon = WebHelper.GetFavIcons(Url);
+                Invoke((MethodInvoker)delegate 
+                {
+                    pictureBox1.Image = favIcon;
+                });
+                
+            }).Start();
+            
+
+        }
 
         #endregion
 
@@ -803,5 +823,7 @@ namespace pmdbs
 
 
         #endregion
+
+        
     }
 }
