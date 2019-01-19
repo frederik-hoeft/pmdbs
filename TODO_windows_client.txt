@@ -6,6 +6,8 @@ WINDOWS CLIENT TODO:
         - create Welcome screen
             - some sort of dashboard
         - create Settings screen
+            - In Settings: set sorting algorithm for ListEntrys
+            - allow using local certificate to validate server --> settings
         - create Credits screen (used way too much licensed crap)
         - create Account screen
         - create Account_edit screen
@@ -22,13 +24,13 @@ WINDOWS CLIENT TODO:
             - Delete Icons and database icon links as well!
         - menu bar
             - slightly decrease size of icons
+            - allow switching between menu points
         - AddPanel
             - add descriptions
             - custom scrollbars
             - too much free space when maximized --> fill empty space
             - Update RefreshUserData Method (Sorting DataTable "UserData")
             - Create Error Messages if Required Information is not set
-            - create optional Icons if no icons can be acquired
         - LoginScreen
             - RegisterButton --> Dictionary based password check
             
@@ -58,11 +60,6 @@ WINDOWS CLIENT TODO:
         - performance optimization
             - disable hidden controls
             
-    - CREATE CORE:
-        - In Settings: set sorting algorithm for ListEntrys
-        - allow switching between menu points
-        - allow using local certificate to validate server --> settings
-    
     - CREATE SOCKET MANAGEMENT METHODS
     
     - IMPLEMENT SECURITY RELATED METHODS
