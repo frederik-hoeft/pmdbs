@@ -17,6 +17,7 @@ using System.IO;
 
 namespace pmdbs
 {
+    
     public partial class Form1 : MetroFramework.Forms.MetroForm
     {
         #region DECLARATIONS
@@ -32,6 +33,7 @@ namespace pmdbs
         private string NickName;
         private DataTable UserData;
         private string DataDetailsID;
+        private IconData AddIcon = new IconData();
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -254,7 +256,7 @@ namespace pmdbs
 
         #region DataPanel
 
-        private void RefreshUserData()
+        private async void RefreshUserData()
         {
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataFlowLayoutPanelList.SuspendLayout();
@@ -264,13 +266,15 @@ namespace pmdbs
             }
             for (int i = 0; i < UserData.Rows.Count; i++)
             {
+                int ID = Convert.ToInt32(UserData.Rows[i]["0"]);
                 string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(UserData.Rows[i]["2"].ToString())).ToString("u");
                 strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
+                Task<List<String>> GetIcon = DataBaseHelper.GetDataAsList("SELECT I_path FROM Tbl_icon WHERE D_id = " + ID.ToString() + ";", (int)ColumnCount.SingleColumn);
+                List<String> result = await GetIcon;
                 ListEntry listEntry = new ListEntry
                 {
                     BackColor = Color.White,
-                    // FOR ICON DOWNLOAD: http://icons.duckduckgo.com/ip2/www.bbs-me.org.ico  --> Better quality than google
-                    FavIcon = Image.FromFile("favicon.ico"),
+                    FavIcon = Image.FromFile(result[0]),
                     HostName = UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : UserData.Rows[i]["3"].ToString(),
                     HostNameFont = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
                     HostNameForeColor = SystemColors.ControlText,
@@ -286,7 +290,7 @@ namespace pmdbs
                     ColorNormal = Color.White,
                     ColorHover = Colors.LightGray,
                     BackgroundColor = Color.White,
-                    id = Convert.ToInt32(UserData.Rows[i]["0"])
+                    id = ID
                 };
                 DataFlowLayoutPanelList.Controls.Add(listEntry);
                 entryList.Add(listEntry);
@@ -295,7 +299,6 @@ namespace pmdbs
             }
             DataFlowLayoutPanelList.ResumeLayout();
             FlowLayoutPanel1_Resize(this, null);
-            DataPictureBoxDetailsLogo.Image = Image.FromFile("favicon.ico");
         }
 
         private void ListEntry_Click(object sender, EventArgs e)
@@ -305,6 +308,7 @@ namespace pmdbs
             ListEntry SenderObject = (ListEntry)sender;
             int index = SenderObject.id;
             DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(index.ToString()));
+            DataPictureBoxDetailsLogo.Image = SenderObject.FavIcon;
             DataLabelDetailsHostname.Text = LinkedRow["3"].ToString();
             DataDetailsEntryUsername.Content = LinkedRow["4"].ToString().Equals("\x01") ? "-" : LinkedRow["4"].ToString();
             DataDetailsEntryPassword.Content = LinkedRow["5"].ToString().Equals("\x01") ? "-" : LinkedRow["5"].ToString();
@@ -598,21 +602,41 @@ namespace pmdbs
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             Task<List<String>> GetId = DataBaseHelper.GetDataAsList("SELECT D_id FROM Tbl_data ORDER BY D_id DESC LIMIT 1;", (int)ColumnCount.SingleColumn);
             List<String> IdList = await GetId;
-            DataRow NewRow = UserData.Rows.Add();
-            NewRow["0"] = IdList[0];
-            NewRow["1"] = "EMPTY";
-            NewRow["2"] = DateTime;
-            NewRow["3"] = Hostname.Equals("") ? "\x01" : Hostname;
-            NewRow["4"] = Username.Equals("") ? "\x01" : Username;
-            NewRow["5"] = Password.Equals("") ? "\x01" : Password;
-            NewRow["6"] = Website.Equals("") ? "\x01" : Website;
-            NewRow["7"] = Email.Equals("") ? "\x01" : Email;
-            NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
-            RefreshUserData();
-            AddPanelMain.SuspendLayout();
-            DataTableLayoutPanelMain.BringToFront();
-            DataTableLayoutPanelMain.ResumeLayout();
-            ResetFields();
+            new Thread(delegate () {
+                if (!string.IsNullOrWhiteSpace(Website))
+                {
+                    IconData favIcon = new IconData();
+                    try
+                    {
+                        favIcon = WebHelper.GetFavIcons(Website);
+                    }
+                    catch
+                    {
+                        favIcon.Image = Image.FromFile("favicon.ico");
+                        favIcon.Path = "favicon.ico";
+                    }
+                    Task InsertIcon = DataBaseHelper.ModifyData("INSERT INTO Tbl_icon (I_path, D_id) VALUES (\"" + favIcon.Path + "\", " + IdList[0] + ")");
+                }
+                Invoke((MethodInvoker)delegate
+                {
+                    DataRow NewRow = UserData.Rows.Add();
+                    NewRow["0"] = IdList[0];
+                    NewRow["1"] = "EMPTY";
+                    NewRow["2"] = DateTime;
+                    NewRow["3"] = Hostname.Equals("") ? "\x01" : Hostname;
+                    NewRow["4"] = Username.Equals("") ? "\x01" : Username;
+                    NewRow["5"] = Password.Equals("") ? "\x01" : Password;
+                    NewRow["6"] = Website.Equals("") ? "\x01" : Website;
+                    NewRow["7"] = Email.Equals("") ? "\x01" : Email;
+                    NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
+                    RefreshUserData();
+                    AddPanelMain.SuspendLayout();
+                    DataTableLayoutPanelMain.BringToFront();
+                    DataTableLayoutPanelMain.ResumeLayout();
+                    ResetFields();
+                });
+            }).Start();
+            
         }
 
         private void AddPanelAdvancedImageButtonAbort_Click(object sender, EventArgs e)
@@ -631,10 +655,11 @@ namespace pmdbs
             }
             string Url = AddEditFieldWebsite.TextTextBox;
             new Thread(delegate () {
-                Image favIcon = WebHelper.GetFavIcons(Url);
+                IconData favIcon = WebHelper.GetFavIcons(Url);
                 Invoke((MethodInvoker)delegate 
                 {
-                    pictureBox1.Image = favIcon;
+                    pictureBox1.Image = favIcon.Image;
+                    AddIcon = favIcon;
                 });
                 
             }).Start();

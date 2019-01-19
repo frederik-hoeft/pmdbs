@@ -38,7 +38,8 @@ namespace pmdbs
             }
         }
 
-        public static Image GetFavIcons(string Url)
+
+        public static IconData GetFavIcons(string Url)
         {
             string domain = "";
             try
@@ -57,12 +58,16 @@ namespace pmdbs
             doc.LoadHtml(HtmlCode);
             string BestImage = doc.DocumentNode.SelectNodes("//img")[0].GetAttributeValue("src", null);
             string ImageFileExtension = BestImage.Split('.').Last().Split('?')[0];
-            string localFilename = @"temp\" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + ImageFileExtension;
+            string localFilename = @"data\" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + ImageFileExtension;
             using (WebClient client = new WebClient())
             {
                 client.DownloadFile(BestImage, localFilename);
             }
-            Image FavIcon = Image.FromFile(localFilename);
+            IconData FavIcon = new IconData
+            {
+                Image = Image.FromFile(localFilename),
+                Path = localFilename
+            };
             return FavIcon;
         }
     }
