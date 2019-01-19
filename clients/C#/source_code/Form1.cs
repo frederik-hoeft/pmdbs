@@ -14,6 +14,9 @@ using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Net;
 using System.IO;
+using System.Drawing.Imaging;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace pmdbs
 {
@@ -22,6 +25,7 @@ namespace pmdbs
     {
         #region DECLARATIONS
         private List<ListEntry> entryList = new List<ListEntry>();
+        private char[] alphabet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
         private char[] passwordSpecialCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '-', '$', '%', '&', '/', '(', ')', '=', '?', '{', '[', ']', '}', '\\', '+', '*', '#', ',', '.', '<', '>', '|', '@', '!', '~', ';', ':', '"' };
         private char[] passwordCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
         private string MasterPassword;
@@ -256,6 +260,50 @@ namespace pmdbs
 
         #region DataPanel
 
+        private async void AddSingleEntry(DataRow newRow)
+        {
+            int ID = Convert.ToInt32(newRow["0"]);
+            string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(newRow["2"].ToString())).ToString("u");
+            strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
+            Task<List<String>> GetIcon = DataBaseHelper.GetDataAsList("SELECT I_path FROM Tbl_icon WHERE D_id = " + ID.ToString() + ";", (int)ColumnCount.SingleColumn);
+            List<String> result = await GetIcon;
+            ListEntry listEntry = new ListEntry
+            {
+                BackColor = Color.White,
+                FavIcon = Image.FromFile(result[0]),
+                HostName = newRow["3"].ToString().Equals("\x01") ? "-" : newRow["3"].ToString(),
+                HostNameFont = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
+                HostNameForeColor = SystemColors.ControlText,
+                Name = "listEntry",
+                Size = new Size(1041, 75),
+                TabIndex = 14,
+                TimeStamp = strTimeStamp,
+                TimeStampFont = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                TimeStampForeColor = SystemColors.ControlText,
+                UserName = newRow["4"].ToString(),
+                UserNameFont = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                UserNameForeColor = SystemColors.ControlText,
+                ColorNormal = Color.White,
+                ColorHover = Colors.LightGray,
+                BackgroundColor = Color.White,
+                id = ID
+            };
+            DataFlowLayoutPanelList.Controls.Add(listEntry);
+            entryList.Add(listEntry);
+            listEntry.OnClickEvent += ListEntry_Click;
+            DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
+            FlowLayoutPanel1_Resize(this, null);
+        }
+
+        private void ReloadSingleEntry(DataRow invalidatedRow)
+        {
+            int ID = Convert.ToInt32(invalidatedRow["0"]);
+            ListEntry invalidatedEntry = entryList.Where(element => element.id == ID).First();
+            entryList.Remove(invalidatedEntry);
+            invalidatedEntry.Dispose();
+            AddSingleEntry(invalidatedRow);
+        }
+
         private async void RefreshUserData()
         {
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
@@ -384,7 +432,7 @@ namespace pmdbs
                 LinkedRow[i.ToString()] = RawValues[i - 3].Equals("") ? "\x01" : RawValues[i - 3];
             }
             LinkedRow["2"] = DateTime;
-            RefreshUserData();
+            ReloadSingleEntry(LinkedRow);
             DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
@@ -448,12 +496,14 @@ namespace pmdbs
         {
             Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             await Task.WhenAll(DeleteItem);
+            ListEntry invalidatedEntry = entryList.Where(element => element.id == Convert.ToInt32(DataDetailsID)).First();
+            entryList.Remove(invalidatedEntry);
+            invalidatedEntry.Dispose();
             DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
             UserData.Rows.Remove(LinkedRow);
             DataPanelDetails.SuspendLayout();
             DataPanelNoSel.BringToFront();
             DataPanelNoSel.ResumeLayout();
-            RefreshUserData();
         }
 
         private void DataLeftAdvancedImageButton_Click(object sender, EventArgs e)
@@ -603,20 +653,49 @@ namespace pmdbs
             Task<List<String>> GetId = DataBaseHelper.GetDataAsList("SELECT D_id FROM Tbl_data ORDER BY D_id DESC LIMIT 1;", (int)ColumnCount.SingleColumn);
             List<String> IdList = await GetId;
             new Thread(delegate () {
-                if (!string.IsNullOrWhiteSpace(Website))
+                IconData favIcon = new IconData();
+                try
                 {
-                    IconData favIcon = new IconData();
-                    try
+                    if (string.IsNullOrWhiteSpace(Website))
+                    {
+                        // EXECUTE CODE IN CATCH
+                        throw new Exception();
+                    }
+                    else
                     {
                         favIcon = WebHelper.GetFavIcons(Website);
                     }
-                    catch
-                    {
-                        favIcon.Image = Image.FromFile("favicon.ico");
-                        favIcon.Path = "favicon.ico";
-                    }
-                    Task InsertIcon = DataBaseHelper.ModifyData("INSERT INTO Tbl_icon (I_path, D_id) VALUES (\"" + favIcon.Path + "\", " + IdList[0] + ")");
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
+                    char letter = Hostname.ToUpper()[0];
+                    int keyIndex = Array.FindIndex(alphabet, i => i.Equals(letter));
+                    // Create Optional Icons
+                    using (Bitmap bmp = new Bitmap(keyIndex == -1 ? @"Resources\Icons\_UNKNOWN.png" : @"Resources\Icons\" + letter + ".png"))
+                    {
+                        Graphics g = Graphics.FromImage(bmp);
+                        // Set the image attribute's color mappings
+                        ColorMap[] colorMap = new ColorMap[1];
+                        Random rng = new Random();
+                        colorMap[0] = new ColorMap
+                        {
+                            OldColor = Color.Black,
+                            NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
+
+                        };
+                        ImageAttributes attr = new ImageAttributes();
+                        attr.SetRemapTable(colorMap);
+                        // Draw using the color map
+                        Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                        g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
+                        favIcon.Image = bmp;
+                        string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+                        bmp.Save(@"data\" + name + ".png", ImageFormat.Png);
+                        favIcon.Path = @"data\" + name + ".png";
+                    }
+                }
+                Task InsertIcon = DataBaseHelper.ModifyData("INSERT INTO Tbl_icon (I_path, D_id) VALUES (\"" + favIcon.Path + "\", " + IdList[0] + ")");
                 Invoke((MethodInvoker)delegate
                 {
                     DataRow NewRow = UserData.Rows.Add();
@@ -629,7 +708,7 @@ namespace pmdbs
                     NewRow["6"] = Website.Equals("") ? "\x01" : Website;
                     NewRow["7"] = Email.Equals("") ? "\x01" : Email;
                     NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
-                    RefreshUserData();
+                    AddSingleEntry(NewRow);
                     AddPanelMain.SuspendLayout();
                     DataTableLayoutPanelMain.BringToFront();
                     DataTableLayoutPanelMain.ResumeLayout();
@@ -655,13 +734,11 @@ namespace pmdbs
             }
             string Url = AddEditFieldWebsite.TextTextBox;
             new Thread(delegate () {
-                IconData favIcon = WebHelper.GetFavIcons(Url);
-                Invoke((MethodInvoker)delegate 
+            IconData favIcon = WebHelper.GetFavIcons(Url);
+                Invoke((MethodInvoker)delegate
                 {
                     pictureBox1.Image = favIcon.Image;
-                    AddIcon = favIcon;
                 });
-                
             }).Start();
             
 
