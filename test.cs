@@ -22,7 +22,7 @@ foreach (HtmlNode Icon in Icons)
 	{
 		string iconLink = Icon.GetAttributeValue("src", null);
 		string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
-		localFilename = @"data\" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + imageFileExtension;
+		localFilename = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + imageFileExtension;
 		using (WebClient client = new WebClient())
 		{
 			client.DownloadFile(iconLink, localFilename);
