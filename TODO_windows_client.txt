@@ -56,6 +56,7 @@ WINDOWS CLIENT TODO:
                 - loading complete
         
     - CODE OPTIMIZATION:
+        - USE COMMENTS!!!
         - Check for TODOs in source code
         - performance optimization
             - disable hidden controls
