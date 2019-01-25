@@ -41,7 +41,7 @@ namespace pmdbs
         }
 
 
-        public static IconData GetFavIcons(string Url)
+        public static string GetFavIcons(string Url)
         {
             string domain = "";
             try
@@ -51,11 +51,11 @@ namespace pmdbs
             }
             catch
             {
-                throw new ArgumentException("Invalid url"); // TODO : CATCH EXCEPTION IS SCOPE ABOVE AND HANDLE ERROR MESSAGE RETURN
+                throw new ArgumentException("Invalid url"); // TODO : CATCH EXCEPTION IN SCOPE ABOVE AND HANDLE ERROR MESSAGE RETURN
             }
             if (!IsValidDomainName(domain))
             {
-                throw new InvalidDomainException(); // TODO : CATCH EXCEPTION IS SCOPE ABOVE AND HANDLE ERROR MESSAGE RETURN
+                throw new InvalidDomainException(); // TODO : CATCH EXCEPTION IN SCOPE ABOVE AND HANDLE ERROR MESSAGE RETURN
             }
             string uri = "https://i.olsh.me/icons?url=" + domain + "#result";
             string HtmlCode = Get(uri).Split(new string[] { "<table" }, StringSplitOptions.None).Last();
@@ -71,7 +71,7 @@ namespace pmdbs
                 {
                     string iconLink = Icon.GetAttributeValue("src", null);
                     string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
-                    localFilename = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + imageFileExtension;
+                    localFilename = "data\\" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + imageFileExtension;
                     using (WebClient client = new WebClient())
                     {
                         client.DownloadFile(iconLink.Replace("https", "http"), localFilename);
@@ -89,12 +89,7 @@ namespace pmdbs
             {
                 throw new Exception("No Icon found");
             }
-            IconData FavIcon = new IconData
-            {
-                Image = Image.FromFile(localFilename),
-                Path = localFilename
-            };
-            return FavIcon;
+            return localFilename;
         }
         public static bool IsValidDomainName(string name)
         {

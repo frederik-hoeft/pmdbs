@@ -17,6 +17,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Security.Cryptography.X509Certificates;
 using System.Net.Security;
+using System.Diagnostics;
 
 namespace pmdbs
 {
@@ -38,6 +39,10 @@ namespace pmdbs
         private DataTable UserData;
         private string DataDetailsID;
         private IconData AddIcon = new IconData();
+        private int DataPerPage = 25;
+        private int CurrentPage = 0;
+        private int CurrentContentCount = 0;
+        int MaxPages = 1;
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -262,6 +267,10 @@ namespace pmdbs
 
         private async void AddSingleEntry(DataRow newRow)
         {
+            if (CurrentContentCount > 24)
+            {
+                return;
+            }
             int ID = Convert.ToInt32(newRow["0"]);
             string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(newRow["2"].ToString())).ToString("u");
             strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
@@ -299,54 +308,69 @@ namespace pmdbs
         {
             int ID = Convert.ToInt32(invalidatedRow["0"]);
             ListEntry invalidatedEntry = entryList.Where(element => element.id == ID).First();
-            entryList.Remove(invalidatedEntry);
-            invalidatedEntry.Dispose();
-            AddSingleEntry(invalidatedRow);
+            RefreshUserData(CurrentPage);
         }
 
-        private async void RefreshUserData()
+        private async void RefreshUserData(int page)
         {
+            Stopwatch sw = new Stopwatch();
+
+            sw.Start();
+            
+            if (page < 0)
+            {
+                page = 0;
+            }
+            MaxPages = Convert.ToInt32(Math.Floor((double)UserData.Rows.Count / DataPerPage));
+            if (UserData.Rows.Count % DataPerPage != 0)
+            {
+                MaxPages++;
+            }
+            if (page < MaxPages)
+            {
+                CurrentPage = page;
+            }
+            else
+            {
+                if (CurrentPage == MaxPages - 1)
+                {
+                    return;
+                }
+                else
+                {
+                    CurrentPage = MaxPages - 1;
+                }
+            }
+            CurrentContentCount = 0;
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataFlowLayoutPanelList.SuspendLayout();
             for (int i = 0; i < entryList.Count; i++)
             {
-                entryList[i].Dispose();
+                entryList[i].Hide();
             }
-            for (int i = 0; i < UserData.Rows.Count; i++)
+            for (int i = CurrentPage * DataPerPage; (CurrentPage * DataPerPage  + DataPerPage >= UserData.Rows.Count) ? i < UserData.Rows.Count : i < CurrentPage * DataPerPage + DataPerPage; i++)
             {
                 int ID = Convert.ToInt32(UserData.Rows[i]["0"]);
                 string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(UserData.Rows[i]["2"].ToString())).ToString("u");
                 strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
                 Task<List<String>> GetIcon = DataBaseHelper.GetDataAsList("SELECT I_path FROM Tbl_icon WHERE D_id = " + ID.ToString() + ";", (int)ColumnCount.SingleColumn);
                 List<String> result = await GetIcon;
-                ListEntry listEntry = new ListEntry
+                ListEntry entry = entryList[i % DataPerPage];
+                using (Image icon = Image.FromFile(result[0]))
                 {
-                    BackColor = Color.White,
-                    FavIcon = Image.FromFile(result[0]),
-                    HostName = UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : UserData.Rows[i]["3"].ToString(),
-                    HostNameFont = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
-                    HostNameForeColor = SystemColors.ControlText,
-                    Name = "listEntry",
-                    Size = new Size(1041, 75),
-                    TabIndex = 14,
-                    TimeStamp = strTimeStamp,
-                    TimeStampFont = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    TimeStampForeColor = SystemColors.ControlText,
-                    UserName = UserData.Rows[i]["4"].ToString(),
-                    UserNameFont = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                    UserNameForeColor = SystemColors.ControlText,
-                    ColorNormal = Color.White,
-                    ColorHover = Colors.LightGray,
-                    BackgroundColor = Color.White,
-                    id = ID
-                };
-                DataFlowLayoutPanelList.Controls.Add(listEntry);
-                entryList.Add(listEntry);
-                listEntry.OnClickEvent += ListEntry_Click;
-                DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
+                    entry.FavIcon = icon.GetThumbnailImage(350, 350, null, new IntPtr());
+                }
+                entry.HostName = UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : UserData.Rows[i]["3"].ToString();
+                entry.TimeStamp = strTimeStamp;
+                entry.UserName = UserData.Rows[i]["4"].ToString();
+                entry.id = ID;
+                entry.Show();
+                CurrentContentCount++;
             }
             DataFlowLayoutPanelList.ResumeLayout();
             FlowLayoutPanel1_Resize(this, null);
+            Console.WriteLine("METHOD 1 Elapsed = {0}", sw.Elapsed);
+            sw.Stop();
         }
 
         private void ListEntry_Click(object sender, EventArgs e)
@@ -361,6 +385,7 @@ namespace pmdbs
             DataDetailsEntryUsername.Content = LinkedRow["4"].ToString().Equals("\x01") ? "-" : LinkedRow["4"].ToString();
             DataDetailsEntryPassword.Content = LinkedRow["5"].ToString().Equals("\x01") ? "-" : LinkedRow["5"].ToString();
             DataDetailsEntryWebsite.Content = LinkedRow["6"].ToString().Equals("\x01") ? "-" : LinkedRow["6"].ToString();
+            DataDetailsEntryWebsite.RawText = LinkedRow["6"].ToString().Equals("\x01") ? "-" : LinkedRow["6"].ToString();
             DataDetailsEntryEmail.Content = LinkedRow["7"].ToString().Equals("\x01") ? "-" : LinkedRow["7"].ToString();
             DataDetailsCustomLabelNotes.Content = LinkedRow["8"].ToString().Equals("\x01") ? "-" : LinkedRow["8"].ToString();
             DataDetailsID = index.ToString();
@@ -452,6 +477,7 @@ namespace pmdbs
             DataEditEditFieldUsername.TextTextBox = LinkedRow["4"].ToString().Equals("\x01") ? "" : LinkedRow["4"].ToString();
             DataEditEditFieldPassword.TextTextBox = LinkedRow["5"].ToString().Equals("\x01") ? "" : LinkedRow["5"].ToString();
             DataEditEditFieldWebsite.TextTextBox = LinkedRow["6"].ToString().Equals("\x01") ? "" : LinkedRow["6"].ToString();
+            
             DataEditEditFieldEmail.TextTextBox = LinkedRow["7"].ToString().Equals("\x01") ? "" : LinkedRow["7"].ToString();
             DataEditAdvancedRichTextBoxNotes.TextValue = LinkedRow["8"].ToString().Equals("\x01") ? "" : LinkedRow["8"].ToString();
             DataPanelDetails.SuspendLayout();
@@ -494,13 +520,17 @@ namespace pmdbs
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            Task<List<String>> GetIcon = DataBaseHelper.GetDataAsList("SELECT I_path FROM Tbl_icon WHERE D_id = " + DataDetailsID + ";", (int)ColumnCount.SingleColumn);
+            List<String> result = await GetIcon;
+            string path = result[0];
+            File.Delete(path);
+            Task DeleteIcon = DataBaseHelper.ModifyData("DELETE FROM Tbl_icon WHERE D_id = " + DataDetailsID + ";");
+            await Task.WhenAll(DeleteIcon);
             Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             await Task.WhenAll(DeleteItem);
-            ListEntry invalidatedEntry = entryList.Where(element => element.id == Convert.ToInt32(DataDetailsID)).First();
-            entryList.Remove(invalidatedEntry);
-            invalidatedEntry.Dispose();
             DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
             UserData.Rows.Remove(LinkedRow);
+            RefreshUserData(CurrentPage);
             DataPanelDetails.SuspendLayout();
             DataPanelNoSel.BringToFront();
             DataPanelNoSel.ResumeLayout();
@@ -508,12 +538,15 @@ namespace pmdbs
 
         private void DataLeftAdvancedImageButton_Click(object sender, EventArgs e)
         {
-
+            if (CurrentPage != 0)
+            {
+                RefreshUserData(CurrentPage - 1);
+            }
         }
 
         private void DataRightAdvancedImageButton_Click(object sender, EventArgs e)
         {
-
+            RefreshUserData(CurrentPage + 1);
         }
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
@@ -538,7 +571,10 @@ namespace pmdbs
 
         private void DataDetailsEntryWebsite_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
+            if (!DataDetailsEntryWebsite.RawText.Equals("-"))
+            {
+                System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
+            }
         }
         #endregion
 
@@ -653,7 +689,7 @@ namespace pmdbs
             Task<List<String>> GetId = DataBaseHelper.GetDataAsList("SELECT D_id FROM Tbl_data ORDER BY D_id DESC LIMIT 1;", (int)ColumnCount.SingleColumn);
             List<String> IdList = await GetId;
             new Thread(delegate () {
-                IconData favIcon = new IconData();
+                string favIcon = "";
                 try
                 {
                     if (string.IsNullOrWhiteSpace(Website))
@@ -689,13 +725,12 @@ namespace pmdbs
                         // Draw using the color map
                         Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
                         g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
-                        favIcon.Image = bmp;
                         string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                         bmp.Save(@"data\" + name + ".png", ImageFormat.Png);
-                        favIcon.Path = @"data\" + name + ".png";
+                        favIcon = @"data\" + name + ".png";
                     }
                 }
-                Task InsertIcon = DataBaseHelper.ModifyData("INSERT INTO Tbl_icon (I_path, D_id) VALUES (\"" + favIcon.Path + "\", " + IdList[0] + ")");
+                Task InsertIcon = DataBaseHelper.ModifyData("INSERT INTO Tbl_icon (I_path, D_id) VALUES (\"" + favIcon + "\", " + IdList[0] + ")");
                 Invoke((MethodInvoker)delegate
                 {
                     DataRow NewRow = UserData.Rows.Add();
@@ -708,7 +743,7 @@ namespace pmdbs
                     NewRow["6"] = Website.Equals("") ? "\x01" : Website;
                     NewRow["7"] = Email.Equals("") ? "\x01" : Email;
                     NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
-                    AddSingleEntry(NewRow);
+                    RefreshUserData(CurrentPage);
                     AddPanelMain.SuspendLayout();
                     DataTableLayoutPanelMain.BringToFront();
                     DataTableLayoutPanelMain.ResumeLayout();
@@ -728,19 +763,6 @@ namespace pmdbs
 
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(AddEditFieldWebsite.TextTextBox))
-            {
-                return;
-            }
-            string Url = AddEditFieldWebsite.TextTextBox;
-            new Thread(delegate () {
-            IconData favIcon = WebHelper.GetFavIcons(Url);
-                Invoke((MethodInvoker)delegate
-                {
-                    pictureBox1.Image = favIcon.Image;
-                });
-            }).Start();
-            
 
         }
 
@@ -847,16 +869,57 @@ namespace pmdbs
                 }
                 RowCounter++;
             }
-            LoginPictureBoxOnlineMain.Dispose();
-            LoginPictureBoxOfflineMain.Dispose();
-            LoginPictureBoxRegisterMain.Dispose();
-            PanelMain.BringToFront();
-            PanelLogin.Dispose();
-            this.MinimumSize = MinSize;
-            this.MaximumSize = MaxSize;
-            this.MaximizeBox = true;
-            this.MinimizeBox = true;
-            RefreshUserData();
+            LoginLoadingLabelDetails.Text = "Loading User Interface...";
+            DataFlowLayoutPanelList.SuspendLayout();
+            new Thread(delegate () {
+                for (int i = 0; i < DataPerPage; i++)
+                {
+                    ListEntry listEntry = new ListEntry
+                    {
+                        BackColor = Color.White,
+                        HostNameFont = new Font("Century Gothic", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
+                        HostNameForeColor = SystemColors.ControlText,
+                        Name = "listEntry",
+                        Size = new Size(1041, 75),
+                        TabIndex = 14,
+                        TimeStampFont = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        TimeStampForeColor = SystemColors.ControlText,
+                        UserNameFont = new Font("Century Gothic", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        UserNameForeColor = SystemColors.ControlText,
+                        ColorNormal = Color.White,
+                        ColorHover = Colors.LightGray,
+                        BackgroundColor = Color.White
+                    };
+                    listEntry.Hide();
+                    Invoke((MethodInvoker)delegate
+                    {
+                        DataFlowLayoutPanelList.Controls.Add(listEntry);
+                    });
+                    entryList.Add(listEntry);
+                    listEntry.OnClickEvent += ListEntry_Click;
+                    DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
+                }
+                Invoke((MethodInvoker)delegate
+                {
+                    DataFlowLayoutPanelList.ResumeLayout();
+                    FlowLayoutPanel1_Resize(this, null);
+                    LoginPictureBoxOnlineMain.Dispose();
+                    LoginPictureBoxOfflineMain.Dispose();
+                    LoginPictureBoxRegisterMain.Dispose();
+                    PanelMain.BringToFront();
+                    PanelLogin.Dispose();
+                    this.MinimumSize = MinSize;
+                    this.MaximumSize = MaxSize;
+                    this.MaximizeBox = true;
+                    this.MinimizeBox = true;
+                    RefreshUserData(0);
+                });
+            }).Start();
+        }
+
+        private static void LoadUI()
+        {
+
         }
 
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
@@ -924,8 +987,7 @@ namespace pmdbs
         }
 
 
-        #endregion
 
-        
+        #endregion
     }
 }
