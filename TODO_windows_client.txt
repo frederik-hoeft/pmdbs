@@ -35,6 +35,7 @@ WINDOWS CLIENT TODO:
             - Create Error Messages if Required Information is not set
         - LoginScreen
             - RegisterButton --> Dictionary based password check
+            - Login to Loading Background is off by a few Pixels
             
             LOADING STEPS with ONLINE_MODE = true (autoupdate / multiple devices)
                 - user enters password
