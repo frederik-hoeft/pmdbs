@@ -9,6 +9,7 @@
 		- HIGH PRIORITY:
 			- Standardize return values sent to client
 			- Check client's version during handshake
+			- Add support for icons in database
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
