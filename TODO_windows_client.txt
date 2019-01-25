@@ -18,6 +18,7 @@ WINDOWS CLIENT TODO:
         - Window Panel
             - Use Custom Minimize / Maximize Buttons
         - DATA PANEL
+            - Add Sorting options in top headline panel
             - RefreshUserData()
                 - needs to check for max data per page
                 - "Open external link" - button needs to check if there is a valid link to open --> currently hardcoded (RawData - Value)
