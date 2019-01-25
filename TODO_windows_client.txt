@@ -21,7 +21,6 @@ WINDOWS CLIENT TODO:
             - Add Sorting options in top headline panel
             - RefreshUserData()
                 - needs to check for max data per page
-                - "Open external link" - button needs to check if there is a valid link to open --> currently hardcoded (RawData - Value)
             - Deleting an item should prompt for confirmation
             - Delete Icons and database icon links as well!
         - menu bar
