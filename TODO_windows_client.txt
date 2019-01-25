@@ -14,6 +14,7 @@ WINDOWS CLIENT TODO:
         - create InApp loading screen
     
     - TWEAKS / FIXES
+        - Upload icons to Server
         - Window Panel
             - Use Custom Minimize / Maximize Buttons
         - DATA PANEL
