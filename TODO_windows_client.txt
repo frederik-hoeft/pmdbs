@@ -6,7 +6,6 @@ WINDOWS CLIENT TODO:
         - create Welcome screen
             - some sort of dashboard
         - create Settings screen
-            - In Settings: set sorting algorithm for ListEntrys
             - allow using local certificate to validate server --> settings
         - create Credits screen (used way too much licensed crap)
         - create Account screen
