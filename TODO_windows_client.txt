@@ -19,8 +19,9 @@ WINDOWS CLIENT TODO:
             - Use Custom Minimize / Maximize Buttons
         - DATA PANEL
             - Add Sorting options in top headline panel
-            - RefreshUserData()
-                - needs to check for max data per page
+            - Add Search box to top headline panel
+            - Show current page
+            - add switch-to-first/last-page buttons
             - Deleting an item should prompt for confirmation
             - Delete Icons and database icon links as well!
         - menu bar
@@ -60,6 +61,7 @@ WINDOWS CLIENT TODO:
         - USE COMMENTS!!!
         - Check for TODOs in source code
         - performance optimization
+            - RefreshUserData() <-- takes too long
             - disable hidden controls
             
     - CREATE SOCKET MANAGEMENT METHODS
