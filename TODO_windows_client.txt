@@ -62,12 +62,6 @@ WINDOWS CLIENT TODO:
         - USE COMMENTS GODDAMNIT!!!
         - Check for TODOs in source code
         - performance optimization
-            - RefreshUserData() <-- takes too long
-                - USE FIXED AMOUNT OF ListEntries
-                    - Initialize at Startup --> During LoadingScreen
-                    - Use Show() and Hide()
-                    - Only change Text / Images
-                    + 340 % PERFORMANCE!!!! (~ 1s --> ~ 0.29s )
             - disable hidden controls
             
     - CREATE SOCKET MANAGEMENT METHODS
