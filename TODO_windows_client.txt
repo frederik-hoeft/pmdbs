@@ -22,7 +22,6 @@ WINDOWS CLIENT TODO:
             - Show current page
             - add switch-to-first/last-page buttons
             - Deleting an item should prompt for confirmation
-            - Delete Icons and database icon links as well!
         - menu bar
             - slightly decrease size of icons
             - allow switching between menu points
