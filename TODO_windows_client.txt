@@ -17,6 +17,7 @@ WINDOWS CLIENT TODO:
         - Window Panel
             - Use Custom Minimize / Maximize Buttons
         - DATA PANEL
+            - On edit save update favicon if changed
             - Add Sorting options in top headline panel
             - Add Search box to top headline panel
             - Show current page
