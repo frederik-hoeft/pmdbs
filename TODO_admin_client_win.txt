@@ -1,0 +1,4 @@
+
+FIX:
+    - Packets randomly being split up --> failing check for 0x01 as first character
+    - Sha256Hash() Function produces different results for the SAME INPUTS! (Python vs C#)
