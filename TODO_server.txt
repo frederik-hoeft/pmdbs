@@ -10,6 +10,8 @@
 			- Standardize return values sent to client
 			- Check client's version during handshake
 			- Add support for icons in database
+			- replace NULL Bytes in GernerateHMACkey() in nonce <-- RSADecrypt seems to generate null bytes? 
+				- otherwise incompatible with windows C#
 				
 		- MEDIUM PRIORITY:
 			Nothing :)
