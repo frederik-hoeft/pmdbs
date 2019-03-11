@@ -1,7 +1,0 @@
-	DEBUG / ADMIN CLIENT TODO:
-	
-    		- TEST ALL METHODS:
-			- TESTED:
-				- sudo()
-				- newAdminDevice()
-
