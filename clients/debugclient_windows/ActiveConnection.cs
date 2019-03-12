@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using CE;
 
 namespace debugclient
 {
@@ -18,6 +18,7 @@ namespace debugclient
             Boolean isDisconnected = false;
             Boolean isSocketError = false;
             Boolean isTcpFin = false;
+            string address = ip + ":" + port;
 
             //IPHostEntry entry = Dns.GetHostEntry("th3fr3d.ddns.net");
             IPAddress ipAddress = IPAddress.Parse(ip);
@@ -25,9 +26,12 @@ namespace debugclient
             IPEndPoint server = new IPEndPoint(ipAddress, port);
             GlobalVarPool.clientSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             GlobalVarPool.clientSocket.Connect(server);
-            Console.WriteLine("Successfully connected to " + ip + ":" + port + "!");
+            ConsoleExtension.PrintF("Successfully connected to " + ip + ":" + port + "!");
+            ConsoleExtension.PrintF("\n");
+            ConsoleExtension.PrintF("CLIENT ---> CONNECTED                  <--- " + address);
             GlobalVarPool.attemptConnection = false;
             GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINIXML\x04"));
+            ConsoleExtension.PrintF("CLIENT ---> CLIENT HELLO               ---> " + address);
             //LINE 1225 IN DEBUGCLIENT.PY BELOW;
             // AWAIT PACKETS FROM SERVER
             try
@@ -114,7 +118,7 @@ namespace debugclient
                         {
                             if (!dataPacket.Contains(0x01))
                             {
-                                Console.WriteLine("CLIENT <-#- [ERRNO 02] ISOH -#-> " + ip);
+                                //ConsoleExtension.PrintF("CLIENT <-#- [ERRNO 02] ISOH            -#-> " + address);
                                 continue;
                             }
                             else if (dataPacket.Where(currentByte => currentByte.Equals(0x01)).Count() == 1)
@@ -123,7 +127,7 @@ namespace debugclient
                             }
                             else
                             {
-                                Console.WriteLine("CLIENT <-#- [ERRNO 02] ISOH -#-> " + ip);
+                                ConsoleExtension.PrintF("CLIENT <-#- [ERRNO 02] ISOH            -#-> " + address);
                                 continue;
                             }
                         }
@@ -140,14 +144,14 @@ namespace debugclient
                                     {
                                         case "FIN":
                                             {
-                                                Console.WriteLine("RECEIVED FIN");
+                                                ConsoleExtension.PrintF("RECEIVED FIN");
                                                 isDisconnected = true;
-                                                Console.WriteLine("REASON: " + dataString.Substring(4).Split(new string[] { "%eq" }, StringSplitOptions.None)[1].Replace("!", "").Replace(";", ""));
+                                                ConsoleExtension.PrintF("REASON: " + dataString.Substring(4).Split(new string[] { "%eq" }, StringSplitOptions.None)[1].Replace("!", "").Replace(";", ""));
                                                 return;
                                             }
                                         case "KEY":
                                             {
-                                                Console.WriteLine("CLIENT <--- SERVER HELLO      <--- " + ip);
+                                                ConsoleExtension.PrintF("CLIENT <--- SERVER HELLO               <--- " + address);
                                                 string packetSID = dataString.Substring(4, 3);
                                                 if (packetSID.Equals("XML"))
                                                 {
@@ -155,12 +159,12 @@ namespace debugclient
                                                     GlobalVarPool.nonce = CryptoHelper.RandomString();
                                                     string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
                                                     string message = "CKEkey%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
-                                                    Console.WriteLine("CLIENT ---> CLIENT KEY EXCHANGE  ---> " + ip);
+                                                    ConsoleExtension.PrintF("CLIENT ---> CLIENT KEY EXCHANGE        ---> " + address);
                                                     GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("Error: Key Format not supported!");
+                                                    ConsoleExtension.PrintF("Error: Key Format not supported!");
                                                 }
                                                 break;
                                             }
@@ -177,7 +181,7 @@ namespace debugclient
                                     string packetID = decrypted.Substring(0, 3);
                                     if (packetID.Equals("SKE"))
                                     {
-                                        Console.WriteLine("CLIENT <--- SYMMETRIC KEY EXCHANGE      <--- " + ip);
+                                        ConsoleExtension.PrintF("CLIENT <--- SYMMETRIC KEY EXCHANGE     <--- " + address);
                                         string key = string.Empty;
                                         string providedNonce = string.Empty;
                                         foreach (string returnValue in decrypted.Substring(3).Split(';'))
@@ -193,8 +197,8 @@ namespace debugclient
                                         }
                                         if (GlobalVarPool.debugging)
                                         {
-                                            Console.WriteLine("Provided nonce: " + providedNonce);
-                                            Console.WriteLine("Real nonce: " + GlobalVarPool.nonce);
+                                            ConsoleExtension.PrintF("Provided nonce: " + providedNonce);
+                                            ConsoleExtension.PrintF("Real nonce: " + GlobalVarPool.nonce);
                                         }
                                         if (!providedNonce.Equals(GlobalVarPool.nonce))
                                         {
@@ -205,12 +209,12 @@ namespace debugclient
                                         GlobalVarPool.hmac = CryptoHelper.SHA256Hash(GlobalVarPool.aesKey + GlobalVarPool.nonce);
                                         if (GlobalVarPool.debugging)
                                         {
-                                            Console.WriteLine("AES KEY: " + GlobalVarPool.aesKey);
-                                            Console.WriteLine("NONCE: " + GlobalVarPool.nonce);
-                                            Console.WriteLine("HMAC KEY: " + GlobalVarPool.hmac);
+                                            ConsoleExtension.PrintF("AES KEY: " + GlobalVarPool.aesKey);
+                                            ConsoleExtension.PrintF("NONCE: " + GlobalVarPool.nonce);
+                                            ConsoleExtension.PrintF("HMAC KEY: " + GlobalVarPool.hmac);
                                         }
                                         GlobalVarPool.nonce = CryptoHelper.RandomString();
-                                        Console.WriteLine("CLIENT <--- ACKNOWLEDGE      ---> " + ip);
+                                        ConsoleExtension.PrintF("CLIENT <--- ACKNOWLEDGE                ---> " + address);
                                         Network.SendEncrypted("KEXACKnonce%eq!" + GlobalVarPool.nonce + "!;");
                                     }
                                     break;
@@ -219,16 +223,16 @@ namespace debugclient
                                 {
                                     if (!CryptoHelper.VerifyHMAC(GlobalVarPool.hmac, dataString.Substring(1)))
                                     {
-                                        Console.WriteLine("SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM");
+                                        ConsoleExtension.PrintF("SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM");
                                     }
-                                    else
+                                    else if (GlobalVarPool.debugging)
                                     {
-                                        Console.WriteLine("HMAC OK!");
+                                        ConsoleExtension.PrintF("HMAC OK!");
                                     }
                                     string decryptedData = CryptoHelper.AESDecrypt(dataString.Substring(1, dataString.Length - 45), GlobalVarPool.aesKey);
                                     if (GlobalVarPool.debugging)
                                     {
-                                        Console.WriteLine("SERVER: " + decryptedData);
+                                        ConsoleExtension.PrintF("SERVER: " + decryptedData);
                                     }
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
@@ -242,16 +246,35 @@ namespace debugclient
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("---KEY EXCHANGE FINISHED---");
+                                                    ConsoleExtension.PrintF("CLIENT <--- KEY EXCHANGE FINISHED      ---> " + address);
+                                                    if (GlobalVarPool.cookie.Equals(string.Empty))
+                                                    {
+                                                        ConsoleExtension.PrintF("CLIENT ---> GET COOKIE                 ---> " + address);
+                                                        Commands.GetCookie(new string[] { "getcookie" });
+                                                    }
                                                     break;
                                                 }
+                                            }
+                                        case "DTA":
+                                            {
+                                                switch (packetSID)
+                                                {
+                                                    case "CKI":
+                                                        {
+                                                            ConsoleExtension.PrintF("CLIENT <--- NEW COOKIE                 <--- " + address);
+                                                            GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
+                                                            File.WriteAllText("cookie.txt",GlobalVarPool.cookie);
+                                                            break;
+                                                        }
+                                                }
+                                                break;
                                             }
                                     }
                                     break;
                                 }
                             default:
                                 {
-                                    Console.WriteLine("CLIENT <-#- [ERRNO 05] IPS -#-> " + ip);
+                                    ConsoleExtension.PrintF("CLIENT <-#- [ERRNO 05] IPS             -#-> " + address);
                                     break;
                                 }
 
@@ -262,11 +285,11 @@ namespace debugclient
             }
             catch (SocketException se)
             {
-                Console.WriteLine(se.Source);
+                ConsoleExtension.PrintF(se.Source);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                ConsoleExtension.PrintF(e.Message);
             }
             finally
             {

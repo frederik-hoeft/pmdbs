@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using CE;
 
 namespace debugclient
 {
@@ -14,13 +16,13 @@ namespace debugclient
             {
                 if (GlobalVarPool.debugging)
                 {
-                    Console.WriteLine("SENDING: U" + data);
+                    ConsoleExtension.PrintF("SENDING: U" + data);
                 }
                 GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01U" + data + "\x04"));
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                ConsoleExtension.PrintF(e.ToString());
             }
         }
 
@@ -32,16 +34,23 @@ namespace debugclient
                 string hmac = CryptoHelper.CalculateHMAC(GlobalVarPool.hmac, encryptedData);
                 if (GlobalVarPool.debugging)
                 {
-                    Console.WriteLine("SENDING: E" + data);
-                    Console.WriteLine("SENDINGE: E" + encryptedData);
-                    Console.WriteLine("CALCULATED HMAC: " + hmac);
+                    ConsoleExtension.PrintF("SENDING: E" + data);
+                    ConsoleExtension.PrintF("SENDINGE: E" + encryptedData);
+                    ConsoleExtension.PrintF("CALCULATED HMAC: " + hmac);
                 }
                 GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01" + "E" + encryptedData + hmac + "\x04"));
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                ConsoleExtension.PrintF(e.ToString());
             }
+        }
+
+        public static string GetHost(string ip)
+        {
+            IPAddress hostIPAddress = IPAddress.Parse(ip);
+            IPHostEntry hostInfo = Dns.GetHostEntry(hostIPAddress);
+            return hostInfo.HostName;
         }
     }
 }

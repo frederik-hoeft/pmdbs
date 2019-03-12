@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CE;
 
 namespace debugclient
 {
@@ -10,14 +11,16 @@ namespace debugclient
     {
         public static void Start()
         {
-            Console.WriteLine("USER INPUT NOW SUPPORTED");
-            Console.WriteLine("type \"help\" to display a list of commands");
-            GlobalVarPool.currentUser = "<offline>";
+            ConsoleExtension.PrintF("USER INPUT NOW SUPPORTED");
+            ConsoleExtension.PrintF("type \"help\" to display a list of commands");
+
+            GlobalVarPool.serverName = Network.GetHost(GlobalVarPool.ip);
+            GlobalVarPool.currentUser = "<" + GlobalVarPool.serverName + ">";
             try
             {
                 while (true)
                 {
-                    string[] parameters = ConsoleExtension.Input(GlobalVarPool.currentUser + " ", ConsoleColor.Red, 1).Split(' ');
+                    string[] parameters = ConsoleExtension.Input(GlobalVarPool.currentUser + " ", ConsoleColorExtension.Red, 1).Split(' ');
                     string command = parameters[0];
                     switch (command.ToLower())
                     {
@@ -119,7 +122,7 @@ namespace debugclient
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Enable Debug Mode to use this command");
+                                    ConsoleExtension.PrintF("Enable Debug Mode to use this command");
                                 }
                                 break;
                             }
@@ -248,7 +251,7 @@ namespace debugclient
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                ConsoleExtension.PrintF(e.Message);
             }
         }
     }
