@@ -249,8 +249,11 @@ namespace debugclient
                                                     ConsoleExtension.PrintF("CLIENT <--- KEY EXCHANGE FINISHED      ---> " + address);
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        ConsoleExtension.PrintF("CLIENT ---> GET COOKIE                 ---> " + address);
                                                         Commands.GetCookie(new string[] { "getcookie" });
+                                                    }
+                                                    else
+                                                    {
+                                                        Commands.CheckCookie(new string[] { "checkcookie" }, true);
                                                     }
                                                     break;
                                                 }
@@ -261,9 +264,126 @@ namespace debugclient
                                                 {
                                                     case "CKI":
                                                         {
-                                                            ConsoleExtension.PrintF("CLIENT <--- NEW COOKIE                 <--- " + address);
+                                                            ConsoleExtension.PrintF("Received new cookie.");
                                                             GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
                                                             File.WriteAllText("cookie.txt",GlobalVarPool.cookie);
+                                                            break;
+                                                        }
+                                                }
+                                                break;
+                                            }
+                                        case "INF":
+                                            {
+                                                switch (packetSID)
+                                                {
+                                                    case "ERR":
+                                                        {
+                                                            string errno = string.Empty;
+                                                            string errID = string.Empty;
+                                                            string message = string.Empty;
+                                                            try
+                                                            {
+                                                                errno = decryptedData.Split(';').Where(element => element.ToLower().Contains("errno")).ToArray()[0].Split('!')[1];
+                                                                errID = decryptedData.Split(';').Where(element => element.ToLower().Contains("code")).ToArray()[0].Split('!')[1];
+                                                                message = decryptedData.Split(';').Where(element => element.ToLower().Contains("message")).ToArray()[0].Split('!')[1];
+                                                            }
+                                                            catch
+                                                            {
+                                                                errno = "-1";
+                                                                errID = "UNKN";
+                                                                message = "UNKNOWN ERROR";
+                                                            }
+                                                            ConsoleExtension.PrintF(ConsoleColorExtension.Yellow + "[ERRNO " + errno + "] " + errID + ": " + message);
+                                                            break;
+                                                        }
+                                                    case "RET":
+                                                        {
+                                                            switch (decryptedData.Split('!')[1])
+                                                            {
+                                                                case "LOGIN_SUCCESSFUL":
+                                                                    {
+                                                                        
+                                                                        string previousUser = GlobalVarPool.currentUser;
+                                                                        GlobalVarPool.currentUser = "<" + GlobalVarPool.username + "@" + GlobalVarPool.serverName + ">";
+                                                                        ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
+                                                                        ConsoleExtension.PrintF("Successfully logged in as " + GlobalVarPool.username + "!");
+                                                                        break;
+                                                                    }
+                                                                case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Successfully created new user. \nPlease check your emails and use the \"ActivateAccount\" command to provide the 2FA code.");
+                                                                        break;
+                                                                    }
+                                                                case "LOGGED_OUT":
+                                                                    {
+                                                                        
+                                                                        string previousUser = GlobalVarPool.currentUser;
+                                                                        GlobalVarPool.currentUser = "<" + GlobalVarPool.serverName + ">";
+                                                                        if (GlobalVarPool.isRoot)
+                                                                        {
+                                                                            GlobalVarPool.isRoot = false;
+                                                                        }
+                                                                        ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
+                                                                        ConsoleExtension.PrintF("Logged out successfully.");
+                                                                        break;
+                                                                    }
+                                                                case "ALREADY_ADMIN":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Ok! You are already logged in as root.");
+                                                                        break;
+                                                                    }
+                                                                case "SEND_VERIFICATION_ADMIN_NEW_DEVICE":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Looks like you have never signed in into root account from this device. Please check your emails and use the \"AddAdminDevice\" command to commit the 2FA code to the server.");
+                                                                        break;
+                                                                    }
+                                                                case "SUCCESSFUL_ADMIN_LOGIN":
+                                                                    {
+                                                                        string previousUser = GlobalVarPool.currentUser;
+                                                                        GlobalVarPool.currentUser = "<root@" + GlobalVarPool.serverName + ">";
+                                                                        GlobalVarPool.isRoot = true;
+                                                                        ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
+                                                                        ConsoleExtension.PrintF(ConsoleColorExtension.Green + @"YOU ARE NOW ROOT!
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Beware of your actions.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.");
+                                                                        break;
+                                                                    }
+                                                                case "COOKIE_DOES_EXIST":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Ok! Cookie is VALID.");
+                                                                        break;
+                                                                    }
+                                                                case "COOKIE_DOES_NOT_EXIST":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Cookie is INVALID!");
+                                                                        Commands.GetCookie(new string[] { "getcookie" });
+                                                                        break;
+                                                                    }
+                                                                case "ACCOUNT_VERIFIED":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Your new account has successfully been activated. You may now log in using the \"login\" command.");
+                                                                        break;
+                                                                    }
+                                                                case "SEND_VERIFICATION_NEW_DEVICE":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Looks like you are trying to log in with a new device. Please check your emails and commit the 2FA code using the \"ConfirmNewDevice\" command.");
+                                                                        break;
+                                                                    }
+                                                                case "":
+                                                                    {
+                                                                        break;
+                                                                    }
+                                                            }
+                                                            break;
+                                                        }
+                                                    case "MIR":
+                                                        {
+                                                            ConsoleExtension.PrintF(ConsoleColorExtension.Green + decryptedData.Split('!')[1]);
                                                             break;
                                                         }
                                                 }

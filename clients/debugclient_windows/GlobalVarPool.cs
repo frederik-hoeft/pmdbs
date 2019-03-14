@@ -19,8 +19,11 @@ namespace debugclient
         public static string foreignRsaKey = string.Empty;
         public static string cookie = string.Empty;
         public static string currentUser = string.Empty;
+        public static string passwordHash = string.Empty;
         public static string serverName = string.Empty;
         public static string username = string.Empty;
+        public static string localAESkey = string.Empty;
+        public static bool isRoot = false;
         public static int port = 0;
         public static bool attemptConnection = true;
         public static bool debugging = false;
