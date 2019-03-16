@@ -21,9 +21,9 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.3-2a.19"
+VERSION = "0.3-3a.19"
 BUILD = "unstable"
-DATE = "Mar 02 2019"
+DATE = "Mar 16 2019"
 TIME = "22:24:14"
 
 
@@ -727,7 +727,9 @@ class DatabaseManagement():
 			# FREE RESOURCES
 			connection.close()
 			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
+			"0.3-3a.19"
 			Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
+			print(fetchMode)
 			return
 		
 	# CHECKS FOR SECURITY ISSUES
@@ -1563,7 +1565,7 @@ class Management():
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			# RETURN DATA TO CLIENT
-			returnData = "DTALOGmode%eq!USER_REQUEST!;msg%eq!" + str(clientLog) + "!;"
+			returnData = "DTALOGmode%eq$USER_REQUEST$§msg%eq$" + str(clientLog) + "$§"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
@@ -2013,7 +2015,6 @@ class Management():
 	# BAN A USER (ADMIN PRIVILEGES NEEDED)
 	def BanAccount(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
-		# username%eq!username!;duration%eq!duration_in_seconds!;
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
 		if not clientSocket == Server.admin:
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
@@ -2082,7 +2083,7 @@ class Management():
 		PrintSendToAdmin("SERVER ---> BANNED ACCOUNT             ---> " + clientAddress)
 		Log.ServerEventLog("BAN_BY_ACCOUNT", username + " has been banned for " + duration + " seconds!")
 		# KICK USER
-		Management.Kick("mode%eq!username!;target%eq!" + username + ";!", clientAddress, clientSocket, aesKey)
+		Management.Kick("mode%eq!username!;target%eq!" + username + "!;", clientAddress, clientSocket, aesKey)
 	
 	# ALLOWS CONNECTION TO SERVER AND SETS UP CLIENT HANDLER THREAD
 	def AllowConnection(clientAddress, clientSocket):
@@ -2284,9 +2285,9 @@ class Management():
 		if not code or not codeTime or codeAttempts == None or not codeType:
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
-		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
+		# CHECK IF ACCOUNT DELETION HAS BEEN SCHEDULED
 		if not codeType == "DELETE_ACCOUNT" or codeAttempts == -1:
-			Handle.Error("NCES", "NO_NEW_LOGIN_SCHEDULED", clientAddress, clientSocket, aesKey, True)
+			Handle.Error("NCES", "ACCOUNT_DELETION_NOT_SCHEDULED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
@@ -2342,7 +2343,7 @@ class Management():
 			connection.close()
 		# SEND CONFIRMATION TO CLIENT
 		PrintSendToAdmin("SERVER ---> ACCOUNT DELETED            ---> " + clientAddress)
-		returnData = "INFRETACCOUNT_DELETED_SUCCESSFULLY"
+		returnData = "INFRETmsg%eq!ACCOUNT_DELETED_SUCCESSFULLY!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 	
@@ -2888,7 +2889,7 @@ class Management():
 		# ALL UPDATED
 		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
-		returnData = "INFRETPASSWORD_CHANGED"
+		returnData = "INFRETmsg%eq!PASSWORD_CHANGED!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 
@@ -2977,7 +2978,7 @@ class Management():
 			html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
-			returnData = "INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;"
+			returnData = "INFRETmsg%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		elif mode == "DELETE_ACCOUNT":
@@ -2989,7 +2990,7 @@ class Management():
 			html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
-			returnData = "INFRETtodo%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;"
+			returnData = "INFRETmsg%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		else:
@@ -3038,15 +3039,38 @@ class Management():
 	# KICKS A CLIENT SPECIFIED BY THE COMMAND (CAN BE USERNAME, IP, IP:PORT)
 	def Kick(command, clientAddress, clientSocket, aesKey):
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
+		print(command)
 		if not clientSocket == Server.admin:
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# mode%eq!ipport!;target%eq!192.168.178.50:52336!
 		try:
 			# GET MODE AND TARGET
-			splittedCommands = command.split(";")
-			mode = splittedCommands[0].split("!")[1]
-			target = splittedCommands[1].split("!")[1]
+			creds = command.split(";")
+			# INITAILIZE VARIABLES TO STORE EXTRACTED VALUES
+			target = None
+			mode = None
+			# EXTRACT VALUES FROM PROVIDED COMMAND
+			try:
+				for credential in creds:
+					if "target" in credential:
+						target = credential.split("!")[1]
+					elif "mode" in credential:
+						mode = credential.split("!")[1]
+					elif len(credential) == 0:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+			except Exception as e:
+				# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+				Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+				return
+			# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
+			if not target or not mode:
+				Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+				return
 			# CHECK FOR SUPPORTED MODES
 			if mode == "ip":
 				# TRY REGEX --> EXCEPTION == INVALID COMMAND
@@ -3074,7 +3098,7 @@ class Management():
 					if not kicked:
 						# CLIENT NOT FOUND
 						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						returnData = "INFRETCLIENT_NOT_FOUND"
+						returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
 						# SEND DATA ENCRYPTED TO CLIENT
 						Network.SendEncrypted(clientSocket, aesKey, returnData)
 					# CLIENT HAS BEEN KICKED
@@ -3083,7 +3107,7 @@ class Management():
 						if not Server.admin == target:
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-							returnData = "INFRETKICKED_CLIENT"
+							returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 							# SEND DATA ENCRYPTED TO CLIENT
 							Network.SendEncrypted(clientSocket, aesKey, returnData)
 			elif mode == "ipport":
@@ -3114,7 +3138,7 @@ class Management():
 					if not kicked:
 						# CLIENT NOT FOUND
 						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						returnData = "INFRETCLIENT_NOT_FOUND"
+						returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
 						# SEND DATA ENCRYPTED TO CLIENT
 						Network.SendEncrypted(clientSocket, aesKey, returnData)
 					# CLIENT HAS BEEN KICKED
@@ -3123,7 +3147,7 @@ class Management():
 						if Server.admin == clientSocket:
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-							returnData = "INFRETCLIENT_KICKED"
+							returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 							# SEND DATA ENCRYPTED TO CLIENT
 							Network.SendEncrypted(clientSocket, aesKey, returnData)
 			elif mode == "username":
@@ -3150,7 +3174,7 @@ class Management():
 				if not kicked:
 					# CLIENT NOT FOUND
 					PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-					returnData = "INFRETCLIENT_NOT_FOUND"
+					returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
 					# SEND DATA ENCRYPTED TO CLIENT
 					Network.SendEncrypted(clientSocket, aesKey, returnData)
 				# CLIENT HAS BEEN KICKED
@@ -3159,7 +3183,7 @@ class Management():
 					if Server.admin == clientSocket:
 						# SEND CONFIRMATION TO ADMIN
 						PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-						returnData = "INFRETCLIENT_KICKED"
+						returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 						# SEND DATA ENCRYPTED TO CLIENT
 						Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# COMMAND IS INVALID
@@ -3406,7 +3430,7 @@ class Management():
 			return
 		else:
 			if not emailInUse == 0:
-				returnData = "INFERREMAIL_ALREADY_IN_USE"
+				returnData = "INFERRmessage%eq!EMAIL_ALREADY_IN_USE!;code%eq!MAIL!;"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> EMAIL ADDRESS IN USE       ---> " + clientAddress)
@@ -4133,7 +4157,7 @@ def PrintSendToAdmin(text):
 		hmacKeys = GetHMACkeys(Server.admin)
 		try:
 			Server.admin.send(b'\x01' + bytes("E" + encryptedData + CryptoHelper.CalculateHMAC(hmacKeys[0], hmacKeys[1], encryptedData), "utf-8") + b'\x04')
-		except SocketError as e:
+		except Exception as e:
 			Log.ServerEventLog("SOCKET_ERROR", str(e))
 			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
 
@@ -4583,7 +4607,7 @@ class Server(Thread):
 		print("------------------------------------------------")
 		print(NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ")")
 		print("for " + PYTHON)
-		print("Copyright (c) 2018 Frederik Hoeft")
+		print("Copyright (c) 2019 Frederik Hoeft")
 		print("All Rights Reserved.")
 		print("------------------------------------------------")
 		print("")
@@ -4639,418 +4663,482 @@ class ClientHandler():
 		keyExchangeFinished = False
 		message = ""
 		# AWAIT PACKETS FROM CLIENT
-		# BUFFER FOR HUGE PACKETS
-		buf = b''
-		# BREAK IF SERVER STOPPED
-		while not Server.stopped and not clientSocket.fileno() == -1:
-			receiving = True
-			# RECEIVE AND DUMP TO BUFFER UNTIL EOT FLAG IS FOUND
-			while receiving:
-				# LOAD DATA TO 32768 BYTE BUFFER --> DOES NOT REALLY MATTER: MAX. ETHERNET PACKET SIZE IS 1500 BYTES
-				data = clientSocket.recv(32768)
-				# CHECK IF ANY DATA HAS BEEN RECEIVED
-				if data:
-					# INITIALIZE ARRAY FOR PACKETS
-					dataPackets = None
-					# ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER----
-					# CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER IS EMPTY
-					if b'\x04' in data and len(buf) == 0:
-						# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
-						rawDataPackets = data.split(b'\x04')
-						# GRAB THE LAST PACKET
-						lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
-						# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
-						dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
-						# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
-						if not len(lastDataPacket) == 0:
-							buf += lastDataPacket
-						# SET RECEIVING TO FALSE TO BREAK THE LOOP
-						receiving = False
-					# CHECK IF PACKET CONTAINS DATA AND BUFFER IS NOT EMPTY
-					elif b'\x04' in data and not len(buf) == 0:
-						# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
-						rawDataPackets = data.split(b'\x04')
-						# APPEND BUFFER CONTENT TO FIRST PACKET
-						rawDataPackets[0] = buf + rawDataPackets[0]
-						# RESET THE BUFFER
-						buf = b''
-						# GRAB THE LAST PACKET
-						lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
-						# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
-						dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
-						# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
-						if not len(lastDataPacket) == 0:
-							buf += lastDataPacket
-						# SET RECEIVING TO FALSE TO BREAK THE LOOP
-						receiving = False
-					# THE PACKET DOES NOT CONTAIN ANY EOT FLAG
+		try:
+			# BUFFER FOR HUGE PACKETS
+			buf = b''
+			# BREAK IF SERVER STOPPED
+			while not Server.stopped and not clientSocket.fileno() == -1:
+				receiving = True
+				# RECEIVE AND DUMP TO BUFFER UNTIL EOT FLAG IS FOUND
+				while receiving:
+					# LOAD DATA TO 32768 BYTE BUFFER --> DOES NOT REALLY MATTER: MAX. ETHERNET PACKET SIZE IS 1500 BYTES
+					data = clientSocket.recv(32768)
+					# CHECK IF ANY DATA HAS BEEN RECEIVED
+					if data:
+						# INITIALIZE ARRAY FOR PACKETS
+						dataPackets = None
+						# ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER----
+						# CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER IS EMPTY
+						if b'\x04' in data and len(buf) == 0:
+							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
+							rawDataPackets = data.split(b'\x04')
+							# GRAB THE LAST PACKET
+							lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
+							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
+							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
+							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
+							if not len(lastDataPacket) == 0:
+								buf += lastDataPacket
+							# SET RECEIVING TO FALSE TO BREAK THE LOOP
+							receiving = False
+						# CHECK IF PACKET CONTAINS DATA AND BUFFER IS NOT EMPTY
+						elif b'\x04' in data and not len(buf) == 0:
+							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
+							rawDataPackets = data.split(b'\x04')
+							# APPEND BUFFER CONTENT TO FIRST PACKET
+							rawDataPackets[0] = buf + rawDataPackets[0]
+							# RESET THE BUFFER
+							buf = b''
+							# GRAB THE LAST PACKET
+							lastDataPacket = rawDataPackets[len(rawDataPackets)-1]
+							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
+							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
+							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
+							if not len(lastDataPacket) == 0:
+								buf += lastDataPacket
+							# SET RECEIVING TO FALSE TO BREAK THE LOOP
+							receiving = False
+						# THE PACKET DOES NOT CONTAIN ANY EOT FLAG
+						else:
+							# APPEND THE WHOLE RECEIVE BUFFER TO THE BUFFER AND REPEAT UNTIL EOT FLAG IS FOUND
+							buf += data
 					else:
-						# APPEND THE WHOLE RECEIVE BUFFER TO THE BUFFER AND REPEAT UNTIL EOT FLAG IS FOUND
-						buf += data
-				else:
-					isTcpFin = True
-					message = "RECEIVED_TCP_FIN"
-					return
-			# ITERATE OVER PACKET ARRAY
-			for dataPacket in dataPackets:
-				# ADMIN IS ALLOWED TO STAY CONNECTED IN SHUTDOWN SEQUENCE
-				if Server.running or Server.admin == clientSocket:
-					# CHECK FOR ADMIN PRIVILEGES (AND DISPLAY FANCY "ADMIN" BADGE)
-					if Server.admin == clientSocket and not "ADMIN" in clientAddress:
-						clientAddress = "ADMIN(" + clientAddress + ")"
-					elif not Server.admin == clientSocket and "ADMIN" in clientAddress:
-						clientAddress = address
-					# ----PACKET VALIDATION----
-					# CHECK IF SOH FLAG IS *NOT* FIRST CHARACTER
-					if not dataPacket[0] == b'\x01':
-						# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONINUE WITH NEXT PACKET
-						if dataPacket.count(b'\x01') == 0:
-							# PACKET IS INVALID
-							PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
-							continue
-						# IF THE PACKET CONTAINS A SOH FLAG BUT IT IS NOT IN THE BEGINNING REMOVE THE BEGINNING UNTIL SOH IS FIRST CHARACTER
-						elif dataPacket.count(b'\x01') == 1:
-							dataPacket = b'\x01' + dataPacket.split(b'\x01')[1]
-						# THE PACKET CONTAINS MORE THAN ONE SOH. SOMETHING WENT HORRIBLY WRONG
-						else:
-							PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
-							continue
-					# DECODE THE PACKET TO UTF-8 STRING
-					dataString = dataPacket[1:].decode("utf-8")
-					# GET PACKET SPECIFIER
-					packetSpecifier = dataString[:1]
-					# CHECK IF DATA IS UNENCRYPTED
-					if packetSpecifier == 'U':
-						# GET PACKETID
-						packetID = dataString[1:4]
-						# CHECK IF PACKET IS DEAUTH PACKET
-						if packetID == "FIN":
-							isDisconnected = True
-							# JUMP TO FINALLY AND FINISH CONNECTION
-							message = "RECEIVED_FIN"
-							return
-						elif packetID == "INI":
-							PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
-							# GET PACKET ID
-							packetSID = dataString[4:7]
-							# GET FORMAT
-							if packetSID == "XML":
-								isXmlClient = True
-								# SEND PUBLIC KEY
-								Network.Send(clientSocket, "KEYXMLkey%eq!" + Server.publicKeyXml + "!;")
-							elif packetSID == "PEM":
-								isXmlClient = False
-								# SEND PUBLIC KEY
-								Network.Send(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
+						isTcpFin = True
+						message = "RECEIVED_TCP_FIN"
+						return
+				# ITERATE OVER PACKET ARRAY
+				for dataPacket in dataPackets:
+					# ADMIN IS ALLOWED TO STAY CONNECTED IN SHUTDOWN SEQUENCE
+					if Server.running or Server.admin == clientSocket:
+						# CHECK FOR ADMIN PRIVILEGES (AND DISPLAY FANCY "ADMIN" BADGE)
+						if Server.admin == clientSocket and not "ADMIN" in clientAddress:
+							clientAddress = "ADMIN(" + clientAddress + ")"
+						elif not Server.admin == clientSocket and "ADMIN" in clientAddress:
+							clientAddress = address
+						# ----PACKET VALIDATION----
+						# CHECK IF SOH FLAG IS *NOT* FIRST CHARACTER
+						if not dataPacket[0] == b'\x01':
+							# IF THE PACKET DOES NOT CONTAIN A SOH FLAG PACKET IS INVALID CONINUE WITH NEXT PACKET
+							if dataPacket.count(b'\x01') == 0:
+								# PACKET IS INVALID
+								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
+								continue
+							# IF THE PACKET CONTAINS A SOH FLAG BUT IT IS NOT IN THE BEGINNING REMOVE THE BEGINNING UNTIL SOH IS FIRST CHARACTER
+							elif dataPacket.count(b'\x01') == 1:
+								dataPacket = b'\x01' + dataPacket.split(b'\x01')[1]
+							# THE PACKET CONTAINS MORE THAN ONE SOH. SOMETHING WENT HORRIBLY WRONG
 							else:
-								PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
-								message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
+								PrintSendToAdmin("SERVER <-#- [ERRNO 14] ISOH            -#-> " + clientAddress)
+								continue
+						# DECODE THE PACKET TO UTF-8 STRING
+						dataString = dataPacket[1:].decode("utf-8")
+						# GET PACKET SPECIFIER
+						packetSpecifier = dataString[:1]
+						# CHECK IF DATA IS UNENCRYPTED
+						if packetSpecifier == 'U':
+							# GET PACKETID
+							packetID = dataString[1:4]
+							# CHECK IF PACKET IS DEAUTH PACKET
+							if packetID == "FIN":
+								isDisconnected = True
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "RECEIVED_FIN"
 								return
-							PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
-						# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
-						elif packetID in ("EXC", "DTA", "INF", "REQ", "MNG", "LOG", "KEX"):
-							# RECEIVED SOME OTHER PACKET OVER UNENCRYPTED CONNECTION
-							# UNSECURE CONNECTION
-							PrintSendToAdmin("SERVER <-#- [ERRNO 03] USEC             -#-> " + clientAddress)
-							# JUMP TO FINALLY AND FINISH CONNECTION
-							message = "SECURITY_EXCEPTION_RECEIVED_SECURE_PACKET_OVER_UNSECURE_CONNECTION"
-							return
-						else:
-							# RECEIVED INVALID PACKET ID
-							PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
-							# JUMP TO FINALLY AND FINISH CONNECTION
-							message = "GENERIC_EXCEPTION_INVALID_PACKET_ID"
-							return
-					# CHECK IF PACKET "IS KEY EXCHANGE" (RSA ENCRYPTED) 
-					elif packetSpecifier == 'K':
-						# GET PACKETID
-						packetID = dataString[1:4]
-						if packetID == "CKE":
-							PrintSendToAdmin("SERVER <--- CLIENT KEY EXCHANGE        <--- " + clientAddress)
-							command = dataString[4:]
-							# EXAMPLE COMMAND = key%eq!key!;nonce%eq!encrypted_nonce!;
-							cryptoInformation = command.split(";")
-							key = None
-							cryptNonce = None
-							# EXTRACT KEY AND NONCE FROM PACKET
-							try:
-								for info in cryptoInformation:
-									if "key" in info:
-										key = info.split("!")[1]
-									elif "nonce" in info:
-										cryptNonce = info.split("!")[1]
-									elif len(info) == 0:
-										pass
-									else:
-										# COMMAND CONTAINED MORE INFORMATION THAN REQUESTED
-										Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, None, False)
-										message = "GENERIC_EXCEPTION_TOO_MANY_ARGUMENTS"
-										return
-							except:
-								# COMMAND HAS UNKNOWN FORMATTING
-								Handle.Error("ICMD", "INVALID_FORMATTING", clientAddress, clientSocket, None, False)
-								message = "GENERIC_EXCEPTION_INVALID_FORMATTING"
-								return
-							# COMMAND DID NOT CONTAIN ALL INFORMATION
-							if not cryptNonce or not key:
-								Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
-								message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
-								return
-							try:
-								if isXmlClient:
-									clientPublicKey = CryptoHelper.RSAPublicXmlToPem(key)
+							elif packetID == "INI":
+								PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
+								# GET PACKET ID
+								packetSID = dataString[4:7]
+								# GET FORMAT
+								if packetSID == "XML":
+									isXmlClient = True
+									# SEND PUBLIC KEY
+									Network.Send(clientSocket, "KEYXMLkey%eq!" + Server.publicKeyXml + "!;")
+								elif packetSID == "PEM":
+									isXmlClient = False
+									# SEND PUBLIC KEY
+									Network.Send(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
 								else:
-									clientPublicKey = key
-							except:
-								Handle.Error("IRSA", "INVALID_RSA_KEY", clientAddress, clientSocket, None, False)
-								message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
+									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+									message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
+									return
+								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
+							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
+							elif packetID in ("EXC", "DTA", "INF", "REQ", "MNG", "LOG", "KEX"):
+								# RECEIVED SOME OTHER PACKET OVER UNENCRYPTED CONNECTION
+								# UNSECURE CONNECTION
+								PrintSendToAdmin("SERVER <-#- [ERRNO 03] USEC             -#-> " + clientAddress)
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "SECURITY_EXCEPTION_RECEIVED_SECURE_PACKET_OVER_UNSECURE_CONNECTION"
 								return
-							# GENERATE 256 BIT AES KEY
-							aesKey = CryptoHelper.AESKeyGenerator()
-							# PrintSendToAdmin("AES: " + aesKey)
-							# ENCRYPT AES KEY USING RSA 4096
-							decNonce = CryptoHelper.RSADecrypt(cryptNonce, Server.serverPrivateKey)
-							CryptoHelper.GenerateHMACkey(aesKey, decNonce, clientSocket)
-							message = "SKEkey%eq!" + aesKey + "!;nonce%eq!" + decNonce + "!;"
-							encryptedMessage = CryptoHelper.RSAEncrypt(message, clientPublicKey)
-							# CONVERT KEY TO BYTES
-							finalBytes = b'\x01' + bytes("K" + encryptedMessage, "utf-8") + b'\x04'
-							# SEND KEY TO CLIENT
-							clientSocket.send(finalBytes)
-							PrintSendToAdmin("SERVER ---> SYMMETRIC KEY EXCHANGE     ---> " + clientAddress)
-						else:
-							# RECEIVED INVALID PACKET ID
-							PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
-							# JUMP TO FINALLY AND FINISH CONNECTION
-							message = "GENERIC_EXCEPTION_INVALID_PACKET_ID"
-							return
-					# CHECK IF PACKET IS AES ENCRYPTED
-					elif packetSpecifier == 'E':
-						# CREATE AES CIPHER
-						hmacKeys = GetHMACkeys(clientSocket)
-						if not CryptoHelper.VerifyHMAC(hmacKeys[0], hmacKeys[1], dataString[1:]):
-							Handle.Error("IMAC", None, clientAddress, clientSocket, None, False)
-							message = "SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM"
-							return
-						aesDecryptor = AESCipher(aesKey)
-						# DECRYPT DATA
-						decryptedData = aesDecryptor.decrypt(dataString[1:-44])
-						# DEBUG PrintSendToAdmin DATA
-						# GET PACKET ID
-						packetID = decryptedData[:3]
-						# GET PACKET SUB-ID
-						packetSID = decryptedData[3:6]
-						if packetID == "KEX":
-							if packetSID == "ACK":
-								command = decryptedData[6:]
-								nonce = None
-								if "nonce" in command:
-									nonce = command.split("!")[1]
-								else:
-									# TOO FEW ARGUMENTS
+							else:
+								# RECEIVED INVALID PACKET ID
+								PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
+								# JUMP TO FINALLY AND FINISH CONNECTION
+								message = "GENERIC_EXCEPTION_INVALID_PACKET_ID"
+								return
+						# CHECK IF PACKET "IS KEY EXCHANGE" (RSA ENCRYPTED) 
+						elif packetSpecifier == 'K':
+							# GET PACKETID
+							packetID = dataString[1:4]
+							if packetID == "CKE":
+								PrintSendToAdmin("SERVER <--- CLIENT KEY EXCHANGE        <--- " + clientAddress)
+								command = dataString[4:]
+								# EXAMPLE COMMAND = key%eq!key!;nonce%eq!encrypted_nonce!;
+								cryptoInformation = command.split(";")
+								key = None
+								cryptNonce = None
+								# EXTRACT KEY AND NONCE FROM PACKET
+								try:
+									for info in cryptoInformation:
+										if "key" in info:
+											key = info.split("!")[1]
+										elif "nonce" in info:
+											cryptNonce = info.split("!")[1]
+										elif len(info) == 0:
+											pass
+										else:
+											# COMMAND CONTAINED MORE INFORMATION THAN REQUESTED
+											Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, None, False)
+											message = "GENERIC_EXCEPTION_TOO_MANY_ARGUMENTS"
+											return
+								except:
+									# COMMAND HAS UNKNOWN FORMATTING
+									Handle.Error("ICMD", "INVALID_FORMATTING", clientAddress, clientSocket, None, False)
+									message = "GENERIC_EXCEPTION_INVALID_FORMATTING"
+									return
+								# COMMAND DID NOT CONTAIN ALL INFORMATION
+								if not cryptNonce or not key:
 									Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
 									message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
 									return
-								# ENCRYPT DATA
-								returnData = "KEXACKnonce%eq!" + nonce + "!;"
-								# SEND DATA ENCRYPTED TO CLIENT
-								Network.SendEncrypted(clientSocket, aesKey, returnData)
-								PrintSendToAdmin("SERVER <--- ACKNOWLEDGE                ---> " + clientAddress)
-								PrintSendToAdmin("SERVER <--- KEY EXCHANGE FINISHED      ---> " + clientAddress)
-								keyExchangeFinished = True
+								try:
+									if isXmlClient:
+										clientPublicKey = CryptoHelper.RSAPublicXmlToPem(key)
+									else:
+										clientPublicKey = key
+								except:
+									Handle.Error("IRSA", "INVALID_RSA_KEY", clientAddress, clientSocket, None, False)
+									message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
+									return
+								# GENERATE 256 BIT AES KEY
+								aesKey = CryptoHelper.AESKeyGenerator()
+								# PrintSendToAdmin("AES: " + aesKey)
+								# ENCRYPT AES KEY USING RSA 4096
+								decNonce = CryptoHelper.RSADecrypt(cryptNonce, Server.serverPrivateKey)
+								CryptoHelper.GenerateHMACkey(aesKey, decNonce, clientSocket)
+								message = "SKEkey%eq!" + aesKey + "!;nonce%eq!" + decNonce + "!;"
+								encryptedMessage = CryptoHelper.RSAEncrypt(message, clientPublicKey)
+								# CONVERT KEY TO BYTES
+								finalBytes = b'\x01' + bytes("K" + encryptedMessage, "utf-8") + b'\x04'
+								# SEND KEY TO CLIENT
+								clientSocket.send(finalBytes)
+								PrintSendToAdmin("SERVER ---> SYMMETRIC KEY EXCHANGE     ---> " + clientAddress)
 							else:
-								PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+								# RECEIVED INVALID PACKET ID
+								PrintSendToAdmin("SERVER <-#- [ERRNO 04] IPID            -#-> " + clientAddress)
 								# JUMP TO FINALLY AND FINISH CONNECTION
-								message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
+								message = "GENERIC_EXCEPTION_INVALID_PACKET_ID"
 								return
-						# REQUEST PACKETS
-						elif packetID == "REQ" and keyExchangeFinished:
-							# INSERT REQUEST
-							if packetSID == "INS":
-								PrintSendToAdmin("SERVER <--- DB-QUERY: INSERT DATA      <--- " + clientAddress)
-								dbThread = Thread(target = DatabaseManagement.Insert, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							# UPDATE REQUEST
-							elif packetSID == "UPD":
-								PrintSendToAdmin("SERVER <--- DB-QUERY: UPDATE DATA      <--- " + clientAddress)
-								dbThread = Thread(target = DatabaseManagement.Update, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							# SELECT REQUEST
-							elif packetSID == "SEL":
-								PrintSendToAdmin("SERVER <--- DB-QUERY: SELECT DATA      <--- " + clientAddress)
-								dbThread = Thread(target = DatabaseManagement.Select, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							# HEADER REQUEST FOR DATABASE SYNCRONIZATION
-							elif packetSID == "SYN":
-								PrintSendToAdmin("SERVER <--- DB-QUERY: SYNCHRONIZE      <--- " + clientAddress)
-								dbThread = Thread(target = DatabaseManagement.Sync, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							# DELETE REQUEST
-							elif packetSID == "DEL":
-								PrintSendToAdmin("SERVER <--- DB-QUERY: DELETE DATA      <--- " + clientAddress)
-								dbThread = Thread(target = DatabaseManagement.Delete, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							else:
-								PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
-								# JUMP TO FINALLY AND FINISH CONNECTION
-								message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
+						# CHECK IF PACKET IS AES ENCRYPTED
+						elif packetSpecifier == 'E':
+							# CREATE AES CIPHER
+							hmacKeys = GetHMACkeys(clientSocket)
+							if not CryptoHelper.VerifyHMAC(hmacKeys[0], hmacKeys[1], dataString[1:]):
+								Handle.Error("IMAC", None, clientAddress, clientSocket, None, False)
+								message = "SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM"
 								return
-						# ACCOUNT MANAGEMENT PACKETS 
-						elif packetID == "MNG" and keyExchangeFinished:
-							# ADMIN LOGIN
-							if packetSID == "ADM":
-								PrintSendToAdmin("SERVER <--- LOGIN AS ADMIN             <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.LoginAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# USER REGISTRATION
-							elif packetSID == "REG":
-								PrintSendToAdmin("SERVER <--- REGISTER NEW USER          <--- " + clientAddress)
-								# REGISTER IN DATABASE
-								dbThread = Thread(target = Management.Register, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							# USER LOGIN
-							elif packetSID == "LGI":
-								PrintSendToAdmin("SERVER <--- LOGIN REQUEST              <--- " + clientAddress)
-								dbThread = Thread(target = Management.Login, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								dbThread.start()
-							# REMOTE SERVER SHUTDOWN
-							elif packetSID == "SHT":
-								PrintSendToAdmin("SERVER <--- SHUTDOWN REQUEST           <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.Shutdown, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# REMOTE SERVER REBOOT
-							elif packetSID == "RBT":
-								PrintSendToAdmin("SERVER <--- REBOOT REQUEST             <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.Reboot, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# DUMP LOGS
-							elif packetSID == "LOG":
-								PrintSendToAdmin("SERVER <--- LOG DUMP REQUEST           <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.DumpEventLog, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# USER LOGOUT
-							elif packetSID == "LGO":
-								PrintSendToAdmin("SERVER <--- LOGOUT REQUEST             <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.Logout, args = (clientAddress, clientSocket, aesKey, False))
-								mgmtThread.start()
-							# LIST CONNECTED CLIENTS
-							elif packetSID == "LIC":
-								PrintSendToAdmin("SERVER <--- DISPLAY CLIENTS            <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.ListClients, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# KICK CLIENT(S)
-							elif packetSID == "KIK":
-								PrintSendToAdmin("SERVER <--- KICK CLIENT                <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.Kick, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# INITIALIZE PASSWORD CHANGE
-							elif packetSID == "IPC":
-								PrintSendToAdmin("SERVER <--- INITIALIZE PASSWORD CHANGE <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# INITAILIZE ACCOUNT DELETION
-							elif packetSID == "IAD":
-								PrintSendToAdmin("SERVER <--- INITIALIZE DELETE ACCOUNT  <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# COMMIT PASSWORD CHANGE
-							elif packetSID == "CPC":
-								PrintSendToAdmin("SERVER <--- COMMIT PASSWORD CHANGE     <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.PasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# GET NEW COOKIE
-							elif packetSID == "CKI":
-								PrintSendToAdmin("SERVER <--- REQUEST NEW COOKIE         <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.RequestCookie, args = (clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# PROVIDE VALIDATION CODE FOR NEW DEVICE
-							elif packetSID == "CND":
-								PrintSendToAdmin("SERVER <--- VALIDATE NEW DEVICE        <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.LoginNewDevice, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# PROVIDE ACTIVATION CODE FOR ACCOUNT
-							elif packetSID == "VER":
-								PrintSendToAdmin("SERVER <--- ACTIVATE ACCOUNT           <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.EmailVerification, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# PROVIDE VALIDATION CODE TO DELETE ACCOUNT
-							elif packetSID == "CAD":
-								PrintSendToAdmin("SERVER <--- DELETE ACCOUNT             <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.DeleteAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# BAN CLIENT
-							elif packetSID == "BAN":
-								PrintSendToAdmin("SERVER <--- BAN USER BY IP             <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.Ban, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
-								mgmtThread.start()
-							# BAN ACCOUNT
-							elif packetSID == "BNA":
-								PrintSendToAdmin("SERVER <--- BAN ACCOUNT                <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.BanAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# PROVIDE VALIDATION CODE FOR NEW ADMIN DEVICE
-							elif packetSID == "NAD":
-								PrintSendToAdmin("SERVER <--- VALIDATE NEW ADMIN DEVICE  <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.LoginNewAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# INITIALIZE ADMIN PASSWORD CHANGE
-							elif packetSID == "APR":
-								PrintSendToAdmin("SERVER <--- INITIALIZE ADMIN-PW CHANGE <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.AdminPasswordChangeRequest, args = (clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# COMMIT ADMIN PASSWORD CHANGE
-							elif packetSID == "APC":
-								PrintSendToAdmin("SERVER <--- COMMIT ADMIN-PW CHANGE     <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# REQUEST MASTER-PASSWORD HASH --> DANGEROUS!!! use CredentialCheckProvider() INSTEAD
-							#elif packetSID == "PWH":
-							#	PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
-							#	mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-							#	mgmtThread.start()
-							# CHANGE EMAIL ADDRESS (ONLY IF ACCOUNT IS NOT YET ACTIVATED)
-							elif packetSID == "CEA":
-								PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.ChangeEmailAddress, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# CHECK IF COOKIE EXISTS
-							elif packetSID == "CCK":
-								PrintSendToAdmin("SERVER <--- CHECK COOKIE               <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.CheckCookie, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# GET ACCOUNT ACTIVITY
-							elif packetSID == "GAA":
-								PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT ACTIVITY   <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.GetAccountActivity, args = (clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# RESEND 2FA CODE
-							elif packetSID == "RTC":
-								PrintSendToAdmin("SERVER <--- RESEND 2FA CODE            <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.ResendCode, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# CHANGE NAME OF USER USED IN MESSAGES
-							elif packetSID == "CHN":
-								PrintSendToAdmin("SERVER <--- REQUEST NAME CHANGE        <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.ChangeName, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							# CHECK CREDENTIALS IN CASE OF PASSWORD CHANGES
-							elif packetSID == "CCR":
-								PrintSendToAdmin("SERVER <--- CREDENTIAL CHECK REQUEST   <--- " + clientAddress)
-								mgmtThread = Thread(target = Management.CredentialCheckProvider, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								mgmtThread.start()
-							else:
-								PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
-								# JUMP TO FINALLY AND FINISH CONNECTION
-								message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
-								return
+							aesDecryptor = AESCipher(aesKey)
+							# DECRYPT DATA
+							decryptedData = aesDecryptor.decrypt(dataString[1:-44])
+							# DEBUG PrintSendToAdmin DATA
+							# GET PACKET ID
+							packetID = decryptedData[:3]
+							# GET PACKET SUB-ID
+							packetSID = decryptedData[3:6]
+							if packetID == "KEX":
+								if packetSID == "ACK":
+									command = decryptedData[6:]
+									nonce = None
+									if "nonce" in command:
+										nonce = command.split("!")[1]
+									else:
+										# TOO FEW ARGUMENTS
+										Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
+										message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
+										return
+									# ENCRYPT DATA
+									returnData = "KEXACKnonce%eq!" + nonce + "!;"
+									# SEND DATA ENCRYPTED TO CLIENT
+									Network.SendEncrypted(clientSocket, aesKey, returnData)
+									PrintSendToAdmin("SERVER <--- ACKNOWLEDGE                ---> " + clientAddress)
+									PrintSendToAdmin("SERVER <--- KEY EXCHANGE FINISHED      ---> " + clientAddress)
+									keyExchangeFinished = True
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+									message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
+									return
+							# REQUEST PACKETS
+							elif packetID == "REQ" and keyExchangeFinished:
+								# INSERT REQUEST
+								if packetSID == "INS":
+									PrintSendToAdmin("SERVER <--- DB-QUERY: INSERT DATA      <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Insert, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# UPDATE REQUEST
+								elif packetSID == "UPD":
+									PrintSendToAdmin("SERVER <--- DB-QUERY: UPDATE DATA      <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Update, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# SELECT REQUEST
+								elif packetSID == "SEL":
+									PrintSendToAdmin("SERVER <--- DB-QUERY: SELECT DATA      <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Select, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# HEADER REQUEST FOR DATABASE SYNCRONIZATION
+								elif packetSID == "SYN":
+									PrintSendToAdmin("SERVER <--- DB-QUERY: SYNCHRONIZE      <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Sync, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# DELETE REQUEST
+								elif packetSID == "DEL":
+									PrintSendToAdmin("SERVER <--- DB-QUERY: DELETE DATA      <--- " + clientAddress)
+									dbThread = Thread(target = DatabaseManagement.Delete, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+									message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
+									return
+							# ACCOUNT MANAGEMENT PACKETS 
+							elif packetID == "MNG" and keyExchangeFinished:
+								# ADMIN LOGIN
+								if packetSID == "ADM":
+									PrintSendToAdmin("SERVER <--- LOGIN AS ADMIN             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.LoginAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# USER REGISTRATION
+								elif packetSID == "REG":
+									PrintSendToAdmin("SERVER <--- REGISTER NEW USER          <--- " + clientAddress)
+									# REGISTER IN DATABASE
+									dbThread = Thread(target = Management.Register, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# USER LOGIN
+								elif packetSID == "LGI":
+									PrintSendToAdmin("SERVER <--- LOGIN REQUEST              <--- " + clientAddress)
+									dbThread = Thread(target = Management.Login, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									dbThread.start()
+								# REMOTE SERVER SHUTDOWN
+								elif packetSID == "SHT":
+									PrintSendToAdmin("SERVER <--- SHUTDOWN REQUEST           <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Shutdown, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# REMOTE SERVER REBOOT
+								elif packetSID == "RBT":
+									PrintSendToAdmin("SERVER <--- REBOOT REQUEST             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Reboot, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# DUMP LOGS
+								elif packetSID == "LOG":
+									PrintSendToAdmin("SERVER <--- LOG DUMP REQUEST           <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.DumpEventLog, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# USER LOGOUT
+								elif packetSID == "LGO":
+									PrintSendToAdmin("SERVER <--- LOGOUT REQUEST             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Logout, args = (clientAddress, clientSocket, aesKey, False))
+									mgmtThread.start()
+								# LIST CONNECTED CLIENTS
+								elif packetSID == "LIC":
+									PrintSendToAdmin("SERVER <--- DISPLAY CLIENTS            <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ListClients, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# KICK CLIENT(S)
+								elif packetSID == "KIK":
+									PrintSendToAdmin("SERVER <--- KICK CLIENT                <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Kick, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# INITIALIZE PASSWORD CHANGE
+								elif packetSID == "IPC":
+									PrintSendToAdmin("SERVER <--- INITIALIZE PASSWORD CHANGE <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# INITAILIZE ACCOUNT DELETION
+								elif packetSID == "IAD":
+									PrintSendToAdmin("SERVER <--- INITIALIZE DELETE ACCOUNT  <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# COMMIT PASSWORD CHANGE
+								elif packetSID == "CPC":
+									PrintSendToAdmin("SERVER <--- COMMIT PASSWORD CHANGE     <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.PasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# GET NEW COOKIE
+								elif packetSID == "CKI":
+									PrintSendToAdmin("SERVER <--- REQUEST NEW COOKIE         <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.RequestCookie, args = (clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# PROVIDE VALIDATION CODE FOR NEW DEVICE
+								elif packetSID == "CND":
+									PrintSendToAdmin("SERVER <--- VALIDATE NEW DEVICE        <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.LoginNewDevice, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# PROVIDE ACTIVATION CODE FOR ACCOUNT
+								elif packetSID == "VER":
+									PrintSendToAdmin("SERVER <--- ACTIVATE ACCOUNT           <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.EmailVerification, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# PROVIDE VALIDATION CODE TO DELETE ACCOUNT
+								elif packetSID == "CAD":
+									PrintSendToAdmin("SERVER <--- DELETE ACCOUNT             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.DeleteAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# BAN CLIENT
+								elif packetSID == "BAN":
+									PrintSendToAdmin("SERVER <--- BAN USER BY IP             <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Ban, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
+									mgmtThread.start()
+								# BAN ACCOUNT
+								elif packetSID == "BNA":
+									PrintSendToAdmin("SERVER <--- BAN ACCOUNT                <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.BanAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# PROVIDE VALIDATION CODE FOR NEW ADMIN DEVICE
+								elif packetSID == "NAD":
+									PrintSendToAdmin("SERVER <--- VALIDATE NEW ADMIN DEVICE  <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.LoginNewAdmin, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# INITIALIZE ADMIN PASSWORD CHANGE
+								elif packetSID == "APR":
+									PrintSendToAdmin("SERVER <--- INITIALIZE ADMIN-PW CHANGE <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AdminPasswordChangeRequest, args = (clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# COMMIT ADMIN PASSWORD CHANGE
+								elif packetSID == "APC":
+									PrintSendToAdmin("SERVER <--- COMMIT ADMIN-PW CHANGE     <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# REQUEST MASTER-PASSWORD HASH --> DANGEROUS!!! use CredentialCheckProvider() INSTEAD
+								#elif packetSID == "PWH":
+								#	PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
+								#	mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+								#	mgmtThread.start()
+								# CHANGE EMAIL ADDRESS (ONLY IF ACCOUNT IS NOT YET ACTIVATED)
+								elif packetSID == "CEA":
+									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ChangeEmailAddress, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHECK IF COOKIE EXISTS
+								elif packetSID == "CCK":
+									PrintSendToAdmin("SERVER <--- CHECK COOKIE               <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.CheckCookie, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# GET ACCOUNT ACTIVITY
+								elif packetSID == "GAA":
+									PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT ACTIVITY   <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.GetAccountActivity, args = (clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# RESEND 2FA CODE
+								elif packetSID == "RTC":
+									PrintSendToAdmin("SERVER <--- RESEND 2FA CODE            <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ResendCode, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHANGE NAME OF USER USED IN MESSAGES
+								elif packetSID == "CHN":
+									PrintSendToAdmin("SERVER <--- REQUEST NAME CHANGE        <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.ChangeName, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHECK CREDENTIALS IN CASE OF PASSWORD CHANGES
+								elif packetSID == "CCR":
+									PrintSendToAdmin("SERVER <--- CREDENTIAL CHECK REQUEST   <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.CredentialCheckProvider, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								else:
+									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
+									# JUMP TO FINALLY AND FINISH CONNECTION
+									message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
+									return
+						else:
+							# INVALID PACKET SPECIFIER
+							PrintSendToAdmin("SERVER <-#- [ERRNO 05] IPSP             -#-> " + clientAddress)
+							message = "GENERIC_EXCEPTION_INVALID_PACKET_SPECIFIER"
+							return
 					else:
-						# INVALID PACKET SPECIFIER
-						PrintSendToAdmin("SERVER <-#- [ERRNO 05] IPSP             -#-> " + clientAddress)
-						message = "GENERIC_EXCEPTION_INVALID_PACKET_SPECIFIER"
 						return
+		except SocketError as SOCKET_ERROR:
+			if SOCKET_ERROR.errno == errno.ETIMEDOUT:
+				isTimedOut = True
+			else:
+				# SET SOCKET ERROR FLAG
+				isSocketError = True
+		# FREE THE SOCKET ONCE THE CLIENT DISCONNECTS OR THE CONNECTION FAILS
+		finally:
+			# SERVER HAS BEEN STOPPED
+			if Server.stopped or clientSocket.fileno() == -1:
+				exit()
+			# CHECK IF SOCKET ERROR OCCURED
+			elif isSocketError:
+				# CLOSE THE CONNECTION
+				clientSocket.close()
+				# REMOVE CLIENT FROM ALL LISTS
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				Management.Unlist(clientSocket)
+				PrintSendToAdmin("SERVER <-x- DISCONNECTED: ERROR        -x-> " + clientAddress)
+			# CHECK IF A TCP FIN HASH BEEN RECEIVED
+			elif isTcpFin:
+				# CHECK IF DISCONNECT MESSAGE HAS ALREADY BEEN SHOWN
+				disconnectMessageShown = True
+				# ITERATE OVER ALL LISTE CLIENTS
+				for client in Server.allClients:
+					# IF THERE IS NOT MATCH THERE IS NO NEED TO SHOW THE MESSAGE AGAIN
+					if clientSocket in client:
+						disconnectMessageShown = False
+						break
+				# REMOVE CLIENT FROM LISTING
+				Management.Unlist(clientSocket)
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				# SEND TCP FIN
+				clientSocket.shutdown(socket.SHUT_RDWR)
+				# CLOSE SOCKET
+				clientSocket.close()
+				# CHECK IF MESSAGE FLAG HAS BEEN SET
+				if not disconnectMessageShown:
+					# SHOW DISCONNECTED-MESSAGE
+					PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + clientAddress)
+			elif isTimedOut:
+				clientSocket.close()
+				# REMOVE CLIENT FROM ALL LISTS
+				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				Management.Unlist(clientSocket)
+				PrintSendToAdmin("SERVER <-x- DISCONNECTED: TIMEOUT      -x-> " + clientAddress)
+			else:
+				# LOGOUT CLIENT
+				if isDisconnected:
+					# REMOVE CLIENT FROM LISTING
+					Management.Unlist(clientSocket)
+					# REMOVE CLIENT FROM AUTHORIZED CLIENTS
+					Management.Logout(clientAddress, clientSocket, aesKey, False)
+					# SEND TCP FIN
+					clientSocket.shutdown(socket.SHUT_RDWR)
+					# CLOSE SOCKET
+					clientSocket.close()
+					PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + clientAddress)
+				elif not Server.running:
+					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, False)
 				else:
-					return
-
+					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					Management.Disconnect(clientSocket, message, clientAddress, False)
 		
 # INITIALIZE THE SERVER
 ServerThread = Server()
