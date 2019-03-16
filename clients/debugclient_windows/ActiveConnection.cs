@@ -12,31 +12,84 @@ namespace debugclient
 {
     public struct ActiveConnection
     {
-        
-        //public Boolean isDisconnected = false;
-        public static void Start(string ip, int port)
+        public static void Start()
         {
+            GlobalVarPool.threadKilled = false;
+            string ip = GlobalVarPool.REMOTE_ADDRESS;
+            int port = GlobalVarPool.REMOTE_PORT;
             Boolean isDisconnected = false;
             Boolean isSocketError = false;
             Boolean isTcpFin = false;
-            string address = ip + ":" + port;
-
-            //IPHostEntry entry = Dns.GetHostEntry("th3fr3d.ddns.net");
-            IPAddress ipAddress = IPAddress.Parse(ip);
-            //IPAddress ipAddress = entry.AddressList[0];
+            IPAddress ipAddress;
+            try
+            {
+                if (GlobalVarPool.ADDRESS_IS_DNS)
+                {
+                    IPHostEntry entry = Dns.GetHostEntry(ip);
+                    ipAddress = entry.AddressList[0];
+                }
+                else
+                {
+                    ipAddress = IPAddress.Parse(ip);
+                }
+            }
+            catch (Exception e)
+            {
+                ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Unable to resolve + " + ip + " Error message: " + e.ToString());
+                return;
+            }
+            while (GlobalVarPool.serverName.Equals(string.Empty))
+            {
+                Thread.Sleep(500);
+            }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
             GlobalVarPool.clientSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             GlobalVarPool.clientSocket.Connect(server);
-            ConsoleExtension.PrintF("Successfully connected to " + ip + ":" + port + "!");
+            ip = ipAddress.ToString();
+            string address = ip + ":" + port;
+            ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully connected to " + ip + ":" + port + "!");
+            if (!GlobalVarPool.bootCompleted)
+            {
+                ConsoleExtension.PrintF("\n");
+                ConsoleExtension.PrintF(@"                      _ _         _    _ _   _ _ ");
+                ConsoleExtension.PrintF(@"                     | | |       | |  | | | (_) |");
+                ConsoleExtension.PrintF(@"  _ __  _ __ ___   __| | |__  ___| |  | | |_ _| |");
+                ConsoleExtension.PrintF(@" | '_ \| '_ ` _ \ / _` | '_ \/ __| |  | | __| | |");
+                ConsoleExtension.PrintF(@" | |_) | | | | | | (_| | |_) \__ \ |__| | |_| | |");
+                ConsoleExtension.PrintF(@" | .__/|_| |_| |_|\__,_|_.__/|___/\____/ \__|_|_|");
+                ConsoleExtension.PrintF(@" | |                                             ");
+                ConsoleExtension.PrintF(@" |_|                                             ");
+                ConsoleExtension.PrintF("--------------------------------------------------");
+                ConsoleExtension.PrintF("pmdbsUtil " + GlobalVarPool.CLIENT_VERSION + " (" + GlobalVarPool.CLIENT_BUILD + ", Mar 16 2019, 16:44:23)");
+                ConsoleExtension.PrintF("for .NET Framework 4.7.2 - MS Windows");
+                ConsoleExtension.PrintF("Copyright (c) Frederik Hoeft 2019");
+                ConsoleExtension.PrintF("All Rigths Reserverd.");
+                ConsoleExtension.PrintF("--------------------------------------------------");
+                GlobalVarPool.bootCompleted = true;
+            }
+            string prevUser = GlobalVarPool.currentUser;
+            GlobalVarPool.currentUser = "<" + GlobalVarPool.serverName + ">";
+            if (GlobalVarPool.isRoot)
+            {
+                GlobalVarPool.isRoot = false;
+            }
+            else if (GlobalVarPool.isUser)
+            {
+                GlobalVarPool.isUser = false;
+            }
+            GlobalVarPool.connected = false;
+            ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(prevUser, GlobalVarPool.currentUser);
+            ConsoleExtension.PrintF("You are now online. Use \"disconnect\" to disconnect.");
             ConsoleExtension.PrintF("\n");
             ConsoleExtension.PrintF("CLIENT ---> CONNECTED                  <--- " + address);
-            GlobalVarPool.attemptConnection = false;
+            GlobalVarPool.connected = true;
             GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINIXML\x04"));
             ConsoleExtension.PrintF("CLIENT ---> CLIENT HELLO               ---> " + address);
             //LINE 1225 IN DEBUGCLIENT.PY BELOW;
             // AWAIT PACKETS FROM SERVER
             try
             {
+                GlobalVarPool.ThreadIDs.Add(Thread.CurrentThread.ManagedThreadId);
                 // INITIALIZE BUFFER FOR HUGE PACKETS (>32 KB)
                 List<byte> buffer = new List<byte>();
                 // INITIALIZE 32 KB RECEIVE BUFFER FOR INCOMING DATA
@@ -63,6 +116,7 @@ namespace debugclient
                             }
                             ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
                             // BREAK ENDLESS LOOP AND JUMP TO CATCH
+                            GlobalVarPool.threadKilled = true;
                             throw new SocketException { Source = "RST" };
                         }
                         // ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER
@@ -163,8 +217,19 @@ namespace debugclient
                                     {
                                         case "FIN":
                                             {
-                                                ConsoleExtension.PrintF("RECEIVED FIN");
                                                 isDisconnected = true;
+                                                try
+                                                {
+                                                    GlobalVarPool.clientSocket.Disconnect(true);
+                                                    GlobalVarPool.clientSocket.Close();
+                                                    GlobalVarPool.clientSocket.Dispose();
+                                                    isTcpFin = true;
+                                                }
+                                                catch
+                                                {
+
+                                                }
+                                                ConsoleExtension.PrintF("Disconnected.");
                                                 ConsoleExtension.PrintF("REASON: " + dataString.Substring(4).Split(new string[] { "%eq" }, StringSplitOptions.None)[1].Replace("!", "").Replace(";", ""));
                                                 return;
                                             }
@@ -458,8 +523,43 @@ Administrator. It usually boils down to these three things:
                                                                         ConsoleExtension.PrintF("A new 2FA code has been sent to your email address.");
                                                                         break;
                                                                     }
+                                                                case "CLIENT_NOT_FOUND":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("This client could not be found.");
+                                                                        break;
+                                                                    }
+                                                                case "CLIENT_KICKED":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("The client has been kicked successfully.");
+                                                                        break;
+                                                                    }
+                                                                case "SEND_VERIFICATION_CHANGE_PASSWORD":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("To change your password please check your emails and use \"commitPwChange\" to provide the code.");
+                                                                        break;
+                                                                    }
+                                                                case "SEND_VERIFICATION_DELETE_ACCOUNT":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("To delete your account please check your emails and use \"commitDelAccount\" to provide the code.");
+                                                                        break;
+                                                                    }
+                                                                case "ACCOUNT_DELETED_SUCCESSFULLY":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Your account has been deleted successfully.");
+                                                                        break;
+                                                                    }
+                                                                case "PASSWORD_CHANGED":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Your password has been changed successfully");
+                                                                        break;
+                                                                    }
                                                                 case "":
                                                                     {
+                                                                        break;
+                                                                    }
+                                                                default:
+                                                                    {
+                                                                        ConsoleExtension.PrintF("received something thats currently not supported: " + decryptedData);
                                                                         break;
                                                                     }
                                                             }
@@ -489,16 +589,74 @@ Administrator. It usually boils down to these three things:
             }
             catch (SocketException se)
             {
-                ConsoleExtension.PrintF(se.Source);
+                if (!GlobalVarPool.threadKilled)
+                {
+                    ConsoleExtension.PrintF(se.ToString());
+                }
             }
             catch (Exception e)
             {
-                ConsoleExtension.PrintF(e.Message);
+                if (!GlobalVarPool.threadKilled)
+                {
+                    ConsoleExtension.PrintF(e.ToString());
+                }
             }
             finally
             {
-                Console.ReadKey();
-                Environment.Exit(Environment.ExitCode);
+                if (isSocketError)
+                {
+                    ConsoleExtension.PrintF("CLIENT <-x- DISCONNECTED (ERROR)       -x-> " + address);
+                    GlobalVarPool.clientSocket.Close();
+                    GlobalVarPool.clientSocket.Dispose();
+                }
+                else if (isTcpFin)
+                {
+                    ConsoleExtension.PrintF("CLIENT <-x- DISCONNECTED (TCP FINISH)  -x-> " + address);
+                    try
+                    {
+                        GlobalVarPool.clientSocket.Disconnect(true);
+                    }
+                    catch { }
+                    GlobalVarPool.clientSocket.Close();
+                    GlobalVarPool.clientSocket.Dispose();
+                }
+                else if (GlobalVarPool.threadKilled)
+                {
+                    ConsoleExtension.PrintF("CLIENT <-x- DISCONNECTED               -x-> " + address);
+                }
+                else
+                {
+                    ConsoleExtension.PrintF("CLIENT <-x- DISCONNECTED               -x-> " + address);
+                    try
+                    {
+                        if (!isDisconnected)
+                        {
+                            Network.Send("FIN");
+                        }
+                        GlobalVarPool.clientSocket.Disconnect(true);
+                        GlobalVarPool.clientSocket.Close();
+                        GlobalVarPool.clientSocket.Dispose();
+                    }
+                    catch
+                    {
+                        GlobalVarPool.clientSocket.Close();
+                        GlobalVarPool.clientSocket.Dispose();
+                    }
+                }
+                string previousUser = GlobalVarPool.currentUser;
+                GlobalVarPool.currentUser = "<offline>";
+                if (GlobalVarPool.isRoot)
+                {
+                    GlobalVarPool.isRoot = false;
+                }
+                else if (GlobalVarPool.isUser)
+                {
+                    GlobalVarPool.isUser = false;
+                }
+                GlobalVarPool.connected = false;
+                GlobalVarPool.ThreadIDs.Remove(Thread.CurrentThread.ManagedThreadId);
+                ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
+                ConsoleExtension.PrintF("You are now offline. Use \"connect\" to re-connect.");
             }
         }
     }

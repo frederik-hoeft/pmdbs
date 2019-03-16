@@ -22,7 +22,10 @@ namespace debugclient
             }
             catch (Exception e)
             {
-                ConsoleExtension.PrintF(e.ToString());
+                if (!GlobalVarPool.threadKilled)
+                {
+                    ConsoleExtension.PrintF(e.ToString());
+                }
             }
         }
 
@@ -42,7 +45,10 @@ namespace debugclient
             }
             catch (Exception e)
             {
-                ConsoleExtension.PrintF(e.ToString());
+                if (!GlobalVarPool.threadKilled)
+                {
+                    ConsoleExtension.PrintF(e.ToString());
+                }
             }
         }
 

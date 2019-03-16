@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CE;
 
@@ -11,6 +13,11 @@ namespace debugclient
     {
         public static void FetchAll(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -39,6 +46,11 @@ namespace debugclient
         }
         public static void FetchSync(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -209,6 +221,11 @@ namespace debugclient
         }
         public static void ChangeEmailAddress(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             try
             {
                 switch (parameters.Count())
@@ -273,6 +290,11 @@ namespace debugclient
         }
         public static void ChangeName(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 string name = string.Empty;
@@ -426,6 +448,11 @@ namespace debugclient
         }
         public static void CommitDeleteAccount(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 string code = string.Empty;
@@ -436,7 +463,7 @@ namespace debugclient
                         case "--help":
                         case "-h":
                             {
-                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide the 2FA code to delete your account and all data associated with it.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide the 2FA code to delete your account and all data associated with it.\n\n-----ARGUMENTS-----\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                                 return;
                             }
                         case "-c":
@@ -465,6 +492,11 @@ namespace debugclient
         }
         public static void CommitPasswordChange(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 switch (parameters.Count())
@@ -532,6 +564,11 @@ namespace debugclient
         }
         public static void ConfirmNewDevice(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 switch (parameters.Count())
@@ -606,8 +643,51 @@ namespace debugclient
                 MissingParameters(parameters[0]);
             }
         }
+        public static void Disconnect(string[] parameters)
+        {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
+            if (parameters.Count() > 1)
+            {
+                for (int i = 1; i < parameters.Count(); i++)
+                {
+                    switch (parameters[i])
+                    {
+                        case "--help":
+                        case "-h":
+                            {
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to disconnect from the server.\n\nThis command takes no arguments.\n");
+                                return;
+                            }
+                        default:
+                            {
+                                MissingParameters(parameters[0]);
+                                break;
+                            }
+                    }
+                }
+            }
+            else
+            {
+                ConsoleExtension.PrintF("Disconnecting ...");
+                Network.Send("FIN");
+                GlobalVarPool.threadKilled = true;
+                GlobalVarPool.clientSocket.Disconnect(true);
+                GlobalVarPool.clientSocket.Close();
+                GlobalVarPool.clientSocket.Dispose();
+                GlobalVarPool.connected = false;
+            }
+        }
         public static void GetCookie(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -685,14 +765,22 @@ namespace debugclient
             }
             else
             {
-                GlobalVarPool.clientSocket.Disconnect(true);
-                GlobalVarPool.clientSocket.Close();
-                GlobalVarPool.clientSocket.Dispose();
+                if (GlobalVarPool.connected)
+                {
+                    GlobalVarPool.clientSocket.Disconnect(true);
+                    GlobalVarPool.clientSocket.Close();
+                    GlobalVarPool.clientSocket.Dispose();
+                }
                 Environment.Exit(Environment.ExitCode);
             }
         }
         public static void GetAccountActivity(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -721,7 +809,9 @@ namespace debugclient
         }
         public static void Help(string[] parameters)
         {
-            ConsoleExtension.PrintF(@"------------------GENERAL INFORMATION-----------------
+            if (GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF(ConsoleColorExtension.Yellow.ToString() + @"------------------GENERAL INFORMATION-----------------
 Command line history with arrow keys and tab completion is supported.
 *any command* -h / --help displays the usage of the command
 
@@ -731,17 +821,32 @@ Command line history with arrow keys and tab completion is supported.
 <addAdminDevice>
 <checkCredentials> --> WIP
 <confirmNewDevice>
-<disconnect> --> WIP
+<disconnect>
 <enableDebugging> --> WIP
 <exit>
 <help>
 <login>
 <register>
 <resendCode>
-<start> --> WIP
 <su>
 
 ");
+            }
+            else
+            {
+                ConsoleExtension.PrintF(ConsoleColorExtension.Gray.ToString() + @"------------------GENERAL INFORMATION-----------------
+Command line history with arrow keys and tab completion is supported.
+*any command* -h / --help displays the usage of the command
+
+--------------------BASIC COMMANDS--------------------
+
+<connect>
+<exit>
+<help>
+
+");
+            }
+            
             if (GlobalVarPool.isUser)
             {
                 ConsoleExtension.PrintF(ConsoleColorExtension.DarkCyan.ToString() + @"----------------USER SPECIFIC COMMANDS----------------
@@ -803,6 +908,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void InitPasswordChange(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -830,6 +940,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void InitDeleteAccount(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -857,6 +972,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Insert(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
@@ -1103,6 +1223,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Login(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 switch (parameters.Count())
@@ -1172,6 +1297,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Logout(string[] parameters)
         {
+            if (!GlobalVarPool.isUser && !GlobalVarPool.isRoot)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -1235,6 +1365,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void NewAdminDevice(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
@@ -1289,7 +1424,6 @@ Command line history with arrow keys and tab completion is supported.
                                 MissingParameters(parameters[0]);
                             }
                             string passwordHash = CryptoHelper.SHA256HashBase64(password);
-                            ConsoleExtension.PrintF(passwordHash);
                             GlobalVarPool.username = "root";
                             ConsoleExtension.PrintF("Trying to link new device to user: root");
                             Network.SendEncrypted("MNGNADpassword%eq!" + passwordHash + "!;code%eq!" + code + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
@@ -1337,6 +1471,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Register(string[] parameters)
         {
+            if (!GlobalVarPool.connected || GlobalVarPool.isRoot || GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
@@ -1423,6 +1562,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void ResendCode(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
@@ -1565,10 +1709,47 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Start(string[] parameters)
         {
-
+            if (GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
+            if (parameters.Count() > 1)
+            {
+                for (int i = 1; i < parameters.Count(); i++)
+                {
+                    switch (parameters[i])
+                    {
+                        case "--help":
+                        case "-h":
+                            {
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used connect to the server.\n\nThis command takes no arguments.\n");
+                                return;
+                            }
+                        default:
+                            {
+                                MissingParameters(parameters[0]);
+                                break;
+                            }
+                    }
+                }
+            }
+            else
+            {
+                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                {
+                    IsBackground = true
+                };
+                connectionThread.Start();
+            }
         }
         public static void Sudo(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
@@ -1630,6 +1811,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Update(string[] parameters)
         {
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
@@ -1757,6 +1943,11 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void ActivateAccount(string[] parameters)
         {
+            if (!GlobalVarPool.connected)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 switch (parameters.Count())
