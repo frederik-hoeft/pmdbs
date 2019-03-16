@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using CE;
 
 namespace debugclient
@@ -54,6 +55,13 @@ namespace debugclient
                         // CHECK IF RECEIVED 0 BYTE MESSAGE (TCP RST)
                         if (connectionDropped == 0)
                         {
+                            string previousUser = GlobalVarPool.currentUser;
+                            GlobalVarPool.currentUser = "<offline>";
+                            if (GlobalVarPool.isRoot)
+                            {
+                                GlobalVarPool.isRoot = false;
+                            }
+                            ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
                             // BREAK ENDLESS LOOP AND JUMP TO CATCH
                             throw new SocketException { Source = "RST" };
                         }
@@ -109,32 +117,43 @@ namespace debugclient
                             // DAMN THAT'S A HUGE PACKET. APPEND THE WHOLE THING TO THE BUFFER AND REPEAT UNTIL EOT FLAG IS FOUND
                             buffer.AddRange(new List<byte>(data));
                         }
+                        // RESET THE DATA BUFFER
+                        data = new byte[32768];
                     }
                     // ITERATE OVER EVERY SINGE PACKET THAT HAS BEEN RECEIVED
                     for (int i = 0; i < dataPackets.Count; i++)
                     {
+                        // LOAD BYTES INTO BYTE LIST --> EASIER TO HANDLE THAN BYTE ARRAYS
                         List<byte> dataPacket = new List<byte>(dataPackets[i]);
-                        if (dataPacket[0] != 0x01)                              // <-- SOMETHING'S F***ED UP HERE: PACKETS ARE SPLIT IN RANDOM PIECES SO THIS CHECK FAILS | NOTE: MAY ACTUALLY WORK?
+                        // CHECK IF PACKETS HAVE A VALID ENTRYPOINT / START OF HEADING
+                        if (dataPacket[0] != 0x01)
                         {
+                            // WELL... APPARENTLY THERE'S NO ENTRY POINT --> IGNORE AND CONTINUE WITH NEXT ONE
                             if (!dataPacket.Contains(0x01))
                             {
-                                //ConsoleExtension.PrintF("CLIENT <-#- [ERRNO 02] ISOH            -#-> " + address);
+                                ConsoleExtension.PrintF("CLIENT <-#- [ERRNO 02] ISOH            -#-> " + address);
                                 continue;
                             }
+                            // CHECK AND HOPE THAT THERE'S AT LEAST ONE VALID ENTRY POINT
                             else if (dataPacket.Where(currentByte => currentByte.Equals(0x01)).Count() == 1)
                             {
                                 dataPacket.RemoveRange(0, dataPacket.IndexOf(0x01));
                             }
+                            // THIS PACKET IS OFICIALLY BROKEN (CONTAINING SEVERAL ENTRY POINTS). HOPE THAT IT WASN'T TOO IMPORTANT AND CONTINUE WITH THE NEXT ONE
                             else
                             {
                                 ConsoleExtension.PrintF("CLIENT <-#- [ERRNO 02] ISOH            -#-> " + address);
                                 continue;
                             }
                         }
+                        // REMOVE ENTRY POINT MARKER BYTE (0x01)
                         dataPacket.RemoveAt(0);
+                        // CONVERT THAT THING TO UTF-8 STRING
                         string dataString = Encoding.UTF8.GetString(dataPacket.ToArray());
+                        // GREP THE PACKET SPECIFIER --> INDICATES ENCRYPTION STATE
                         char packetSpecifier = dataString[0];
                         // FROM HERE ON USE MAIN PROTOCOL DEFINED HERE: https://github.com/Th3-Fr3d/pmdbs/blob/development/doc/CustomProtocolFinal.pdf
+                        // ALL THAT'S HAPPENING FROM HERE ON DOWN IS PACKET PARSING AND MATCHING METHODS TO SAID PACKETS. SHOULD BE SOMEWHERE BETWEEN SELF-EXPLANATORY AND BLACK MAGIC
                         switch (packetSpecifier)
                         {
                             case 'U':
@@ -221,6 +240,7 @@ namespace debugclient
                                 }
                             case 'E':
                                 {
+                                    Thread.Sleep(100); // <-- APPARENTLY THERE'S SOME NASTY BUG SOMEWHERE. DONT KNOW DONT CARE. USING "Thread.Sleep(100);" SEEMS TO FIX IT SOMEHOW. JUST MICROSOFT THINGS *sigh*
                                     if (!CryptoHelper.VerifyHMAC(GlobalVarPool.hmac, dataString.Substring(1)))
                                     {
                                         ConsoleExtension.PrintF("SECURITY_EXCEPTION_INVALID_HMAC_CHECKSUM");
@@ -269,6 +289,53 @@ namespace debugclient
                                                             File.WriteAllText("cookie.txt",GlobalVarPool.cookie);
                                                             break;
                                                         }
+                                                    case "LOG":
+                                                        {
+                                                            try
+                                                            {
+                                                                string[] parts = decryptedData.Substring(6).Split('§');
+                                                                string mode = string.Empty;
+                                                                string message = string.Empty;
+                                                                foreach (string part in parts)
+                                                                {
+                                                                    if (part.Contains("mode"))
+                                                                    {
+                                                                        mode = part.Split('$')[1];
+                                                                    }
+                                                                    else if (part.Contains("msg"))
+                                                                    {
+                                                                        message = part.Split('$')[1];
+                                                                    }
+                                                                    else if (part.Length != 0)
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Error: unexpected number of arguments in LOG");
+                                                                    }
+                                                                }
+                                                                if (new string[] { mode, message }.Contains(string.Empty))
+                                                                {
+                                                                    ConsoleExtension.PrintF("Error: too few arguments in LOG");
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (mode.Equals("USER_REQUEST"))
+                                                                    {
+                                                                        ConsoleExtension.PrintF("Your account activity:");
+                                                                        ConsoleExtension.PrintF(message);
+                                                                    }
+                                                                    else
+                                                                    {
+
+                                                                    }
+                                                                    ConsoleExtension.PrintF("Received " + mode + " log.");
+                                                                    ConsoleExtension.PrintF(message);
+                                                                }
+                                                            }
+                                                            catch (IndexOutOfRangeException e)
+                                                            {
+                                                                ConsoleExtension.PrintF("Error in LOG: " + e);
+                                                            }
+                                                            break;
+                                                        }
                                                 }
                                                 break;
                                             }
@@ -296,6 +363,7 @@ namespace debugclient
                                                             ConsoleExtension.PrintF(ConsoleColorExtension.Yellow + "[ERRNO " + errno + "] " + errID + ": " + message);
                                                             break;
                                                         }
+                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WHAT AM I DOING WITH MY LIFE???
                                                     case "RET":
                                                         {
                                                             switch (decryptedData.Split('!')[1])
@@ -305,6 +373,7 @@ namespace debugclient
                                                                         
                                                                         string previousUser = GlobalVarPool.currentUser;
                                                                         GlobalVarPool.currentUser = "<" + GlobalVarPool.username + "@" + GlobalVarPool.serverName + ">";
+                                                                        GlobalVarPool.isUser = true;
                                                                         ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
                                                                         ConsoleExtension.PrintF("Successfully logged in as " + GlobalVarPool.username + "!");
                                                                         break;
@@ -322,6 +391,10 @@ namespace debugclient
                                                                         if (GlobalVarPool.isRoot)
                                                                         {
                                                                             GlobalVarPool.isRoot = false;
+                                                                        }
+                                                                        else if (GlobalVarPool.isUser)
+                                                                        {
+                                                                            GlobalVarPool.isUser = false;
                                                                         }
                                                                         ConsoleExtension.formatPrompt = ConsoleExtension.formatPrompt.Replace(previousUser, GlobalVarPool.currentUser);
                                                                         ConsoleExtension.PrintF("Logged out successfully.");
@@ -350,7 +423,8 @@ Administrator. It usually boils down to these three things:
 
     #1) Beware of your actions.
     #2) Think before you type.
-    #3) With great power comes great responsibility.");
+    #3) With great power comes great responsibility.
+");
                                                                         break;
                                                                     }
                                                                 case "COOKIE_DOES_EXIST":
@@ -372,6 +446,16 @@ Administrator. It usually boils down to these three things:
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
                                                                         ConsoleExtension.PrintF("Looks like you are trying to log in with a new device. Please check your emails and commit the 2FA code using the \"ConfirmNewDevice\" command.");
+                                                                        break;
+                                                                    }
+                                                                case "NOT_LOGGED_IN":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("You cannot do this as you are currently not logged in.");
+                                                                        break;
+                                                                    }
+                                                                case "CODE_RESENT":
+                                                                    {
+                                                                        ConsoleExtension.PrintF("A new 2FA code has been sent to your email address.");
                                                                         break;
                                                                     }
                                                                 case "":
@@ -414,6 +498,7 @@ Administrator. It usually boils down to these three things:
             finally
             {
                 Console.ReadKey();
+                Environment.Exit(Environment.ExitCode);
             }
         }
     }

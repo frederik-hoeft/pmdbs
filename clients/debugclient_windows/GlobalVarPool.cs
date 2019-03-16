@@ -24,6 +24,7 @@ namespace debugclient
         public static string username = string.Empty;
         public static string localAESkey = string.Empty;
         public static bool isRoot = false;
+        public static bool isUser = false;
         public static int port = 0;
         public static bool attemptConnection = true;
         public static bool debugging = false;
