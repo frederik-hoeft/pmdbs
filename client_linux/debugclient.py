@@ -35,14 +35,14 @@ class CryptoHelper():
 		ActiveConnection.hmac = hashlib.sha256(bytes(aesKey + nonce,"utf-8")).hexdigest()
 
 	def CalculateHMAC(message):
-		return CryptoHelper.SHA256(ActiveConnection.hmac[32:] + CryptoHelper.SHA256(ActiveConnection.hmac[:32] + message))
+		return CryptoHelper.SHA256Base64(ActiveConnection.hmac[32:] + CryptoHelper.SHA256Base64(ActiveConnection.hmac[:32] + message))
 		
 	def VerifyHMAC(fullMessage):
 		hmac = fullMessage[-44:]
 		if ActiveConnection.debugging:
 			print("Received HMAC: " + hmac)
 		message = fullMessage[:-44]
-		actualHMAC = CryptoHelper.SHA256(ActiveConnection.hmac[32:] + CryptoHelper.SHA256(ActiveConnection.hmac[:32] + message))
+		actualHMAC = CryptoHelper.SHA256Base64(ActiveConnection.hmac[32:] + CryptoHelper.SHA256Base64(ActiveConnection.hmac[:32] + message))
 		if ActiveConnection.debugging:
 			print("Correct HMAC: " + actualHMAC)
 		if not hmac == actualHMAC:
@@ -50,10 +50,14 @@ class CryptoHelper():
 		else:
 			return True
 	
-	# RETURNS SHA256 HASH OF PLAINTEXT
-	def SHA256(plaintext):
+	# RETURNS SHA256Base64 HASH OF PLAINTEXT
+	def SHA256Base64(plaintext):
 		hashBytes = base64.b64encode(hashlib.sha256(bytes(plaintext, "utf-8")).digest())
 		return hashBytes.decode("utf-8")
+	
+	# RETURNS SHA256 Hex HASH OF PLAINTEXT
+	def SHA256(plaintext):
+		return hashlib.sha256(bytes(plaintext, "utf-8")).hexdigest()
 	
 	# ENCRYPTS A MESSAGE USING A 4096 BIT RSA KEY
 	def RSAEncrypt(plaintext, publicKeyPemString):
@@ -181,9 +185,7 @@ class IO(Thread):
 			while True:
 				parameters = input("").split("-")
 				command = parameters[0].replace(" ","")
-				if command == "pwchange":
-					self.IOpasswordChangeRequest(parameters)
-				elif command == "exit":
+				if command == "exit":
 					self.IOexit(parameters)
 				elif command == 'register':
 					self.IOregister(parameters)
@@ -379,16 +381,6 @@ class IO(Thread):
 			
 			print('typo in command ' + '\'' + command + '\'')
 	
-	def IOpasswordChangeRequest(self, parameters):
-		try:
-			if parameters[1] == "h":
-				print("this command takes no parameters")
-				return
-		except Exception as e:
-			print(e)
-			pass
-		Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;")
-	
 	def IOlistAllClients(self,parameters):
 		try:
 			if parameters[1] == "h":
@@ -417,7 +409,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		Network.SendEncrypted("MNGLOGSERVER")
+		Network.SendEncrypted("MNGLOGmode%eq!SERVER!;")
 	
 	def IOclog(self,parameters):
 		try:
@@ -539,7 +531,7 @@ class IO(Thread):
 				return
 			if not nickname:
 				nickname = "user"
-			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
+			finalPassword = CryptoHelper.SHA256Base64(CryptoHelper.SHA256Base64(password)[:32])
 			Network.SendEncrypted("MNGREGusername%eq!" + username + "!;password%eq!" + finalPassword + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
@@ -829,7 +821,7 @@ class IO(Thread):
 			if not password:
 				print("too few arguments")
 				return
-			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
+			finalPassword = CryptoHelper.SHA256Base64(password)
 			Network.SendEncrypted("MNGADMpassword%eq!" + finalPassword + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
@@ -859,7 +851,7 @@ class IO(Thread):
 			if not password or not code:
 				print("too few arguments")
 				return
-			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
+			finalPassword = CryptoHelper.SHA256Base64(password)
 			Network.SendEncrypted("MNGNADpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;cookie%eq!" + ActiveConnection.cookie + "!;")
 		except Exception as e:
 			print(e)
@@ -883,7 +875,7 @@ class IO(Thread):
 		except Exception as e:
 			print(e)
 			pass
-		Network.SendEncrypted("MNGACRPWCmode%eq!PASSWORD_CHANGE!;")
+		Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;")
 		
 	def IOinitDelAccount(self,parameters):
 		try:
@@ -919,7 +911,7 @@ class IO(Thread):
 			if not password or not code:
 				print("too few arguments")
 				return
-			finalPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(password)[:32])
+			finalPassword = CryptoHelper.SHA256Base64(password)
 			Network.SendEncrypted("MNGAPCpassword%eq!" + finalPassword + "!;code%eq!PM-" + code + "!;")
 		except Exception as e:
 			print(e)
