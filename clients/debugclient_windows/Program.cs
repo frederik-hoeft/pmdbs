@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using System.Threading;
 using System.IO;
 using CE;
-using System.Text.RegularExpressions;
 
 namespace debugclient
 {
     class Program
     {
-        
+
         static void Main(string[] args)
         {
             string ip = "192.168.178.46";

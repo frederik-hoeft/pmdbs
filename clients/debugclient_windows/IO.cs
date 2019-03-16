@@ -20,7 +20,7 @@ namespace debugclient
             {
                 while (true)
                 {
-                    string[] parameters = ConsoleExtension.Input(GlobalVarPool.currentUser + " ", ConsoleColorExtension.Red, 1).Split(' ');
+                    string[] parameters = ConsoleExtension.Input(GlobalVarPool.currentUser + " ", ConsoleColorExtension.Gray, 1).Split(' ');
                     string command = parameters[0];
                     switch (command.ToLower())
                     {
@@ -59,12 +59,12 @@ namespace debugclient
                                 Commands.Custom(parameters);
                                 break;
                             }
-                        case "sync":
+                        case "fetchsync":
                             {
                                 Commands.FetchSync(parameters);
                                 break;
                             }
-                        case "alldata":
+                        case "fetchall":
                             {
                                 Commands.FetchAll(parameters);
                                 break;
