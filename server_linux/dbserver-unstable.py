@@ -1526,7 +1526,7 @@ class Management():
 			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# RETURN SUCCESS STATUS TO CLIENT
-		returnData = "INFRETtodo%eq!CODE_RESEND!;"
+		returnData = "INFRETmsg%eq!CODE_RESENT!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# SEND EMAIL
@@ -1563,7 +1563,7 @@ class Management():
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			# RETURN DATA TO CLIENT
-			returnData = "LOGDMP" + str(clientLog)
+			returnData = "DTALOGmode%eq!USER_REQUEST!;msg%eq!" + str(clientLog) + "!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
@@ -2520,14 +2520,14 @@ class Management():
 		# CHECK IF USER ACCOUNT IS VERIFIED
 		if isVerified == 0:
 			PrintSendToAdmin("SERVER ---> ACCOUT NOT VERIFIED        ---> " + clientAddress)
-			returnData = "INFERRACCOUNT_NOT_VERIFIED"
+			returnData = "INFERRmsg%eq!ACCOUNT_NOT_VERIFIED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
 		# ADD USER TO WHITELIST
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
-		returnData = "INFLOGIN_SUCCESSFUL"
+		returnData = "INFRETmsg%eq!LOGIN_SUCCESSFUL!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
@@ -3227,7 +3227,7 @@ class Management():
 			# RETURN ALL CURRENTLY CONNECTED CLIENTS
 			Log.ServerEventLog("SHOW_CONNECTED_CLIENTS", GetDetails(clientSocket))
 			# CREATE A HEADER FOT THE TABLE
-			header = CWHITE + FUNDERLINED + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + ENDF
+			header = CWHITE + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + "\n" + 22 * "─" + "┼" + 37 * "─" + ENDF
 			PrintSendToAdmin(header)
 			# ITERATE OVER CLIENT LIST
 			for client in Server.allClients:
@@ -3264,7 +3264,7 @@ class Management():
 			# RETURN A LIST OF ALL ACCOUNTS
 			Log.ServerEventLog("SHOW_ALL_ACCOUNTS", GetDetails(clientSocket))
 			# CREATE A HEADER FOT THE TABLE
-			header = CWHITE + FUNDERLINED + "USERNAME" + 12 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + ENDF
+			header = CWHITE + "USERNAME" + 14 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + "\n" + 23 * "─" + "┼" + 9 * "─" + "┼" + 25 * "─" + ENDF
 			PrintSendToAdmin(header)
 			# CREATE CONNECTION TO DATABASE
 			connection = sqlite3.connect(Server.dataBase)
@@ -3318,7 +3318,7 @@ class Management():
 							lastSeen = "N/A"
 					# ADD PADDING FOR TABLE
 					status += (7 - len(status)) * " "
-					user += (20 - len(user)) * " "
+					user += (22 - len(user)) * " "
 					# SET ONLINE / OFFLINE COLOR CODING
 					if "ONLINE" in status:
 						status = CGREEN + status
@@ -3467,18 +3467,41 @@ class Management():
 		
 	# DUMP THE EVENT LOG / ADMIN PRIVILEGES REQUIRED
 	def DumpEventLog(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND MNGLOGmode%eq!CLIENT!;username%eq!testuser1!;
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
 		if not clientSocket == Server.admin:
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
 			return
+		creds = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SQL INJECTION CHECK PASSED. CREDENTIALS ARE VALID
 		# CHECK IF PACKET IS VALID
+		username = None
+		mode = None
+		# ECTRACT INFORAMTION FROM COMMAND
+		try:
+			for credential in creds:
+				if "mode" in credential:
+					mode = credential.split("!")[1]
+				elif "username" in credential:
+					username = credential.split("!")[1]
+				elif len(credential) == 0:
+					pass
+				else:
+					# COMMAND CONTAINED MORE DATA THAN REQUESTED
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+					return
+		except Exception as e:
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
 		try:
-			# CHECK IF SERVER OR CLIENT LOG SHOULD BE DUMPED
-			if command == "SERVER":
+			if mode == "SERVER":
 				# EXECUTE QUERY
 				cursor.execute("SELECT * FROM Tbl_serverLog;")
 				# FETCH DATA
@@ -3486,27 +3509,28 @@ class Management():
 				# FORMAT DATA
 				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 				# ENCRYPT AND SEND TO ADMIN
-				returnData = "LOGDMPSERVER\n" + finalData
+				returnData = "DTALOGmode%eq$SERVER$§msg%eq$\n" + finalData + "$§"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> SERVER LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
 				Log.ServerEventLog("SERVER_LOG_DUMP", GetDetails(clientSocket))
-			elif command == "CLIENT":
+			elif mode == "CLIENT" and username:
 				# EXECUTE QUERY
-				cursor.execute("SELECT * FROM Tbl_clientLog;")
+				cursor.execute("SELECT * FROM Tbl_clientLog AS c, Tbl_user as u WHERE u.U_username = \"" + username + "\" and c.L_userid = u.U_id;")
 				# FETCH DATA
 				data = cursor.fetchall()
 				# FORMAT DATA
 				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 				# ENCRYPT AND SEND TO ADMIN
-				returnData = "LOGDMPCLIENT\n" + finalData
+				returnData = "DTALOGmode%eq$CLIENT$§msg%eq$\n" + finalData + "$§"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> CLIENT LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
 				Log.ServerEventLog("CLIENT_LOG_DUMP", GetDetails(clientSocket))
 			else:
+				Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 				return
 		finally:
 			# FREE RESOURCES
@@ -3662,6 +3686,7 @@ class Management():
 			Handle.Error("ADMN", None, clientAddress, clientSocket, aesKey, True)
 			# CREATE LOG ENTRY
 			Log.ServerEventLog("FAILED_ADMIN_LOGIN_ATTEMPT", details)
+			return
 		# CREDENTIAL CHECK PASSED
 		# CHECK FOR OTHER ADMINS
 		if not Server.admin == None:
@@ -4012,7 +4037,7 @@ class Management():
 		# ADD USER TO WHITELIST
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
-		returnData = "INFRETLOGIN_SUCCESSFUL"
+		returnData = "INFRETmsg%eq!LOGIN_SUCCESSFUL!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
@@ -4035,7 +4060,7 @@ class Management():
 			isLoggedout = True
 			print("SERVER **** ADMIN LOGOUT               **** " + clientAddress)
 			if not isDisconnected:
-				returnData = "INFRETLOGGED_OUT"
+				returnData = "INFRETmsg%eq!LOGGED_OUT!;"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 		else:
@@ -4052,7 +4077,7 @@ class Management():
 						isLoggedout = True
 						PrintSendToAdmin("SERVER ---> LOGGED OUT                 ---> " + clientAddress)
 						if not isDisconnected:
-							returnData = "INFRETLOGGED_OUT"
+							returnData = "INFRETmsg%eq!LOGGED_OUT!;"
 							# SEND DATA ENCRYPTED TO CLIENT
 							Network.SendEncrypted(clientSocket, aesKey, returnData)
 						break
@@ -4060,11 +4085,11 @@ class Management():
 			if not isLoggedout and not isDisconnected:
 				try:
 					# RETURN ERROR MESSAGE TO CLIENT
-					returnData = "INFERRNOT_LOGGED_IN"
+					returnData = "INFRETmsg%eq!NOT_LOGGED_IN!;"
 					# SEND DATA ENCRYPTED TO CLIENT
 					Network.SendEncrypted(clientSocket, aesKey, returnData)
 				except:
-					Network.Send(clientSocket, "INFERRNOT_LOGGED_IN")
+					Network.Send(clientSocket, "INFRETmsg%eq!NOT_LOGGED_IN!;")
 		# RETURN STATUS
 		return isLoggedout
 	
