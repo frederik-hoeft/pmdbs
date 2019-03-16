@@ -11,10 +11,27 @@ namespace debugclient
     {
         public static void Start()
         {
-            ConsoleExtension.PrintF("USER INPUT NOW SUPPORTED");
-            ConsoleExtension.PrintF("type \"help\" to display a list of commands");
-
-            GlobalVarPool.serverName = Network.GetHost(GlobalVarPool.ip);
+            ConsoleExtension.PrintF(HelperMethods.CheckOk() + "IO Thread up and running.");
+            ConsoleExtension.PrintF(HelperMethods.CheckOk() + "USER INPUT NOW SUPPORTED");
+            ConsoleExtension.PrintF(HelperMethods.Check() + ConsoleColorExtension.Cyan.ToString() + "type \"help\" to display a list of commands");
+            if (GlobalVarPool.ADDRESS_IS_DNS)
+            {
+                GlobalVarPool.serverName = GlobalVarPool.REMOTE_ADDRESS;
+            }
+            else
+            {
+                ConsoleExtension.PrintF(HelperMethods.Check() + "Resolving server name ...");
+                try
+                {
+                    GlobalVarPool.serverName = Network.GetHost(GlobalVarPool.REMOTE_ADDRESS);
+                    ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Resolved server name. Server name is: " + GlobalVarPool.serverName);
+                }
+                catch
+                {
+                    ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Server name could not be resolved. Using \"UNKNOWN\" instead.");
+                    GlobalVarPool.serverName = "UNKNOWN";
+                }
+            }
             GlobalVarPool.currentUser = "<" + GlobalVarPool.serverName + ">";
             try
             {
@@ -24,6 +41,16 @@ namespace debugclient
                     string command = parameters[0];
                     switch (command.ToLower())
                     {
+                        case "connect":
+                            {
+                                Commands.Start(parameters);
+                                break;
+                            }
+                        case "disconnect":
+                            {
+                                Commands.Disconnect(parameters);
+                                break;
+                            }
                         case "exit":
                             {
                                 Commands.Exit(parameters);
