@@ -192,6 +192,53 @@ namespace pmdbs
             }
             return cryptedPassword;
         }
+        public static string SHA256HashBase64(string text)
+        {
+            SHA256Cng ShaHashFunction = new SHA256Cng();
+            byte[] plainBytes = Encoding.UTF8.GetBytes(text);
+            byte[] hashedBytes = ShaHashFunction.ComputeHash(plainBytes);
+            return Convert.ToBase64String(hashedBytes);
+        }
+        #endregion
+        #region HMAC
+        public static string CalculateHMAC(string hmacKey, string message)
+        {
+
+            return SHA256HashBase64(hmacKey.Substring(32, 32) + SHA256HashBase64(hmacKey.Substring(0, 32) + message));
+        }
+
+        public static bool VerifyHMAC(string hmacKey, string fullMessage)
+        {
+            string hmac = fullMessage.Substring(fullMessage.Length - 44, 44);
+            string message = fullMessage.Substring(0, fullMessage.Length - 44);
+            string actualHmac = CalculateHMAC(hmacKey, message);
+            if (hmac.Equals(actualHmac))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        #endregion
+        #region SecureRandomGenerator
+        public static string RandomString()
+        {
+            byte[] randomBytes = new Byte[64];
+            using (RandomNumberGenerator rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(randomBytes);
+            }
+            SHA256Cng ShaHashFunction = new SHA256Cng();
+            byte[] hashedBytes = ShaHashFunction.ComputeHash(randomBytes);
+            string randomString = string.Empty;
+            foreach (byte b in hashedBytes)
+            {
+                randomString += string.Format("{0:x2}", b);
+            }
+            return randomString;
+        }
         #endregion
     }
 }

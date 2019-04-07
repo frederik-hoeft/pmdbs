@@ -84,7 +84,7 @@ namespace pmdbs
             }
         }
 
-        public override Color BackColor
+        public Color BackgroundColor
         {
             get { return BGColor; }
             set { BGColor = value; }

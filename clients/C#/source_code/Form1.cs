@@ -46,6 +46,7 @@ namespace pmdbs
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
+
         public const int WM_NCLBUTTONDOWN = 0xA1;
         public const int HT_CAPTION = 0x2;
 
@@ -54,9 +55,20 @@ namespace pmdbs
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
-        private void FlowLayoutPanel1_MouseEnter(object sender, EventArgs e)
+        private void DataFlowLayoutPanelList_MouseEnter(object sender, EventArgs e)
         {
             DataFlowLayoutPanelList.Focus();
+        }
+        internal static class NativeWinAPI
+        {
+            internal static readonly int GWL_EXSTYLE = -20;
+            internal static readonly int WS_EX_COMPOSITED = 0x02000000;
+
+            [DllImport("user32")]
+            internal static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+
+            [DllImport("user32")]
+            internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
         }
 
         private void AddFlowLayoutPanelCenter_MouseEnter(object sender, EventArgs e)
@@ -181,6 +193,7 @@ namespace pmdbs
             {
                 if (Result[0].Equals("1"))
                 {
+                    GlobalVarPool.wasOnline = true;
                     //TODO: Check for Password Changes
                 }
                 NickName = Result[1];
@@ -188,8 +201,9 @@ namespace pmdbs
                 LoginPictureBoxOfflineMain.BringToFront();
                 LoginPictureBoxRegisterMain.SuspendLayout();
                 LoginPictureBoxLoadingMain.SuspendLayout();
-                if (!NickName.Equals("User"))
+                if (!NickName.Equals(GlobalVarPool.name))
                 {
+                    GlobalVarPool.name = NickName;
                     LoginLabelOfflineUsername.Text = NickName;
                 }
             }
@@ -200,15 +214,21 @@ namespace pmdbs
                 LoginPictureBoxRegisterMain.BringToFront();
                 LoginPictureBoxLoadingMain.SuspendLayout();
             }
-            Thread.Sleep(1500); // Emulate hardwork
+            Thread.Sleep(1500); // SHOW SPLASHSCREEN
             GuiLoaded = true;
-
         }
         #endregion
         public Form1()
         {
             InitializeComponent();
             #region LOAD
+            foreach (Control c in this.Controls)
+            {
+                int style = NativeWinAPI.GetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE);
+                style |= NativeWinAPI.WS_EX_COMPOSITED;
+                NativeWinAPI.SetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE, style);
+            }
+
             InitializeTransparency();
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -235,6 +255,8 @@ namespace pmdbs
             AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
             AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
             windowButtonClose.OnClickEvent += WindowButtonClose_Click;
+            SettingsAdvancedImageButtonFooterAbort.OnClickEvent += SettingsAdvancedImageButtonFooterAbort_Click;
+            SettingsAdvancedImageButtonFooterSave.OnClickEvent += SettingsAdvancedImageButtonFooterSave_Click;
             #endregion
             #endregion
         }
@@ -252,6 +274,7 @@ namespace pmdbs
             DashboardPanelHomeIndicator.BackColor = Color.White;
             DashboardPanelSettingsIndicator.BackColor = Colors.Orange;
             DashboardPanelPasswordsIndicator.BackColor = Color.White;
+            SettingsTableLayoutPanelMain.BringToFront();
         }
 
         private void DashboardMenuEntryPasswords_Click(object sender, EventArgs e)
@@ -259,6 +282,7 @@ namespace pmdbs
             DashboardPanelHomeIndicator.BackColor = Color.White;
             DashboardPanelSettingsIndicator.BackColor = Color.White;
             DashboardPanelPasswordsIndicator.BackColor = Colors.Orange;
+            DataTableLayoutPanelMain.BringToFront();
             //Populate();
         }
         #endregion
@@ -338,7 +362,7 @@ namespace pmdbs
                 }
                 else
                 {
-                    CurrentPage = MaxPages - 1;
+                    CurrentPage = MaxPages - 1 < 0 ? 0 : MaxPages - 1;
                 }
             }
             CurrentContentCount = 0;
@@ -763,7 +787,7 @@ namespace pmdbs
 
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-
+            CustomException.ThrowNew.NotImplementedException();
         }
 
         #endregion
@@ -800,7 +824,7 @@ namespace pmdbs
 
         private void LoginAnimatedButtonOnlineLogin_Click(object sender, EventArgs e)
         {
-
+            CustomException.ThrowNew.GenericException();
         }
 
         private async void LoginAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
@@ -987,6 +1011,21 @@ namespace pmdbs
         }
 
 
+
+        #endregion
+
+        #region SettingsPanel
+        #region SettingsFooter
+        private void SettingsAdvancedImageButtonFooterSave_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void SettingsAdvancedImageButtonFooterAbort_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
 
         #endregion
     }
