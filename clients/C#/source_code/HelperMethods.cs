@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Management;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using System.Linq.Expressions;
+using System.Threading;
 
 namespace pmdbs
 {
@@ -41,19 +43,18 @@ namespace pmdbs
             return Parts;
         }
 
-        public static MethodInfo CreateFunction(string config_file)
+        public static MethodInfo CompileFunction(string config_file)
         {
             string code = @"
         using System;
             
-        namespace UserFunctions
+        namespace pmdbs
         {                
             public class BinaryFunction
             {                
-                public static object[] Config()
+                public static bool Condition()
                 {
-                    place_holder
-                    return new object[]{CONFIG_VERSION, CONFIG_BUILD, REMOTE_ADDRESS, REMOTE_PORT, ADDRESS_IS_DNS, USE_PERSISTENT_RSA_KEYS};
+                    return place_holder;
                 }
             }
         }
@@ -66,122 +67,126 @@ namespace pmdbs
                 // True - memory generation, false - external file generation
                 GenerateInMemory = true
             };
+            parameters.ReferencedAssemblies.Add(Assembly.GetEntryAssembly().Location);
             CompilerResults results = provider.CompileAssemblyFromSource(parameters, finalCode);
-            Type binaryFunction = results.CompiledAssembly.GetType("UserFunctions.BinaryFunction");
-            return binaryFunction.GetMethod("Config");
+            Type binaryFunction = results.CompiledAssembly.GetType("pmdbs.BinaryFunction");
+            return binaryFunction.GetMethod("Condition");
         }
+
         public static string GetOS()
         {
             return Environment.OSVersion.VersionString;
         }
+
+        public static void Prompt(string promptMain, string promptAction)
+        {
+            GlobalVarPool.promptAction.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.promptAction.Text = promptAction;
+            });
+            GlobalVarPool.promptEMail.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.promptEMail.Text = "An email containing a verification code has been sent to " + GlobalVarPool.email + ".";
+            });
+            GlobalVarPool.promptMain.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.promptMain.Text = promptMain;
+            });
+            GlobalVarPool.promptPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.promptPanel.BringToFront();
+            });
+        }
+
         public static void InvokeOutputLabel(string text)
         {
             if (GlobalVarPool.outputLabelIsValid)
             {
-                GlobalVarPool.OutputLabel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                GlobalVarPool.outputLabel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
-                    GlobalVarPool.OutputLabel.Text = text;
+                    GlobalVarPool.outputLabel.Text = text;
                 });
             }
         }
-        public abstract class RoundedRectangle
+
+        public static void LoadingHelper(object parameters)
         {
-            public enum RectangleCorners
+            GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
-                None = 0, TopLeft = 1, TopRight = 2, BottomLeft = 4, BottomRight = 8,
-                All = TopLeft | TopRight | BottomLeft | BottomRight
-            }
-
-            public static GraphicsPath Create(int x, int y, int width, int height,
-                                              int radius, RectangleCorners corners)
+                GlobalVarPool.loadingSpinner.Visible = true;
+            });
+            GlobalVarPool.loadingLogo.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
-                int xw = x + width;
-                int yh = y + height;
-                int xwr = xw - radius;
-                int yhr = yh - radius;
-                int xr = x + radius;
-                int yr = y + radius;
-                int r2 = radius * 2;
-                int xwr2 = xw - r2;
-                int yhr2 = yh - r2;
+                GlobalVarPool.loadingLogo.Visible = true;
+            });
+            GlobalVarPool.loadingLabel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.loadingLabel.Visible = true;
+            });
+            GlobalVarPool.settingsAbort.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.settingsAbort.Visible = false;
+            });
+            GlobalVarPool.settingsSave.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.settingsSave.Visible = false;
+            });
+            GlobalVarPool.loadingPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.loadingPanel.BringToFront();
+            });
+            GlobalVarPool.settingsPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.settingsPanel.BringToFront();
+            });
 
-                GraphicsPath p = new GraphicsPath();
-                p.StartFigure();
+            // PARSE PARAMETER OBJECT TO LIST
+            List<object> paramsList = (List<object>)parameters;
+            // GET PARAMETERS AND PARSE THEM TO CORRESPONDING DATA TYPES
+            System.Windows.Forms.Panel finalPanel = (System.Windows.Forms.Panel)paramsList[0];
+            System.Windows.Forms.Label output = (System.Windows.Forms.Label)paramsList[1];
+            bool showBackendOutput = (bool)paramsList[2];
+            string finishCondition = (string)paramsList[3];
 
-                //Top Left Corner
-                if ((RectangleCorners.TopLeft & corners) == RectangleCorners.TopLeft)
-                {
-                    p.AddArc(x, y, r2, r2, 180, 90);
-                }
-                else
-                {
-                    p.AddLine(x, yr, x, y);
-                    p.AddLine(x, y, xr, y);
-                }
+            // SET GLOBAL VARIABLES
+            GlobalVarPool.outputLabelIsValid = showBackendOutput;
+            GlobalVarPool.outputLabel = output;
 
-                //Top Edge
-                p.AddLine(xr, y, xwr, y);
+            // COMPILE CONDITION AT RUNTIME BECAUSE IT'S IMPOSSIBLE TO PASS A LAMBDA EXPRESSION AS PARAMETER WHEN USING ParameterizedThreadStart()
+            // STUPID, OVERCOMPLICATED, OFFICIALLY CONSIDERED "UGLY" BUT IT WORKS ... SOMEHOW *sigh*
+            MethodInfo condition = CompileFunction(finishCondition);
 
-                //Top Right Corner
-                if ((RectangleCorners.TopRight & corners) == RectangleCorners.TopRight)
-                {
-                    p.AddArc(xwr2, y, r2, r2, 270, 90);
-                }
-                else
-                {
-                    p.AddLine(xwr, y, xw, y);
-                    p.AddLine(xw, y, xw, yr);
-                }
-
-                //Right Edge
-                p.AddLine(xw, yr, xw, yhr);
-
-                //Bottom Right Corner
-                if ((RectangleCorners.BottomRight & corners) == RectangleCorners.BottomRight)
-                {
-                    p.AddArc(xwr2, yhr2, r2, r2, 0, 90);
-                }
-                else
-                {
-                    p.AddLine(xw, yhr, xw, yh);
-                    p.AddLine(xw, yh, xwr, yh);
-                }
-
-                //Bottom Edge
-                p.AddLine(xwr, yh, xr, yh);
-
-                //Bottom Left Corner
-                if ((RectangleCorners.BottomLeft & corners) == RectangleCorners.BottomLeft)
-                {
-                    p.AddArc(x, yhr2, r2, r2, 90, 90);
-                }
-                else
-                {
-                    p.AddLine(xr, yh, x, yh);
-                    p.AddLine(x, yh, x, yhr);
-                }
-
-                //Left Edge
-                p.AddLine(x, yhr, x, yr);
-
-                p.CloseFigure();
-                return p;
+            // WAIT FOR LOADING PROCEDURE TO COMPLETE
+            while (!(bool)condition.Invoke(null,null))
+            {
+                Thread.Sleep(1000);
+                GlobalVarPool.isUser = true;
             }
-
-            public static GraphicsPath Create(Rectangle rect, int radius, RectangleCorners c)
-            { return Create(rect.X, rect.Y, rect.Width, rect.Height, radius, c); }
-
-            public static GraphicsPath Create(int x, int y, int width, int height, int radius)
-            { return Create(x, y, width, height, radius, RectangleCorners.All); }
-
-            public static GraphicsPath Create(Rectangle rect, int radius)
-            { return Create(rect.X, rect.Y, rect.Width, rect.Height, radius); }
-
-            public static GraphicsPath Create(int x, int y, int width, int height)
-            { return Create(x, y, width, height, 5); }
-
-            public static GraphicsPath Create(Rectangle rect)
-            { return Create(rect.X, rect.Y, rect.Width, rect.Height); }
+            // INVOKE UI AND HIDE LOADING SCREEN
+            finalPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                finalPanel.BringToFront();
+            });
+            GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.loadingSpinner.Visible = false;
+            });
+            GlobalVarPool.loadingLogo.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.loadingLogo.Visible = false;
+            });
+            GlobalVarPool.loadingLabel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.loadingLabel.Visible = false;
+            });
+            GlobalVarPool.settingsAbort.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.settingsAbort.Visible = true;
+            });
+            GlobalVarPool.settingsSave.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.settingsSave.Visible = true;
+            });
         }
     }
 }

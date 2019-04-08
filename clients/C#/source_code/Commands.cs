@@ -10,8 +10,9 @@ namespace pmdbs
 {
     public struct Commands
     {
-        public static void FetchAll(string[] parameters)
+        public static void FetchAll(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -36,8 +37,9 @@ namespace pmdbs
                 Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_ALL!;");
             }
         }
-        public static void FetchSync(string[] parameters)
+        public static void FetchSync(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -62,12 +64,13 @@ namespace pmdbs
                 Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
             }
         }
-        public static void Authenticate(string[] parameters)
+        public static void Authenticate(object parameterObject)
         {
-
+            string[] parameters = (string[])parameterObject;
         }
-        public static void BanAccount(string[] parameters)
+        public static void BanAccount(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -128,8 +131,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void BanClient(string[] parameters)
+        public static void BanClient(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -190,8 +194,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void ChangeEmailAddress(string[] parameters)
+        public static void ChangeEmailAddress(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isUser)
             {
                 return;
@@ -252,8 +257,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void ChangeName(string[] parameters)
+        public static void ChangeName(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 string name = string.Empty;
@@ -290,8 +296,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void GetClientLog(string[] parameters)
+        public static void GetClientLog(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -332,8 +339,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void CommitAdminPasswordChange(string[] parameters)
+        public static void CommitAdminPasswordChange(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -395,8 +403,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void CommitDeleteAccount(string[] parameters)
+        public static void CommitDeleteAccount(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isUser)
             {
                 return;
@@ -437,8 +446,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void CommitPasswordChange(string[] parameters)
+        public static void CommitPasswordChange(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             try
             {
                 switch (parameters.Count())
@@ -498,8 +508,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void ConfirmNewDevice(string[] parameters)
+        public static void ConfirmNewDevice(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -571,8 +582,9 @@ namespace pmdbs
                 return;
             }
         }
-        public static void Disconnect(string[] parameters)
+        public static void Disconnect(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -606,8 +618,9 @@ namespace pmdbs
                 GlobalVarPool.connected = false;
             }
         }
-        public static void GetCookie(string[] parameters)
+        public static void GetCookie(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -636,35 +649,39 @@ namespace pmdbs
                 Network.SendEncrypted("MNGCKI");
             }
         }
-        public static void Custom(string[] parameters)
+        public static void Custom(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
+        }
+        public static void CustomEncrypted(object parameterObject)
+        {
+            string[] parameters = (string[])parameterObject;
+        }
+        public static void Delete(object parameterObject)
+        {
+            string[] parameters = (string[])parameterObject;
+        }
+        public static void DisableDebugging(object parameterObject)
+        {
+            string[] parameters = (string[])parameterObject;
 
         }
-        public static void CustomEncrypted(string[] parameters)
+        public static void EnableDebugging(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
 
         }
-        public static void Delete(string[] parameters)
+        public static void Error(object parameterObject)
         {
-
-        }
-        public static void DisableDebugging(string[] parameters)
-        {
-
-        }
-        public static void EnableDebugging(string[] parameters)
-        {
-
-        }
-        public static void Error(string[] parameters)
-        {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.debugging)
             {
                 return;
             }
         }
-        public static void Exit(string[] parameters)
+        public static void Exit(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -695,8 +712,9 @@ namespace pmdbs
                 //Environment.Exit(Environment.ExitCode);
             }
         }
-        public static void GetAccountActivity(string[] parameters)
+        public static void GetAccountActivity(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -721,8 +739,9 @@ namespace pmdbs
                 Network.SendEncrypted("MNGGAA");
             }
         }
-        /*public static void Help(string[] parameters)
+        /*public static void Help(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (GlobalVarPool.connected)
             {
                 ConsoleExtension.PrintF(ConsoleColorExtension.Yellow.ToString() + @"------------------GENERAL INFORMATION-----------------
@@ -812,15 +831,17 @@ Command line history with arrow keys and tab completion is supported.
 ");
             }
         }*/
-        public static void InitAdminPasswordChange(string[] parameters)
+        public static void InitAdminPasswordChange(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
             }
         }
-        public static void InitPasswordChange(string[] parameters)
+        public static void InitPasswordChange(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -845,8 +866,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;");
             }
         }
-        public static void InitDeleteAccount(string[] parameters)
+        public static void InitDeleteAccount(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -871,8 +893,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGIACmode%eq!DELETE_ACCOUNT!;");
             }
         }
-        public static void Insert(string[] parameters)
+        public static void Insert(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             try
             {
                 int parameterCount = parameters.Count();
@@ -976,8 +999,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void Kick(string[] parameters)
+        public static void Kick(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -1038,8 +1062,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void ListAllClients(string[] parameters)
+        public static void ListAllClients(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -1068,8 +1093,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLICmode%eq!ALL_CONNECTED!;");
             }
         }
-        public static void ListAllUsers(string[] parameters)
+        public static void ListAllUsers(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -1098,8 +1124,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLICmode%eq!ALL_USERS!;");
             }
         }
-        public static void Login(string[] parameters)
+        public static void Login(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -1164,8 +1191,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void Logout(string[] parameters)
+        public static void Logout(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isUser && !GlobalVarPool.isRoot)
             {
                 return;
@@ -1194,8 +1222,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLGO");
             }
         }
-        public static void CheckCookie(string[] parameters, bool isAutomatedQuery)
+        public static void CheckCookie(object parameterObject, bool isAutomatedQuery)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.debugging && !isAutomatedQuery)
             {
                 return;
@@ -1224,12 +1253,13 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
         }
-        public static void CheckCredentials(string[] parameters)
+        public static void CheckCredentials(object parameterObject)
         {
-
+            string[] parameters = (string[])parameterObject;
         }
-        public static void NewAdminDevice(string[] parameters)
+        public static void NewAdminDevice(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -1293,8 +1323,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void Reboot(string[] parameters)
+        public static void Reboot(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -1324,8 +1355,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGRBTREBOOT");
             }
         }
-        public static void Register(string[] parameters)
+        public static void Register(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected || GlobalVarPool.isRoot || GlobalVarPool.isUser)
             {
                 return;
@@ -1407,8 +1439,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void ResendCode(string[] parameters)
+        public static void ResendCode(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -1477,12 +1510,13 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void Select(string[] parameters)
+        public static void Select(object parameterObject)
         {
-
+            string[] parameters = (string[])parameterObject;
         }
-        public static void Shutdown(string[] parameters)
+        public static void Shutdown(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -1512,8 +1546,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGSHTSHUTDOWN");
             }
         }
-        public static void GetServerLog(string[] parameters)
+        public static void GetServerLog(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
                 return;
@@ -1542,8 +1577,9 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLOGmode%eq!SERVER!;");
             }
         }
-        public static void Start(string[] parameters)
+        public static void Start(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (GlobalVarPool.connected)
             {
                 return;
@@ -1576,8 +1612,9 @@ Command line history with arrow keys and tab completion is supported.
                 connectionThread.Start();
             }
         }
-        public static void Sudo(string[] parameters)
+        public static void Sudo(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;
@@ -1634,8 +1671,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void Update(string[] parameters)
+        public static void Update(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             try
             {
                 int parameterCount = parameters.Count();
@@ -1754,8 +1792,9 @@ Command line history with arrow keys and tab completion is supported.
                 return;
             }
         }
-        public static void ActivateAccount(string[] parameters)
+        public static void ActivateAccount(object parameterObject)
         {
+            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
                 return;

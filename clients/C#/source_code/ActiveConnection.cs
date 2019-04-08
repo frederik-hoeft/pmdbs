@@ -408,6 +408,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
+                                                                        GlobalVarPool.command = new List<string> { "activateaccount", "-u", GlobalVarPool.username};
+
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":

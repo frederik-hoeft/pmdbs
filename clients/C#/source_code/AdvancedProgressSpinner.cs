@@ -67,7 +67,7 @@ namespace pmdbs
         private float angle = 270;
         private Color foreColor = Color.FromArgb(255, 96, 49);
         private Color backColor = Color.FromArgb(17, 17, 17);
-        private Boolean drawBorder = false;
+        private readonly Boolean drawBorder = false;
         private int timerInterval = 40;
 
         public int TimerInterval
