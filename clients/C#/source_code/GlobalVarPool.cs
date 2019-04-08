@@ -33,11 +33,27 @@ namespace pmdbs
         public static string passwordHash = string.Empty;
         public static string localAESkey = string.Empty;
 
+        // GLOBAL CONTROLS
+        public static AdvancedProgressSpinner loadingSpinner = null;
+        public static AdvancedImageButton settingsSave = null;
+        public static AdvancedImageButton settingsAbort = null;
+        public static System.Windows.Forms.Panel loadingPanel = null;
+        public static System.Windows.Forms.Label loadingLabel = null;
+        public static System.Windows.Forms.PictureBox loadingLogo = null;
+        public static System.Windows.Forms.TableLayoutPanel settingsPanel = null;
+        public static System.Windows.Forms.Panel previousPanel = null;
+        public static System.Windows.Forms.Label promptMain = null;
+        public static System.Windows.Forms.Label promptEMail = null;
+        public static System.Windows.Forms.Label promptAction = null;
+        public static System.Windows.Forms.Panel promptPanel = null;
+
         // GLOBAL VARIABLES
         public static string name = "User";
         public static string currentUser = string.Empty;
         public static string serverName = string.Empty;
         public static string username = string.Empty;
+        public static string email = string.Empty;
+        public static List<string> command = new List<string>();
         public static bool connected = false;
         public static bool bootCompleted = false;
         public static bool isRoot = false;
@@ -48,7 +64,7 @@ namespace pmdbs
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
 
-        public static System.Windows.Forms.Label OutputLabel = null;
+        public static System.Windows.Forms.Label outputLabel = null;
         public static bool outputLabelIsValid = false;
     }
 }
