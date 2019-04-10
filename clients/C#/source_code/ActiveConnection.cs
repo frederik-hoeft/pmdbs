@@ -283,6 +283,20 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
+                                    if (GlobalVarPool.search)
+                                    {
+                                        if (GlobalVarPool.searchCondition == SearchCondition.Match)
+                                        {
+                                            if (decryptedData.Equals(GlobalVarPool.automatedTaskCondition))
+                                            {
+
+                                            }
+                                        }
+                                        else if (GlobalVarPool.searchCondition == SearchCondition.In)
+                                        {
+
+                                        }
+                                    }
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
                                     switch (packetID)
@@ -408,8 +422,7 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
-                                                                        GlobalVarPool.command = new List<string> { "activateaccount", "-u", GlobalVarPool.username};
-
+                                                                        GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":
