@@ -869,7 +869,7 @@ namespace pmdbs
             string FirstUsage = TrueHashList[1];
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Checking Password...";
             if (!Stage2PasswordHash.Equals(TrueHash))
@@ -884,7 +884,7 @@ namespace pmdbs
             }
             MasterPassword = Stage1PasswordHash;
             LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
-            GlobalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             UserData = await GetData;
@@ -1052,16 +1052,10 @@ namespace pmdbs
                 SettingsLabelPromptCode.Text = "*Enter code (this field is required)";
                 return;
             }
-            if (code.Length != 6)
+            if (!Regex.IsMatch(code, "^[0-9]{6}$"))
             {
                 SettingsLabelPromptCode.ForeColor = Color.Firebrick;
-                SettingsLabelPromptCode.Text = "*Enter code (6 characters)";
-                return;
-            }
-            if (!Regex.IsMatch(code, "^[0-9]*$"))
-            {
-                SettingsLabelPromptCode.ForeColor = Color.Firebrick;
-                SettingsLabelPromptCode.Text = "*Enter code (Numbers only)";
+                SettingsLabelPromptCode.Text = "*Enter code (6 digits)";
                 return;
             }
             if (!GlobalVarPool.connected)
@@ -1122,6 +1116,8 @@ namespace pmdbs
                 GlobalVarPool.REMOTE_PORT = port;
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper));
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+                GlobalVarPool.search = true;
+                GlobalVarPool.searchCondition = SearchCondition.In;
                 GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
                 GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
                 Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))

@@ -431,6 +431,7 @@ namespace pmdbs
                                                                         GlobalVarPool.currentUser = "<" + GlobalVarPool.username + "@" + GlobalVarPool.serverName + ">";
                                                                         GlobalVarPool.isUser = true;
                                                                         HelperMethods.InvokeOutputLabel("Successfully logged in as " + GlobalVarPool.username + "!");
+                                                                        CustomException.ThrowNew.NotImplementedException("Wow it actually worked \\(^_^)/");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
