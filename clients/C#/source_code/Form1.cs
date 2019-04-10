@@ -1122,7 +1122,8 @@ namespace pmdbs
                 GlobalVarPool.REMOTE_PORT = port;
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper));
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
-                GlobalVarPool.automatedTaskCondition = "";
+                GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
+                GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
                 Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
                 {
                     IsBackground = true
