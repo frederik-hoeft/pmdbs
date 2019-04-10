@@ -303,7 +303,7 @@ namespace pmdbs
                                         }
                                         else
                                         {
-                                            if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
+                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
                                             {
                                                 IOAdapter.Parse(GlobalVarPool.automatedTask);
                                                 GlobalVarPool.search = false;
