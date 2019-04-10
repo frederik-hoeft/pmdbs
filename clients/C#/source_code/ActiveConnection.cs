@@ -99,6 +99,20 @@ namespace pmdbs
                     // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
                 }
             }
+            if (string.IsNullOrEmpty(GlobalVarPool.cookie))
+            {
+                // ConsoleExtension.PrintF(HelperMethods.Check() + "Looking for cookie ...");
+                DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
+                try
+                {
+                    GlobalVarPool.cookie = File.ReadAllText(d.GetFiles().Where(file => file.Name.Equals("cookie.txt")).First().FullName);
+                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Found cookie.");
+                }
+                catch
+                {
+                    // ConsoleExtension.PrintF(HelperMethods.CheckWarning() + "Cookie not found.");
+                }
+            }
             GlobalVarPool.threadKilled = false;
             string ip = GlobalVarPool.REMOTE_ADDRESS;
             int port = GlobalVarPool.REMOTE_PORT;
@@ -377,7 +391,7 @@ namespace pmdbs
                                         }
                                         else if (GlobalVarPool.searchCondition == SearchCondition.In)
                                         {
-                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Contains(decryptedData))
+                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
                                             {
                                                 IOAdapter.Parse(GlobalVarPool.automatedTask);
                                                 GlobalVarPool.search = false;
@@ -385,7 +399,7 @@ namespace pmdbs
                                         }
                                         else
                                         {
-                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                                            if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
                                             {
                                                 IOAdapter.Parse(GlobalVarPool.automatedTask);
                                                 GlobalVarPool.search = false;
@@ -566,6 +580,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
+                                                                        GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
+                                                                        HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
                                                                         break;
                                                                     }
                                                                 case "NOT_LOGGED_IN":
