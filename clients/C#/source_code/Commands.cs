@@ -510,6 +510,7 @@ namespace pmdbs
         }
         public static void ConfirmNewDevice(object parameterObject)
         {
+            HelperMethods.InvokeOutputLabel("Confirming new device ...");
             string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
@@ -1793,6 +1794,7 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void ActivateAccount(object parameterObject)
         {
+            HelperMethods.InvokeOutputLabel("Activating account ...");
             string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {

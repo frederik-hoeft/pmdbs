@@ -515,7 +515,7 @@ namespace pmdbs
                                                             CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
                                                             break;
                                                         }
-                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WHAT AM I DOING WITH MY LIFE???
+                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
                                                     case "RET":
                                                         {
                                                             switch (decryptedData.Split('!')[1])
@@ -580,7 +580,7 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
+                                                                        GlobalVarPool.promptCommand = "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword;
                                                                         HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
                                                                         break;
                                                                     }

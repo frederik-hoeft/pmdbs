@@ -1063,7 +1063,7 @@ namespace pmdbs
                 CustomException.ThrowNew.NetworkException("Not connected!");
                 return;
             }
-            if (!string.IsNullOrEmpty(GlobalVarPool.promptCommand))
+            if (string.IsNullOrEmpty(GlobalVarPool.promptCommand))
             {
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
