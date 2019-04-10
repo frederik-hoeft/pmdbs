@@ -1106,13 +1106,17 @@ namespace pmdbs
             if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
             {
                 isIP = true;
+                GlobalVarPool.REMOTE_ADDRESS = ip;
             }
             try
             {
-                Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
-                IPHostEntry ipAddress = await ipTask;
-                string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
-                GlobalVarPool.REMOTE_ADDRESS = ipv4String;
+                if (!isIP)
+                {
+                    Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
+                    IPHostEntry ipAddress = await ipTask;
+                    string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
+                    GlobalVarPool.REMOTE_ADDRESS = ipv4String;
+                }
                 GlobalVarPool.REMOTE_PORT = port;
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
