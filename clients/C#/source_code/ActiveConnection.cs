@@ -38,10 +38,6 @@ namespace pmdbs
                 CustomException.ThrowNew.NetworkException("Unable to resolve + " + ip + " Error message: " + e.ToString());
                 return;
             }
-            while (GlobalVarPool.serverName.Equals(string.Empty))
-            {
-                Thread.Sleep(500);
-            }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
             GlobalVarPool.clientSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             GlobalVarPool.clientSocket.Connect(server);

@@ -157,9 +157,13 @@ namespace pmdbs
             MethodInfo condition = CompileFunction(finishCondition);
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!(bool)condition.Invoke(null,null))
+            while (!(bool)condition.Invoke(null,null) || !GlobalVarPool.connected)
             {
                 Thread.Sleep(1000);
+            }
+            if (!GlobalVarPool.connected)
+            {
+                CustomException.ThrowNew.NetworkException("Connection lost!");
             }
             // INVOKE UI AND HIDE LOADING SCREEN
             finalPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
