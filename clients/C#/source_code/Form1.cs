@@ -1114,7 +1114,10 @@ namespace pmdbs
                 string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
                 GlobalVarPool.REMOTE_ADDRESS = ipv4String;
                 GlobalVarPool.REMOTE_PORT = port;
-                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper));
+                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+                {
+                    IsBackground = true
+                };
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 GlobalVarPool.search = true;
                 GlobalVarPool.searchCondition = SearchCondition.In;

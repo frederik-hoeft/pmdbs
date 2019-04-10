@@ -1177,11 +1177,9 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 return;
                             }
-                            GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
-                            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
-                            string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
+                            
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }

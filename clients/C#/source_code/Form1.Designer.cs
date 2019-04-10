@@ -51,6 +51,17 @@
             this.SettingsAdvancedImageButtonFooterAbort = new pmdbs.AdvancedImageButton();
             this.SettingsAdvancedImageButtonFooterSave = new pmdbs.AdvancedImageButton();
             this.SettingsPanelContentMain = new System.Windows.Forms.Panel();
+            this.SettingsFlowLayoutPanelLogin = new System.Windows.Forms.FlowLayoutPanel();
+            this.SettingsPanelLoginContent = new System.Windows.Forms.Panel();
+            this.SettingsLabelLoginAccountDesc = new System.Windows.Forms.Label();
+            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
+            this.SettingsLabelLoginAccount = new System.Windows.Forms.Label();
+            this.SettingsLabelLoginServer = new System.Windows.Forms.Label();
+            this.SettingsLabelLoginServerDesc = new System.Windows.Forms.Label();
+            this.SettingsLabelLoginMain = new System.Windows.Forms.Label();
+            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
+            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
+            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
             this.SettingsPanelPromptMain = new System.Windows.Forms.Panel();
             this.SettingsLabelPromptAction = new System.Windows.Forms.Label();
             this.SettingsLabelPromptMain = new System.Windows.Forms.Label();
@@ -66,17 +77,6 @@
             this.SettingsLabelLoadingStatus = new System.Windows.Forms.Label();
             this.SettingsAdvancedProgressSpinnerLoading = new pmdbs.AdvancedProgressSpinner();
             this.SettingsPictureBoxLoadingLogo = new System.Windows.Forms.PictureBox();
-            this.SettingsFlowLayoutPanelLogin = new System.Windows.Forms.FlowLayoutPanel();
-            this.SettingsPanelLoginContent = new System.Windows.Forms.Panel();
-            this.SettingsLabelLoginAccountDesc = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
-            this.SettingsLabelLoginAccount = new System.Windows.Forms.Label();
-            this.SettingsLabelLoginServer = new System.Windows.Forms.Label();
-            this.SettingsLabelLoginServerDesc = new System.Windows.Forms.Label();
-            this.SettingsLabelLoginMain = new System.Windows.Forms.Label();
-            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
-            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
-            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
             this.SettingsFlowLayoutPanelRegister = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelRegisterContent = new System.Windows.Forms.Panel();
             this.SettingsLabelRegisterAccountDesc = new System.Windows.Forms.Label();
@@ -258,14 +258,14 @@
             this.SettingsTableLayoutPanelCenter.SuspendLayout();
             this.SettingsPanelFooter.SuspendLayout();
             this.SettingsPanelContentMain.SuspendLayout();
+            this.SettingsFlowLayoutPanelLogin.SuspendLayout();
+            this.SettingsPanelLoginContent.SuspendLayout();
             this.SettingsPanelPromptMain.SuspendLayout();
             this.SettingsPanelPromptCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).BeginInit();
             this.SettingsPanelLoadingMain.SuspendLayout();
             this.SettingsPanelLoadingCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLoadingLogo)).BeginInit();
-            this.SettingsFlowLayoutPanelLogin.SuspendLayout();
-            this.SettingsPanelLoginContent.SuspendLayout();
             this.SettingsFlowLayoutPanelRegister.SuspendLayout();
             this.SettingsPanelRegisterContent.SuspendLayout();
             this.SettingsFlowLayoutPanelOffline.SuspendLayout();
@@ -628,6 +628,181 @@
             this.SettingsPanelContentMain.Size = new System.Drawing.Size(700, 898);
             this.SettingsPanelContentMain.TabIndex = 14;
             // 
+            // SettingsFlowLayoutPanelLogin
+            // 
+            this.SettingsFlowLayoutPanelLogin.AutoScroll = true;
+            this.SettingsFlowLayoutPanelLogin.Controls.Add(this.SettingsPanelLoginContent);
+            this.SettingsFlowLayoutPanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsFlowLayoutPanelLogin.Location = new System.Drawing.Point(0, 0);
+            this.SettingsFlowLayoutPanelLogin.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsFlowLayoutPanelLogin.Name = "SettingsFlowLayoutPanelLogin";
+            this.SettingsFlowLayoutPanelLogin.Size = new System.Drawing.Size(700, 898);
+            this.SettingsFlowLayoutPanelLogin.TabIndex = 15;
+            // 
+            // SettingsPanelLoginContent
+            // 
+            this.SettingsPanelLoginContent.BackColor = System.Drawing.Color.White;
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccountDesc);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsAnimatedButtonLoginSubmit);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccount);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginServer);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginServerDesc);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginMain);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginIP);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginPort);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginUsername);
+            this.SettingsPanelLoginContent.Location = new System.Drawing.Point(0, 0);
+            this.SettingsPanelLoginContent.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelLoginContent.Name = "SettingsPanelLoginContent";
+            this.SettingsPanelLoginContent.Size = new System.Drawing.Size(670, 896);
+            this.SettingsPanelLoginContent.TabIndex = 10;
+            // 
+            // SettingsLabelLoginAccountDesc
+            // 
+            this.SettingsLabelLoginAccountDesc.AutoSize = true;
+            this.SettingsLabelLoginAccountDesc.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLabelLoginAccountDesc.Location = new System.Drawing.Point(4, 490);
+            this.SettingsLabelLoginAccountDesc.Name = "SettingsLabelLoginAccountDesc";
+            this.SettingsLabelLoginAccountDesc.Size = new System.Drawing.Size(603, 42);
+            this.SettingsLabelLoginAccountDesc.TabIndex = 22;
+            this.SettingsLabelLoginAccountDesc.Text = "Please create your master username below to log into your existing \r\naccount.";
+            // 
+            // SettingsAnimatedButtonLoginSubmit
+            // 
+            this.SettingsAnimatedButtonLoginSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonLoginSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonLoginSubmit.Depth = 0;
+            this.SettingsAnimatedButtonLoginSubmit.Icon = null;
+            this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
+            this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonLoginSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
+            this.SettingsAnimatedButtonLoginSubmit.Primary = false;
+            this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
+            this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
+            this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
+            this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
+            // 
+            // SettingsLabelLoginAccount
+            // 
+            this.SettingsLabelLoginAccount.AutoSize = true;
+            this.SettingsLabelLoginAccount.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelLoginAccount.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.SettingsLabelLoginAccount.Location = new System.Drawing.Point(7, 456);
+            this.SettingsLabelLoginAccount.Name = "SettingsLabelLoginAccount";
+            this.SettingsLabelLoginAccount.Size = new System.Drawing.Size(205, 28);
+            this.SettingsLabelLoginAccount.TabIndex = 20;
+            this.SettingsLabelLoginAccount.Text = "Account Settings";
+            // 
+            // SettingsLabelLoginServer
+            // 
+            this.SettingsLabelLoginServer.AutoSize = true;
+            this.SettingsLabelLoginServer.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelLoginServer.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.SettingsLabelLoginServer.Location = new System.Drawing.Point(7, 117);
+            this.SettingsLabelLoginServer.Name = "SettingsLabelLoginServer";
+            this.SettingsLabelLoginServer.Size = new System.Drawing.Size(240, 28);
+            this.SettingsLabelLoginServer.TabIndex = 19;
+            this.SettingsLabelLoginServer.Text = "Server Specification";
+            // 
+            // SettingsLabelLoginServerDesc
+            // 
+            this.SettingsLabelLoginServerDesc.AutoSize = true;
+            this.SettingsLabelLoginServerDesc.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLabelLoginServerDesc.Location = new System.Drawing.Point(4, 148);
+            this.SettingsLabelLoginServerDesc.Name = "SettingsLabelLoginServerDesc";
+            this.SettingsLabelLoginServerDesc.Size = new System.Drawing.Size(574, 42);
+            this.SettingsLabelLoginServerDesc.TabIndex = 18;
+            this.SettingsLabelLoginServerDesc.Text = "Please enter the IP or DNS of the server you\'d like to connect to \r\nbelow and spe" +
+    "cify the port.";
+            // 
+            // SettingsLabelLoginMain
+            // 
+            this.SettingsLabelLoginMain.AutoSize = true;
+            this.SettingsLabelLoginMain.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelLoginMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLabelLoginMain.Location = new System.Drawing.Point(3, 67);
+            this.SettingsLabelLoginMain.Name = "SettingsLabelLoginMain";
+            this.SettingsLabelLoginMain.Size = new System.Drawing.Size(99, 38);
+            this.SettingsLabelLoginMain.TabIndex = 0;
+            this.SettingsLabelLoginMain.Text = "Login";
+            // 
+            // SettingsEditFieldLoginIP
+            // 
+            this.SettingsEditFieldLoginIP.AutoSize = true;
+            this.SettingsEditFieldLoginIP.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginIP.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginIP.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginIP.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginIP.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginIP.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearHover")));
+            this.SettingsEditFieldLoginIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearNormal")));
+            this.SettingsEditFieldLoginIP.Location = new System.Drawing.Point(6, 202);
+            this.SettingsEditFieldLoginIP.Name = "SettingsEditFieldLoginIP";
+            this.SettingsEditFieldLoginIP.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginIP.TabIndex = 2;
+            this.SettingsEditFieldLoginIP.TextTextBox = "";
+            this.SettingsEditFieldLoginIP.TextTitle = "IP / DNS*";
+            this.SettingsEditFieldLoginIP.UseColoredCaret = true;
+            this.SettingsEditFieldLoginIP.UseDefaultValue = false;
+            this.SettingsEditFieldLoginIP.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginPort
+            // 
+            this.SettingsEditFieldLoginPort.AutoSize = true;
+            this.SettingsEditFieldLoginPort.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPort.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPort.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginPort.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginPort.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginPort.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearHover")));
+            this.SettingsEditFieldLoginPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearNormal")));
+            this.SettingsEditFieldLoginPort.Location = new System.Drawing.Point(6, 298);
+            this.SettingsEditFieldLoginPort.Name = "SettingsEditFieldLoginPort";
+            this.SettingsEditFieldLoginPort.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginPort.TabIndex = 3;
+            this.SettingsEditFieldLoginPort.TextTextBox = "";
+            this.SettingsEditFieldLoginPort.TextTitle = "Port*";
+            this.SettingsEditFieldLoginPort.UseColoredCaret = true;
+            this.SettingsEditFieldLoginPort.UseDefaultValue = false;
+            this.SettingsEditFieldLoginPort.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginUsername
+            // 
+            this.SettingsEditFieldLoginUsername.AutoSize = true;
+            this.SettingsEditFieldLoginUsername.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginUsername.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearHover")));
+            this.SettingsEditFieldLoginUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearNormal")));
+            this.SettingsEditFieldLoginUsername.Location = new System.Drawing.Point(6, 546);
+            this.SettingsEditFieldLoginUsername.Name = "SettingsEditFieldLoginUsername";
+            this.SettingsEditFieldLoginUsername.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginUsername.TabIndex = 4;
+            this.SettingsEditFieldLoginUsername.TextTextBox = "";
+            this.SettingsEditFieldLoginUsername.TextTitle = "Username*";
+            this.SettingsEditFieldLoginUsername.UseColoredCaret = true;
+            this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
+            this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
+            // 
             // SettingsPanelPromptMain
             // 
             this.SettingsPanelPromptMain.BackColor = System.Drawing.Color.White;
@@ -822,181 +997,6 @@
             this.SettingsPictureBoxLoadingLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.SettingsPictureBoxLoadingLogo.TabIndex = 14;
             this.SettingsPictureBoxLoadingLogo.TabStop = false;
-            // 
-            // SettingsFlowLayoutPanelLogin
-            // 
-            this.SettingsFlowLayoutPanelLogin.AutoScroll = true;
-            this.SettingsFlowLayoutPanelLogin.Controls.Add(this.SettingsPanelLoginContent);
-            this.SettingsFlowLayoutPanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsFlowLayoutPanelLogin.Location = new System.Drawing.Point(0, 0);
-            this.SettingsFlowLayoutPanelLogin.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsFlowLayoutPanelLogin.Name = "SettingsFlowLayoutPanelLogin";
-            this.SettingsFlowLayoutPanelLogin.Size = new System.Drawing.Size(700, 898);
-            this.SettingsFlowLayoutPanelLogin.TabIndex = 15;
-            // 
-            // SettingsPanelLoginContent
-            // 
-            this.SettingsPanelLoginContent.BackColor = System.Drawing.Color.White;
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccountDesc);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsAnimatedButtonLoginSubmit);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccount);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginServer);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginServerDesc);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginMain);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginIP);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginPort);
-            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginUsername);
-            this.SettingsPanelLoginContent.Location = new System.Drawing.Point(0, 0);
-            this.SettingsPanelLoginContent.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelLoginContent.Name = "SettingsPanelLoginContent";
-            this.SettingsPanelLoginContent.Size = new System.Drawing.Size(670, 896);
-            this.SettingsPanelLoginContent.TabIndex = 10;
-            // 
-            // SettingsLabelLoginAccountDesc
-            // 
-            this.SettingsLabelLoginAccountDesc.AutoSize = true;
-            this.SettingsLabelLoginAccountDesc.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelLoginAccountDesc.Location = new System.Drawing.Point(4, 490);
-            this.SettingsLabelLoginAccountDesc.Name = "SettingsLabelLoginAccountDesc";
-            this.SettingsLabelLoginAccountDesc.Size = new System.Drawing.Size(603, 42);
-            this.SettingsLabelLoginAccountDesc.TabIndex = 22;
-            this.SettingsLabelLoginAccountDesc.Text = "Please create your master username below to log into your existing \r\naccount.";
-            // 
-            // SettingsAnimatedButtonLoginSubmit
-            // 
-            this.SettingsAnimatedButtonLoginSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonLoginSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonLoginSubmit.Depth = 0;
-            this.SettingsAnimatedButtonLoginSubmit.Icon = null;
-            this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
-            this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonLoginSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
-            this.SettingsAnimatedButtonLoginSubmit.Primary = false;
-            this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
-            this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
-            this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
-            this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
-            // 
-            // SettingsLabelLoginAccount
-            // 
-            this.SettingsLabelLoginAccount.AutoSize = true;
-            this.SettingsLabelLoginAccount.BackColor = System.Drawing.Color.White;
-            this.SettingsLabelLoginAccount.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.SettingsLabelLoginAccount.Location = new System.Drawing.Point(7, 456);
-            this.SettingsLabelLoginAccount.Name = "SettingsLabelLoginAccount";
-            this.SettingsLabelLoginAccount.Size = new System.Drawing.Size(205, 28);
-            this.SettingsLabelLoginAccount.TabIndex = 20;
-            this.SettingsLabelLoginAccount.Text = "Account Settings";
-            // 
-            // SettingsLabelLoginServer
-            // 
-            this.SettingsLabelLoginServer.AutoSize = true;
-            this.SettingsLabelLoginServer.BackColor = System.Drawing.Color.White;
-            this.SettingsLabelLoginServer.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.SettingsLabelLoginServer.Location = new System.Drawing.Point(7, 117);
-            this.SettingsLabelLoginServer.Name = "SettingsLabelLoginServer";
-            this.SettingsLabelLoginServer.Size = new System.Drawing.Size(240, 28);
-            this.SettingsLabelLoginServer.TabIndex = 19;
-            this.SettingsLabelLoginServer.Text = "Server Specification";
-            // 
-            // SettingsLabelLoginServerDesc
-            // 
-            this.SettingsLabelLoginServerDesc.AutoSize = true;
-            this.SettingsLabelLoginServerDesc.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelLoginServerDesc.Location = new System.Drawing.Point(4, 148);
-            this.SettingsLabelLoginServerDesc.Name = "SettingsLabelLoginServerDesc";
-            this.SettingsLabelLoginServerDesc.Size = new System.Drawing.Size(574, 42);
-            this.SettingsLabelLoginServerDesc.TabIndex = 18;
-            this.SettingsLabelLoginServerDesc.Text = "Please enter the IP or DNS of the server you\'d like to connect to \r\nbelow and spe" +
-    "cify the port.";
-            // 
-            // SettingsLabelLoginMain
-            // 
-            this.SettingsLabelLoginMain.AutoSize = true;
-            this.SettingsLabelLoginMain.BackColor = System.Drawing.Color.White;
-            this.SettingsLabelLoginMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelLoginMain.Location = new System.Drawing.Point(3, 67);
-            this.SettingsLabelLoginMain.Name = "SettingsLabelLoginMain";
-            this.SettingsLabelLoginMain.Size = new System.Drawing.Size(99, 38);
-            this.SettingsLabelLoginMain.TabIndex = 0;
-            this.SettingsLabelLoginMain.Text = "Login";
-            // 
-            // SettingsEditFieldLoginIP
-            // 
-            this.SettingsEditFieldLoginIP.AutoSize = true;
-            this.SettingsEditFieldLoginIP.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginIP.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginIP.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginIP.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginIP.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginIP.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldLoginIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearHover")));
-            this.SettingsEditFieldLoginIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearNormal")));
-            this.SettingsEditFieldLoginIP.Location = new System.Drawing.Point(6, 202);
-            this.SettingsEditFieldLoginIP.Name = "SettingsEditFieldLoginIP";
-            this.SettingsEditFieldLoginIP.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldLoginIP.TabIndex = 2;
-            this.SettingsEditFieldLoginIP.TextTextBox = "";
-            this.SettingsEditFieldLoginIP.TextTitle = "IP / DNS*";
-            this.SettingsEditFieldLoginIP.UseColoredCaret = true;
-            this.SettingsEditFieldLoginIP.UseDefaultValue = false;
-            this.SettingsEditFieldLoginIP.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldLoginPort
-            // 
-            this.SettingsEditFieldLoginPort.AutoSize = true;
-            this.SettingsEditFieldLoginPort.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPort.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPort.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginPort.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginPort.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginPort.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldLoginPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearHover")));
-            this.SettingsEditFieldLoginPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearNormal")));
-            this.SettingsEditFieldLoginPort.Location = new System.Drawing.Point(6, 298);
-            this.SettingsEditFieldLoginPort.Name = "SettingsEditFieldLoginPort";
-            this.SettingsEditFieldLoginPort.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldLoginPort.TabIndex = 3;
-            this.SettingsEditFieldLoginPort.TextTextBox = "";
-            this.SettingsEditFieldLoginPort.TextTitle = "Port*";
-            this.SettingsEditFieldLoginPort.UseColoredCaret = true;
-            this.SettingsEditFieldLoginPort.UseDefaultValue = false;
-            this.SettingsEditFieldLoginPort.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldLoginUsername
-            // 
-            this.SettingsEditFieldLoginUsername.AutoSize = true;
-            this.SettingsEditFieldLoginUsername.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginUsername.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearHover")));
-            this.SettingsEditFieldLoginUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearNormal")));
-            this.SettingsEditFieldLoginUsername.Location = new System.Drawing.Point(6, 546);
-            this.SettingsEditFieldLoginUsername.Name = "SettingsEditFieldLoginUsername";
-            this.SettingsEditFieldLoginUsername.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldLoginUsername.TabIndex = 4;
-            this.SettingsEditFieldLoginUsername.TextTextBox = "";
-            this.SettingsEditFieldLoginUsername.TextTitle = "Username*";
-            this.SettingsEditFieldLoginUsername.UseColoredCaret = true;
-            this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
-            this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
             // 
             // SettingsFlowLayoutPanelRegister
             // 
@@ -3507,8 +3507,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3531,6 +3531,9 @@
             this.SettingsTableLayoutPanelCenter.ResumeLayout(false);
             this.SettingsPanelFooter.ResumeLayout(false);
             this.SettingsPanelContentMain.ResumeLayout(false);
+            this.SettingsFlowLayoutPanelLogin.ResumeLayout(false);
+            this.SettingsPanelLoginContent.ResumeLayout(false);
+            this.SettingsPanelLoginContent.PerformLayout();
             this.SettingsPanelPromptMain.ResumeLayout(false);
             this.SettingsPanelPromptMain.PerformLayout();
             this.SettingsPanelPromptCenter.ResumeLayout(false);
@@ -3539,9 +3542,6 @@
             this.SettingsPanelLoadingMain.ResumeLayout(false);
             this.SettingsPanelLoadingCenter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLoadingLogo)).EndInit();
-            this.SettingsFlowLayoutPanelLogin.ResumeLayout(false);
-            this.SettingsPanelLoginContent.ResumeLayout(false);
-            this.SettingsPanelLoginContent.PerformLayout();
             this.SettingsFlowLayoutPanelRegister.ResumeLayout(false);
             this.SettingsPanelRegisterContent.ResumeLayout(false);
             this.SettingsPanelRegisterContent.PerformLayout();

@@ -160,7 +160,6 @@ namespace pmdbs
             while (!(bool)condition.Invoke(null,null))
             {
                 Thread.Sleep(1000);
-                GlobalVarPool.isUser = true;
             }
             // INVOKE UI AND HIDE LOADING SCREEN
             finalPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
