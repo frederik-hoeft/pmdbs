@@ -1126,6 +1126,7 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Login(object parameterObject)
         {
+            HelperMethods.InvokeOutputLabel("Logging in ...");
             string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
