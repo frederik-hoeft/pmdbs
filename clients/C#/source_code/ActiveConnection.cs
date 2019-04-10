@@ -13,6 +13,92 @@ namespace pmdbs
     {
         public static void Start()
         {
+            if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
+            {
+                if (GlobalVarPool.USE_PERSISTENT_RSA_KEYS)
+                {
+                    DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
+                    bool retry = true;
+                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Looking for RSA key pair in " + d.FullName + "\\keys ...");
+                    if (!Directory.Exists(d.FullName + "\\keys"))
+                    {
+                        // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Directory \"keys\" does not exist in " + d.FullName + ".");
+                        // ConsoleExtension.PrintF(HelperMethods.Check() + "Creating directory \"keys\" ...");
+                        try
+                        {
+                            Directory.CreateDirectory(d.FullName + "\\keys");
+                        }
+                        catch (Exception e)
+                        {
+                            // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Could not create directory: " + e.ToString());
+                            return;
+                        }
+                        // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Directory \"keys\" created successfully.");
+                    }
+                    while (retry)
+                    {
+                        d = new DirectoryInfo(Directory.GetCurrentDirectory() + "\\keys");
+                        FileInfo[] files = d.GetFiles().Where(file => (new[] { "client.privatekey", "client.publickey" }).Contains(file.Name)).ToArray();
+                        if (files.Length < 2)
+                        {
+                            bool selected = false;
+                            while (!selected)
+                            {
+                                // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "No key file found!");
+                                // ConsoleExtension.PrintF(HelperMethods.CheckManual() + "What to do next?");
+                                // ConsoleExtension.PrintF(HelperMethods.Check() + "[R] = Retry");
+                                // ConsoleExtension.PrintF(HelperMethods.Check() + "[G] = Generate");
+                                string choice = "G";
+                                if (choice.ToUpper().Equals("G"))
+                                {
+                                    HelperMethods.InvokeOutputLabel("Generating RSA Keys ...");
+                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Generating 4096 bit RSA key pair...");
+                                    string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
+                                    GlobalVarPool.PublicKey = RSAKeyPair[0];
+                                    GlobalVarPool.PrivateKey = RSAKeyPair[1];
+                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Exporting RSA private key ...");
+                                    File.WriteAllText(d.FullName + "\\client.privatekey", GlobalVarPool.PrivateKey);
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "RSA private key exported successfully.");
+                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Exporting RSA public key ...");
+                                    File.WriteAllText(d.FullName + "\\client.publickey", GlobalVarPool.PublicKey);
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "RSA public key exported successfully.");
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Generated RSA key pair.");
+                                    retry = false;
+                                    selected = true;
+                                }
+                                else if (choice.ToUpper().Equals("R"))
+                                {
+                                    selected = true;
+                                }
+                                else
+                                {
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Invalid option! Please try again.");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
+                            // ConsoleExtension.PrintF(HelperMethods.Check() + "Reading RSA keys ...");
+                            // KINDA LAZY BUT IT WORKS
+                            GlobalVarPool.PrivateKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.privatekey")).ToArray()[0].FullName);
+                            GlobalVarPool.PublicKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.publickey")).ToArray()[0].FullName);
+                            // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
+                            retry = false;
+                        }
+                    }
+                }
+                else
+                {
+                    HelperMethods.InvokeOutputLabel("Generating RSA keys ...");
+                   //  ConsoleExtension.PrintF(HelperMethods.Check() + "Generating 4096 bit RSA key pair...");
+                    string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
+                    GlobalVarPool.PublicKey = RSAKeyPair[0];
+                    GlobalVarPool.PrivateKey = RSAKeyPair[1];
+                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Generated RSA key pair.");
+                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
+                }
+            }
             GlobalVarPool.threadKilled = false;
             string ip = GlobalVarPool.REMOTE_ADDRESS;
             int port = GlobalVarPool.REMOTE_PORT;
