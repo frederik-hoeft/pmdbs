@@ -569,11 +569,8 @@ namespace pmdbs
                             {
                                 return;
                             }
-                            GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
-                            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
-                            string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
