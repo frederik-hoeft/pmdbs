@@ -55,7 +55,7 @@ namespace pmdbs
         public static string email = string.Empty;
         public static string promptCommand = string.Empty;
         public static string automatedTaskCondition = string.Empty;
-        public static List<string> automatedTask = new List<string>();
+        public static string automatedTask = string.Empty;
         public static SearchCondition searchCondition = SearchCondition.Match;
         
         public static bool connected = false;
