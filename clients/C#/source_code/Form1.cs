@@ -882,9 +882,11 @@ namespace pmdbs
                 LoginPictureBoxLoadingMain.SuspendLayout();
                 return;
             }
-            MasterPassword = Stage1PasswordHash;
             LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            CustomException.ThrowNew.NotImplementedException(Password);
+            CustomException.ThrowNew.NotImplementedException(Stage1PasswordHash.Substring(0, 32));
+            CustomException.ThrowNew.NotImplementedException(GlobalVarPool.onlinePassword);
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             UserData = await GetData;
