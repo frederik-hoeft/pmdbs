@@ -289,12 +289,25 @@ namespace pmdbs
                                         {
                                             if (decryptedData.Equals(GlobalVarPool.automatedTaskCondition))
                                             {
-
+                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                GlobalVarPool.search = false;
                                             }
                                         }
                                         else if (GlobalVarPool.searchCondition == SearchCondition.In)
                                         {
-
+                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Contains(decryptedData))
+                                            {
+                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                GlobalVarPool.search = false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
+                                            {
+                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                GlobalVarPool.search = false;
+                                            }
                                         }
                                     }
                                     string packetID = decryptedData.Substring(0, 3);
