@@ -13,7 +13,7 @@ namespace pmdbs
         public static string REMOTE_ADDRESS = null;
         public static int REMOTE_PORT;
         public static bool ADDRESS_IS_DNS;
-        public static bool USE_PERSISTENT_RSA_KEYS;
+        public static bool USE_PERSISTENT_RSA_KEYS = true;
         public static string CONFIG_VERSION = null;
         public static string CONFIG_BUILD = null;
 
