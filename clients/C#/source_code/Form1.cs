@@ -1075,7 +1075,6 @@ namespace pmdbs
         #region SettingsLogin
         private async void SettingsAnimatedButtonLoginSubmit_Click(object sender, EventArgs e)
         {
-            // TODO: CONTINUE
             string ip = SettingsEditFieldLoginIP.TextTextBox;
             string strPort = SettingsEditFieldLoginPort.TextTextBox;
             string username = SettingsEditFieldLoginUsername.TextTextBox;
@@ -1094,6 +1093,79 @@ namespace pmdbs
             if (string.IsNullOrEmpty(username))
             {
                 CustomException.ThrowNew.FormatException("Please enter your username.");
+                return;
+            }
+            int port = Convert.ToInt32(strPort);
+            if (port < 1 || port > 65536)
+            {
+                CustomException.ThrowNew.FormatException("Please enter a valid port number.");
+                return;
+            }
+            if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
+            {
+                isIP = true;
+                GlobalVarPool.REMOTE_ADDRESS = ip;
+            }
+            try
+            {
+                if (!isIP)
+                {
+                    Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
+                    IPHostEntry ipAddress = await ipTask;
+                    string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
+                    GlobalVarPool.REMOTE_ADDRESS = ipv4String;
+                }
+                GlobalVarPool.REMOTE_PORT = port;
+                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+                {
+                    IsBackground = true
+                };
+                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+                GlobalVarPool.search = true;
+                GlobalVarPool.searchCondition = SearchCondition.In;
+                GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
+                GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
+                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                {
+                    IsBackground = true
+                };
+                connectionThread.Start();
+            }
+            catch
+            {
+
+            }
+        }
+
+        #endregion
+        #region SettingsRegister
+        private async void SettingsAnimatedButtonSubmit_Click(object sender, EventArgs e)
+        {
+            string ip = SettingsEditFieldRegisterIP.TextTextBox;
+            string strPort = SettingsEditFieldRegisterPort.TextTextBox;
+            string username = SettingsEditFieldRegisterUsername.TextTextBox;
+            string email = SettingsEditFieldRegisterEmail.TextTextBox; 
+            string nickname = SettingsEditFieldRegisterName.TextTextBox;
+            bool isIP = false;
+
+            if (string.IsNullOrEmpty(ip))
+            {
+                CustomException.ThrowNew.FormatException("Please enter the IPv4 address or DNS of the server you'd like to connect to.");
+                return;
+            }
+            if (string.IsNullOrEmpty(strPort))
+            {
+                CustomException.ThrowNew.FormatException("Please enter the port of the server you'd like to connect to.");
+                return;
+            }
+            if (string.IsNullOrEmpty(username))
+            {
+                CustomException.ThrowNew.FormatException("Please enter your username.");
+                return;
+            }
+            if (string.IsNullOrEmpty(email))
+            {
+                CustomException.ThrowNew.FormatException("Please enter your email address.");
                 return;
             }
             int port = Convert.ToInt32(strPort);
