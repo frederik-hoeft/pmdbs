@@ -158,7 +158,7 @@ namespace pmdbs
             MethodInfo condition = CompileFunction(finishCondition);
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!(bool)condition.Invoke(null,null) || !GlobalVarPool.connected || GlobalVarPool.commandError)
+            while (!(bool)condition.Invoke(null,null) && GlobalVarPool.connected && !GlobalVarPool.commandError)
             {
                 Thread.Sleep(1000);
             }
