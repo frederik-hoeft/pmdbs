@@ -522,8 +522,11 @@ namespace pmdbs
                                                                     }
                                                                 case "MAIL":
                                                                     {
-                                                                        GlobalVarPool.commandError = true;
-                                                                        CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
+                                                                        if (message.Equals("EMAIL_ALREADY_IN_USE"))
+                                                                        {
+                                                                            GlobalVarPool.commandError = true;
+                                                                            CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
+                                                                        }
                                                                         break;
                                                                     }
                                                                 default:

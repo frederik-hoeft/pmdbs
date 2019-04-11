@@ -162,9 +162,16 @@ namespace pmdbs
             {
                 Thread.Sleep(1000);
             }
-            if (!GlobalVarPool.connected || GlobalVarPool.commandError)
+            if (!GlobalVarPool.connected)
             {
                 CustomException.ThrowNew.NetworkException("Connection lost!");
+                GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    GlobalVarPool.previousPanel.BringToFront();
+                });
+            }
+            else if (GlobalVarPool.commandError)
+            {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
                     GlobalVarPool.previousPanel.BringToFront();
