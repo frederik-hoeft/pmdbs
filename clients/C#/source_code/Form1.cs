@@ -1163,7 +1163,11 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter your username.");
                 return;
             }
-
+            if (new string[] { " ", "\"", "'", "__" }.Any(username.Contains))
+            {
+                CustomException.ThrowNew.FormatException("The username may not contain spaces, single or double quotes or double underscores.");
+                return;
+            }
             if (string.IsNullOrEmpty(email))
             {
                 CustomException.ThrowNew.FormatException("Please enter your email address.");
