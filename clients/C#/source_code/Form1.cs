@@ -1122,15 +1122,22 @@ namespace pmdbs
                     IsBackground = true
                 };
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
-                GlobalVarPool.search = true;
-                GlobalVarPool.searchCondition = SearchCondition.In;
-                GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
-                GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
-                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                if (GlobalVarPool.connected)
                 {
-                    IsBackground = true
-                };
-                connectionThread.Start();
+                    IOAdapter.Parse("login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                }
+                else
+                {
+                    GlobalVarPool.search = true;
+                    GlobalVarPool.searchCondition = SearchCondition.In;
+                    GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
+                    GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
+                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                    {
+                        IsBackground = true
+                    };
+                    connectionThread.Start();
+                }
             }
             catch
             {
@@ -1216,15 +1223,22 @@ namespace pmdbs
                     IsBackground = true
                 };
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
-                GlobalVarPool.search = true;
-                GlobalVarPool.searchCondition = SearchCondition.In;
-                GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
-                GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname;
-                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                if (GlobalVarPool.connected)
                 {
-                    IsBackground = true
-                };
-                connectionThread.Start();
+                    IOAdapter.Parse("register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                }
+                else
+                {
+                    GlobalVarPool.search = true;
+                    GlobalVarPool.searchCondition = SearchCondition.In;
+                    GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
+                    GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname;
+                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                    {
+                        IsBackground = true
+                    };
+                    connectionThread.Start();
+                }
             }
             catch
             {
