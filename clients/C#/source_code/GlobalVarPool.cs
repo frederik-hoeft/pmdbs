@@ -58,7 +58,8 @@ namespace pmdbs
         public static string automatedTask = string.Empty;
         public static string onlinePassword = string.Empty;
         public static SearchCondition searchCondition = SearchCondition.Match;
-        
+
+        public static bool commandError = false;
         public static bool connected = false;
         public static bool bootCompleted = false;
         public static bool isRoot = false;

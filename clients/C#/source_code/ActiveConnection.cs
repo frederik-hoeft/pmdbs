@@ -512,7 +512,20 @@ namespace pmdbs
                                                                 errID = "UNKN";
                                                                 message = "UNKNOWN ERROR";
                                                             }
-                                                            CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
+                                                            switch (errID)
+                                                            {
+                                                                case "UEXT":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException(message);
+                                                                        break;
+                                                                    }
+                                                                default:
+                                                                    {
+                                                                        CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
+                                                                        break;
+                                                                    }
+                                                            }
                                                             break;
                                                         }
                                                         //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
@@ -534,7 +547,6 @@ namespace pmdbs
                                                                     {
                                                                         GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
                                                                         HelperMethods.Prompt("Confirm your account", "Please verify your email address.");
-
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":

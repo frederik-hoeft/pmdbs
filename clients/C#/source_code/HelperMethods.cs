@@ -111,6 +111,7 @@ namespace pmdbs
 
         public static void LoadingHelper(object parameters)
         {
+            GlobalVarPool.commandError = false;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingSpinner.Visible = true;
@@ -157,19 +158,26 @@ namespace pmdbs
             MethodInfo condition = CompileFunction(finishCondition);
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!(bool)condition.Invoke(null,null) || !GlobalVarPool.connected)
+            while (!(bool)condition.Invoke(null,null) || !GlobalVarPool.connected || GlobalVarPool.commandError)
             {
                 Thread.Sleep(1000);
             }
-            if (!GlobalVarPool.connected)
+            if (!GlobalVarPool.connected || GlobalVarPool.commandError)
             {
                 CustomException.ThrowNew.NetworkException("Connection lost!");
+                GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    GlobalVarPool.previousPanel.BringToFront();
+                });
             }
-            // INVOKE UI AND HIDE LOADING SCREEN
-            finalPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            else
             {
-                finalPanel.BringToFront();
-            });
+                // INVOKE UI AND HIDE LOADING SCREEN
+                finalPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    finalPanel.BringToFront();
+                });
+            }
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingSpinner.Visible = false;
