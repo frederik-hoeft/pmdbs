@@ -517,7 +517,7 @@ namespace pmdbs
                                                                 case "UEXT":
                                                                     {
                                                                         GlobalVarPool.commandError = true;
-                                                                        CustomException.ThrowNew.GenericException(message);
+                                                                        CustomException.ThrowNew.GenericException("This username or email address is already taken." + Environment.NewLine + message);
                                                                         break;
                                                                     }
                                                                 default:

@@ -1426,7 +1426,7 @@ Command line history with arrow keys and tab completion is supported.
                             }
                             string passwordHash = CryptoHelper.SHA256Hash(password).Substring(0, 32);
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + passwordHash + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
