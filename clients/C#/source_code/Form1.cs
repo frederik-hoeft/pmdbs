@@ -1116,6 +1116,7 @@ namespace pmdbs
                     GlobalVarPool.REMOTE_ADDRESS = ipv4String;
                 }
                 GlobalVarPool.REMOTE_PORT = port;
+                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
                     IsBackground = true
@@ -1209,6 +1210,7 @@ namespace pmdbs
                     GlobalVarPool.REMOTE_ADDRESS = ipv4String;
                 }
                 GlobalVarPool.REMOTE_PORT = port;
+                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
                     IsBackground = true
