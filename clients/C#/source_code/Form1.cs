@@ -1147,7 +1147,10 @@ namespace pmdbs
             string email = SettingsEditFieldRegisterEmail.TextTextBox; 
             string nickname = SettingsEditFieldRegisterName.TextTextBox;
             bool isIP = false;
-
+            if (string.IsNullOrEmpty(nickname))
+            {
+                nickname = "User";
+            }
             if (string.IsNullOrEmpty(ip))
             {
                 CustomException.ThrowNew.FormatException("Please enter the IPv4 address or DNS of the server you'd like to connect to.");
@@ -1163,16 +1166,21 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter your username.");
                 return;
             }
-            if (new string[] { " ", "\"", "'", "__" }.Any(username.Contains))
+            if (new string[] { username, email, nickname}.Where(element => new string[] { " ", "\"", "'" }.Any(element.Contains)).Any())
             {
-                CustomException.ThrowNew.FormatException("The username may not contain spaces, single or double quotes or double underscores.");
+                CustomException.ThrowNew.FormatException("The username, nickname and email address may not contain spaces, single or double quotes.");
                 return;
+            }
+            if (username.Contains("__"))
+            {
+                CustomException.ThrowNew.FormatException("The username may not contain double underscores.");
             }
             if (string.IsNullOrEmpty(email))
             {
                 CustomException.ThrowNew.FormatException("Please enter your email address.");
                 return;
             }
+            // DAMN REGEX SYNTAX SUCKS ... TODO: REPLACE THIS WITH SOME ACTUALLY READABLE LINQ QUERY
             if (!Regex.IsMatch(email, @"^[^.][0-9a-zA-z\.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-\.]+\.[a-z]+$"))
             {
                 CustomException.ThrowNew.FormatException("Please enter a valid email address.");
@@ -1185,6 +1193,7 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter a valid port number.");
                 return;
             }
+            // MORE DISGUSTING REGEXES. THIS ONE DOESN'T EVEN WORK PROPERLY AS IT ALLOWS STUFF LIKE 1.1.1 AS IPv4 ADDRESSES --> TODO: LINQ <3
             if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
             {
                 isIP = true;
@@ -1208,7 +1217,7 @@ namespace pmdbs
                 GlobalVarPool.search = true;
                 GlobalVarPool.searchCondition = SearchCondition.In;
                 GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
-                GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + "";
+                GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname;
                 Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
                 {
                     IsBackground = true
@@ -1217,7 +1226,7 @@ namespace pmdbs
             }
             catch
             {
-
+                CustomException.ThrowNew.GenericException("Something went wrong.");
             }
         }
         #endregion
