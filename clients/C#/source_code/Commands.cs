@@ -1843,6 +1843,10 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 return;
                             }
+                            GlobalVarPool.search = true;
+                            GlobalVarPool.searchCondition = SearchCondition.In;
+                            GlobalVarPool.automatedTaskCondition = "ACCOUNT_VERIFIED";
+                            GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
                             Network.SendEncrypted("MNGVERusername%eq!" + username + "!;code%eq!" + code + "!;");
                             break;
                         }
