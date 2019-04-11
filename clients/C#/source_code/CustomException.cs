@@ -50,6 +50,10 @@ namespace pmdbs
             {
                 new ErrorForm("This feature is not available yet.", "Not Implemented Exception").ShowDialog();
             }
+            public static void NotImplementedException(string message)
+            {
+                new ErrorForm(message, "Not Implemented Exception").ShowDialog();
+            }
         }
     }
 }

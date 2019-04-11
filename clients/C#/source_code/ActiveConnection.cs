@@ -13,6 +13,106 @@ namespace pmdbs
     {
         public static void Start()
         {
+            if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
+            {
+                if (GlobalVarPool.USE_PERSISTENT_RSA_KEYS)
+                {
+                    DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
+                    bool retry = true;
+                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Looking for RSA key pair in " + d.FullName + "\\keys ...");
+                    if (!Directory.Exists(d.FullName + "\\keys"))
+                    {
+                        // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Directory \"keys\" does not exist in " + d.FullName + ".");
+                        // ConsoleExtension.PrintF(HelperMethods.Check() + "Creating directory \"keys\" ...");
+                        try
+                        {
+                            Directory.CreateDirectory(d.FullName + "\\keys");
+                        }
+                        catch (Exception e)
+                        {
+                            // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Could not create directory: " + e.ToString());
+                            return;
+                        }
+                        // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Directory \"keys\" created successfully.");
+                    }
+                    while (retry)
+                    {
+                        d = new DirectoryInfo(Directory.GetCurrentDirectory() + "\\keys");
+                        FileInfo[] files = d.GetFiles().Where(file => (new[] { "client.privatekey", "client.publickey" }).Contains(file.Name)).ToArray();
+                        if (files.Length < 2)
+                        {
+                            bool selected = false;
+                            while (!selected)
+                            {
+                                // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "No key file found!");
+                                // ConsoleExtension.PrintF(HelperMethods.CheckManual() + "What to do next?");
+                                // ConsoleExtension.PrintF(HelperMethods.Check() + "[R] = Retry");
+                                // ConsoleExtension.PrintF(HelperMethods.Check() + "[G] = Generate");
+                                string choice = "G";
+                                if (choice.ToUpper().Equals("G"))
+                                {
+                                    HelperMethods.InvokeOutputLabel("Generating RSA Keys ...");
+                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Generating 4096 bit RSA key pair...");
+                                    string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
+                                    GlobalVarPool.PublicKey = RSAKeyPair[0];
+                                    GlobalVarPool.PrivateKey = RSAKeyPair[1];
+                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Exporting RSA private key ...");
+                                    File.WriteAllText(d.FullName + "\\client.privatekey", GlobalVarPool.PrivateKey);
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "RSA private key exported successfully.");
+                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Exporting RSA public key ...");
+                                    File.WriteAllText(d.FullName + "\\client.publickey", GlobalVarPool.PublicKey);
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "RSA public key exported successfully.");
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Generated RSA key pair.");
+                                    retry = false;
+                                    selected = true;
+                                }
+                                else if (choice.ToUpper().Equals("R"))
+                                {
+                                    selected = true;
+                                }
+                                else
+                                {
+                                    // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Invalid option! Please try again.");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
+                            // ConsoleExtension.PrintF(HelperMethods.Check() + "Reading RSA keys ...");
+                            // KINDA LAZY BUT IT WORKS
+                            GlobalVarPool.PrivateKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.privatekey")).ToArray()[0].FullName);
+                            GlobalVarPool.PublicKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.publickey")).ToArray()[0].FullName);
+                            // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
+                            retry = false;
+                        }
+                    }
+                }
+                else
+                {
+                    HelperMethods.InvokeOutputLabel("Generating RSA keys ...");
+                   //  ConsoleExtension.PrintF(HelperMethods.Check() + "Generating 4096 bit RSA key pair...");
+                    string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
+                    GlobalVarPool.PublicKey = RSAKeyPair[0];
+                    GlobalVarPool.PrivateKey = RSAKeyPair[1];
+                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Generated RSA key pair.");
+                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
+                }
+            }
+            if (string.IsNullOrEmpty(GlobalVarPool.cookie))
+            {
+                // ConsoleExtension.PrintF(HelperMethods.Check() + "Looking for cookie ...");
+                DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
+                try
+                {
+                    GlobalVarPool.cookie = File.ReadAllText(d.GetFiles().Where(file => file.Name.Equals("cookie.txt")).First().FullName);
+                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Found cookie.");
+                }
+                catch
+                {
+                    // ConsoleExtension.PrintF(HelperMethods.CheckWarning() + "Cookie not found.");
+                }
+            }
             GlobalVarPool.threadKilled = false;
             string ip = GlobalVarPool.REMOTE_ADDRESS;
             int port = GlobalVarPool.REMOTE_PORT;
@@ -37,10 +137,6 @@ namespace pmdbs
             {
                 CustomException.ThrowNew.NetworkException("Unable to resolve + " + ip + " Error message: " + e.ToString());
                 return;
-            }
-            while (GlobalVarPool.serverName.Equals(string.Empty))
-            {
-                Thread.Sleep(500);
             }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
             GlobalVarPool.clientSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -283,6 +379,33 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
+                                    if (GlobalVarPool.search)
+                                    {
+                                        if (GlobalVarPool.searchCondition == SearchCondition.Match)
+                                        {
+                                            if (decryptedData.Equals(GlobalVarPool.automatedTaskCondition))
+                                            {
+                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                GlobalVarPool.search = false;
+                                            }
+                                        }
+                                        else if (GlobalVarPool.searchCondition == SearchCondition.In)
+                                        {
+                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                                            {
+                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                GlobalVarPool.search = false;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
+                                            {
+                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                GlobalVarPool.search = false;
+                                            }
+                                        }
+                                    }
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
                                     switch (packetID)
@@ -389,10 +512,32 @@ namespace pmdbs
                                                                 errID = "UNKN";
                                                                 message = "UNKNOWN ERROR";
                                                             }
-                                                            CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
+                                                            switch (errID)
+                                                            {
+                                                                case "UEXT":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException("This username is already in use." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
+                                                                case "MAIL":
+                                                                    {
+                                                                        if (message.Equals("EMAIL_ALREADY_IN_USE"))
+                                                                        {
+                                                                            GlobalVarPool.commandError = true;
+                                                                            CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                default:
+                                                                    {
+                                                                        CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
+                                                                        break;
+                                                                    }
+                                                            }
                                                             break;
                                                         }
-                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WHAT AM I DOING WITH MY LIFE???
+                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
                                                     case "RET":
                                                         {
                                                             switch (decryptedData.Split('!')[1])
@@ -404,12 +549,13 @@ namespace pmdbs
                                                                         GlobalVarPool.currentUser = "<" + GlobalVarPool.username + "@" + GlobalVarPool.serverName + ">";
                                                                         GlobalVarPool.isUser = true;
                                                                         HelperMethods.InvokeOutputLabel("Successfully logged in as " + GlobalVarPool.username + "!");
+                                                                        CustomException.ThrowNew.NotImplementedException("Wow it actually worked \\(^_^)/");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
-                                                                        GlobalVarPool.command = new List<string> { "activateaccount", "-u", GlobalVarPool.username};
-
+                                                                        GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
+                                                                        HelperMethods.Prompt("Confirm your account", "Please verify your email address.");
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":
@@ -457,6 +603,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
+                                                                        GlobalVarPool.promptCommand = "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword;
+                                                                        HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
                                                                         break;
                                                                     }
                                                                 case "NOT_LOGGED_IN":

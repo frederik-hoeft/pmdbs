@@ -510,6 +510,7 @@ namespace pmdbs
         }
         public static void ConfirmNewDevice(object parameterObject)
         {
+            HelperMethods.InvokeOutputLabel("Confirming new device ...");
             string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
@@ -568,11 +569,8 @@ namespace pmdbs
                             {
                                 return;
                             }
-                            GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
-                            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
-                            string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
@@ -1126,6 +1124,7 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void Login(object parameterObject)
         {
+            HelperMethods.InvokeOutputLabel("Logging in ...");
             string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
@@ -1177,11 +1176,9 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 return;
                             }
-                            GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
-                            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
-                            string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
+                            
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
@@ -1429,7 +1426,7 @@ Command line history with arrow keys and tab completion is supported.
                             }
                             string passwordHash = CryptoHelper.SHA256Hash(password).Substring(0, 32);
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + passwordHash + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
@@ -1794,6 +1791,7 @@ Command line history with arrow keys and tab completion is supported.
         }
         public static void ActivateAccount(object parameterObject)
         {
+            HelperMethods.InvokeOutputLabel("Activating account ...");
             string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
@@ -1845,6 +1843,10 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 return;
                             }
+                            GlobalVarPool.search = true;
+                            GlobalVarPool.searchCondition = SearchCondition.In;
+                            GlobalVarPool.automatedTaskCondition = "ACCOUNT_VERIFIED";
+                            GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
                             Network.SendEncrypted("MNGVERusername%eq!" + username + "!;code%eq!" + code + "!;");
                             break;
                         }

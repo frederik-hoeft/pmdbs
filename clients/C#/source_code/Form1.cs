@@ -869,7 +869,7 @@ namespace pmdbs
             string FirstUsage = TrueHashList[1];
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Checking Password...";
             if (!Stage2PasswordHash.Equals(TrueHash))
@@ -882,9 +882,8 @@ namespace pmdbs
                 LoginPictureBoxLoadingMain.SuspendLayout();
                 return;
             }
-            MasterPassword = Stage1PasswordHash;
             LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
-            GlobalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             UserData = await GetData;
@@ -1052,16 +1051,10 @@ namespace pmdbs
                 SettingsLabelPromptCode.Text = "*Enter code (this field is required)";
                 return;
             }
-            if (code.Length != 6)
+            if (!Regex.IsMatch(code, "^[0-9]{6}$"))
             {
                 SettingsLabelPromptCode.ForeColor = Color.Firebrick;
-                SettingsLabelPromptCode.Text = "*Enter code (6 characters)";
-                return;
-            }
-            if (!Regex.IsMatch(code, "^[0-9]*$"))
-            {
-                SettingsLabelPromptCode.ForeColor = Color.Firebrick;
-                SettingsLabelPromptCode.Text = "*Enter code (Numbers only)";
+                SettingsLabelPromptCode.Text = "*Enter code (6 digits)";
                 return;
             }
             if (!GlobalVarPool.connected)
@@ -1069,288 +1062,19 @@ namespace pmdbs
                 CustomException.ThrowNew.NetworkException("Not connected!");
                 return;
             }
-            if (GlobalVarPool.command.Count == 0)
+            if (string.IsNullOrEmpty(GlobalVarPool.promptCommand))
             {
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
             }
-            List<string> parameterList = GlobalVarPool.command;
-            parameterList.AddRange(new string[] { "-c", "PM-" + code });
-            string command = parameterList[0];
-            object parameters = parameterList.ToArray();
-            switch (command.ToLower())
-            {
-                case "connect":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Start));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "disconnect":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Disconnect));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "exit":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Exit));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "register":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Register));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "insert":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Insert));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "select":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Select));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "update":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Update));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "customencrypted":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.CustomEncrypted));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "custom":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Custom));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "fetchsync":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.FetchSync));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "fetchall":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.FetchAll));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "login":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Login));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "logout":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Logout));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "su":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Sudo));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "shutdown":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Shutdown));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "reboot":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Reboot));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "start":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Start));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "serverlog":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.GetServerLog));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "clientlog":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.GetClientLog));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "listallclients":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ListAllClients));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "error":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Error));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "getcookie":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.GetCookie));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "kick":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Kick));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "activateaccount":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ActivateAccount));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "confirmnewdevice":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ConfirmNewDevice));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "addadmindevice":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.NewAdminDevice));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "initadminpwchange":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.InitAdminPasswordChange));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "commitadminpwchange":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.CommitAdminPasswordChange));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "initpwchange":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.InitPasswordChange));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "commitpwchange":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.CommitPasswordChange));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "initdelaccount":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.InitDeleteAccount));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "commitdelaccount":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.CommitDeleteAccount));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "banclient":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.BanClient));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "banaccount":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.BanAccount));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "listallusers":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ListAllUsers));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "getaccountactivity":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.GetAccountActivity));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "changeemailaddress":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ChangeEmailAddress));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "resendcode":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ResendCode));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "changename":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.ChangeName));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "enabledebugging":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.EnableDebugging));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "disabledebugging":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.DisableDebugging));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "checkcredentials":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.CheckCredentials));
-                        t.Start(parameters);
-                        break;
-                    }
-                case "delete":
-                    {
-                        Thread t = new Thread(new ParameterizedThreadStart(Commands.Delete));
-                        t.Start(parameters);
-                        break;
-                    }
-                default:
-                    {
-                        CustomException.ThrowNew.GenericException("Command not found!");
-                        break;
-                    }
-            }
+            string command = GlobalVarPool.promptCommand + " -c PM-" + code;
+            IOAdapter.Parse(command);
             SettingsPanelPromptMain.SendToBack();
         }
         #endregion
         #region SettingsLogin
         private async void SettingsAnimatedButtonLoginSubmit_Click(object sender, EventArgs e)
         {
-            // TODO: CONTINUE
             string ip = SettingsEditFieldLoginIP.TextTextBox;
             string strPort = SettingsEditFieldLoginPort.TextTextBox;
             string username = SettingsEditFieldLoginUsername.TextTextBox;
@@ -1380,23 +1104,145 @@ namespace pmdbs
             if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
             {
                 isIP = true;
+                GlobalVarPool.REMOTE_ADDRESS = ip;
             }
             try
             {
-                Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
-                IPHostEntry ipAddress = await ipTask;
-                string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
-                GlobalVarPool.REMOTE_ADDRESS = ipv4String;
+                if (!isIP)
+                {
+                    Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
+                    IPHostEntry ipAddress = await ipTask;
+                    string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
+                    GlobalVarPool.REMOTE_ADDRESS = ipv4String;
+                }
                 GlobalVarPool.REMOTE_PORT = port;
-                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
                     IsBackground = true
                 };
-                connectionThread.Start();
+                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+                if (GlobalVarPool.connected)
+                {
+                    IOAdapter.Parse("login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                }
+                else
+                {
+                    GlobalVarPool.search = true;
+                    GlobalVarPool.searchCondition = SearchCondition.In;
+                    GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
+                    GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
+                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                    {
+                        IsBackground = true
+                    };
+                    connectionThread.Start();
+                }
             }
             catch
             {
 
+            }
+        }
+
+        #endregion
+        #region SettingsRegister
+        private async void SettingsAnimatedButtonSubmit_Click(object sender, EventArgs e)
+        {
+            string ip = SettingsEditFieldRegisterIP.TextTextBox;
+            string strPort = SettingsEditFieldRegisterPort.TextTextBox;
+            string username = SettingsEditFieldRegisterUsername.TextTextBox;
+            string email = SettingsEditFieldRegisterEmail.TextTextBox; 
+            string nickname = SettingsEditFieldRegisterName.TextTextBox;
+            bool isIP = false;
+            if (string.IsNullOrEmpty(nickname))
+            {
+                nickname = "User";
+            }
+            if (string.IsNullOrEmpty(ip))
+            {
+                CustomException.ThrowNew.FormatException("Please enter the IPv4 address or DNS of the server you'd like to connect to.");
+                return;
+            }
+            if (string.IsNullOrEmpty(strPort))
+            {
+                CustomException.ThrowNew.FormatException("Please enter the port of the server you'd like to connect to.");
+                return;
+            }
+            if (string.IsNullOrEmpty(username))
+            {
+                CustomException.ThrowNew.FormatException("Please enter your username.");
+                return;
+            }
+            if (new string[] { username, email, nickname}.Where(element => new string[] { " ", "\"", "'" }.Any(element.Contains)).Any())
+            {
+                CustomException.ThrowNew.FormatException("The username, nickname and email address may not contain spaces, single or double quotes.");
+                return;
+            }
+            if (username.Contains("__"))
+            {
+                CustomException.ThrowNew.FormatException("The username may not contain double underscores.");
+            }
+            if (string.IsNullOrEmpty(email))
+            {
+                CustomException.ThrowNew.FormatException("Please enter your email address.");
+                return;
+            }
+            // DAMN REGEX SYNTAX SUCKS ... TODO: REPLACE THIS WITH SOME ACTUALLY READABLE LINQ QUERY
+            if (!Regex.IsMatch(email, @"^[^.][0-9a-zA-z\.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-\.]+\.[a-z]+$"))
+            {
+                CustomException.ThrowNew.FormatException("Please enter a valid email address.");
+                return;
+            }
+            GlobalVarPool.email = email;
+            int port = Convert.ToInt32(strPort);
+            if (port < 1 || port > 65536)
+            {
+                CustomException.ThrowNew.FormatException("Please enter a valid port number.");
+                return;
+            }
+            // MORE DISGUSTING REGEXES. THIS ONE DOESN'T EVEN WORK PROPERLY AS IT ALLOWS STUFF LIKE 1.1.1 AS IPv4 ADDRESSES --> TODO: LINQ <3
+            if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
+            {
+                isIP = true;
+                GlobalVarPool.REMOTE_ADDRESS = ip;
+            }
+            try
+            {
+                if (!isIP)
+                {
+                    Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
+                    IPHostEntry ipAddress = await ipTask;
+                    string ipv4String = ipAddress.AddressList.First().ToString();
+                    GlobalVarPool.REMOTE_ADDRESS = ipv4String;
+                }
+                GlobalVarPool.REMOTE_PORT = port;
+                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+                {
+                    IsBackground = true
+                };
+                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+                if (GlobalVarPool.connected)
+                {
+                    IOAdapter.Parse("register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                }
+                else
+                {
+                    GlobalVarPool.search = true;
+                    GlobalVarPool.searchCondition = SearchCondition.In;
+                    GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
+                    GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname;
+                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                    {
+                        IsBackground = true
+                    };
+                    connectionThread.Start();
+                }
+            }
+            catch
+            {
+                CustomException.ThrowNew.GenericException("Something went wrong.");
             }
         }
         #endregion

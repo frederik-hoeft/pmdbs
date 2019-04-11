@@ -132,9 +132,9 @@
             this.advancedTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.advancedTextBox1.ForeColorFocus = System.Drawing.Color.Black;
             this.advancedTextBox1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.advancedTextBox1.Location = new System.Drawing.Point(0, 31);
+            this.advancedTextBox1.Location = new System.Drawing.Point(0, 51);
             this.advancedTextBox1.Name = "advancedTextBox1";
-            this.advancedTextBox1.Size = new System.Drawing.Size(308, 54);
+            this.advancedTextBox1.Size = new System.Drawing.Size(308, 34);
             this.advancedTextBox1.TabIndex = 1;
             this.advancedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.advancedTextBox1.TextValue = "TextTextBox";

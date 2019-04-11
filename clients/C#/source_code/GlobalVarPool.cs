@@ -13,7 +13,7 @@ namespace pmdbs
         public static string REMOTE_ADDRESS = null;
         public static int REMOTE_PORT;
         public static bool ADDRESS_IS_DNS;
-        public static bool USE_PERSISTENT_RSA_KEYS;
+        public static bool USE_PERSISTENT_RSA_KEYS = true;
         public static string CONFIG_VERSION = null;
         public static string CONFIG_BUILD = null;
 
@@ -53,7 +53,13 @@ namespace pmdbs
         public static string serverName = string.Empty;
         public static string username = string.Empty;
         public static string email = string.Empty;
-        public static List<string> command = new List<string>();
+        public static string promptCommand = string.Empty;
+        public static string automatedTaskCondition = string.Empty;
+        public static string automatedTask = string.Empty;
+        public static string onlinePassword = string.Empty;
+        public static SearchCondition searchCondition = SearchCondition.Match;
+
+        public static bool commandError = false;
         public static bool connected = false;
         public static bool bootCompleted = false;
         public static bool isRoot = false;
@@ -61,10 +67,17 @@ namespace pmdbs
         public static bool wasOnline = false;
         public static bool debugging = false;
         public static bool threadKilled = false;
+        public static bool search = false;
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
 
         public static System.Windows.Forms.Label outputLabel = null;
         public static bool outputLabelIsValid = false;
+    }
+    public enum SearchCondition
+    {
+        Match = 1,
+        Contains = 2,
+        In = 3
     }
 }
