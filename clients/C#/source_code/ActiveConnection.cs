@@ -517,7 +517,13 @@ namespace pmdbs
                                                                 case "UEXT":
                                                                     {
                                                                         GlobalVarPool.commandError = true;
-                                                                        CustomException.ThrowNew.GenericException("This username or email address is already in use." + Environment.NewLine + message);
+                                                                        CustomException.ThrowNew.GenericException("This username is already in use." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
+                                                                case "MAIL":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
                                                                         break;
                                                                     }
                                                                 default:
