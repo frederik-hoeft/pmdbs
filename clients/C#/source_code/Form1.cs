@@ -1163,11 +1163,18 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter your username.");
                 return;
             }
+
             if (string.IsNullOrEmpty(email))
             {
                 CustomException.ThrowNew.FormatException("Please enter your email address.");
                 return;
             }
+            if (!Regex.IsMatch(email, @"^[^.][0-9a-zA-z\.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-\.]+\.[a-z]+$"))
+            {
+                CustomException.ThrowNew.FormatException("Please enter a valid email address.");
+                return;
+            }
+            GlobalVarPool.email = email;
             int port = Convert.ToInt32(strPort);
             if (port < 1 || port > 65536)
             {
@@ -1185,7 +1192,7 @@ namespace pmdbs
                 {
                     Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
                     IPHostEntry ipAddress = await ipTask;
-                    string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
+                    string ipv4String = ipAddress.AddressList.First().ToString();
                     GlobalVarPool.REMOTE_ADDRESS = ipv4String;
                 }
                 GlobalVarPool.REMOTE_PORT = port;
@@ -1197,7 +1204,7 @@ namespace pmdbs
                 GlobalVarPool.search = true;
                 GlobalVarPool.searchCondition = SearchCondition.In;
                 GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
-                GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
+                GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + "";
                 Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
                 {
                     IsBackground = true
