@@ -1280,9 +1280,12 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 MissingParameters(parameters[0]);
                             }
+                            ConsoleExtension.PrintF(password);
+                            ConsoleExtension.PrintF(CryptoHelper.SHA256Hash(password).Substring(0, 32));
+                            ConsoleExtension.PrintF(CryptoHelper.SHA256Hash(CryptoHelper.SHA256Hash(password).Substring(0, 32)));
                             GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
                             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
-                            string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
+                            string onlinePassword = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(0, 32));
                             GlobalVarPool.username = username;
                             ConsoleExtension.PrintF("Trying to log in as user: " + username);
                             Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
@@ -1547,7 +1550,10 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 nickname = "user";
                             }
-                            string passwordHash = CryptoHelper.SHA256Hash(password).Substring(0, 32);
+                            ConsoleExtension.PrintF(password);
+                            ConsoleExtension.PrintF(CryptoHelper.SHA256Hash(password).Substring(0, 32));
+                            ConsoleExtension.PrintF(CryptoHelper.SHA256Hash(CryptoHelper.SHA256Hash(password).Substring(0, 32)));
+                            string passwordHash = CryptoHelper.SHA256Hash(CryptoHelper.SHA256Hash(password).Substring(0, 32));
                             GlobalVarPool.username = username;
                             ConsoleExtension.PrintF("Trying to register new user: " + username);
                             Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + passwordHash + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
