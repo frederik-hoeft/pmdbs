@@ -206,5 +206,10 @@ namespace pmdbs
                 GlobalVarPool.settingsSave.Visible = true;
             });
         }
+
+        public static void Sync()
+        {
+
+        }
     }
 }
