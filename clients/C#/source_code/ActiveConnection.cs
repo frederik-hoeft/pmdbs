@@ -488,6 +488,41 @@ namespace pmdbs
                                                             }
                                                             break;
                                                         }
+                                                    case "RET":
+                                                        {
+                                                            try
+                                                            {
+                                                                string mode = decryptedData.Substring(6).Split(';').Where(element => element.Contains("mode")).FirstOrDefault();
+                                                                if (string.IsNullOrEmpty(mode))
+                                                                {
+                                                                    break;
+                                                                }
+                                                                switch (mode.Split('!')[1])
+                                                                {
+                                                                    case "INSERT":
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                    case "FETCH_ALL":
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                    case "FETCH_SYNC":
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                    default:
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                }
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            break;
+                                                        }
                                                 }
                                                 break;
                                             }
