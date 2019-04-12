@@ -639,9 +639,15 @@ namespace pmdbs
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
+            string hid = LinkedRow["1"].ToString();
+            if (!hid.Equals("EMPTY"))
+            {
+                Task SetDelFlag = DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hid + "\");");
+                await Task.WhenAll(SetDelFlag);
+            }
             Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             await Task.WhenAll(DeleteItem);
-            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             UserData.Rows.Remove(LinkedRow);
             RefreshUserData(CurrentPage);
             DataPanelDetails.SuspendLayout();
