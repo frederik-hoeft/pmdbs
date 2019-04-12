@@ -304,7 +304,6 @@ namespace pmdbs
         #endregion
 
         #region DataPanel
-
         private async void AddSingleEntry(DataRow newRow)
         {
             if (CurrentContentCount > 24)
@@ -491,7 +490,63 @@ namespace pmdbs
             Query += " WHERE D_id = " + DataDetailsID + ";";
             Task UpdateData = DataBaseHelper.ModifyData(Query);
             await Task.WhenAll(UpdateData);
+
             DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
+            string oldUrl = LinkedRow["6"].ToString();
+            if (!Website.Equals(oldUrl))
+            {
+                new Thread(delegate () {
+                    string favIcon = "";
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(Website))
+                        {
+                            // EXECUTE CODE IN CATCH
+                            throw new Exception();
+                        }
+                        else
+                        {
+                            favIcon = WebHelper.GetFavIcons(Website);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
+                        char letter = Hostname.ToUpper()[0];
+                        int keyIndex = Array.FindIndex(alphabet, i => i.Equals(letter));
+                        // Create Optional Icons
+                        using (Bitmap bmp = new Bitmap(keyIndex == -1 ? @"Resources\Icons\_UNKNOWN.png" : @"Resources\Icons\" + letter + ".png"))
+                        {
+                            Graphics g = Graphics.FromImage(bmp);
+                            // Set the image attribute's color mappings
+                            ColorMap[] colorMap = new ColorMap[1];
+                            Random rng = new Random();
+                            colorMap[0] = new ColorMap
+                            {
+                                OldColor = Color.Black,
+                                NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
+
+                            };
+                            ImageAttributes attr = new ImageAttributes();
+                            attr.SetRemapTable(colorMap);
+                            // Draw using the color map
+                            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                            g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
+                            string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+                            bmp.Save(@"data\" + name + ".png", ImageFormat.Png);
+                            favIcon = @"data\" + name + ".png";
+                        }
+                    }
+                    Task InsertIcon = DataBaseHelper.ModifyData("INSERT INTO Tbl_icon (I_path, D_id) VALUES (\"" + favIcon + "\", " + DataDetailsID + ")");
+                    Invoke((MethodInvoker)delegate
+                    {
+                        ReloadSingleEntry(LinkedRow);
+                        DataFlowLayoutPanelEdit.SuspendLayout();
+                        DataPanelDetails.BringToFront();
+                        DataPanelDetails.ResumeLayout();
+                    });
+                }).Start();
+            }
             for (int i = 3; i < (int)ColumnCount.Tbl_data - 1; i++)
             {
                 LinkedRow[i.ToString()] = RawValues[i - 3].Equals("") ? "\x01" : RawValues[i - 3];
