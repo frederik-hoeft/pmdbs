@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.4-2a.19"
-BUILD = "unstable"
+VERSION = "0.4-3b.19"
+BUILD = "development"
 DATE = "Apr 12 2019"
-TIME = "20:50:56"
+TIME = "21:50:18"
 
 
 ################################################################################
@@ -456,7 +456,7 @@ class DatabaseManagement():
 			connection.close()
 		Log.ClientEventLog("INSERT", clientSocket)
 		# SEND ACKNOWLEDGEMENT TO CLIENT
-		returnData = "DTARETINSlocal_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;"
+		returnData = "DTARETmode%eq!INSERT!;local_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;"
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
 			
@@ -673,7 +673,7 @@ class DatabaseManagement():
 			return
 		# PARAMETER CHECK PASSED
 		# GENERATE SQL QUERY
-		fetchMode = queryParameter.split("%eq")[1].replace('!','')
+		fetchMode = queryParameter.split("!")[1]
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
@@ -689,16 +689,17 @@ class DatabaseManagement():
 				connection.close()
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
+			finally:
+				# FREE RESOURCES
+				connection.close()
 			if not data:
 				# FREE RESOURCES
 				connection.close()
 				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
 				return
-			# FREE RESOURCES
-			connection.close()
 			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			returnData = "DTARETSYN" + finalData
+			returnData = "DTARETmode%eq!FETCH_SYNC!;" + finalData
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED SYNDATA           ---> " + clientAddress)
@@ -714,16 +715,17 @@ class DatabaseManagement():
 				connection.close()
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
+			finally:
+				# FREE RESOURCES
+				connection.close()
 			if not data:
 				# FREE RESOURCES
 				connection.close()
 				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
 				return
-			# FREE RESOURCES
-			connection.close()
 			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			returnData = "DTARETSYN" + finalData
+			returnData = "DTARETmode%eq!FETCH_ALL!;" + finalData
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED DTADUMP           ---> " + clientAddress)
@@ -732,9 +734,7 @@ class DatabaseManagement():
 			# FREE RESOURCES
 			connection.close()
 			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
-			"0.3-3a.19"
 			Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
-			print(fetchMode)
 			return
 		
 	# CHECKS FOR SECURITY ISSUES
