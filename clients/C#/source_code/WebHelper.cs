@@ -63,7 +63,7 @@ namespace pmdbs
             doc.LoadHtml(HtmlCode);
             //string BestImage = doc.DocumentNode.SelectNodes("//img")[0].GetAttributeValue("src", null);
             HtmlNodeCollection Icons = doc.DocumentNode.SelectNodes("//img");
-            string localFilename = "";
+            string base64Image = string.Empty;
             bool successful = false;
             foreach (HtmlNode Icon in Icons)
             {
@@ -71,10 +71,17 @@ namespace pmdbs
                 {
                     string iconLink = Icon.GetAttributeValue("src", null);
                     string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
-                    localFilename = "data\\" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString() + "." + imageFileExtension;
                     using (WebClient client = new WebClient())
                     {
-                        client.DownloadFile(iconLink.Replace("https", "http"), localFilename);
+                        using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink.Replace("https", "http"))))
+                        {
+                            Bitmap bmpIcon = new Bitmap(Image.FromStream(stream));
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                bmpIcon.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                base64Image = Convert.ToBase64String(ms.ToArray());
+                            }
+                        }
                     }
                     successful = true;
                     break;
@@ -89,7 +96,7 @@ namespace pmdbs
             {
                 throw new Exception("No Icon found");
             }
-            return localFilename;
+            return base64Image;
         }
         public static bool IsValidDomainName(string name)
         {
