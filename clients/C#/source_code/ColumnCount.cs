@@ -9,9 +9,9 @@ namespace pmdbs
     public enum ColumnCount
     {
         Tbl_user = 8,
-        Tbl_data = 9,
+        Tbl_data = 10,
         Tbl_commonPasswords = 2,
-        Tbl_icon = 3,
+        Tbl_settings = 5,
         SingleColumn = 1
     }
 }
