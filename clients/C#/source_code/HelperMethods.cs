@@ -206,9 +206,71 @@ namespace pmdbs
                 GlobalVarPool.settingsSave.Visible = true;
             });
         }
-
-        public static void Sync()
+        
+        public static async void Sync(string remoteHeaderString, string deletedItemString)
         {
+            // HEADERS FORMAT:
+            // headers%eq![('HID','1555096481'),('HID','1555097171')]!
+            // DELETED FORMAT:
+            // deleted%eq![('HID'),('HID')]!
+            string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
+            string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < deletedItems.Length; i++)
+            {
+                Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
+                await Task.WhenAny(Delete);
+            }
+            string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
+            string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+            List<List<string>> remoteHeaders = new List<List<string>>();
+            for (int i = 0; i < splittedRemoteHeader.Length; i++)
+            {
+                remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" },StringSplitOptions.RemoveEmptyEntries).ToList());
+            }
+            Task<List<List<string>>> localHeaderTask = DataBaseHelper.GetDataAs2DList("SELECT D_hid, D_datetime, D_id FROM Tbl_data;", 3);
+
+            List<List<string>> localHeaders = await localHeaderTask;
+            List<List<string>> tempRemoteHeaders = remoteHeaders;
+            for (int i = 0; i < tempRemoteHeaders.Count; i++)
+            {
+                string remoteHid = tempRemoteHeaders[i][0];
+                int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
+                List<List<string>> tempLocalHeaders = localHeaders;
+                for (int j = 0; j < tempLocalHeaders.Count; j++)
+                {
+                    string localHid = tempLocalHeaders[j][0];
+                    int localTimestamp = Convert.ToInt32(tempLocalHeaders[j][1]);
+                    if (remoteHid.Equals(localHid))
+                    {
+                        if (remoteTimestamp > localTimestamp)
+                        {
+                            // TODO: FETCH LATEST DATA FROM SERVER
+                        }
+                        else if(remoteTimestamp != localTimestamp)
+                        {
+                            // UPDATE SERVER
+                            string id = localHeaders[j][2];
+                            Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                            List<string> account = await GetAccount;
+                            NetworkAdapter.MethodProvider.Update(account);
+                        }
+                        localHeaders.Remove(tempLocalHeaders[j]);
+                        remoteHeaders.Remove(tempRemoteHeaders[i]);
+                    }
+                }
+            }
+            // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
+            for (int i = 0; i < remoteHeaders.Count; i++)
+            {
+                string hid = remoteHeaders[i][0];
+                // TODO: CHECK IF HID IS IN LOCAL Tbl_delete
+                // TODO: DOWNLOAD DATA WHERE HID = remoteHeaders[i][0]
+            }
+            // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
+            for (int i = 0; i < localHeaders.Count; i++)
+            {
+                // TODO: UPLOAD DATA AND SET LOCAL HID  TO RETURNED HID
+            }
 
         }
     }

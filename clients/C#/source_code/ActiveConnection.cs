@@ -421,11 +421,11 @@ namespace pmdbs
                                                     HelperMethods.InvokeOutputLabel("Encrypted connection established!");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        Commands.GetCookie(new string[] { "getcookie" });
+                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
                                                     }
                                                     else
                                                     {
-                                                        Commands.CheckCookie(new string[] { "checkcookie" }, true);
+                                                        NetworkAdapter.CommandInterpreter.CheckCookie(new string[] { "checkcookie" }, true);
                                                     }
                                                     break;
                                                 }
@@ -508,6 +508,10 @@ namespace pmdbs
                                                                             break;
                                                                         }
                                                                     case "FETCH_SYNC":
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                    case "UPDATE":
                                                                         {
                                                                             break;
                                                                         }
@@ -629,7 +633,7 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
                                                                     {
-                                                                        Commands.GetCookie(new string[] { "getcookie" });
+                                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
                                                                         break;
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
