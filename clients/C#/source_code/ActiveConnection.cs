@@ -13,6 +13,7 @@ namespace pmdbs
     {
         public static void Start()
         {
+            // TODO: CLEAN THIS UP
             if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
             {
                 if (GlobalVarPool.USE_PERSISTENT_RSA_KEYS)
@@ -421,11 +422,11 @@ namespace pmdbs
                                                     HelperMethods.InvokeOutputLabel("Encrypted connection established!");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        Commands.GetCookie(new string[] { "getcookie" });
+                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
                                                     }
                                                     else
                                                     {
-                                                        Commands.CheckCookie(new string[] { "checkcookie" }, true);
+                                                        NetworkAdapter.CommandInterpreter.CheckCookie(new string[] { "checkcookie" }, true);
                                                     }
                                                     break;
                                                 }
@@ -490,15 +491,18 @@ namespace pmdbs
                                                         }
                                                     case "RET":
                                                         {
+                                                            // TODO: IMPLEMENT BETTER ERROR HANDLING
                                                             try
                                                             {
-                                                                string mode = decryptedData.Substring(6).Split(';').Where(element => element.Contains("mode")).FirstOrDefault();
+                                                                string content = decryptedData.Substring(6);
+                                                                string mode = content.Split(';').Where(element => element.Contains("mode")).FirstOrDefault();
                                                                 if (string.IsNullOrEmpty(mode))
                                                                 {
                                                                     break;
                                                                 }
                                                                 switch (mode.Split('!')[1])
                                                                 {
+                                                                    // TODO: IMPLEMENT RETURN VALUE HANDLING
                                                                     case "INSERT":
                                                                         {
                                                                             break;
@@ -509,6 +513,20 @@ namespace pmdbs
                                                                         }
                                                                     case "FETCH_SYNC":
                                                                         {
+                                                                            string remoteHeaderString = content.Split(';').Where(element => element.Contains("headers")).FirstOrDefault();
+                                                                            string deletedItemString = content.Split(';').Where(element => element.Contains("deleted")).FirstOrDefault();
+                                                                            object parameters = (object)new string[] { remoteHeaderString, deletedItemString };
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
+                                                                            t.Start(parameters);
+                                                                            break;
+                                                                        }
+                                                                    case "UPDATE":
+                                                                        {
+                                                                            break;
+                                                                        }
+                                                                    case "SELECT":
+                                                                        {
+                                                                            GlobalVarPool.selectedAccounts.Add(content);
                                                                             break;
                                                                         }
                                                                     default:
@@ -629,7 +647,7 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
                                                                     {
-                                                                        Commands.GetCookie(new string[] { "getcookie" });
+                                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
                                                                         break;
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
