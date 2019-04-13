@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.4-3b.19"
+VERSION = "0.4-5b.19"
 BUILD = "development"
-DATE = "Apr 12 2019"
-TIME = "21:50:18"
+DATE = "Apr 13 2019"
+TIME = "21:40:49"
 
 
 ################################################################################
@@ -389,7 +389,7 @@ class DatabaseManagement():
 					column = parameters[0]
 					value = parameters[1].replace('!','')
 					# CHECK IF CULUMN IS VALID
-					if column in ["uname","password","host","notes","email","datetime","url"]:
+					if column in ["uname","password","host","notes","email","datetime","url","icon"]:
 						if query == "":
 							query = "D_" + column
 							values = "\"" + value + "\""
@@ -440,7 +440,7 @@ class DatabaseManagement():
 		if HID == None:
 			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
 			return
-		hashedID = CryptoHelper.BLAKE2(str(HID), str(userID))
+		hashedID = CryptoHelper.BLAKE2(str(HID) + Timestamp(), str(userID))
 		try:
 			# ADD HID TO ENTRY
 			cursor.execute("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";")
@@ -486,7 +486,7 @@ class DatabaseManagement():
 					parameters = rawParameter.split("%eq")
 					column = parameters[0]
 					value = parameters[1].replace('!','')
-					if column in ["uname","password","host","notes","email","datetime","url"]:
+					if column in ["uname","password","host","notes","email","datetime","url","icon"]:
 						if query == "":
 							query = "D_" + column + " = \"" + value + "\""
 						else:
@@ -524,7 +524,7 @@ class DatabaseManagement():
 			connection.close()
 		Log.ClientEventLog("UPDATE", clientSocket)
 		# SEND ACKNOWLEDGEMENT TO CLIENT
-		returnData = "DTARETUPDhashed_id%eq!" + HID + "!;"
+		returnData = "DTARETmode%eq!UPDATE!;hashed_id%eq!" + HID + "!;"
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
 		
@@ -563,7 +563,7 @@ class DatabaseManagement():
 		cursor = connection.cursor()
 		rawData = None
 		try:
-			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_hid, D_datetime FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
+			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_icon, D_hid, D_datetime FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
 			# GET DATA FROM CURSOR OBJECT
 			rawData = cursor.fetchall()
 		except Exception as e:
@@ -581,18 +581,19 @@ class DatabaseManagement():
 				dPassword = str(entry[2])
 				dEmail = str(entry[3])
 				dNotes = str(entry[4])
-				dHid = str(entry[5])
-				dDatetime = str(entry[6])
+				dIcon = str(entry[5])
+				dHid = str(entry[7])
+				dDatetime = str(entry[8])
 				# APPLY PACKET FORMATTING
 				# EXAMPLE: host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;hid%eq!test!;datetime%eq!test!;
-				data = "host%eq!" + dHost + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
+				data = "host%eq!" + dHost + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;icon%eq!" + dIcon + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
 				# RETURN DATA TO CLIENT
-				returnData = "DTARETSEL" + data
+				returnData = "DTARETmode%eq!SELECT!;" + data
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> RETURNED DATA              ---> " + clientAddress)
 			Log.ClientEventLog("SELECT", clientSocket)
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			returnData = "INFRETSELACK"
+			returnData = "INFRETmsg%eq!SELECT_FINISHED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
@@ -680,10 +681,19 @@ class DatabaseManagement():
 		cursor = connection.cursor()
 		# SYNC-MODE ONLY FETCHES IDS 
 		if fetchMode == "FETCH_SYNC":
-			data = None
+			dataHeaders = None
+			deletedHeaders = None
+			try:
+				cursor.execute("SELECT DEL_hid FROM Tbl_delete WHERE DEL_userid = " + userID + ";")
+				deletedHeaders = cursor.fetchall()
+			except Exception as e:
+				# FREE RESOURCES
+				connection.close()
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+				return
 			try:
 				cursor.execute("SELECT D_hid,D_datetime FROM Tbl_data WHERE D_userid = " + userID + ";")
-				data = cursor.fetchall()
+				dataHeaders = cursor.fetchall()
 			except Exception as e:
 				# FREE RESOURCES
 				connection.close()
@@ -692,14 +702,15 @@ class DatabaseManagement():
 			finally:
 				# FREE RESOURCES
 				connection.close()
-			if not data:
+			if str(dataHeaders) == "" or str(deletedHeaders) == "":
 				# FREE RESOURCES
 				connection.close()
 				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
 				return
-			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
+			finalHeaders = str(dataHeaders).replace(", ",",")
+			finalDeletedHeaders = str(deletedHeaders).replace(", ",",").replace(",)",")")
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			returnData = "DTARETmode%eq!FETCH_SYNC!;" + finalData
+			returnData = "DTARETmode%eq!FETCH_SYNC!;headers%eq!" + finalHeaders + "!;deleted%eq!" + finalDeletedHeaders + "!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED SYNDATA           ---> " + clientAddress)
