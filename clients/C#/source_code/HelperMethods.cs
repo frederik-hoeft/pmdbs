@@ -206,7 +206,11 @@ namespace pmdbs
                 GlobalVarPool.settingsSave.Visible = true;
             });
         }
-        
+        /// <summary>
+        /// SYNCHRONIZE LOCAL DATABASE WITH REMOTE DATABASE ON THE SERVER
+        /// </summary>
+        /// <param name="remoteHeaderString">REMOTE HEADERS</param>
+        /// <param name="deletedItemString">REMOTE DELETED HEADERS</param>
         public static async void Sync(string remoteHeaderString, string deletedItemString)
         {
             // HEADERS FORMAT:
@@ -260,6 +264,7 @@ namespace pmdbs
                 }
             }
             // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
+            List<string> accountsToDelete = new List<string>();
             for (int i = 0; i < remoteHeaders.Count; i++)
             {
                 string hid = remoteHeaders[i][0];
@@ -268,13 +273,15 @@ namespace pmdbs
                 bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
                 if (isDeleted)
                 {
-                    // TODO: DELETE ON SERVER
+                    accountsToDelete.Add(hid);
                 }
                 else
                 {
                     // TODO: DOWNLOAD FROM SERVER
                 }
             }
+            // DELETE ON SERVER
+            NetworkAdapter.MethodProvider.Delete(accountsToDelete);
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
             {

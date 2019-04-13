@@ -51,7 +51,12 @@ namespace pmdbs
             }
             public static void Delete(List<string> hids)
             {
-
+                string hidsFormatted = "";
+                for (int i = 0; i < hids.Count; i++)
+                {
+                    hidsFormatted += hids[i] + ";";
+                }
+                Network.SendEncrypted("REQDEL" + hidsFormatted);
             }
             public static void Select(string hid)
             {

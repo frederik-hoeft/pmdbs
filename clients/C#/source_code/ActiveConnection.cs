@@ -13,6 +13,7 @@ namespace pmdbs
     {
         public static void Start()
         {
+            // TODO: CLEAN THIS UP
             if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
             {
                 if (GlobalVarPool.USE_PERSISTENT_RSA_KEYS)
