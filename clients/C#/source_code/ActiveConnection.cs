@@ -494,7 +494,8 @@ namespace pmdbs
                                                             // TODO: IMPLEMENT BETTER ERROR HANDLING
                                                             try
                                                             {
-                                                                string mode = decryptedData.Substring(6).Split(';').Where(element => element.Contains("mode")).FirstOrDefault();
+                                                                string content = decryptedData.Substring(6);
+                                                                string mode = content.Split(';').Where(element => element.Contains("mode")).FirstOrDefault();
                                                                 if (string.IsNullOrEmpty(mode))
                                                                 {
                                                                     break;
@@ -512,10 +513,20 @@ namespace pmdbs
                                                                         }
                                                                     case "FETCH_SYNC":
                                                                         {
+                                                                            string remoteHeaderString = content.Split(';').Where(element => element.Contains("headers")).FirstOrDefault();
+                                                                            string deletedItemString = content.Split(';').Where(element => element.Contains("deleted")).FirstOrDefault();
+                                                                            object parameters = (object)new string[] { remoteHeaderString, deletedItemString };
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
+                                                                            t.Start(parameters);
                                                                             break;
                                                                         }
                                                                     case "UPDATE":
                                                                         {
+                                                                            break;
+                                                                        }
+                                                                    case "SELECT":
+                                                                        {
+                                                                            GlobalVarPool.selectedAccounts.Add(content);
                                                                             break;
                                                                         }
                                                                     default:
