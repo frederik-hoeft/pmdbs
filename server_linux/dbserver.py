@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.1-1.19"
+VERSION = "0.4-3b.19"
 BUILD = "development"
-DATE = "Jan 09 2019"
-TIME = "14:33:49"
+DATE = "Apr 12 2019"
+TIME = "21:50:18"
 
 
 ################################################################################
@@ -80,6 +80,7 @@ try:
 	import pygeoip
 	import sys
 	import getpass
+	import inspect
 	from config import *
 	from email.mime.multipart import MIMEMultipart
 	from email.mime.text import MIMEText
@@ -101,7 +102,7 @@ else:
 class CryptoHelper():
 	
 	def GenerateHMACkey(aesKey, nonce, clientSocket):
-		hmacKey = hashlib.sha256(bytes(aesKey + nonce,"utf-8")).hexdigest()
+		hmacKey = hashlib.sha256(bytes(aesKey + nonce.replace("\x00", ""),"utf-8")).hexdigest()
 		for client in Server.allClients:
 			if clientSocket in client:
 				client[4] = hmacKey
@@ -114,10 +115,10 @@ class CryptoHelper():
 		hmac = fullMessage[-44:]
 		message = fullMessage[:-44]
 		actualHMAC = CryptoHelper.SHA256(k2 + CryptoHelper.SHA256(k1 + message))
-		if not hmac == actualHMAC:
-			return False
-		else:
+		if hmac == actualHMAC:
 			return True
+		else:
+			return False
 			
 	# ENCRYPTS A MESSAGE USING A 4096 BIT RSA KEY
 	def RSAEncrypt(plaintext, publicKeyPemString):
@@ -455,7 +456,7 @@ class DatabaseManagement():
 			connection.close()
 		Log.ClientEventLog("INSERT", clientSocket)
 		# SEND ACKNOWLEDGEMENT TO CLIENT
-		returnData = "DTARETINSlocal_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;"
+		returnData = "DTARETmode%eq!INSERT!;local_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;"
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
 			
@@ -631,7 +632,12 @@ class DatabaseManagement():
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
-		try:	
+		try:
+			for hid in parameters:
+				if not len(hid) == 0:
+					cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_userid = " + userID + " AND D_hid = \"" + hid + "\");")
+					if cursor.fetchall()[0][0] == 1:
+						cursor.execute("INSERT INTO Tbl_delete (DEL_hid, DEL_userid) VALUES (\"" + hid + "\", " + userID + ");")
 			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
 		except Exception as e:
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
@@ -667,7 +673,7 @@ class DatabaseManagement():
 			return
 		# PARAMETER CHECK PASSED
 		# GENERATE SQL QUERY
-		fetchMode = queryParameter.split("%eq")[1].replace('!','')
+		fetchMode = queryParameter.split("!")[1]
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
@@ -683,16 +689,17 @@ class DatabaseManagement():
 				connection.close()
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
+			finally:
+				# FREE RESOURCES
+				connection.close()
 			if not data:
 				# FREE RESOURCES
 				connection.close()
 				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
 				return
-			# FREE RESOURCES
-			connection.close()
 			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			returnData = "DTARETSYN" + finalData
+			returnData = "DTARETmode%eq!FETCH_SYNC!;" + finalData
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED SYNDATA           ---> " + clientAddress)
@@ -708,16 +715,17 @@ class DatabaseManagement():
 				connection.close()
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
+			finally:
+				# FREE RESOURCES
+				connection.close()
 			if not data:
 				# FREE RESOURCES
 				connection.close()
 				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
 				return
-			# FREE RESOURCES
-			connection.close()
 			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
-			returnData = "DTARETSYN" + finalData
+			returnData = "DTARETmode%eq!FETCH_ALL!;" + finalData
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED DTADUMP           ---> " + clientAddress)
@@ -1092,6 +1100,65 @@ class Handle():
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
 	
+	# CHECK IF COOKIE EXISTS
+	def CheckCookie(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "username%eq!username!;password%eq!password!;cookie%eq!cookie!;"
+		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+		creds = command.split(";")
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
+		cookie = None
+		# GET THE COOKIE FROM ARRAY
+		try:
+			for credential in creds:
+				if credential:
+					if "cookie" in credential:
+						cookie = credential.split("!")[1]
+					elif len(credential) == 0:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+		except Exception as e:
+			# COMMAND CONTAINS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if not cookie:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		# CREATE CONNECTION TO DATABASE
+		connection = sqlite3.connect(Server.dataBase)
+		# CREATE CURSOR
+		cursor = connection.cursor()
+		cookieExists = 0
+		try:
+			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
+			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\" LIMIT 1);")
+			data = cursor.fetchall()
+			cookieExists = data[0][0]
+		except Exception as e:
+			# SQL ERROR 
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		finally:
+			connection.close()
+		returnValue = None
+		if cookieExists == 1:
+			returnValue = "INFRETmsg%eq!COOKIE_DOES_EXIST!;"
+			PrintSendToAdmin("SERVER ---> COOKIE CHECK SUCCESSFUL    ---> " + clientAddress)
+		else:
+			returnValue = "INFRETmsg%eq!COOKIE_DOES_NOT_EXIST!;"
+			PrintSendToAdmin("SERVER ---> COOKIE CHECK FAILED        ---> " + clientAddress)
+		if not returnValue:
+			Handle.Error("00", None, clientAddress, clientSocket, aesKey, True)
+			return
+		Network.SendEncrypted(clientSocket, aesKey, returnValue)
+		
+	
 	# GET USERNAME AND PASSWORD AND CHECK IF CREDENTIALS ARE VALID --> RETURN BOOL TO CLIENT
 	def CredentialCheckProvider(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "username%eq!username!;password%eq!password!;cookie%eq!cookie!;"
@@ -1193,7 +1260,7 @@ class Management():
 		else:
 			# CREDENTIAL CHECK PASSED
 			Log.ClientEventLog("CREDENTIAL_CHECK_SUCCESSFUL", clientSocket)
-			returnData = "INFRETCREDENTIAL_CHECK_SUCCESSFUL"
+			returnData = "INFRETmsg%eq!CREDENTIAL_CHECK_SUCCESSFUL!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK SUCCESS   ---> " + clientAddress)
@@ -1466,7 +1533,7 @@ class Management():
 			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# RETURN SUCCESS STATUS TO CLIENT
-		returnData = "INFRETtodo%eq!CODE_RESEND!;"
+		returnData = "INFRETmsg%eq!CODE_RESENT!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# SEND EMAIL
@@ -1503,7 +1570,7 @@ class Management():
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
 			# RETURN DATA TO CLIENT
-			returnData = "LOGDMP" + str(clientLog)
+			returnData = "DTALOGmode%eq$USER_REQUEST$§msg%eq$" + str(clientLog) + "$§"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
@@ -1724,7 +1791,7 @@ class Management():
 		try:
 			# CHECK IF CREDENTIALS ARE VALID
 			# QUERY FOR USER ID
-			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"__ADMIN__\" AND U_password = \"" + hashedPassword + "\";")
+			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"__ADMIN__\" AND U_password = \"" + hashedPassword + "\" LIMIT 1;")
 			# FETCH DATA
 			data = cursor.fetchall()
 			# GET USER ID
@@ -1770,7 +1837,7 @@ class Management():
 					pass
 		Server.adminAesKey = aesKey
 		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
-		returnData = "INFRETSUCCESSFUL_ADMIN_LOGIN"
+		returnData = "INFRETmsg%eq!SUCCESSFUL_ADMIN_LOGIN!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
@@ -1953,7 +2020,6 @@ class Management():
 	# BAN A USER (ADMIN PRIVILEGES NEEDED)
 	def BanAccount(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
-		# username%eq!username!;duration%eq!duration_in_seconds!;
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
 		if not clientSocket == Server.admin:
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
@@ -2022,7 +2088,7 @@ class Management():
 		PrintSendToAdmin("SERVER ---> BANNED ACCOUNT             ---> " + clientAddress)
 		Log.ServerEventLog("BAN_BY_ACCOUNT", username + " has been banned for " + duration + " seconds!")
 		# KICK USER
-		Management.Kick("mode%eq!username!;target%eq!" + username + ";!", clientAddress, clientSocket, aesKey)
+		Management.Kick("mode%eq!username!;target%eq!" + username + "!;", clientAddress, clientSocket, aesKey)
 	
 	# ALLOWS CONNECTION TO SERVER AND SETS UP CLIENT HANDLER THREAD
 	def AllowConnection(clientAddress, clientSocket):
@@ -2208,7 +2274,7 @@ class Management():
 		codeType = None
 		codeAttempts = None
 		try:
-			# QUERY DAATABASE FOR VALIDATION CODES
+			# QUERY DATABASE FOR VALIDATION CODES
 			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_id = " + userID + ";")
 			data = cursor.fetchall()
 			code = data[0][0]
@@ -2224,9 +2290,9 @@ class Management():
 		if not code or not codeTime or codeAttempts == None or not codeType:
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
-		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
+		# CHECK IF ACCOUNT DELETION HAS BEEN SCHEDULED
 		if not codeType == "DELETE_ACCOUNT" or codeAttempts == -1:
-			Handle.Error("NCES", "NO_NEW_LOGIN_SCHEDULED", clientAddress, clientSocket, aesKey, True)
+			Handle.Error("NCES", "ACCOUNT_DELETION_NOT_SCHEDULED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if not code == providedCode:
@@ -2263,10 +2329,11 @@ class Management():
 		# LOGOUT USER
 		Management.Logout(clientAddress, clientSocket, aesKey, False)
 		try:
-			# DELETE WHITELISTED COOKIES, USER DATA, USER LOG AND USER ACCOUNT
+			# DELETE WHITELISTED COOKIES, USER DATA, USER LOG, DELETED ITEMS AND USER ACCOUNT
 			cursor.execute("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";")
 			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";")
 			cursor.execute("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";")
+			cursor.execute("DELETE FROM Tbl_delete WHERE DEL_userid = " + userID + ";")
 			cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
 		except Exception as e:
 			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLL BACK AND FREE RESOURCES
@@ -2282,7 +2349,7 @@ class Management():
 			connection.close()
 		# SEND CONFIRMATION TO CLIENT
 		PrintSendToAdmin("SERVER ---> ACCOUNT DELETED            ---> " + clientAddress)
-		returnData = "INFRETACCOUNT_DELETED_SUCCESSFULLY"
+		returnData = "INFRETmsg%eq!ACCOUNT_DELETED_SUCCESSFULLY!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 	
@@ -2460,14 +2527,14 @@ class Management():
 		# CHECK IF USER ACCOUNT IS VERIFIED
 		if isVerified == 0:
 			PrintSendToAdmin("SERVER ---> ACCOUT NOT VERIFIED        ---> " + clientAddress)
-			returnData = "INFERRACCOUNT_NOT_VERIFIED"
+			returnData = "INFERRmsg%eq!ACCOUNT_NOT_VERIFIED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
 		# ADD USER TO WHITELIST
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
-		returnData = "INFLOGIN_SUCCESSFUL"
+		returnData = "INFRETmsg%eq!LOGIN_SUCCESSFUL!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
@@ -2638,7 +2705,7 @@ class Management():
 		else:
 			connection.commit()
 			PrintSendToAdmin("SERVER ---> ACCOUNT VERIFIED           ---> " + clientAddress)
-			returnData = "INFRETACCOUNT_VERIFIED"
+			returnData = "INFRETmsg%eq!ACCOUNT_VERIFIED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# FREE RESOURCES
@@ -2828,7 +2895,7 @@ class Management():
 		# ALL UPDATED
 		# INITIALIZE SYNCRONIZATION (REQUEST UPDATED DATA FROM USER)
 		PrintSendToAdmin("SERVER ---> PASSWORD CHANGED           ---> " + clientAddress)
-		returnData = "INFRETPASSWORD_CHANGED"
+		returnData = "INFRETmsg%eq!PASSWORD_CHANGED!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 
@@ -2917,7 +2984,7 @@ class Management():
 			html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(PASSWORD_CHANGE_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
-			returnData = "INFRETtodo%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;"
+			returnData = "INFRETmsg%eq!SEND_VERIFICATION_CHANGE_PASSWORD!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		elif mode == "DELETE_ACCOUNT":
@@ -2929,7 +2996,7 @@ class Management():
 			html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(DELETE_ACCOUNT_CONFIRMATION_MAX_TIME))
 			# CALL SENDMAIL
 			Management.SendMail(SUPPORT_EMAIL_SENDER, address, subject, text, html, clientAddress)
-			returnData = "INFRETtodo%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;"
+			returnData = "INFRETmsg%eq!SEND_VERIFICATION_DELETE_ACCOUNT!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 		else:
@@ -2984,9 +3051,31 @@ class Management():
 		# mode%eq!ipport!;target%eq!192.168.178.50:52336!
 		try:
 			# GET MODE AND TARGET
-			splittedCommands = command.split(";")
-			mode = splittedCommands[0].split("!")[1]
-			target = splittedCommands[1].split("!")[1]
+			creds = command.split(";")
+			# INITAILIZE VARIABLES TO STORE EXTRACTED VALUES
+			target = None
+			mode = None
+			# EXTRACT VALUES FROM PROVIDED COMMAND
+			try:
+				for credential in creds:
+					if "target" in credential:
+						target = credential.split("!")[1]
+					elif "mode" in credential:
+						mode = credential.split("!")[1]
+					elif len(credential) == 0:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+			except Exception as e:
+				# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+				Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+				return
+			# VALIDATE THAT ALL VARIABLES HAVE BEEN INITIALIZED
+			if not target or not mode:
+				Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+				return
 			# CHECK FOR SUPPORTED MODES
 			if mode == "ip":
 				# TRY REGEX --> EXCEPTION == INVALID COMMAND
@@ -3014,7 +3103,7 @@ class Management():
 					if not kicked:
 						# CLIENT NOT FOUND
 						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						returnData = "INFRETCLIENT_NOT_FOUND"
+						returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
 						# SEND DATA ENCRYPTED TO CLIENT
 						Network.SendEncrypted(clientSocket, aesKey, returnData)
 					# CLIENT HAS BEEN KICKED
@@ -3023,7 +3112,7 @@ class Management():
 						if not Server.admin == target:
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-							returnData = "INFRETKICKED_CLIENT"
+							returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 							# SEND DATA ENCRYPTED TO CLIENT
 							Network.SendEncrypted(clientSocket, aesKey, returnData)
 			elif mode == "ipport":
@@ -3054,7 +3143,7 @@ class Management():
 					if not kicked:
 						# CLIENT NOT FOUND
 						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						returnData = "INFRETCLIENT_NOT_FOUND"
+						returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
 						# SEND DATA ENCRYPTED TO CLIENT
 						Network.SendEncrypted(clientSocket, aesKey, returnData)
 					# CLIENT HAS BEEN KICKED
@@ -3063,7 +3152,7 @@ class Management():
 						if Server.admin == clientSocket:
 							# SEND CONFIRMATION TO ADMIN
 							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-							returnData = "INFRETCLIENT_KICKED"
+							returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 							# SEND DATA ENCRYPTED TO CLIENT
 							Network.SendEncrypted(clientSocket, aesKey, returnData)
 			elif mode == "username":
@@ -3090,7 +3179,7 @@ class Management():
 				if not kicked:
 					# CLIENT NOT FOUND
 					PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-					returnData = "INFRETCLIENT_NOT_FOUND"
+					returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
 					# SEND DATA ENCRYPTED TO CLIENT
 					Network.SendEncrypted(clientSocket, aesKey, returnData)
 				# CLIENT HAS BEEN KICKED
@@ -3099,7 +3188,7 @@ class Management():
 					if Server.admin == clientSocket:
 						# SEND CONFIRMATION TO ADMIN
 						PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-						returnData = "INFRETCLIENT_KICKED"
+						returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 						# SEND DATA ENCRYPTED TO CLIENT
 						Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# COMMAND IS INVALID
@@ -3147,10 +3236,14 @@ class Management():
 			# SEND CUSTOM FIN
 			Network.Send(clientSocket, "FINmessage%eq!" + message + "!;")
 		# SEND TCP FIN
-		clientSocket.shutdown(socket.SHUT_RDWR)
-		# CLOSE SOCKET
-		clientSocket.close()
-		PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + address)
+		try:
+			clientSocket.shutdown(socket.SHUT_RDWR)
+		except:
+			PrintSendToAdmin ("SERVER <-x- TCP RESET                  -x-> " + address)
+		finally:
+			# CLOSE SOCKET
+			clientSocket.close()
+			PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + address)
 
 	# RETURNS LIST OF CLIENTS
 	def ListClients(command, clientAddress, clientSocket, aesKey):
@@ -3163,7 +3256,7 @@ class Management():
 			# RETURN ALL CURRENTLY CONNECTED CLIENTS
 			Log.ServerEventLog("SHOW_CONNECTED_CLIENTS", GetDetails(clientSocket))
 			# CREATE A HEADER FOT THE TABLE
-			header = CWHITE + FUNDERLINED + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + ENDF
+			header = CWHITE + "IP:PORT" + 14 * " " + " │ STATUS" + 30 * " " + "\n" + 22 * "─" + "┼" + 37 * "─" + ENDF
 			PrintSendToAdmin(header)
 			# ITERATE OVER CLIENT LIST
 			for client in Server.allClients:
@@ -3200,7 +3293,7 @@ class Management():
 			# RETURN A LIST OF ALL ACCOUNTS
 			Log.ServerEventLog("SHOW_ALL_ACCOUNTS", GetDetails(clientSocket))
 			# CREATE A HEADER FOT THE TABLE
-			header = CWHITE + FUNDERLINED + "USERNAME" + 12 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + ENDF
+			header = CWHITE + "USERNAME" + 14 * " " + " │ STATUS" + 1 * " " + " │ LAST ONLINE (Zulu Time)" + "\n" + 23 * "─" + "┼" + 9 * "─" + "┼" + 25 * "─" + ENDF
 			PrintSendToAdmin(header)
 			# CREATE CONNECTION TO DATABASE
 			connection = sqlite3.connect(Server.dataBase)
@@ -3254,7 +3347,7 @@ class Management():
 							lastSeen = "N/A"
 					# ADD PADDING FOR TABLE
 					status += (7 - len(status)) * " "
-					user += (20 - len(user)) * " "
+					user += (22 - len(user)) * " "
 					# SET ONLINE / OFFLINE COLOR CODING
 					if "ONLINE" in status:
 						status = CGREEN + status
@@ -3342,9 +3435,7 @@ class Management():
 			return
 		else:
 			if not emailInUse == 0:
-				returnData = "INFERREMAIL_ALREADY_IN_USE"
-				# SEND DATA ENCRYPTED TO CLIENT
-				Network.SendEncrypted(clientSocket, aesKey, returnData)
+				Handle.Error("MAIL","EMAIL_ALREADY_IN_USE", clientAddress, clientSocket, aesKey, True)
 				PrintSendToAdmin("SERVER ---> EMAIL ADDRESS IN USE       ---> " + clientAddress)
 				return
 		try:
@@ -3395,7 +3486,7 @@ class Management():
 		subject = SUPPORT_EMAIL_REGISTER_SUBJECT
 		text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
 		html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds(ACCOUNT_ACTIVATION_MAX_TIME))
-		returnData = "INFRETtodo%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;"
+		returnData = "INFRETmsg%eq!SEND_VERIFICATION_ACTIVATE_ACCOUNT!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		# SEND VERIFICATION CODE BY EMAIL
@@ -3403,18 +3494,41 @@ class Management():
 		
 	# DUMP THE EVENT LOG / ADMIN PRIVILEGES REQUIRED
 	def DumpEventLog(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND MNGLOGmode%eq!CLIENT!;username%eq!testuser1!;
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
 		if not clientSocket == Server.admin:
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
 			return
+		creds = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+			return
+		# SQL INJECTION CHECK PASSED. CREDENTIALS ARE VALID
 		# CHECK IF PACKET IS VALID
+		username = None
+		mode = None
+		# ECTRACT INFORAMTION FROM COMMAND
+		try:
+			for credential in creds:
+				if "mode" in credential:
+					mode = credential.split("!")[1]
+				elif "username" in credential:
+					username = credential.split("!")[1]
+				elif len(credential) == 0:
+					pass
+				else:
+					# COMMAND CONTAINED MORE DATA THAN REQUESTED
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+					return
+		except Exception as e:
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
 		# CREATE CURSOR
 		cursor = connection.cursor()
 		try:
-			# CHECK IF SERVER OR CLIENT LOG SHOULD BE DUMPED
-			if command == "SERVER":
+			if mode == "SERVER":
 				# EXECUTE QUERY
 				cursor.execute("SELECT * FROM Tbl_serverLog;")
 				# FETCH DATA
@@ -3422,27 +3536,28 @@ class Management():
 				# FORMAT DATA
 				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 				# ENCRYPT AND SEND TO ADMIN
-				returnData = "LOGDMPSERVER\n" + finalData
+				returnData = "DTALOGmode%eq$SERVER$§msg%eq$\n" + finalData + "$§"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> SERVER LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
 				Log.ServerEventLog("SERVER_LOG_DUMP", GetDetails(clientSocket))
-			elif command == "CLIENT":
+			elif mode == "CLIENT" and username:
 				# EXECUTE QUERY
-				cursor.execute("SELECT * FROM Tbl_clientLog;")
+				cursor.execute("SELECT * FROM Tbl_clientLog AS c, Tbl_user as u WHERE u.U_username = \"" + username + "\" and c.L_userid = u.U_id;")
 				# FETCH DATA
 				data = cursor.fetchall()
 				# FORMAT DATA
 				finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 				# ENCRYPT AND SEND TO ADMIN
-				returnData = "LOGDMPCLIENT\n" + finalData
+				returnData = "DTALOGmode%eq$CLIENT$§msg%eq$\n" + finalData + "$§"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> CLIENT LOG DUMP            ---> " + clientAddress)
 				# LOG DATA DUMP
 				Log.ServerEventLog("CLIENT_LOG_DUMP", GetDetails(clientSocket))
 			else:
+				Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 				return
 		finally:
 			# FREE RESOURCES
@@ -3455,7 +3570,7 @@ class Management():
 		creds = command.split(";")
 		# CHECK IF USER IS ADMIN
 		if clientSocket == Server.admin:
-			returnData = "Ok! You are already Admin."
+			returnData = "INFRETmsg%eq!ALREADY_ADMIN!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
@@ -3567,7 +3682,7 @@ class Management():
 			subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
 			text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
 			html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME))
-			returnData = "INFRETtodo%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;"
+			returnData = "INFRETmsg%eq!SEND_VERIFICATION_ADMIN_NEW_DEVICE!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# SEND ACCOUNT VALIDATION EMAIL
@@ -3598,6 +3713,7 @@ class Management():
 			Handle.Error("ADMN", None, clientAddress, clientSocket, aesKey, True)
 			# CREATE LOG ENTRY
 			Log.ServerEventLog("FAILED_ADMIN_LOGIN_ATTEMPT", details)
+			return
 		# CREDENTIAL CHECK PASSED
 		# CHECK FOR OTHER ADMINS
 		if not Server.admin == None:
@@ -3624,7 +3740,7 @@ class Management():
 					pass
 		Server.adminAesKey = aesKey
 		Log.ServerEventLog("ADMIN_LOGIN_SUCCESSFUL", details)
-		returnData = "INFRETSUCCESSFUL_ADMIN_LOGIN"
+		returnData = "INFRETmsg%eq!SUCCESSFUL_ADMIN_LOGIN!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
@@ -3741,7 +3857,7 @@ class Management():
 		print(CWHITE + "         Rescheduling process ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Rescheduled process." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server shutdown complete." + ENDF)
-		os.system("sleep " + str(REBOOT_TIME) + " && python3 dbserver.py")
+		os.system("sleep " + str(REBOOT_TIME) + " && python3 " + inspect.getfile(inspect.currentframe()))
 	
 	# LOGIN A CLIENT AND ADD HIM TO AUTHORIZED CLIENTS (SAVES EXPENSIVE DATABASE LOOKUPS)
 	def Login(command, clientAddress, clientSocket, aesKey):
@@ -3909,7 +4025,7 @@ class Management():
 			subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
 			text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (name, details, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
 			html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (name, htmlDetails, codeFinal, ConvertFromSeconds(NEW_DEVICE_CONFIRMATION_MAX_TIME))
-			returnData = "INFRETtodo%eq!SEND_VERIFICATION_NEW_DEVICE!;"
+			returnData = "INFRETmsg%eq!SEND_VERIFICATION_NEW_DEVICE!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			# SEND ACCOUNT VALIDATION EMAIL
@@ -3948,7 +4064,7 @@ class Management():
 		# ADD USER TO WHITELIST
 		Server.authorizedClients.append([userID, clientSocket, username])
 		Log.ClientEventLog("LOGIN_SUCCESSFUL", clientSocket)
-		returnData = "INFRETLOGIN_SUCCESSFUL"
+		returnData = "INFRETmsg%eq!LOGIN_SUCCESSFUL!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncrypted(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LOGIN SUCCESSFUL           ---> " + clientAddress)
@@ -3971,7 +4087,7 @@ class Management():
 			isLoggedout = True
 			print("SERVER **** ADMIN LOGOUT               **** " + clientAddress)
 			if not isDisconnected:
-				returnData = "INFRETLOGGED_OUT"
+				returnData = "INFRETmsg%eq!LOGGED_OUT!;"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 		else:
@@ -3988,7 +4104,7 @@ class Management():
 						isLoggedout = True
 						PrintSendToAdmin("SERVER ---> LOGGED OUT                 ---> " + clientAddress)
 						if not isDisconnected:
-							returnData = "INFRETLOGGED_OUT"
+							returnData = "INFRETmsg%eq!LOGGED_OUT!;"
 							# SEND DATA ENCRYPTED TO CLIENT
 							Network.SendEncrypted(clientSocket, aesKey, returnData)
 						break
@@ -3996,11 +4112,11 @@ class Management():
 			if not isLoggedout and not isDisconnected:
 				try:
 					# RETURN ERROR MESSAGE TO CLIENT
-					returnData = "INFERRNOT_LOGGED_IN"
+					returnData = "INFRETmsg%eq!NOT_LOGGED_IN!;"
 					# SEND DATA ENCRYPTED TO CLIENT
 					Network.SendEncrypted(clientSocket, aesKey, returnData)
 				except:
-					Network.Send(clientSocket, "INFERRNOT_LOGGED_IN")
+					Network.Send(clientSocket, "INFRETmsg%eq!NOT_LOGGED_IN!;")
 		# RETURN STATUS
 		return isLoggedout
 	
@@ -4039,11 +4155,12 @@ def PrintSendToAdmin(text):
 	# IF ADMIN IS LOGGED IN SEND SERVER MESSAGES
 	if not Server.admin == None:
 		aesEncryptor = AESCipher(Server.adminAesKey)
+		text = "INFMIRmsg%eq!" + text + "!;"
 		encryptedData = aesEncryptor.encrypt(text)
 		hmacKeys = GetHMACkeys(Server.admin)
 		try:
 			Server.admin.send(b'\x01' + bytes("E" + encryptedData + CryptoHelper.CalculateHMAC(hmacKeys[0], hmacKeys[1], encryptedData), "utf-8") + b'\x04')
-		except SocketError as e:
+		except Exception as e:
 			Log.ServerEventLog("SOCKET_ERROR", str(e))
 			Management.Logout(Server.adminIp, Server.admin, Server.adminAesKey, True)
 
@@ -4257,7 +4374,7 @@ class Server(Thread):
 				newAdminPasswordConfirm = getpass.getpass(CWHITE + " > " + ENDF)
 				if newAdminPassword == newAdminPasswordConfirm and len(newAdminPassword) > 0:
 					print(CWHITE + "         Setting admin password ..." + ENDF)
-					adminPassword = CryptoHelper.SHA256(CryptoHelper.SHA256(newAdminPassword)[:32])
+					adminPassword = CryptoHelper.SHA256(newAdminPassword)
 					hashedUsername = CryptoHelper.SHA256("__ADMIN__")
 					salt = CryptoHelper.SHA256(hashedUsername + adminPassword)
 					hashedPassword = CryptoHelper.Scrypt(adminPassword, salt)
@@ -4493,7 +4610,7 @@ class Server(Thread):
 		print("------------------------------------------------")
 		print(NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ")")
 		print("for " + PYTHON)
-		print("Copyright (c) 2018 Frederik Hoeft")
+		print("Copyright (c) 2019 Frederik Hoeft")
 		print("All Rights Reserved.")
 		print("------------------------------------------------")
 		print("")
@@ -4854,23 +4971,16 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <--- KICK CLIENT                <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.Kick, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
-								# ACCOUNT REQUESTS
-								elif packetSID == "ACR":
-									# INITIALIZE PASSWORD CHANGE
-									if decryptedData[6:9] == "PWC":
-										PrintSendToAdmin("SERVER <--- INITIALIZE PASSWORD CHANGE <--- " + clientAddress)
-										mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
-										mgmtThread.start()
-									# INITAILIZE ACCOUNT DELETION
-									elif decryptedData[6:9] == "DEL":
-										PrintSendToAdmin("SERVER <--- INITIALIZE DELETE ACCOUNT  <--- " + clientAddress)
-										mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
-										mgmtThread.start()
-									else:
-										PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
-										# JUMP TO FINALLY AND FINISH CONNECTION
-										message = "GENERIC_EXCEPTION_INVALID_SUB_ID"
-										return
+								# INITIALIZE PASSWORD CHANGE
+								elif packetSID == "IPC":
+									PrintSendToAdmin("SERVER <--- INITIALIZE PASSWORD CHANGE <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# INITAILIZE ACCOUNT DELETION
+								elif packetSID == "IAD":
+									PrintSendToAdmin("SERVER <--- INITIALIZE DELETE ACCOUNT  <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.AccountRequest, args = (decryptedData[9:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
 								# COMMIT PASSWORD CHANGE
 								elif packetSID == "CPC":
 									PrintSendToAdmin("SERVER <--- COMMIT PASSWORD CHANGE     <--- " + clientAddress)
@@ -4892,7 +5002,7 @@ class ClientHandler():
 									mgmtThread = Thread(target = Management.EmailVerification, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# PROVIDE VALIDATION CODE TO DELETE ACCOUNT
-								elif packetSID == "DEL":
+								elif packetSID == "CAD":
 									PrintSendToAdmin("SERVER <--- DELETE ACCOUNT             <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.DeleteAccount, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
@@ -4921,7 +5031,7 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <--- COMMIT ADMIN-PW CHANGE     <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
-								# REQUEST MASTER-PASSWORD HASH
+								# REQUEST MASTER-PASSWORD HASH --> DANGEROUS!!! use CredentialCheckProvider() INSTEAD
 								#elif packetSID == "PWH":
 								#	PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
 								#	mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
@@ -4930,6 +5040,11 @@ class ClientHandler():
 								elif packetSID == "CEA":
 									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.ChangeEmailAddress, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# CHECK IF COOKIE EXISTS
+								elif packetSID == "CCK":
+									PrintSendToAdmin("SERVER <--- CHECK COOKIE               <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.CheckCookie, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								# GET ACCOUNT ACTIVITY
 								elif packetSID == "GAA":
@@ -4985,12 +5100,12 @@ class ClientHandler():
 			# CHECK IF A TCP FIN HASH BEEN RECEIVED
 			elif isTcpFin:
 				# CHECK IF DISCONNECT MESSAGE HAS ALREADY BEEN SHOWN
-				disconnectMessageShowed = True
+				disconnectMessageShown = True
 				# ITERATE OVER ALL LISTE CLIENTS
 				for client in Server.allClients:
 					# IF THERE IS NOT MATCH THERE IS NO NEED TO SHOW THE MESSAGE AGAIN
 					if clientSocket in client:
-						disconnectMessageShowed = False
+						disconnectMessageShown = False
 						break
 				# REMOVE CLIENT FROM LISTING
 				Management.Unlist(clientSocket)
@@ -5000,7 +5115,7 @@ class ClientHandler():
 				# CLOSE SOCKET
 				clientSocket.close()
 				# CHECK IF MESSAGE FLAG HAS BEEN SET
-				if not disconnectMessageShowed:
+				if not disconnectMessageShown:
 					# SHOW DISCONNECTED-MESSAGE
 					PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + clientAddress)
 			elif isTimedOut:

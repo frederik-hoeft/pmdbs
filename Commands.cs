@@ -5,14 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CE;
 
-namespace pmdbs
+namespace debugclient
 {
     public struct Commands
     {
-        public static void FetchAll(object parameterObject)
+        public static void FetchAll(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -22,11 +27,12 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request all account user-saved data.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request all account user-saved data.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -34,12 +40,17 @@ namespace pmdbs
             }
             else
             {
+                ConsoleExtension.PrintF("Requesting all data of user: " + GlobalVarPool.currentUser + "...");
                 Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_ALL!;");
             }
         }
-        public static void FetchSync(object parameterObject)
+        public static void FetchSync(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -49,11 +60,12 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request the headers of all user-saved data to be used for database syncing.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request the headers of all user-saved data to be used for database syncing.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -61,33 +73,39 @@ namespace pmdbs
             }
             else
             {
+                ConsoleExtension.PrintF("Requesting headers owned by user: " + GlobalVarPool.currentUser + "...");
                 Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
             }
         }
-        public static void Authenticate(object parameterObject)
+        public static void Authenticate(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+
         }
-        public static void BanAccount(object parameterObject)
+        public static void BanAccount(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to prevent a user for X seconds from logging in.\n\n-----ARGUMENTS-----\n-u <username>\n-d <duration in seconds>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to prevent a user for X seconds from logging in.\n\n-----ARGUMENTS-----\n-u <username>\n-d <duration in seconds>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -113,13 +131,14 @@ namespace pmdbs
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { username, duration }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             Network.SendEncrypted("MNGBNAusername%eq!" + username + "!;duration%eq!" + duration + "!;");
                             break;
@@ -128,29 +147,34 @@ namespace pmdbs
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void BanClient(object parameterObject)
+        public static void BanClient(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to prevent a client with the indicated IPv4 address for X seconds from connecting to the server.\n\n-----ARGUMENTS-----\n-t <target (IPv4)>\n-d <duration in seconds>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to prevent a client with the indicated IPv4 address for X seconds from connecting to the server.\n\n-----ARGUMENTS-----\n-t <target (IPv4)>\n-d <duration in seconds>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -176,13 +200,14 @@ namespace pmdbs
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { target, duration }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             Network.SendEncrypted("MNGBANip%eq!" + target + "!;duration%eq!" + duration + "!;");
                             break;
@@ -191,29 +216,34 @@ namespace pmdbs
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void ChangeEmailAddress(object parameterObject)
+        public static void ChangeEmailAddress(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isUser)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to change the email address connected to the account.\n\n-----ARGUMENTS-----\n-u <username>\n-e <new email address>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to change the email address connected to the account.\n\n-----ARGUMENTS-----\n-u <username>\n-e <new email address>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -239,13 +269,14 @@ namespace pmdbs
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { email, username }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             Network.SendEncrypted("MNGCEAnew_email%eq!" + email + "!;username%eq!" + username + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
@@ -254,12 +285,16 @@ namespace pmdbs
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void ChangeName(object parameterObject)
+        public static void ChangeName(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 string name = string.Empty;
@@ -270,7 +305,7 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to change the users display name (not the username).\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to change the users display name (not the username).\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         case "-n":
@@ -281,26 +316,27 @@ namespace pmdbs
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
                 }
                 if (name.Equals(string.Empty))
                 {
-                    return;
+                    MissingParameters(parameters[0]);
                 }
                 Network.SendEncrypted("MNGCHNnew_name%eq!" + name + "!;");
             }
             else
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void GetClientLog(object parameterObject)
+        public static void GetClientLog(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -313,7 +349,7 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to fetch the server log.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to fetch the server log.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         case "-u":
@@ -324,41 +360,47 @@ namespace pmdbs
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
                 }
                 if (username.Equals(string.Empty))
                 {
-                    return;
+                    MissingParameters(parameters[0]);
                 }
                 Network.SendEncrypted("MNGLOGmode%eq!CLIENT!;username%eq!" + username + "!;");
             }
             else
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void CommitAdminPasswordChange(object parameterObject)
+        public static void CommitAdminPasswordChange(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide a 2FA code as well as the new password for the root account.\n\n-----ARGUMENTS-----\n-p <new root password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide a 2FA code as well as the new password for the root account.\n\n-----ARGUMENTS-----\n-p <new root password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -384,13 +426,14 @@ namespace pmdbs
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { password, code }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             string passwordHash = CryptoHelper.SHA256HashBase64(password);
                             Network.SendEncrypted("MNGAPCpassword%eq!" + passwordHash + "!;code%eq!" + code + "!;");
@@ -400,14 +443,14 @@ namespace pmdbs
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void CommitDeleteAccount(object parameterObject)
+        public static void CommitDeleteAccount(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isUser)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -420,7 +463,7 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide the 2FA code to delete your account and all data associated with it.\n\n-----ARGUMENTS-----\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide the 2FA code to delete your account and all data associated with it.\n\n-----ARGUMENTS-----\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                                 return;
                             }
                         case "-c":
@@ -431,37 +474,47 @@ namespace pmdbs
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
                 }
                 if (code.Equals(string.Empty))
                 {
-                    return;
+                    MissingParameters(parameters[0]);
                 }
                 Network.SendEncrypted("MNGCADcode%eq!" + code + "!;");
             }
             else
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void CommitPasswordChange(object parameterObject)
+        public static void CommitPasswordChange(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
+                return;
+            }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide a 2FA code as well as the new password for your account.\n\n-----ARGUMENTS-----\n-p <new password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to provide a 2FA code as well as the new password for your account.\n\n-----ARGUMENTS-----\n-p <new password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -487,13 +540,14 @@ namespace pmdbs
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { password, code }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
                             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
@@ -505,30 +559,34 @@ namespace pmdbs
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void ConfirmNewDevice(object parameterObject)
+        public static void ConfirmNewDevice(string[] parameters)
         {
-            HelperMethods.InvokeOutputLabel("Confirming new device ...");
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to link a new device to your account.\n\n-----ARGUMENTS-----\n-u <username>\n-p <password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to link a new device to your account.\n\n-----ARGUMENTS-----\n-u <username>\n-p <password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -561,30 +619,35 @@ namespace pmdbs
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { code, username, password }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
+                            GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
+                            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
+                            string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            ConsoleExtension.PrintF("Linking new device to user account: " + username);
+                            Network.SendEncrypted("MNGCNDusername%eq!" + username + "!;code%eq!" + code + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void Disconnect(object parameterObject)
+        public static void Disconnect(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -596,11 +659,12 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to disconnect from the server.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to disconnect from the server.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -608,6 +672,7 @@ namespace pmdbs
             }
             else
             {
+                ConsoleExtension.PrintF("Disconnecting ...");
                 Network.Send("FIN");
                 GlobalVarPool.threadKilled = true;
                 GlobalVarPool.clientSocket.Disconnect(true);
@@ -616,11 +681,11 @@ namespace pmdbs
                 GlobalVarPool.connected = false;
             }
         }
-        public static void GetCookie(object parameterObject)
+        public static void GetCookie(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -632,11 +697,12 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request a new device cookie. The device cookie is needed to identify your device and if necessary request a 2FA code. This command only needs to be executed once as the cookie is stored on your device.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request a new device cookie. The device cookie is needed to identify your device and if necessary request a 2FA code. This command only needs to be executed once as the cookie is stored on your device.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -644,42 +710,39 @@ namespace pmdbs
             }
             else
             {
+                ConsoleExtension.PrintF("Requesting new cookie ...");
                 Network.SendEncrypted("MNGCKI");
             }
         }
-        public static void Custom(object parameterObject)
+        public static void Custom(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
-        }
-        public static void CustomEncrypted(object parameterObject)
-        {
-            string[] parameters = (string[])parameterObject;
-        }
-        public static void Delete(object parameterObject)
-        {
-            string[] parameters = (string[])parameterObject;
-        }
-        public static void DisableDebugging(object parameterObject)
-        {
-            string[] parameters = (string[])parameterObject;
 
         }
-        public static void EnableDebugging(object parameterObject)
+        public static void CustomEncrypted(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
 
         }
-        public static void Error(object parameterObject)
+        public static void Delete(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+
+        }
+        public static void DisableDebugging(string[] parameters)
+        {
+
+        }
+        public static void EnableDebugging(string[] parameters)
+        {
+
+        }
+        public static void Error(string[] parameters)
+        {
             if (!GlobalVarPool.debugging)
             {
                 return;
             }
         }
-        public static void Exit(object parameterObject)
+        public static void Exit(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -689,11 +752,12 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to quit the program.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to quit the program.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -707,12 +771,16 @@ namespace pmdbs
                     GlobalVarPool.clientSocket.Close();
                     GlobalVarPool.clientSocket.Dispose();
                 }
-                //Environment.Exit(Environment.ExitCode);
+                Environment.Exit(Environment.ExitCode);
             }
         }
-        public static void GetAccountActivity(object parameterObject)
+        public static void GetAccountActivity(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -722,11 +790,12 @@ namespace pmdbs
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to get recent account activity.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to get recent account activity.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -734,12 +803,12 @@ namespace pmdbs
             }
             else
             {
+                ConsoleExtension.PrintF("Querying account activity for user: " + GlobalVarPool.username);
                 Network.SendEncrypted("MNGGAA");
             }
         }
-        /*public static void Help(object parameterObject)
+        public static void Help(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (GlobalVarPool.connected)
             {
                 ConsoleExtension.PrintF(ConsoleColorExtension.Yellow.ToString() + @"------------------GENERAL INFORMATION-----------------
@@ -828,18 +897,22 @@ Command line history with arrow keys and tab completion is supported.
 <getCookie>
 ");
             }
-        }*/
-        public static void InitAdminPasswordChange(object parameterObject)
+        }
+        public static void InitAdminPasswordChange(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
         }
-        public static void InitPasswordChange(object parameterObject)
+        public static void InitPasswordChange(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -849,11 +922,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request a password change for the current user.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request a password change for the current user.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -864,9 +938,13 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;");
             }
         }
-        public static void InitDeleteAccount(object parameterObject)
+        public static void InitDeleteAccount(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             if (parameters.Count() > 1)
             {
                 for (int i = 1; i < parameters.Count(); i++)
@@ -876,11 +954,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to initialize the deletion of the current user.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to initialize the deletion of the current user.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -891,23 +970,32 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGIACmode%eq!DELETE_ACCOUNT!;");
             }
         }
-        public static void Insert(object parameterObject)
+        public static void Insert(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
                 switch (parameterCount)
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to insert a new row into the user data database.\n\n-----ARGUMENTS-----\n-hs <host>\n-p <password> <HID>-----OPTIONAL-----\n-u <username>\n-url <url>\n-e email\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to insert a new row into the user data database.\n\n-----ARGUMENTS-----\n-hs <host>\n-p <password> <HID>-----OPTIONAL-----\n-u <username>\n-url <url>\n-e email\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -962,13 +1050,14 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { host, password }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             string query = "local_id%eq!" + -1 + "!;host%eq!" + CryptoHelper.AESEncrypt(host, GlobalVarPool.localAESkey) + "!;password%eq!" + CryptoHelper.AESEncrypt(password, GlobalVarPool.localAESkey) + "!;datetime%eq!" + DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + "!;";
                             if (!username.Equals(string.Empty))
@@ -987,6 +1076,7 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 query += "url%eq!" + CryptoHelper.AESEncrypt(url, GlobalVarPool.localAESkey) + "!;";
                             }
+                            ConsoleExtension.PrintF("Inserting new account ...");
                             Network.SendEncrypted("REQINS" + query);
                             break;
                         }
@@ -994,29 +1084,34 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void Kick(object parameterObject)
+        public static void Kick(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to disconnect a specific target (client or user) from the server.\n\n-----ARGUMENTS-----\n-t <target>\n-m <ip/ipport/username>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to disconnect a specific target (client or user) from the server.\n\n-----ARGUMENTS-----\n-t <target>\n-m <ip/ipport/username>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1042,13 +1137,14 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { target, mode }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             Network.SendEncrypted("MNGKIKtarget%eq!" + target + "!;mode%eq!" + mode + "!;");
                             break;
@@ -1057,14 +1153,15 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void ListAllClients(object parameterObject)
+        public static void ListAllClients(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -1076,11 +1173,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to list all connected clients.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to list all connected clients.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1091,11 +1189,11 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLICmode%eq!ALL_CONNECTED!;");
             }
         }
-        public static void ListAllUsers(object parameterObject)
+        public static void ListAllUsers(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -1107,11 +1205,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to list all users.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to list all users.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1122,27 +1221,31 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLICmode%eq!ALL_USERS!;");
             }
         }
-        public static void Login(object parameterObject)
+        public static void Login(string[] parameters)
         {
-            HelperMethods.InvokeOutputLabel("Logging in ...");
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used for authentication at the server.\n\n-----ARGUMENTS-----\n-u <username>\n-p <password>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used for authentication at the server.\n\n-----ARGUMENTS-----\n-u <username>\n-p <password>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1168,31 +1271,35 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { username, password }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
-                            
+                            GlobalVarPool.passwordHash = CryptoHelper.SHA256Hash(password);
+                            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(32, 32));
+                            string onlinePassword = CryptoHelper.SHA256Hash(GlobalVarPool.passwordHash.Substring(0, 32));
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            ConsoleExtension.PrintF("Trying to log in as user: " + username);
+                            Network.SendEncrypted("MNGLGIusername%eq!" + username + "!;password%eq!" + onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void Logout(object parameterObject)
+        public static void Logout(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isUser && !GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -1204,11 +1311,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to logout of an account.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to logout of an account.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1219,9 +1327,8 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLGO");
             }
         }
-        public static void CheckCookie(object parameterObject, bool isAutomatedQuery)
+        public static void CheckCookie(string[] parameters, bool isAutomatedQuery)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.debugging && !isAutomatedQuery)
             {
                 return;
@@ -1235,11 +1342,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to check weather your device cookie is valid.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to check weather your device cookie is valid.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1247,18 +1355,19 @@ Command line history with arrow keys and tab completion is supported.
             }
             else
             {
+                ConsoleExtension.PrintF("Validating cookie...");
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
         }
-        public static void CheckCredentials(object parameterObject)
+        public static void CheckCredentials(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+
         }
-        public static void NewAdminDevice(object parameterObject)
+        public static void NewAdminDevice(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             try
@@ -1266,15 +1375,20 @@ Command line history with arrow keys and tab completion is supported.
                 int parameterCount = parameters.Count();
                 switch (parameterCount)
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to link a new device to the root user.\n\n-----ARGUMENTS-----\n-p <password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to link a new device to the root user.\n\n-----ARGUMENTS-----\n-p <password>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1300,16 +1414,18 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { code, password }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             string passwordHash = CryptoHelper.SHA256HashBase64(password);
                             GlobalVarPool.username = "root";
+                            ConsoleExtension.PrintF("Trying to link new device to user: root");
                             Network.SendEncrypted("MNGNADpassword%eq!" + passwordHash + "!;code%eq!" + code + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
@@ -1317,14 +1433,14 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void Reboot(object parameterObject)
+        public static void Reboot(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             int parameterCount = parameters.Count();
@@ -1337,11 +1453,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to reboot the server.\nBeware that THIS WILL TEMPORARILY END YOUR ROOT SESSION and you will have to log back in after the reboot has completed. If you want to shut the server down instead use the \"shutdown\" command.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to reboot the server.\nBeware that THIS WILL TEMPORARILY END YOUR ROOT SESSION and you will have to log back in after the reboot has completed. If you want to shut the server down instead use the \"shutdown\" command.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1352,11 +1469,11 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGRBTREBOOT");
             }
         }
-        public static void Register(object parameterObject)
+        public static void Register(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected || GlobalVarPool.isRoot || GlobalVarPool.isUser)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             try
@@ -1364,15 +1481,20 @@ Command line history with arrow keys and tab completion is supported.
                 int parameterCount = parameters.Count();
                 switch (parameterCount)
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to create a new user.\n\n-----ARGUMENTS-----\n-u <username>\n-p <password>\n-e <email>\n-n <nickname>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to create a new user.\n\n-----ARGUMENTS-----\n-u <username>\n-p <password>\n-e <email>\n-n <nickname>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1412,35 +1534,37 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { email, username, password }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             if (nickname.Equals(string.Empty))
                             {
                                 nickname = "user";
                             }
-                            string passwordHash = CryptoHelper.SHA256Hash(password).Substring(0, 32);
+                            string passwordHash = CryptoHelper.SHA256Hash(CryptoHelper.SHA256Hash(password).Substring(0, 32));
                             GlobalVarPool.username = username;
-                            Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                            ConsoleExtension.PrintF("Trying to register new user: " + username);
+                            Network.SendEncrypted("MNGREGusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;password%eq!" + passwordHash + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
                 }
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void ResendCode(object parameterObject)
+        public static void ResendCode(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             try
@@ -1448,15 +1572,20 @@ Command line history with arrow keys and tab completion is supported.
                 int parameterCount = parameters.Count();
                 switch (parameterCount)
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request a new 2FA code.\n\n-----ARGUMENTS-----\n-u <username>\n-e <email>\n-n <nickname>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to request a new 2FA code.\n\n-----ARGUMENTS-----\n-u <username>\n-e <email>\n-n <nickname>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1489,14 +1618,16 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { email, username, nickname }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
+                            ConsoleExtension.PrintF("Requesting new 2FA code ...");
                             Network.SendEncrypted("MNGRTCusername%eq!" + username + "!;email%eq!" + email + "!;nickname%eq!" + nickname + "!;");
                             break;
                         }
@@ -1504,18 +1635,18 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void Select(object parameterObject)
+        public static void Select(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+
         }
-        public static void Shutdown(object parameterObject)
+        public static void Shutdown(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             int parameterCount = parameters.Count();
@@ -1528,11 +1659,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to shut the server down.\nBeware that THIS WILL END YOUR ROOT SESSION and you will have to rely on SSH or other remote applications to restart the server. If you just want to reboot use the \"reboot\" command.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to shut the server down.\nBeware that THIS WILL END YOUR ROOT SESSION and you will have to rely on SSH or other remote applications to restart the server. If you just want to reboot use the \"reboot\" command.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1543,11 +1675,11 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGSHTSHUTDOWN");
             }
         }
-        public static void GetServerLog(object parameterObject)
+        public static void GetServerLog(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.isRoot)
             {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -1559,11 +1691,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to fetch the server log.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to fetch the server log.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1574,11 +1707,11 @@ Command line history with arrow keys and tab completion is supported.
                 Network.SendEncrypted("MNGLOGmode%eq!SERVER!;");
             }
         }
-        public static void Start(object parameterObject)
+        public static void Start(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             if (parameters.Count() > 1)
@@ -1590,11 +1723,12 @@ Command line history with arrow keys and tab completion is supported.
                         case "--help":
                         case "-h":
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used connect to the server.\n\nThis command takes no arguments.\n");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used connect to the server.\n\nThis command takes no arguments.\n");
                                 return;
                             }
                         default:
                             {
+                                MissingParameters(parameters[0]);
                                 break;
                             }
                     }
@@ -1609,11 +1743,11 @@ Command line history with arrow keys and tab completion is supported.
                 connectionThread.Start();
             }
         }
-        public static void Sudo(object parameterObject)
+        public static void Sudo(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             try
@@ -1621,15 +1755,20 @@ Command line history with arrow keys and tab completion is supported.
                 int parameterCount = parameters.Count();
                 switch (parameterCount)
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to log in as root user who has elevated privileges and can manage the server.\n\n-----ARGUMENTS-----\n-p <password>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to log in as root user who has elevated privileges and can manage the server.\n\n-----ARGUMENTS-----\n-p <password>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1648,16 +1787,18 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (password.Equals(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             string passwordHash = CryptoHelper.SHA256HashBase64(password);
                             GlobalVarPool.username = "root";
+                            ConsoleExtension.PrintF("Trying to log in as user: " + ConsoleColorExtension.Red.ToString() + GlobalVarPool.username);
                             Network.SendEncrypted("MNGADMpassword%eq!" + passwordHash + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
                             break;
                         }
@@ -1665,26 +1806,35 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void Update(object parameterObject)
+        public static void Update(string[] parameters)
         {
-            string[] parameters = (string[])parameterObject;
+            if (!GlobalVarPool.isUser)
+            {
+                ConsoleExtension.PrintF("ERROR: PERM Operation not permitted.");
+                return;
+            }
             try
             {
                 int parameterCount = parameters.Count();
                 switch (parameterCount)
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to update a row  with the provided HID in the user database.\n\n-----ARGUMENTS-----\n-hid <HID>-----OPTIONAL-----\n -hs <host>\n-u <username>\n-p <password>\n-url <url>\n-e email\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to update a row  with the provided HID in the user database.\n\n-----ARGUMENTS-----\n-hid <HID>-----OPTIONAL-----\n -hs <host>\n-u <username>\n-p <password>\n-url <url>\n-e email\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1746,13 +1896,14 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (hid.Equals(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             string query = "hid%eq!" + hid + "!;datetime%eq!" + DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString() + "!;";
                             if (!host.Equals(string.Empty))
@@ -1779,6 +1930,7 @@ Command line history with arrow keys and tab completion is supported.
                             {
                                 query += "url%eq!" + CryptoHelper.AESEncrypt(url, GlobalVarPool.localAESkey) + "!;";
                             }
+                            ConsoleExtension.PrintF("Trying to activate account: " + username);
                             Network.SendEncrypted("REQUPD" + query);
                             break;
                         }
@@ -1786,30 +1938,34 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
         }
-        public static void ActivateAccount(object parameterObject)
+        public static void ActivateAccount(string[] parameters)
         {
-            HelperMethods.InvokeOutputLabel("Activating account ...");
-            string[] parameters = (string[])parameterObject;
             if (!GlobalVarPool.connected)
             {
+                ConsoleExtension.PrintF("ERROR: Operation not available.");
                 return;
             }
             try
             {
                 switch (parameters.Count())
                 {
+                    case 1:
+                        {
+                            MissingParameters(parameters[0]);
+                            break;
+                        }
                     case 2:
                         {
                             if (new string[] { "-h", "--help" }.Contains(parameters[1].ToLower()))
                             {
-                                //ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to verify your email address and activate your account.\n\n-----ARGUMENTS-----\n-u <username>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
+                                ConsoleExtension.PrintF(ConsoleColorExtension.Cyan.ToString() + parameters[0].ToLower() + ConsoleColorExtension.Default.ToString() + " is used to verify your email address and activate your account.\n\n-----ARGUMENTS-----\n-u <username>\n-c <code>\n\n-----MISC-----\n--help shows this help\n-h shows this help");
                             }
                             else
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
                             break;
                         }
@@ -1835,18 +1991,16 @@ Command line history with arrow keys and tab completion is supported.
                                         }
                                     default:
                                         {
+                                            MissingParameters(parameters[0]);
                                             return;
                                         }
                                 }
                             }
                             if (new string[] { username, code }.Contains(string.Empty))
                             {
-                                return;
+                                MissingParameters(parameters[0]);
                             }
-                            GlobalVarPool.search = true;
-                            GlobalVarPool.searchCondition = SearchCondition.In;
-                            GlobalVarPool.automatedTaskCondition = "ACCOUNT_VERIFIED";
-                            GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
+                            ConsoleExtension.PrintF("Trying to activate account: " + username);
                             Network.SendEncrypted("MNGVERusername%eq!" + username + "!;code%eq!" + code + "!;");
                             break;
                         }
@@ -1854,8 +2008,13 @@ Command line history with arrow keys and tab completion is supported.
             }
             catch
             {
-                return;
+                MissingParameters(parameters[0]);
             }
+        }
+
+        public static void MissingParameters(string command)
+        {
+            ConsoleExtension.PrintF(ConsoleColorExtension.Red.ToString() + "Error: Syntax " + ConsoleColorExtension.Default.ToString() + "Type " + command.ToLower() + " --help for a summary of options.");
         }
     }
 }
