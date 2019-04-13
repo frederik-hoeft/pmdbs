@@ -209,10 +209,12 @@ namespace pmdbs
         /// <summary>
         /// SYNCHRONIZE LOCAL DATABASE WITH REMOTE DATABASE ON THE SERVER
         /// </summary>
-        /// <param name="remoteHeaderString">REMOTE HEADERS</param>
-        /// <param name="deletedItemString">REMOTE DELETED HEADERS</param>
-        public static async void Sync(string remoteHeaderString, string deletedItemString)
+        /// <param name="parameter">new string[] { remoteHeaderString, deletedItemString }</param>
+        public static async void Sync(object parameter)
         {
+            string[] parameters = (string[])parameter;
+            string remoteHeaderString = parameters[0];
+            string deletedItemString = parameters[1];
             // HEADERS FORMAT:
             // headers%eq![('HID','1555096481'),('HID','1555097171')]!
             // DELETED FORMAT:
