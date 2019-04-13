@@ -490,6 +490,7 @@ namespace pmdbs
                                                         }
                                                     case "RET":
                                                         {
+                                                            // TODO: IMPLEMENT BETTER ERROR HANDLING
                                                             try
                                                             {
                                                                 string mode = decryptedData.Substring(6).Split(';').Where(element => element.Contains("mode")).FirstOrDefault();
@@ -499,6 +500,7 @@ namespace pmdbs
                                                                 }
                                                                 switch (mode.Split('!')[1])
                                                                 {
+                                                                    // TODO: IMPLEMENT RETURN VALUE HANDLING
                                                                     case "INSERT":
                                                                         {
                                                                             break;
