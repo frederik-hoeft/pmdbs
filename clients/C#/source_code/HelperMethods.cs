@@ -249,14 +249,18 @@ namespace pmdbs
                 //ITERATE OVER LOCAL HEADERS
                 for (int j = 0; j < tempLocalHeaders.Count; j++)
                 {
+                    // GET LOCAL HID AND TIMESTAMPS
                     string localHid = tempLocalHeaders[j][0];
                     int localTimestamp = Convert.ToInt32(tempLocalHeaders[j][1]);
+                    // FIND MATCHING REMOTE AND LOCAL HIDS
                     if (remoteHid.Equals(localHid))
                     {
+                        // GET ALL HIDS WHERE THE REMOTE HID IS NEWER
                         if (remoteTimestamp > localTimestamp)
                         {
                             accountsToGet.Add(remoteHid);
                         }
+                        // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
                         else if(remoteTimestamp != localTimestamp)
                         {
                             // UPDATE SERVER
@@ -265,6 +269,7 @@ namespace pmdbs
                             List<string> account = await GetAccount;
                             NetworkAdapter.MethodProvider.Update(account);
                         }
+                        // REMOVE THEM FROM THE LISTS
                         localHeaders.Remove(tempLocalHeaders[j]);
                         remoteHeaders.Remove(tempRemoteHeaders[i]);
                     }
@@ -288,7 +293,10 @@ namespace pmdbs
                 }
             }
             // DELETE ON SERVER
-            NetworkAdapter.MethodProvider.Delete(accountsToDelete);
+            if (accountsToDelete.Count > 0)
+            {
+                NetworkAdapter.MethodProvider.Delete(accountsToDelete);
+            }
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
             {
@@ -299,7 +307,10 @@ namespace pmdbs
                 NetworkAdapter.MethodProvider.Insert(account);
             }
             // DOWNLOAD FROM SERVER
-            NetworkAdapter.MethodProvider.Select(accountsToGet);
+            if (accountsToGet.Count > 0)
+            {
+                NetworkAdapter.MethodProvider.Select(accountsToGet);
+            }
         }
     }
 }
