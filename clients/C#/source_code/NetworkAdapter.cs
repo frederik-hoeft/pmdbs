@@ -58,9 +58,14 @@ namespace pmdbs
                 }
                 Network.SendEncrypted("REQDEL" + hidsFormatted);
             }
-            public static void Select(string hid)
+            public static void Select(List<string> hids)
             {
-
+                string hidsFormatted = "";
+                for (int i = 0; i < hids.Count; i++)
+                {
+                    hidsFormatted += hids[i] + ";";
+                }
+                Network.SendEncrypted("REQSEL" + hidsFormatted);
             }
         }
         public struct CommandInterpreter

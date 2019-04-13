@@ -219,6 +219,7 @@ namespace pmdbs
             // deleted%eq![('HID'),('HID')]!
             string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
             string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+            // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
             for (int i = 0; i < deletedItems.Length; i++)
             {
                 Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
@@ -227,19 +228,25 @@ namespace pmdbs
             string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
             string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
             List<List<string>> remoteHeaders = new List<List<string>>();
+            // APPEND REMOTE HEADERS TO LIST
             for (int i = 0; i < splittedRemoteHeader.Length; i++)
             {
                 remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" },StringSplitOptions.RemoveEmptyEntries).ToList());
             }
+            // GET LOCAL HEADERS
             Task<List<List<string>>> localHeaderTask = DataBaseHelper.GetDataAs2DList("SELECT D_hid, D_datetime, D_id FROM Tbl_data;", 3);
 
             List<List<string>> localHeaders = await localHeaderTask;
             List<List<string>> tempRemoteHeaders = remoteHeaders;
+            List<string> accountsToGet = new List<string>();
+            // ITERATE OVER REMOTE HEADERS
             for (int i = 0; i < tempRemoteHeaders.Count; i++)
             {
+                // GET REMOTE HID AND TIMESTAMP
                 string remoteHid = tempRemoteHeaders[i][0];
                 int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
                 List<List<string>> tempLocalHeaders = localHeaders;
+                //ITERATE OVER LOCAL HEADERS
                 for (int j = 0; j < tempLocalHeaders.Count; j++)
                 {
                     string localHid = tempLocalHeaders[j][0];
@@ -248,7 +255,7 @@ namespace pmdbs
                     {
                         if (remoteTimestamp > localTimestamp)
                         {
-                            // TODO: FETCH LATEST DATA FROM SERVER
+                            accountsToGet.Add(remoteHid);
                         }
                         else if(remoteTimestamp != localTimestamp)
                         {
@@ -277,7 +284,7 @@ namespace pmdbs
                 }
                 else
                 {
-                    // TODO: DOWNLOAD FROM SERVER
+                    accountsToGet.Add(hid);
                 }
             }
             // DELETE ON SERVER
@@ -291,6 +298,8 @@ namespace pmdbs
                 // UPLOAD DATA
                 NetworkAdapter.MethodProvider.Insert(account);
             }
+            // DOWNLOAD FROM SERVER
+            NetworkAdapter.MethodProvider.Select(accountsToGet);
         }
     }
 }
