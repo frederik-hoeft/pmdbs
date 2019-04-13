@@ -263,15 +263,27 @@ namespace pmdbs
             for (int i = 0; i < remoteHeaders.Count; i++)
             {
                 string hid = remoteHeaders[i][0];
-                // TODO: CHECK IF HID IS IN LOCAL Tbl_delete
-                // TODO: DOWNLOAD DATA WHERE HID = remoteHeaders[i][0]
+                Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList("SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"" + hid + "\" LIMIT 1);", 1);
+                List<string> TaskCheckExistsResult = await TaskCheckExists;
+                bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
+                if (isDeleted)
+                {
+                    // TODO: DELETE ON SERVER
+                }
+                else
+                {
+                    // TODO: DOWNLOAD FROM SERVER
+                }
             }
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
             {
-                // TODO: UPLOAD DATA AND SET LOCAL HID  TO RETURNED HID
+                string id = localHeaders[i][2];
+                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                List<string> account = await GetAccount;
+                // UPLOAD DATA
+                NetworkAdapter.MethodProvider.Insert(account);
             }
-
         }
     }
 }
