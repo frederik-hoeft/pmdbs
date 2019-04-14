@@ -1166,13 +1166,21 @@ namespace pmdbs
             {
                 case "ACTIVATE_ACCOUNT":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", "activateaccount -c PM-" + code);
-                        NetworkAdapter.Task.Create()
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", "activateaccount -u " + GlobalVarPool.username + " -c PM-" + code);
+                        NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGGED_OUT", "logout");
+                        NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                        break;
+                    }
+                case "CONFIRM_NEW_DEVICE":
+                    {
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword + " -c PM-" + code);
+
+                        ;
                         break;
                     }
             }
-            string command = GlobalVarPool.promptCommand + " -c PM-" + code;
-            NetworkAdapter.CommandInterpreter.Parse(command);
+            NetworkAdapter.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
         }
         #endregion
@@ -1210,6 +1218,7 @@ namespace pmdbs
                 isIP = true;
                 GlobalVarPool.REMOTE_ADDRESS = ip;
             }
+            GlobalVarPool.username = username;
             try
             {
                 if (!isIP)
