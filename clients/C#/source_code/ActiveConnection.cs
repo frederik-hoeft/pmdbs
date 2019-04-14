@@ -524,7 +524,7 @@ namespace pmdbs
                                                                     // TODO: IMPLEMENT RETURN VALUE HANDLING
                                                                     case "INSERT":
                                                                         {
-                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
                                                                             t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
                                                                             break;
                                                                         }
@@ -634,7 +634,7 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "SEND_VERIFICATION_ACTIVATE_ACCOUNT";
+                                                                        GlobalVarPool.promptCommand = "ACTIVATE_ACCOUNT";
                                                                         HelperMethods.Prompt("Confirm your account", "Please verify your email address.");
                                                                         break;
                                                                     }
