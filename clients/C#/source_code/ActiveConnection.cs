@@ -618,9 +618,14 @@ namespace pmdbs
                                                             {
                                                                 case "LOGIN_SUCCESSFUL":
                                                                     {
-                                                                        
-                                                                        string previousUser = GlobalVarPool.currentUser;
-                                                                        GlobalVarPool.currentUser = "<" + GlobalVarPool.username + "@" + GlobalVarPool.serverName + ">";
+                                                                        if (!GlobalVarPool.wasOnline)
+                                                                        {
+                                                                            new Thread(async delegate ()
+                                                                            {
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_data SET U_wasOnline = 1;");
+                                                                                GlobalVarPool.wasOnline = true;
+                                                                            }).Start();
+                                                                        }
                                                                         GlobalVarPool.isUser = true;
                                                                         HelperMethods.InvokeOutputLabel("Successfully logged in as " + GlobalVarPool.username + "!");
                                                                         CustomException.ThrowNew.NotImplementedException("Wow it actually worked \\(^_^)/");
@@ -673,6 +678,13 @@ namespace pmdbs
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
                                                                     {
+                                                                        if (!GlobalVarPool.name.Equals("User"))
+                                                                        {
+                                                                            new Thread(async delegate ()
+                                                                            {
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + GlobalVarPool.name + "\";");
+                                                                            }).Start();
+                                                                        }
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":

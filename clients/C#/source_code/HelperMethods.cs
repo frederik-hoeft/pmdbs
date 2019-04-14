@@ -454,7 +454,7 @@ namespace pmdbs
             }
             GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
-                DataSyncAdvancedImageButton.Enabled = false;
+                GlobalVarPool.SyncButton.Enabled = true;
                 Form1.InvokeReload();
             });
         }
