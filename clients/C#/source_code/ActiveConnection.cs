@@ -386,7 +386,7 @@ namespace pmdbs
                                         {
                                             if (decryptedData.Equals(GlobalVarPool.automatedTaskCondition))
                                             {
-                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                NetworkAdapter.CommandInterpreter.Parse(GlobalVarPool.automatedTask);
                                                 GlobalVarPool.search = false;
                                             }
                                         }
@@ -394,7 +394,7 @@ namespace pmdbs
                                         {
                                             if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
                                             {
-                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                NetworkAdapter.CommandInterpreter.Parse(GlobalVarPool.automatedTask);
                                                 GlobalVarPool.search = false;
                                             }
                                         }
@@ -402,7 +402,7 @@ namespace pmdbs
                                         {
                                             if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
                                             {
-                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
+                                                NetworkAdapter.CommandInterpreter.Parse(GlobalVarPool.automatedTask);
                                                 GlobalVarPool.search = false;
                                             }
                                         }
@@ -422,11 +422,11 @@ namespace pmdbs
                                                     HelperMethods.InvokeOutputLabel("Encrypted connection established!");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
+                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
                                                     }
                                                     else
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.CheckCookie(new string[] { "checkcookie" }, true);
+                                                        NetworkAdapter.CommandInterpreter.Parse("checkcookie");
                                                     }
                                                     break;
                                                 }
@@ -505,6 +505,8 @@ namespace pmdbs
                                                                     // TODO: IMPLEMENT RETURN VALUE HANDLING
                                                                     case "INSERT":
                                                                         {
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
+                                                                            t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
                                                                             break;
                                                                         }
                                                                     case "FETCH_ALL":
@@ -515,7 +517,7 @@ namespace pmdbs
                                                                         {
                                                                             string remoteHeaderString = content.Split(';').Where(element => element.Contains("headers")).FirstOrDefault();
                                                                             string deletedItemString = content.Split(';').Where(element => element.Contains("deleted")).FirstOrDefault();
-                                                                            object parameters = (object)new string[] { remoteHeaderString, deletedItemString };
+                                                                            object parameters = new string[] { remoteHeaderString, deletedItemString };
                                                                             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
                                                                             t.Start(parameters);
                                                                             break;
@@ -647,7 +649,7 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
                                                                     {
-                                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
+                                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
                                                                         break;
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
@@ -690,6 +692,11 @@ namespace pmdbs
                                                                     }
                                                                 case "PASSWORD_CHANGED":
                                                                     {
+                                                                        break;
+                                                                    }
+                                                                case "SELECT_FINISHED":
+                                                                    {
+
                                                                         break;
                                                                     }
                                                                 case "":
