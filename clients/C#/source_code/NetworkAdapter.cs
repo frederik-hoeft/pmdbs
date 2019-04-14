@@ -44,6 +44,14 @@ namespace pmdbs
             {
                 taskList.Remove(task);
             }
+            public static void Clear()
+            {
+                taskList.Clear();
+            }
+            public static List<Task> GetAll()
+            {
+                return taskList;
+            }
         }
         public partial class Task
         {
@@ -376,7 +384,6 @@ namespace pmdbs
                 }
             }
         }
-
         public struct MethodProvider
         {
             /// <summary>

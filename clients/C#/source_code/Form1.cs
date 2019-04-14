@@ -1160,6 +1160,17 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
             }
+            List<NetworkAdapter.Task> scheduledTasks = NetworkAdapter.Tasks.GetAll();
+            NetworkAdapter.Tasks.Clear();
+            switch (GlobalVarPool.promptCommand)
+            {
+                case "ACTIVATE_ACCOUNT":
+                    {
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", "activateaccount -c PM-" + code);
+                        NetworkAdapter.Task.Create()
+                        break;
+                    }
+            }
             string command = GlobalVarPool.promptCommand + " -c PM-" + code;
             NetworkAdapter.CommandInterpreter.Parse(command);
             SettingsPanelPromptMain.SendToBack();
