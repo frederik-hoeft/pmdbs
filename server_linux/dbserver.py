@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.4-5b.19"
+VERSION = "0.4-6b.19"
 BUILD = "development"
-DATE = "Apr 13 2019"
-TIME = "21:40:49"
+DATE = "Apr 14 2019"
+TIME = "18:53:17"
 
 
 ################################################################################
@@ -1263,7 +1263,7 @@ class Management():
 		if credentialsValid == 0:
 			# CREDENTIAL CHECK FAILED
 			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
-			returnData = "INFRETCREDENTIAL_CHECK_FAILED"
+			returnData = "INFRETmsg%eq!CREDENTIAL_CHECK_FAILED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK FAILED    ---> " + clientAddress)
@@ -3882,7 +3882,7 @@ class Management():
 		# CHECK IF USER IS LOGGED IN ALREADY
 		for client in Server.authorizedClients:
 			if clientSocket in client:
-				returnData = "INFRETALREADY_LOGGED_IN"
+				returnData = "INFRETmsg%eq!ALREADY_LOGGED_IN!;"
 				# SEND DATA ENCRYPTED TO CLIENT
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
 				PrintSendToAdmin("SERVER ---> ALREADY LOGGED IN          ---> " + clientAddress)
@@ -4068,7 +4068,7 @@ class Management():
 		# CREDENTIAL CHECK PASSED
 		if isVerified == 0:
 			PrintSendToAdmin("SERVER ---> ACCOUT NOT VERIFIED        ---> " + clientAddress)
-			returnData = "INFERRACCOUNT_NOT_VERIFIED"
+			returnData = "INFERRmsg%eq!ACCOUNT_NOT_VERIFIED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			return
