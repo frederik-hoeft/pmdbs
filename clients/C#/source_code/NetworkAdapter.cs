@@ -52,6 +52,14 @@ namespace pmdbs
             {
                 return taskList;
             }
+            public static void RemoveCurrent()
+            {
+                try
+                {
+                    taskList.RemoveAt(0);
+                }
+                catch { }
+            }
         }
         public partial class Task
         {

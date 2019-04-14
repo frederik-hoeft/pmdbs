@@ -48,6 +48,9 @@ namespace pmdbs
         public static System.Windows.Forms.Label promptAction = null;
         public static System.Windows.Forms.Panel promptPanel = null;
 
+        // SETTINGS
+        public static bool wasOnline = false;
+
         // GLOBAL VARIABLES
         public static string name = "User";
         public static string currentUser = string.Empty;
@@ -58,13 +61,13 @@ namespace pmdbs
         public static List<string> selectedAccounts = new List<string>();
         public static System.Data.DataTable UserData = new System.Data.DataTable();
         public static Form1 Form1 = null;
+        public static AdvancedImageButton SyncButton = null;
 
         public static bool commandError = false;
         public static bool connected = false;
         public static bool bootCompleted = false;
         public static bool isRoot = false;
         public static bool isUser = false;
-        public static bool wasOnline = false;
         public static bool debugging = false;
         public static bool threadKilled = false;
         public static bool search = false;
