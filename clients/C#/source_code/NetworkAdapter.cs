@@ -10,15 +10,37 @@ namespace pmdbs
 {
     public static class NetworkAdapter
     {
+        public static readonly List<NetworkAdapter.Task> Tasks = new List<Task>();
         public partial class Task
         {
-            public Task()
+            private readonly string _automatedTask = string.Empty;
+            private readonly string _automatedTaskCondition = string.Empty;
+            private readonly SearchCondition _searchCondition = SearchCondition.Match;
+            private Task()
             {
 
             }
-            public Task()
+            private Task(SearchCondition searchCondition, string automatedTaskCondition, string automatedTask)
             {
-
+                _automatedTask = automatedTask;
+                _automatedTaskCondition = automatedTaskCondition;
+                _searchCondition = searchCondition;
+            }
+            public SearchCondition searchCondition
+            {
+                get { return _searchCondition; }
+            }
+            public string automatedTask
+            {
+                get { return _automatedTask; }
+            }
+            public string automatedTaskCondition
+            {
+                get { return _automatedTaskCondition; }
+            }
+            public static Task Create(SearchCondition searchCondition, string automatedTaskCondition, string automatedTask)
+            {
+                return new Task(searchCondition, automatedTaskCondition, automatedTask);
             }
         }
         public struct CommandInterpreter
@@ -361,7 +383,10 @@ namespace pmdbs
                 Network.SendEncrypted("REQSEL" + hidsFormatted);
             }
 
-            public static void Execute(List<string, int>)
+            public static void Execute(List<NetworkAdapter.Task> tasks)
+            {
+
+            }
         }
         private struct Commands
         {
