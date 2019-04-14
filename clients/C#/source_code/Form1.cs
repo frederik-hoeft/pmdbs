@@ -672,15 +672,23 @@ namespace pmdbs
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            if (!GlobalVarPool.wasOnline)
+            {
+                DataTableLayoutPanelMain.SuspendLayout();
+                SettingsTableLayoutPanelMain.BringToFront();
+                SettingsFlowLayoutPanelRegister.BringToFront();
+                return;
+            }
             if (!GlobalVarPool.connected)
             {
-
+                NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
             }
             if (!GlobalVarPool.isUser)
             {
-
+                NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
             }
-            NetworkAdapter.CommandInterpreter.Parse("fetchsync");
+            NetworkAdapter.Task.Create(SearchCondition.Contains, "FETCH_SYNC", "fetchsync");
+            DataSyncAdvancedImageButton.Enabled = false;
         }
 
         private void DataDetailsEntryUsername_Click(object sender, EventArgs e)
@@ -1175,8 +1183,10 @@ namespace pmdbs
                 case "CONFIRM_NEW_DEVICE":
                     {
                         NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword + " -c PM-" + code);
-
-                        ;
+                        for (int i = 1; i < scheduledTasks.Count; i++)
+                        {
+                            NetworkAdapter.Tasks.Add(scheduledTasks[i]);
+                        }
                         break;
                     }
             }
