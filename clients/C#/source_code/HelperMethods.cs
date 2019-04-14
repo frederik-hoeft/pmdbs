@@ -11,6 +11,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Data;
 
 namespace pmdbs
 {
@@ -313,6 +314,173 @@ namespace pmdbs
             {
                 NetworkAdapter.MethodProvider.Select(accountsToGet);
             }
+            else
+            {
+                // TODO: OUTPUT TO GUI "SYNC FINISHED" OR SOMETHING LIKE THIS
+            }
+        }
+
+        public static async void FinishSync()
+        {
+            for (int i = 0; i < GlobalVarPool.selectedAccounts.Count; i++)
+            {
+                string[] account = new string[] { "host", "url", "uname", "password", "email", "notes", "icon", "hid", "datetime" };
+                string[] values = new string[] { null, null, null, null, null, null, null, null, null };
+                string[] accountParts = GlobalVarPool.selectedAccounts[i].Split(';');
+                try
+                {
+                    for (int j = 0; j < accountParts.Length; j++)
+                    {
+                        for (int k = 0; k < account.Length; k++)
+                        {
+                            if (accountParts[j].Contains(account[k]))
+                            {
+                                values.SetValue(accountParts[j].Split('!')[1], k);
+                                break; ;
+                            }
+                        }
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                }
+                GlobalVarPool.selectedAccounts.Clear();
+                if (values.Contains(null))
+                {
+                    CustomException.ThrowNew.GenericException("NULL value in sync values!");
+                    continue;
+                }
+                Task<List<string>> CheckHidExistsTask = DataBaseHelper.GetDataAsList("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_hid = \"" + values[7] + "\");",1);
+                List<string> hidExists = await CheckHidExistsTask;
+                if (Convert.ToBoolean(Convert.ToInt32(hidExists[0])))
+                {
+                    string query = "UPDATE Tbl_data SET ";
+                    bool isFirstValue = true;
+                    try
+                    {
+                        for (int j = 0; j < account.Length; j++)
+                        {
+                            if (isFirstValue)
+                            {
+                                query += "D_" + account[j] + " = \"" + values[j] + "\"";
+                                isFirstValue = false;
+                            }
+                            else
+                            {
+                                query += ", D_" + account[j] + " = \"" + values[j] + "\"";
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                    }
+                    query += " WHERE D_hid = \"" + values[7] + "\";";
+                    Task Update = DataBaseHelper.ModifyData(query);
+                    await Task.WhenAny(Update);
+                }
+                else
+                {
+                    string query = "INSERT INTO Tbl_data (";
+                    bool isFirst = true;
+                    try
+                    {
+                        for (int j = 0; j < account.Length; j++)
+                        {
+                            if (isFirst)
+                            {
+                                query += "D_" + account[j];
+                                isFirst = false;
+                            }
+                            else
+                            {
+                                query += ", D_" + account[j];
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                    }
+                    query += ") VALUES (";
+                    isFirst = true;
+                    try
+                    {
+                        for (int j = 0; j < values.Length; j++)
+                        {
+                            if (isFirst)
+                            {
+                                query += "\"" + values[j] + "\"";
+                                isFirst = false;
+                            }
+                            else
+                            {
+                                query += ", \"" + values[j] + "\"";
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                    }
+                    query += ");";
+                    Task Insert = DataBaseHelper.ModifyData(query);
+                    await Task.WhenAny(Insert);
+                }
+            }
+            // TODO: INVOKE UI
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            GlobalVarPool.UserData = await GetData;
+            int Columns = GlobalVarPool.UserData.Columns.Count;
+            int RowCounter = 0;
+            int Fields = (Columns - 3) * GlobalVarPool.UserData.Rows.Count;
+            foreach (DataRow Row in GlobalVarPool.UserData.Rows)
+            {
+                for (int i = 3; i < Columns; i++)
+                {
+                    string FieldValue = Row[i].ToString();
+                    if (!FieldValue.Equals("\x01"))
+                    {
+                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
+                        Row.BeginEdit();
+                        Row.SetField(i, decryptedData);
+                        Row.EndEdit();
+                    }
+                    double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
+                    double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
+                }
+                RowCounter++;
+            }
+            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                Form1.InvokeReload();
+            });
+        }
+
+        public static async void SetHid(object parameter)
+        {
+            string[] parameters = (string[])parameter;
+            string localID = string.Empty;
+            string hid = string.Empty;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].Contains("local_id"))
+                {
+                    localID = parameters[i].Split('!')[1];
+                }
+                else if (parameters[i].Contains("hashed_id"))
+                {
+                    hid = parameters[i].Split('!')[1];
+                }
+            }
+            if (new string[] { localID, hid }.Contains(string.Empty))
+            {
+                CustomException.ThrowNew.GenericException("Missing parameter in SetHid().");
+                return;
+            }
+            Task Update = DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_hid = \"" + hid + "\" WHERE D_id = " + localID + ";");
+            await Task.WhenAny(Update);
         }
     }
 }

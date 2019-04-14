@@ -25,6 +25,7 @@ namespace pmdbs
     
     public partial class Form1 : MetroFramework.Forms.MetroForm
     {
+        
         #region DECLARATIONS
         private List<ListEntry> entryList = new List<ListEntry>();
         private char[] alphabet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -34,16 +35,17 @@ namespace pmdbs
         private bool GuiLoaded = false;
         private Size MaxSize;
         private Size MinSize;
-        private string LocalAESkey;
-        private string GlobalAESkey;
         private string NickName;
-        private DataTable UserData;
         private string DataDetailsID;
         private IconData AddIcon = new IconData();
         private int DataPerPage = 25;
         private int CurrentPage = 0;
         private int CurrentContentCount = 0;
         int MaxPages = 1;
+        public static void InvokeReload()
+        {
+            GlobalVarPool.Form1.RefreshUserData(0);
+        }
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -229,7 +231,7 @@ namespace pmdbs
                 style |= NativeWinAPI.WS_EX_COMPOSITED;
                 NativeWinAPI.SetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE, style);
             }
-
+            GlobalVarPool.Form1 = this;
             InitializeTransparency();
             #region INIT
             this.MaximizeBox = false;
@@ -360,8 +362,8 @@ namespace pmdbs
             {
                 page = 0;
             }
-            MaxPages = Convert.ToInt32(Math.Floor((double)UserData.Rows.Count / DataPerPage));
-            if (UserData.Rows.Count % DataPerPage != 0)
+            MaxPages = Convert.ToInt32(Math.Floor((double)GlobalVarPool.UserData.Rows.Count / DataPerPage));
+            if (GlobalVarPool.UserData.Rows.Count % DataPerPage != 0)
             {
                 MaxPages++;
             }
@@ -387,22 +389,22 @@ namespace pmdbs
             {
                 entryList[i].Hide();
             }
-            for (int i = CurrentPage * DataPerPage; (CurrentPage * DataPerPage  + DataPerPage >= UserData.Rows.Count) ? i < UserData.Rows.Count : i < CurrentPage * DataPerPage + DataPerPage; i++)
+            for (int i = CurrentPage * DataPerPage; ((CurrentPage * DataPerPage) + DataPerPage >= GlobalVarPool.UserData.Rows.Count) ? i < GlobalVarPool.UserData.Rows.Count : i < (CurrentPage * DataPerPage) + DataPerPage; i++)
             {
-                int ID = Convert.ToInt32(UserData.Rows[i]["0"]);
-                string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(UserData.Rows[i]["2"].ToString())).ToString("u");
+                int ID = Convert.ToInt32(GlobalVarPool.UserData.Rows[i]["0"]);
+                string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(GlobalVarPool.UserData.Rows[i]["2"].ToString())).ToString("u");
                 strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
                 ListEntry entry = entryList[i % DataPerPage];
-                byte[] iconBytes = Convert.FromBase64String(UserData.Rows[i]["9"].ToString());
+                byte[] iconBytes = Convert.FromBase64String(GlobalVarPool.UserData.Rows[i]["9"].ToString());
                 using (MemoryStream ms = new MemoryStream(iconBytes, 0, iconBytes.Length))
                 {
                     Image icon = Image.FromStream(ms, true);
                     entry.FavIcon = icon.GetThumbnailImage(350, 350, null, new IntPtr());
                     icon.Dispose();
                 }
-                entry.HostName = UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : UserData.Rows[i]["3"].ToString();
+                entry.HostName = GlobalVarPool.UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : GlobalVarPool.UserData.Rows[i]["3"].ToString();
                 entry.TimeStamp = strTimeStamp;
-                entry.UserName = UserData.Rows[i]["4"].ToString();
+                entry.UserName = GlobalVarPool.UserData.Rows[i]["4"].ToString();
                 entry.id = ID;
                 entry.Show();
                 CurrentContentCount++;
@@ -417,7 +419,7 @@ namespace pmdbs
             DataPanelDetails.BringToFront();
             ListEntry SenderObject = (ListEntry)sender;
             int index = SenderObject.id;
-            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(index.ToString()));
+            DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(index.ToString()));
             UpdateDetailsWindow(LinkedRow);
         }
 
@@ -489,7 +491,7 @@ namespace pmdbs
                 }
                 else
                 {
-                    Values[i] = CryptoHelper.AESEncrypt(Values[i], LocalAESkey);
+                    Values[i] = CryptoHelper.AESEncrypt(Values[i], GlobalVarPool.localAESkey);
                 }
             }
             string Query = "UPDATE Tbl_data SET D_datetime = \"" + DateTime + "\"";
@@ -500,7 +502,7 @@ namespace pmdbs
             Query += " WHERE D_id = " + DataDetailsID + ";";
             Task UpdateData = DataBaseHelper.ModifyData(Query);
             await Task.WhenAll(UpdateData);
-            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
+            DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string oldUrl = LinkedRow["6"].ToString();
             if (!Website.Equals(oldUrl))
             {
@@ -549,7 +551,7 @@ namespace pmdbs
                         }
                     }
                     LinkedRow["9"] = favIcon;
-                    string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, LocalAESkey);
+                    string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
                     Query = "UPDATE Tbl_data SET D_icon = \"" + encryptedFavIcon + "\" WHERE D_id = " + DataDetailsID + ";";
                     Task SetFavIcon = DataBaseHelper.ModifyData(Query);
                     await Task.WhenAll(SetFavIcon);
@@ -584,7 +586,7 @@ namespace pmdbs
 
         private void DataEditAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
+            DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<String>("0").Equals(DataDetailsID));
             DataEditEditFieldHostname.TextTextBox = LinkedRow["3"].ToString();
             DataEditEditFieldUsername.TextTextBox = LinkedRow["4"].ToString().Equals("\x01") ? "" : LinkedRow["4"].ToString();
             DataEditEditFieldPassword.TextTextBox = LinkedRow["5"].ToString().Equals("\x01") ? "" : LinkedRow["5"].ToString();
@@ -639,7 +641,7 @@ namespace pmdbs
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            DataRow LinkedRow = UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
+            DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string hid = LinkedRow["1"].ToString();
             if (!hid.Equals("EMPTY"))
             {
@@ -648,7 +650,7 @@ namespace pmdbs
             }
             Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             await Task.WhenAll(DeleteItem);
-            UserData.Rows.Remove(LinkedRow);
+            GlobalVarPool.UserData.Rows.Remove(LinkedRow);
             RefreshUserData(CurrentPage);
             DataPanelDetails.SuspendLayout();
             DataPanelNoSel.BringToFront();
@@ -670,7 +672,15 @@ namespace pmdbs
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            if (!GlobalVarPool.connected)
+            {
 
+            }
+            if (!GlobalVarPool.isUser)
+            {
+
+            }
+            NetworkAdapter.CommandInterpreter.Parse("fetchsync");
         }
 
         private void DataDetailsEntryUsername_Click(object sender, EventArgs e)
@@ -826,7 +836,7 @@ namespace pmdbs
                     }
                     else
                     {
-                        Values[i] = CryptoHelper.AESEncrypt(Values[i], LocalAESkey);
+                        Values[i] = CryptoHelper.AESEncrypt(Values[i], GlobalVarPool.localAESkey);
                     }
                 }
                 string Query = "INSERT INTO Tbl_data (D_datetime";
@@ -842,12 +852,12 @@ namespace pmdbs
                 Query += ");";
                 Task InsertData = DataBaseHelper.ModifyData(Query);
                 await Task.WhenAll(InsertData);
-                if (UserData == null)
+                if (GlobalVarPool.UserData == null)
                 {
-                    UserData = new DataTable();
+                    GlobalVarPool.UserData = new DataTable();
                     for (int i = 0; i < (int)ColumnCount.Tbl_data; i++)
                     {
-                        UserData.Columns.Add(i.ToString(), typeof(string));
+                        GlobalVarPool.UserData.Columns.Add(i.ToString(), typeof(string));
                     }
                 }
                 //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
@@ -855,7 +865,7 @@ namespace pmdbs
                 List<string> IdList = await GetId;
                 Invoke((MethodInvoker)delegate
                 {
-                    DataRow NewRow = UserData.Rows.Add();
+                    DataRow NewRow = GlobalVarPool.UserData.Rows.Add();
                     NewRow["0"] = IdList[0];
                     NewRow["1"] = "EMPTY";
                     NewRow["2"] = DateTime;
@@ -965,22 +975,22 @@ namespace pmdbs
                 LoginPictureBoxLoadingMain.SuspendLayout();
                 return;
             }
-            LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
+            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
-            UserData = await GetData;
-            int Columns = UserData.Columns.Count;
+            GlobalVarPool.UserData = await GetData;
+            int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
-            int Fields = (Columns - 3) * UserData.Rows.Count;
-            foreach (DataRow Row in UserData.Rows)
+            int Fields = (Columns - 3) * GlobalVarPool.UserData.Rows.Count;
+            foreach (DataRow Row in GlobalVarPool.UserData.Rows)
             {
                 for (int i = 3; i < Columns; i++)
                 {
                     string FieldValue = Row[i].ToString();
                     if (!FieldValue.Equals("\x01"))
                     {
-                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, LocalAESkey);
+                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
                         Row.BeginEdit();
                         Row.SetField(i, decryptedData);
                         Row.EndEdit();
@@ -1097,8 +1107,8 @@ namespace pmdbs
             Task SetupDatabase = DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
             await Task.WhenAll(SetupDatabase);
             MasterPassword = Stage1PasswordHash;
-            LocalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
-            GlobalAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginPictureBoxOnlineMain.Dispose();
             LoginPictureBoxOfflineMain.Dispose();
             LoginPictureBoxRegisterMain.Dispose();
@@ -1151,7 +1161,7 @@ namespace pmdbs
                 return;
             }
             string command = GlobalVarPool.promptCommand + " -c PM-" + code;
-            IOAdapter.Parse(command);
+            NetworkAdapter.CommandInterpreter.Parse(command);
             SettingsPanelPromptMain.SendToBack();
         }
         #endregion
@@ -1207,7 +1217,7 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    IOAdapter.Parse("login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                    NetworkAdapter.CommandInterpreter.Parse("login -u " + username + " -p " + GlobalVarPool.onlinePassword);
                 }
                 else
                 {
@@ -1308,7 +1318,7 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    IOAdapter.Parse("register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                    NetworkAdapter.CommandInterpreter.Parse("register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
                 }
                 else
                 {
@@ -1331,7 +1341,6 @@ namespace pmdbs
         #endregion
 
         #endregion
-
 
     }
 }
