@@ -165,61 +165,7 @@ namespace pmdbs
             B.Dispose();
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
-        {
-
-            if (GuiLoaded)
-            {
-                return;
-            }
-            this.Hide();
-
-            ThreadPool.QueueUserWorkItem((x) =>
-            {
-                using (var splashForm = new SplashForm())
-                {
-                    splashForm.Show();
-                    while (!GuiLoaded)
-                        Application.DoEvents();
-                    splashForm.Close();
-                    this.Invoke((MethodInvoker)delegate {
-                        // this code runs on the UI thread!
-                        this.Show();
-                        this.Activate();
-                    });
-
-                }
-            });
-            Task<List<String>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
-            List<String> Result = await Initialize;
-            try
-            {
-                if (Result[0].Equals("1"))
-                {
-                    GlobalVarPool.wasOnline = true;
-                    //TODO: Check for Password Changes
-                }
-                NickName = Result[1];
-                LoginPictureBoxOnlineMain.SuspendLayout();
-                LoginPictureBoxOfflineMain.BringToFront();
-                LoginPictureBoxRegisterMain.SuspendLayout();
-                LoginPictureBoxLoadingMain.SuspendLayout();
-                if (!NickName.Equals(GlobalVarPool.name))
-                {
-                    GlobalVarPool.name = NickName;
-                    LoginLabelOfflineUsername.Text = NickName;
-                }
-            }
-            catch
-            {
-                LoginPictureBoxOnlineMain.SuspendLayout();
-                LoginPictureBoxOfflineMain.SuspendLayout();
-                LoginPictureBoxRegisterMain.BringToFront();
-                LoginPictureBoxLoadingMain.SuspendLayout();
-            }
-            Thread.Sleep(1500); // SHOW SPLASHSCREEN
-            GuiLoaded = true;
-        }
+        
         #endregion
         public Form1()
         {
@@ -276,6 +222,63 @@ namespace pmdbs
             #endregion
             #endregion
         }
+
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+
+            if (GuiLoaded)
+            {
+                return;
+            }
+            this.Hide();
+
+            ThreadPool.QueueUserWorkItem((x) =>
+            {
+                using (var splashForm = new SplashForm())
+                {
+                    splashForm.Show();
+                    while (!GuiLoaded)
+                        Application.DoEvents();
+                    splashForm.Close();
+                    this.Invoke((MethodInvoker)delegate {
+                        // this code runs on the UI thread!
+                        this.Show();
+                        this.Activate();
+                    });
+
+                }
+            });
+            Task<List<String>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
+            List<String> Result = await Initialize;
+            try
+            {
+                if (Result[0].Equals("1"))
+                {
+                    GlobalVarPool.wasOnline = true;
+                    //TODO: Check for Password Changes
+                }
+                NickName = Result[1];
+                LoginPictureBoxOnlineMain.SuspendLayout();
+                LoginPictureBoxOfflineMain.BringToFront();
+                LoginPictureBoxRegisterMain.SuspendLayout();
+                LoginPictureBoxLoadingMain.SuspendLayout();
+                if (!NickName.Equals(GlobalVarPool.name))
+                {
+                    GlobalVarPool.name = NickName;
+                    LoginLabelOfflineUsername.Text = NickName;
+                }
+            }
+            catch
+            {
+                LoginPictureBoxOnlineMain.SuspendLayout();
+                LoginPictureBoxOfflineMain.SuspendLayout();
+                LoginPictureBoxRegisterMain.BringToFront();
+                LoginPictureBoxLoadingMain.SuspendLayout();
+            }
+            Thread.Sleep(1500); // SHOW SPLASHSCREEN
+            GuiLoaded = true;
+        }
+
         #region Menu
 
         private void MenuMenuEntryHome_Click(object sender, EventArgs e)
