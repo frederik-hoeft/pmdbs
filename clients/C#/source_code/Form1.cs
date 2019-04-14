@@ -699,6 +699,7 @@ namespace pmdbs
                 NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
             }
             NetworkAdapter.Task.Create(SearchCondition.Contains, "FETCH_SYNC", "fetchsync");
+            NetworkAdapter.Tasks.Execute();
             DataSyncAdvancedImageButton.Enabled = false;
         }
 
@@ -1368,7 +1369,6 @@ namespace pmdbs
             }
         }
         #endregion
-
         #region SettingsOffline
         private void SettingsAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
         {
@@ -1379,7 +1379,6 @@ namespace pmdbs
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
         #endregion
-
         #region SettingsOnline
         #endregion
 
