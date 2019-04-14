@@ -10,7 +10,29 @@ namespace pmdbs
 {
     public static class NetworkAdapter
     {
-        public static readonly List<NetworkAdapter.Task> Tasks = new List<Task>();
+        public sealed class Tasks
+        {
+            private static readonly List<NetworkAdapter.Task> taskList = new List<Task>();
+            public static Task GetCurrent()
+            {
+                return taskList[0];
+            }
+            public static Task GetCurrentOrDefault()
+            {
+                if (taskList.Count > 0)
+                {
+                    return taskList[0];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            public static bool IsAvailable()
+            {
+                return taskList.Count > 0 ? true : false;
+            }
+        }
         public partial class Task
         {
             private readonly string _automatedTask = string.Empty;
@@ -21,16 +43,17 @@ namespace pmdbs
                 _automatedTask = automatedTask;
                 _automatedTaskCondition = automatedTaskCondition;
                 _searchCondition = searchCondition;
+                Tasks.Add(this);
             }
-            public SearchCondition searchCondition
+            public SearchCondition SearchCondition
             {
                 get { return _searchCondition; }
             }
-            public string automatedTask
+            public string Command
             {
                 get { return _automatedTask; }
             }
-            public string automatedTaskCondition
+            public string FinishedCondition
             {
                 get { return _automatedTaskCondition; }
             }
