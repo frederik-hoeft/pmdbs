@@ -55,13 +55,9 @@ namespace pmdbs
         public static string username = string.Empty;
         public static string email = string.Empty;
         public static string promptCommand = string.Empty;
-        public static string automatedTaskCondition = string.Empty;
-        public static string automatedTask = string.Empty;
-        public static SearchCondition searchCondition = SearchCondition.Match;
         public static List<string> selectedAccounts = new List<string>();
         public static System.Data.DataTable UserData = new System.Data.DataTable();
         public static Form1 Form1 = null;
-        public static List<List<object>> scheduledTasks = new List<List<object>>();
 
         public static bool commandError = false;
         public static bool connected = false;

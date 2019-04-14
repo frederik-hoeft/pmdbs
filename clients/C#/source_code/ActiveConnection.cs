@@ -380,30 +380,31 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
-                                    if (GlobalVarPool.search)
+                                    if (NetworkAdapter.Tasks.Count > 0)
                                     {
-                                        if (GlobalVarPool.searchCondition == SearchCondition.Match)
+                                        NetworkAdapter.Task currentTask = NetworkAdapter.Tasks[0];
+                                        if (currentTask.searchCondition == SearchCondition.Match)
                                         {
-                                            if (decryptedData.Equals(GlobalVarPool.automatedTaskCondition))
+                                            if (decryptedData.Equals(currentTask.automatedTaskCondition))
                                             {
-                                                NetworkAdapter.CommandInterpreter.Parse(GlobalVarPool.automatedTask);
-                                                GlobalVarPool.search = false;
+                                                NetworkAdapter.CommandInterpreter.Parse(currentTask.automatedTask);
+                                                currentTask.Delete();
                                             }
                                         }
-                                        else if (GlobalVarPool.searchCondition == SearchCondition.In)
+                                        else if (currentTask.searchCondition == SearchCondition.In)
                                         {
-                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                                            if (currentTask.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
                                             {
-                                                NetworkAdapter.CommandInterpreter.Parse(GlobalVarPool.automatedTask);
-                                                GlobalVarPool.search = false;
+                                                NetworkAdapter.CommandInterpreter.Parse(currentTask.automatedTask);
+                                                currentTask.Delete();
                                             }
                                         }
                                         else
                                         {
-                                            if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
+                                            if (decryptedData.Contains(currentTask.automatedTaskCondition))
                                             {
-                                                NetworkAdapter.CommandInterpreter.Parse(GlobalVarPool.automatedTask);
-                                                GlobalVarPool.search = false;
+                                                NetworkAdapter.CommandInterpreter.Parse(currentTask.automatedTask);
+                                                currentTask.Delete();
                                             }
                                         }
                                     }

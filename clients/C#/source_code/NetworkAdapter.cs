@@ -16,10 +16,6 @@ namespace pmdbs
             private readonly string _automatedTask = string.Empty;
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly SearchCondition _searchCondition = SearchCondition.Match;
-            private Task()
-            {
-
-            }
             private Task(SearchCondition searchCondition, string automatedTaskCondition, string automatedTask)
             {
                 _automatedTask = automatedTask;
@@ -41,6 +37,10 @@ namespace pmdbs
             public static Task Create(SearchCondition searchCondition, string automatedTaskCondition, string automatedTask)
             {
                 return new Task(searchCondition, automatedTaskCondition, automatedTask);
+            }
+            public void Delete()
+            {
+                Tasks.Remove(this);
             }
         }
         public struct CommandInterpreter
