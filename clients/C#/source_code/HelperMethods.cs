@@ -235,74 +235,78 @@ namespace pmdbs
             Task<List<List<string>>> localHeaderTask = DataBaseHelper.GetDataAs2DList("SELECT D_hid, D_datetime, D_id FROM Tbl_data;", 3);
 
             List<List<string>> localHeaders = await localHeaderTask;
-            string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
-            string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
-            List<List<string>> remoteHeaders = new List<List<string>>();
-            // APPEND REMOTE HEADERS TO LIST
-            for (int i = 0; i < splittedRemoteHeader.Length; i++)
-            {
-                remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" },StringSplitOptions.RemoveEmptyEntries).ToList());
-            }
-            
-            List<List<string>> tempRemoteHeaders = remoteHeaders;
             List<string> accountsToGet = new List<string>();
-            // ITERATE OVER REMOTE HEADERS
-            for (int i = 0; i < tempRemoteHeaders.Count; i++)
+            if (!remoteHeaderString.Equals("headers%eq![]!"))
             {
-                // GET REMOTE HID AND TIMESTAMP
-                string remoteHid = tempRemoteHeaders[i][0];
-                int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
-                List<List<string>> tempLocalHeaders = localHeaders;
-                //ITERATE OVER LOCAL HEADERS
-                for (int j = 0; j < tempLocalHeaders.Count; j++)
+                string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
+                string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+                List<List<string>> remoteHeaders = new List<List<string>>();
+                // APPEND REMOTE HEADERS TO LIST
+                for (int i = 0; i < splittedRemoteHeader.Length; i++)
                 {
-                    // GET LOCAL HID AND TIMESTAMPS
-                    string localHid = tempLocalHeaders[j][0];
-                    int localTimestamp = Convert.ToInt32(tempLocalHeaders[j][1]);
-                    // FIND MATCHING REMOTE AND LOCAL HIDS
-                    if (remoteHid.Equals(localHid))
+                    remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" }, StringSplitOptions.RemoveEmptyEntries).ToList());
+                }
+
+                List<List<string>> tempRemoteHeaders = remoteHeaders;
+                
+                // ITERATE OVER REMOTE HEADERS
+                for (int i = 0; i < tempRemoteHeaders.Count; i++)
+                {
+                    // GET REMOTE HID AND TIMESTAMP
+                    string remoteHid = tempRemoteHeaders[i][0];
+                    int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
+                    List<List<string>> tempLocalHeaders = localHeaders;
+                    //ITERATE OVER LOCAL HEADERS
+                    for (int j = 0; j < tempLocalHeaders.Count; j++)
                     {
-                        // GET ALL HIDS WHERE THE REMOTE HID IS NEWER
-                        if (remoteTimestamp > localTimestamp)
+                        // GET LOCAL HID AND TIMESTAMPS
+                        string localHid = tempLocalHeaders[j][0];
+                        int localTimestamp = Convert.ToInt32(tempLocalHeaders[j][1]);
+                        // FIND MATCHING REMOTE AND LOCAL HIDS
+                        if (remoteHid.Equals(localHid))
                         {
-                            accountsToGet.Add(remoteHid);
+                            // GET ALL HIDS WHERE THE REMOTE HID IS NEWER
+                            if (remoteTimestamp > localTimestamp)
+                            {
+                                accountsToGet.Add(remoteHid);
+                            }
+                            // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
+                            else if (remoteTimestamp != localTimestamp)
+                            {
+                                // UPDATE SERVER
+                                string id = localHeaders[j][2];
+                                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                                List<string> account = await GetAccount;
+                                NetworkAdapter.MethodProvider.Update(account);
+                            }
+                            // REMOVE THEM FROM THE LISTS
+                            localHeaders.Remove(tempLocalHeaders[j]);
+                            remoteHeaders.Remove(tempRemoteHeaders[i]);
                         }
-                        // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
-                        else if(remoteTimestamp != localTimestamp)
-                        {
-                            // UPDATE SERVER
-                            string id = localHeaders[j][2];
-                            Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
-                            List<string> account = await GetAccount;
-                            NetworkAdapter.MethodProvider.Update(account);
-                        }
-                        // REMOVE THEM FROM THE LISTS
-                        localHeaders.Remove(tempLocalHeaders[j]);
-                        remoteHeaders.Remove(tempRemoteHeaders[i]);
                     }
                 }
-            }
-            // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
-            List<string> accountsToDelete = new List<string>();
-            for (int i = 0; i < remoteHeaders.Count; i++)
-            {
-                string hid = remoteHeaders[i][0];
-                Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList("SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"" + hid + "\" LIMIT 1);", 1);
-                List<string> TaskCheckExistsResult = await TaskCheckExists;
-                bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
-                if (isDeleted)
+                // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
+                List<string> accountsToDelete = new List<string>();
+                for (int i = 0; i < remoteHeaders.Count; i++)
                 {
-                    accountsToDelete.Add(hid);
+                    string hid = remoteHeaders[i][0];
+                    Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList("SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"" + hid + "\" LIMIT 1);", 1);
+                    List<string> TaskCheckExistsResult = await TaskCheckExists;
+                    bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
+                    if (isDeleted)
+                    {
+                        accountsToDelete.Add(hid);
+                    }
+                    else
+                    {
+                        accountsToGet.Add(hid);
+                    }
                 }
-                else
+                // DELETE ON SERVER
+                if (accountsToDelete.Count > 0)
                 {
-                    accountsToGet.Add(hid);
+                    NetworkAdapter.MethodProvider.Delete(accountsToDelete);
                 }
-            }
-            // DELETE ON SERVER
-            if (accountsToDelete.Count > 0)
-            {
-                NetworkAdapter.MethodProvider.Delete(accountsToDelete);
             }
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
@@ -318,9 +322,13 @@ namespace pmdbs
             {
                 NetworkAdapter.MethodProvider.Select(accountsToGet);
             }
-            else
+            if (localHeaders.Count == 0 && accountsToGet.Count == 0)
             {
-                // TODO: OUTPUT TO GUI "SYNC FINISHED" OR SOMETHING LIKE THIS
+                GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    CustomException.ThrowNew.GenericException("Done. Nothing to do.");
+                    GlobalVarPool.SyncButton.Enabled = true;
+                });
             }
         }
 
