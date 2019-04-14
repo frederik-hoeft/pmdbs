@@ -634,7 +634,7 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
+                                                                        GlobalVarPool.promptCommand = "SEND_VERIFICATION_ACTIVATE_ACCOUNT";
                                                                         HelperMethods.Prompt("Confirm your account", "Please verify your email address.");
                                                                         break;
                                                                     }
