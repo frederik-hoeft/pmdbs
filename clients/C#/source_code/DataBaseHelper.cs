@@ -29,14 +29,14 @@ namespace pmdbs
         /// <param name="query">SQLite query to be executed.</param>
         /// <param name="columns">Number of by query returned columns.</param>
         /// <returns></returns
-        public static async Task<List<String>> GetDataAsList(string query, int columns)
+        public static async Task<List<string>> GetDataAsList(string query, int columns)
         {
             SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
             SQLiteDataReader reader = sql_cmd.ExecuteReader();
-            List<String> DataList = new List<string>();
+            List<string> DataList = new List<string>();
             while (reader.Read())
             {
                 try
@@ -61,23 +61,24 @@ namespace pmdbs
         /// <param name="query">SQLite query to be executed.</param>
         /// <param name="columns">Number of by query returned columns.</param>
         /// <returns></returns>
-        public static async Task<List<List<String>>> GetDataAs2DList(string query, int columns)
+        public static async Task<List<List<string>>> GetDataAs2DList(string query, int columns)
         {
             SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
             SQLiteDataReader reader = sql_cmd.ExecuteReader();
-            List<List<String>> OuterList = new List<List<string>>();
+            List<List<string>> OuterList = new List<List<string>>();
             while (reader.Read())
             {
                 try
                 {
-                    List<String> InnerList = new List<string>();
+                    List<string> InnerList = new List<string>();
                     for (int i = 0; i < columns; i++)
                     {
                         InnerList.Add(reader[i].ToString());
                     }
+                    OuterList.Add(InnerList);
                 }
                 catch (Exception outOfRange)
                 {

@@ -10,6 +10,388 @@ namespace pmdbs
 {
     public static class NetworkAdapter
     {
+        public sealed class Tasks
+        {
+            private static readonly List<NetworkAdapter.Task> taskList = new List<Task>();
+            public static Task GetCurrent()
+            {
+                return taskList[0];
+            }
+            public static Task GetCurrentOrDefault()
+            {
+                if (taskList.Count > 0)
+                {
+                    return taskList[0];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            public static bool Available()
+            {
+                return taskList.Count > 0 ? true : false;
+            }
+            public static void Execute()
+            {
+                CommandInterpreter.Parse(GetCurrent().Command);
+            }
+            public static void Add(Task task)
+            {
+                taskList.Add(task);
+            }
+            public static void Remove(Task task)
+            {
+                taskList.Remove(task);
+            }
+            public static void Clear()
+            {
+                taskList.Clear();
+            }
+            public static List<Task> GetAll()
+            {
+                return taskList;
+            }
+            public static void RemoveCurrent()
+            {
+                try
+                {
+                    taskList.RemoveAt(0);
+                }
+                catch { }
+            }
+        }
+        public partial class Task
+        {
+            private readonly string _automatedTask = string.Empty;
+            private readonly string _automatedTaskCondition = string.Empty;
+            private readonly string _failedCondition = "SIG_TASK_FAILED";
+            private readonly SearchCondition _searchCondition = SearchCondition.Match;
+            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command)
+            {
+                _automatedTask = Command;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                Tasks.Add(this);
+            }
+            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
+            {
+                _automatedTask = Command;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
+                Tasks.Add(this);
+            }
+            public SearchCondition SearchCondition
+            {
+                get { return _searchCondition; }
+            }
+            public string Command
+            {
+                get { return _automatedTask; }
+            }
+            public string FinishedCondition
+            {
+                get { return _automatedTaskCondition; }
+            }
+            public string FailedCondition
+            {
+                get { return _failedCondition; }
+            }
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command)
+            {
+                return new Task(SearchCondition, FinishedCondition, Command);
+            }
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
+            {
+                return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
+            }
+            public void Delete()
+            {
+                Tasks.Remove(this);
+            }
+        }
+        public struct CommandInterpreter
+        {
+            public static void Parse(string command)
+            {
+                string[] stringParameters = command.Split(' ');
+                string keyword = stringParameters[0];
+                object parameters = stringParameters;
+                switch (keyword.ToLower())
+                {
+                    case "connect":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Start));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "disconnect":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Disconnect));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "exit":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Exit));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "register":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Register));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "insert":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Insert));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "select":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Select));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "update":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Update));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "customencrypted":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.CustomEncrypted));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "custom":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Custom));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "fetchsync":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.FetchSync));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "fetchall":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.FetchAll));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "login":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Login));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "logout":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Logout));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "su":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Sudo));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "shutdown":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Shutdown));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "reboot":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Reboot));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "start":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Start));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "serverlog":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.GetServerLog));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "clientlog":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.GetClientLog));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "listallclients":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ListAllClients));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "error":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Error));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "getcookie":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.GetCookie));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "checkcookie":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.CheckCookie));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "kick":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Kick));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "activateaccount":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ActivateAccount));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "confirmnewdevice":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ConfirmNewDevice));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "addadmindevice":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.NewAdminDevice));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "initadminpwchange":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.InitAdminPasswordChange));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "commitadminpwchange":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.CommitAdminPasswordChange));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "initpwchange":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.InitPasswordChange));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "commitpwchange":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.CommitPasswordChange));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "initdelaccount":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.InitDeleteAccount));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "commitdelaccount":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.CommitDeleteAccount));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "banclient":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.BanClient));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "banaccount":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.BanAccount));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "listallusers":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ListAllUsers));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "getaccountactivity":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.GetAccountActivity));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "changeemailaddress":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ChangeEmailAddress));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "resendcode":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ResendCode));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "changename":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.ChangeName));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "enabledebugging":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.EnableDebugging));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "disabledebugging":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.DisableDebugging));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "checkcredentials":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.CheckCredentials));
+                            t.Start(parameters);
+                            break;
+                        }
+                    case "delete":
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(Commands.Delete));
+                            t.Start(parameters);
+                            break;
+                        }
+                    default:
+                        {
+                            CustomException.ThrowNew.GenericException("Command not found!");
+                            break;
+                        }
+                }
+            }
+        }
         public struct MethodProvider
         {
             /// <summary>
@@ -46,7 +428,7 @@ namespace pmdbs
                 string icon = account[7];
                 string hid = account[8];
                 string timestamp = account[9];
-                string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!icon!;";
+                string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
                 Network.SendEncrypted("REQINS" + query);
             }
             public static void Delete(List<string> hids)
@@ -67,8 +449,13 @@ namespace pmdbs
                 }
                 Network.SendEncrypted("REQSEL" + hidsFormatted);
             }
+
+            public static void Execute(List<NetworkAdapter.Task> tasks)
+            {
+
+            }
         }
-        public struct CommandInterpreter
+        private struct Commands
         {
             public static void FetchAll(object parameterObject)
             {
@@ -1279,13 +1666,9 @@ namespace pmdbs
                     Network.SendEncrypted("MNGLGO");
                 }
             }
-            public static void CheckCookie(object parameterObject, bool isAutomatedQuery)
+            public static void CheckCookie(object parameterObject)
             {
                 string[] parameters = (string[])parameterObject;
-                if (!GlobalVarPool.debugging && !isAutomatedQuery)
-                {
-                    return;
-                }
                 if (parameters.Count() > 1)
                 {
                     for (int i = 1; i < parameters.Count(); i++)
@@ -1903,10 +2286,6 @@ namespace pmdbs
                                 {
                                     return;
                                 }
-                                GlobalVarPool.search = true;
-                                GlobalVarPool.searchCondition = SearchCondition.In;
-                                GlobalVarPool.automatedTaskCondition = "ACCOUNT_VERIFIED";
-                                GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
                                 Network.SendEncrypted("MNGVERusername%eq!" + username + "!;code%eq!" + code + "!;");
                                 break;
                             }

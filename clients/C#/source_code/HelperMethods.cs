@@ -11,6 +11,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Data;
 
 namespace pmdbs
 {
@@ -219,85 +220,93 @@ namespace pmdbs
             // headers%eq![('HID','1555096481'),('HID','1555097171')]!
             // DELETED FORMAT:
             // deleted%eq![('HID'),('HID')]!
-            string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
-            string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
-            // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
-            for (int i = 0; i < deletedItems.Length; i++)
+            if (!deletedItemString.Equals("deleted%eq![]!"))
             {
-                Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
-                await Task.WhenAny(Delete);
-            }
-            string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
-            string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
-            List<List<string>> remoteHeaders = new List<List<string>>();
-            // APPEND REMOTE HEADERS TO LIST
-            for (int i = 0; i < splittedRemoteHeader.Length; i++)
-            {
-                remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" },StringSplitOptions.RemoveEmptyEntries).ToList());
+                string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
+                string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+                // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
+                for (int i = 0; i < deletedItems.Length; i++)
+                {
+                    Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
+                    await Task.WhenAny(Delete);
+                }
             }
             // GET LOCAL HEADERS
             Task<List<List<string>>> localHeaderTask = DataBaseHelper.GetDataAs2DList("SELECT D_hid, D_datetime, D_id FROM Tbl_data;", 3);
 
             List<List<string>> localHeaders = await localHeaderTask;
-            List<List<string>> tempRemoteHeaders = remoteHeaders;
             List<string> accountsToGet = new List<string>();
-            // ITERATE OVER REMOTE HEADERS
-            for (int i = 0; i < tempRemoteHeaders.Count; i++)
+            if (!remoteHeaderString.Equals("headers%eq![]!"))
             {
-                // GET REMOTE HID AND TIMESTAMP
-                string remoteHid = tempRemoteHeaders[i][0];
-                int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
-                List<List<string>> tempLocalHeaders = localHeaders;
-                //ITERATE OVER LOCAL HEADERS
-                for (int j = 0; j < tempLocalHeaders.Count; j++)
+                string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
+                string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+                List<List<string>> remoteHeaders = new List<List<string>>();
+                // APPEND REMOTE HEADERS TO LIST
+                for (int i = 0; i < splittedRemoteHeader.Length; i++)
                 {
-                    // GET LOCAL HID AND TIMESTAMPS
-                    string localHid = tempLocalHeaders[j][0];
-                    int localTimestamp = Convert.ToInt32(tempLocalHeaders[j][1]);
-                    // FIND MATCHING REMOTE AND LOCAL HIDS
-                    if (remoteHid.Equals(localHid))
+                    remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" }, StringSplitOptions.RemoveEmptyEntries).ToList());
+                }
+
+                List<List<string>> tempRemoteHeaders = remoteHeaders;
+                
+                // ITERATE OVER REMOTE HEADERS
+                for (int i = 0; i < tempRemoteHeaders.Count; i++)
+                {
+                    // GET REMOTE HID AND TIMESTAMP
+                    string remoteHid = tempRemoteHeaders[i][0];
+                    int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
+                    List<List<string>> tempLocalHeaders = localHeaders;
+                    //ITERATE OVER LOCAL HEADERS
+                    for (int j = 0; j < tempLocalHeaders.Count; j++)
                     {
-                        // GET ALL HIDS WHERE THE REMOTE HID IS NEWER
-                        if (remoteTimestamp > localTimestamp)
+                        // GET LOCAL HID AND TIMESTAMPS
+                        string localHid = tempLocalHeaders[j][0];
+                        int localTimestamp = Convert.ToInt32(tempLocalHeaders[j][1]);
+                        // FIND MATCHING REMOTE AND LOCAL HIDS
+                        if (remoteHid.Equals(localHid))
                         {
-                            accountsToGet.Add(remoteHid);
+                            // GET ALL HIDS WHERE THE REMOTE HID IS NEWER
+                            if (remoteTimestamp > localTimestamp)
+                            {
+                                accountsToGet.Add(remoteHid);
+                            }
+                            // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
+                            else if (remoteTimestamp != localTimestamp)
+                            {
+                                // UPDATE SERVER
+                                string id = localHeaders[j][2];
+                                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                                List<string> account = await GetAccount;
+                                NetworkAdapter.MethodProvider.Update(account);
+                            }
+                            // REMOVE THEM FROM THE LISTS
+                            localHeaders.Remove(tempLocalHeaders[j]);
+                            remoteHeaders.Remove(tempRemoteHeaders[i]);
                         }
-                        // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
-                        else if(remoteTimestamp != localTimestamp)
-                        {
-                            // UPDATE SERVER
-                            string id = localHeaders[j][2];
-                            Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
-                            List<string> account = await GetAccount;
-                            NetworkAdapter.MethodProvider.Update(account);
-                        }
-                        // REMOVE THEM FROM THE LISTS
-                        localHeaders.Remove(tempLocalHeaders[j]);
-                        remoteHeaders.Remove(tempRemoteHeaders[i]);
                     }
                 }
-            }
-            // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
-            List<string> accountsToDelete = new List<string>();
-            for (int i = 0; i < remoteHeaders.Count; i++)
-            {
-                string hid = remoteHeaders[i][0];
-                Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList("SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"" + hid + "\" LIMIT 1);", 1);
-                List<string> TaskCheckExistsResult = await TaskCheckExists;
-                bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
-                if (isDeleted)
+                // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
+                List<string> accountsToDelete = new List<string>();
+                for (int i = 0; i < remoteHeaders.Count; i++)
                 {
-                    accountsToDelete.Add(hid);
+                    string hid = remoteHeaders[i][0];
+                    Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList("SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"" + hid + "\" LIMIT 1);", 1);
+                    List<string> TaskCheckExistsResult = await TaskCheckExists;
+                    bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
+                    if (isDeleted)
+                    {
+                        accountsToDelete.Add(hid);
+                    }
+                    else
+                    {
+                        accountsToGet.Add(hid);
+                    }
                 }
-                else
+                // DELETE ON SERVER
+                if (accountsToDelete.Count > 0)
                 {
-                    accountsToGet.Add(hid);
+                    NetworkAdapter.MethodProvider.Delete(accountsToDelete);
                 }
-            }
-            // DELETE ON SERVER
-            if (accountsToDelete.Count > 0)
-            {
-                NetworkAdapter.MethodProvider.Delete(accountsToDelete);
             }
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
@@ -313,6 +322,178 @@ namespace pmdbs
             {
                 NetworkAdapter.MethodProvider.Select(accountsToGet);
             }
+            if (localHeaders.Count == 0 && accountsToGet.Count == 0)
+            {
+                GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    CustomException.ThrowNew.GenericException("Done. Nothing to do.");
+                    GlobalVarPool.SyncButton.Enabled = true;
+                });
+            }
+        }
+
+        public static async void FinishSync()
+        {
+            for (int i = 0; i < GlobalVarPool.selectedAccounts.Count; i++)
+            {
+                string[] account = new string[] { "host", "url", "uname", "password", "email", "notes", "icon", "hid", "datetime" };
+                string[] values = new string[] { null, null, null, null, null, null, null, null, null };
+                string[] accountParts = GlobalVarPool.selectedAccounts[i].Split(';');
+                try
+                {
+                    for (int j = 0; j < accountParts.Length; j++)
+                    {
+                        for (int k = 0; k < account.Length; k++)
+                        {
+                            if (accountParts[j].Contains(account[k]))
+                            {
+                                values.SetValue(accountParts[j].Split('!')[1], k);
+                                break; ;
+                            }
+                        }
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                }
+                GlobalVarPool.selectedAccounts.Clear();
+                if (values.Contains(null))
+                {
+                    CustomException.ThrowNew.GenericException("NULL value in sync values!");
+                    continue;
+                }
+                Task<List<string>> CheckHidExistsTask = DataBaseHelper.GetDataAsList("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_hid = \"" + values[7] + "\");",1);
+                List<string> hidExists = await CheckHidExistsTask;
+                if (Convert.ToBoolean(Convert.ToInt32(hidExists[0])))
+                {
+                    string query = "UPDATE Tbl_data SET ";
+                    bool isFirstValue = true;
+                    try
+                    {
+                        for (int j = 0; j < account.Length; j++)
+                        {
+                            if (isFirstValue)
+                            {
+                                query += "D_" + account[j] + " = \"" + values[j] + "\"";
+                                isFirstValue = false;
+                            }
+                            else
+                            {
+                                query += ", D_" + account[j] + " = \"" + values[j] + "\"";
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                    }
+                    query += " WHERE D_hid = \"" + values[7] + "\";";
+                    Task Update = DataBaseHelper.ModifyData(query);
+                    await Task.WhenAny(Update);
+                }
+                else
+                {
+                    string query = "INSERT INTO Tbl_data (";
+                    bool isFirst = true;
+                    try
+                    {
+                        for (int j = 0; j < account.Length; j++)
+                        {
+                            if (isFirst)
+                            {
+                                query += "D_" + account[j];
+                                isFirst = false;
+                            }
+                            else
+                            {
+                                query += ", D_" + account[j];
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                    }
+                    query += ") VALUES (";
+                    isFirst = true;
+                    try
+                    {
+                        for (int j = 0; j < values.Length; j++)
+                        {
+                            if (isFirst)
+                            {
+                                query += "\"" + values[j] + "\"";
+                                isFirst = false;
+                            }
+                            else
+                            {
+                                query += ", \"" + values[j] + "\"";
+                            }
+                        }
+                    }
+                    catch (IndexOutOfRangeException e)
+                    {
+                        CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
+                    }
+                    query += ");";
+                    Task Insert = DataBaseHelper.ModifyData(query);
+                    await Task.WhenAny(Insert);
+                }
+            }
+            // TODO: INVOKE UI
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            GlobalVarPool.UserData = await GetData;
+            int Columns = GlobalVarPool.UserData.Columns.Count;
+            int RowCounter = 0;
+            int Fields = (Columns - 3) * GlobalVarPool.UserData.Rows.Count;
+            foreach (DataRow Row in GlobalVarPool.UserData.Rows)
+            {
+                for (int i = 3; i < Columns; i++)
+                {
+                    string FieldValue = Row[i].ToString();
+                    if (!FieldValue.Equals("\x01"))
+                    {
+                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
+                        Row.BeginEdit();
+                        Row.SetField(i, decryptedData);
+                        Row.EndEdit();
+                    }
+                    double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
+                    double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
+                }
+                RowCounter++;
+            }
+            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.SyncButton.Enabled = true;
+                Form1.InvokeReload();
+            });
+        }
+
+        public static async void SetHid(object parameter)
+        {
+            string[] parameters = (string[])parameter;
+            string localID = string.Empty;
+            string hid = string.Empty;
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i].Contains("local_id"))
+                {
+                    localID = parameters[i].Split('!')[1];
+                }
+                else if (parameters[i].Contains("hashed_id"))
+                {
+                    hid = parameters[i].Split('!')[1];
+                }
+            }
+            if (new string[] { localID, hid }.Contains(string.Empty))
+            {
+                CustomException.ThrowNew.GenericException("Missing parameter in SetHid().");
+                return;
+            }
+            Task Update = DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_hid = \"" + hid + "\" WHERE D_id = " + localID + ";");
+            await Task.WhenAny(Update);
         }
     }
 }

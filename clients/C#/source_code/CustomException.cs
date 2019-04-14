@@ -54,6 +54,14 @@ namespace pmdbs
             {
                 new ErrorForm(message, "Not Implemented Exception").ShowDialog();
             }
+            public static void IndexOutOfRangeException()
+            {
+                new ErrorForm("An IndexOutOfRange Exception has occured.", "Index Out Of Range Exception").ShowDialog();
+            }
+            public static void IndexOutOfRangeException(string message)
+            {
+                new ErrorForm(message, "Index Out Of Range Exception").ShowDialog();
+            }
         }
     }
 }

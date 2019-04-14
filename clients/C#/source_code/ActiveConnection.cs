@@ -380,30 +380,49 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
-                                    if (GlobalVarPool.search)
+                                    if (NetworkAdapter.Tasks.Available())
                                     {
-                                        if (GlobalVarPool.searchCondition == SearchCondition.Match)
+                                        NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
+                                        if (currentTask.FailedCondition.Split('|').Where(failedCondition => decryptedData.Contains(failedCondition)).Count() == 0)
                                         {
-                                            if (decryptedData.Equals(GlobalVarPool.automatedTaskCondition))
+                                            if (currentTask.SearchCondition == SearchCondition.Match)
                                             {
-                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
-                                                GlobalVarPool.search = false;
+                                                if (decryptedData.Equals(currentTask.FinishedCondition))
+                                                {
+                                                    currentTask.Delete();
+
+                                                    if (NetworkAdapter.Tasks.Available())
+                                                    {
+                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                    }
+                                                }
                                             }
-                                        }
-                                        else if (GlobalVarPool.searchCondition == SearchCondition.In)
-                                        {
-                                            if (GlobalVarPool.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                                            else if (currentTask.SearchCondition == SearchCondition.In)
                                             {
-                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
-                                                GlobalVarPool.search = false;
+                                                if (currentTask.FinishedCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                                                {
+                                                    currentTask.Delete();
+
+                                                    if (NetworkAdapter.Tasks.Available())
+                                                    {
+                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                    }
+                                                }
                                             }
-                                        }
-                                        else
-                                        {
-                                            if (decryptedData.Contains(GlobalVarPool.automatedTaskCondition))
+                                            else
                                             {
-                                                IOAdapter.Parse(GlobalVarPool.automatedTask);
-                                                GlobalVarPool.search = false;
+                                                if (decryptedData.Contains(currentTask.FinishedCondition))
+                                                {
+                                                    currentTask.Delete();
+
+                                                    if (NetworkAdapter.Tasks.Available())
+                                                    {
+                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -422,11 +441,11 @@ namespace pmdbs
                                                     HelperMethods.InvokeOutputLabel("Encrypted connection established!");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
+                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
                                                     }
                                                     else
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.CheckCookie(new string[] { "checkcookie" }, true);
+                                                        NetworkAdapter.CommandInterpreter.Parse("checkcookie");
                                                     }
                                                     break;
                                                 }
@@ -505,6 +524,8 @@ namespace pmdbs
                                                                     // TODO: IMPLEMENT RETURN VALUE HANDLING
                                                                     case "INSERT":
                                                                         {
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
+                                                                            t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
                                                                             break;
                                                                         }
                                                                     case "FETCH_ALL":
@@ -515,7 +536,7 @@ namespace pmdbs
                                                                         {
                                                                             string remoteHeaderString = content.Split(';').Where(element => element.Contains("headers")).FirstOrDefault();
                                                                             string deletedItemString = content.Split(';').Where(element => element.Contains("deleted")).FirstOrDefault();
-                                                                            object parameters = (object)new string[] { remoteHeaderString, deletedItemString };
+                                                                            object parameters = new string[] { remoteHeaderString, deletedItemString };
                                                                             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
                                                                             t.Start(parameters);
                                                                             break;
@@ -597,9 +618,15 @@ namespace pmdbs
                                                             {
                                                                 case "LOGIN_SUCCESSFUL":
                                                                     {
-                                                                        
-                                                                        string previousUser = GlobalVarPool.currentUser;
-                                                                        GlobalVarPool.currentUser = "<" + GlobalVarPool.username + "@" + GlobalVarPool.serverName + ">";
+                                                                        if (!GlobalVarPool.wasOnline)
+                                                                        {
+                                                                            new Thread(async delegate ()
+                                                                            {
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1;");
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT + "\";");
+                                                                                GlobalVarPool.wasOnline = true;
+                                                                            }).Start();
+                                                                        }
                                                                         GlobalVarPool.isUser = true;
                                                                         HelperMethods.InvokeOutputLabel("Successfully logged in as " + GlobalVarPool.username + "!");
                                                                         CustomException.ThrowNew.NotImplementedException("Wow it actually worked \\(^_^)/");
@@ -607,7 +634,7 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "activateaccount -u " + GlobalVarPool.username;
+                                                                        GlobalVarPool.promptCommand = "ACTIVATE_ACCOUNT";
                                                                         HelperMethods.Prompt("Confirm your account", "Please verify your email address.");
                                                                         break;
                                                                     }
@@ -647,16 +674,23 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
                                                                     {
-                                                                        NetworkAdapter.CommandInterpreter.GetCookie(new string[] { "getcookie" });
+                                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
                                                                         break;
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
                                                                     {
+                                                                        if (!GlobalVarPool.name.Equals("User"))
+                                                                        {
+                                                                            new Thread(async delegate ()
+                                                                            {
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + GlobalVarPool.name + "\";");
+                                                                            }).Start();
+                                                                        }
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword;
+                                                                        GlobalVarPool.promptCommand = "CONFIRM_NEW_DEVICE";
                                                                         HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
                                                                         break;
                                                                     }
@@ -690,6 +724,11 @@ namespace pmdbs
                                                                     }
                                                                 case "PASSWORD_CHANGED":
                                                                     {
+                                                                        break;
+                                                                    }
+                                                                case "SELECT_FINISHED":
+                                                                    {
+
                                                                         break;
                                                                     }
                                                                 case "":
