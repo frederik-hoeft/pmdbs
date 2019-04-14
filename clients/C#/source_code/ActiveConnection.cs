@@ -380,31 +380,34 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
-                                    if (NetworkAdapter.Tasks.Count > 0)
+                                    if (NetworkAdapter.Tasks.IsAvailable())
                                     {
-                                        NetworkAdapter.Task currentTask = NetworkAdapter.Tasks[0];
-                                        if (currentTask.searchCondition == SearchCondition.Match)
+                                        NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
+                                        if (currentTask.SearchCondition == SearchCondition.Match)
                                         {
-                                            if (decryptedData.Equals(currentTask.automatedTaskCondition))
+                                            if (decryptedData.Equals(currentTask.FinishedCondition))
                                             {
-                                                NetworkAdapter.CommandInterpreter.Parse(currentTask.automatedTask);
                                                 currentTask.Delete();
+                                                NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
                                             }
                                         }
-                                        else if (currentTask.searchCondition == SearchCondition.In)
+                                        else if (currentTask.SearchCondition == SearchCondition.In)
                                         {
-                                            if (currentTask.automatedTaskCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                                            if (currentTask.FinishedCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
                                             {
-                                                NetworkAdapter.CommandInterpreter.Parse(currentTask.automatedTask);
                                                 currentTask.Delete();
+                                                NetworkAdapter.Task newTask = NetworkAdapter.Tasks[0];
+                                                NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
                                             }
                                         }
                                         else
                                         {
-                                            if (decryptedData.Contains(currentTask.automatedTaskCondition))
+                                            if (decryptedData.Contains(currentTask.FinishedCondition))
                                             {
-                                                NetworkAdapter.CommandInterpreter.Parse(currentTask.automatedTask);
                                                 currentTask.Delete();
+                                                NetworkAdapter.Task newTask = NetworkAdapter.Tasks[0];
+                                                NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
                                             }
                                         }
                                     }

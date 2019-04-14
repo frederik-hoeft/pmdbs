@@ -1225,6 +1225,7 @@ namespace pmdbs
                     GlobalVarPool.searchCondition = SearchCondition.In;
                     GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
                     GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
+
                     Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
                     {
                         IsBackground = true
