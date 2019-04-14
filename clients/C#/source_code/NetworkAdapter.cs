@@ -10,6 +10,17 @@ namespace pmdbs
 {
     public static class NetworkAdapter
     {
+        public partial class Task
+        {
+            public Task()
+            {
+
+            }
+            public Task()
+            {
+
+            }
+        }
         public struct CommandInterpreter
         {
             public static void Parse(string command)
@@ -349,6 +360,8 @@ namespace pmdbs
                 }
                 Network.SendEncrypted("REQSEL" + hidsFormatted);
             }
+
+            public static void Execute(List<string, int>)
         }
         private struct Commands
         {
