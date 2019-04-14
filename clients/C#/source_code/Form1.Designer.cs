@@ -3402,7 +3402,7 @@
             this.SettingsPanelOfflineContent2.Controls.Add(this.editField2);
             this.SettingsPanelOfflineContent2.Controls.Add(this.label9);
             this.SettingsPanelOfflineContent2.Controls.Add(this.label10);
-            this.SettingsPanelOfflineContent2.Location = new System.Drawing.Point(0, 877);
+            this.SettingsPanelOfflineContent2.Location = new System.Drawing.Point(0, 899);
             this.SettingsPanelOfflineContent2.Margin = new System.Windows.Forms.Padding(0);
             this.SettingsPanelOfflineContent2.Name = "SettingsPanelOfflineContent2";
             this.SettingsPanelOfflineContent2.Size = new System.Drawing.Size(670, 313);
@@ -3480,7 +3480,7 @@
             this.panel4.Location = new System.Drawing.Point(0, 564);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(670, 313);
+            this.panel4.Size = new System.Drawing.Size(670, 335);
             this.panel4.TabIndex = 16;
             // 
             // animatedButton2
@@ -3489,7 +3489,7 @@
             this.animatedButton2.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.animatedButton2.Depth = 0;
             this.animatedButton2.Icon = null;
-            this.animatedButton2.Location = new System.Drawing.Point(108, 238);
+            this.animatedButton2.Location = new System.Drawing.Point(108, 262);
             this.animatedButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.animatedButton2.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
             this.animatedButton2.Name = "animatedButton2";
@@ -3505,10 +3505,9 @@
             this.label7.ForeColor = System.Drawing.Color.Black;
             this.label7.Location = new System.Drawing.Point(3, 67);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(641, 60);
+            this.label7.Size = new System.Drawing.Size(641, 186);
             this.label7.TabIndex = 11;
-            this.label7.Text = "Your Display Name is used to personalize your experience.\r\nIt will be shown on yo" +
-    "ur Dashboard and when ever you log in.";
+            this.label7.Text = resources.GetString("label7.Text");
             // 
             // label12
             // 
@@ -3527,7 +3526,7 @@
             this.animatedButton6.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.animatedButton6.Depth = 0;
             this.animatedButton6.Icon = null;
-            this.animatedButton6.Location = new System.Drawing.Point(346, 238);
+            this.animatedButton6.Location = new System.Drawing.Point(346, 262);
             this.animatedButton6.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.animatedButton6.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
             this.animatedButton6.Name = "animatedButton6";
