@@ -428,7 +428,7 @@ namespace pmdbs
                 string icon = account[7];
                 string hid = account[8];
                 string timestamp = account[9];
-                string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!icon!;";
+                string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
                 Network.SendEncrypted("REQINS" + query);
             }
             public static void Delete(List<string> hids)

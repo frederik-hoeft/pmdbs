@@ -690,6 +690,7 @@ namespace pmdbs
                 SettingsFlowLayoutPanelRegister.BringToFront();
                 return;
             }
+            NetworkAdapter.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
                 NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
