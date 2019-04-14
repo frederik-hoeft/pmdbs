@@ -220,14 +220,21 @@ namespace pmdbs
             // headers%eq![('HID','1555096481'),('HID','1555097171')]!
             // DELETED FORMAT:
             // deleted%eq![('HID'),('HID')]!
-            string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
-            string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
-            // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
-            for (int i = 0; i < deletedItems.Length; i++)
+            if (!deletedItemString.Equals("deleted%eq![]!"))
             {
-                Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
-                await Task.WhenAny(Delete);
+                string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
+                string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+                // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
+                for (int i = 0; i < deletedItems.Length; i++)
+                {
+                    Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
+                    await Task.WhenAny(Delete);
+                }
             }
+            // GET LOCAL HEADERS
+            Task<List<List<string>>> localHeaderTask = DataBaseHelper.GetDataAs2DList("SELECT D_hid, D_datetime, D_id FROM Tbl_data;", 3);
+
+            List<List<string>> localHeaders = await localHeaderTask;
             string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
             string[] splittedRemoteHeader = cleanedRemoteHeaderString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
             List<List<string>> remoteHeaders = new List<List<string>>();
@@ -236,10 +243,7 @@ namespace pmdbs
             {
                 remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" },StringSplitOptions.RemoveEmptyEntries).ToList());
             }
-            // GET LOCAL HEADERS
-            Task<List<List<string>>> localHeaderTask = DataBaseHelper.GetDataAs2DList("SELECT D_hid, D_datetime, D_id FROM Tbl_data;", 3);
-
-            List<List<string>> localHeaders = await localHeaderTask;
+            
             List<List<string>> tempRemoteHeaders = remoteHeaders;
             List<string> accountsToGet = new List<string>();
             // ITERATE OVER REMOTE HEADERS
