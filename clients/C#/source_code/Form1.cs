@@ -1217,22 +1217,14 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task Login = NetworkAdapter.Task.Create(SearchCondition.In,)
-                    NetworkAdapter.CommandInterpreter.Parse("login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
                 }
                 else
                 {
-                    GlobalVarPool.search = true;
-                    GlobalVarPool.searchCondition = SearchCondition.In;
-                    GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
-                    GlobalVarPool.automatedTask = "login -u " + username + " -p " + GlobalVarPool.onlinePassword;
-
-                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
-                    {
-                        IsBackground = true
-                    };
-                    connectionThread.Start();
+                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
+                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
                 }
+                NetworkAdapter.Tasks.Execute();
             }
             catch
             {
@@ -1320,20 +1312,14 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.CommandInterpreter.Parse("register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
                 }
                 else
                 {
-                    GlobalVarPool.search = true;
-                    GlobalVarPool.searchCondition = SearchCondition.In;
-                    GlobalVarPool.automatedTaskCondition = "COOKIE_DOES_EXIST|DTACKI";
-                    GlobalVarPool.automatedTask = "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname;
-                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
-                    {
-                        IsBackground = true
-                    };
-                    connectionThread.Start();
+                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
+                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
                 }
+                NetworkAdapter.Tasks.Execute();
             }
             catch
             {
