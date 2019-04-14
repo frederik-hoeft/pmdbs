@@ -286,8 +286,7 @@ namespace pmdbs
             MenuPanelHomeIndicator.BackColor = Colors.Orange;
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
-            // Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper));
-            // t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+            WindowHeaderLabelTitle.Text = "Dashboard";
         }
 
         private void MenuMenuEntrySettings_Click(object sender, EventArgs e)
@@ -296,6 +295,15 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Colors.Orange;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             SettingsTableLayoutPanelMain.BringToFront();
+            if (GlobalVarPool.wasOnline)
+            {
+                SettingsFlowLayoutPanelOnline.BringToFront();
+            }
+            else
+            {
+                SettingsFlowLayoutPanelOffline.BringToFront();
+            }
+            WindowHeaderLabelTitle.Text = "Settings";
         }
 
         private void MenuMenuEntryPasswords_Click(object sender, EventArgs e)
@@ -304,7 +312,7 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
             DataTableLayoutPanelMain.BringToFront();
-            //Populate();
+            WindowHeaderLabelTitle.Text = "Your Accounts";
         }
         #endregion
 
@@ -1361,7 +1369,22 @@ namespace pmdbs
         }
         #endregion
 
+        #region SettingsOffline
+        private void SettingsAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
+        {
+            SettingsFlowLayoutPanelLogin.BringToFront();
+        }
+        private void SettingsAnimatedButtonOfflineRegister_Click(object sender, EventArgs e)
+        {
+            SettingsFlowLayoutPanelRegister.BringToFront();
+        }
         #endregion
+
+        #region SettingsOnline
+        #endregion
+
+        #endregion
+
 
     }
 }

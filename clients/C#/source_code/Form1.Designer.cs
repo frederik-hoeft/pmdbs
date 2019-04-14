@@ -235,19 +235,19 @@
             this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
             this.windowButtonClose = new pmdbs.WindowButton();
             this.SettingsEditFieldOfflineNewPasswordConfirm = new pmdbs.EditField();
-            this.animatedButton4 = new pmdbs.AnimatedButton();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
+            this.SettingsAnimatedButtonChangePasswordSubmit = new pmdbs.AnimatedButton();
+            this.SettingsLabelOfflineChangePassword = new System.Windows.Forms.Label();
+            this.SettingsLabelOfflinePasswordDescription = new System.Windows.Forms.Label();
             this.SettingsPanelOfflineContent2 = new System.Windows.Forms.Panel();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.animatedButton5 = new pmdbs.AnimatedButton();
-            this.editField2 = new pmdbs.EditField();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.animatedButton2 = new pmdbs.AnimatedButton();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.animatedButton6 = new pmdbs.AnimatedButton();
+            this.SettingsLabelOfflineChangeNameDescription = new System.Windows.Forms.Label();
+            this.SettingsLabelOfflineChangeName = new System.Windows.Forms.Label();
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldOfflineName = new pmdbs.EditField();
+            this.SettingsPanelOfflineContent1 = new System.Windows.Forms.Panel();
+            this.SettingsAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.SettingsLabelOfflineGoOnlineDescription = new System.Windows.Forms.Label();
+            this.SettingsLabelOfflineGoOnline = new System.Windows.Forms.Label();
+            this.SettingsAnimatedButtonOfflineRegister = new pmdbs.AnimatedButton();
             this.DashboardPanel.SuspendLayout();
             this.DashboardFlowLayoutPanel.SuspendLayout();
             this.DashboardPanelHome.SuspendLayout();
@@ -335,7 +335,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
             this.SettingsPanelOfflineContent2.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.SettingsPanelOfflineContent1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DashboardPanel
@@ -1236,7 +1236,7 @@
             this.SettingsFlowLayoutPanelOffline.AutoScroll = true;
             this.SettingsFlowLayoutPanelOffline.Controls.Add(this.SettingsPanelOfflineContentHeader);
             this.SettingsFlowLayoutPanelOffline.Controls.Add(this.SettingsPanelOfflineContent3);
-            this.SettingsFlowLayoutPanelOffline.Controls.Add(this.panel4);
+            this.SettingsFlowLayoutPanelOffline.Controls.Add(this.SettingsPanelOfflineContent1);
             this.SettingsFlowLayoutPanelOffline.Controls.Add(this.SettingsPanelOfflineContent2);
             this.SettingsFlowLayoutPanelOffline.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SettingsFlowLayoutPanelOffline.Location = new System.Drawing.Point(0, 0);
@@ -1319,9 +1319,9 @@
             // 
             // SettingsPanelOfflineContent3
             // 
-            this.SettingsPanelOfflineContent3.Controls.Add(this.label6);
-            this.SettingsPanelOfflineContent3.Controls.Add(this.label5);
-            this.SettingsPanelOfflineContent3.Controls.Add(this.animatedButton4);
+            this.SettingsPanelOfflineContent3.Controls.Add(this.SettingsLabelOfflinePasswordDescription);
+            this.SettingsPanelOfflineContent3.Controls.Add(this.SettingsLabelOfflineChangePassword);
+            this.SettingsPanelOfflineContent3.Controls.Add(this.SettingsAnimatedButtonChangePasswordSubmit);
             this.SettingsPanelOfflineContent3.Controls.Add(this.SettingsEditFieldOfflineNewPassword);
             this.SettingsPanelOfflineContent3.Controls.Add(this.SettingsEditFieldOfflineNewPasswordConfirm);
             this.SettingsPanelOfflineContent3.Location = new System.Drawing.Point(0, 155);
@@ -2757,11 +2757,11 @@
             // WindowHeaderLabelTitle
             // 
             this.WindowHeaderLabelTitle.AutoSize = true;
-            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold);
             this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.Black;
-            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(12, 28);
+            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(3, 25);
             this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
-            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(249, 38);
+            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(377, 56);
             this.WindowHeaderLabelTitle.TabIndex = 10;
             this.WindowHeaderLabelTitle.Text = "Some headline";
             // 
@@ -3358,183 +3358,185 @@
             this.SettingsEditFieldOfflineNewPasswordConfirm.UseDefaultValue = false;
             this.SettingsEditFieldOfflineNewPasswordConfirm.UseSystemPasswordChar = false;
             // 
-            // animatedButton4
+            // SettingsAnimatedButtonChangePasswordSubmit
             // 
-            this.animatedButton4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton4.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.animatedButton4.Depth = 0;
-            this.animatedButton4.Icon = null;
-            this.animatedButton4.Location = new System.Drawing.Point(207, 312);
-            this.animatedButton4.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton4.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton4.Name = "animatedButton4";
-            this.animatedButton4.Primary = false;
-            this.animatedButton4.Size = new System.Drawing.Size(255, 87);
-            this.animatedButton4.TabIndex = 10;
-            this.animatedButton4.Text = "Change Master Password";
-            this.animatedButton4.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonChangePasswordSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonChangePasswordSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonChangePasswordSubmit.Depth = 0;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Icon = null;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Location = new System.Drawing.Point(207, 312);
+            this.SettingsAnimatedButtonChangePasswordSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Name = "SettingsAnimatedButtonChangePasswordSubmit";
+            this.SettingsAnimatedButtonChangePasswordSubmit.Primary = false;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
+            this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // SettingsLabelOfflineChangePassword
             // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.White;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label5.Location = new System.Drawing.Point(3, 20);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(281, 28);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "Change Your Password";
+            this.SettingsLabelOfflineChangePassword.AutoSize = true;
+            this.SettingsLabelOfflineChangePassword.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelOfflineChangePassword.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.SettingsLabelOfflineChangePassword.Location = new System.Drawing.Point(3, 20);
+            this.SettingsLabelOfflineChangePassword.Name = "SettingsLabelOfflineChangePassword";
+            this.SettingsLabelOfflineChangePassword.Size = new System.Drawing.Size(281, 28);
+            this.SettingsLabelOfflineChangePassword.TabIndex = 10;
+            this.SettingsLabelOfflineChangePassword.Text = "Change Your Password";
             // 
-            // label6
+            // SettingsLabelOfflinePasswordDescription
             // 
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(3, 67);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(641, 60);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "The Master Password is needed everytime you log into pmdbs. \r\nChoose a strong pas" +
+            this.SettingsLabelOfflinePasswordDescription.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.SettingsLabelOfflinePasswordDescription.ForeColor = System.Drawing.Color.Black;
+            this.SettingsLabelOfflinePasswordDescription.Location = new System.Drawing.Point(3, 67);
+            this.SettingsLabelOfflinePasswordDescription.Name = "SettingsLabelOfflinePasswordDescription";
+            this.SettingsLabelOfflinePasswordDescription.Size = new System.Drawing.Size(641, 60);
+            this.SettingsLabelOfflinePasswordDescription.TabIndex = 11;
+            this.SettingsLabelOfflinePasswordDescription.Text = "The Master Password is needed everytime you log into pmdbs. \r\nChoose a strong pas" +
     "sword as this protects all your data!";
             // 
             // SettingsPanelOfflineContent2
             // 
-            this.SettingsPanelOfflineContent2.Controls.Add(this.animatedButton5);
-            this.SettingsPanelOfflineContent2.Controls.Add(this.editField2);
-            this.SettingsPanelOfflineContent2.Controls.Add(this.label9);
-            this.SettingsPanelOfflineContent2.Controls.Add(this.label10);
+            this.SettingsPanelOfflineContent2.Controls.Add(this.SettingsAnimatedButtonOfflineChangeNameSubmit);
+            this.SettingsPanelOfflineContent2.Controls.Add(this.SettingsEditFieldOfflineName);
+            this.SettingsPanelOfflineContent2.Controls.Add(this.SettingsLabelOfflineChangeNameDescription);
+            this.SettingsPanelOfflineContent2.Controls.Add(this.SettingsLabelOfflineChangeName);
             this.SettingsPanelOfflineContent2.Location = new System.Drawing.Point(0, 899);
             this.SettingsPanelOfflineContent2.Margin = new System.Windows.Forms.Padding(0);
             this.SettingsPanelOfflineContent2.Name = "SettingsPanelOfflineContent2";
             this.SettingsPanelOfflineContent2.Size = new System.Drawing.Size(670, 313);
             this.SettingsPanelOfflineContent2.TabIndex = 15;
             // 
-            // label9
+            // SettingsLabelOfflineChangeNameDescription
             // 
-            this.label9.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.label9.ForeColor = System.Drawing.Color.Black;
-            this.label9.Location = new System.Drawing.Point(3, 67);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(641, 60);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Your Display Name is used to personalize your experience.\r\nIt will be shown on yo" +
+            this.SettingsLabelOfflineChangeNameDescription.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.SettingsLabelOfflineChangeNameDescription.ForeColor = System.Drawing.Color.Black;
+            this.SettingsLabelOfflineChangeNameDescription.Location = new System.Drawing.Point(3, 67);
+            this.SettingsLabelOfflineChangeNameDescription.Name = "SettingsLabelOfflineChangeNameDescription";
+            this.SettingsLabelOfflineChangeNameDescription.Size = new System.Drawing.Size(641, 60);
+            this.SettingsLabelOfflineChangeNameDescription.TabIndex = 11;
+            this.SettingsLabelOfflineChangeNameDescription.Text = "Your Display Name is used to personalize your experience.\r\nIt will be shown on yo" +
     "ur Dashboard and when ever you log in.";
             // 
-            // label10
+            // SettingsLabelOfflineChangeName
             // 
-            this.label10.AutoSize = true;
-            this.label10.BackColor = System.Drawing.Color.White;
-            this.label10.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label10.Location = new System.Drawing.Point(3, 20);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(337, 28);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Change Your Display Name";
+            this.SettingsLabelOfflineChangeName.AutoSize = true;
+            this.SettingsLabelOfflineChangeName.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelOfflineChangeName.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.SettingsLabelOfflineChangeName.Location = new System.Drawing.Point(3, 20);
+            this.SettingsLabelOfflineChangeName.Name = "SettingsLabelOfflineChangeName";
+            this.SettingsLabelOfflineChangeName.Size = new System.Drawing.Size(337, 28);
+            this.SettingsLabelOfflineChangeName.TabIndex = 10;
+            this.SettingsLabelOfflineChangeName.Text = "Change Your Display Name";
             // 
-            // animatedButton5
+            // SettingsAnimatedButtonOfflineChangeNameSubmit
             // 
-            this.animatedButton5.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton5.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.animatedButton5.Depth = 0;
-            this.animatedButton5.Icon = null;
-            this.animatedButton5.Location = new System.Drawing.Point(219, 239);
-            this.animatedButton5.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton5.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton5.Name = "animatedButton5";
-            this.animatedButton5.Primary = false;
-            this.animatedButton5.Size = new System.Drawing.Size(232, 61);
-            this.animatedButton5.TabIndex = 13;
-            this.animatedButton5.Text = "Change Name";
-            this.animatedButton5.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Depth = 0;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Icon = null;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Location = new System.Drawing.Point(218, 239);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Name = "SettingsAnimatedButtonOfflineChangeNameSubmit";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Primary = false;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.TabIndex = 13;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Text = "Change Name";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.UseVisualStyleBackColor = true;
             // 
-            // editField2
+            // SettingsEditFieldOfflineName
             // 
-            this.editField2.AutoSize = true;
-            this.editField2.BackColor = System.Drawing.Color.White;
-            this.editField2.BackGroundColor = System.Drawing.Color.White;
-            this.editField2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField2.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField2.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField2.DefaultValue = "Enter some text...";
-            this.editField2.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField2.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField2.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField2.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearHover")));
-            this.editField2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField2.ImageClearNormal")));
-            this.editField2.Location = new System.Drawing.Point(5, 143);
-            this.editField2.Name = "editField2";
-            this.editField2.Size = new System.Drawing.Size(660, 84);
-            this.editField2.TabIndex = 12;
-            this.editField2.TextTextBox = "User";
-            this.editField2.TextTitle = "Your Display Name";
-            this.editField2.UseColoredCaret = true;
-            this.editField2.UseDefaultValue = false;
-            this.editField2.UseSystemPasswordChar = false;
+            this.SettingsEditFieldOfflineName.AutoSize = true;
+            this.SettingsEditFieldOfflineName.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineName.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineName.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineName.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineName.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineName.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldOfflineName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearHover")));
+            this.SettingsEditFieldOfflineName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearNormal")));
+            this.SettingsEditFieldOfflineName.Location = new System.Drawing.Point(5, 143);
+            this.SettingsEditFieldOfflineName.Name = "SettingsEditFieldOfflineName";
+            this.SettingsEditFieldOfflineName.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldOfflineName.TabIndex = 12;
+            this.SettingsEditFieldOfflineName.TextTextBox = "User";
+            this.SettingsEditFieldOfflineName.TextTitle = "Your Display Name";
+            this.SettingsEditFieldOfflineName.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineName.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineName.UseSystemPasswordChar = false;
             // 
-            // panel4
+            // SettingsPanelOfflineContent1
             // 
-            this.panel4.Controls.Add(this.animatedButton6);
-            this.panel4.Controls.Add(this.animatedButton2);
-            this.panel4.Controls.Add(this.label7);
-            this.panel4.Controls.Add(this.label12);
-            this.panel4.Location = new System.Drawing.Point(0, 564);
-            this.panel4.Margin = new System.Windows.Forms.Padding(0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(670, 335);
-            this.panel4.TabIndex = 16;
+            this.SettingsPanelOfflineContent1.Controls.Add(this.SettingsAnimatedButtonOfflineRegister);
+            this.SettingsPanelOfflineContent1.Controls.Add(this.SettingsAnimatedButtonOfflineLogin);
+            this.SettingsPanelOfflineContent1.Controls.Add(this.SettingsLabelOfflineGoOnlineDescription);
+            this.SettingsPanelOfflineContent1.Controls.Add(this.SettingsLabelOfflineGoOnline);
+            this.SettingsPanelOfflineContent1.Location = new System.Drawing.Point(0, 564);
+            this.SettingsPanelOfflineContent1.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelOfflineContent1.Name = "SettingsPanelOfflineContent1";
+            this.SettingsPanelOfflineContent1.Size = new System.Drawing.Size(670, 335);
+            this.SettingsPanelOfflineContent1.TabIndex = 16;
             // 
-            // animatedButton2
+            // SettingsAnimatedButtonOfflineLogin
             // 
-            this.animatedButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton2.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.animatedButton2.Depth = 0;
-            this.animatedButton2.Icon = null;
-            this.animatedButton2.Location = new System.Drawing.Point(108, 262);
-            this.animatedButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton2.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton2.Name = "animatedButton2";
-            this.animatedButton2.Primary = false;
-            this.animatedButton2.Size = new System.Drawing.Size(232, 61);
-            this.animatedButton2.TabIndex = 13;
-            this.animatedButton2.Text = "Login";
-            this.animatedButton2.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineLogin.Depth = 0;
+            this.SettingsAnimatedButtonOfflineLogin.Icon = null;
+            this.SettingsAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(99, 262);
+            this.SettingsAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineLogin.Name = "SettingsAnimatedButtonOfflineLogin";
+            this.SettingsAnimatedButtonOfflineLogin.Primary = false;
+            this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineLogin.TabIndex = 13;
+            this.SettingsAnimatedButtonOfflineLogin.Text = "Login";
+            this.SettingsAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineLogin_Click);
             // 
-            // label7
+            // SettingsLabelOfflineGoOnlineDescription
             // 
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.label7.ForeColor = System.Drawing.Color.Black;
-            this.label7.Location = new System.Drawing.Point(3, 67);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(641, 186);
-            this.label7.TabIndex = 11;
-            this.label7.Text = resources.GetString("label7.Text");
+            this.SettingsLabelOfflineGoOnlineDescription.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.SettingsLabelOfflineGoOnlineDescription.ForeColor = System.Drawing.Color.Black;
+            this.SettingsLabelOfflineGoOnlineDescription.Location = new System.Drawing.Point(3, 67);
+            this.SettingsLabelOfflineGoOnlineDescription.Name = "SettingsLabelOfflineGoOnlineDescription";
+            this.SettingsLabelOfflineGoOnlineDescription.Size = new System.Drawing.Size(641, 186);
+            this.SettingsLabelOfflineGoOnlineDescription.TabIndex = 11;
+            this.SettingsLabelOfflineGoOnlineDescription.Text = resources.GetString("SettingsLabelOfflineGoOnlineDescription.Text");
             // 
-            // label12
+            // SettingsLabelOfflineGoOnline
             // 
-            this.label12.AutoSize = true;
-            this.label12.BackColor = System.Drawing.Color.White;
-            this.label12.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label12.Location = new System.Drawing.Point(3, 20);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(129, 28);
-            this.label12.TabIndex = 10;
-            this.label12.Text = "Go Online";
+            this.SettingsLabelOfflineGoOnline.AutoSize = true;
+            this.SettingsLabelOfflineGoOnline.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelOfflineGoOnline.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.SettingsLabelOfflineGoOnline.Location = new System.Drawing.Point(3, 20);
+            this.SettingsLabelOfflineGoOnline.Name = "SettingsLabelOfflineGoOnline";
+            this.SettingsLabelOfflineGoOnline.Size = new System.Drawing.Size(129, 28);
+            this.SettingsLabelOfflineGoOnline.TabIndex = 10;
+            this.SettingsLabelOfflineGoOnline.Text = "Go Online";
             // 
-            // animatedButton6
+            // SettingsAnimatedButtonOfflineRegister
             // 
-            this.animatedButton6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton6.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.animatedButton6.Depth = 0;
-            this.animatedButton6.Icon = null;
-            this.animatedButton6.Location = new System.Drawing.Point(346, 262);
-            this.animatedButton6.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton6.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton6.Name = "animatedButton6";
-            this.animatedButton6.Primary = false;
-            this.animatedButton6.Size = new System.Drawing.Size(232, 61);
-            this.animatedButton6.TabIndex = 14;
-            this.animatedButton6.Text = "REgister";
-            this.animatedButton6.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineRegister.Depth = 0;
+            this.SettingsAnimatedButtonOfflineRegister.Icon = null;
+            this.SettingsAnimatedButtonOfflineRegister.Location = new System.Drawing.Point(337, 262);
+            this.SettingsAnimatedButtonOfflineRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineRegister.Name = "SettingsAnimatedButtonOfflineRegister";
+            this.SettingsAnimatedButtonOfflineRegister.Primary = false;
+            this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
+            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineRegister_Click);
             // 
             // Form1
             // 
@@ -3542,8 +3544,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3665,8 +3667,8 @@
             this.LoginPanelOnlineCredentials.PerformLayout();
             this.SettingsPanelOfflineContent2.ResumeLayout(false);
             this.SettingsPanelOfflineContent2.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.SettingsPanelOfflineContent1.ResumeLayout(false);
+            this.SettingsPanelOfflineContent1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3879,19 +3881,19 @@
         private System.Windows.Forms.Label SettingsLabelPromptMailInfo;
         private AnimatedButton SettingsAnimatedButtonPromptSubmit;
         private EditField SettingsEditFieldOfflineNewPasswordConfirm;
-        private System.Windows.Forms.Label label5;
-        private AnimatedButton animatedButton4;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label SettingsLabelOfflineChangePassword;
+        private AnimatedButton SettingsAnimatedButtonChangePasswordSubmit;
+        private System.Windows.Forms.Label SettingsLabelOfflinePasswordDescription;
         private System.Windows.Forms.Panel SettingsPanelOfflineContent2;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Panel panel4;
-        private AnimatedButton animatedButton6;
-        private AnimatedButton animatedButton2;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label12;
-        private AnimatedButton animatedButton5;
-        private EditField editField2;
+        private System.Windows.Forms.Label SettingsLabelOfflineChangeNameDescription;
+        private System.Windows.Forms.Label SettingsLabelOfflineChangeName;
+        private System.Windows.Forms.Panel SettingsPanelOfflineContent1;
+        private AnimatedButton SettingsAnimatedButtonOfflineRegister;
+        private AnimatedButton SettingsAnimatedButtonOfflineLogin;
+        private System.Windows.Forms.Label SettingsLabelOfflineGoOnlineDescription;
+        private System.Windows.Forms.Label SettingsLabelOfflineGoOnline;
+        private AnimatedButton SettingsAnimatedButtonOfflineChangeNameSubmit;
+        private EditField SettingsEditFieldOfflineName;
     }
 }
 
