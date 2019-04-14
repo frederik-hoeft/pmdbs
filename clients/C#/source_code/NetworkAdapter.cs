@@ -28,21 +28,42 @@ namespace pmdbs
                     return null;
                 }
             }
-            public static bool IsAvailable()
+            public static bool Available()
             {
                 return taskList.Count > 0 ? true : false;
+            }
+            public static void Execute()
+            {
+                CommandInterpreter.Parse(GetCurrent().Command);
+            }
+            public static void Add(Task task)
+            {
+                taskList.Add(task);
+            }
+            public static void Remove(Task task)
+            {
+                taskList.Remove(task);
             }
         }
         public partial class Task
         {
             private readonly string _automatedTask = string.Empty;
             private readonly string _automatedTaskCondition = string.Empty;
+            private readonly string _failedCondition = "SIG_TASK_FAILED";
             private readonly SearchCondition _searchCondition = SearchCondition.Match;
-            private Task(SearchCondition searchCondition, string automatedTaskCondition, string automatedTask)
+            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command)
             {
-                _automatedTask = automatedTask;
-                _automatedTaskCondition = automatedTaskCondition;
-                _searchCondition = searchCondition;
+                _automatedTask = Command;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                Tasks.Add(this);
+            }
+            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
+            {
+                _automatedTask = Command;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
                 Tasks.Add(this);
             }
             public SearchCondition SearchCondition
@@ -57,9 +78,17 @@ namespace pmdbs
             {
                 get { return _automatedTaskCondition; }
             }
-            public static Task Create(SearchCondition searchCondition, string automatedTaskCondition, string automatedTask)
+            public string FailedCondition
             {
-                return new Task(searchCondition, automatedTaskCondition, automatedTask);
+                get { return _failedCondition; }
+            }
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command)
+            {
+                return new Task(SearchCondition, FinishedCondition, Command);
+            }
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
+            {
+                return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
             }
             public void Delete()
             {
