@@ -622,7 +622,7 @@ namespace pmdbs
                                                                         {
                                                                             new Thread(async delegate ()
                                                                             {
-                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_data SET U_wasOnline = 1;");
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1;");
                                                                                 GlobalVarPool.wasOnline = true;
                                                                             }).Start();
                                                                         }
