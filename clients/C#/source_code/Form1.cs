@@ -1217,6 +1217,7 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
+                    NetworkAdapter.Task Login = NetworkAdapter.Task.Create(SearchCondition.In,)
                     NetworkAdapter.CommandInterpreter.Parse("login -u " + username + " -p " + GlobalVarPool.onlinePassword);
                 }
                 else
