@@ -1201,11 +1201,6 @@ namespace pmdbs
                         }
                         break;
                     }
-                case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
-                    {
-
-                        break;
-                    }
             }
             NetworkAdapter.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
