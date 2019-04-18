@@ -329,7 +329,7 @@ namespace pmdbs
             {
                 NetworkAdapter.MethodProvider.Select(accountsToGet);
             }
-            if (localHeaders.Count == 0 && accountsToGet.Count == 0)
+            if (GlobalVarPool.expectedPacketCount == 0)
             {
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
@@ -350,12 +350,16 @@ namespace pmdbs
                 {
                     for (int j = 0; j < accountParts.Length; j++)
                     {
+                        if (accountParts[j].Equals("mode%eq!SELECT!"))
+                        {
+                            continue;
+                        }
                         for (int k = 0; k < account.Length; k++)
                         {
                             if (accountParts[j].Contains(account[k]))
                             {
                                 values.SetValue(accountParts[j].Split('!')[1], k);
-                                break; ;
+                                break;
                             }
                         }
                     }
@@ -364,7 +368,6 @@ namespace pmdbs
                 {
                     CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
                 }
-                GlobalVarPool.selectedAccounts.Clear();
                 if (values.Contains(null))
                 {
                     CustomException.ThrowNew.GenericException("NULL value in sync values!");
@@ -448,6 +451,7 @@ namespace pmdbs
                     await Task.WhenAny(Insert);
                 }
             }
+            GlobalVarPool.selectedAccounts.Clear();
             // TODO: INVOKE UI
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;

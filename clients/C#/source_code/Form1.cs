@@ -197,6 +197,7 @@ namespace pmdbs
             GlobalVarPool.promptEMail = SettingsLabelPromptMailInfo;
             GlobalVarPool.promptMain = SettingsLabelPromptMain;
             GlobalVarPool.promptPanel = SettingsPanelPromptMain;
+            GlobalVarPool.SyncButton = DataSyncAdvancedImageButton;
             #endregion
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
