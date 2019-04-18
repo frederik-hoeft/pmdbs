@@ -236,6 +236,7 @@ namespace pmdbs
 
             List<List<string>> localHeaders = await localHeaderTask;
             List<string> accountsToGet = new List<string>();
+            List<string> accountsToUpdate = new List<string>();
             if (!remoteHeaderString.Equals("headers%eq![]!"))
             {
                 string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
@@ -273,11 +274,8 @@ namespace pmdbs
                             // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
                             else if (remoteTimestamp != localTimestamp)
                             {
-                                // UPDATE SERVER
-                                string id = localHeaders[j][2];
-                                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
-                                List<string> account = await GetAccount;
-                                NetworkAdapter.MethodProvider.Update(account);
+                                // UPDATE SERVER (ADD LOCAL ID TO accountsToUpdate LIST)
+                                accountsToUpdate.Add(localHeaders[j][2]);
                             }
                             // REMOVE THEM FROM THE LISTS
                             localHeaders.Remove(tempLocalHeaders[j]);
@@ -308,6 +306,7 @@ namespace pmdbs
                     NetworkAdapter.MethodProvider.Delete(accountsToDelete);
                 }
             }
+            GlobalVarPool.exspectedPacketCount = accountsToUpdate.Count + accountsToGet.Count + localHeaders.Count;
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
             {
@@ -316,6 +315,12 @@ namespace pmdbs
                 List<string> account = await GetAccount;
                 // UPLOAD DATA
                 NetworkAdapter.MethodProvider.Insert(account);
+            }
+            for (int i = 0; i < accountsToUpdate.Count; i++)
+            {
+                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + accountsToUpdate[i] + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                List<string> account = await GetAccount;
+                NetworkAdapter.MethodProvider.Update(account);
             }
             // DOWNLOAD FROM SERVER
             if (accountsToGet.Count > 0)

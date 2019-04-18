@@ -380,6 +380,7 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
+                                    // TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
                                     if (NetworkAdapter.Tasks.Available())
                                     {
                                         NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
@@ -526,6 +527,10 @@ namespace pmdbs
                                                                         {
                                                                             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
                                                                             t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
                                                                             break;
                                                                         }
                                                                     case "FETCH_ALL":
@@ -543,17 +548,41 @@ namespace pmdbs
                                                                         }
                                                                     case "UPDATE":
                                                                         {
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
                                                                             break;
                                                                         }
                                                                     case "SELECT":
                                                                         {
                                                                             GlobalVarPool.selectedAccounts.Add(content);
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case "DELETING_COMPLETED":
+                                                                        {
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
                                                                             break;
                                                                         }
                                                                     default:
                                                                         {
                                                                             break;
                                                                         }
+                                                                }
+                                                                if (GlobalVarPool.exspectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
+                                                                {
+                                                                    GlobalVarPool.countSyncPackets = false;
+                                                                    new Thread(new ThreadStart(HelperMethods.FinishSync))
+                                                                    {
+                                                                        IsBackground = true
+                                                                    }.Start();
                                                                 }
                                                             }
                                                             catch

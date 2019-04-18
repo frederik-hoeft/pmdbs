@@ -63,7 +63,11 @@ namespace pmdbs
         public static Form1 Form1 = null;
         public static AdvancedImageButton SyncButton = null;
 
+        public static int countedPackets = 0;
+        public static int exspectedPacketCount = 0;
+
         public static bool commandError = false;
+        public static bool countSyncPackets = false;
         public static bool connected = false;
         public static bool bootCompleted = false;
         public static bool isRoot = false;
