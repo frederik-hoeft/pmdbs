@@ -301,6 +301,7 @@ namespace pmdbs
                     }
                 }
             }
+            GlobalVarPool.countSyncPackets = true;
             GlobalVarPool.expectedPacketCount = accountsToUpdate.Count + accountsToGet.Count + localHeaders.Count + (accountsToDelete.Count > 0 ? 1 : 0);
             // DELETE ON SERVER
             if (accountsToDelete.Count > 0)
