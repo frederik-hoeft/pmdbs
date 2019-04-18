@@ -248,13 +248,25 @@ namespace pmdbs
 
                 }
             });
-            Task<List<String>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
-            List<String> Result = await Initialize;
+            Task<List<string>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
+            List<string> Result = await Initialize;
             try
             {
                 if (Result[0].Equals("1"))
                 {
                     GlobalVarPool.wasOnline = true;
+                    try
+                    {
+                        // GET SERVER SETTINGS
+                        Task<List<string>> getSettings = DataBaseHelper.GetDataAsList("SELECT S_server_ip, S_server_port FROM Tbl_settings LIMIT 1;",2);
+                        List<string> settingsList = await getSettings;
+                        GlobalVarPool.REMOTE_ADDRESS = settingsList[0];
+                        GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settingsList[1]);
+                    }
+                    catch
+                    {
+
+                    }
                     //TODO: Check for Password Changes
                 }
                 NickName = Result[1];
