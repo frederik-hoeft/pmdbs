@@ -197,6 +197,7 @@ namespace pmdbs
             GlobalVarPool.promptEMail = SettingsLabelPromptMailInfo;
             GlobalVarPool.promptMain = SettingsLabelPromptMain;
             GlobalVarPool.promptPanel = SettingsPanelPromptMain;
+            GlobalVarPool.SyncButton = DataSyncAdvancedImageButton;
             #endregion
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
@@ -248,13 +249,28 @@ namespace pmdbs
 
                 }
             });
-            Task<List<String>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
-            List<String> Result = await Initialize;
+            Task<List<string>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
+            List<string> Result = await Initialize;
             try
             {
                 if (Result[0].Equals("1"))
                 {
                     GlobalVarPool.wasOnline = true;
+                    try
+                    {
+                        // GET SERVER SETTINGS
+                        Task<List<string>> getSettings = DataBaseHelper.GetDataAsList("SELECT S_server_ip, S_server_port FROM Tbl_settings LIMIT 1;",2);
+                        List<string> settingsList = await getSettings;
+                        GlobalVarPool.REMOTE_ADDRESS = settingsList[0];
+                        GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settingsList[1]);
+                        Task<List<string>> getUsername = DataBaseHelper.GetDataAsList("SELECT U_username FROM Tbl_user LIMIT 1;",(int)ColumnCount.SingleColumn);
+                        List<string> usernameList = await getUsername;
+                        GlobalVarPool.username = usernameList[0];
+                    }
+                    catch
+                    {
+
+                    }
                     //TODO: Check for Password Changes
                 }
                 NickName = Result[1];
@@ -1267,6 +1283,8 @@ namespace pmdbs
                     NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
                     NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
                 }
+                NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
+                NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
                 NetworkAdapter.Tasks.Execute();
             }
             catch

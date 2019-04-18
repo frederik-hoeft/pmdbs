@@ -380,6 +380,7 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
+                                    // TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
                                     if (NetworkAdapter.Tasks.Available())
                                     {
                                         NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
@@ -526,6 +527,10 @@ namespace pmdbs
                                                                         {
                                                                             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
                                                                             t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
                                                                             break;
                                                                         }
                                                                     case "FETCH_ALL":
@@ -543,11 +548,27 @@ namespace pmdbs
                                                                         }
                                                                     case "UPDATE":
                                                                         {
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
                                                                             break;
                                                                         }
                                                                     case "SELECT":
                                                                         {
                                                                             GlobalVarPool.selectedAccounts.Add(content);
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case "DELETING_COMPLETED":
+                                                                        {
+                                                                            if (GlobalVarPool.countSyncPackets)
+                                                                            {
+                                                                                GlobalVarPool.countedPackets++;
+                                                                            }
                                                                             break;
                                                                         }
                                                                     default:
@@ -555,10 +576,22 @@ namespace pmdbs
                                                                             break;
                                                                         }
                                                                 }
+                                                                if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
+                                                                {
+                                                                    GlobalVarPool.countSyncPackets = false;
+                                                                    NetworkAdapter.Tasks.Clear();
+                                                                    NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
+                                                                    NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                                                                    NetworkAdapter.Tasks.Execute();
+                                                                    new Thread(new ThreadStart(HelperMethods.FinishSync))
+                                                                    {
+                                                                        IsBackground = true
+                                                                    }.Start();
+                                                                }
                                                             }
-                                                            catch
+                                                            catch (Exception e)
                                                             {
-
+                                                                CustomException.ThrowNew.FormatException("Error in return handling:" + Environment.NewLine + e.ToString());
                                                             }
                                                             break;
                                                         }
@@ -622,14 +655,13 @@ namespace pmdbs
                                                                         {
                                                                             new Thread(async delegate ()
                                                                             {
-                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1;");
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1, U_username = \"" + GlobalVarPool.username + "\";");
                                                                                 await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT + "\";");
                                                                                 GlobalVarPool.wasOnline = true;
                                                                             }).Start();
                                                                         }
                                                                         GlobalVarPool.isUser = true;
                                                                         HelperMethods.InvokeOutputLabel("Successfully logged in as " + GlobalVarPool.username + "!");
-                                                                        CustomException.ThrowNew.NotImplementedException("Wow it actually worked \\(^_^)/");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
