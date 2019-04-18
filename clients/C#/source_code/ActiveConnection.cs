@@ -651,7 +651,7 @@ namespace pmdbs
                                                                         {
                                                                             new Thread(async delegate ()
                                                                             {
-                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1;");
+                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1, U_username = \"" + GlobalVarPool.username + "\";");
                                                                                 await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT + "\";");
                                                                                 GlobalVarPool.wasOnline = true;
                                                                             }).Start();

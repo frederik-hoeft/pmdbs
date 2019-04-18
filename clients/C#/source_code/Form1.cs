@@ -262,6 +262,9 @@ namespace pmdbs
                         List<string> settingsList = await getSettings;
                         GlobalVarPool.REMOTE_ADDRESS = settingsList[0];
                         GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settingsList[1]);
+                        Task<List<string>> getUsername = DataBaseHelper.GetDataAsList("SELECT U_username FROM Tbl_user LIMIT 1;",(int)ColumnCount.SingleColumn);
+                        List<string> usernameList = await getUsername;
+                        GlobalVarPool.username = usernameList[0];
                     }
                     catch
                     {
@@ -1279,6 +1282,8 @@ namespace pmdbs
                     NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
                     NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
                 }
+                NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
+                NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
                 NetworkAdapter.Tasks.Execute();
             }
             catch
