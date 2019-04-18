@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.4-6b.19"
+VERSION = "0.4-7b.19"
 BUILD = "development"
-DATE = "Apr 14 2019"
-TIME = "18:53:17"
+DATE = "Apr 18 2019"
+TIME = "22:15:18"
 
 
 ################################################################################
@@ -563,7 +563,7 @@ class DatabaseManagement():
 		cursor = connection.cursor()
 		rawData = None
 		try:
-			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_icon, D_hid, D_datetime FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
+			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_icon, D_hid, D_datetime, D_url FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
 			# GET DATA FROM CURSOR OBJECT
 			rawData = cursor.fetchall()
 		except Exception as e:
@@ -582,11 +582,12 @@ class DatabaseManagement():
 				dEmail = str(entry[3])
 				dNotes = str(entry[4])
 				dIcon = str(entry[5])
-				dHid = str(entry[7])
-				dDatetime = str(entry[8])
+				dHid = str(entry[6])
+				dDatetime = str(entry[7])
+				dUrl = str(entry[8])
 				# APPLY PACKET FORMATTING
 				# EXAMPLE: host%eq!test!;uname%eq!test!;password%eq!test!;email%eq!test!;notes%eq!test!;hid%eq!test!;datetime%eq!test!;
-				data = "host%eq!" + dHost + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;icon%eq!" + dIcon + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
+				data = "host%eq!" + dHost + "!;url%eq!" + dUrl + "!;uname%eq!" + dUname + "!;password%eq!" + dPassword + "!;email%eq!" + dEmail + "!;notes%eq!" + dNotes + "!;icon%eq!" + dIcon + "!;hid%eq!" + dHid + "!;datetime%eq!" + dDatetime + "!;"
 				# RETURN DATA TO CLIENT
 				returnData = "DTARETmode%eq!SELECT!;" + data
 				Network.SendEncrypted(clientSocket, aesKey, returnData)
@@ -634,7 +635,7 @@ class DatabaseManagement():
 		# CREATE CURSOR
 		cursor = connection.cursor()
 		try:
-			for hid in parameters:
+			for hid in queryParameters:
 				if not len(hid) == 0:
 					cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_userid = " + userID + " AND D_hid = \"" + hid + "\");")
 					if cursor.fetchall()[0][0] == 1:
@@ -647,7 +648,7 @@ class DatabaseManagement():
 			connection.commit()
 			Log.ClientEventLog("DELETE", clientSocket)
 			# SEND ACKNOWLEDGEMENT TO CLIENT
-			returnData = "DTARETDELCONFIRMED" + queryParameter
+			returnData = "DTARETmode%eq!DELETING_COMPLETED!;" + queryParameter
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
