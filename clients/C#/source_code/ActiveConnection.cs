@@ -579,15 +579,19 @@ namespace pmdbs
                                                                 if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
+                                                                    NetworkAdapter.Tasks.Clear();
+                                                                    NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
+                                                                    NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                                                                    NetworkAdapter.Tasks.Execute();
                                                                     new Thread(new ThreadStart(HelperMethods.FinishSync))
                                                                     {
                                                                         IsBackground = true
                                                                     }.Start();
                                                                 }
                                                             }
-                                                            catch
+                                                            catch (Exception e)
                                                             {
-
+                                                                CustomException.ThrowNew.FormatException("Error in return handling:" + Environment.NewLine + e.ToString());
                                                             }
                                                             break;
                                                         }

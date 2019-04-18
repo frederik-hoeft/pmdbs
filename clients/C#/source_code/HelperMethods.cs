@@ -249,15 +249,19 @@ namespace pmdbs
                     remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" }, StringSplitOptions.RemoveEmptyEntries).ToList());
                 }
 
-                List<List<string>> tempRemoteHeaders = remoteHeaders;
-                
+                // DEEP COPY ONLY OUTER LIST (ISN'T IMPLEMENTED BY DEFAULT *sigh*)
+                List<List<string>> tempRemoteHeaders = remoteHeaders.ConvertAll(stringList => stringList);
+
                 // ITERATE OVER REMOTE HEADERS
                 for (int i = 0; i < tempRemoteHeaders.Count; i++)
                 {
                     // GET REMOTE HID AND TIMESTAMP
                     string remoteHid = tempRemoteHeaders[i][0];
                     int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
-                    List<List<string>> tempLocalHeaders = localHeaders;
+
+                    // DEEP COPY (ISN'T IMPLEMENTED BY DEFAULT *sigh*)
+                    List<List<string>> tempLocalHeaders = localHeaders.ConvertAll(stringList => stringList);
+
                     //ITERATE OVER LOCAL HEADERS
                     for (int j = 0; j < tempLocalHeaders.Count; j++)
                     {
@@ -301,8 +305,12 @@ namespace pmdbs
                     }
                 }
             }
-            GlobalVarPool.countSyncPackets = true;
+            GlobalVarPool.countedPackets = 0;
             GlobalVarPool.expectedPacketCount = accountsToUpdate.Count + accountsToGet.Count + localHeaders.Count + (accountsToDelete.Count > 0 ? 1 : 0);
+            if (GlobalVarPool.expectedPacketCount > 0)
+            {
+                GlobalVarPool.countSyncPackets = true;
+            }
             // DELETE ON SERVER
             if (accountsToDelete.Count > 0)
             {
