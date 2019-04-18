@@ -237,6 +237,7 @@ namespace pmdbs
             List<List<string>> localHeaders = await localHeaderTask;
             List<string> accountsToGet = new List<string>();
             List<string> accountsToUpdate = new List<string>();
+            List<string> accountsToDelete = new List<string>();
             if (!remoteHeaderString.Equals("headers%eq![]!"))
             {
                 string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
@@ -284,7 +285,6 @@ namespace pmdbs
                     }
                 }
                 // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
-                List<string> accountsToDelete = new List<string>();
                 for (int i = 0; i < remoteHeaders.Count; i++)
                 {
                     string hid = remoteHeaders[i][0];
@@ -300,13 +300,13 @@ namespace pmdbs
                         accountsToGet.Add(hid);
                     }
                 }
-                // DELETE ON SERVER
-                if (accountsToDelete.Count > 0)
-                {
-                    NetworkAdapter.MethodProvider.Delete(accountsToDelete);
-                }
             }
-            GlobalVarPool.exspectedPacketCount = accountsToUpdate.Count + accountsToGet.Count + localHeaders.Count;
+            GlobalVarPool.expectedPacketCount = accountsToUpdate.Count + accountsToGet.Count + localHeaders.Count + (accountsToDelete.Count > 0 ? 1 : 0);
+            // DELETE ON SERVER
+            if (accountsToDelete.Count > 0)
+            {
+                NetworkAdapter.MethodProvider.Delete(accountsToDelete);
+            }
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
             {
@@ -316,6 +316,7 @@ namespace pmdbs
                 // UPLOAD DATA
                 NetworkAdapter.MethodProvider.Insert(account);
             }
+            // UPDATE DATA ON THE SERVER
             for (int i = 0; i < accountsToUpdate.Count; i++)
             {
                 Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + accountsToUpdate[i] + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);

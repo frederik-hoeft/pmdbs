@@ -64,7 +64,7 @@ namespace pmdbs
         public static AdvancedImageButton SyncButton = null;
 
         public static int countedPackets = 0;
-        public static int exspectedPacketCount = 0;
+        public static int expectedPacketCount = 0;
 
         public static bool commandError = false;
         public static bool countSyncPackets = false;

@@ -576,7 +576,7 @@ namespace pmdbs
                                                                             break;
                                                                         }
                                                                 }
-                                                                if (GlobalVarPool.exspectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
+                                                                if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
                                                                     new Thread(new ThreadStart(HelperMethods.FinishSync))
