@@ -236,6 +236,8 @@ namespace pmdbs
 
             List<List<string>> localHeaders = await localHeaderTask;
             List<string> accountsToGet = new List<string>();
+            List<string> accountsToUpdate = new List<string>();
+            List<string> accountsToDelete = new List<string>();
             if (!remoteHeaderString.Equals("headers%eq![]!"))
             {
                 string cleanedRemoteHeaderString = remoteHeaderString.Replace("headers%eq![('", "").Replace("')]!", "");
@@ -247,15 +249,19 @@ namespace pmdbs
                     remoteHeaders.Add(splittedRemoteHeader[i].Split(new string[] { "','" }, StringSplitOptions.RemoveEmptyEntries).ToList());
                 }
 
-                List<List<string>> tempRemoteHeaders = remoteHeaders;
-                
+                // DEEP COPY ONLY OUTER LIST (ISN'T IMPLEMENTED BY DEFAULT *sigh*)
+                List<List<string>> tempRemoteHeaders = remoteHeaders.ConvertAll(stringList => stringList);
+
                 // ITERATE OVER REMOTE HEADERS
                 for (int i = 0; i < tempRemoteHeaders.Count; i++)
                 {
                     // GET REMOTE HID AND TIMESTAMP
                     string remoteHid = tempRemoteHeaders[i][0];
                     int remoteTimestamp = Convert.ToInt32(tempRemoteHeaders[i][1]);
-                    List<List<string>> tempLocalHeaders = localHeaders;
+
+                    // DEEP COPY (ISN'T IMPLEMENTED BY DEFAULT *sigh*)
+                    List<List<string>> tempLocalHeaders = localHeaders.ConvertAll(stringList => stringList);
+
                     //ITERATE OVER LOCAL HEADERS
                     for (int j = 0; j < tempLocalHeaders.Count; j++)
                     {
@@ -273,11 +279,8 @@ namespace pmdbs
                             // GET ALL HIDS WHERE THE LOCAL HID IS NEWER --> IGNORE IF THEY'RE THE SAME AGE
                             else if (remoteTimestamp != localTimestamp)
                             {
-                                // UPDATE SERVER
-                                string id = localHeaders[j][2];
-                                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
-                                List<string> account = await GetAccount;
-                                NetworkAdapter.MethodProvider.Update(account);
+                                // UPDATE SERVER (ADD LOCAL ID TO accountsToUpdate LIST)
+                                accountsToUpdate.Add(localHeaders[j][2]);
                             }
                             // REMOVE THEM FROM THE LISTS
                             localHeaders.Remove(tempLocalHeaders[j]);
@@ -286,7 +289,6 @@ namespace pmdbs
                     }
                 }
                 // DOWNLOAD ALL DATA THAT IS NOT PRESENT ON THE CLIENT YET
-                List<string> accountsToDelete = new List<string>();
                 for (int i = 0; i < remoteHeaders.Count; i++)
                 {
                     string hid = remoteHeaders[i][0];
@@ -302,11 +304,17 @@ namespace pmdbs
                         accountsToGet.Add(hid);
                     }
                 }
-                // DELETE ON SERVER
-                if (accountsToDelete.Count > 0)
-                {
-                    NetworkAdapter.MethodProvider.Delete(accountsToDelete);
-                }
+            }
+            GlobalVarPool.countedPackets = 0;
+            GlobalVarPool.expectedPacketCount = accountsToUpdate.Count + accountsToGet.Count + localHeaders.Count + (accountsToDelete.Count > 0 ? 1 : 0);
+            if (GlobalVarPool.expectedPacketCount > 0)
+            {
+                GlobalVarPool.countSyncPackets = true;
+            }
+            // DELETE ON SERVER
+            if (accountsToDelete.Count > 0)
+            {
+                NetworkAdapter.MethodProvider.Delete(accountsToDelete);
             }
             // UPLOAD ALL DATA THAT IS NOT PRESENT ON THE SERVER YET
             for (int i = 0; i < localHeaders.Count; i++)
@@ -317,12 +325,19 @@ namespace pmdbs
                 // UPLOAD DATA
                 NetworkAdapter.MethodProvider.Insert(account);
             }
+            // UPDATE DATA ON THE SERVER
+            for (int i = 0; i < accountsToUpdate.Count; i++)
+            {
+                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + accountsToUpdate[i] + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                List<string> account = await GetAccount;
+                NetworkAdapter.MethodProvider.Update(account);
+            }
             // DOWNLOAD FROM SERVER
             if (accountsToGet.Count > 0)
             {
                 NetworkAdapter.MethodProvider.Select(accountsToGet);
             }
-            if (localHeaders.Count == 0 && accountsToGet.Count == 0)
+            if (GlobalVarPool.expectedPacketCount == 0)
             {
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
@@ -343,12 +358,16 @@ namespace pmdbs
                 {
                     for (int j = 0; j < accountParts.Length; j++)
                     {
+                        if (accountParts[j].Equals("mode%eq!SELECT!"))
+                        {
+                            continue;
+                        }
                         for (int k = 0; k < account.Length; k++)
                         {
                             if (accountParts[j].Contains(account[k]))
                             {
                                 values.SetValue(accountParts[j].Split('!')[1], k);
-                                break; ;
+                                break;
                             }
                         }
                     }
@@ -357,7 +376,6 @@ namespace pmdbs
                 {
                     CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
                 }
-                GlobalVarPool.selectedAccounts.Clear();
                 if (values.Contains(null))
                 {
                     CustomException.ThrowNew.GenericException("NULL value in sync values!");
@@ -441,6 +459,7 @@ namespace pmdbs
                     await Task.WhenAny(Insert);
                 }
             }
+            GlobalVarPool.selectedAccounts.Clear();
             // TODO: INVOKE UI
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
