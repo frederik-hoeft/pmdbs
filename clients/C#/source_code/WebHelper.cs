@@ -40,7 +40,6 @@ namespace pmdbs
             }
         }
 
-
         public static string GetFavIcons(string Url)
         {
             string domain = "";
@@ -67,30 +66,45 @@ namespace pmdbs
             bool successful = false;
             foreach (HtmlNode Icon in Icons)
             {
-                try
+                string iconLink = Icon.GetAttributeValue("src", null);
+                string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
+                ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+                SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
+                
+
+                for (int i = 0; i < protocolTypes.Length; i++)
                 {
-                    string iconLink = Icon.GetAttributeValue("src", null);
-                    string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
-                    using (WebClient client = new WebClient())
+                    ServicePointManager.SecurityProtocol = protocolTypes[i];
+                    try
                     {
-                        using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink.Replace("https", "http"))))
+                        using (WebClient client = new WebClient())
+                        using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink)))
                         {
-                            Bitmap bmpIcon = new Bitmap(Image.FromStream(stream));
+                            Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
+                            /*if (bmpIcon.Width < 32 || bmpIcon.Height < 32)
+                            {
+                                break;
+                            }*/
                             using (MemoryStream ms = new MemoryStream())
                             {
                                 bmpIcon.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                                 base64Image = Convert.ToBase64String(ms.ToArray());
                             }
                         }
+                        successful = true;
+                        break;
                     }
-                    successful = true;
+                    catch (Exception e)
+                    {
+                        //CustomException.ThrowNew.NetworkException(e.ToString());
+                    }
+                }
+
+                if (successful)
+                {
                     break;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message.ToUpper() + "\n" + e.ToString());
-                    continue;
-                }
+                
             }
             if (!successful)
             {
@@ -98,6 +112,23 @@ namespace pmdbs
             }
             return base64Image;
         }
+
+        private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
+        {
+            // If the certificate is a valid, signed certificate, return true.
+            if (error == System.Net.Security.SslPolicyErrors.None)
+            {
+                return true;
+            }
+
+            Console.WriteLine("X509Certificate [{0}] Policy Error: '{1}'",
+                cert.Subject,
+                error.ToString());
+
+            return false;
+        }
+
+
         public static bool IsValidDomainName(string name)
         {
             return Uri.CheckHostName(name) != UriHostNameType.Unknown;
