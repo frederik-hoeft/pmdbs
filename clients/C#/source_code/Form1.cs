@@ -522,8 +522,7 @@ namespace pmdbs
                 Query += ", " + Columns[i] + " = \"" + Values[i] + "\"";
             }
             Query += " WHERE D_id = " + DataDetailsID + ";";
-            Task UpdateData = DataBaseHelper.ModifyData(Query);
-            await Task.WhenAll(UpdateData);
+            await DataBaseHelper.ModifyData(Query);
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string oldUrl = LinkedRow["6"].ToString();
             if (!Website.Equals(oldUrl))
@@ -574,8 +573,7 @@ namespace pmdbs
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
                     Query = "UPDATE Tbl_data SET D_icon = \"" + encryptedFavIcon + "\" WHERE D_id = " + DataDetailsID + ";";
-                    Task SetFavIcon = DataBaseHelper.ModifyData(Query);
-                    await Task.WhenAll(SetFavIcon);
+                    await DataBaseHelper.ModifyData(Query);
                     Invoke((MethodInvoker)delegate
                     {
                         UpdateDetailsWindow(LinkedRow);
@@ -666,11 +664,9 @@ namespace pmdbs
             string hid = LinkedRow["1"].ToString();
             if (!hid.Equals("EMPTY"))
             {
-                Task SetDelFlag = DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hid + "\");");
-                await Task.WhenAll(SetDelFlag);
+                await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hid + "\");");
             }
-            Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
-            await Task.WhenAll(DeleteItem);
+            await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             GlobalVarPool.UserData.Rows.Remove(LinkedRow);
             RefreshUserData(CurrentPage);
             DataPanelDetails.SuspendLayout();
@@ -881,8 +877,7 @@ namespace pmdbs
                     Query += ", \"" + Values[i] + "\"";
                 }
                 Query += ");";
-                Task InsertData = DataBaseHelper.ModifyData(Query);
-                await Task.WhenAll(InsertData);
+                await DataBaseHelper.ModifyData(Query);
                 if (GlobalVarPool.UserData == null)
                 {
                     GlobalVarPool.UserData = new DataTable();
@@ -1144,8 +1139,7 @@ namespace pmdbs
             Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
-            Task SetupDatabase = DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
-            await Task.WhenAll(SetupDatabase);
+            await DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));

@@ -36,7 +36,7 @@ namespace pmdbs
         /// <returns></returns
         public static async Task<List<string>> GetDataAsList(string query, int columns)
         {
-            Task Connect = SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
@@ -69,7 +69,7 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<List<List<string>>> GetDataAs2DList(string query, int columns)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
@@ -104,7 +104,7 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<DataTable> GetDataAsDataTable(string query, int columns)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
@@ -141,7 +141,7 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task ModifyData(string query)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();

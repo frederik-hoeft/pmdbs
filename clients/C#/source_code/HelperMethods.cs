@@ -227,8 +227,7 @@ namespace pmdbs
                 // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
                 for (int i = 0; i < deletedItems.Length; i++)
                 {
-                    Task Delete = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
-                    await Task.WhenAny(Delete);
+                    await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
                 }
             }
             // GET LOCAL HEADERS
@@ -412,8 +411,7 @@ namespace pmdbs
                         CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
                     }
                     query += " WHERE D_hid = \"" + values[7] + "\";";
-                    Task Update = DataBaseHelper.ModifyData(query);
-                    await Task.WhenAny(Update);
+                    await DataBaseHelper.ModifyData(query);
                 }
                 else
                 {
@@ -460,8 +458,7 @@ namespace pmdbs
                         CustomException.ThrowNew.IndexOutOfRangeException(e.ToString());
                     }
                     query += ");";
-                    Task Insert = DataBaseHelper.ModifyData(query);
-                    await Task.WhenAny(Insert);
+                    await DataBaseHelper.ModifyData(query);
                 }
             }
             GlobalVarPool.selectedAccounts.Clear();
@@ -516,8 +513,7 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Missing parameter in SetHid().");
                 return;
             }
-            Task Update = DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_hid = \"" + hid + "\" WHERE D_id = " + localID + ";");
-            await Task.WhenAny(Update);
+            await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_hid = \"" + hid + "\" WHERE D_id = " + localID + ";");
         }
     }
 }
