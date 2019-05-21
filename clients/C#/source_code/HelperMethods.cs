@@ -468,7 +468,7 @@ namespace pmdbs
             GlobalVarPool.selectedAccounts.Clear();
             // TODO: INVOKE UI
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
-            GlobalVarPool.UserData = await GetData;
+            GlobalVarPool.UserData = await GetData; // <-- ERROR: "Database is not open" after insert + syncing
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
             int Fields = (Columns - 3) * GlobalVarPool.UserData.Rows.Count;
