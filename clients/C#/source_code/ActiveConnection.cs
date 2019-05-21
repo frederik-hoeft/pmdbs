@@ -523,7 +523,8 @@ namespace pmdbs
                                                                     case "INSERT":
                                                                         {
                                                                             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
-                                                                            t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
+                                                                            t.Start((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
+                                                                            // HelperMethods.SetHid((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                                                                             if (GlobalVarPool.countSyncPackets)
                                                                             {
                                                                                 GlobalVarPool.countedPackets++;
