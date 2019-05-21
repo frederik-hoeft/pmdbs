@@ -1277,15 +1277,15 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 else
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
-                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
-                NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
-                NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                NetworkAdapter.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                 NetworkAdapter.Tasks.Execute();
             }
             catch (Exception ex)
@@ -1343,6 +1343,7 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter a valid email address.");
                 return;
             }
+            GlobalVarPool.name = nickname;
             GlobalVarPool.email = email;
             int port = Convert.ToInt32(strPort);
             if (port < 1 || port > 65536)
@@ -1374,12 +1375,12 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 else
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
-                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 NetworkAdapter.Tasks.Execute();
             }

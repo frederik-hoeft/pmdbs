@@ -503,6 +503,16 @@ namespace pmdbs
                 Network.SendEncrypted("MNGCNDusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
 
+            public static void Delete(List<string> hids)
+            {
+                string hidsFormatted = "";
+                for (int i = 0; i < hids.Count; i++)
+                {
+                    hidsFormatted += hids[i] + ";";
+                }
+                Network.SendEncrypted("REQDEL" + hidsFormatted);
+            }
+
             public static void Disconnect()
             {
                 Network.Send("FIN");
@@ -513,44 +523,12 @@ namespace pmdbs
                 GlobalVarPool.connected = false;
             }
             
-            public static void Sync()
-            {
-                Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
-            }
 
             public static void GetCookie()
             {
                 Network.SendEncrypted("MNGCKI");
             }
 
-            public static void Login()
-            {
-                Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
-            }
-
-            public static void Logout()
-            {
-                Network.SendEncrypted("MNGLGO");
-            }
-
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
-            public static void Update(List<string> account)
-            {
-                string host = account[1];
-                string url = account[2];
-                string username = account[3];
-                string password = account[4];
-                string email = account[5];
-                string notes = account[6];
-                string icon = account[7];
-                string hid = account[8];
-                string timestamp = account[9];
-                string query = "hid%eq!" + hid + "!;datetime%eq!" + timestamp + "!;host%eq!" + host + "!;password%eq!" + password + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
-                Network.SendEncrypted("REQUPD" + query);
-            }
             /// <summary>
             /// 
             /// </summary>
@@ -570,15 +548,22 @@ namespace pmdbs
                 string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
                 Network.SendEncrypted("REQINS" + query);
             }
-            public static void Delete(List<string> hids)
+
+            public static void Login()
             {
-                string hidsFormatted = "";
-                for (int i = 0; i < hids.Count; i++)
-                {
-                    hidsFormatted += hids[i] + ";";
-                }
-                Network.SendEncrypted("REQDEL" + hidsFormatted);
+                Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
+
+            public static void Logout()
+            {
+                Network.SendEncrypted("MNGLGO");
+            }
+
+            public static void Register()
+            {
+                Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
             public static void Select(List<string> hids)
             {
                 string hidsFormatted = "";
@@ -589,9 +574,28 @@ namespace pmdbs
                 Network.SendEncrypted("REQSEL" + hidsFormatted);
             }
 
-            public static void Execute(List<NetworkAdapter.Task> tasks)
+            public static void Sync()
             {
+                Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
+            }
 
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
+            public static void Update(List<string> account)
+            {
+                string host = account[1];
+                string url = account[2];
+                string username = account[3];
+                string password = account[4];
+                string email = account[5];
+                string notes = account[6];
+                string icon = account[7];
+                string hid = account[8];
+                string timestamp = account[9];
+                string query = "hid%eq!" + hid + "!;datetime%eq!" + timestamp + "!;host%eq!" + host + "!;password%eq!" + password + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
+                Network.SendEncrypted("REQUPD" + query);
             }
         }
 

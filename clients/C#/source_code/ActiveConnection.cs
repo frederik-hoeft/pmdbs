@@ -394,7 +394,7 @@ namespace pmdbs
 
                                                     if (NetworkAdapter.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrent();
                                                         NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
                                                     }
                                                 }
@@ -407,7 +407,7 @@ namespace pmdbs
 
                                                     if (NetworkAdapter.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrent();
                                                         NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
                                                     }
                                                 }
@@ -420,7 +420,7 @@ namespace pmdbs
 
                                                     if (NetworkAdapter.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
+                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrent();
                                                         NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
                                                     }
                                                 }
@@ -580,8 +580,8 @@ namespace pmdbs
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
                                                                     NetworkAdapter.Tasks.Clear();
-                                                                    NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
-                                                                    NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                                                                    NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                                                    NetworkAdapter.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                                                                     NetworkAdapter.Tasks.Execute();
                                                                     new Thread(new ThreadStart(HelperMethods.FinishSync))
                                                                     {
