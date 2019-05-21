@@ -181,7 +181,6 @@ namespace pmdbs
 
             public Action<object[]> ParameterizedAction
             {
-                
                 get { return _automatedParameterizedAction; }
             }
 
@@ -232,7 +231,7 @@ namespace pmdbs
 
             public void Execute()
             {
-
+                _automatedParameterizedAction(null);
             }
         }
         public struct CommandInterpreter

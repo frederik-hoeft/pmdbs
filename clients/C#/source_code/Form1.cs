@@ -704,10 +704,6 @@ namespace pmdbs
             if (!GlobalVarPool.connected)
             {
                 NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
-                object[] temp = new object[] { };
-                Action test = new Action(delegate { });
-                Action<object[]> t = (Action<object[]>)test(temp);
-                NetworkAdapter.Tasks.GetCurrent().ParameterizedAction();
             }
             if (!GlobalVarPool.isUser)
             {
