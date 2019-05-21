@@ -933,7 +933,22 @@ namespace pmdbs
 
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            CustomException.ThrowNew.NotImplementedException();
+            animatedButton1.Enabled = false;
+            new Thread(delegate ()
+            {
+                string base64Img = WebHelper.GetFavIcons(AddEditFieldWebsite.TextTextBox);
+                byte[] iconBytes = Convert.FromBase64String(base64Img);
+                Invoke((MethodInvoker)delegate
+                {
+                    using (MemoryStream ms = new MemoryStream(iconBytes, 0, iconBytes.Length))
+                    {
+                        Image icon = Image.FromStream(ms, true);
+                        pictureBox1.Image = icon.GetThumbnailImage(350, 350, null, new IntPtr());
+                        icon.Dispose();
+                    }
+                    animatedButton1.Enabled = true;
+                });
+            }).Start();
         }
 
         #endregion
