@@ -599,6 +599,7 @@ class DatabaseManagement():
 			Network.SendEncrypted(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
 		except Exception as e:
+			Log.ServerEventLog("ERROR", str(e))
 			Handle.Error("UNKN", e, clientAddress, clientSocket, aesKey, True)
 			return
 	
