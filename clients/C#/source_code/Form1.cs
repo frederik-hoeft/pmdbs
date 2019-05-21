@@ -1345,6 +1345,7 @@ namespace pmdbs
             }
             GlobalVarPool.name = nickname;
             GlobalVarPool.email = email;
+            GlobalVarPool.username = username;
             int port = Convert.ToInt32(strPort);
             if (port < 1 || port > 65536)
             {

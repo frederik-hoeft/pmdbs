@@ -55,7 +55,7 @@ namespace pmdbs
             /// </summary>
             public static void Execute()
             {
-                CommandInterpreter.Parse(GetCurrent().Command);
+                GetCurrent().Run();
             }
             /// <summary>
             /// Schedules a new task to be executed by the ATS

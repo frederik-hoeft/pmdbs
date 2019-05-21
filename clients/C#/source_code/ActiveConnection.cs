@@ -394,8 +394,7 @@ namespace pmdbs
 
                                                     if (NetworkAdapter.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrent();
-                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                        NetworkAdapter.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -407,8 +406,7 @@ namespace pmdbs
 
                                                     if (NetworkAdapter.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrent();
-                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                        NetworkAdapter.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -420,8 +418,7 @@ namespace pmdbs
 
                                                     if (NetworkAdapter.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrent();
-                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                        NetworkAdapter.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
