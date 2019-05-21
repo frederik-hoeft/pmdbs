@@ -700,17 +700,17 @@ namespace pmdbs
                 SettingsFlowLayoutPanelRegister.BringToFront();
                 return;
             }
-            NetworkAdapter.Tasks.Clear();
+            AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            NetworkAdapter.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
-            NetworkAdapter.Tasks.Execute();
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+            AutomatedTaskFramework.Tasks.Execute();
             DataSyncAdvancedImageButton.Enabled = false;
         }
 
@@ -1198,29 +1198,29 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
             }
-            List<NetworkAdapter.Task> scheduledTasks = NetworkAdapter.Tasks.GetAll();
-            NetworkAdapter.Tasks.Clear();
+            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll();
+            AutomatedTaskFramework.Tasks.Clear();
             switch (GlobalVarPool.promptCommand)
             {
                 case "ACTIVATE_ACCOUNT":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
-                        NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGGED_OUT", NetworkAdapter.MethodProvider.Logout);
-                        NetworkAdapter.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
+                        AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "LOGGED_OUT", NetworkAdapter.MethodProvider.Logout);
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                         break;
                     }
                 case "CONFIRM_NEW_DEVICE":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
                         for (int i = 1; i < scheduledTasks.Count; i++)
                         {
-                            NetworkAdapter.Tasks.Add(scheduledTasks[i]);
+                            AutomatedTaskFramework.Tasks.Add(scheduledTasks[i]);
                         }
                         break;
                     }
             }
-            NetworkAdapter.Tasks.Execute();
+            AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
         }
         #endregion
@@ -1277,16 +1277,16 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 else
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
-                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
-                NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                NetworkAdapter.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
-                NetworkAdapter.Tasks.Execute();
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Tasks.Execute();
             }
             catch (Exception ex)
             {
@@ -1376,14 +1376,14 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 else
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
-                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
-                NetworkAdapter.Tasks.Execute();
+                AutomatedTaskFramework.Tasks.Execute();
             }
             catch
             {

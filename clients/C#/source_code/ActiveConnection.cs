@@ -381,9 +381,9 @@ namespace pmdbs
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
                                     // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
-                                    if (NetworkAdapter.Tasks.Available())
+                                    if (AutomatedTaskFramework.Tasks.Available())
                                     {
-                                        NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
+                                        AutomatedTaskFramework.Task currentTask = AutomatedTaskFramework.Tasks.GetCurrent();
                                         if (currentTask.FailedCondition.Split('|').Where(failedCondition => decryptedData.Contains(failedCondition)).Count() == 0)
                                         {
                                             if (currentTask.SearchCondition == SearchCondition.Match)
@@ -392,9 +392,9 @@ namespace pmdbs
                                                 {
                                                     currentTask.Delete();
 
-                                                    if (NetworkAdapter.Tasks.Available())
+                                                    if (AutomatedTaskFramework.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Tasks.GetCurrent().Run();
+                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -404,9 +404,9 @@ namespace pmdbs
                                                 {
                                                     currentTask.Delete();
 
-                                                    if (NetworkAdapter.Tasks.Available())
+                                                    if (AutomatedTaskFramework.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Tasks.GetCurrent().Run();
+                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -416,9 +416,9 @@ namespace pmdbs
                                                 {
                                                     currentTask.Delete();
 
-                                                    if (NetworkAdapter.Tasks.Available())
+                                                    if (AutomatedTaskFramework.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Tasks.GetCurrent().Run();
+                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -576,10 +576,10 @@ namespace pmdbs
                                                                 if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
-                                                                    NetworkAdapter.Tasks.Clear();
-                                                                    NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                                                                    NetworkAdapter.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
-                                                                    NetworkAdapter.Tasks.Execute();
+                                                                    AutomatedTaskFramework.Tasks.Clear();
+                                                                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                                                    AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                                                                    AutomatedTaskFramework.Tasks.Execute();
                                                                     new Thread(new ThreadStart(HelperMethods.FinishSync))
                                                                     {
                                                                         IsBackground = true
@@ -703,7 +703,7 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
                                                                     {
-                                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
+                                                                        NetworkAdapter.MethodProvider.GetCookie();
                                                                         break;
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
