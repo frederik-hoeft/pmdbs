@@ -367,6 +367,7 @@ namespace pmdbs
                             case 'E':
                                 {
                                     Thread.Sleep(100); // <-- APPARENTLY THERE'S SOME NASTY BUG SOMEWHERE. DONT KNOW DONT CARE. USING "Thread.Sleep(100);" SEEMS TO FIX IT SOMEHOW. JUST MICROSOFT THINGS *sigh*
+                                    File.AppendAllText("log.txt", dataString + Environment.NewLine);
                                     if (!CryptoHelper.VerifyHMAC(GlobalVarPool.hmac, dataString.Substring(1)))
                                     {
                                         CustomException.ThrowNew.NetworkException("Received an invalid HMAC checksum.", "[ERRNO 31] IMAC");
@@ -380,6 +381,7 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
+                                    File.AppendAllText("log.txt", decryptedData + Environment.NewLine + Environment.NewLine);
                                     // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
                                     if (AutomatedTaskFramework.Tasks.Available())
                                     {
