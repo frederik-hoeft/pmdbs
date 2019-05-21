@@ -124,7 +124,7 @@ namespace pmdbs
                 Tasks.Add(this);
             }
 
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action TaskAction)
+            private Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
@@ -132,7 +132,7 @@ namespace pmdbs
                 Tasks.Add(this);
             }
 
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action TaskAction, string FailedCondition)
+            private Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
