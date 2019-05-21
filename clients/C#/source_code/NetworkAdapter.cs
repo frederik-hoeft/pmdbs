@@ -301,6 +301,9 @@ namespace pmdbs
                 }
             }
         }
+        /// <summary>
+        /// MethodProvider contains all methods to interact with the remote server.
+        /// </summary>
         public struct MethodProvider
         {
             public static void ActivateAccount(string code)
