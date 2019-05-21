@@ -108,7 +108,6 @@ namespace pmdbs
         public partial class Task
         {
             private readonly Action _automatedAction = new Action(delegate { });
-            private readonly Action<object[]> _automatedParameterizedAction = new Action<object[]>(delegate { });
             private readonly string _automatedTask = string.Empty;
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
@@ -124,23 +123,6 @@ namespace pmdbs
             private Task(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
             {
                 _automatedTask = Command;
-                _automatedTaskCondition = FinishedCondition;
-                _searchCondition = SearchCondition;
-                _failedCondition = FailedCondition;
-                Tasks.Add(this);
-            }
-
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> ParameterizedTaskAction)
-            {
-                _automatedParameterizedAction = ParameterizedTaskAction;
-                _automatedTaskCondition = FinishedCondition;
-                _searchCondition = SearchCondition;
-                Tasks.Add(this);
-            }
-
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> ParameterizedTaskAction, string FailedCondition)
-            {
-                _automatedParameterizedAction = ParameterizedTaskAction;
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
                 _failedCondition = FailedCondition;
@@ -174,16 +156,6 @@ namespace pmdbs
                 get { return _automatedTask; }
             }
 
-            public Action Action
-            {
-                get { return _automatedAction; }
-            }
-
-            public Action<object[]> ParameterizedAction
-            {
-                get { return _automatedParameterizedAction; }
-            }
-
             public string FinishedCondition
             {
                 get { return _automatedTaskCondition; }
@@ -204,16 +176,6 @@ namespace pmdbs
                 return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
             }
 
-            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action<object[]> ParameterizedTaskAction)
-            {
-                return new Task(SearchCondition, FinishedCondition, ParameterizedTaskAction);
-            }
-
-            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action<object[]> ParameterizedTaskAction, string FailedCondition)
-            {
-                return new Task(SearchCondition, FinishedCondition, ParameterizedTaskAction, FailedCondition);
-            }
-
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 return new Task(SearchCondition, FinishedCondition, TaskAction);
@@ -229,9 +191,9 @@ namespace pmdbs
                 Tasks.Remove(this);
             }
 
-            public void Execute()
+            public void Run()
             {
-                _automatedParameterizedAction(null);
+                _automatedAction();
             }
         }
         public struct CommandInterpreter
@@ -517,6 +479,18 @@ namespace pmdbs
         }
         public struct MethodProvider
         {
+            public static void Connect()
+            {
+                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                {
+                    IsBackground = true
+                };
+                connectionThread.Start();
+            }
+            public static void Login()
+            {
+                Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
             public static void GetCookie()
             {
                 Network.SendEncrypted("MNGCKI");
