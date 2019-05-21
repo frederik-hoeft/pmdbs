@@ -479,6 +479,16 @@ namespace pmdbs
         }
         public struct MethodProvider
         {
+            public static void ActivateAccount(string code)
+            {
+                Network.SendEncrypted("MNGVERusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;");
+            }
+
+            public static void CheckCookie()
+            {
+                Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
             public static void Connect()
             {
                 Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
@@ -487,18 +497,40 @@ namespace pmdbs
                 };
                 connectionThread.Start();
             }
-            public static void Login()
+
+            public static void ConfirmNewDevice(string code)
             {
-                Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+                Network.SendEncrypted("MNGCNDusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
+
+            public static void Disconnect()
+            {
+                Network.Send("FIN");
+                GlobalVarPool.threadKilled = true;
+                GlobalVarPool.clientSocket.Disconnect(true);
+                GlobalVarPool.clientSocket.Close();
+                GlobalVarPool.clientSocket.Dispose();
+                GlobalVarPool.connected = false;
+            }
+            
+            public static void Sync()
+            {
+                Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
+            }
+
             public static void GetCookie()
             {
                 Network.SendEncrypted("MNGCKI");
             }
 
-            public static void CheckCookie()
+            public static void Login()
             {
-                Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
+                Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
+            public static void Logout()
+            {
+                Network.SendEncrypted("MNGLGO");
             }
 
             /// <summary>

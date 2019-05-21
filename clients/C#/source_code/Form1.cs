@@ -703,13 +703,13 @@ namespace pmdbs
             NetworkAdapter.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
+                NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
+                NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            NetworkAdapter.Task.Create(SearchCondition.Contains, "FETCH_SYNC", "fetchsync");
+            NetworkAdapter.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
             NetworkAdapter.Tasks.Execute();
             DataSyncAdvancedImageButton.Enabled = false;
         }
@@ -1204,15 +1204,15 @@ namespace pmdbs
             {
                 case "ACTIVATE_ACCOUNT":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", "activateaccount -u " + GlobalVarPool.username + " -c PM-" + code);
-                        NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGGED_OUT", "logout");
-                        NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
+                        NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGGED_OUT", NetworkAdapter.MethodProvider.Logout);
+                        NetworkAdapter.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                         break;
                     }
                 case "CONFIRM_NEW_DEVICE":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword + " -c PM-" + code);
+                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
                         for (int i = 1; i < scheduledTasks.Count; i++)
                         {
                             NetworkAdapter.Tasks.Add(scheduledTasks[i]);
