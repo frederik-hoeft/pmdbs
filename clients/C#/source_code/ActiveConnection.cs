@@ -442,11 +442,11 @@ namespace pmdbs
                                                     HelperMethods.InvokeOutputLabel("Encrypted connection established!");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
+                                                        NetworkAdapter.MethodProvider.GetCookie();
                                                     }
                                                     else
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.Parse("checkcookie");
+                                                        NetworkAdapter.MethodProvider.CheckCookie();
                                                     }
                                                     break;
                                                 }

@@ -8,15 +8,29 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// NetworkAdapter contains all high-level classes and methods used to interact with the server.
+    /// </summary>
     public static class NetworkAdapter
     {
+        /// <summary>
+        /// Tasks maintains a list of all currently active tasks and provides basic task management such as scheduling, executing and cancelling.
+        /// </summary>
         public sealed class Tasks
         {
             private static readonly List<NetworkAdapter.Task> taskList = new List<Task>();
+            /// <summary>
+            /// Gets the next scheduled task
+            /// </summary>
+            /// <returns>Task object</returns>
             public static Task GetCurrent()
             {
                 return taskList[0];
             }
+            /// <summary>
+            /// Gets the next scheduled task or NULL if no task is scheduled
+            /// </summary>
+            /// <returns>Task object or NULL</returns>
             public static Task GetCurrentOrDefault()
             {
                 if (taskList.Count > 0)
@@ -28,6 +42,10 @@ namespace pmdbs
                     return null;
                 }
             }
+            /// <summary>
+            /// Checks whether any tasks are scheduled
+            /// </summary>
+            /// <returns></returns>
             public static bool Available()
             {
                 return taskList.Count > 0 ? true : false;
