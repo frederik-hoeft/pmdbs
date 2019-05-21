@@ -339,6 +339,12 @@ namespace pmdbs
             }
             if (GlobalVarPool.expectedPacketCount == 0)
             {
+                GlobalVarPool.countSyncPackets = false;
+                AutomatedTaskFramework.Tasks.Clear();
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Tasks.Execute();
+                HelperMethods.FinishSync();
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
                     CustomException.ThrowNew.GenericException("Done. Nothing to do.");
