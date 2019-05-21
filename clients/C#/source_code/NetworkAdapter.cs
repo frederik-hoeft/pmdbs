@@ -394,6 +394,16 @@ namespace pmdbs
         }
         public struct MethodProvider
         {
+            public static void GetCookie()
+            {
+                Network.SendEncrypted("MNGCKI");
+            }
+
+            public static void CheckCookie()
+            {
+                Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
             /// <summary>
             /// 
             /// </summary>
@@ -455,6 +465,10 @@ namespace pmdbs
 
             }
         }
+
+        /// <summary>
+        /// LEGACY CODE CURRENTLY ONLY USED BY THE ATS (AUTOMATED-TASK-SYSTEM). MAY BE USED BY THE INTEGRATED CLI IN THE FUTURE.
+        /// </summary>
         private struct Commands
         {
             public static void FetchAll(object parameterObject)
