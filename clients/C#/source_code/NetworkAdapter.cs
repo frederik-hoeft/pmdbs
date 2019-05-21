@@ -50,33 +50,59 @@ namespace pmdbs
             {
                 return taskList.Count > 0 ? true : false;
             }
+            /// <summary>
+            /// Executes the next scheduled task
+            /// </summary>
             public static void Execute()
             {
                 CommandInterpreter.Parse(GetCurrent().Command);
             }
+            /// <summary>
+            /// Schedules a new task to be executed by the ATS
+            /// </summary>
+            /// <param name="task"></param>
             public static void Add(Task task)
             {
                 taskList.Add(task);
             }
+            /// <summary>
+            /// Cancels a specific task from the schedule
+            /// </summary>
+            /// <param name="task">The task to be cancelled</param>
             public static void Remove(Task task)
             {
                 taskList.Remove(task);
             }
+            /// <summary>
+            /// Cancels all scheduled tasks
+            /// </summary>
             public static void Clear()
             {
                 taskList.Clear();
             }
+            /// <summary>
+            /// Gets all currently scheduled tasks
+            /// </summary>
+            /// <returns>List of all scheduleds tasks</returns>
             public static List<Task> GetAll()
             {
                 return taskList;
             }
-            public static void RemoveCurrent()
+            /// <summary>
+            /// Cancels the current task
+            /// </summary>
+            /// <returns>Returns true if the task has been cancelled successfully</returns>
+            public static bool RemoveCurrent()
             {
                 try
                 {
                     taskList.RemoveAt(0);
+                    return true;
                 }
-                catch { }
+                catch
+                {
+                    return false;
+                }
             }
         }
         public partial class Task
@@ -99,6 +125,14 @@ namespace pmdbs
                 _searchCondition = SearchCondition;
                 _failedCondition = FailedCondition;
                 Tasks.Add(this);
+            }
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction)
+            {
+
+            }
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction, string FailedCondition)
+            {
+
             }
             public SearchCondition SearchCondition
             {
