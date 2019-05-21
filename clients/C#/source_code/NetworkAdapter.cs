@@ -107,7 +107,8 @@ namespace pmdbs
         }
         public partial class Task
         {
-            private readonly Action<object[]> _automatedAction = new Action<object[]>(delegate { });
+            private readonly Action _automatedAction = new Action(delegate { });
+            private readonly Action<object[]> _automatedParameterizedAction = new Action<object[]>(delegate { });
             private readonly string _automatedTask = string.Empty;
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
@@ -119,6 +120,7 @@ namespace pmdbs
                 _searchCondition = SearchCondition;
                 Tasks.Add(this);
             }
+
             private Task(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
             {
                 _automatedTask = Command;
@@ -127,14 +129,33 @@ namespace pmdbs
                 _failedCondition = FailedCondition;
                 Tasks.Add(this);
             }
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction)
+
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> ParameterizedTaskAction)
+            {
+                _automatedParameterizedAction = ParameterizedTaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                Tasks.Add(this);
+            }
+
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> ParameterizedTaskAction, string FailedCondition)
+            {
+                _automatedParameterizedAction = ParameterizedTaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
+                Tasks.Add(this);
+            }
+
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action TaskAction)
             {
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
                 Tasks.Add(this);
             }
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction, string FailedCondition)
+
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action TaskAction, string FailedCondition)
             {
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
@@ -142,46 +163,73 @@ namespace pmdbs
                 _failedCondition = FailedCondition;
                 Tasks.Add(this);
             }
+
             public SearchCondition SearchCondition
             {
                 get { return _searchCondition; }
             }
+
             public string Command
             {
                 get { return _automatedTask; }
             }
-            public Action<object[]> Action
+
+            public Action Action
             {
                 get { return _automatedAction; }
             }
+
+            public Action<object[]> ParameterizedAction
+            {
+                
+                get { return _automatedParameterizedAction; }
+            }
+
             public string FinishedCondition
             {
                 get { return _automatedTaskCondition; }
             }
+
             public string FailedCondition
             {
                 get { return _failedCondition; }
             }
+
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command)
             {
                 return new Task(SearchCondition, FinishedCondition, Command);
             }
+
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
             {
                 return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
             }
+
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action<object[]> ParameterizedTaskAction)
             {
                 return new Task(SearchCondition, FinishedCondition, ParameterizedTaskAction);
             }
+
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action<object[]> ParameterizedTaskAction, string FailedCondition)
             {
                 return new Task(SearchCondition, FinishedCondition, ParameterizedTaskAction, FailedCondition);
             }
+
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
+            {
+                return new Task(SearchCondition, FinishedCondition, TaskAction);
+            }
+
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
+            {
+                return new Task(SearchCondition, FinishedCondition, TaskAction, FailedCondition);
+            }
+
             public void Delete()
             {
                 Tasks.Remove(this);
             }
+
             public void Execute()
             {
 
