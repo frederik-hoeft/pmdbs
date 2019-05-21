@@ -8,15 +8,29 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// NetworkAdapter contains all high-level classes and methods used to interact with the server.
+    /// </summary>
     public static class NetworkAdapter
     {
+        /// <summary>
+        /// Tasks maintains a list of all currently active tasks and provides basic task management such as scheduling, executing and cancelling.
+        /// </summary>
         public sealed class Tasks
         {
             private static readonly List<NetworkAdapter.Task> taskList = new List<Task>();
+            /// <summary>
+            /// Gets the next scheduled task
+            /// </summary>
+            /// <returns>Task object</returns>
             public static Task GetCurrent()
             {
                 return taskList[0];
             }
+            /// <summary>
+            /// Gets the next scheduled task or NULL if no task is scheduled
+            /// </summary>
+            /// <returns>Task object or NULL</returns>
             public static Task GetCurrentOrDefault()
             {
                 if (taskList.Count > 0)
@@ -28,41 +42,72 @@ namespace pmdbs
                     return null;
                 }
             }
+            /// <summary>
+            /// Checks whether any tasks are scheduled
+            /// </summary>
+            /// <returns></returns>
             public static bool Available()
             {
                 return taskList.Count > 0 ? true : false;
             }
+            /// <summary>
+            /// Executes the next scheduled task
+            /// </summary>
             public static void Execute()
             {
                 CommandInterpreter.Parse(GetCurrent().Command);
             }
+            /// <summary>
+            /// Schedules a new task to be executed by the ATS
+            /// </summary>
+            /// <param name="task"></param>
             public static void Add(Task task)
             {
                 taskList.Add(task);
             }
+            /// <summary>
+            /// Cancels a specific task from the schedule
+            /// </summary>
+            /// <param name="task">The task to be cancelled</param>
             public static void Remove(Task task)
             {
                 taskList.Remove(task);
             }
+            /// <summary>
+            /// Cancels all scheduled tasks
+            /// </summary>
             public static void Clear()
             {
                 taskList.Clear();
             }
+            /// <summary>
+            /// Gets all currently scheduled tasks
+            /// </summary>
+            /// <returns>List of all scheduleds tasks</returns>
             public static List<Task> GetAll()
             {
                 return taskList;
             }
-            public static void RemoveCurrent()
+            /// <summary>
+            /// Cancels the current task
+            /// </summary>
+            /// <returns>Returns true if the task has been cancelled successfully</returns>
+            public static bool RemoveCurrent()
             {
                 try
                 {
                     taskList.RemoveAt(0);
+                    return true;
                 }
-                catch { }
+                catch
+                {
+                    return false;
+                }
             }
         }
         public partial class Task
         {
+            private readonly Action<object[]> _automatedAction = new Action<object[]>(delegate { });
             private readonly string _automatedTask = string.Empty;
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
@@ -82,6 +127,21 @@ namespace pmdbs
                 _failedCondition = FailedCondition;
                 Tasks.Add(this);
             }
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction)
+            {
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                Tasks.Add(this);
+            }
+            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction, string FailedCondition)
+            {
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
+                Tasks.Add(this);
+            }
             public SearchCondition SearchCondition
             {
                 get { return _searchCondition; }
@@ -89,6 +149,10 @@ namespace pmdbs
             public string Command
             {
                 get { return _automatedTask; }
+            }
+            public Action<object[]> Action
+            {
+                get { return _automatedAction; }
             }
             public string FinishedCondition
             {
@@ -106,9 +170,21 @@ namespace pmdbs
             {
                 return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
             }
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action<object[]> ParameterizedTaskAction)
+            {
+                return new Task(SearchCondition, FinishedCondition, ParameterizedTaskAction);
+            }
+            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action<object[]> ParameterizedTaskAction, string FailedCondition)
+            {
+                return new Task(SearchCondition, FinishedCondition, ParameterizedTaskAction, FailedCondition);
+            }
             public void Delete()
             {
                 Tasks.Remove(this);
+            }
+            public void Execute()
+            {
+
             }
         }
         public struct CommandInterpreter
@@ -394,6 +470,16 @@ namespace pmdbs
         }
         public struct MethodProvider
         {
+            public static void GetCookie()
+            {
+                Network.SendEncrypted("MNGCKI");
+            }
+
+            public static void CheckCookie()
+            {
+                Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
             /// <summary>
             /// 
             /// </summary>
@@ -455,6 +541,10 @@ namespace pmdbs
 
             }
         }
+
+        /// <summary>
+        /// LEGACY CODE CURRENTLY ONLY USED BY THE ATS (AUTOMATED-TASK-SYSTEM). MAY BE USED BY THE INTEGRATED CLI IN THE FUTURE.
+        /// </summary>
         private struct Commands
         {
             public static void FetchAll(object parameterObject)

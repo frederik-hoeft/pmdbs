@@ -22,10 +22,8 @@ using System.Text.RegularExpressions;
 
 namespace pmdbs
 {
-    
     public partial class Form1 : MetroFramework.Forms.MetroForm
     {
-        
         #region DECLARATIONS
         private List<ListEntry> entryList = new List<ListEntry>();
         private char[] alphabet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
@@ -164,7 +162,6 @@ namespace pmdbs
             G.Dispose();
             B.Dispose();
         }
-
         
         #endregion
         public Form1()
@@ -226,7 +223,6 @@ namespace pmdbs
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-
             if (GuiLoaded)
             {
                 return;
@@ -246,7 +242,6 @@ namespace pmdbs
                         this.Show();
                         this.Activate();
                     });
-
                 }
             });
             Task<List<string>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
@@ -267,9 +262,9 @@ namespace pmdbs
                         List<string> usernameList = await getUsername;
                         GlobalVarPool.username = usernameList[0];
                     }
-                    catch
+                    catch (Exception ex)
                     {
-
+                        CustomException.ThrowNew.GenericException(ex.ToString());
                     }
                     //TODO: Check for Password Changes
                 }
@@ -562,7 +557,6 @@ namespace pmdbs
                             {
                                 OldColor = Color.Black,
                                 NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
-
                             };
                             ImageAttributes attr = new ImageAttributes();
                             attr.SetRemapTable(colorMap);
@@ -920,7 +914,6 @@ namespace pmdbs
                     ResetFields();
                 });
             }).Start();
-            
         }
 
         private void AddPanelAdvancedImageButtonAbort_Click(object sender, EventArgs e)
@@ -1101,11 +1094,6 @@ namespace pmdbs
             }).Start();
         }
 
-        private static void LoadUI()
-        {
-
-        }
-
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
             if (LoginButtonDisabled)
@@ -1169,8 +1157,6 @@ namespace pmdbs
             this.MinimumSize = MinSize;
             this.MaximumSize = MaxSize;
         }
-
-
 
         #endregion
 
@@ -1302,9 +1288,9 @@ namespace pmdbs
                 NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
                 NetworkAdapter.Tasks.Execute();
             }
-            catch
+            catch (Exception ex)
             {
-
+                CustomException.ThrowNew.GenericException(ex.ToString());
             }
         }
 
@@ -1417,7 +1403,5 @@ namespace pmdbs
         #endregion
 
         #endregion
-
-
     }
 }

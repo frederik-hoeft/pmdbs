@@ -380,7 +380,7 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
-                                    // TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
+                                    // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
                                     if (NetworkAdapter.Tasks.Available())
                                     {
                                         NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
@@ -442,11 +442,11 @@ namespace pmdbs
                                                     HelperMethods.InvokeOutputLabel("Encrypted connection established!");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
+                                                        NetworkAdapter.MethodProvider.GetCookie();
                                                     }
                                                     else
                                                     {
-                                                        NetworkAdapter.CommandInterpreter.Parse("checkcookie");
+                                                        NetworkAdapter.MethodProvider.CheckCookie();
                                                     }
                                                     break;
                                                 }
