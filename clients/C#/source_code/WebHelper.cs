@@ -71,7 +71,6 @@ namespace pmdbs
                 ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
                 SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
                 
-
                 for (int i = 0; i < protocolTypes.Length; i++)
                 {
                     ServicePointManager.SecurityProtocol = protocolTypes[i];

@@ -147,8 +147,8 @@ namespace pmdbs
             HelperMethods.InvokeOutputLabel("Successfully connected to " + ip + ":" + port + "!");
             GlobalVarPool.bootCompleted = true;
             GlobalVarPool.connected = true;
-            GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINIXML\x04"));
             HelperMethods.InvokeOutputLabel("Sending Client Hello ...");
+            GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINIXML\x04"));
             //LINE 1225 IN DEBUGCLIENT.PY BELOW;
             // AWAIT PACKETS FROM SERVER
             try
@@ -157,7 +157,9 @@ namespace pmdbs
                 // INITIALIZE BUFFER FOR HUGE PACKETS (>32 KB)
                 List<byte> buffer = new List<byte>();
                 // INITIALIZE 32 KB RECEIVE BUFFER FOR INCOMING DATA
-                byte[] data = new byte[32768];
+                int bufferSize = 32768;
+                byte[] data = new byte[bufferSize];
+
                 // RUN UNTIL THREAD IS TERMINATED
                 while (true)
                 {
@@ -178,6 +180,7 @@ namespace pmdbs
                         }
                         // ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER
                         // CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER FOR BIG PACKETS IS EMPTY
+                        data = data.Where(b => b != 0x00).ToArray();
                         if (data.Contains<byte>(0x04) && buffer.Count == 0)
                         {
                             // SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
@@ -229,12 +232,12 @@ namespace pmdbs
                             buffer.AddRange(new List<byte>(data));
                         }
                         // RESET THE DATA BUFFER
-                        data = new byte[32768];
+                        data = new byte[bufferSize];
                     }
                     // ITERATE OVER EVERY SINGE PACKET THAT HAS BEEN RECEIVED
                     for (int i = 0; i < dataPackets.Count; i++)
                     {
-                        // LOAD BYTES INTO BYTE LIST --> EASIER TO HANDLE THAN BYTE ARRAYS
+                        // LOAD BYTE ARRAY INTO BYTE LIST --> EASIER TO HANDLE THAN BYTE ARRAYS
                         List<byte> dataPacket = new List<byte>(dataPackets[i]);
                         // CHECK IF PACKETS HAVE A VALID ENTRYPOINT / START OF HEADING
                         if (dataPacket[0] != 0x01)
@@ -368,6 +371,7 @@ namespace pmdbs
                                 {
                                     Thread.Sleep(100); // <-- APPARENTLY THERE'S SOME NASTY BUG SOMEWHERE. DONT KNOW DONT CARE. USING "Thread.Sleep(100);" SEEMS TO FIX IT SOMEHOW. JUST MICROSOFT THINGS *sigh*
                                     // File.AppendAllText("log1.txt", dataString + Environment.NewLine);
+                                    File.WriteAllText("debug.txt", "HMAC = " + GlobalVarPool.hmac + "\nAESKEY = " + GlobalVarPool.aesKey + "\n" + dataString.Substring(1));
                                     if (!CryptoHelper.VerifyHMAC(GlobalVarPool.hmac, dataString.Substring(1)))
                                     {
                                         CustomException.ThrowNew.NetworkException("Received an invalid HMAC checksum.", "[ERRNO 31] IMAC");
