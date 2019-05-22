@@ -350,7 +350,6 @@ namespace pmdbs
                 GlobalVarPool.connected = false;
             }
             
-
             public static void GetCookie()
             {
                 Network.SendEncrypted("MNGCKI");
@@ -1083,12 +1082,10 @@ namespace pmdbs
             public static void DisableDebugging(object parameterObject)
             {
                 string[] parameters = (string[])parameterObject;
-
             }
             public static void EnableDebugging(object parameterObject)
             {
                 string[] parameters = (string[])parameterObject;
-
             }
             public static void Error(object parameterObject)
             {

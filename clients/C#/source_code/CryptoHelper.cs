@@ -203,7 +203,6 @@ namespace pmdbs
         #region HMAC
         public static string CalculateHMAC(string hmacKey, string message)
         {
-
             return SHA256HashBase64(hmacKey.Substring(32, 32) + SHA256HashBase64(hmacKey.Substring(0, 32) + message));
         }
 
