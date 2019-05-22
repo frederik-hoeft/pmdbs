@@ -9,162 +9,19 @@ using System.Threading.Tasks;
 namespace pmdbs
 {
     /// <summary>
-    /// NetworkAdapter contains all high-level classes and methods used to interact with the server.
+    /// NetworkAdapter is a high-level API to interact with the PMDBS-server.
     /// </summary>
     public static class NetworkAdapter
     {
         /// <summary>
-        /// Tasks maintains a list of all currently active tasks and provides basic task management such as scheduling, executing and cancelling.
+        /// CommandInterpreter contains all Methods for text-based command parsing.
         /// </summary>
-        public sealed class Tasks
-        {
-            private static readonly List<NetworkAdapter.Task> taskList = new List<Task>();
-            /// <summary>
-            /// Gets the next scheduled task
-            /// </summary>
-            /// <returns>Task object</returns>
-            public static Task GetCurrent()
-            {
-                return taskList[0];
-            }
-            /// <summary>
-            /// Gets the next scheduled task or NULL if no task is scheduled
-            /// </summary>
-            /// <returns>Task object or NULL</returns>
-            public static Task GetCurrentOrDefault()
-            {
-                if (taskList.Count > 0)
-                {
-                    return taskList[0];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            /// <summary>
-            /// Checks whether any tasks are scheduled
-            /// </summary>
-            /// <returns></returns>
-            public static bool Available()
-            {
-                return taskList.Count > 0 ? true : false;
-            }
-            /// <summary>
-            /// Executes the next scheduled task
-            /// </summary>
-            public static void Execute()
-            {
-                CommandInterpreter.Parse(GetCurrent().Command);
-            }
-            /// <summary>
-            /// Schedules a new task to be executed by the ATS
-            /// </summary>
-            /// <param name="task"></param>
-            public static void Add(Task task)
-            {
-                taskList.Add(task);
-            }
-            /// <summary>
-            /// Cancels a specific task from the schedule
-            /// </summary>
-            /// <param name="task">The task to be cancelled</param>
-            public static void Remove(Task task)
-            {
-                taskList.Remove(task);
-            }
-            /// <summary>
-            /// Cancels all scheduled tasks
-            /// </summary>
-            public static void Clear()
-            {
-                taskList.Clear();
-            }
-            /// <summary>
-            /// Gets all currently scheduled tasks
-            /// </summary>
-            /// <returns>List of all scheduleds tasks</returns>
-            public static List<Task> GetAll()
-            {
-                return taskList;
-            }
-            /// <summary>
-            /// Cancels the current task
-            /// </summary>
-            /// <returns>Returns true if the task has been cancelled successfully</returns>
-            public static bool RemoveCurrent()
-            {
-                try
-                {
-                    taskList.RemoveAt(0);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-        }
-        public partial class Task
-        {
-            private readonly string _automatedTask = string.Empty;
-            private readonly string _automatedTaskCondition = string.Empty;
-            private readonly string _failedCondition = "SIG_TASK_FAILED";
-            private readonly SearchCondition _searchCondition = SearchCondition.Match;
-            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command)
-            {
-                _automatedTask = Command;
-                _automatedTaskCondition = FinishedCondition;
-                _searchCondition = SearchCondition;
-                Tasks.Add(this);
-            }
-            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
-            {
-                _automatedTask = Command;
-                _automatedTaskCondition = FinishedCondition;
-                _searchCondition = SearchCondition;
-                _failedCondition = FailedCondition;
-                Tasks.Add(this);
-            }
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction)
-            {
-
-            }
-            private Task(SearchCondition SearchCondition, string FinishCondition, Action<object[]> TaskAction, string FailedCondition)
-            {
-
-            }
-            public SearchCondition SearchCondition
-            {
-                get { return _searchCondition; }
-            }
-            public string Command
-            {
-                get { return _automatedTask; }
-            }
-            public string FinishedCondition
-            {
-                get { return _automatedTaskCondition; }
-            }
-            public string FailedCondition
-            {
-                get { return _failedCondition; }
-            }
-            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command)
-            {
-                return new Task(SearchCondition, FinishedCondition, Command);
-            }
-            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
-            {
-                return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
-            }
-            public void Delete()
-            {
-                Tasks.Remove(this);
-            }
-        }
         public struct CommandInterpreter
         {
+            /// <summary>
+            /// Parses a command and calls the corresponding method to execute the command.
+            /// </summary>
+            /// <param name="command">The command to be executed.</param>
             public static void Parse(string command)
             {
                 string[] stringParameters = command.Split(' ');
@@ -444,16 +301,109 @@ namespace pmdbs
                 }
             }
         }
+        /// <summary>
+        /// MethodProvider contains all methods to interact with the remote server.
+        /// </summary>
         public struct MethodProvider
         {
-            public static void GetCookie()
+            public static void ActivateAccount(string code)
             {
-                Network.SendEncrypted("MNGCKI");
+                Network.SendEncrypted("MNGVERusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;");
             }
 
             public static void CheckCookie()
             {
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
+            public static void Connect()
+            {
+                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                {
+                    IsBackground = true
+                };
+                connectionThread.Start();
+            }
+
+            public static void ConfirmNewDevice(string code)
+            {
+                Network.SendEncrypted("MNGCNDusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
+            public static void Delete(List<string> hids)
+            {
+                string hidsFormatted = "";
+                for (int i = 0; i < hids.Count; i++)
+                {
+                    hidsFormatted += hids[i] + ";";
+                }
+                Network.SendEncrypted("REQDEL" + hidsFormatted);
+            }
+
+            public static void Disconnect()
+            {
+                Network.Send("FIN");
+                GlobalVarPool.threadKilled = true;
+                GlobalVarPool.clientSocket.Disconnect(true);
+                GlobalVarPool.clientSocket.Close();
+                GlobalVarPool.clientSocket.Dispose();
+                GlobalVarPool.connected = false;
+            }
+            
+
+            public static void GetCookie()
+            {
+                Network.SendEncrypted("MNGCKI");
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
+            public static void Insert(List<string> account)
+            {
+                string id = account[0];
+                string host = account[1];
+                string url = account[2];
+                string username = account[3];
+                string password = account[4];
+                string email = account[5];
+                string notes = account[6];
+                string icon = account[7];
+                string hid = account[8];
+                string timestamp = account[9];
+                string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
+                Network.SendEncrypted("REQINS" + query);
+            }
+
+            public static void Login()
+            {
+                Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
+            public static void Logout()
+            {
+                Network.SendEncrypted("MNGLGO");
+            }
+
+            public static void Register()
+            {
+                Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+
+            public static void Select(List<string> hids)
+            {
+                string hidsFormatted = "";
+                for (int i = 0; i < hids.Count; i++)
+                {
+                    hidsFormatted += hids[i] + ";";
+                }
+                Network.SendEncrypted("REQSEL" + hidsFormatted);
+            }
+
+            public static void Sync()
+            {
+                Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
             }
 
             /// <summary>
@@ -474,52 +424,10 @@ namespace pmdbs
                 string query = "hid%eq!" + hid + "!;datetime%eq!" + timestamp + "!;host%eq!" + host + "!;password%eq!" + password + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
                 Network.SendEncrypted("REQUPD" + query);
             }
-            /// <summary>
-            /// 
-            /// </summary>
-            /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
-            public static void Insert(List<string> account)
-            {
-                string id = account[0];
-                string host = account[1];
-                string url = account[2];
-                string username = account[3];
-                string password = account[4];
-                string email = account[5];
-                string notes = account[6];
-                string icon = account[7];
-                string hid = account[8];
-                string timestamp = account[9];
-                string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
-                Network.SendEncrypted("REQINS" + query);
-            }
-            public static void Delete(List<string> hids)
-            {
-                string hidsFormatted = "";
-                for (int i = 0; i < hids.Count; i++)
-                {
-                    hidsFormatted += hids[i] + ";";
-                }
-                Network.SendEncrypted("REQDEL" + hidsFormatted);
-            }
-            public static void Select(List<string> hids)
-            {
-                string hidsFormatted = "";
-                for (int i = 0; i < hids.Count; i++)
-                {
-                    hidsFormatted += hids[i] + ";";
-                }
-                Network.SendEncrypted("REQSEL" + hidsFormatted);
-            }
-
-            public static void Execute(List<NetworkAdapter.Task> tasks)
-            {
-
-            }
         }
 
         /// <summary>
-        /// LEGACY CODE CURRENTLY ONLY USED BY THE ATS (AUTOMATED-TASK-SYSTEM). MAY BE USED BY THE INTEGRATED CLI IN THE FUTURE.
+        /// LEGACY CODE CURRENTLY NOT BEING USED. MAY BE USED BY THE INTEGRATED CLI IN THE FUTURE.
         /// </summary>
         private struct Commands
         {

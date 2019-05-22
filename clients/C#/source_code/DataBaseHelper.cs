@@ -13,8 +13,13 @@ namespace pmdbs
         private static SQLiteConnection sql_con;
         private static SQLiteCommand sql_cmd;
 
-        private static void SetConnection()
+        private static async Task SetConnection()
         {
+            while (GlobalVarPool.databaseIsInUse)
+            {
+                await Task.Delay(200);
+            }
+            GlobalVarPool.databaseIsInUse = true;
             string dataSource = "Resources\\localdata_windows.db";
 
             sql_con = new SQLiteConnection
@@ -31,7 +36,7 @@ namespace pmdbs
         /// <returns></returns
         public static async Task<List<string>> GetDataAsList(string query, int columns)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
@@ -53,6 +58,7 @@ namespace pmdbs
             }
             sql_con.Close();
             sql_con.Dispose();
+            GlobalVarPool.databaseIsInUse = false;
             return DataList;
         }
         /// <summary>
@@ -63,7 +69,7 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<List<List<string>>> GetDataAs2DList(string query, int columns)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
@@ -87,6 +93,7 @@ namespace pmdbs
             }
             sql_con.Close();
             sql_con.Dispose();
+            GlobalVarPool.databaseIsInUse = false;
             return OuterList;
         }
         /// <summary>
@@ -97,7 +104,7 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<DataTable> GetDataAsDataTable(string query, int columns)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
@@ -124,6 +131,7 @@ namespace pmdbs
             }
             sql_con.Close();
             sql_con.Dispose();
+            GlobalVarPool.databaseIsInUse = false;
             return ReturnData;
         }
         /// <summary>
@@ -133,12 +141,13 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task ModifyData(string query)
         {
-            SetConnection();
+            await SetConnection();
             sql_cmd = sql_con.CreateCommand();
             sql_cmd.CommandText = query;
             await sql_cmd.ExecuteNonQueryAsync();
             sql_con.Close();
             sql_con.Dispose();
+            GlobalVarPool.databaseIsInUse = false;
         }
     }
 }
