@@ -522,8 +522,7 @@ namespace pmdbs
                 Query += ", " + Columns[i] + " = \"" + Values[i] + "\"";
             }
             Query += " WHERE D_id = " + DataDetailsID + ";";
-            Task UpdateData = DataBaseHelper.ModifyData(Query);
-            await Task.WhenAll(UpdateData);
+            await DataBaseHelper.ModifyData(Query);
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string oldUrl = LinkedRow["6"].ToString();
             if (!Website.Equals(oldUrl))
@@ -574,8 +573,7 @@ namespace pmdbs
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
                     Query = "UPDATE Tbl_data SET D_icon = \"" + encryptedFavIcon + "\" WHERE D_id = " + DataDetailsID + ";";
-                    Task SetFavIcon = DataBaseHelper.ModifyData(Query);
-                    await Task.WhenAll(SetFavIcon);
+                    await DataBaseHelper.ModifyData(Query);
                     Invoke((MethodInvoker)delegate
                     {
                         UpdateDetailsWindow(LinkedRow);
@@ -666,11 +664,9 @@ namespace pmdbs
             string hid = LinkedRow["1"].ToString();
             if (!hid.Equals("EMPTY"))
             {
-                Task SetDelFlag = DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hid + "\");");
-                await Task.WhenAll(SetDelFlag);
+                await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hid + "\");");
             }
-            Task DeleteItem = DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
-            await Task.WhenAll(DeleteItem);
+            await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             GlobalVarPool.UserData.Rows.Remove(LinkedRow);
             RefreshUserData(CurrentPage);
             DataPanelDetails.SuspendLayout();
@@ -700,17 +696,17 @@ namespace pmdbs
                 SettingsFlowLayoutPanelRegister.BringToFront();
                 return;
             }
-            NetworkAdapter.Tasks.Clear();
+            AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            NetworkAdapter.Task.Create(SearchCondition.Contains, "FETCH_SYNC", "fetchsync");
-            NetworkAdapter.Tasks.Execute();
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+            AutomatedTaskFramework.Tasks.Execute();
             DataSyncAdvancedImageButton.Enabled = false;
         }
 
@@ -881,8 +877,7 @@ namespace pmdbs
                     Query += ", \"" + Values[i] + "\"";
                 }
                 Query += ");";
-                Task InsertData = DataBaseHelper.ModifyData(Query);
-                await Task.WhenAll(InsertData);
+                await DataBaseHelper.ModifyData(Query);
                 if (GlobalVarPool.UserData == null)
                 {
                     GlobalVarPool.UserData = new DataTable();
@@ -1144,8 +1139,7 @@ namespace pmdbs
             Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
-            Task SetupDatabase = DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
-            await Task.WhenAll(SetupDatabase);
+            await DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
@@ -1198,29 +1192,29 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
             }
-            List<NetworkAdapter.Task> scheduledTasks = NetworkAdapter.Tasks.GetAll();
-            NetworkAdapter.Tasks.Clear();
+            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll();
+            AutomatedTaskFramework.Tasks.Clear();
             switch (GlobalVarPool.promptCommand)
             {
                 case "ACTIVATE_ACCOUNT":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", "activateaccount -u " + GlobalVarPool.username + " -c PM-" + code);
-                        NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword);
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGGED_OUT", "logout");
-                        NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
+                        AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "LOGGED_OUT", NetworkAdapter.MethodProvider.Logout);
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                         break;
                     }
                 case "CONFIRM_NEW_DEVICE":
                     {
-                        NetworkAdapter.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", "confirmnewdevice -u " + GlobalVarPool.username + " -p " + GlobalVarPool.onlinePassword + " -c PM-" + code);
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
                         for (int i = 1; i < scheduledTasks.Count; i++)
                         {
-                            NetworkAdapter.Tasks.Add(scheduledTasks[i]);
+                            AutomatedTaskFramework.Tasks.Add(scheduledTasks[i]);
                         }
                         break;
                     }
             }
-            NetworkAdapter.Tasks.Execute();
+            AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
         }
         #endregion
@@ -1277,16 +1271,16 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 else
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
-                    NetworkAdapter.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", "login -u " + username + " -p " + GlobalVarPool.onlinePassword);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
-                NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
-                NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
-                NetworkAdapter.Tasks.Execute();
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Tasks.Execute();
             }
             catch (Exception ex)
             {
@@ -1343,7 +1337,9 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter a valid email address.");
                 return;
             }
+            GlobalVarPool.name = nickname;
             GlobalVarPool.email = email;
+            GlobalVarPool.username = username;
             int port = Convert.ToInt32(strPort);
             if (port < 1 || port > 65536)
             {
@@ -1374,14 +1370,14 @@ namespace pmdbs
                 t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
                 if (GlobalVarPool.connected)
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 else
                 {
-                    NetworkAdapter.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", "connect");
-                    NetworkAdapter.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", "register -u " + username + " -p " + GlobalVarPool.onlinePassword + " -e " + email + " -n " + nickname);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
-                NetworkAdapter.Tasks.Execute();
+                AutomatedTaskFramework.Tasks.Execute();
             }
             catch
             {

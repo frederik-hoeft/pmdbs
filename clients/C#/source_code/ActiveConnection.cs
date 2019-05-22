@@ -367,6 +367,7 @@ namespace pmdbs
                             case 'E':
                                 {
                                     Thread.Sleep(100); // <-- APPARENTLY THERE'S SOME NASTY BUG SOMEWHERE. DONT KNOW DONT CARE. USING "Thread.Sleep(100);" SEEMS TO FIX IT SOMEHOW. JUST MICROSOFT THINGS *sigh*
+                                    // File.AppendAllText("log1.txt", dataString + Environment.NewLine);
                                     if (!CryptoHelper.VerifyHMAC(GlobalVarPool.hmac, dataString.Substring(1)))
                                     {
                                         CustomException.ThrowNew.NetworkException("Received an invalid HMAC checksum.", "[ERRNO 31] IMAC");
@@ -380,10 +381,11 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
-                                    // TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
-                                    if (NetworkAdapter.Tasks.Available())
+                                    // File.AppendAllText("log1.txt", decryptedData + Environment.NewLine + Environment.NewLine);
+                                    // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
+                                    if (AutomatedTaskFramework.Tasks.Available())
                                     {
-                                        NetworkAdapter.Task currentTask = NetworkAdapter.Tasks.GetCurrent();
+                                        AutomatedTaskFramework.Task currentTask = AutomatedTaskFramework.Tasks.GetCurrent();
                                         if (currentTask.FailedCondition.Split('|').Where(failedCondition => decryptedData.Contains(failedCondition)).Count() == 0)
                                         {
                                             if (currentTask.SearchCondition == SearchCondition.Match)
@@ -392,10 +394,9 @@ namespace pmdbs
                                                 {
                                                     currentTask.Delete();
 
-                                                    if (NetworkAdapter.Tasks.Available())
+                                                    if (AutomatedTaskFramework.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
-                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -405,10 +406,9 @@ namespace pmdbs
                                                 {
                                                     currentTask.Delete();
 
-                                                    if (NetworkAdapter.Tasks.Available())
+                                                    if (AutomatedTaskFramework.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
-                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -418,10 +418,9 @@ namespace pmdbs
                                                 {
                                                     currentTask.Delete();
 
-                                                    if (NetworkAdapter.Tasks.Available())
+                                                    if (AutomatedTaskFramework.Tasks.Available())
                                                     {
-                                                        NetworkAdapter.Task newTask = NetworkAdapter.Tasks.GetCurrentOrDefault();
-                                                        NetworkAdapter.CommandInterpreter.Parse(newTask.Command);
+                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
                                                     }
                                                 }
                                             }
@@ -526,7 +525,8 @@ namespace pmdbs
                                                                     case "INSERT":
                                                                         {
                                                                             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
-                                                                            t.Start((object)content.Split(new string[] { ";" },StringSplitOptions.RemoveEmptyEntries));
+                                                                            t.Start((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
+                                                                            // HelperMethods.SetHid((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                                                                             if (GlobalVarPool.countSyncPackets)
                                                                             {
                                                                                 GlobalVarPool.countedPackets++;
@@ -579,10 +579,10 @@ namespace pmdbs
                                                                 if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
-                                                                    NetworkAdapter.Tasks.Clear();
-                                                                    NetworkAdapter.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", "logout");
-                                                                    NetworkAdapter.Task.Create(SearchCondition.Match, null, "disconnect");
-                                                                    NetworkAdapter.Tasks.Execute();
+                                                                    AutomatedTaskFramework.Tasks.Clear();
+                                                                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                                                    AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                                                                    AutomatedTaskFramework.Tasks.Execute();
                                                                     new Thread(new ThreadStart(HelperMethods.FinishSync))
                                                                     {
                                                                         IsBackground = true
@@ -706,7 +706,7 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
                                                                     {
-                                                                        NetworkAdapter.CommandInterpreter.Parse("getcookie");
+                                                                        NetworkAdapter.MethodProvider.GetCookie();
                                                                         break;
                                                                     }
                                                                 case "ACCOUNT_VERIFIED":
