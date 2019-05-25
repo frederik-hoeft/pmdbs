@@ -270,10 +270,7 @@ namespace pmdbs
                                                     GlobalVarPool.clientSocket.Dispose();
                                                     isTcpFin = true;
                                                 }
-                                                catch
-                                                {
-
-                                                }
+                                                catch { }
                                                 if (GlobalVarPool.debugging)
                                                 {
                                                     Console.WriteLine("Disconnected.");
@@ -440,10 +437,6 @@ namespace pmdbs
                                                                     {
                                                                         //ConsoleExtension.PrintF("Your account activity:");
                                                                         //ConsoleExtension.PrintF(message);
-                                                                    }
-                                                                    else
-                                                                    {
-
                                                                     }
                                                                     //ConsoleExtension.PrintF("Received " + mode + " log.");
                                                                     //ConsoleExtension.PrintF(message);
@@ -619,7 +612,6 @@ namespace pmdbs
                                                                     }
                                                                 case "LOGGED_OUT":
                                                                     {
-                                                                        
                                                                         string previousUser = GlobalVarPool.currentUser;
                                                                         GlobalVarPool.currentUser = "<" + GlobalVarPool.serverName + ">";
                                                                         if (GlobalVarPool.isRoot)
@@ -707,7 +699,6 @@ namespace pmdbs
                                                                     }
                                                                 case "SELECT_FINISHED":
                                                                     {
-
                                                                         break;
                                                                     }
                                                                 case "":
