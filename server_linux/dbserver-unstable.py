@@ -115,10 +115,7 @@ class CryptoHelper():
 		hmac = fullMessage[-44:]
 		message = fullMessage[:-44]
 		actualHMAC = CryptoHelper.SHA256(k2 + CryptoHelper.SHA256(k1 + message))
-		if hmac == actualHMAC:
-			return True
-		else:
-			return False
+		return hmac == actualHMAC
 			
 	# ENCRYPTS A MESSAGE USING A 4096 BIT RSA KEY
 	def RSAEncrypt(plaintext, publicKeyPemString):
@@ -384,7 +381,7 @@ class DatabaseManagement():
 		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
 		try:
 			for rawParameter in queryParameters:
-				if not len(rawParameter) == 0:
+				if rawParameter:
 					parameters = rawParameter.split("%eq")
 					column = parameters[0]
 					value = parameters[1].replace('!','')
@@ -430,14 +427,14 @@ class DatabaseManagement():
 			cursor.execute("SELECT last_insert_rowid() FROM Tbl_data;")
 			# CREATE HID (HASHED ID)
 			dataID = cursor.fetchall()
-			if len(dataID) == 0:
+			if not dataID:
 				return
 			HID = dataID[0][0]
 		except Exception as e:
 			connection.close()
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
-		if HID == None:
+		if HID is None:
 			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
 			return
 		hashedID = CryptoHelper.BLAKE2(str(HID), str(userID))
@@ -472,7 +469,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if userID == None:
+		if userID is None:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -482,7 +479,7 @@ class DatabaseManagement():
 		try:
 			# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
 			for rawParameter in queryParameters:
-				if not len(rawParameter) == 0:
+				if rawParameter:
 					parameters = rawParameter.split("%eq")
 					column = parameters[0]
 					value = parameters[1].replace('!','')
@@ -538,7 +535,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if userID == None:
+		if userID is None:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -546,7 +543,7 @@ class DatabaseManagement():
 		query = ""
 		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
 		for parameter in queryParameters:
-			if not len(parameter) == 0:
+			if parameter:
 				if query == "":
 					query = "d_hid = \"" + parameter + "\""
 				else:
@@ -609,7 +606,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if userID == None:
+		if userID is None:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -617,7 +614,7 @@ class DatabaseManagement():
 		query = ""
 		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
 		for parameter in queryParameters:
-			if not len(parameter) == 0:
+			if parameter:
 				if query == "":
 					query = "d_hid = \"" + parameter + "\""
 				else:
@@ -862,7 +859,7 @@ class Log():
 				address = client[1]
 				try:
 					details = client[3]
-				except:
+				except IndexError:
 					pass
 		# CREATE CONNECTION TO DATABASE
 		connection = sqlite3.connect(Server.dataBase)
@@ -871,7 +868,7 @@ class Log():
 		# WRITE ENTRY TO DATABASE
 		try:
 			cursor.execute("INSERT INTO Tbl_clientLog (L_event, L_ip, L_datetime, L_details, L_userid) VALUES (\"" + event + "\",\"" + address + "\",\"" + dateTime + "\",\"" + details + "\"," + userID + ");")
-		except:
+		excepty:
 			connection.rollback()
 			return False
 		else:
@@ -1111,7 +1108,7 @@ class Management():
 				if credential:
 					if "cookie" in credential:
 						cookie = credential.split("!")[1]
-					elif len(credential) == 0:
+					elif not credential:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1176,7 +1173,7 @@ class Management():
 						password = credential.split("!")[1]
 					elif "cookie" in credential:
 						cookie = credential.split("!")[1]
-					elif len(credential) == 0:
+					elif not credential:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1278,7 +1275,7 @@ class Management():
 				if parameter:
 					if "new_name" in parameter:
 						newName = parameter.split("!")[1]
-					elif len(parameter) == 0:
+					elif not parameter:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1347,7 +1344,7 @@ class Management():
 						nickname = parameter.split("!")[1]
 					elif "email" in parameter:
 						email = parameter.split("!")[1]
-					elif len(parameter) == 0:
+					elif not parameter:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1388,7 +1385,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
-		if not codeType or not codeTime or codeAttempts == None or codeResend == None or isVerified == None or not userID:
+		if not codeType or not codeTime or codeAttempts is None or codeResend is None or isVerified is None or not userID:
 			# SOMETHING WENT WRONG --> TROW SQL EXCEPTION AND FREE RESOURCES
 			connection.close()
 			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
@@ -1422,7 +1419,7 @@ class Management():
 				finally:
 					# FREE RESOURCES
 					connection.close()
-					return
+				return
 			else:
 				# INCREMENT RESEND-CALL-COUNTER BY 1
 				try:
@@ -1560,7 +1557,7 @@ class Management():
 			return
 		else:
 			# CHECK IF DATA HAS BEEN FETCHED PROPERLY
-			if clientLog == None:
+			if clientLog is None:
 				# SOMETHONG WENT WRONG --> SQL ERROR
 				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 				return
@@ -1596,7 +1593,7 @@ class Management():
 					cookie = parameter.split("!")[1]
 				elif "new_email" in parameter:
 					newEmail = parameter.split("!")[1]
-				elif len(parameter) == 0:
+				elif not parameter:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1634,7 +1631,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF VARIABLE HAS BEEN SET AT ALL
-		if isVerified == None:
+		if isVerified is None:
 			# FREE RESOURCES
 			connection.close()
 			# LOG ERROR
@@ -1690,7 +1687,7 @@ class Management():
 					cookie = credential.split("!")[1]
 				elif "code" in credential:
 					providedCode = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif credential:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1727,7 +1724,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or codeAttempts == None or not codeType:
+		if not code or not codeTime or codeAttempts is None or not codeType:
 			Handle.Error("SQLE", "VALIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
@@ -1813,7 +1810,7 @@ class Management():
 			connection.close()
 		# CREDENTIAL CHECK PASSED
 		# CHECK FOR OTHER ADMINS
-		if not Server.admin == None:
+		if not Server.admin is None:
 			# THROW ADMIN ALREADY LOGGED IN
 			# RETURN ERROR MESSAGE TO CLIENT
 			Handle.Error("ACNA", None, clientAddress, clientSocket, aesKey, True)
@@ -1908,7 +1905,7 @@ class Management():
 					newPassword = credential.split("!")[1]
 				elif "code" in credential:
 					providedCode = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -1945,7 +1942,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or codeAttempts == None or not codeType:
+		if not code or not codeTime or codeAttempts is None or not codeType:
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		if not codeType == "ADMIN_PASSWORD_CHANGE":
@@ -2033,7 +2030,7 @@ class Management():
 					username = parameter.split("!")[1]
 				elif "duration" in parameter:
 					duration = parameter.split("!")[1]
-				elif len(parameter) == 0:
+				elif not parameter:
 					pass
 				else:
 					# MORE DATA PROVIDED THAN NEEDED --> THROW EXCEPTION
@@ -2063,7 +2060,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF USER EXISTS
-		if not userExists == 1:
+		if userExists == 0:
 			Handle.Error("UDNE", None, clientAddress, clientSocket, aesKey, True)
 			return
 		try:
@@ -2166,7 +2163,7 @@ class Management():
 					ip = parameter.split("!")[1]
 				elif "duration" in parameter:
 					duration = parameter.split("!")[1]
-				elif len(parameter) == 0:
+				elif not parameter:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -2245,7 +2242,7 @@ class Management():
 			for credential in creds:
 				if "code" in credential:
 					providedCode = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -2282,7 +2279,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or codeAttempts == None or not codeType:
+		if not code or not codeTime or codeAttempts is None or not codeType:
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ACCOUNT DELETION HAS BEEN SCHEDULED
@@ -2372,7 +2369,7 @@ class Management():
 					cookie = credential.split("!")[1]
 				elif "code" in credential:
 					providedCode = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -2415,7 +2412,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or codeAttempts == None or not username or not codeType or isBanned == None or not banTime or not banDuration:
+		if not code or not codeTime or codeAttempts is None or not username or not codeType or isBanned is None or not banTime or not banDuration:
 			Handle.Error("SQLE", "VALIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		if isBanned == 1:
@@ -2598,7 +2595,7 @@ class Management():
 					username = credential.split("!")[1]
 				elif "code" in credential:
 					providedCode = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND ERROR
 				else:
@@ -2637,7 +2634,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VARIABLES ARE INITIALIZED
-		if isVerified == None or not code or not codeTime or codeAttempts == None or not codeType:
+		if isVerified is None or not code or not codeTime or codeAttempts is None or not codeType:
 			connection.close()
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
@@ -2723,7 +2720,7 @@ class Management():
 			for credential in creds:
 				if "username" in credential:
 					username = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -2786,7 +2783,7 @@ class Management():
 					newPassword = credential.split("!")[1]
 				elif "code" in credential:
 					providedCode = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -2825,7 +2822,7 @@ class Management():
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or codeAttempts == None or not username or not codeType:
+		if not code or not codeTime or codeAttempts is None or not username or not codeType:
 			Handle.Error("SQLE", "VARIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		if not codeType == "PASSWORD_CHANGE":
@@ -3057,7 +3054,7 @@ class Management():
 						target = credential.split("!")[1]
 					elif "mode" in credential:
 						mode = credential.split("!")[1]
-					elif len(credential) == 0:
+					elif not credential:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -3397,7 +3394,7 @@ class Management():
 					nickname = credential.split("!")[1]
 				elif "cookie" in credential:
 					cookie = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINED MORE DATA THAN REQUESTED
@@ -3511,7 +3508,7 @@ class Management():
 					mode = credential.split("!")[1]
 				elif "username" in credential:
 					username = credential.split("!")[1]
-				elif len(credential) == 0:
+				elif not credential:
 					pass
 				else:
 					# COMMAND CONTAINED MORE DATA THAN REQUESTED
@@ -3585,7 +3582,7 @@ class Management():
 						password = credential.split("!")[1]
 					elif "cookie" in credential:
 						cookie = credential.split("!")[1]
-					elif len(credential) == 0:
+					elif not credential:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -3713,7 +3710,7 @@ class Management():
 			return
 		# CREDENTIAL CHECK PASSED
 		# CHECK FOR OTHER ADMINS
-		if not Server.admin == None:
+		if not Server.admin is None:
 			# THROW ADMIN ALREADY LOGGED IN
 			# RETURN ERROR MESSAGE TO CLIENT
 			Handle.Error("ACNA", None, clientAddress, clientSocket, aesKey, True)
@@ -3750,7 +3747,7 @@ class Management():
 			return
 		PrintSendToAdmin(CWHITE + "         Initializing shutdown ..." + ENDF)
 		# CHECK IF PACKET IS VALID
-		if not command == "SHUTDOWN":
+		if command != "SHUTDOWN":
 			PrintSendToAdmin(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Shutdown initalized." + ENDF)
 			return
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
@@ -3805,7 +3802,7 @@ class Management():
 			return
 		# CHECK IF PACKET IS VALID
 		PrintSendToAdmin(CWHITE + "         Initializing reboot ..." + ENDF)
-		if not command == "REBOOT":
+		if command != "REBOOT":
 			PrintSendToAdmin(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reboot initalized." + ENDF)
 			return
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
@@ -3893,7 +3890,7 @@ class Management():
 						password = credential.split("!")[1]
 					elif "cookie" in credential:
 						cookie = credential.split("!")[1]
-					elif len(credential) == 0:
+					elif not credential:
 						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
@@ -4150,7 +4147,7 @@ def ReplaceAll(text, charArray):
 def PrintSendToAdmin(text):
 	print(text)
 	# IF ADMIN IS LOGGED IN SEND SERVER MESSAGES
-	if not Server.admin == None:
+	if not Server.admin is None:
 		aesEncryptor = AESCipher(Server.adminAesKey)
 		text = "INFMIRmsg%eq!" + text + "!;"
 		encryptedData = aesEncryptor.encrypt(text)
@@ -4228,7 +4225,7 @@ class Server(Thread):
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
 		try:
-			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION == None or WRONG_CODE_AUTOBAN_DURATION_ADMIN == None or RESEND_CODE_MAX_COUNT == None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS == None or not PYTHON_VERSIONS:
+			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION is None or WRONG_CODE_AUTOBAN_DURATION_ADMIN is None or RESEND_CODE_MAX_COUNT is None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS is None or not PYTHON_VERSIONS:
 				if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 				else:
@@ -4261,7 +4258,7 @@ class Server(Thread):
 		print(CWHITE + "         Checking for database in " + os.getcwd() + " ..." + ENDF)
 		dataBases = glob.glob(os.getcwd() + "/*.db")
 		# EXIT IF NO DATABASES HAVE BEEN FOUND
-		if len(dataBases) == 0:
+		if not dataBases:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: No database found." + ENDF)
 			return
 		# IF ONLY ONE DATABASE IS AVAILABLE AUTOSELECT IT
@@ -4300,7 +4297,6 @@ class Server(Thread):
 				# INDEX WAS INVALID --> RETRY
 				except:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
-					pass
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + self.dataBase + ENDF)
 		# CHECK FOR READ / WRITE PERMISSIONS
 		print(CWHITE + "         Checking permissions ..." + ENDF)
@@ -4457,7 +4453,7 @@ class Server(Thread):
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Fatal: could not create doirectory \"keys\ in " + os.getcwd() + "." + ENDF)
 						exit()
 				keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
-				if len(keyFiles) == 0:
+				if not keyFiles:
 					selected = False
 					while not selected:
 						print(CWHITE + "         No key file found!" + ENDF)
@@ -4593,7 +4589,6 @@ class Server(Thread):
 				print(CWHITE + "         Retrying in 5 seconds ..." + ENDF)
 				time.sleep(5)
 				Server.TCPsocket.close()
-				pass
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Set up TCP listener on " + self.localAddress + ":" + str(self.localPort) + "." + ENDF)
 		print("")
 		print("                      _ _                       ")
@@ -4679,7 +4674,7 @@ class ClientHandler():
 						dataPackets = None
 						# ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER----
 						# CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER IS EMPTY
-						if b'\x04' in data and len(buf) == 0:
+						if b'\x04' in data and not buf:
 							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
 							rawDataPackets = data.split(b'\x04')
 							# GRAB THE LAST PACKET
@@ -4687,12 +4682,12 @@ class ClientHandler():
 							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
 							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
 							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
-							if not len(lastDataPacket) == 0:
+							if lastDataPacket:
 								buf += lastDataPacket
 							# SET RECEIVING TO FALSE TO BREAK THE LOOP
 							receiving = False
 						# CHECK IF PACKET CONTAINS DATA AND BUFFER IS NOT EMPTY
-						elif b'\x04' in data and not len(buf) == 0:
+						elif b'\x04' in data and buf:
 							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
 							rawDataPackets = data.split(b'\x04')
 							# APPEND BUFFER CONTENT TO FIRST PACKET
@@ -4704,7 +4699,7 @@ class ClientHandler():
 							# MOVE ALL BUT THE LAST PACKET IN THE PACKET ARRAY
 							dataPackets = rawDataPackets[0:len(rawDataPackets)-1]
 							# IN CASE THE LAST PACKET CONTAINS DATA TOO MOVE IT IN BUFFER
-							if not len(lastDataPacket) == 0:
+							if lastDataPacket:
 								buf += lastDataPacket
 							# SET RECEIVING TO FALSE TO BREAK THE LOOP
 							receiving = False
@@ -4804,7 +4799,7 @@ class ClientHandler():
 											key = info.split("!")[1]
 										elif "nonce" in info:
 											cryptNonce = info.split("!")[1]
-										elif len(info) == 0:
+										elif not info:
 											pass
 										else:
 											# COMMAND CONTAINED MORE INFORMATION THAN REQUESTED
