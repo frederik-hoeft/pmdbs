@@ -20,21 +20,21 @@ namespace pmdbs
                 {
                     DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
                     bool retry = true;
-                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Looking for RSA key pair in " + d.FullName + "\\keys ...");
+                    HelperMethods.InvokeOutputLabel("Looking for RSA key pair in " + d.FullName + "\\keys ...");
                     if (!Directory.Exists(d.FullName + "\\keys"))
                     {
-                        // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Directory \"keys\" does not exist in " + d.FullName + ".");
-                        // ConsoleExtension.PrintF(HelperMethods.Check() + "Creating directory \"keys\" ...");
+                        HelperMethods.InvokeOutputLabel("Directory \"keys\" does not exist in " + d.FullName + ".");
+                        HelperMethods.InvokeOutputLabel("Creating directory \"keys\" ...");
                         try
                         {
                             Directory.CreateDirectory(d.FullName + "\\keys");
                         }
                         catch (Exception e)
                         {
-                            // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Could not create directory: " + e.ToString());
+                            CustomException.ThrowNew.GenericException("Could not create directory: " + e.ToString());
                             return;
                         }
-                        // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Directory \"keys\" created successfully.");
+                        HelperMethods.InvokeOutputLabel("Directory \"keys\" created successfully.");
                     }
                     while (retry)
                     {
@@ -45,46 +45,31 @@ namespace pmdbs
                             bool selected = false;
                             while (!selected)
                             {
-                                // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "No key file found!");
-                                // ConsoleExtension.PrintF(HelperMethods.CheckManual() + "What to do next?");
-                                // ConsoleExtension.PrintF(HelperMethods.Check() + "[R] = Retry");
-                                // ConsoleExtension.PrintF(HelperMethods.Check() + "[G] = Generate");
-                                string choice = "G";
-                                if (choice.ToUpper().Equals("G"))
-                                {
-                                    HelperMethods.InvokeOutputLabel("Generating RSA Keys ...");
-                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Generating 4096 bit RSA key pair...");
-                                    string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
-                                    GlobalVarPool.PublicKey = RSAKeyPair[0];
-                                    GlobalVarPool.PrivateKey = RSAKeyPair[1];
-                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Exporting RSA private key ...");
-                                    File.WriteAllText(d.FullName + "\\client.privatekey", GlobalVarPool.PrivateKey);
-                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "RSA private key exported successfully.");
-                                    // ConsoleExtension.PrintF(HelperMethods.Check() + "Exporting RSA public key ...");
-                                    File.WriteAllText(d.FullName + "\\client.publickey", GlobalVarPool.PublicKey);
-                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "RSA public key exported successfully.");
-                                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Generated RSA key pair.");
-                                    retry = false;
-                                    selected = true;
-                                }
-                                else if (choice.ToUpper().Equals("R"))
-                                {
-                                    selected = true;
-                                }
-                                else
-                                {
-                                    // ConsoleExtension.PrintF(HelperMethods.CheckFailed() + "Invalid option! Please try again.");
-                                }
+                                HelperMethods.InvokeOutputLabel("No key file found!");
+                                HelperMethods.InvokeOutputLabel("Generating RSA Keys ...");
+                                HelperMethods.InvokeOutputLabel("Generating 4096 bit RSA key pair...");
+                                string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
+                                GlobalVarPool.PublicKey = RSAKeyPair[0];
+                                GlobalVarPool.PrivateKey = RSAKeyPair[1];
+                                HelperMethods.InvokeOutputLabel("Exporting RSA private key ...");
+                                File.WriteAllText(d.FullName + "\\client.privatekey", GlobalVarPool.PrivateKey);
+                                HelperMethods.InvokeOutputLabel("RSA private key exported successfully.");
+                                HelperMethods.InvokeOutputLabel("Exporting RSA public key ...");
+                                File.WriteAllText(d.FullName + "\\client.publickey", GlobalVarPool.PublicKey);
+                                HelperMethods.InvokeOutputLabel("RSA public key exported successfully.");
+                                HelperMethods.InvokeOutputLabel("Generated RSA key pair.");
+                                retry = false;
+                                selected = true;
                             }
                         }
                         else
                         {
                             HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
-                            // ConsoleExtension.PrintF(HelperMethods.Check() + "Reading RSA keys ...");
+                            HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
                             // KINDA LAZY BUT IT WORKS
                             GlobalVarPool.PrivateKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.privatekey")).ToArray()[0].FullName);
                             GlobalVarPool.PublicKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.publickey")).ToArray()[0].FullName);
-                            // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
+                            HelperMethods.InvokeOutputLabel("Successfully set up RSA keys.");
                             retry = false;
                         }
                     }
@@ -92,26 +77,26 @@ namespace pmdbs
                 else
                 {
                     HelperMethods.InvokeOutputLabel("Generating RSA keys ...");
-                   //  ConsoleExtension.PrintF(HelperMethods.Check() + "Generating 4096 bit RSA key pair...");
+                    HelperMethods.InvokeOutputLabel("Generating 4096 bit RSA key pair...");
                     string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
                     GlobalVarPool.PublicKey = RSAKeyPair[0];
                     GlobalVarPool.PrivateKey = RSAKeyPair[1];
-                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Generated RSA key pair.");
-                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Successfully set up RSA keys.");
+                    HelperMethods.InvokeOutputLabel("Generated RSA key pair.");
+                    HelperMethods.InvokeOutputLabel("Successfully set up RSA keys.");
                 }
             }
             if (string.IsNullOrEmpty(GlobalVarPool.cookie))
             {
-                // ConsoleExtension.PrintF(HelperMethods.Check() + "Looking for cookie ...");
+                HelperMethods.InvokeOutputLabel("Looking for cookie ...");
                 DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
                 try
                 {
                     GlobalVarPool.cookie = File.ReadAllText(d.GetFiles().Where(file => file.Name.Equals("cookie.txt")).First().FullName);
-                    // ConsoleExtension.PrintF(HelperMethods.CheckOk() + "Found cookie.");
+                    HelperMethods.InvokeOutputLabel("Found cookie.");
                 }
                 catch
                 {
-                    // ConsoleExtension.PrintF(HelperMethods.CheckWarning() + "Cookie not found.");
+                    HelperMethods.InvokeOutputLabel("Cookie not found.");
                 }
             }
             GlobalVarPool.threadKilled = false;
@@ -387,49 +372,7 @@ namespace pmdbs
                                     }
                                     // File.AppendAllText("log1.txt", decryptedData + Environment.NewLine + Environment.NewLine);
                                     // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
-                                    if (AutomatedTaskFramework.Tasks.Available())
-                                    {
-                                        AutomatedTaskFramework.Task currentTask = AutomatedTaskFramework.Tasks.GetCurrent();
-                                        if (currentTask.FailedCondition.Split('|').Where(failedCondition => decryptedData.Contains(failedCondition)).Count() == 0)
-                                        {
-                                            if (currentTask.SearchCondition == SearchCondition.Match)
-                                            {
-                                                if (decryptedData.Equals(currentTask.FinishedCondition))
-                                                {
-                                                    currentTask.Delete();
-
-                                                    if (AutomatedTaskFramework.Tasks.Available())
-                                                    {
-                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
-                                                    }
-                                                }
-                                            }
-                                            else if (currentTask.SearchCondition == SearchCondition.In)
-                                            {
-                                                if (currentTask.FinishedCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
-                                                {
-                                                    currentTask.Delete();
-
-                                                    if (AutomatedTaskFramework.Tasks.Available())
-                                                    {
-                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (decryptedData.Contains(currentTask.FinishedCondition))
-                                                {
-                                                    currentTask.Delete();
-
-                                                    if (AutomatedTaskFramework.Tasks.Available())
-                                                    {
-                                                        AutomatedTaskFramework.Tasks.GetCurrent().Run();
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    AutomatedTaskFramework.DoTasks(decryptedData);
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
                                     switch (packetID)
@@ -793,11 +736,9 @@ namespace pmdbs
                                     CustomException.ThrowNew.NetworkException("Received invalid Packet Specifier.", "[ERRNO 05] IPS");
                                     break;
                                 }
-
                         }
                     }
                 }
-
             }
             catch (SocketException se)
             {
