@@ -4381,7 +4381,7 @@ class Server(Thread):
 				newAdminPassword = getpass.getpass(CWHITE + " > " + ENDF)
 				print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Please confirm the new admin password:" + ENDF)
 				newAdminPasswordConfirm = getpass.getpass(CWHITE + " > " + ENDF)
-				if newAdminPassword == newAdminPasswordConfirm and len(newAdminPassword) > 0:
+				if newAdminPassword == newAdminPasswordConfirm and newAdminPassword:
 					print(CWHITE + "         Setting admin password ..." + ENDF)
 					adminPassword = CryptoHelper.SHA256(newAdminPassword)
 					hashedUsername = CryptoHelper.SHA256("__ADMIN__")
@@ -4690,7 +4690,7 @@ class ClientHandler():
 						dataPackets = None
 						# ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER----
 						# CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER IS EMPTY
-						if b'\x04' in data and len(buf) == 0:
+						if b'\x04' in data and not buf:
 							# SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
 							rawDataPackets = data.split(b'\x04')
 							# GRAB THE LAST PACKET
