@@ -375,7 +375,6 @@
             this.MenuSyncPictureBox.Location = new System.Drawing.Point(89, 45);
             this.MenuSyncPictureBox.Name = "MenuSyncPictureBox";
             this.MenuSyncPictureBox.Size = new System.Drawing.Size(86, 86);
-            this.MenuSyncPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MenuSyncPictureBox.TabIndex = 2;
             this.MenuSyncPictureBox.TabStop = false;
             this.MenuSyncPictureBox.Click += new System.EventHandler(this.MenuSyncPictureBox_Click);

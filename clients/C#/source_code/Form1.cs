@@ -337,7 +337,7 @@ namespace pmdbs
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            angle += 10;              // set the speed here..
+            angle += 36;              // set the speed here..
             angle = angle % 360;
             MenuSyncPictureBox.Invalidate();
         }
@@ -1386,13 +1386,12 @@ namespace pmdbs
         {
             if (bmp != null)
             {
-                Bitmap bm = new Bitmap(bmp);
                 float bw2 = bmp.Width / 2f;    // really ought..
                 float bh2 = bmp.Height / 2f;   // to be equal!!!
-                Graphics graphics = Graphics.FromImage(bm);
                 e.Graphics.TranslateTransform(bw2, bh2);
                 e.Graphics.RotateTransform(angle);
                 e.Graphics.TranslateTransform(-bw2, -bh2);
+                e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
                 e.Graphics.DrawImage(bmp, 0, 0);
                 e.Graphics.ResetTransform();
             }
