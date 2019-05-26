@@ -346,7 +346,6 @@ namespace pmdbs
             angle2 = angle2 % 360;
             angle3 = angle3 % 360;
             MenuSyncPictureBox.Invalidate();
-            pictureBox2.Invalidate();
             pictureBox3.Invalidate();
         }
         #endregion
