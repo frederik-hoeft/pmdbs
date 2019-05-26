@@ -26,7 +26,7 @@ namespace pmdbs
     {
         #region DECLARATIONS
         private List<ListEntry> entryList = new List<ListEntry>();
-        private char[] alphabet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+        
         private char[] passwordSpecialCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '-', '$', '%', '&', '/', '(', ')', '=', '?', '{', '[', ']', '}', '\\', '+', '*', '#', ',', '.', '<', '>', '|', '@', '!', '~', ';', ':', '"' };
         private char[] passwordCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
         private string MasterPassword;
@@ -209,9 +209,9 @@ namespace pmdbs
             DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
             DataEditSaveAdvancedImageButton.OnClickEvent += DataEditSave_Click;
             DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
-            DashboardMenuEntryHome.OnClickEvent += MenuMenuEntryHome_Click;
-            DashboardMenuEntrySettings.OnClickEvent += MenuMenuEntrySettings_Click;
-            DashboardMenuEntryPasswords.OnClickEvent += MenuMenuEntryPasswords_Click;
+            MenuMenuEntryHome.OnClickEvent += MenuMenuEntryHome_Click;
+            MenuMenuEntrySettings.OnClickEvent += MenuMenuEntrySettings_Click;
+            MenuMenuEntryPasswords.OnClickEvent += MenuMenuEntryPasswords_Click;
             AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
             AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
             windowButtonClose.OnClickEvent += WindowButtonClose_Click;
@@ -324,6 +324,29 @@ namespace pmdbs
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Your Accounts";
+        }
+        Bitmap bmp;
+        float angle = 0f;
+        float angle2 = 0f;
+        float angle3 = 0f;
+        private void MenuSyncPictureBox_Click(object sender, EventArgs e)
+        {
+            // MenuSyncPictureBox.Image = RotateImage(MenuSyncPictureBox.Image, 72);
+            bmp = new Bitmap(Image.FromFile(@"D:\Downloads\stuff\pmdbs\Mirror\sync_icon_syncing2.png"));
+            timer1.Interval = 50;
+            timer1.Start();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            angle += 36;              // set the speed here..
+            angle2 += 24;
+            angle3 += 18;
+            angle = angle % 360;
+            angle2 = angle2 % 360;
+            angle3 = angle3 % 360;
+            MenuSyncPictureBox.Invalidate();
+            pictureBox3.Invalidate();
         }
         #endregion
 
@@ -473,6 +496,7 @@ namespace pmdbs
 
         private async void DataEditSave_Click(object sender, EventArgs e)
         {
+            DataEditSaveAdvancedImageButton.Enabled = false;
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             string Hostname = DataEditEditFieldHostname.TextTextBox;
             string Username = DataEditEditFieldUsername.TextTextBox;
@@ -544,31 +568,7 @@ namespace pmdbs
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        char letter = Hostname.ToUpper()[0];
-                        // Create Optional Icons
-                        using (Bitmap bmp = new Bitmap(alphabet.Contains(letter) ? @"Resources\Icons\" + letter + ".png" : @"Resources\Icons\_UNKNOWN.png"))
-                        {
-                            Graphics g = Graphics.FromImage(bmp);
-                            // Set the image attribute's color mappings
-                            ColorMap[] colorMap = new ColorMap[1];
-                            Random rng = new Random();
-                            colorMap[0] = new ColorMap
-                            {
-                                OldColor = Color.Black,
-                                NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
-                            };
-                            ImageAttributes attr = new ImageAttributes();
-                            attr.SetRemapTable(colorMap);
-                            // Draw using the color map
-                            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                            g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
-                            string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-                            using (MemoryStream ms = new MemoryStream())
-                            {
-                                bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                                favIcon = Convert.ToBase64String(ms.ToArray());
-                            }
-                        }
+                        favIcon = HelperMethods.GenerateIcon(Hostname);
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
@@ -578,6 +578,7 @@ namespace pmdbs
                     {
                         UpdateDetailsWindow(LinkedRow);
                         ReloadSingleEntry(LinkedRow);
+                        DataEditSaveAdvancedImageButton.Enabled = true;
                         DataFlowLayoutPanelEdit.SuspendLayout();
                         DataPanelDetails.BringToFront();
                         DataPanelDetails.ResumeLayout();
@@ -780,6 +781,7 @@ namespace pmdbs
 
         private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
         {
+            AddPanelAdvancedImageButtonSave.Enabled = false;
             string Hostname = AddEditFieldHostname.TextTextBox;
             string Username = AddEditFieldUsername.TextTextBox;
             string Password = AddEditFieldPassword.TextTextBox;
@@ -809,31 +811,7 @@ namespace pmdbs
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                    char letter = Hostname.ToUpper()[0];
-                    // Create Optional Icons
-                    using (Bitmap bmp = new Bitmap(alphabet.Contains(letter) ? @"Resources\Icons\" + letter + ".png" : @"Resources\Icons\_UNKNOWN.png"))
-                    {
-                        Graphics g = Graphics.FromImage(bmp);
-                        // Set the image attribute's color mappings
-                        ColorMap[] colorMap = new ColorMap[1];
-                        Random rng = new Random();
-                        colorMap[0] = new ColorMap
-                        {
-                            OldColor = Color.Black,
-                            NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
-                        };
-                        ImageAttributes attr = new ImageAttributes();
-                        attr.SetRemapTable(colorMap);
-                        // Draw using the color map
-                        Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                        g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
-                        string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                            favIcon = Convert.ToBase64String(ms.ToArray());
-                        }
-                    }
+                    HelperMethods.GenerateIcon(Hostname);
                 }
                 string[] Values = new string[]
                 {
@@ -903,6 +881,7 @@ namespace pmdbs
                     NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
                     NewRow["9"] = favIcon;
                     RefreshUserData(CurrentPage);
+                    AddPanelAdvancedImageButtonSave.Enabled = true;
                     AddPanelMain.SuspendLayout();
                     DataTableLayoutPanelMain.BringToFront();
                     DataTableLayoutPanelMain.ResumeLayout();
@@ -924,7 +903,15 @@ namespace pmdbs
             animatedButton1.Enabled = false;
             new Thread(delegate ()
             {
-                string base64Img = WebHelper.GetFavIcons(AddEditFieldWebsite.TextTextBox);
+                string base64Img;
+                try
+                {
+                    base64Img = WebHelper.GetFavIcons(AddEditFieldWebsite.TextTextBox);
+                }
+                catch
+                {
+                    base64Img = HelperMethods.GenerateIcon(AddEditFieldHostname.TextTextBox);
+                }
                 byte[] iconBytes = Convert.FromBase64String(base64Img);
                 Invoke((MethodInvoker)delegate
                 {
@@ -1394,10 +1381,57 @@ namespace pmdbs
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
+
         #endregion
+
         #region SettingsOnline
         #endregion
 
         #endregion
+
+        private void MenuSyncPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (bmp != null)
+            {
+                float bw2 = bmp.Width / 2f;    // really ought..
+                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                e.Graphics.TranslateTransform(bw2, bh2);
+                e.Graphics.RotateTransform(angle);
+                e.Graphics.TranslateTransform(-bw2, -bh2);
+                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
+                e.Graphics.DrawImage(bmp, 0, 0);
+                e.Graphics.ResetTransform();
+            }
+        }
+
+        private void pictureBox2_Paint(object sender, PaintEventArgs e)
+        {
+            if (bmp != null)
+            {
+                float bw2 = bmp.Width / 2f;    // really ought..
+                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                e.Graphics.TranslateTransform(bw2, bh2);
+                e.Graphics.RotateTransform(angle2);
+                e.Graphics.TranslateTransform(-bw2, -bh2);
+                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
+                e.Graphics.DrawImage(bmp, 0, 0);
+                e.Graphics.ResetTransform();
+            }
+        }
+
+        private void pictureBox3_Paint(object sender, PaintEventArgs e)
+        {
+            if (bmp != null)
+            {
+                float bw2 = bmp.Width / 2f;    // really ought..
+                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                e.Graphics.TranslateTransform(bw2, bh2);
+                e.Graphics.RotateTransform(angle3);
+                e.Graphics.TranslateTransform(-bw2, -bh2);
+                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
+                e.Graphics.DrawImage(bmp, 0, 0);
+                e.Graphics.ResetTransform();
+            }
+        }
     }
 }

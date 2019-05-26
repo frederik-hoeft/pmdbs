@@ -12,12 +12,13 @@ using System.Drawing;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Data;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace pmdbs
 {
     public struct HelperMethods
     {
-
         public static List<byte[]> Separate(byte[] source, byte[] separator)
         {
             var Parts = new List<byte[]>();
@@ -36,7 +37,6 @@ namespace pmdbs
                         i += separator.Length - 1;
                     }
                 }
-                
             }
             Part = new byte[source.Length - Index];
             Array.Copy(source, Index, Part, 0, Part.Length);
@@ -213,6 +213,7 @@ namespace pmdbs
         /// <param name="parameter">new string[] { remoteHeaderString, deletedItemString }</param>
         public static async void Sync(object parameter)
         {
+            bool refresh = false;
             string[] parameters = (string[])parameter;
             string remoteHeaderString = parameters[0];
             string deletedItemString = parameters[1];
@@ -224,10 +225,16 @@ namespace pmdbs
             {
                 string cleanedDeletedItemString = deletedItemString.Replace("deleted%eq![('", "").Replace("')]!", "");
                 string[] deletedItems = cleanedDeletedItemString.Split(new string[] { "'),('" }, StringSplitOptions.RemoveEmptyEntries);
+                Task<List<string>> getHids = DataBaseHelper.GetDataAsList("Select D_hid from Tbl_data;", (int)ColumnCount.SingleColumn);
+                List<string> hids = await getHids;
                 // DELETE ALL LOCAL ACCOUNTS THAT HAVE BEEN DELETED ON THE SERVER
                 for (int i = 0; i < deletedItems.Length; i++)
                 {
-                    await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
+                    if (hids.Contains(deletedItems[i]))
+                    {
+                        await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
+                        refresh = true;
+                    }
                 }
             }
             // GET LOCAL HEADERS
@@ -343,11 +350,18 @@ namespace pmdbs
                 AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                 AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                 AutomatedTaskFramework.Tasks.Execute();
-                GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                if (refresh)
                 {
-                    CustomException.ThrowNew.GenericException("Done. Nothing to do.");
-                    GlobalVarPool.SyncButton.Enabled = true;
-                });
+                    ReloadData();
+                }
+                else
+                {
+                    GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                    {
+                        CustomException.ThrowNew.GenericException("Done. Nothing to do.");
+                        GlobalVarPool.SyncButton.Enabled = true;
+                    });
+                }
             }
         }
 
@@ -355,11 +369,12 @@ namespace pmdbs
         {
             for (int i = 0; i < GlobalVarPool.selectedAccounts.Count; i++)
             {
-                string[] account = new string[] { "host", "url", "uname", "password", "email", "notes", "icon", "hid", "datetime" };
+                string[] account = new string[] { "host%eq", "url%eq", "uname%eq", "password%eq", "email%eq", "notes%eq", "icon%eq", "hid%eq", "datetime%eq" };
                 string[] values = new string[] { null, null, null, null, null, null, null, null, null };
                 string[] accountParts = GlobalVarPool.selectedAccounts[i].Split(';');
                 try
                 {
+                    string icon_DEBUGGING = accountParts[7];
                     for (int j = 0; j < accountParts.Length; j++)
                     {
                         if (accountParts[j].Equals("mode%eq!SELECT!"))
@@ -384,6 +399,10 @@ namespace pmdbs
                 {
                     CustomException.ThrowNew.GenericException("NULL value in sync values!");
                     continue;
+                }
+                for (int j = 0; j < account.Length; j++)
+                {
+                    account.SetValue(account[j].Replace("%eq", ""), j);
                 }
                 Task<List<string>> CheckHidExistsTask = DataBaseHelper.GetDataAsList("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_hid = \"" + values[7] + "\");",1);
                 List<string> hidExists = await CheckHidExistsTask;
@@ -462,34 +481,7 @@ namespace pmdbs
                 }
             }
             GlobalVarPool.selectedAccounts.Clear();
-            // TODO: INVOKE UI
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
-            GlobalVarPool.UserData = await GetData; // <-- ERROR: "Database is not open" after insert + syncing
-            int Columns = GlobalVarPool.UserData.Columns.Count;
-            int RowCounter = 0;
-            int Fields = (Columns - 3) * GlobalVarPool.UserData.Rows.Count;
-            foreach (DataRow Row in GlobalVarPool.UserData.Rows)
-            {
-                for (int i = 3; i < Columns; i++)
-                {
-                    string FieldValue = Row[i].ToString();
-                    if (!FieldValue.Equals("\x01"))
-                    {
-                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
-                        Row.BeginEdit();
-                        Row.SetField(i, decryptedData);
-                        Row.EndEdit();
-                    }
-                    double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
-                    double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
-                }
-                RowCounter++;
-            }
-            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.SyncButton.Enabled = true;
-                Form1.InvokeReload();
-            });
+            ReloadData();
         }
 
         public static async void SetHid(object parameter)
@@ -514,6 +506,67 @@ namespace pmdbs
                 return;
             }
             await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_hid = \"" + hid + "\" WHERE D_id = " + localID + ";");
+        }
+
+        public static async void ReloadData()
+        {
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            GlobalVarPool.UserData = await GetData;
+            int Columns = GlobalVarPool.UserData.Columns.Count;
+            int RowCounter = 0;
+            int Fields = (Columns - 3) * GlobalVarPool.UserData.Rows.Count;
+            foreach (DataRow Row in GlobalVarPool.UserData.Rows)
+            {
+                for (int i = 3; i < Columns; i++)
+                {
+                    string FieldValue = Row[i].ToString();
+                    if (!FieldValue.Equals("\x01"))
+                    {
+                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
+                        Row.BeginEdit();
+                        Row.SetField(i, decryptedData);
+                        Row.EndEdit();
+                    }
+                    // TODO: DISPLAY PROGRESS
+                    double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
+                    double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
+                }
+                RowCounter++;
+            }
+            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.SyncButton.Enabled = true;
+                Form1.InvokeReload();
+            });
+        }
+        public static string GenerateIcon(string Hostname)
+        {
+            char[] alphabet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+            char letter = Hostname.ToUpper()[0];
+            // Create Optional Icons
+            using (Bitmap bmp = new Bitmap(alphabet.Contains(letter) ? @"Resources\Icons\" + letter + ".png" : @"Resources\Icons\_UNKNOWN.png"))
+            {
+                Graphics g = Graphics.FromImage(bmp);
+                // Set the image attribute's color mappings
+                ColorMap[] colorMap = new ColorMap[1];
+                Random rng = new Random();
+                colorMap[0] = new ColorMap
+                {
+                    OldColor = Color.Black,
+                    NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
+                };
+                ImageAttributes attr = new ImageAttributes();
+                attr.SetRemapTable(colorMap);
+                // Draw using the color map
+                Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+                g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
+                string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    return Convert.ToBase64String(ms.ToArray());
+                }
+            }
         }
     }
 }

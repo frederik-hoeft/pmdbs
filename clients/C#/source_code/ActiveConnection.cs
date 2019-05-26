@@ -164,8 +164,9 @@ namespace pmdbs
                             throw new SocketException { Source = "RST" };
                         }
                         // ----HANDLE CASES OF MORE THAN ONE PACKET IN RECEIVE BUFFER
-                        // CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER FOR BIG PACKETS IS EMPTY
+                        // REMOVE ANY NULL BYTES FROM BUFFER
                         data = data.Where(b => b != 0x00).ToArray();
+                        // CHECK IF PACKET CONTAINS EOT FLAG AND IF THE BUFFER FOR BIG PACKETS IS EMPTY
                         if (data.Contains<byte>(0x04) && buffer.Count == 0)
                         {
                             // SPLIT PACKETS ON EOT FLAG (MIGHT BE MORE THAN ONE PACKET)
