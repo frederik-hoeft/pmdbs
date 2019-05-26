@@ -330,8 +330,8 @@ namespace pmdbs
         private void MenuSyncPictureBox_Click(object sender, EventArgs e)
         {
             // MenuSyncPictureBox.Image = RotateImage(MenuSyncPictureBox.Image, 72);
-            bmp = new Bitmap(MenuSyncPictureBox.Image);
-            timer1.Interval = 100;
+            bmp = new Bitmap(Image.FromFile(@"D:\Downloads\stuff\pmdbs\Mirror\sync_icon_syncing2.png"));
+            timer1.Interval = 50;
             timer1.Start();
         }
 
@@ -1391,7 +1391,7 @@ namespace pmdbs
                 e.Graphics.TranslateTransform(bw2, bh2);
                 e.Graphics.RotateTransform(angle);
                 e.Graphics.TranslateTransform(-bw2, -bh2);
-                e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
+                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
                 e.Graphics.DrawImage(bmp, 0, 0);
                 e.Graphics.ResetTransform();
             }
