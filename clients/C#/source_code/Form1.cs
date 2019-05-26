@@ -328,6 +328,7 @@ namespace pmdbs
         Bitmap bmp;
         float angle = 0f;
         float angle2 = 0f;
+        float angle3 = 0f;
         private void MenuSyncPictureBox_Click(object sender, EventArgs e)
         {
             // MenuSyncPictureBox.Image = RotateImage(MenuSyncPictureBox.Image, 72);
@@ -340,9 +341,13 @@ namespace pmdbs
         {
             angle += 36;              // set the speed here..
             angle2 += 24;
+            angle3 += 18;
             angle = angle % 360;
+            angle2 = angle2 % 360;
+            angle3 = angle3 % 360;
             MenuSyncPictureBox.Invalidate();
             pictureBox2.Invalidate();
+            pictureBox3.Invalidate();
         }
         #endregion
 
@@ -1408,6 +1413,21 @@ namespace pmdbs
                 float bh2 = bmp.Height / 2f;   // to be equal!!!
                 e.Graphics.TranslateTransform(bw2, bh2);
                 e.Graphics.RotateTransform(angle2);
+                e.Graphics.TranslateTransform(-bw2, -bh2);
+                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
+                e.Graphics.DrawImage(bmp, 0, 0);
+                e.Graphics.ResetTransform();
+            }
+        }
+
+        private void pictureBox3_Paint(object sender, PaintEventArgs e)
+        {
+            if (bmp != null)
+            {
+                float bw2 = bmp.Width / 2f;    // really ought..
+                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                e.Graphics.TranslateTransform(bw2, bh2);
+                e.Graphics.RotateTransform(angle3);
                 e.Graphics.TranslateTransform(-bw2, -bh2);
                 //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
                 e.Graphics.DrawImage(bmp, 0, 0);
