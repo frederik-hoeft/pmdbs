@@ -209,9 +209,9 @@ namespace pmdbs
             DataDetailsEntryWebsite.OnClickEvent += DataDetailsEntryWebsite_Click;
             DataEditSaveAdvancedImageButton.OnClickEvent += DataEditSave_Click;
             DataEditCancelAdvancedImageButton.OnClickEvent += DataEditCancel_Click;
-            DashboardMenuEntryHome.OnClickEvent += MenuMenuEntryHome_Click;
-            DashboardMenuEntrySettings.OnClickEvent += MenuMenuEntrySettings_Click;
-            DashboardMenuEntryPasswords.OnClickEvent += MenuMenuEntryPasswords_Click;
+            MenuMenuEntryHome.OnClickEvent += MenuMenuEntryHome_Click;
+            MenuMenuEntrySettings.OnClickEvent += MenuMenuEntrySettings_Click;
+            MenuMenuEntryPasswords.OnClickEvent += MenuMenuEntryPasswords_Click;
             AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
             AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
             windowButtonClose.OnClickEvent += WindowButtonClose_Click;
@@ -324,6 +324,51 @@ namespace pmdbs
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Your Accounts";
+        }
+
+        private void MenuSyncPictureBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new Image containing the same image only rotated
+        /// </summary>
+        /// <param name=""image"">The <see cref=""System.Drawing.Image"/"> to rotate
+        /// <param name=""offset"">The position to rotate from.
+        /// <param name=""angle"">The amount to rotate the image, clockwise, in degrees
+        /// <returns>A new <see cref=""System.Drawing.Bitmap"/"> of the same size rotated.</see>
+        /// <exception cref=""System.ArgumentNullException"">Thrown if <see cref=""image"/"> is null.</see>
+        public static Bitmap RotateImage(Image image, PointF offset, float angle)
+        {
+            if (image == null)
+                throw new ArgumentNullException("image");
+
+            //create a new empty bitmap to hold rotated image
+            Bitmap rotatedBmp = new Bitmap(image.Width, image.Height);
+            rotatedBmp.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+            //make a graphics object from the empty bitmap
+            Graphics g = Graphics.FromImage(rotatedBmp);
+
+            //Put the rotation point in the center of the image
+            g.TranslateTransform(offset.X, offset.Y);
+
+            //rotate the image
+            g.RotateTransform(angle);
+
+            //move the image back
+            g.TranslateTransform(-offset.X, -offset.Y);
+
+            //draw passed in image onto graphics object
+            g.DrawImage(image, new PointF(0, 0));
+
+            return rotatedBmp;
         }
         #endregion
 
@@ -1359,9 +1404,12 @@ namespace pmdbs
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
         #endregion
+
         #region SettingsOnline
         #endregion
 
         #endregion
+
+        
     }
 }
