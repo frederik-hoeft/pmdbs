@@ -385,7 +385,13 @@ namespace pmdbs
                         {
                             if (accountParts[j].Contains(account[k]))
                             {
-                                values.SetValue(accountParts[j].Split('!')[1], k);
+                                if (j == 7)
+                                {
+                                    Console.WriteLine("yay");
+                                }
+                                string[] valueArray = accountParts[j].Split('!');
+                                string value = valueArray[1];
+                                values.SetValue(value, k);
                                 break;
                             }
                         }
