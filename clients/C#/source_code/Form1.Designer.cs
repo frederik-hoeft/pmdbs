@@ -379,6 +379,7 @@
             this.MenuSyncPictureBox.TabIndex = 2;
             this.MenuSyncPictureBox.TabStop = false;
             this.MenuSyncPictureBox.Click += new System.EventHandler(this.MenuSyncPictureBox_Click);
+            this.MenuSyncPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MenuSyncPictureBox_Paint);
             // 
             // MenuSyncLabelHeader
             // 

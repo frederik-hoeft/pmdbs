@@ -325,31 +325,21 @@ namespace pmdbs
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Your Accounts";
         }
-
+        Bitmap bmp;
+        float angle = 0f;
         private void MenuSyncPictureBox_Click(object sender, EventArgs e)
         {
             // MenuSyncPictureBox.Image = RotateImage(MenuSyncPictureBox.Image, 72);
+            bmp = new Bitmap(MenuSyncPictureBox.Image);
             timer1.Interval = 100;
             timer1.Start();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            MenuSyncPictureBox.Image = RotateImage(MenuSyncPictureBox.Image, 72);
-        }
-
-        public Image RotateImage(Image img)
-        {
-            var bmp = new Bitmap(img);
-
-            using (Graphics gfx = Graphics.FromImage(bmp))
-            {
-                gfx.Clear(Color.White);
-                gfx.DrawImage(img, 0, 0, img.Width, img.Height);
-            }
-
-            bmp.RotateFlip(RotateFlipType.Rotate270FlipNone);
-            return bmp;
+            angle += 10;              // set the speed here..
+            angle = angle % 360;
+            MenuSyncPictureBox.Invalidate();
         }
         #endregion
 
@@ -1384,6 +1374,7 @@ namespace pmdbs
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
+
         #endregion
 
         #region SettingsOnline
@@ -1391,6 +1382,20 @@ namespace pmdbs
 
         #endregion
 
-        
+        private void MenuSyncPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (bmp != null)
+            {
+                Bitmap bm = new Bitmap(bmp);
+                float bw2 = bmp.Width / 2f;    // really ought..
+                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                Graphics graphics = Graphics.FromImage(bm);
+                e.Graphics.TranslateTransform(bw2, bh2);
+                e.Graphics.RotateTransform(angle);
+                e.Graphics.TranslateTransform(-bw2, -bh2);
+                e.Graphics.DrawImage(bmp, 0, 0);
+                e.Graphics.ResetTransform();
+            }
+        }
     }
 }
