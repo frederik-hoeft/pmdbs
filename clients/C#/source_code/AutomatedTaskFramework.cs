@@ -8,6 +8,52 @@ namespace pmdbs
 {
     public static class AutomatedTaskFramework
     {
+        public static void DoTasks(string data)
+        {
+            if (AutomatedTaskFramework.Tasks.Available())
+            {
+                AutomatedTaskFramework.Task currentTask = AutomatedTaskFramework.Tasks.GetCurrent();
+                if (currentTask.FailedCondition.Split('|').Where(failedCondition => data.Contains(failedCondition)).Count() == 0)
+                {
+                    if (currentTask.SearchCondition == SearchCondition.Match)
+                    {
+                        if (data.Equals(currentTask.FinishedCondition))
+                        {
+                            currentTask.Delete();
+
+                            if (AutomatedTaskFramework.Tasks.Available())
+                            {
+                                AutomatedTaskFramework.Tasks.GetCurrent().Run();
+                            }
+                        }
+                    }
+                    else if (currentTask.SearchCondition == SearchCondition.In)
+                    {
+                        if (currentTask.FinishedCondition.Split('|').Where(taskCondition => data.Contains(taskCondition)).Count() != 0)
+                        {
+                            currentTask.Delete();
+
+                            if (AutomatedTaskFramework.Tasks.Available())
+                            {
+                                AutomatedTaskFramework.Tasks.GetCurrent().Run();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (data.Contains(currentTask.FinishedCondition))
+                        {
+                            currentTask.Delete();
+
+                            if (AutomatedTaskFramework.Tasks.Available())
+                            {
+                                AutomatedTaskFramework.Tasks.GetCurrent().Run();
+                            }
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// Tasks maintains a list of all currently active tasks and provides basic task management such as scheduling, executing and cancelling.
         /// </summary>
