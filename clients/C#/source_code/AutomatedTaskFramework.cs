@@ -13,11 +13,11 @@ namespace pmdbs
             if (AutomatedTaskFramework.Tasks.Available())
             {
                 AutomatedTaskFramework.Task currentTask = AutomatedTaskFramework.Tasks.GetCurrent();
-                if (currentTask.FailedCondition.Split('|').Where(failedCondition => decryptedData.Contains(failedCondition)).Count() == 0)
+                if (currentTask.FailedCondition.Split('|').Where(failedCondition => data.Contains(failedCondition)).Count() == 0)
                 {
                     if (currentTask.SearchCondition == SearchCondition.Match)
                     {
-                        if (decryptedData.Equals(currentTask.FinishedCondition))
+                        if (data.Equals(currentTask.FinishedCondition))
                         {
                             currentTask.Delete();
 
@@ -29,7 +29,7 @@ namespace pmdbs
                     }
                     else if (currentTask.SearchCondition == SearchCondition.In)
                     {
-                        if (currentTask.FinishedCondition.Split('|').Where(taskCondition => decryptedData.Contains(taskCondition)).Count() != 0)
+                        if (currentTask.FinishedCondition.Split('|').Where(taskCondition => data.Contains(taskCondition)).Count() != 0)
                         {
                             currentTask.Delete();
 
@@ -41,7 +41,7 @@ namespace pmdbs
                     }
                     else
                     {
-                        if (decryptedData.Contains(currentTask.FinishedCondition))
+                        if (data.Contains(currentTask.FinishedCondition))
                         {
                             currentTask.Delete();
 

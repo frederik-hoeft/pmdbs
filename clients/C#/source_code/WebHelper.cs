@@ -80,10 +80,11 @@ namespace pmdbs
                         using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink)))
                         {
                             Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
-                            /*if (bmpIcon.Width < 32 || bmpIcon.Height < 32)
+                            if (bmpIcon.Width < 64 || bmpIcon.Height < 64)
                             {
                                 break;
-                            }*/
+                            }
+                            bmpIcon = (Bitmap)bmpIcon.GetThumbnailImage(350, 350, null, new IntPtr());
                             using (MemoryStream ms = new MemoryStream())
                             {
                                 bmpIcon.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
