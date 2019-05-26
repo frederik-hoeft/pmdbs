@@ -369,7 +369,7 @@ namespace pmdbs
         {
             for (int i = 0; i < GlobalVarPool.selectedAccounts.Count; i++)
             {
-                string[] account = new string[] { "host", "url", "uname", "password", "email", "notes", "icon", "hid", "datetime" };
+                string[] account = new string[] { "host%eq", "url%eq", "uname%eq", "password%eq", "email%eq", "notes%eq", "icon%eq", "hid%eq", "datetime%eq" };
                 string[] values = new string[] { null, null, null, null, null, null, null, null, null };
                 string[] accountParts = GlobalVarPool.selectedAccounts[i].Split(';');
                 try
@@ -385,13 +385,7 @@ namespace pmdbs
                         {
                             if (accountParts[j].Contains(account[k]))
                             {
-                                if (j == 7)
-                                {
-                                    Console.WriteLine("yay");
-                                }
-                                string[] valueArray = accountParts[j].Split('!');
-                                string value = valueArray[1];
-                                values.SetValue(value, k);
+                                values.SetValue(accountParts[j].Split('!')[1], k);
                                 break;
                             }
                         }
@@ -405,6 +399,10 @@ namespace pmdbs
                 {
                     CustomException.ThrowNew.GenericException("NULL value in sync values!");
                     continue;
+                }
+                for (int j = 0; j < account.Length; j++)
+                {
+                    account.SetValue(account[j].Replace("%eq", ""), j);
                 }
                 Task<List<string>> CheckHidExistsTask = DataBaseHelper.GetDataAsList("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_hid = \"" + values[7] + "\");",1);
                 List<string> hidExists = await CheckHidExistsTask;
