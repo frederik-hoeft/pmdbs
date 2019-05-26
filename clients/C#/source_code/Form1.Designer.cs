@@ -253,6 +253,7 @@
             this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
             this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
             this.windowButtonClose = new pmdbs.WindowButton();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -342,6 +343,7 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -360,6 +362,7 @@
             // 
             // MenuPanelSync
             // 
+            this.MenuPanelSync.Controls.Add(this.pictureBox2);
             this.MenuPanelSync.Controls.Add(this.MenuSyncPictureBox);
             this.MenuPanelSync.Controls.Add(this.MenuSyncLabelHeader);
             this.MenuPanelSync.Controls.Add(this.MenuSyncLabelStatus);
@@ -372,7 +375,7 @@
             // MenuSyncPictureBox
             // 
             this.MenuSyncPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("MenuSyncPictureBox.Image")));
-            this.MenuSyncPictureBox.Location = new System.Drawing.Point(89, 45);
+            this.MenuSyncPictureBox.Location = new System.Drawing.Point(13, 45);
             this.MenuSyncPictureBox.Name = "MenuSyncPictureBox";
             this.MenuSyncPictureBox.Size = new System.Drawing.Size(86, 86);
             this.MenuSyncPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -3582,6 +3585,17 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(155, 45);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(86, 86);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox2_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -3715,6 +3729,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3944,6 +3959,7 @@
         private System.Windows.Forms.Label MenuSyncLabelHeader;
         private System.Windows.Forms.Label MenuSyncLabelStatus;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 
