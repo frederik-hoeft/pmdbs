@@ -365,6 +365,9 @@ namespace pmdbs
             if (!showSyncAnimation && angle == 0)
             {
                 SyncAnimationTimer.Stop();
+                bmp = null;
+                MenuSyncPictureBox.Invalidate();
+                MenuSyncPictureBox.Image = Resources.Icon_sync;
             }
         }
 

@@ -308,16 +308,19 @@ namespace pmdbs
         {
             public static void ActivateAccount(string code)
             {
+                HelperMethods.InvokeOutputLabel("Activating account ...");
                 Network.SendEncrypted("MNGVERusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;");
             }
 
             public static void CheckCookie()
             {
+                HelperMethods.InvokeOutputLabel("Checking cookie ...");
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
 
             public static void Connect()
             {
+                HelperMethods.InvokeOutputLabel("Connecting ...");
                 Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
                 {
                     IsBackground = true
@@ -327,6 +330,7 @@ namespace pmdbs
 
             public static void ConfirmNewDevice(string code)
             {
+                HelperMethods.InvokeOutputLabel("Adding device ...");
                 Network.SendEncrypted("MNGCNDusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
 
@@ -352,6 +356,7 @@ namespace pmdbs
             
             public static void GetCookie()
             {
+                HelperMethods.InvokeOutputLabel("Requested cookie.");
                 Network.SendEncrypted("MNGCKI");
             }
 
@@ -361,6 +366,7 @@ namespace pmdbs
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Insert(List<string> account)
             {
+                HelperMethods.InvokeOutputLabel("Uploading data ...");
                 string id = account[0];
                 string host = account[1];
                 string url = account[2];
@@ -377,21 +383,25 @@ namespace pmdbs
 
             public static void Login()
             {
+                HelperMethods.InvokeOutputLabel("Logging in ...");
                 Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
 
             public static void Logout()
             {
+                HelperMethods.InvokeOutputLabel("Logging out ...");
                 Network.SendEncrypted("MNGLGO");
             }
 
             public static void Register()
             {
+                HelperMethods.InvokeOutputLabel("Registering new user ...");
                 Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
 
             public static void Select(List<string> hids)
             {
+                HelperMethods.InvokeOutputLabel("Downloading data ...");
                 string hidsFormatted = "";
                 for (int i = 0; i < hids.Count; i++)
                 {
