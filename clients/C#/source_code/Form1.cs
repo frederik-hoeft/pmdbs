@@ -330,12 +330,15 @@ namespace pmdbs
         private void MenuSyncPictureBox_Click(object sender, EventArgs e)
         {
             // bmp = new Bitmap(Image.FromFile(@"Resources\Icons\icon_syncing_final.png"));
-            bmp = new Bitmap(Image.FromFile(@"Resources\Icons\icon_syncing_final.png"));
-            timer1.Interval = 50;
-            timer1.Start();
+            MenuSyncLabelHeader.ForeColor = Colors.Orange;
+            MenuSyncLabelStatus.ForeColor = Colors.Orange;
+            MenuSyncPictureBox.Image = Resources.icon_empty;
+            bmp = new Bitmap(Resources.icon_syncing);
+            SyncAnimationTimer.Interval = 50;
+            SyncAnimationTimer.Start();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void SyncAnimationTimer_Tick(object sender, EventArgs e)
         {
             angle += 18;
             angle = angle % 360;
