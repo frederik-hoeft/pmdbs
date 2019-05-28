@@ -44,6 +44,11 @@ namespace pmdbs
         {
             GlobalVarPool.Form1.RefreshUserData(0);
         }
+
+        public static void InvokeSyncAnimationStop()
+        {
+            GlobalVarPool.Form1.SyncAnimationStop();
+        }
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -293,6 +298,7 @@ namespace pmdbs
         #region Menu
         Bitmap bmp;
         float angle = 0f;
+        bool showSyncAnimation = false;
         private void MenuMenuEntryHome_Click(object sender, EventArgs e)
         {
             MenuPanelHomeIndicator.BackColor = Colors.Orange;
@@ -326,9 +332,10 @@ namespace pmdbs
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Your Accounts";
         }
-        
+
         private void SyncAnimationStart()
         {
+            showSyncAnimation = true;
             GlobalVarPool.outputLabel = MenuSyncLabelStatus;
             GlobalVarPool.outputLabelIsValid = true;
             bmp = new Bitmap(Resources.icon_syncing);
@@ -342,9 +349,12 @@ namespace pmdbs
 
         private void SyncAnimationStop()
         {
+            showSyncAnimation = false;
             GlobalVarPool.outputLabelIsValid = false;
+            MenuSyncLabelHeader.ForeColor = Color.FromArgb(100, 100, 100);
+            MenuSyncLabelStatus.ForeColor = Color.FromArgb(100, 100, 100);
             MenuSyncLabelHeader.Text = "Sync";
-            MenuSyncLabelStatus.Text = "";
+            MenuSyncLabelStatus.Text = "Last Update: " + TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(TimeConverter.TimeStamp())).ToString("u");
         }
 
         private void SyncAnimationTimer_Tick(object sender, EventArgs e)
@@ -352,6 +362,10 @@ namespace pmdbs
             angle += 18;
             angle = angle % 360;
             MenuSyncPictureBox.Invalidate();
+            if (!showSyncAnimation && angle == 0)
+            {
+                SyncAnimationTimer.Stop();
+            }
         }
 
         private void MenuSyncPictureBox_Paint(object sender, PaintEventArgs e)
@@ -524,7 +538,7 @@ namespace pmdbs
             string Email = DataEditEditFieldEmail.TextTextBox;
             string Website = DataEditEditFieldWebsite.TextTextBox;
             string Notes = DataEditAdvancedRichTextBoxNotes.TextValue;
-            string DateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string DateTime = TimeConverter.TimeStamp();
             string[] Values = new string[]
             {
                 Hostname,
@@ -710,6 +724,7 @@ namespace pmdbs
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            SyncAnimationStart();
             if (!GlobalVarPool.wasOnline)
             {
                 DataTableLayoutPanelMain.SuspendLayout();
@@ -808,7 +823,7 @@ namespace pmdbs
             string Email = AddEditFieldEmail.TextTextBox;
             string Website = AddEditFieldWebsite.TextTextBox;
             string Notes = AddPanelNotesAdvancedRichTextBox.TextValue;
-            string DateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string DateTime = TimeConverter.TimeStamp();
             
             if (Password.Equals("") || Hostname.Equals(""))
             {
@@ -1142,7 +1157,7 @@ namespace pmdbs
             LoginPictureBoxRegisterMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
-            string FirstUsage = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string FirstUsage = TimeConverter.TimeStamp();
             Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
