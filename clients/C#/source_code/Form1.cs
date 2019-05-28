@@ -327,15 +327,24 @@ namespace pmdbs
             WindowHeaderLabelTitle.Text = "Your Accounts";
         }
         
-        private void MenuSyncPictureBox_Click(object sender, EventArgs e)
+        private void SyncAnimationStart()
         {
-            bmp = new Bitmap(Image.FromFile(@"Resources\Icons\Image2.png"));
+            GlobalVarPool.outputLabel = MenuSyncLabelStatus;
+            GlobalVarPool.outputLabelIsValid = true;
+            bmp = new Bitmap(Resources.icon_syncing);
+            MenuSyncLabelHeader.Text = "Syncing ...";
             MenuSyncLabelHeader.ForeColor = Colors.Orange;
             MenuSyncLabelStatus.ForeColor = Colors.Orange;
             MenuSyncPictureBox.Image = Resources.icon_empty;
-            // bmp = new Bitmap(Resources.icon_syncing);
             SyncAnimationTimer.Interval = 50;
             SyncAnimationTimer.Start();
+        }
+
+        private void SyncAnimationStop()
+        {
+            GlobalVarPool.outputLabelIsValid = false;
+            MenuSyncLabelHeader.Text = "Sync";
+            MenuSyncLabelStatus.Text = "";
         }
 
         private void SyncAnimationTimer_Tick(object sender, EventArgs e)
