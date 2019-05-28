@@ -350,11 +350,6 @@ namespace pmdbs
         private void SyncAnimationStop()
         {
             showSyncAnimation = false;
-            GlobalVarPool.outputLabelIsValid = false;
-            MenuSyncLabelHeader.ForeColor = Color.FromArgb(100, 100, 100);
-            MenuSyncLabelStatus.ForeColor = Color.FromArgb(100, 100, 100);
-            MenuSyncLabelHeader.Text = "Sync";
-            MenuSyncLabelStatus.Text = "Last Update: " + TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(TimeConverter.TimeStamp())).ToString("u");
         }
 
         private void SyncAnimationTimer_Tick(object sender, EventArgs e)
@@ -368,6 +363,11 @@ namespace pmdbs
                 bmp = null;
                 MenuSyncPictureBox.Invalidate();
                 MenuSyncPictureBox.Image = Resources.Icon_sync;
+                GlobalVarPool.outputLabelIsValid = false;
+                MenuSyncLabelHeader.ForeColor = Color.FromArgb(100, 100, 100);
+                MenuSyncLabelStatus.ForeColor = Color.FromArgb(100, 100, 100);
+                MenuSyncLabelHeader.Text = "Sync";
+                MenuSyncLabelStatus.Text = "Last Update: " + TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(TimeConverter.TimeStamp())).ToString("u");
             }
         }
 

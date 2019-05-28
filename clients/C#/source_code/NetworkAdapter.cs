@@ -336,6 +336,7 @@ namespace pmdbs
 
             public static void Delete(List<string> hids)
             {
+                HelperMethods.InvokeOutputLabel("Deleting data ...");
                 string hidsFormatted = "";
                 for (int i = 0; i < hids.Count; i++)
                 {
@@ -346,6 +347,7 @@ namespace pmdbs
 
             public static void Disconnect()
             {
+                HelperMethods.InvokeOutputLabel("Disconnecting ...");
                 Network.Send("FIN");
                 GlobalVarPool.threadKilled = true;
                 GlobalVarPool.clientSocket.Disconnect(true);
@@ -366,7 +368,7 @@ namespace pmdbs
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Insert(List<string> account)
             {
-                HelperMethods.InvokeOutputLabel("Uploading data ...");
+                HelperMethods.InvokeOutputLabel("Inserting data ...");
                 string id = account[0];
                 string host = account[1];
                 string url = account[2];
@@ -412,6 +414,7 @@ namespace pmdbs
 
             public static void Sync()
             {
+                HelperMethods.InvokeOutputLabel("Synchronizing ...");
                 Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
             }
 
@@ -421,6 +424,7 @@ namespace pmdbs
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Update(List<string> account)
             {
+                HelperMethods.InvokeOutputLabel("Updating data ...");
                 string host = account[1];
                 string url = account[2];
                 string username = account[3];
