@@ -329,11 +329,11 @@ namespace pmdbs
         
         private void MenuSyncPictureBox_Click(object sender, EventArgs e)
         {
-            // bmp = new Bitmap(Image.FromFile(@"Resources\Icons\icon_syncing_final.png"));
+            bmp = new Bitmap(Image.FromFile(@"Resources\Icons\Image2.png"));
             MenuSyncLabelHeader.ForeColor = Colors.Orange;
             MenuSyncLabelStatus.ForeColor = Colors.Orange;
             MenuSyncPictureBox.Image = Resources.icon_empty;
-            bmp = new Bitmap(Resources.icon_syncing);
+            // bmp = new Bitmap(Resources.icon_syncing);
             SyncAnimationTimer.Interval = 50;
             SyncAnimationTimer.Start();
         }
