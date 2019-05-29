@@ -1259,9 +1259,10 @@ namespace pmdbs
             }
             AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
-            if (!GlobalVarPool.SyncButton.Enabled)
+            if (GlobalVarPool.promptFromBackgroundThread)
             {
                 SettingsTableLayoutPanelMain.SendToBack();
+                GlobalVarPool.promptFromBackgroundThread = false;
             }
         }
         #endregion
