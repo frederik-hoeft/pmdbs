@@ -44,6 +44,11 @@ namespace pmdbs
         {
             GlobalVarPool.Form1.RefreshUserData(0);
         }
+
+        public static void InvokeSyncAnimationStop()
+        {
+            GlobalVarPool.Form1.SyncAnimationStop();
+        }
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -291,7 +296,9 @@ namespace pmdbs
         }
 
         #region Menu
-
+        Bitmap bmp;
+        float angle = 0f;
+        bool showSyncAnimation = false;
         private void MenuMenuEntryHome_Click(object sender, EventArgs e)
         {
             MenuPanelHomeIndicator.BackColor = Colors.Orange;
@@ -325,28 +332,58 @@ namespace pmdbs
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Your Accounts";
         }
-        Bitmap bmp;
-        float angle = 0f;
-        float angle2 = 0f;
-        float angle3 = 0f;
-        private void MenuSyncPictureBox_Click(object sender, EventArgs e)
+
+        private void SyncAnimationStart()
         {
-            // MenuSyncPictureBox.Image = RotateImage(MenuSyncPictureBox.Image, 72);
-            bmp = new Bitmap(Image.FromFile(@"D:\Downloads\stuff\pmdbs\Mirror\sync_icon_syncing2.png"));
-            timer1.Interval = 50;
-            timer1.Start();
+            showSyncAnimation = true;
+            GlobalVarPool.outputLabel = MenuSyncLabelStatus;
+            GlobalVarPool.outputLabelIsValid = true;
+            bmp = new Bitmap(Resources.icon_syncing);
+            MenuSyncLabelHeader.Text = "Syncing ...";
+            MenuSyncLabelHeader.ForeColor = Colors.Orange;
+            MenuSyncLabelStatus.ForeColor = Colors.Orange;
+            MenuSyncPictureBox.Image = Resources.icon_empty;
+            SyncAnimationTimer.Interval = 50;
+            SyncAnimationTimer.Start();
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+        private void SyncAnimationStop()
         {
-            angle += 36;              // set the speed here..
-            angle2 += 24;
-            angle3 += 18;
+            showSyncAnimation = false;
+        }
+
+        private void SyncAnimationTimer_Tick(object sender, EventArgs e)
+        {
+            angle += 18;
             angle = angle % 360;
-            angle2 = angle2 % 360;
-            angle3 = angle3 % 360;
             MenuSyncPictureBox.Invalidate();
-            pictureBox3.Invalidate();
+            if (!showSyncAnimation && angle == 0)
+            {
+                SyncAnimationTimer.Stop();
+                bmp = null;
+                MenuSyncPictureBox.Invalidate();
+                MenuSyncPictureBox.Image = Resources.Icon_sync;
+                GlobalVarPool.outputLabelIsValid = false;
+                MenuSyncLabelHeader.ForeColor = Color.FromArgb(100, 100, 100);
+                MenuSyncLabelStatus.ForeColor = Color.FromArgb(100, 100, 100);
+                MenuSyncLabelHeader.Text = "Sync";
+                MenuSyncLabelStatus.Text = "Last Update: " + TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(TimeConverter.TimeStamp())).ToString("u");
+            }
+        }
+
+        private void MenuSyncPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            if (bmp != null)
+            {
+                float bw2 = bmp.Width / 2f;    // really ought..
+                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                e.Graphics.TranslateTransform(bw2, bh2);
+                e.Graphics.RotateTransform(angle);
+                e.Graphics.TranslateTransform(-bw2, -bh2);
+                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
+                e.Graphics.DrawImage(bmp, 0, 0);
+                e.Graphics.ResetTransform();
+            }
         }
         #endregion
 
@@ -504,7 +541,7 @@ namespace pmdbs
             string Email = DataEditEditFieldEmail.TextTextBox;
             string Website = DataEditEditFieldWebsite.TextTextBox;
             string Notes = DataEditAdvancedRichTextBoxNotes.TextValue;
-            string DateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string DateTime = TimeConverter.TimeStamp();
             string[] Values = new string[]
             {
                 Hostname,
@@ -690,6 +727,7 @@ namespace pmdbs
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            SyncAnimationStart();
             if (!GlobalVarPool.wasOnline)
             {
                 DataTableLayoutPanelMain.SuspendLayout();
@@ -788,7 +826,7 @@ namespace pmdbs
             string Email = AddEditFieldEmail.TextTextBox;
             string Website = AddEditFieldWebsite.TextTextBox;
             string Notes = AddPanelNotesAdvancedRichTextBox.TextValue;
-            string DateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string DateTime = TimeConverter.TimeStamp();
             
             if (Password.Equals("") || Hostname.Equals(""))
             {
@@ -1122,7 +1160,7 @@ namespace pmdbs
             LoginPictureBoxRegisterMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
-            string FirstUsage = DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();
+            string FirstUsage = TimeConverter.TimeStamp();
             Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
@@ -1388,50 +1426,5 @@ namespace pmdbs
         #endregion
 
         #endregion
-
-        private void MenuSyncPictureBox_Paint(object sender, PaintEventArgs e)
-        {
-            if (bmp != null)
-            {
-                float bw2 = bmp.Width / 2f;    // really ought..
-                float bh2 = bmp.Height / 2f;   // to be equal!!!
-                e.Graphics.TranslateTransform(bw2, bh2);
-                e.Graphics.RotateTransform(angle);
-                e.Graphics.TranslateTransform(-bw2, -bh2);
-                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
-                e.Graphics.DrawImage(bmp, 0, 0);
-                e.Graphics.ResetTransform();
-            }
-        }
-
-        private void pictureBox2_Paint(object sender, PaintEventArgs e)
-        {
-            if (bmp != null)
-            {
-                float bw2 = bmp.Width / 2f;    // really ought..
-                float bh2 = bmp.Height / 2f;   // to be equal!!!
-                e.Graphics.TranslateTransform(bw2, bh2);
-                e.Graphics.RotateTransform(angle2);
-                e.Graphics.TranslateTransform(-bw2, -bh2);
-                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
-                e.Graphics.DrawImage(bmp, 0, 0);
-                e.Graphics.ResetTransform();
-            }
-        }
-
-        private void pictureBox3_Paint(object sender, PaintEventArgs e)
-        {
-            if (bmp != null)
-            {
-                float bw2 = bmp.Width / 2f;    // really ought..
-                float bh2 = bmp.Height / 2f;   // to be equal!!!
-                e.Graphics.TranslateTransform(bw2, bh2);
-                e.Graphics.RotateTransform(angle3);
-                e.Graphics.TranslateTransform(-bw2, -bh2);
-                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
-                e.Graphics.DrawImage(bmp, 0, 0);
-                e.Graphics.ResetTransform();
-            }
-        }
     }
 }
