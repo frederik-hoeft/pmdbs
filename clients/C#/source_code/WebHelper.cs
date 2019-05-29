@@ -42,7 +42,7 @@ namespace pmdbs
 
         public static string GetFavIcons(string Url)
         {
-            string domain = "";
+            string domain = string.Empty;
             try
             {
                 Uri UriToResolve = new Uri(Url);
@@ -80,7 +80,7 @@ namespace pmdbs
                         using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink)))
                         {
                             Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
-                            if (bmpIcon.Width < 64 || bmpIcon.Height < 64)
+                            if (bmpIcon.Width < 60 || bmpIcon.Height < 60)
                             {
                                 break;
                             }

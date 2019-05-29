@@ -833,7 +833,7 @@ namespace pmdbs
                 return;
             }
             new Thread(async delegate() {
-                string favIcon = "";
+                string favIcon = string.Empty;
                 try
                 {
                     if (string.IsNullOrWhiteSpace(Website))
@@ -849,7 +849,7 @@ namespace pmdbs
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                    HelperMethods.GenerateIcon(Hostname);
+                    favIcon = HelperMethods.GenerateIcon(Hostname);
                 }
                 string[] Values = new string[]
                 {
