@@ -94,10 +94,7 @@ namespace pmdbs
                         successful = true;
                         break;
                     }
-                    catch (Exception e)
-                    {
-                        //CustomException.ThrowNew.NetworkException(e.ToString());
-                    }
+                    catch { }
                 }
 
                 if (successful)

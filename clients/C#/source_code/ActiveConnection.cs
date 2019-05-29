@@ -383,7 +383,7 @@ namespace pmdbs
                                                 }
                                                 else
                                                 {
-                                                    HelperMethods.InvokeOutputLabel("Encrypted connection established!");
+                                                    HelperMethods.InvokeOutputLabel("Key Exchange finished.");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
                                                         NetworkAdapter.MethodProvider.GetCookie();
@@ -602,7 +602,7 @@ namespace pmdbs
                                                                             }).Start();
                                                                         }
                                                                         GlobalVarPool.isUser = true;
-                                                                        HelperMethods.InvokeOutputLabel("Successfully logged in as " + GlobalVarPool.username + "!");
+                                                                        HelperMethods.InvokeOutputLabel("Logged in.");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
