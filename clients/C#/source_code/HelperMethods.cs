@@ -554,7 +554,7 @@ namespace pmdbs
                 Random rng = new Random();
                 colorMap[0] = new ColorMap
                 {
-                    OldColor = Color.Black,
+                    OldColor = Color.FromArgb(255, 102, 51),
                     NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
                 };
                 ImageAttributes attr = new ImageAttributes();
@@ -562,7 +562,7 @@ namespace pmdbs
                 // Draw using the color map
                 Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
                 g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
-                string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+                // string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                 using (MemoryStream ms = new MemoryStream())
                 {
                     bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
