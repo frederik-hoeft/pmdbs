@@ -51,7 +51,7 @@ namespace pmdbs
                         DataList.Add(reader[i].ToString());
                     }
                 }
-                catch (Exception  outOfRange)
+                catch (IndexOutOfRangeException outOfRange)
                 {
                     Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
                 }
@@ -86,7 +86,7 @@ namespace pmdbs
                     }
                     OuterList.Add(InnerList);
                 }
-                catch (Exception outOfRange)
+                catch (IndexOutOfRangeException outOfRange)
                 {
                     Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
                 }
@@ -95,6 +95,33 @@ namespace pmdbs
             sql_con.Dispose();
             GlobalVarPool.databaseIsInUse = false;
             return OuterList;
+        }
+
+        public static async Task<string> GetSingleOrDefault(string query)
+        {
+            await SetConnection();
+            sql_cmd = sql_con.CreateCommand();
+            sql_cmd.CommandText = query;
+            await sql_cmd.ExecuteNonQueryAsync();
+            SQLiteDataReader reader = sql_cmd.ExecuteReader();
+            string returnData = string.Empty;
+            int i = 0;
+            while (reader.Read())
+            {
+                try
+                {
+                    returnData = reader[0].ToString();
+                    i++;
+                }
+                catch (IndexOutOfRangeException outOfRange)
+                {
+                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                }
+            }
+            sql_con.Close();
+            sql_con.Dispose();
+            GlobalVarPool.databaseIsInUse = false;
+            return i != 1 ? string.Empty : returnData; 
         }
         /// <summary>
         /// Returns result of SQLite database query as DataTable Object.
@@ -124,7 +151,7 @@ namespace pmdbs
                         NewRow[i.ToString()] = reader[i].ToString();
                     }
                 }
-                catch (Exception outOfRange)
+                catch (IndexOutOfRangeException outOfRange)
                 {
                     Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
                 }

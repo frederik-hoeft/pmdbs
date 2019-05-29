@@ -6,12 +6,13 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace pmdbs
 {
     public struct ActiveConnection
     {
-        public static void Start()
+        public static async void Start()
         {
             // TODO: CLEAN THIS UP
             if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
@@ -88,15 +89,15 @@ namespace pmdbs
             if (string.IsNullOrEmpty(GlobalVarPool.cookie))
             {
                 HelperMethods.InvokeOutputLabel("Looking for cookie ...");
-                DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
-                try
-                {
-                    GlobalVarPool.cookie = File.ReadAllText(d.GetFiles().Where(file => file.Name.Equals("cookie.txt")).First().FullName);
-                    HelperMethods.InvokeOutputLabel("Found cookie.");
-                }
-                catch
+                Task<string> GetCookie = DataBaseHelper.GetSingleOrDefault("SELECT U_cookie FROM Tbl_user;");
+                GlobalVarPool.cookie = await GetCookie;
+                if (string.IsNullOrEmpty(GlobalVarPool.cookie))
                 {
                     HelperMethods.InvokeOutputLabel("Cookie not found.");
+                }
+                else
+                {
+                    HelperMethods.InvokeOutputLabel("Found cookie.");
                 }
             }
             GlobalVarPool.threadKilled = false;
@@ -126,7 +127,20 @@ namespace pmdbs
             }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
             GlobalVarPool.clientSocket = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            GlobalVarPool.clientSocket.Connect(server);
+            try
+            {
+                GlobalVarPool.clientSocket.Connect(server);
+            }
+            catch (Exception e)
+            {
+                CustomException.ThrowNew.NetworkException("Could not connect to server:\n\n" + e.ToString());
+                GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
+                {
+                    GlobalVarPool.SyncButton.Enabled = true;
+                    Form1.InvokeSyncAnimationStop();
+                });
+                return;
+            }
             ip = ipAddress.ToString();
             string address = ip + ":" + port;
             HelperMethods.InvokeOutputLabel("Successfully connected to " + ip + ":" + port + "!");
@@ -369,10 +383,16 @@ namespace pmdbs
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
                                     // File.AppendAllText("log1.txt", decryptedData + Environment.NewLine + Environment.NewLine);
-                                    // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
-                                    AutomatedTaskFramework.DoTasks(decryptedData);
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
+                                    // LOGIN TASK RELIES ON "DTACKI" AND WOULD START BEFORE THE COOKIE HAS BEEN SET. THEREFORE SET THE COOKIE BEFORE INVOKING THE AUTOMATED TASK FRAMEWORK
+                                    if (packetID.Equals("DTA") && packetSID.Equals("CKI"))
+                                    {
+                                        GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
+                                        await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_cookie = \"" + GlobalVarPool.cookie + "\";");
+                                    }
+                                    // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
+                                    AutomatedTaskFramework.DoTasks(decryptedData);
                                     switch (packetID)
                                     {
                                         case "KEX":
@@ -399,12 +419,6 @@ namespace pmdbs
                                             {
                                                 switch (packetSID)
                                                 {
-                                                    case "CKI":
-                                                        {
-                                                            GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
-                                                            File.WriteAllText("cookie.txt",GlobalVarPool.cookie);
-                                                            break;
-                                                        }
                                                     case "LOG":
                                                         {
                                                             try
@@ -662,6 +676,10 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
+                                                                        if (!GlobalVarPool.SyncButton.Enabled)
+                                                                        {
+                                                                            GlobalVarPool.promptFromBackgroundThread = true;
+                                                                        }
                                                                         GlobalVarPool.promptCommand = "CONFIRM_NEW_DEVICE";
                                                                         HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
                                                                         break;

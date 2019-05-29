@@ -97,6 +97,13 @@ namespace pmdbs
             {
                 GlobalVarPool.promptPanel.BringToFront();
             });
+            if (GlobalVarPool.promptFromBackgroundThread)
+            {
+                GlobalVarPool.settingsPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    GlobalVarPool.settingsPanel.BringToFront();
+                });
+            }
         }
 
         public static void InvokeOutputLabel(string text)
@@ -548,20 +555,20 @@ namespace pmdbs
             // Create Optional Icons
             using (Bitmap bmp = new Bitmap(alphabet.Contains(letter) ? @"Resources\Icons\" + letter + ".png" : @"Resources\Icons\_UNKNOWN.png"))
             {
-                /*Graphics g = Graphics.FromImage(bmp);
+                Graphics g = Graphics.FromImage(bmp);
                 // Set the image attribute's color mappings
                 ColorMap[] colorMap = new ColorMap[1];
                 Random rng = new Random();
                 colorMap[0] = new ColorMap
                 {
-                    OldColor = Color.Black,
+                    OldColor = Color.FromArgb(255, 102, 51),
                     NewColor = ColorExtensions.HSBToRGBConversion((float)rng.NextDouble(), (float)rng.Next(50, 90) / 100, 0.5f)
                 };
                 ImageAttributes attr = new ImageAttributes();
                 attr.SetRemapTable(colorMap);
                 // Draw using the color map
                 Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-                g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);*/
+                g.DrawImage(bmp, rect, 0, 0, rect.Width, rect.Height, GraphicsUnit.Pixel, attr);
                 // string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                 using (MemoryStream ms = new MemoryStream())
                 {
