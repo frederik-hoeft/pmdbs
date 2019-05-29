@@ -815,6 +815,7 @@ namespace pmdbs
             AddEditFieldPassword.TextTextBox = "";
             AddEditFieldUsername.TextTextBox = "";
             AddEditFieldWebsite.TextTextBox = "";
+            AddPictureBoxCheckIconIcon.Image = Resources._default;
         }
 
         private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
@@ -833,23 +834,35 @@ namespace pmdbs
                 return;
             }
             new Thread(async delegate() {
-                string favIcon = "";
-                try
+                string favIcon = string.Empty;
+                if (!AddPictureBoxCheckIconIcon.Image.Equals(Resources._default))
                 {
-                    if (string.IsNullOrWhiteSpace(Website))
+                    using (Bitmap iconBmp = new Bitmap(AddPictureBoxCheckIconIcon.Image))
+                    using (MemoryStream ms = new MemoryStream())
                     {
-                        // EXECUTE CODE IN CATCH
-                        throw new Exception();
-                    }
-                    else
-                    {
-                        favIcon = WebHelper.GetFavIcons(Website);
+                        iconBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        favIcon = Convert.ToBase64String(ms.ToArray());
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                    HelperMethods.GenerateIcon(Hostname);
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(Website))
+                        {
+                            // EXECUTE CODE IN CATCH
+                            throw new Exception();
+                        }
+                        else
+                        {
+                            favIcon = WebHelper.GetFavIcons(Website);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
+                        favIcon = HelperMethods.GenerateIcon(Hostname);
+                    }
                 }
                 string[] Values = new string[]
                 {
@@ -936,9 +949,14 @@ namespace pmdbs
             ResetFields();
         }
 
-        private void animatedButton1_Click(object sender, EventArgs e)
+        private void AddPanelAnimatedButtonCheckIcon_Click(object sender, EventArgs e)
         {
-            animatedButton1.Enabled = false;
+            if (string.IsNullOrEmpty(AddEditFieldHostname.TextTextBox))
+            {
+                CustomException.ThrowNew.GenericException("Please enter a valid Hostname first!");
+                return;
+            }
+            AddPanelAnimatedButtonCheckIcon.Enabled = false;
             new Thread(delegate ()
             {
                 string base64Img;
@@ -956,10 +974,10 @@ namespace pmdbs
                     using (MemoryStream ms = new MemoryStream(iconBytes, 0, iconBytes.Length))
                     {
                         Image icon = Image.FromStream(ms, true);
-                        pictureBox1.Image = icon.GetThumbnailImage(350, 350, null, new IntPtr());
+                        AddPictureBoxCheckIconIcon.Image = icon.GetThumbnailImage(350, 350, null, new IntPtr());
                         icon.Dispose();
                     }
-                    animatedButton1.Enabled = true;
+                    AddPanelAnimatedButtonCheckIcon.Enabled = true;
                 });
             }).Start();
         }
@@ -1241,6 +1259,10 @@ namespace pmdbs
             }
             AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
+            if (!GlobalVarPool.SyncButton.Enabled)
+            {
+                SettingsTableLayoutPanelMain.SendToBack();
+            }
         }
         #endregion
         #region SettingsLogin
