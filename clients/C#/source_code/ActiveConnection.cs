@@ -676,6 +676,10 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
+                                                                        if (!GlobalVarPool.SyncButton.Enabled)
+                                                                        {
+                                                                            GlobalVarPool.promptFromBackgroundThread = true;
+                                                                        }
                                                                         GlobalVarPool.promptCommand = "CONFIRM_NEW_DEVICE";
                                                                         HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
                                                                         break;

@@ -97,6 +97,13 @@ namespace pmdbs
             {
                 GlobalVarPool.promptPanel.BringToFront();
             });
+            if (GlobalVarPool.promptFromBackgroundThread)
+            {
+                GlobalVarPool.settingsPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    GlobalVarPool.settingsPanel.BringToFront();
+                });
+            }
         }
 
         public static void InvokeOutputLabel(string text)

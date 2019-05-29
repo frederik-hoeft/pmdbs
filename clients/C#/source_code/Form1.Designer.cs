@@ -177,15 +177,35 @@
             this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOnlineError = new System.Windows.Forms.Label();
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
-            this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
-            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
-            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
-            this.LoginEditFieldRegisterPassword2 = new pmdbs.EditField();
-            this.LoginEditFieldRegisterPassword = new pmdbs.EditField();
-            this.LoginAnimatedButtonRegister = new pmdbs.AnimatedButton();
-            this.LoginAnimatedButtonOnlineLogin = new pmdbs.AnimatedButton();
-            this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
-            this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
+            this.SettingsAdvancedImageButtonFooterAbort = new pmdbs.AdvancedImageButton();
+            this.SettingsAdvancedImageButtonFooterSave = new pmdbs.AdvancedImageButton();
+            this.SettingsAnimatedButtonPromptSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldPromptCode = new pmdbs.EditField();
+            this.editField3 = new pmdbs.EditField();
+            this.SettingsAnimatedButtonChangePasswordSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldOfflineNewPassword = new pmdbs.EditField();
+            this.SettingsEditFieldOfflineNewPasswordConfirm = new pmdbs.EditField();
+            this.SettingsAnimatedButtonOfflineRegister = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldOfflineName = new pmdbs.EditField();
+            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
+            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
+            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
+            this.SettingsAnimatedButtonSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldRegisterEmail = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterIP = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterName = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterPort = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterUsername = new pmdbs.EditField();
+            this.SettingsAdvancedProgressSpinnerLoading = new pmdbs.AdvancedProgressSpinner();
+            this.animatedButton3 = new pmdbs.AnimatedButton();
+            this.editField7 = new pmdbs.EditField();
+            this.editField9 = new pmdbs.EditField();
+            this.editField10 = new pmdbs.EditField();
+            this.editField8 = new pmdbs.EditField();
+            this.editField6 = new pmdbs.EditField();
             this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
@@ -220,38 +240,18 @@
             this.AddPanelAnimatedButtonCheckIcon = new pmdbs.AnimatedButton();
             this.AddPanelAdvancedImageButtonAbort = new pmdbs.AdvancedImageButton();
             this.AddPanelAdvancedImageButtonSave = new pmdbs.AdvancedImageButton();
-            this.SettingsAdvancedImageButtonFooterAbort = new pmdbs.AdvancedImageButton();
-            this.SettingsAdvancedImageButtonFooterSave = new pmdbs.AdvancedImageButton();
-            this.editField3 = new pmdbs.EditField();
-            this.SettingsAnimatedButtonChangePasswordSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldOfflineNewPassword = new pmdbs.EditField();
-            this.SettingsEditFieldOfflineNewPasswordConfirm = new pmdbs.EditField();
-            this.SettingsAnimatedButtonOfflineRegister = new pmdbs.AnimatedButton();
-            this.SettingsAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldOfflineName = new pmdbs.EditField();
-            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
-            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
-            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
-            this.SettingsAnimatedButtonSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldRegisterEmail = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterIP = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterName = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterPort = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterUsername = new pmdbs.EditField();
-            this.SettingsAnimatedButtonPromptSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldPromptCode = new pmdbs.EditField();
-            this.SettingsAdvancedProgressSpinnerLoading = new pmdbs.AdvancedProgressSpinner();
-            this.animatedButton3 = new pmdbs.AnimatedButton();
-            this.editField7 = new pmdbs.EditField();
-            this.editField9 = new pmdbs.EditField();
-            this.editField10 = new pmdbs.EditField();
-            this.editField8 = new pmdbs.EditField();
-            this.editField6 = new pmdbs.EditField();
             this.MenuMenuEntryHome = new pmdbs.MenuEntry();
             this.MenuMenuEntryPasswords = new pmdbs.MenuEntry();
             this.MenuMenuEntrySettings = new pmdbs.MenuEntry();
+            this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
+            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
+            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.LoginEditFieldRegisterPassword2 = new pmdbs.EditField();
+            this.LoginEditFieldRegisterPassword = new pmdbs.EditField();
+            this.LoginAnimatedButtonRegister = new pmdbs.AnimatedButton();
+            this.LoginAnimatedButtonOnlineLogin = new pmdbs.AnimatedButton();
+            this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
+            this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
             this.windowButtonClose = new pmdbs.WindowButton();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
@@ -473,8 +473,8 @@
             // DataPanelMain
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
-            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
+            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelMain.Location = new System.Drawing.Point(265, 114);
@@ -1257,8 +1257,8 @@
             // 
             // SettingsPanelContentMain
             // 
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
@@ -2144,194 +2144,619 @@
             this.LoginLabelOnlineTitle.TabIndex = 2;
             this.LoginLabelOnlineTitle.Text = "Online Login";
             // 
-            // LoginLoadingAdvancedProgressSpinner
+            // SettingsAdvancedImageButtonFooterAbort
             // 
-            this.LoginLoadingAdvancedProgressSpinner.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginLoadingAdvancedProgressSpinner.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginLoadingAdvancedProgressSpinner.Location = new System.Drawing.Point(207, 18);
-            this.LoginLoadingAdvancedProgressSpinner.Maximum = 100;
-            this.LoginLoadingAdvancedProgressSpinner.Name = "LoginLoadingAdvancedProgressSpinner";
-            this.LoginLoadingAdvancedProgressSpinner.Size = new System.Drawing.Size(100, 100);
-            this.LoginLoadingAdvancedProgressSpinner.Speed = 2.5F;
-            this.LoginLoadingAdvancedProgressSpinner.TabIndex = 12;
-            this.LoginLoadingAdvancedProgressSpinner.Text = "advancedProgressSpinner1";
-            this.LoginLoadingAdvancedProgressSpinner.TimerInterval = 40;
+            this.SettingsAdvancedImageButtonFooterAbort.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageHover")));
+            this.SettingsAdvancedImageButtonFooterAbort.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageNormal")));
+            this.SettingsAdvancedImageButtonFooterAbort.Location = new System.Drawing.Point(625, 13);
+            this.SettingsAdvancedImageButtonFooterAbort.Name = "SettingsAdvancedImageButtonFooterAbort";
+            this.SettingsAdvancedImageButtonFooterAbort.Size = new System.Drawing.Size(72, 72);
+            this.SettingsAdvancedImageButtonFooterAbort.TabIndex = 1;
             // 
-            // LoginEditFieldOfflinePassword
+            // SettingsAdvancedImageButtonFooterSave
             // 
-            this.LoginEditFieldOfflinePassword.AutoSize = true;
-            this.LoginEditFieldOfflinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOfflinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOfflinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOfflinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOfflinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOfflinePassword.DefaultValue = "Enter Password...";
-            this.LoginEditFieldOfflinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOfflinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOfflinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOfflinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOfflinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearHover")));
-            this.LoginEditFieldOfflinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearNormal")));
-            this.LoginEditFieldOfflinePassword.Location = new System.Drawing.Point(44, 37);
-            this.LoginEditFieldOfflinePassword.Name = "LoginEditFieldOfflinePassword";
-            this.LoginEditFieldOfflinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOfflinePassword.TabIndex = 1;
-            this.LoginEditFieldOfflinePassword.TextTextBox = "";
-            this.LoginEditFieldOfflinePassword.TextTitle = "Password";
-            this.LoginEditFieldOfflinePassword.UseColoredCaret = false;
-            this.LoginEditFieldOfflinePassword.UseDefaultValue = false;
-            this.LoginEditFieldOfflinePassword.UseSystemPasswordChar = true;
+            this.SettingsAdvancedImageButtonFooterSave.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterSave.ImageHover")));
+            this.SettingsAdvancedImageButtonFooterSave.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterSave.ImageNormal")));
+            this.SettingsAdvancedImageButtonFooterSave.Location = new System.Drawing.Point(3, 13);
+            this.SettingsAdvancedImageButtonFooterSave.Name = "SettingsAdvancedImageButtonFooterSave";
+            this.SettingsAdvancedImageButtonFooterSave.Size = new System.Drawing.Size(72, 72);
+            this.SettingsAdvancedImageButtonFooterSave.TabIndex = 0;
             // 
-            // LoginAnimatedButtonOfflineLogin
+            // SettingsAnimatedButtonPromptSubmit
             // 
-            this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginAnimatedButtonOfflineLogin.Depth = 0;
-            this.LoginAnimatedButtonOfflineLogin.Icon = null;
-            this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(220, 684);
-            this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
-            this.LoginAnimatedButtonOfflineLogin.Primary = false;
-            this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
-            this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
+            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
+            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
+            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 742);
+            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonPromptSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
+            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
+            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
+            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
+            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
+            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
             // 
-            // LoginEditFieldRegisterPassword2
+            // SettingsEditFieldPromptCode
             // 
-            this.LoginEditFieldRegisterPassword2.AutoSize = true;
-            this.LoginEditFieldRegisterPassword2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword2.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldRegisterPassword2.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword2.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldRegisterPassword2.DefaultValue = "Enter some text...";
-            this.LoginEditFieldRegisterPassword2.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword2.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
-            this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 292);
-            this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
-            this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldRegisterPassword2.TabIndex = 1;
-            this.LoginEditFieldRegisterPassword2.TextTextBox = "";
-            this.LoginEditFieldRegisterPassword2.TextTitle = "Re-enter Master Password";
-            this.LoginEditFieldRegisterPassword2.UseColoredCaret = false;
-            this.LoginEditFieldRegisterPassword2.UseDefaultValue = false;
-            this.LoginEditFieldRegisterPassword2.UseSystemPasswordChar = true;
+            this.SettingsEditFieldPromptCode.AutoSize = true;
+            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
+            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Century Gothic", 20F);
+            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
+            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
+            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
+            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
+            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 104);
+            this.SettingsEditFieldPromptCode.TabIndex = 15;
+            this.SettingsEditFieldPromptCode.TextTextBox = "";
+            this.SettingsEditFieldPromptCode.TextTitle = "";
+            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
+            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
+            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
             // 
-            // LoginEditFieldRegisterPassword
+            // editField3
             // 
-            this.LoginEditFieldRegisterPassword.AutoSize = true;
-            this.LoginEditFieldRegisterPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldRegisterPassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldRegisterPassword.DefaultValue = "Enter some text...";
-            this.LoginEditFieldRegisterPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
-            this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 197);
-            this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
-            this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldRegisterPassword.TabIndex = 0;
-            this.LoginEditFieldRegisterPassword.TextTextBox = "";
-            this.LoginEditFieldRegisterPassword.TextTitle = "Master Password";
-            this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
-            this.LoginEditFieldRegisterPassword.UseDefaultValue = false;
-            this.LoginEditFieldRegisterPassword.UseSystemPasswordChar = true;
+            this.editField3.AutoSize = true;
+            this.editField3.BackColor = System.Drawing.Color.White;
+            this.editField3.BackGroundColor = System.Drawing.Color.White;
+            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField3.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField3.DefaultValue = "Enter some text...";
+            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField3.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField3.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
+            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
+            this.editField3.Location = new System.Drawing.Point(6, 755);
+            this.editField3.Name = "editField3";
+            this.editField3.Size = new System.Drawing.Size(660, 84);
+            this.editField3.TabIndex = 7;
+            this.editField3.TextTextBox = "";
+            this.editField3.TextTitle = "Url";
+            this.editField3.UseColoredCaret = true;
+            this.editField3.UseDefaultValue = false;
+            this.editField3.UseSystemPasswordChar = false;
             // 
-            // LoginAnimatedButtonRegister
+            // SettingsAnimatedButtonChangePasswordSubmit
             // 
-            this.LoginAnimatedButtonRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginAnimatedButtonRegister.Depth = 0;
-            this.LoginAnimatedButtonRegister.Icon = null;
-            this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(220, 728);
-            this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
-            this.LoginAnimatedButtonRegister.Primary = false;
-            this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonRegister.TabIndex = 8;
-            this.LoginAnimatedButtonRegister.Text = "Register";
-            this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
+            this.SettingsAnimatedButtonChangePasswordSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonChangePasswordSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonChangePasswordSubmit.Depth = 0;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Icon = null;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Location = new System.Drawing.Point(207, 312);
+            this.SettingsAnimatedButtonChangePasswordSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Name = "SettingsAnimatedButtonChangePasswordSubmit";
+            this.SettingsAnimatedButtonChangePasswordSubmit.Primary = false;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
+            this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
             // 
-            // LoginAnimatedButtonOnlineLogin
+            // SettingsEditFieldOfflineNewPassword
             // 
-            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOnlineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
-            this.LoginAnimatedButtonOnlineLogin.Icon = null;
-            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
-            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOnlineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
-            this.LoginAnimatedButtonOnlineLogin.Primary = false;
-            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
-            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
+            this.SettingsEditFieldOfflineNewPassword.AutoSize = true;
+            this.SettingsEditFieldOfflineNewPassword.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPassword.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineNewPassword.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineNewPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineNewPassword.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearHover")));
+            this.SettingsEditFieldOfflineNewPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearNormal")));
+            this.SettingsEditFieldOfflineNewPassword.Location = new System.Drawing.Point(4, 132);
+            this.SettingsEditFieldOfflineNewPassword.Name = "SettingsEditFieldOfflineNewPassword";
+            this.SettingsEditFieldOfflineNewPassword.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldOfflineNewPassword.TabIndex = 4;
+            this.SettingsEditFieldOfflineNewPassword.TextTextBox = "";
+            this.SettingsEditFieldOfflineNewPassword.TextTitle = "New Password*";
+            this.SettingsEditFieldOfflineNewPassword.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineNewPassword.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineNewPassword.UseSystemPasswordChar = true;
             // 
-            // LoginEditFieldOnlinePassword
+            // SettingsEditFieldOfflineNewPasswordConfirm
             // 
-            this.LoginEditFieldOnlinePassword.AutoSize = true;
-            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlinePassword.DefaultValue = "Enter some text...";
-            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOnlinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearHover")));
-            this.LoginEditFieldOnlinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearNormal")));
-            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 179);
-            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
-            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlinePassword.TabIndex = 1;
-            this.LoginEditFieldOnlinePassword.TextTextBox = "";
-            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
-            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
-            this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
-            this.LoginEditFieldOnlinePassword.UseSystemPasswordChar = true;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.AutoSize = true;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover")));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal")));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.Location = new System.Drawing.Point(4, 218);
+            this.SettingsEditFieldOfflineNewPasswordConfirm.Name = "SettingsEditFieldOfflineNewPasswordConfirm";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldOfflineNewPasswordConfirm.TabIndex = 8;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox = "";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTitle = "Confirm New Password*";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.UseSystemPasswordChar = false;
             // 
-            // LoginEditFieldOnlineUsername
+            // SettingsAnimatedButtonOfflineRegister
             // 
-            this.LoginEditFieldOnlineUsername.AutoSize = true;
-            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlineUsername.DefaultValue = "Enter your Username...";
-            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOnlineUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearHover")));
-            this.LoginEditFieldOnlineUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearNormal")));
-            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 72);
-            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
-            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlineUsername.TabIndex = 0;
-            this.LoginEditFieldOnlineUsername.TextTextBox = "";
-            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
-            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
-            this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
-            this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
+            this.SettingsAnimatedButtonOfflineRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineRegister.Depth = 0;
+            this.SettingsAnimatedButtonOfflineRegister.Icon = null;
+            this.SettingsAnimatedButtonOfflineRegister.Location = new System.Drawing.Point(337, 262);
+            this.SettingsAnimatedButtonOfflineRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineRegister.Name = "SettingsAnimatedButtonOfflineRegister";
+            this.SettingsAnimatedButtonOfflineRegister.Primary = false;
+            this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
+            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineRegister_Click);
+            // 
+            // SettingsAnimatedButtonOfflineLogin
+            // 
+            this.SettingsAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineLogin.Depth = 0;
+            this.SettingsAnimatedButtonOfflineLogin.Icon = null;
+            this.SettingsAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(99, 262);
+            this.SettingsAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineLogin.Name = "SettingsAnimatedButtonOfflineLogin";
+            this.SettingsAnimatedButtonOfflineLogin.Primary = false;
+            this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineLogin.TabIndex = 13;
+            this.SettingsAnimatedButtonOfflineLogin.Text = "Login";
+            this.SettingsAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineLogin_Click);
+            // 
+            // SettingsAnimatedButtonOfflineChangeNameSubmit
+            // 
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Depth = 0;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Icon = null;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Location = new System.Drawing.Point(218, 239);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Name = "SettingsAnimatedButtonOfflineChangeNameSubmit";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Primary = false;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.TabIndex = 13;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Text = "Change Name";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.UseVisualStyleBackColor = true;
+            // 
+            // SettingsEditFieldOfflineName
+            // 
+            this.SettingsEditFieldOfflineName.AutoSize = true;
+            this.SettingsEditFieldOfflineName.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineName.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineName.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineName.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineName.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineName.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldOfflineName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearHover")));
+            this.SettingsEditFieldOfflineName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearNormal")));
+            this.SettingsEditFieldOfflineName.Location = new System.Drawing.Point(5, 143);
+            this.SettingsEditFieldOfflineName.Name = "SettingsEditFieldOfflineName";
+            this.SettingsEditFieldOfflineName.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldOfflineName.TabIndex = 12;
+            this.SettingsEditFieldOfflineName.TextTextBox = "User";
+            this.SettingsEditFieldOfflineName.TextTitle = "Your Display Name";
+            this.SettingsEditFieldOfflineName.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineName.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineName.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonLoginSubmit
+            // 
+            this.SettingsAnimatedButtonLoginSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonLoginSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonLoginSubmit.Depth = 0;
+            this.SettingsAnimatedButtonLoginSubmit.Icon = null;
+            this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
+            this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonLoginSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
+            this.SettingsAnimatedButtonLoginSubmit.Primary = false;
+            this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
+            this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
+            this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
+            this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
+            // 
+            // SettingsEditFieldLoginIP
+            // 
+            this.SettingsEditFieldLoginIP.AutoSize = true;
+            this.SettingsEditFieldLoginIP.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginIP.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginIP.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginIP.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginIP.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginIP.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearHover")));
+            this.SettingsEditFieldLoginIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearNormal")));
+            this.SettingsEditFieldLoginIP.Location = new System.Drawing.Point(6, 202);
+            this.SettingsEditFieldLoginIP.Name = "SettingsEditFieldLoginIP";
+            this.SettingsEditFieldLoginIP.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginIP.TabIndex = 2;
+            this.SettingsEditFieldLoginIP.TextTextBox = "192.168.178.46";
+            this.SettingsEditFieldLoginIP.TextTitle = "IP / DNS*";
+            this.SettingsEditFieldLoginIP.UseColoredCaret = true;
+            this.SettingsEditFieldLoginIP.UseDefaultValue = false;
+            this.SettingsEditFieldLoginIP.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginPort
+            // 
+            this.SettingsEditFieldLoginPort.AutoSize = true;
+            this.SettingsEditFieldLoginPort.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPort.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPort.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginPort.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginPort.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginPort.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearHover")));
+            this.SettingsEditFieldLoginPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearNormal")));
+            this.SettingsEditFieldLoginPort.Location = new System.Drawing.Point(6, 298);
+            this.SettingsEditFieldLoginPort.Name = "SettingsEditFieldLoginPort";
+            this.SettingsEditFieldLoginPort.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginPort.TabIndex = 3;
+            this.SettingsEditFieldLoginPort.TextTextBox = "4447";
+            this.SettingsEditFieldLoginPort.TextTitle = "Port*";
+            this.SettingsEditFieldLoginPort.UseColoredCaret = true;
+            this.SettingsEditFieldLoginPort.UseDefaultValue = false;
+            this.SettingsEditFieldLoginPort.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginUsername
+            // 
+            this.SettingsEditFieldLoginUsername.AutoSize = true;
+            this.SettingsEditFieldLoginUsername.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginUsername.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearHover")));
+            this.SettingsEditFieldLoginUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearNormal")));
+            this.SettingsEditFieldLoginUsername.Location = new System.Drawing.Point(6, 546);
+            this.SettingsEditFieldLoginUsername.Name = "SettingsEditFieldLoginUsername";
+            this.SettingsEditFieldLoginUsername.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginUsername.TabIndex = 4;
+            this.SettingsEditFieldLoginUsername.TextTextBox = "testuser";
+            this.SettingsEditFieldLoginUsername.TextTitle = "Username*";
+            this.SettingsEditFieldLoginUsername.UseColoredCaret = true;
+            this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
+            this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonSubmit
+            // 
+            this.SettingsAnimatedButtonSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonSubmit.Depth = 0;
+            this.SettingsAnimatedButtonSubmit.Icon = null;
+            this.SettingsAnimatedButtonSubmit.Location = new System.Drawing.Point(178, 829);
+            this.SettingsAnimatedButtonSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonSubmit.Name = "SettingsAnimatedButtonSubmit";
+            this.SettingsAnimatedButtonSubmit.Primary = false;
+            this.SettingsAnimatedButtonSubmit.Size = new System.Drawing.Size(317, 56);
+            this.SettingsAnimatedButtonSubmit.TabIndex = 21;
+            this.SettingsAnimatedButtonSubmit.Text = "Connect & Register";
+            this.SettingsAnimatedButtonSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonSubmit_Click);
+            // 
+            // SettingsEditFieldRegisterEmail
+            // 
+            this.SettingsEditFieldRegisterEmail.AutoSize = true;
+            this.SettingsEditFieldRegisterEmail.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterEmail.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterEmail.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterEmail.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterEmail.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearHover")));
+            this.SettingsEditFieldRegisterEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearNormal")));
+            this.SettingsEditFieldRegisterEmail.Location = new System.Drawing.Point(6, 637);
+            this.SettingsEditFieldRegisterEmail.Name = "SettingsEditFieldRegisterEmail";
+            this.SettingsEditFieldRegisterEmail.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldRegisterEmail.TabIndex = 6;
+            this.SettingsEditFieldRegisterEmail.TextTextBox = "";
+            this.SettingsEditFieldRegisterEmail.TextTitle = "Email*";
+            this.SettingsEditFieldRegisterEmail.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterEmail.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterEmail.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterIP
+            // 
+            this.SettingsEditFieldRegisterIP.AutoSize = true;
+            this.SettingsEditFieldRegisterIP.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterIP.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterIP.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterIP.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterIP.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterIP.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldRegisterIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearHover")));
+            this.SettingsEditFieldRegisterIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearNormal")));
+            this.SettingsEditFieldRegisterIP.Location = new System.Drawing.Point(6, 202);
+            this.SettingsEditFieldRegisterIP.Name = "SettingsEditFieldRegisterIP";
+            this.SettingsEditFieldRegisterIP.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldRegisterIP.TabIndex = 2;
+            this.SettingsEditFieldRegisterIP.TextTextBox = "192.168.178.46";
+            this.SettingsEditFieldRegisterIP.TextTitle = "IP / DNS*";
+            this.SettingsEditFieldRegisterIP.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterIP.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterIP.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterName
+            // 
+            this.SettingsEditFieldRegisterName.AutoSize = true;
+            this.SettingsEditFieldRegisterName.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterName.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterName.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterName.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterName.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterName.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldRegisterName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearHover")));
+            this.SettingsEditFieldRegisterName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearNormal")));
+            this.SettingsEditFieldRegisterName.Location = new System.Drawing.Point(6, 740);
+            this.SettingsEditFieldRegisterName.Name = "SettingsEditFieldRegisterName";
+            this.SettingsEditFieldRegisterName.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldRegisterName.TabIndex = 7;
+            this.SettingsEditFieldRegisterName.TextTextBox = "freddy";
+            this.SettingsEditFieldRegisterName.TextTitle = "Display Name";
+            this.SettingsEditFieldRegisterName.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterName.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterName.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterPort
+            // 
+            this.SettingsEditFieldRegisterPort.AutoSize = true;
+            this.SettingsEditFieldRegisterPort.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterPort.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterPort.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterPort.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterPort.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterPort.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldRegisterPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearHover")));
+            this.SettingsEditFieldRegisterPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearNormal")));
+            this.SettingsEditFieldRegisterPort.Location = new System.Drawing.Point(6, 298);
+            this.SettingsEditFieldRegisterPort.Name = "SettingsEditFieldRegisterPort";
+            this.SettingsEditFieldRegisterPort.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldRegisterPort.TabIndex = 3;
+            this.SettingsEditFieldRegisterPort.TextTextBox = "4447";
+            this.SettingsEditFieldRegisterPort.TextTitle = "Port*";
+            this.SettingsEditFieldRegisterPort.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterPort.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterPort.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterUsername
+            // 
+            this.SettingsEditFieldRegisterUsername.AutoSize = true;
+            this.SettingsEditFieldRegisterUsername.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterUsername.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterUsername.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearHover")));
+            this.SettingsEditFieldRegisterUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearNormal")));
+            this.SettingsEditFieldRegisterUsername.Location = new System.Drawing.Point(6, 538);
+            this.SettingsEditFieldRegisterUsername.Name = "SettingsEditFieldRegisterUsername";
+            this.SettingsEditFieldRegisterUsername.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldRegisterUsername.TabIndex = 4;
+            this.SettingsEditFieldRegisterUsername.TextTextBox = "";
+            this.SettingsEditFieldRegisterUsername.TextTitle = "Username*";
+            this.SettingsEditFieldRegisterUsername.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterUsername.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterUsername.UseSystemPasswordChar = false;
+            // 
+            // SettingsAdvancedProgressSpinnerLoading
+            // 
+            this.SettingsAdvancedProgressSpinnerLoading.ColorBackground = System.Drawing.Color.Gainsboro;
+            this.SettingsAdvancedProgressSpinnerLoading.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAdvancedProgressSpinnerLoading.Location = new System.Drawing.Point(243, 18);
+            this.SettingsAdvancedProgressSpinnerLoading.Maximum = 100;
+            this.SettingsAdvancedProgressSpinnerLoading.Name = "SettingsAdvancedProgressSpinnerLoading";
+            this.SettingsAdvancedProgressSpinnerLoading.Size = new System.Drawing.Size(115, 115);
+            this.SettingsAdvancedProgressSpinnerLoading.Speed = 2.5F;
+            this.SettingsAdvancedProgressSpinnerLoading.TabIndex = 12;
+            this.SettingsAdvancedProgressSpinnerLoading.Text = "advancedProgressSpinner1";
+            this.SettingsAdvancedProgressSpinnerLoading.TimerInterval = 40;
+            // 
+            // animatedButton3
+            // 
+            this.animatedButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.animatedButton3.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.animatedButton3.Depth = 0;
+            this.animatedButton3.Icon = null;
+            this.animatedButton3.Location = new System.Drawing.Point(223, 453);
+            this.animatedButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.animatedButton3.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButton3.Name = "animatedButton3";
+            this.animatedButton3.Primary = false;
+            this.animatedButton3.Size = new System.Drawing.Size(213, 55);
+            this.animatedButton3.TabIndex = 5;
+            this.animatedButton3.Text = "Update";
+            this.animatedButton3.UseVisualStyleBackColor = true;
+            // 
+            // editField7
+            // 
+            this.editField7.AutoSize = true;
+            this.editField7.BackColor = System.Drawing.Color.White;
+            this.editField7.BackGroundColor = System.Drawing.Color.White;
+            this.editField7.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField7.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField7.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField7.DefaultValue = "Enter some text...";
+            this.editField7.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField7.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField7.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField7.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField7.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField7.ImageClearHover")));
+            this.editField7.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField7.ImageClearNormal")));
+            this.editField7.Location = new System.Drawing.Point(6, 148);
+            this.editField7.Name = "editField7";
+            this.editField7.Size = new System.Drawing.Size(660, 84);
+            this.editField7.TabIndex = 2;
+            this.editField7.TextTextBox = "";
+            this.editField7.TextTitle = "Username*";
+            this.editField7.UseColoredCaret = true;
+            this.editField7.UseDefaultValue = false;
+            this.editField7.UseSystemPasswordChar = false;
+            // 
+            // editField9
+            // 
+            this.editField9.AutoSize = true;
+            this.editField9.BackColor = System.Drawing.Color.White;
+            this.editField9.BackGroundColor = System.Drawing.Color.White;
+            this.editField9.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField9.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField9.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField9.DefaultValue = "Enter some text...";
+            this.editField9.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField9.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField9.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField9.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField9.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField9.ImageClearHover")));
+            this.editField9.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField9.ImageClearNormal")));
+            this.editField9.Location = new System.Drawing.Point(6, 244);
+            this.editField9.Name = "editField9";
+            this.editField9.Size = new System.Drawing.Size(660, 84);
+            this.editField9.TabIndex = 3;
+            this.editField9.TextTextBox = "";
+            this.editField9.TextTitle = "Email*";
+            this.editField9.UseColoredCaret = true;
+            this.editField9.UseDefaultValue = false;
+            this.editField9.UseSystemPasswordChar = false;
+            // 
+            // editField10
+            // 
+            this.editField10.AutoSize = true;
+            this.editField10.BackColor = System.Drawing.Color.White;
+            this.editField10.BackGroundColor = System.Drawing.Color.White;
+            this.editField10.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField10.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField10.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField10.DefaultValue = "Enter some text...";
+            this.editField10.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField10.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField10.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField10.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField10.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField10.ImageClearHover")));
+            this.editField10.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField10.ImageClearNormal")));
+            this.editField10.Location = new System.Drawing.Point(6, 340);
+            this.editField10.Name = "editField10";
+            this.editField10.Size = new System.Drawing.Size(660, 84);
+            this.editField10.TabIndex = 4;
+            this.editField10.TextTextBox = "";
+            this.editField10.TextTitle = "Display Name";
+            this.editField10.UseColoredCaret = true;
+            this.editField10.UseDefaultValue = false;
+            this.editField10.UseSystemPasswordChar = false;
+            // 
+            // editField8
+            // 
+            this.editField8.AutoSize = true;
+            this.editField8.BackColor = System.Drawing.Color.White;
+            this.editField8.BackGroundColor = System.Drawing.Color.White;
+            this.editField8.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField8.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField8.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField8.DefaultValue = "Enter some text...";
+            this.editField8.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField8.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField8.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField8.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField8.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField8.ImageClearHover")));
+            this.editField8.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField8.ImageClearNormal")));
+            this.editField8.Location = new System.Drawing.Point(6, 149);
+            this.editField8.Name = "editField8";
+            this.editField8.Size = new System.Drawing.Size(660, 84);
+            this.editField8.TabIndex = 7;
+            this.editField8.TextTextBox = "";
+            this.editField8.TextTitle = "Port*";
+            this.editField8.UseColoredCaret = true;
+            this.editField8.UseDefaultValue = false;
+            this.editField8.UseSystemPasswordChar = false;
+            // 
+            // editField6
+            // 
+            this.editField6.AutoSize = true;
+            this.editField6.BackColor = System.Drawing.Color.White;
+            this.editField6.BackGroundColor = System.Drawing.Color.White;
+            this.editField6.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField6.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField6.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField6.DefaultValue = "Enter some text...";
+            this.editField6.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField6.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField6.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField6.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField6.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField6.ImageClearHover")));
+            this.editField6.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField6.ImageClearNormal")));
+            this.editField6.Location = new System.Drawing.Point(6, 59);
+            this.editField6.Name = "editField6";
+            this.editField6.Size = new System.Drawing.Size(660, 84);
+            this.editField6.TabIndex = 6;
+            this.editField6.TextTextBox = "";
+            this.editField6.TextTitle = "IP*";
+            this.editField6.UseColoredCaret = true;
+            this.editField6.UseDefaultValue = false;
+            this.editField6.UseSystemPasswordChar = false;
             // 
             // DataSyncAdvancedImageButton
             // 
@@ -2896,620 +3321,6 @@
             this.AddPanelAdvancedImageButtonSave.Size = new System.Drawing.Size(72, 72);
             this.AddPanelAdvancedImageButtonSave.TabIndex = 0;
             // 
-            // SettingsAdvancedImageButtonFooterAbort
-            // 
-            this.SettingsAdvancedImageButtonFooterAbort.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageHover")));
-            this.SettingsAdvancedImageButtonFooterAbort.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageNormal")));
-            this.SettingsAdvancedImageButtonFooterAbort.Location = new System.Drawing.Point(625, 13);
-            this.SettingsAdvancedImageButtonFooterAbort.Name = "SettingsAdvancedImageButtonFooterAbort";
-            this.SettingsAdvancedImageButtonFooterAbort.Size = new System.Drawing.Size(72, 72);
-            this.SettingsAdvancedImageButtonFooterAbort.TabIndex = 1;
-            // 
-            // SettingsAdvancedImageButtonFooterSave
-            // 
-            this.SettingsAdvancedImageButtonFooterSave.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterSave.ImageHover")));
-            this.SettingsAdvancedImageButtonFooterSave.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterSave.ImageNormal")));
-            this.SettingsAdvancedImageButtonFooterSave.Location = new System.Drawing.Point(3, 13);
-            this.SettingsAdvancedImageButtonFooterSave.Name = "SettingsAdvancedImageButtonFooterSave";
-            this.SettingsAdvancedImageButtonFooterSave.Size = new System.Drawing.Size(72, 72);
-            this.SettingsAdvancedImageButtonFooterSave.TabIndex = 0;
-            // 
-            // editField3
-            // 
-            this.editField3.AutoSize = true;
-            this.editField3.BackColor = System.Drawing.Color.White;
-            this.editField3.BackGroundColor = System.Drawing.Color.White;
-            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField3.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField3.DefaultValue = "Enter some text...";
-            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField3.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
-            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
-            this.editField3.Location = new System.Drawing.Point(6, 755);
-            this.editField3.Name = "editField3";
-            this.editField3.Size = new System.Drawing.Size(660, 84);
-            this.editField3.TabIndex = 7;
-            this.editField3.TextTextBox = "";
-            this.editField3.TextTitle = "Url";
-            this.editField3.UseColoredCaret = true;
-            this.editField3.UseDefaultValue = false;
-            this.editField3.UseSystemPasswordChar = false;
-            // 
-            // SettingsAnimatedButtonChangePasswordSubmit
-            // 
-            this.SettingsAnimatedButtonChangePasswordSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonChangePasswordSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonChangePasswordSubmit.Depth = 0;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Icon = null;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Location = new System.Drawing.Point(207, 312);
-            this.SettingsAnimatedButtonChangePasswordSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Name = "SettingsAnimatedButtonChangePasswordSubmit";
-            this.SettingsAnimatedButtonChangePasswordSubmit.Primary = false;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
-            this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
-            this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
-            // 
-            // SettingsEditFieldOfflineNewPassword
-            // 
-            this.SettingsEditFieldOfflineNewPassword.AutoSize = true;
-            this.SettingsEditFieldOfflineNewPassword.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPassword.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOfflineNewPassword.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOfflineNewPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOfflineNewPassword.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearHover")));
-            this.SettingsEditFieldOfflineNewPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearNormal")));
-            this.SettingsEditFieldOfflineNewPassword.Location = new System.Drawing.Point(4, 132);
-            this.SettingsEditFieldOfflineNewPassword.Name = "SettingsEditFieldOfflineNewPassword";
-            this.SettingsEditFieldOfflineNewPassword.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldOfflineNewPassword.TabIndex = 4;
-            this.SettingsEditFieldOfflineNewPassword.TextTextBox = "";
-            this.SettingsEditFieldOfflineNewPassword.TextTitle = "New Password*";
-            this.SettingsEditFieldOfflineNewPassword.UseColoredCaret = true;
-            this.SettingsEditFieldOfflineNewPassword.UseDefaultValue = false;
-            this.SettingsEditFieldOfflineNewPassword.UseSystemPasswordChar = true;
-            // 
-            // SettingsEditFieldOfflineNewPasswordConfirm
-            // 
-            this.SettingsEditFieldOfflineNewPasswordConfirm.AutoSize = true;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover")));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal")));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.Location = new System.Drawing.Point(4, 218);
-            this.SettingsEditFieldOfflineNewPasswordConfirm.Name = "SettingsEditFieldOfflineNewPasswordConfirm";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldOfflineNewPasswordConfirm.TabIndex = 8;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox = "";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTitle = "Confirm New Password*";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.UseColoredCaret = true;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.UseDefaultValue = false;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.UseSystemPasswordChar = false;
-            // 
-            // SettingsAnimatedButtonOfflineRegister
-            // 
-            this.SettingsAnimatedButtonOfflineRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOfflineRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOfflineRegister.Depth = 0;
-            this.SettingsAnimatedButtonOfflineRegister.Icon = null;
-            this.SettingsAnimatedButtonOfflineRegister.Location = new System.Drawing.Point(337, 262);
-            this.SettingsAnimatedButtonOfflineRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOfflineRegister.Name = "SettingsAnimatedButtonOfflineRegister";
-            this.SettingsAnimatedButtonOfflineRegister.Primary = false;
-            this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
-            this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineRegister_Click);
-            // 
-            // SettingsAnimatedButtonOfflineLogin
-            // 
-            this.SettingsAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOfflineLogin.Depth = 0;
-            this.SettingsAnimatedButtonOfflineLogin.Icon = null;
-            this.SettingsAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(99, 262);
-            this.SettingsAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOfflineLogin.Name = "SettingsAnimatedButtonOfflineLogin";
-            this.SettingsAnimatedButtonOfflineLogin.Primary = false;
-            this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOfflineLogin.TabIndex = 13;
-            this.SettingsAnimatedButtonOfflineLogin.Text = "Login";
-            this.SettingsAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineLogin_Click);
-            // 
-            // SettingsAnimatedButtonOfflineChangeNameSubmit
-            // 
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Depth = 0;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Icon = null;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Location = new System.Drawing.Point(218, 239);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Name = "SettingsAnimatedButtonOfflineChangeNameSubmit";
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Primary = false;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.TabIndex = 13;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Text = "Change Name";
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.UseVisualStyleBackColor = true;
-            // 
-            // SettingsEditFieldOfflineName
-            // 
-            this.SettingsEditFieldOfflineName.AutoSize = true;
-            this.SettingsEditFieldOfflineName.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineName.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineName.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOfflineName.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOfflineName.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOfflineName.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldOfflineName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearHover")));
-            this.SettingsEditFieldOfflineName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearNormal")));
-            this.SettingsEditFieldOfflineName.Location = new System.Drawing.Point(5, 143);
-            this.SettingsEditFieldOfflineName.Name = "SettingsEditFieldOfflineName";
-            this.SettingsEditFieldOfflineName.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldOfflineName.TabIndex = 12;
-            this.SettingsEditFieldOfflineName.TextTextBox = "User";
-            this.SettingsEditFieldOfflineName.TextTitle = "Your Display Name";
-            this.SettingsEditFieldOfflineName.UseColoredCaret = true;
-            this.SettingsEditFieldOfflineName.UseDefaultValue = false;
-            this.SettingsEditFieldOfflineName.UseSystemPasswordChar = false;
-            // 
-            // SettingsAnimatedButtonLoginSubmit
-            // 
-            this.SettingsAnimatedButtonLoginSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonLoginSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonLoginSubmit.Depth = 0;
-            this.SettingsAnimatedButtonLoginSubmit.Icon = null;
-            this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
-            this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonLoginSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
-            this.SettingsAnimatedButtonLoginSubmit.Primary = false;
-            this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
-            this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
-            this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
-            this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
-            // 
-            // SettingsEditFieldLoginIP
-            // 
-            this.SettingsEditFieldLoginIP.AutoSize = true;
-            this.SettingsEditFieldLoginIP.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginIP.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginIP.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginIP.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginIP.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginIP.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldLoginIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearHover")));
-            this.SettingsEditFieldLoginIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearNormal")));
-            this.SettingsEditFieldLoginIP.Location = new System.Drawing.Point(6, 202);
-            this.SettingsEditFieldLoginIP.Name = "SettingsEditFieldLoginIP";
-            this.SettingsEditFieldLoginIP.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldLoginIP.TabIndex = 2;
-            this.SettingsEditFieldLoginIP.TextTextBox = "192.168.178.46";
-            this.SettingsEditFieldLoginIP.TextTitle = "IP / DNS*";
-            this.SettingsEditFieldLoginIP.UseColoredCaret = true;
-            this.SettingsEditFieldLoginIP.UseDefaultValue = false;
-            this.SettingsEditFieldLoginIP.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldLoginPort
-            // 
-            this.SettingsEditFieldLoginPort.AutoSize = true;
-            this.SettingsEditFieldLoginPort.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPort.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPort.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginPort.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginPort.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginPort.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldLoginPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearHover")));
-            this.SettingsEditFieldLoginPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearNormal")));
-            this.SettingsEditFieldLoginPort.Location = new System.Drawing.Point(6, 298);
-            this.SettingsEditFieldLoginPort.Name = "SettingsEditFieldLoginPort";
-            this.SettingsEditFieldLoginPort.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldLoginPort.TabIndex = 3;
-            this.SettingsEditFieldLoginPort.TextTextBox = "4447";
-            this.SettingsEditFieldLoginPort.TextTitle = "Port*";
-            this.SettingsEditFieldLoginPort.UseColoredCaret = true;
-            this.SettingsEditFieldLoginPort.UseDefaultValue = false;
-            this.SettingsEditFieldLoginPort.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldLoginUsername
-            // 
-            this.SettingsEditFieldLoginUsername.AutoSize = true;
-            this.SettingsEditFieldLoginUsername.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginUsername.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearHover")));
-            this.SettingsEditFieldLoginUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearNormal")));
-            this.SettingsEditFieldLoginUsername.Location = new System.Drawing.Point(6, 546);
-            this.SettingsEditFieldLoginUsername.Name = "SettingsEditFieldLoginUsername";
-            this.SettingsEditFieldLoginUsername.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldLoginUsername.TabIndex = 4;
-            this.SettingsEditFieldLoginUsername.TextTextBox = "testuser";
-            this.SettingsEditFieldLoginUsername.TextTitle = "Username*";
-            this.SettingsEditFieldLoginUsername.UseColoredCaret = true;
-            this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
-            this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
-            // 
-            // SettingsAnimatedButtonSubmit
-            // 
-            this.SettingsAnimatedButtonSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonSubmit.Depth = 0;
-            this.SettingsAnimatedButtonSubmit.Icon = null;
-            this.SettingsAnimatedButtonSubmit.Location = new System.Drawing.Point(178, 829);
-            this.SettingsAnimatedButtonSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonSubmit.Name = "SettingsAnimatedButtonSubmit";
-            this.SettingsAnimatedButtonSubmit.Primary = false;
-            this.SettingsAnimatedButtonSubmit.Size = new System.Drawing.Size(317, 56);
-            this.SettingsAnimatedButtonSubmit.TabIndex = 21;
-            this.SettingsAnimatedButtonSubmit.Text = "Connect & Register";
-            this.SettingsAnimatedButtonSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonSubmit_Click);
-            // 
-            // SettingsEditFieldRegisterEmail
-            // 
-            this.SettingsEditFieldRegisterEmail.AutoSize = true;
-            this.SettingsEditFieldRegisterEmail.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterEmail.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterEmail.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterEmail.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterEmail.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearHover")));
-            this.SettingsEditFieldRegisterEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearNormal")));
-            this.SettingsEditFieldRegisterEmail.Location = new System.Drawing.Point(6, 637);
-            this.SettingsEditFieldRegisterEmail.Name = "SettingsEditFieldRegisterEmail";
-            this.SettingsEditFieldRegisterEmail.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldRegisterEmail.TabIndex = 6;
-            this.SettingsEditFieldRegisterEmail.TextTextBox = "";
-            this.SettingsEditFieldRegisterEmail.TextTitle = "Email*";
-            this.SettingsEditFieldRegisterEmail.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterEmail.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterEmail.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterIP
-            // 
-            this.SettingsEditFieldRegisterIP.AutoSize = true;
-            this.SettingsEditFieldRegisterIP.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterIP.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterIP.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterIP.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterIP.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterIP.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldRegisterIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearHover")));
-            this.SettingsEditFieldRegisterIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearNormal")));
-            this.SettingsEditFieldRegisterIP.Location = new System.Drawing.Point(6, 202);
-            this.SettingsEditFieldRegisterIP.Name = "SettingsEditFieldRegisterIP";
-            this.SettingsEditFieldRegisterIP.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldRegisterIP.TabIndex = 2;
-            this.SettingsEditFieldRegisterIP.TextTextBox = "192.168.178.46";
-            this.SettingsEditFieldRegisterIP.TextTitle = "IP / DNS*";
-            this.SettingsEditFieldRegisterIP.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterIP.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterIP.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterName
-            // 
-            this.SettingsEditFieldRegisterName.AutoSize = true;
-            this.SettingsEditFieldRegisterName.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterName.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterName.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterName.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterName.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterName.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldRegisterName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearHover")));
-            this.SettingsEditFieldRegisterName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearNormal")));
-            this.SettingsEditFieldRegisterName.Location = new System.Drawing.Point(6, 740);
-            this.SettingsEditFieldRegisterName.Name = "SettingsEditFieldRegisterName";
-            this.SettingsEditFieldRegisterName.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldRegisterName.TabIndex = 7;
-            this.SettingsEditFieldRegisterName.TextTextBox = "freddy";
-            this.SettingsEditFieldRegisterName.TextTitle = "Display Name";
-            this.SettingsEditFieldRegisterName.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterName.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterName.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterPort
-            // 
-            this.SettingsEditFieldRegisterPort.AutoSize = true;
-            this.SettingsEditFieldRegisterPort.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterPort.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterPort.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterPort.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterPort.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterPort.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldRegisterPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearHover")));
-            this.SettingsEditFieldRegisterPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearNormal")));
-            this.SettingsEditFieldRegisterPort.Location = new System.Drawing.Point(6, 298);
-            this.SettingsEditFieldRegisterPort.Name = "SettingsEditFieldRegisterPort";
-            this.SettingsEditFieldRegisterPort.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldRegisterPort.TabIndex = 3;
-            this.SettingsEditFieldRegisterPort.TextTextBox = "4447";
-            this.SettingsEditFieldRegisterPort.TextTitle = "Port*";
-            this.SettingsEditFieldRegisterPort.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterPort.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterPort.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterUsername
-            // 
-            this.SettingsEditFieldRegisterUsername.AutoSize = true;
-            this.SettingsEditFieldRegisterUsername.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterUsername.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterUsername.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearHover")));
-            this.SettingsEditFieldRegisterUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearNormal")));
-            this.SettingsEditFieldRegisterUsername.Location = new System.Drawing.Point(6, 538);
-            this.SettingsEditFieldRegisterUsername.Name = "SettingsEditFieldRegisterUsername";
-            this.SettingsEditFieldRegisterUsername.Size = new System.Drawing.Size(660, 84);
-            this.SettingsEditFieldRegisterUsername.TabIndex = 4;
-            this.SettingsEditFieldRegisterUsername.TextTextBox = "";
-            this.SettingsEditFieldRegisterUsername.TextTitle = "Username*";
-            this.SettingsEditFieldRegisterUsername.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterUsername.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterUsername.UseSystemPasswordChar = false;
-            // 
-            // SettingsAnimatedButtonPromptSubmit
-            // 
-            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
-            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
-            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 742);
-            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonPromptSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
-            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
-            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
-            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
-            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
-            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
-            // 
-            // SettingsEditFieldPromptCode
-            // 
-            this.SettingsEditFieldPromptCode.AutoSize = true;
-            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
-            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Century Gothic", 20F);
-            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
-            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
-            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
-            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
-            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 104);
-            this.SettingsEditFieldPromptCode.TabIndex = 15;
-            this.SettingsEditFieldPromptCode.TextTextBox = "";
-            this.SettingsEditFieldPromptCode.TextTitle = "";
-            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
-            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
-            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
-            // 
-            // SettingsAdvancedProgressSpinnerLoading
-            // 
-            this.SettingsAdvancedProgressSpinnerLoading.ColorBackground = System.Drawing.Color.Gainsboro;
-            this.SettingsAdvancedProgressSpinnerLoading.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAdvancedProgressSpinnerLoading.Location = new System.Drawing.Point(243, 18);
-            this.SettingsAdvancedProgressSpinnerLoading.Maximum = 100;
-            this.SettingsAdvancedProgressSpinnerLoading.Name = "SettingsAdvancedProgressSpinnerLoading";
-            this.SettingsAdvancedProgressSpinnerLoading.Size = new System.Drawing.Size(115, 115);
-            this.SettingsAdvancedProgressSpinnerLoading.Speed = 2.5F;
-            this.SettingsAdvancedProgressSpinnerLoading.TabIndex = 12;
-            this.SettingsAdvancedProgressSpinnerLoading.Text = "advancedProgressSpinner1";
-            this.SettingsAdvancedProgressSpinnerLoading.TimerInterval = 40;
-            // 
-            // animatedButton3
-            // 
-            this.animatedButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton3.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.animatedButton3.Depth = 0;
-            this.animatedButton3.Icon = null;
-            this.animatedButton3.Location = new System.Drawing.Point(223, 453);
-            this.animatedButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton3.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton3.Name = "animatedButton3";
-            this.animatedButton3.Primary = false;
-            this.animatedButton3.Size = new System.Drawing.Size(213, 55);
-            this.animatedButton3.TabIndex = 5;
-            this.animatedButton3.Text = "Update";
-            this.animatedButton3.UseVisualStyleBackColor = true;
-            // 
-            // editField7
-            // 
-            this.editField7.AutoSize = true;
-            this.editField7.BackColor = System.Drawing.Color.White;
-            this.editField7.BackGroundColor = System.Drawing.Color.White;
-            this.editField7.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField7.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField7.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField7.DefaultValue = "Enter some text...";
-            this.editField7.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField7.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField7.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField7.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField7.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField7.ImageClearHover")));
-            this.editField7.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField7.ImageClearNormal")));
-            this.editField7.Location = new System.Drawing.Point(6, 148);
-            this.editField7.Name = "editField7";
-            this.editField7.Size = new System.Drawing.Size(660, 84);
-            this.editField7.TabIndex = 2;
-            this.editField7.TextTextBox = "";
-            this.editField7.TextTitle = "Username*";
-            this.editField7.UseColoredCaret = true;
-            this.editField7.UseDefaultValue = false;
-            this.editField7.UseSystemPasswordChar = false;
-            // 
-            // editField9
-            // 
-            this.editField9.AutoSize = true;
-            this.editField9.BackColor = System.Drawing.Color.White;
-            this.editField9.BackGroundColor = System.Drawing.Color.White;
-            this.editField9.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField9.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField9.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField9.DefaultValue = "Enter some text...";
-            this.editField9.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField9.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField9.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField9.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField9.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField9.ImageClearHover")));
-            this.editField9.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField9.ImageClearNormal")));
-            this.editField9.Location = new System.Drawing.Point(6, 244);
-            this.editField9.Name = "editField9";
-            this.editField9.Size = new System.Drawing.Size(660, 84);
-            this.editField9.TabIndex = 3;
-            this.editField9.TextTextBox = "";
-            this.editField9.TextTitle = "Email*";
-            this.editField9.UseColoredCaret = true;
-            this.editField9.UseDefaultValue = false;
-            this.editField9.UseSystemPasswordChar = false;
-            // 
-            // editField10
-            // 
-            this.editField10.AutoSize = true;
-            this.editField10.BackColor = System.Drawing.Color.White;
-            this.editField10.BackGroundColor = System.Drawing.Color.White;
-            this.editField10.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField10.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField10.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField10.DefaultValue = "Enter some text...";
-            this.editField10.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField10.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField10.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField10.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField10.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField10.ImageClearHover")));
-            this.editField10.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField10.ImageClearNormal")));
-            this.editField10.Location = new System.Drawing.Point(6, 340);
-            this.editField10.Name = "editField10";
-            this.editField10.Size = new System.Drawing.Size(660, 84);
-            this.editField10.TabIndex = 4;
-            this.editField10.TextTextBox = "";
-            this.editField10.TextTitle = "Display Name";
-            this.editField10.UseColoredCaret = true;
-            this.editField10.UseDefaultValue = false;
-            this.editField10.UseSystemPasswordChar = false;
-            // 
-            // editField8
-            // 
-            this.editField8.AutoSize = true;
-            this.editField8.BackColor = System.Drawing.Color.White;
-            this.editField8.BackGroundColor = System.Drawing.Color.White;
-            this.editField8.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField8.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField8.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField8.DefaultValue = "Enter some text...";
-            this.editField8.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField8.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField8.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField8.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField8.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField8.ImageClearHover")));
-            this.editField8.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField8.ImageClearNormal")));
-            this.editField8.Location = new System.Drawing.Point(6, 149);
-            this.editField8.Name = "editField8";
-            this.editField8.Size = new System.Drawing.Size(660, 84);
-            this.editField8.TabIndex = 7;
-            this.editField8.TextTextBox = "";
-            this.editField8.TextTitle = "Port*";
-            this.editField8.UseColoredCaret = true;
-            this.editField8.UseDefaultValue = false;
-            this.editField8.UseSystemPasswordChar = false;
-            // 
-            // editField6
-            // 
-            this.editField6.AutoSize = true;
-            this.editField6.BackColor = System.Drawing.Color.White;
-            this.editField6.BackGroundColor = System.Drawing.Color.White;
-            this.editField6.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField6.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField6.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField6.DefaultValue = "Enter some text...";
-            this.editField6.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField6.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField6.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField6.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField6.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField6.ImageClearHover")));
-            this.editField6.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField6.ImageClearNormal")));
-            this.editField6.Location = new System.Drawing.Point(6, 59);
-            this.editField6.Name = "editField6";
-            this.editField6.Size = new System.Drawing.Size(660, 84);
-            this.editField6.TabIndex = 6;
-            this.editField6.TextTextBox = "";
-            this.editField6.TextTitle = "IP*";
-            this.editField6.UseColoredCaret = true;
-            this.editField6.UseDefaultValue = false;
-            this.editField6.UseSystemPasswordChar = false;
-            // 
             // MenuMenuEntryHome
             // 
             this.MenuMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -3570,6 +3381,195 @@
             this.MenuMenuEntrySettings.TabIndex = 5;
             this.MenuMenuEntrySettings.TextTitle = "Settings";
             // 
+            // LoginLoadingAdvancedProgressSpinner
+            // 
+            this.LoginLoadingAdvancedProgressSpinner.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginLoadingAdvancedProgressSpinner.ColorForeground = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginLoadingAdvancedProgressSpinner.Location = new System.Drawing.Point(207, 18);
+            this.LoginLoadingAdvancedProgressSpinner.Maximum = 100;
+            this.LoginLoadingAdvancedProgressSpinner.Name = "LoginLoadingAdvancedProgressSpinner";
+            this.LoginLoadingAdvancedProgressSpinner.Size = new System.Drawing.Size(100, 100);
+            this.LoginLoadingAdvancedProgressSpinner.Speed = 2.5F;
+            this.LoginLoadingAdvancedProgressSpinner.TabIndex = 12;
+            this.LoginLoadingAdvancedProgressSpinner.Text = "advancedProgressSpinner1";
+            this.LoginLoadingAdvancedProgressSpinner.TimerInterval = 40;
+            // 
+            // LoginEditFieldOfflinePassword
+            // 
+            this.LoginEditFieldOfflinePassword.AutoSize = true;
+            this.LoginEditFieldOfflinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOfflinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOfflinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOfflinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOfflinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOfflinePassword.DefaultValue = "Enter Password...";
+            this.LoginEditFieldOfflinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOfflinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOfflinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOfflinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOfflinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearHover")));
+            this.LoginEditFieldOfflinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOfflinePassword.ImageClearNormal")));
+            this.LoginEditFieldOfflinePassword.Location = new System.Drawing.Point(44, 37);
+            this.LoginEditFieldOfflinePassword.Name = "LoginEditFieldOfflinePassword";
+            this.LoginEditFieldOfflinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOfflinePassword.TabIndex = 1;
+            this.LoginEditFieldOfflinePassword.TextTextBox = "";
+            this.LoginEditFieldOfflinePassword.TextTitle = "Password";
+            this.LoginEditFieldOfflinePassword.UseColoredCaret = false;
+            this.LoginEditFieldOfflinePassword.UseDefaultValue = false;
+            this.LoginEditFieldOfflinePassword.UseSystemPasswordChar = true;
+            // 
+            // LoginAnimatedButtonOfflineLogin
+            // 
+            this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginAnimatedButtonOfflineLogin.Depth = 0;
+            this.LoginAnimatedButtonOfflineLogin.Icon = null;
+            this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(220, 684);
+            this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
+            this.LoginAnimatedButtonOfflineLogin.Primary = false;
+            this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
+            this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
+            // 
+            // LoginEditFieldRegisterPassword2
+            // 
+            this.LoginEditFieldRegisterPassword2.AutoSize = true;
+            this.LoginEditFieldRegisterPassword2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword2.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldRegisterPassword2.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword2.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldRegisterPassword2.DefaultValue = "Enter some text...";
+            this.LoginEditFieldRegisterPassword2.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword2.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
+            this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
+            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 292);
+            this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
+            this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldRegisterPassword2.TabIndex = 1;
+            this.LoginEditFieldRegisterPassword2.TextTextBox = "";
+            this.LoginEditFieldRegisterPassword2.TextTitle = "Re-enter Master Password";
+            this.LoginEditFieldRegisterPassword2.UseColoredCaret = false;
+            this.LoginEditFieldRegisterPassword2.UseDefaultValue = false;
+            this.LoginEditFieldRegisterPassword2.UseSystemPasswordChar = true;
+            // 
+            // LoginEditFieldRegisterPassword
+            // 
+            this.LoginEditFieldRegisterPassword.AutoSize = true;
+            this.LoginEditFieldRegisterPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldRegisterPassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldRegisterPassword.DefaultValue = "Enter some text...";
+            this.LoginEditFieldRegisterPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
+            this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
+            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 197);
+            this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
+            this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldRegisterPassword.TabIndex = 0;
+            this.LoginEditFieldRegisterPassword.TextTextBox = "";
+            this.LoginEditFieldRegisterPassword.TextTitle = "Master Password";
+            this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
+            this.LoginEditFieldRegisterPassword.UseDefaultValue = false;
+            this.LoginEditFieldRegisterPassword.UseSystemPasswordChar = true;
+            // 
+            // LoginAnimatedButtonRegister
+            // 
+            this.LoginAnimatedButtonRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginAnimatedButtonRegister.Depth = 0;
+            this.LoginAnimatedButtonRegister.Icon = null;
+            this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(220, 728);
+            this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
+            this.LoginAnimatedButtonRegister.Primary = false;
+            this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonRegister.TabIndex = 8;
+            this.LoginAnimatedButtonRegister.Text = "Register";
+            this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
+            // 
+            // LoginAnimatedButtonOnlineLogin
+            // 
+            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOnlineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
+            this.LoginAnimatedButtonOnlineLogin.Icon = null;
+            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
+            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOnlineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
+            this.LoginAnimatedButtonOnlineLogin.Primary = false;
+            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
+            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
+            // 
+            // LoginEditFieldOnlinePassword
+            // 
+            this.LoginEditFieldOnlinePassword.AutoSize = true;
+            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlinePassword.DefaultValue = "Enter some text...";
+            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOnlinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearHover")));
+            this.LoginEditFieldOnlinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearNormal")));
+            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 179);
+            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
+            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlinePassword.TabIndex = 1;
+            this.LoginEditFieldOnlinePassword.TextTextBox = "";
+            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
+            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
+            this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
+            this.LoginEditFieldOnlinePassword.UseSystemPasswordChar = true;
+            // 
+            // LoginEditFieldOnlineUsername
+            // 
+            this.LoginEditFieldOnlineUsername.AutoSize = true;
+            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlineUsername.DefaultValue = "Enter your Username...";
+            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOnlineUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearHover")));
+            this.LoginEditFieldOnlineUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearNormal")));
+            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 72);
+            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
+            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlineUsername.TabIndex = 0;
+            this.LoginEditFieldOnlineUsername.TextTextBox = "";
+            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
+            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
+            this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
+            this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
+            // 
             // windowButtonClose
             // 
             this.windowButtonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -3588,8 +3588,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
