@@ -1235,7 +1235,8 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
             }
-            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll();
+            // DEEP COPY SCHEDULED TASKS
+            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => AutomatedTaskFramework.Task.Create(task.SearchCondition, task.FinishedCondition, task.TaskAction));
             AutomatedTaskFramework.Tasks.Clear();
             switch (GlobalVarPool.promptCommand)
             {
