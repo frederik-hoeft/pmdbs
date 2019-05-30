@@ -187,6 +187,11 @@ namespace pmdbs
                 Tasks.Add(this);
             }
 
+            public Action TaskAction
+            {
+                get { return _automatedAction; }
+            }
+
             public SearchCondition SearchCondition
             {
                 get { return _searchCondition; }
