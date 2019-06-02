@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.5-3b.19"
+VERSION = "0.6-1b.19"
 BUILD = "development"
-DATE = "May 26 2019"
-TIME = "12:31:15"
+DATE = "Jun 02 2019"
+TIME = "17:50:39"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -128,6 +128,178 @@ except Exception as e:
 	# IF ANYTHING GOES WRONG PRINT ERROR MESSAGE AND EXIT
 	print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Importing required packages: " + str(e) + ENDF)
 	exit()
+
+################################################################################
+#-----------------------------SERVER DATABASE CLASS----------------------------#
+################################################################################
+
+class DatabaseHelper():
+	
+	class ServerData():
+		IS_LOCKED = False
+		DATABASE = None
+		
+		def Modify(query, clientAddress):
+			if DatabaseHelper.ServerData.DATABASE is None:
+				return False
+			while DatabaseHelper.ServerData.IS_LOCKED:
+				time.sleep(0.1)
+			DatabaseHelper.ServerData.IS_LOCKED = True
+			# CREATE CONNECTION TO DATABASE
+			connection = sqlite3.connect(DatabaseHelper.ServerData.DATABASE)
+			# CREATE CURSOR
+			cursor = connection.cursor()
+			try:
+				cursor.execute(query)
+			except sqlite3.OperationalError as SQLError:
+				connection.rollback()
+				Handle.Error("SQLE", str(SQLError), clientAddress, None, None, False)
+				return False
+			except Exception as e:
+				connection.rollback()
+				Handle.Error("SQLX", str(e), clientAddress, None, None, False)
+				return False
+			else:
+				connection.commit()
+			finally:
+				connection.close()
+				DatabaseHelper.ServerData.IS_LOCKED = False
+			return True
+			
+		def Select(query, clientAddress):
+			if DatabaseHelper.ServerData.DATABASE is None:
+				return False
+			while DatabaseHelper.ServerData.IS_LOCKED:
+				time.sleep(0.1)
+			data = []
+			DatabaseHelper.ServerData.IS_LOCKED = True
+			# CREATE CONNECTION TO DATABASE
+			connection = sqlite3.connect(DatabaseHelper.ServerData.DATABASE)
+			# CREATE CURSOR
+			cursor = connection.cursor()
+			try:
+				data = cursor.execute(query).fetchall()
+			except sqlite3.OperationalError as SQLError:
+				Handle.Error("SQLE", str(SQLError), clientAddress, None, None, False)
+				return False
+			except Exception as e:
+				Handle.Error("SQLX", str(e), clientAddress, None, None, False)
+				return False
+			finally:
+				connection.close()
+				DatabaseHelper.ServerData.IS_LOCKED = False
+			return data
+			
+	class UserData():
+		IS_LOCKED = False
+		DATABASE = None
+		
+		def Modify(query, clientSocket, aesKey):
+			if DatabaseHelper.UserData.DATABASE is None:
+				return False
+			client = GetClient(clientSocket)
+			while DatabaseHelper.UserData.IS_LOCKED:
+				time.sleep(0.1)
+			DatabaseHelper.UserData.IS_LOCKED = True
+			# CREATE CONNECTION TO DATABASE
+			connection = sqlite3.connect(DatabaseHelper.UserData.DATABASE)
+			# CREATE CURSOR
+			cursor = connection.cursor()
+			try:
+				cursor.execute(query)
+			except sqlite3.OperationalError as SQLError:
+				connection.rollback()
+				Handle.Error("SQLE", str(SQLError), client.address, clientSocket, aesKey, True)
+				return False
+			except Exception as e:
+				connection.rollback()
+				Handle.Error("SQLX", str(e), client.address, clientSocket, aesKey, True)
+				return False
+			else:
+				connection.commit()
+			finally:
+				connection.close()
+				DatabaseHelper.UserData.IS_LOCKED = False
+			return True
+			
+		def ModifySilent(query, clientAddress):
+			if DatabaseHelper.UserData.DATABASE is None:
+				return False
+			while DatabaseHelper.UserData.IS_LOCKED:
+				time.sleep(0.1)
+			DatabaseHelper.UserData.IS_LOCKED = True
+			# CREATE CONNECTION TO DATABASE
+			connection = sqlite3.connect(DatabaseHelper.UserData.DATABASE)
+			# CREATE CURSOR
+			cursor = connection.cursor()
+			try:
+				cursor.execute(query)
+			except sqlite3.OperationalError as SQLError:
+				connection.rollback()
+				Handle.Error("SQLE", str(SQLError), clientAddress, None, None, False)
+				return False
+			except Exception as e:
+				connection.rollback()
+				Handle.Error("SQLX", str(e), clientAddress, None, None, False)
+				return False
+			else:
+				connection.commit()
+			finally:
+				connection.close()
+				DatabaseHelper.UserData.IS_LOCKED = False
+			return True
+			
+		def Select(query, clientSocket, aesKey):
+			if DatabaseHelper.UserData.DATABASE is None:
+				return False
+			client = GetClient(clientSocket)
+			while DatabaseHelper.UserData.IS_LOCKED:
+				time.sleep(0.1)
+			data = []
+			DatabaseHelper.UserData.IS_LOCKED = True
+			# CREATE CONNECTION TO DATABASE
+			connection = sqlite3.connect(DatabaseHelper.UserData.DATABASE)
+			# CREATE CURSOR
+			cursor = connection.cursor()
+			try:
+				data = cursor.execute(query).fetchall()
+			except sqlite3.OperationalError as SQLError:
+				Handle.Error("SQLE", str(SQLError), client.address, clientSocket, aesKey, True)
+				return False
+			except Exception as e:
+				Handle.Error("SQLX", str(e), client.address, clientSocket, aesKey, True)
+				return False
+			finally:
+				connection.close()
+				DatabaseHelper.UserData.IS_LOCKED = False
+			return data
+			
+		def SelectSilent(query, clientAddress):
+			if DatabaseHelper.UserData.DATABASE is None:
+				return False
+			while DatabaseHelper.UserData.IS_LOCKED:
+				time.sleep(0.1)
+			data = []
+			DatabaseHelper.UserData.IS_LOCKED = True
+			# CREATE CONNECTION TO DATABASE
+			connection = sqlite3.connect(DatabaseHelper.UserData.DATABASE)
+			# CREATE CURSOR
+			cursor = connection.cursor()
+			try:
+				data = cursor.execute(query).fetchall()
+			except sqlite3.OperationalError as SQLError:
+				Handle.Error("SQLE", str(SQLError), clientAddress, None, None, False)
+				return False
+			except Exception as e:
+				Handle.Error("SQLX", str(e), clientAddress, None, None, False)
+				return False
+			finally:
+				connection.close()
+				DatabaseHelper.UserData.IS_LOCKED = False
+			return data
+			
+		
+
 
 ################################################################################
 #------------------------------SERVER CRYPTO CLASS-----------------------------#
@@ -363,24 +535,12 @@ class DatabaseManagement():
 	
 	# CLEANS UP THE DATABASE
 	def GarbageCollection():
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		# INITIALIZE VARIABLES
-		users = None
-		blacklist = None
-		# QUERY DATABASE AND STORE FETCHED RUSULTS IN PREVIOUSLY INITIALIZED VARIABLES
-		try:
-			cursor.execute("SELECT B_id, B_time, B_duration FROM Tbl_blacklist;")
-			blacklist = cursor.fetchall()
-			cursor.execute("SELECT U_id, U_isVerified, U_codeType, U_codeTime FROM Tbl_user;")
-			users = cursor.fetchall()
-		# THROW SQL EXCEPTION AND LOG ERROR
-		except Exception as e:
-			connection.close()
-			info = "errno%eq!17!;code%eq!SQLE!;message%eq!" + e +"!;"
-			Log.ServerEventLog("ERROR", info)
+		blacklist = DatabaseHelper.ServerData.Select("SELECT B_id, B_time, B_duration FROM Tbl_blacklist;", "GARBAGE_COLLECTION")
+		users = DatabaseHelper.UserData.SelectSilent("SELECT U_id, U_isVerified, U_codeType, U_codeTime FROM Tbl_user;", "GARBAGE_COLLECTION")
+		if blacklist is False:
+			return False
+		if users is False:
 			return False
 		try:
 			# ITERATE OVER ALL BLACKLIST ENTRIES
@@ -389,10 +549,10 @@ class DatabaseManagement():
 				if int(entry[1]) + int(entry[2]) < int(Timestamp().split(".")[0]):
 					B_id = entry[0]
 					# DELETE ENTRY
-					cursor.execute("DELETE FROM Tbl_blacklist where B_id = " + str(B_id) + ";")
+					if not DatabaseHelper.ServerData.Modify("DELETE FROM Tbl_blacklist where B_id = " + str(B_id) + ";", "GARBAGE_COLLECTION"):
+						return False
 		# THROW EXCEPTION AND LOG ERROR
 		except Exception as e:
-			connection.close()
 			info = "errno%eq!00!;code%eq!UNKN!;message%eq!" + e +"!;"
 			Log.ServerEventLog("ERROR", info)
 			return False
@@ -403,28 +563,22 @@ class DatabaseManagement():
 				if user[1] == 0 and user[2] == "ACTIVATE_ACCOUNT" and int(user[3]) + ACCOUNT_ACTIVATION_MAX_TIME < int(Timestamp().split(".")[0]):
 					U_id = entry[0]
 					# DELETE ACCOUNT
-					cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + str(U_id) + ";")
+					DatabaseHelper.UserData.ModifySilent("DELETE FROM Tbl_user WHERE U_id = " + str(U_id) + ";", "GARBAGE_COLLECTION")
 		# THROW EXCEPTION AND LOG ERROR
 		except Exception as e:
 			info = "errno%eq!00!;code%eq!UNKN!;message%eq!" + e +"!;"
 			Log.ServerEventLog("ERROR", info)
 			return False
-		else:
-			# EXIT THREAD
-			return True
-		finally:
-			# FREE RESOURCES
-			connection.close()
+		return True
 
 	# INSERT DATA 
 	def Insert(command, clientAddress, clientSocket, aesKey):
-		
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		# EXAMPLE COMMAND
 		# local_id%eq!local_id!;uname%eq!uname!;password%eq!password!;...
 		queryParameters = command.split(";")
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(queryParameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
@@ -479,52 +633,19 @@ class DatabaseManagement():
 		# APPEND USER ID TO QUERY
 		query += "," + "D_userid"
 		values += "," + str(userID)
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		try:
-			# EXECUTE SQL QUERY
-			fullQuery = "INSERT INTO Tbl_data (" + query + ") VALUES (" + values + ");"
-			# PrintSendToAdmin(fullQuery)
-			cursor.execute(fullQuery)
-		except Exception as e:
-			connection.rollback()
-			connection.close()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		if not DatabaseHelper.UserData.Modify(fullQuery, clientSocket, aesKey):
 			return
-		else:
-			# COMMIT CHANGES
-			connection.commit()
 		HID = None
 		try:
-			cursor.execute("SELECT last_insert_rowid() FROM Tbl_data;")
-			# CREATE HID (HASHED ID)
-			dataID = cursor.fetchall()
-			if not dataID:
-				return
-			HID = dataID[0][0]
+			HID = DatabaseHelper.UserData.Select(fullQuery, clientSocket, aesKey)[0][0]
 		except Exception as e:
-			connection.close()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if HID is None:
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "HID is None", clientAddress, clientSocket, aesKey, True)
 			return
 		hashedID = CryptoHelper.BLAKE2(str(HID) + Timestamp(), str(userID))
-		try:
-			# ADD HID TO ENTRY
-			cursor.execute("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";")
-		except Exception as e:
-			connection.rollback()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";", clientSocket, aesKey):
 			return
-		else:
-			# COMMIT CHANGES
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
 		Log.ClientEventLog("INSERT", clientSocket)
 		# SEND ACKNOWLEDGEMENT TO CLIENT
 		returnData = "DTARETmode%eq!INSERT!;local_id%eq!" + localID + "!;hashed_id%eq!" + hashedID + "!;"
@@ -538,7 +659,7 @@ class DatabaseManagement():
 		# SPLIT THE RAW COMMAND TO GET THE PARAMETERS
 		queryParameters = command.split(";")
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(queryParameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
@@ -567,8 +688,8 @@ class DatabaseManagement():
 		except Exception as e:
 			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
-		if not HID:
-			Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
+		if HID is None:
+			Handle.Error("UNKN", "HID is None", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ANY PARAMETERS HAVE BEEN SET
 		if query == "":
@@ -576,23 +697,8 @@ class DatabaseManagement():
 			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK PASSED: REQUEST IS VALID
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		try:
-			# EXECUTE QUERY
-			cursor.execute("UPDATE Tbl_data SET " + query + " WHERE D_userid = " + userID + " AND d_hid = \"" + HID + "\";")
-		except Exception as e:
-			connection.rollback()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_data SET " + query + " WHERE D_userid = " + userID + " AND d_hid = \"" + HID + "\";", clientSocket, aesKey):
 			return
-		else:
-			# COMMIT CHANGES
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
 		Log.ClientEventLog("UPDATE", clientSocket)
 		# SEND ACKNOWLEDGEMENT TO CLIENT
 		returnData = "DTARETmode%eq!UPDATE!;hashed_id%eq!" + HID + "!;"
@@ -604,7 +710,7 @@ class DatabaseManagement():
 		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
 		# CHECK FOR SECURITY ISSUES
 		queryParameters = queryParameter.split(";")
-		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(queryParameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
@@ -678,7 +784,7 @@ class DatabaseManagement():
 		# EXAMPLE command = "HID1;HID2;HID3;HID4;HID5;"
 		queryParameters = queryParameter.split(";")
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(queryParameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(queryParameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
@@ -731,7 +837,7 @@ class DatabaseManagement():
 	def Sync(queryParameter, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "fetch_mode%eq!FETCH_SYNC!"
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security([queryParameter], clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check([queryParameter], clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
@@ -820,29 +926,51 @@ class DatabaseManagement():
 			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
 			Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 			return
+	
+	# DATABASE SECURTITY CLASS
+	class Security():
 		
-	# CHECKS FOR SECURITY ISSUES
-	def Security(queryArray, clientAddress, clientSocket, aesKey):
-		# CHECK FOR SQL INJECTION
-		for element in queryArray:
-			if ('\"' in element) or ('\'' in element):
+		# CHECKS QUERY FOR SECURITY ISSUES
+		def CheckSingle(query, clientAddress, clientSocket, aesKey):
+			if ('\"' in query) or ('\'' in query):
 				Handle.Error("SQLI", None, clientAddress, clientSocket, aesKey, True)
 				Log.ClientEventLog("SQL_INJECTION_ATTEMPT", clientSocket)
 				Log.ServerEventLog("SQL_INJECTION_ATTEMPT", GetDetails(clientSocket))
 				Management.Logout(clientAddress, clientSocket, aesKey, True)
 				Management.Disconnect(clientSocket, "ANTI_SQL_INJECTION", clientAddress, False)
 				return False
-		# SQL INJECTION CHECK PASSED
-		return True
-	
-	# CHECKS FOR SECURITY ISSUES WITHOUT HANDLING ERRORS OR WRITING LOGS
-	def SecuritySilent(queryArray):
-		# CHECK FOR SQL INJECTION
-		for element in queryArray:
-			if ('\"' in element) or ('\'' in element):
+			# SQL INJECTION CHECK PASSED
+			return True
+			
+		# CHECKS QUERY FOR SECURITY ISSUES WITHOUT HANDLING ERRORS OR WRITING LOGS
+		def CheckSingleSilent(query):
+			if ('\"' in query) or ('\'' in query):
 				return False
-		# SQL INJECTION CHECK PASSED
-		return True
+			# SQL INJECTION CHECK PASSED
+			return True
+			
+		# CHECKS PARAMETER ARRAY FOR SECURITY ISSUES
+		def Check(queryArray, clientAddress, clientSocket, aesKey):
+			# CHECK FOR SQL INJECTION
+			for element in queryArray:
+				if ('\"' in element) or ('\'' in element):
+					Handle.Error("SQLI", None, clientAddress, clientSocket, aesKey, True)
+					Log.ClientEventLog("SQL_INJECTION_ATTEMPT", clientSocket)
+					Log.ServerEventLog("SQL_INJECTION_ATTEMPT", GetDetails(clientSocket))
+					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					Management.Disconnect(clientSocket, "ANTI_SQL_INJECTION", clientAddress, False)
+					return False
+			# SQL INJECTION CHECK PASSED
+			return True
+		
+		# CHECKS PARAMETER ARRAY FOR SECURITY ISSUES WITHOUT HANDLING ERRORS OR WRITING LOGS
+		def CheckSilent(queryArray):
+			# CHECK FOR SQL INJECTION
+			for element in queryArray:
+				if ('\"' in element) or ('\'' in element):
+					return False
+			# SQL INJECTION CHECK PASSED
+			return True
 		
 # METHODS RELATED TO CREATING AND MANAGING LOGS		
 class Log():
@@ -927,8 +1055,7 @@ class Log():
 	# CREATES LOG FOR CLIENT RELATED EVENTS 
 	def ClientEventLog(event, clientSocket):
 		# CHECKS FOR SQL INJECTION
-		sqliSecure = DatabaseManagement.SecuritySilent([event])
-		if not sqliSecure:
+		if not DatabaseManagement.Security.CheckSingleSilent(event):
 			return False
 		# INITIALIZE VARIABLES
 		dateTime = Timestamp()
@@ -969,26 +1096,14 @@ class Log():
 	
 	# CREATES LOG FOR SERVER RELATED OR GLOBAL EVENTS
 	def ServerEventLog(event, details):
-		# CHECKS FOR SQL INJECTION
-		sqliSecure = DatabaseManagement.SecuritySilent([event, details])
-		if not sqliSecure:
+		if not DatabaseManagement.Security.CheckSilent([event, details]]):
 			return False
 		# GET TIMESTAMP
 		dateTime = Timestamp()
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		# WRITE ENTRY TO DATABASE
-		try:
-			cursor.execute("INSERT INTO Tbl_serverLog (S_event, S_datetime, S_details) VALUES(\"" + event + "\",\"" + dateTime + "\",\"" + details + "\");")
-			connection.commit()
+		if DatabaseHelper.ServerData.Modify("INSERT INTO Tbl_serverLog (S_event, S_datetime, S_details) VALUES(\"" + event + "\",\"" + dateTime + "\",\"" + details + "\");", "SERVER_EVENT_LOG"):
 			return True
-		except:
-			return False
-		finally:
-			# FREE RESOURCES
-			connection.close()
+		return False
 		
 class Handle():
 	
@@ -1028,6 +1143,7 @@ class Handle():
 		# [ERRNO 30] E2RE				--> EXPIRED 2FA REQUEST
 		# [ERRNO 31] IMAC				--> INVALID MESSAGE AUTHENTICATION CODE
 		# [ERRNO 32] MAIL				--> ERROR OCCURED DURING SendMail()
+		# [ERRNO 33] SQLX				--> UNKNOWN SQL EXCEPTION
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -1163,13 +1279,16 @@ class Handle():
 			errorNo = "32"
 			if not message:
 				message = "SEND_MAIL_FAILED"
+		elif errorID == "SQLX":
+			errorNo = "33"
+			if not message:
+				message = "GENERIC_SQL_EXCEPTION"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
 		Log.ServerEventLog("ERROR", info)
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
-		if not clientSocket:
-			PrintSendToAdmin("ERROR MESSAGE: " + info)
+		if clientSocket is None:
 			return
 		if not isEncrypted:
 			Network.SendThreadSafe(clientSocket, "INFERR" + info)
@@ -1187,7 +1306,7 @@ class Management():
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
 		cookie = None
@@ -1246,7 +1365,7 @@ class Management():
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
 		username = None
@@ -1353,7 +1472,7 @@ class Management():
 		# new_name%eq!new_name!;
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES TO STORE EXTRACTED DATA IN
@@ -1416,7 +1535,7 @@ class Management():
 		# username%eq!username!;name%eq!name!;email%eq!email!;
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES TO STORE EXTRACTED DATA IN
@@ -1666,7 +1785,7 @@ class Management():
 		# username%eq!username!;cookie%eq!cookie!;new_email%eq!new_email!;
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES
@@ -1760,7 +1879,7 @@ class Management():
 		# code%eq!code!;password%eq!password!;cookie%eq!cookie!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES
@@ -1963,7 +2082,7 @@ class Management():
 		# password%eq!password!;code%eq!code!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION ATTEMPTS
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
@@ -2093,7 +2212,7 @@ class Management():
 			return
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
 			return
 		# INITIALIZE VARIABLES
 		username = None
@@ -2178,7 +2297,7 @@ class Management():
 		cursor = connection.cursor()
 		ip = clientAddress.split(":")[0]
 		# CHECK FOR SQL INJECTION --> UNLIKELY BECAUSE IT'S CALLED LOCALLY
-		if not DatabaseManagement.SecuritySilent([ip]):
+		if not DatabaseManagement.Security.CheckSilent([ip]):
 			PrintSendToAdmin("SERVER <-#- [ERRNO 07]           SQLI  -#-> " + clientAddress)
 			return
 		# INITIALIZE VARIABLES
@@ -2226,7 +2345,7 @@ class Management():
 				return
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(parameters, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
 			return
 		# INITIALIZE VARIABLES
 		ip = None
@@ -2426,7 +2545,7 @@ class Management():
 		# username%eq!username!;code%eq!code!;password%eq!password!;cookie%eq!cookie!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES
@@ -2658,7 +2777,7 @@ class Management():
 		# username%eq!username!;code%eq!code!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES
@@ -2786,7 +2905,7 @@ class Management():
 		# username%eq!username!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION ATTEMPTS
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLE TO STORE THE USERNAME
@@ -2839,7 +2958,7 @@ class Management():
 		# password%eq!passsword!;code%eq!code!;
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION ATTEMPTS
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
@@ -3466,7 +3585,7 @@ class Management():
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SQL INJECTION CHECK PASSED. CREDENTIALS ARE VALID
 		# CREATE SCRYPT HASHED PASSWORD
@@ -3551,7 +3670,7 @@ class Management():
 			return
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# SQL INJECTION CHECK PASSED. CREDENTIALS ARE VALID
 		# CHECK IF PACKET IS VALID
@@ -3625,7 +3744,7 @@ class Management():
 			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			return
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
 		password = None
@@ -3912,7 +4031,7 @@ class Management():
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# CHECK FOR SECURITY ISSUES
-		if not DatabaseManagement.Security(creds, clientAddress, clientSocket, aesKey):
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
 			return
 		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
 		username = None
@@ -4213,7 +4332,7 @@ class Client(object):
 	HMACkey = None
 	SOCKET_IN_USE = False
 	
-	def __init__(self, socket, address):
+	def __init__(self, socket, address, aesKey):
 		self.socket = socket
 		self.address = address
 		
@@ -4308,9 +4427,34 @@ class Server(Thread):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked build info. Current build: " + BUILD + "-build. " + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked config. " + ENDF)
 		PYTHON = "Python " + " / ".join(PYTHON_VERSIONS) + " - LINUX"
+		print(CWHITE + "         Looking for server.db database in " + os.getcwd() + " ..." + ENDF)
+		DatabaseHelper.ServerData.DATABASE = os.getcwd() + "/server.db"
+		if os.path.isfile(DatabaseHelper.ServerData.DATABASE):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found server.db" + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Could not find server.db in " + os.getcwd() + ENDF)
+			return	
+		# CHECK FOR READ / WRITE PERMISSIONS
+		print(CWHITE + "         Checking permissions for server.db ..." + ENDF)
+		print(CWHITE + "         Checking READ permission for server.db ..." + ENDF)
+		if os.access(DatabaseHelper.ServerData.DATABASE, os.R_OK):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission for server.db." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking READ permission for server.db." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+			return
+		print(CWHITE + "         Checking WRITE permission for server.db ..." + ENDF)
+		if os.access(DatabaseHelper.ServerData.DATABASE, os.W_OK):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got WRITE permission for server.db." + ENDF)
+		else:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking WRITE permission for server.db." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+			return
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ/WRITE permissions for server.db." + ENDF)
 		# GET ANY DATABASES IN CURRENT WORKING DIRECTORY
-		print(CWHITE + "         Checking for database in " + os.getcwd() + " ..." + ENDF)
+		print(CWHITE + "         Looking for user database in " + os.getcwd() + " ..." + ENDF)
 		dataBases = glob.glob(os.getcwd() + "/*.db")
+		dataBases.remove(os.getcwd() + "/server.db")
 		# EXIT IF NO DATABASES HAVE BEEN FOUND
 		if not dataBases:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: No database found." + ENDF)
@@ -4321,7 +4465,7 @@ class Server(Thread):
 			pathParts = dataBases[0].split("/")
 			db = pathParts[len(pathParts) - 1]
 			# SET DATABASE
-			Server.dataBase = db
+			DatabaseHelper.UserData.DATABASE = db
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found sqlite3 database \"" + self.dataBase + "\" in " + os.getcwd() + ENDF)
 			print(CWHITE + "         Autoselecting ..." + ENDF)
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + self.dataBase + ENDF)
@@ -4346,71 +4490,68 @@ class Server(Thread):
 				# TRY TO SELECT DATABASE AT SELECTED INDEX
 				try:
 					selectedDb = int(selectedDbString)
-					Server.dataBase = cleanedDataBases[selectedDb]
+					DatabaseHelper.UserData.DATABASE = cleanedDataBases[selectedDb]
 					notSelected = False
 				# INDEX WAS INVALID --> RETRY
 				except:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + self.dataBase + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + DatabaseHelper.UserData.DATABASE + ENDF)
 		# CHECK FOR READ / WRITE PERMISSIONS
-		print(CWHITE + "         Checking permissions ..." + ENDF)
-		print(CWHITE + "         Checking for READ permission ..." + ENDF)
-		if os.access(self.dataBase, os.R_OK):
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+		print(CWHITE + "         Checking permissions for user database ..." + ENDF)
+		print(CWHITE + "         Checking READ permission for user database ..." + ENDF)
+		if os.access(DatabaseHelper.UserData.DATABASE, os.R_OK):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
 		else:
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking READ permission." + ENDF)
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
 			return
 		print(CWHITE + "         Checking for WRITE permission ..." + ENDF)
-		if os.access(self.dataBase, os.W_OK):
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for WRITE permission." + ENDF)
+		if os.access(DatabaseHelper.UserData.DATABASE, os.W_OK):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got WRITE permission." + ENDF)
 		else:
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for WRITE permission." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking WRITE permission." + ENDF)
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
 			return
-		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked permissions." + ENDF)
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked READ/WRITE permissions for user database." + ENDF)
 		# CHECK FOR ADMIN ACCOUNT
-		print(CWHITE + "         Verifying database integrity ..." + ENDF)
-		connection = sqlite3.connect(self.dataBase)
-		cursor = connection.cursor()
-		userLen = None
+		print(CWHITE + "         Verifying database structure of server.db ..." + ENDF)
 		blacklistLen = None
+		serverLogLen = None
+		try:
+			blacklistLen = len(DatabaseHelper.ServerData.Select("PRAGMA table_info(Tbl_blacklist);", "BOOT_CHECK"))
+			serverLogLen = len(DatabaseHelper.ServerData.Select("PRAGMA table_info(Tbl_serverLog);", "BOOT_CHECK"))
+		except Exception as e:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Server database structure is INVALID: " + str(e) + ENDF)
+			return
+		if not blacklistLen == TABLE_BLACKLIST_LENGTH or not serverLogLen == TABLE_SERVERLOG_LENGTH:
+			connection.close()
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Server database structure is INVALID." + ENDF)
+			return
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Structure of server.db is VALID..." + ENDF)
+		print(CWHITE + "         Verifying database structure of user database ..." + ENDF)
+		userLen = None
 		clientLogLen = None
 		connectUserCookiesLen = None
 		cookiesLen = None
 		dataLen = None
-		serverLogLen = None
 		try:
-			cursor.execute("PRAGMA table_info(Tbl_blacklist);")
-			blacklistLen = len(cursor.fetchall())
-			cursor.execute("PRAGMA table_info(Tbl_clientLog);")
-			clientLogLen = len(cursor.fetchall())
-			cursor.execute("PRAGMA table_info(Tbl_connectUserCookies);")
-			connectUserCookiesLen = len(cursor.fetchall())
-			cursor.execute("PRAGMA table_info(Tbl_cookies);")
-			cookiesLen = len(cursor.fetchall())
-			cursor.execute("PRAGMA table_info(Tbl_data);")
-			dataLen = len(cursor.fetchall())
-			cursor.execute("PRAGMA table_info(Tbl_serverLog);")
-			serverLogLen = len(cursor.fetchall())
-			cursor.execute("PRAGMA table_info(Tbl_user);")
-			userLen = len(cursor.fetchall())
+			clientLogLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_clientLog);", "BOOT_CHECK"))
+			connectUserCookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_connectUserCookies);", "BOOT_CHECK"))
+			cookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_cookies);", "BOOT_CHECK"))
+			dataLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_data);", "BOOT_CHECK"))
+			userLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_user);", "BOOT_CHECK"))
 		except Exception as e:
-			connection.close()
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity: " + str(e) + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID: " + str(e) + ENDF)
 			return
 		if not userLen == TABLE_USER_LENGTH or not blacklistLen == TABLE_BLACKLIST_LENGTH or not clientLogLen == TABLE_CLIENTLOG_LENGTH or not connectUserCookiesLen == TABLE_CONNECTUSERCOOKIES_LENGTH or not cookiesLen == TABLE_COOKIES_LENGTH or not dataLen == TABLE_DATA_LENGTH or not serverLogLen == TABLE_SERVERLOG_LENGTH:
-			connection.close()
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity." + ENDF)
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID." + ENDF)
 			return
 		adminSet = 0
-		try:
-			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"__ADMIN__\");")
-			adminSet = cursor.fetchall()[0][0]
-		except Exception as e:
-			connection.close()
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Verifying database integrity: " + str(e) + ENDF)
-			return
+		#try:
+		adminSet = DatabaseHelper.UserData.SelectSilent("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"__ADMIN__\");", "BOOT_CHECK")[0][0]
+		#except Exception as e:
+		#	print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID: " + str(e) + ENDF)
+		#	return
 		if adminSet == 0:
 			noMatch = True
 			while noMatch:
@@ -4425,23 +4566,17 @@ class Server(Thread):
 					hashedUsername = CryptoHelper.SHA256("__ADMIN__")
 					salt = CryptoHelper.SHA256(hashedUsername + adminPassword)
 					hashedPassword = CryptoHelper.Scrypt(adminPassword, salt)
-					try:
-						cursor.execute("INSERT INTO Tbl_user (U_username, U_name, U_password, U_email, U_isVerified, U_lastPasswordChange, U_isBanned) VALUES (\"__ADMIN__\", \"__ADMIN__\", \"" + hashedPassword + "\", \"" + SUPPORT_EMAIL_ADDRESS + "\", 1, \"" + Timestamp() + "\",0);")
-					except Exception as e:
-						connection.rollback()
-						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Setting admin password: " + str(e) + ENDF)
-						return
-					else:
-						connection.commit()
+					if DatabaseHelper.UserData.ModifySilent("INSERT INTO Tbl_user (U_username, U_name, U_password, U_email, U_isVerified, U_lastPasswordChange, U_isBanned) VALUES (\"__ADMIN__\", \"__ADMIN__\", \"" + hashedPassword + "\", \"" + SUPPORT_EMAIL_ADDRESS + "\", 1, \"" + Timestamp() + "\",0);", "BOOT_CHECK"):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Set admin password." + ENDF)
-						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database integrity." + ENDF)
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database structure." + ENDF)
 						noMatch = False
-					finally:
-						connection.close()
+					else:
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Setting admin password" + ENDF)
+						return
 				else:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] These passwords don't match! Please try again." + ENDF)
 		else:
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database integrity." + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database structure." + ENDF)
 		print(CWHITE + "         Running garbage collection on database ..." + ENDF)
 		if not DatabaseManagement.GarbageCollection():
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Garbage collection. " + ENDF)
