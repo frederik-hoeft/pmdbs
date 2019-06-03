@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDB-Server"
-VERSION = "0.6-1b.19"
+VERSION = "0.6-2b.19"
 BUILD = "development"
-DATE = "Jun 02 2019"
-TIME = "17:50:39"
+DATE = "Jun 03 2019"
+TIME = "12:07:45"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -133,8 +133,9 @@ except Exception as e:
 #-----------------------------SERVER DATABASE CLASS----------------------------#
 ################################################################################
 
+# PROVIDES ACCESS TO DATABASES
 class DatabaseHelper():
-	
+	# PROVIDES THREAD-SAFE ACCESS TO THE SERVER DATABASE
 	class ServerData():
 		IS_LOCKED = False
 		DATABASE = None
@@ -189,7 +190,8 @@ class DatabaseHelper():
 				connection.close()
 				DatabaseHelper.ServerData.IS_LOCKED = False
 			return data
-			
+	
+	# PROVIDES THREAD-SAFE ACCESS TO THE USER DATABASE
 	class UserData():
 		IS_LOCKED = False
 		DATABASE = None
@@ -734,21 +736,7 @@ class DatabaseManagement():
 			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK PASSED: REQUEST IS VALID
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		rawData = None
-		try:
-			cursor.execute("SELECT D_host, D_uname, D_password, D_email, D_notes, D_icon, D_hid, D_datetime, D_url FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
-			# GET DATA FROM CURSOR OBJECT
-			rawData = cursor.fetchall()
-		except Exception as e:
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-			return
-		finally:
-			# FREE RESOURCES
-			connection.close()
+		rawData = DatabaseHelper.UserData.Select("SELECT D_host, D_uname, D_password, D_email, D_notes, D_icon, D_hid, D_datetime, D_url FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");", clientSocket, aesKey)
 		try:
 			# CREATE AND SEND PACKET FOR EACH RETURNED ROW
 			for entry in rawData:
@@ -808,21 +796,11 @@ class DatabaseManagement():
 			Handle.Error("ISQP", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK PASSED: REQUEST IS VALID
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		try:
-			for hid in queryParameters:
-				if hid:
-					cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_userid = " + userID + " AND D_hid = \"" + hid + "\");")
-					if cursor.fetchall()[0][0] == 1:
-						cursor.execute("INSERT INTO Tbl_delete (DEL_hid, DEL_userid) VALUES (\"" + hid + "\", " + userID + ");")
-			cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");")
-		except Exception as e:
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-			return
-		else:
+		for hid in queryParameters:
+			if hid:
+				if DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_userid = " + userID + " AND D_hid = \"" + hid + "\");", clientSocket, aesKey)[0][0] == 1:
+					DatabaseHelper.UserData.Modify("INSERT INTO Tbl_delete (DEL_hid, DEL_userid) VALUES (\"" + hid + "\", " + userID + ");", clientSocket, aesKey)
+		if DatabaseHelper.UserData.Modify("DELETE FROM Tbl_data WHERE D_userid = " + userID + " AND (" + query + ");", clientSocket, aesKey):
 			connection.commit()
 			Log.ClientEventLog("DELETE", clientSocket)
 			# SEND ACKNOWLEDGEMENT TO CLIENT
@@ -830,9 +808,6 @@ class DatabaseManagement():
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> RETURNED STATUS            ---> " + clientAddress)
-		finally:
-			# FREE RESOURCES
-			connection.close()
 			
 	def Sync(queryParameter, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "fetch_mode%eq!FETCH_SYNC!"
@@ -854,37 +829,15 @@ class DatabaseManagement():
 		# PARAMETER CHECK PASSED
 		# GENERATE SQL QUERY
 		fetchMode = queryParameter.split("!")[1]
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		# SYNC-MODE ONLY FETCHES IDS 
 		if fetchMode == "FETCH_SYNC":
-			dataHeaders = None
-			deletedHeaders = None
-			try:
-				cursor.execute("SELECT DEL_hid FROM Tbl_delete WHERE DEL_userid = " + userID + ";")
-				deletedHeaders = cursor.fetchall()
-			except Exception as e:
-				# FREE RESOURCES
-				connection.close()
-				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			dataHeaders = DatabaseHelper.UserData.Select("SELECT D_hid,D_datetime FROM Tbl_data WHERE D_userid = " + userID + ";", clientSocket, aesKey)
+			if dataHeaders is False:
+				Handle.Error("UNKN", "dataHeaders is False", clientAddress, clientSocket, aesKey, True)
 				return
-			try:
-				cursor.execute("SELECT D_hid,D_datetime FROM Tbl_data WHERE D_userid = " + userID + ";")
-				dataHeaders = cursor.fetchall()
-			except Exception as e:
-				# FREE RESOURCES
-				connection.close()
-				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-				return
-			finally:
-				# FREE RESOURCES
-				connection.close()
-			if str(dataHeaders) == "" or str(deletedHeaders) == "":
-				# FREE RESOURCES
-				connection.close()
-				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
+			deletedHeaders = DatabaseHelper.UserData.Select("SELECT DEL_hid FROM Tbl_delete WHERE DEL_userid = " + userID + ";", clientSocket, aesKey)
+			if deletedHeaders is False:
+				Handle.Error("UNKN", "deletedHeaders is False", clientAddress, clientSocket, aesKey, True)
 				return
 			finalHeaders = str(dataHeaders).replace(", ",",")
 			finalDeletedHeaders = str(deletedHeaders).replace(", ",",").replace(",)",")")
@@ -896,22 +849,11 @@ class DatabaseManagement():
 			Log.ClientEventLog("SYNC", clientSocket)
 		# DUMP-MODE RETURNS ALL DATA
 		elif fetchMode == "FETCH_ALL":
-			data = None
-			try:
-				cursor.execute("SELECT * FROM Tbl_data WHERE D_userid = " + userID + ";")
-				data = cursor.fetchall()
-			except Exception as e:
+			data = DatabaseHelper.UserData.Select("SELECT * FROM Tbl_data WHERE D_userid = " + userID + ";", clientSocket, aesKey)
+			if data is False:
 				# FREE RESOURCES
 				connection.close()
-				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-				return
-			finally:
-				# FREE RESOURCES
-				connection.close()
-			if not data:
-				# FREE RESOURCES
-				connection.close()
-				Handle.Error("UNKN", None, clientAddress, clientSocket, aesKey, True)
+				Handle.Error("UNKN", "data is False", clientAddress, clientSocket, aesKey, True)
 				return
 			finalData = str(data).replace(", ",",").replace('[','').replace(']','')
 			# SEND ACKNOWLEDGEMENT TO CLIENT (LAST PACKET OUT)
@@ -925,7 +867,6 @@ class DatabaseManagement():
 			connection.close()
 			# THROW INVALID SQL QUERY PARAMETERS EXCEPTION
 			Handle.Error("ISQP", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
-			return
 	
 	# DATABASE SECURTITY CLASS
 	class Security():
@@ -1067,7 +1008,7 @@ class Log():
 		# GET USER ID
 		user = GetUser(clientSocket)
 		userID = user.ID if user else False
-		if not userID:
+		if userID is False:
 			return False
 		# GET ADDRESS AND DETAILS
 		client = GetClient(clientSocket)
@@ -1077,22 +1018,8 @@ class Log():
 		else:
 			address = "N/A"
 			details = "N/A"
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		# WRITE ENTRY TO DATABASE
-		try:
-			cursor.execute("INSERT INTO Tbl_clientLog (L_event, L_ip, L_datetime, L_details, L_userid) VALUES (\"" + event + "\",\"" + address + "\",\"" + dateTime + "\",\"" + details + "\"," + userID + ");")
-		except:
-			connection.rollback()
-			return False
-		else:
-			connection.commit()
-			return True
-		finally:
-			# FREE RESOURCES
-			connection.close()
+		return DatabaseHelper.UserData.ModifySilent("INSERT INTO Tbl_clientLog (L_event, L_ip, L_datetime, L_details, L_userid) VALUES (\"" + event + "\",\"" + address + "\",\"" + dateTime + "\",\"" + details + "\"," + userID + ");", address)
 	
 	# CREATES LOG FOR SERVER RELATED OR GLOBAL EVENTS
 	def ServerEventLog(event, details):
@@ -1330,22 +1257,13 @@ class Management():
 		if not cookie:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		cookieExists = 0
 		try:
-			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
-			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\" LIMIT 1);")
-			data = cursor.fetchall()
-			cookieExists = data[0][0]
-		except Exception as e:
-			# SQL ERROR 
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			cookieExists = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\" LIMIT 1);", clientSocket, aesKey)[0][0]
+		except IndexError as e:
+			# INDEX ERROR 
+			Handle.Error("NFND", e, clientAddress, clientSocket, aesKey, True)
 			return
-		finally:
-			connection.close()
 		returnValue = None
 		if cookieExists == 1:
 			returnValue = "INFRETmsg%eq!COOKIE_DOES_EXIST!;"
@@ -1353,9 +1271,6 @@ class Management():
 		else:
 			returnValue = "INFRETmsg%eq!COOKIE_DOES_NOT_EXIST!;"
 			PrintSendToAdmin("SERVER ---> COOKIE CHECK FAILED        ---> " + clientAddress)
-		if not returnValue:
-			Handle.Error("00", None, clientAddress, clientSocket, aesKey, True)
-			return
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnValue)
 		
 	
@@ -1395,24 +1310,18 @@ class Management():
 		if not username or not password or not cookie:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		userExists = 0
 		cookieExists = 0
 		isNewDevice = 1
+		# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
+		data = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\") UNION ALL SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");", clientSocket, aesKey)
 		try:
-			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
-			cursor.execute("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\") UNION ALL SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");")
-			data = cursor.fetchall()
 			cookieExists = data[0][0]
 			isNewDevice = data[1][0]
 			userExists = data[2][0]
-		except Exception as e:
-			# SQL ERROR 
-			connection.close()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		except IndexError as e:
+			# INDEX ERROR 
+			Handle.Error("NFND", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if userExists == 0:
 			connection.close()
@@ -1433,22 +1342,17 @@ class Management():
 		hashedUsername = CryptoHelper.SHA256(username)
 		salt = CryptoHelper.SHA256(hashedUsername + password)
 		hashedPassword = CryptoHelper.Scrypt(password, salt)
+		# CHECK IF CREDENTIALS ARE VALID
+		# FETCH DATA
+		data = DatabaseHelper.UserData.Select("SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";", clientSocket, aesKey)
 		credentialsValid = 0
 		try:
-			# CHECK IF CREDENTIALS ARE VALID
-			# QUERY FOR USER ID
-			cursor.execute("SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";")
-			# FETCH DATA
-			data = cursor.fetchall()
-			# GET USER ID
 			credentialsValid = data[0][0]
-		except:
+		except Exception as e:
 			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
 			# RETURN ERROR MESSAGE TO CLIENT
-			Handle.Error("CRED", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
-		finally:
-			connection.close()
 		if credentialsValid == 0:
 			# CREDENTIAL CHECK FAILED
 			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
@@ -1457,13 +1361,12 @@ class Management():
 			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK FAILED    ---> " + clientAddress)
 			return
-		else:
-			# CREDENTIAL CHECK PASSED
-			Log.ClientEventLog("CREDENTIAL_CHECK_SUCCESSFUL", clientSocket)
-			returnData = "INFRETmsg%eq!CREDENTIAL_CHECK_SUCCESSFUL!;"
-			# SEND DATA ENCRYPTED TO CLIENT
-			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK SUCCESS   ---> " + clientAddress)
+		# CREDENTIAL CHECK PASSED
+		Log.ClientEventLog("CREDENTIAL_CHECK_SUCCESSFUL", clientSocket)
+		returnData = "INFRETmsg%eq!CREDENTIAL_CHECK_SUCCESSFUL!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+		PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK SUCCESS   ---> " + clientAddress)
 			
 	
 	# CHANGES THE USERS NAME THAT IS USED TO PERSONALIZE MESSAGES
@@ -1504,30 +1407,13 @@ class Management():
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# USER IS LOGGED IN
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		try:
-			# UPDATE THE NAME IN THE DATABASE
-			cursor.execute("UPDATE Tbl_user SET U_name = \"" + newName + "\" WHERE U_id = " + userID + ";")
-		except Exception as e:
-			# SOMETHING WENT WRONG --> THROW SQL EXCEPTION AND ROLLBACK
-			connection.rollback()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-			return
-		else:
-			# COMMIT CHANGES
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
-		# RETURN SUCCESS STATUS TO CLIENT
-		returnData = "INFRETstatus%eq!NAME_CHANGED!;"
-		# SEND DATA ENCRYPTED TO CLIENT
-		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-		# GET SOME DEBUG OUTPUT HAPPENING
-		PrintSendToAdmin("SERVER ---> NAME CHANGED               ---> " + clientAddress)
+		if DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_name = \"" + newName + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey):
+			# RETURN SUCCESS STATUS TO CLIENT
+			returnData = "INFRETstatus%eq!NAME_CHANGED!;"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+			# GET SOME DEBUG OUTPUT HAPPENING
+			PrintSendToAdmin("SERVER ---> NAME CHANGED               ---> " + clientAddress)
 	
 	# ALLOWS TO RESEND ANY 2FA CODE IN CASE SOME ERROR OCCURED
 	def ResendCode(command, clientAddress, clientSocket, aesKey):
@@ -1566,10 +1452,6 @@ class Management():
 		if not username or not email or not nickname:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		# INITIALIZE VARIABLES
 		codeTime = None
 		codeAttempts = None
@@ -1577,31 +1459,26 @@ class Management():
 		codeResend = None
 		isVerified = None
 		userID = None
+		# POPULATE VARIABLES WITH VALUES FROM DATABASE
+		data = DatabaseHelper.UserData.Select("SELECT U_codeType, U_codeTime, U_codeAttempts, U_codeResend, U_isVerified, U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_name = \"" + nickname + "\" AND U_email = \"" + email + "\";", clientSocket, aesKey)
 		try:
-			# POPULATE VARIABLES WITH VALUES FROM DATABASE
-			cursor.execute("SELECT U_codeType, U_codeTime, U_codeAttempts, U_codeResend, U_isVerified, U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_name = \"" + nickname + "\" AND U_email = \"" + email + "\";")
-			data = cursor.fetchall()
 			codeType = data[0][0]
 			codeTime = data[0][1]
 			codeAttempts = data[0][2]
 			codeResend = data[0][3]
 			isVerified = data[0][4]
 			userID = str(data[0][5])
-		except Exception as e:
+		except IndexError as e:
 			# IN CASE OF ERROR FREE RESOURCES AND THROW SQL EXCEPTION
-			connection.close()
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
-		if not codeType or not codeTime or codeAttempts is None or codeResend is None or isVerified is None or not userID:
-			# SOMETHING WENT WRONG --> TROW SQL EXCEPTION AND FREE RESOURCES
-			connection.close()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if codeType is None or codeTime is None or codeAttempts is None or codeResend is None or isVerified is None or userID is None:
+			# SOMETHING WENT WRONG
+			Handle.Error("SQLE", "codeType is None or codeTime is None or codeAttempts is None or codeResend is None or isVerified is None or userID is None", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF CODE EVENT IS AVTIVE
 		if codeAttempts == -1:
-			# FREE RESOURCES
-			connection.close()
 			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ACCOUNT IS ACVIVATED
@@ -1610,55 +1487,22 @@ class Management():
 			if codeResend + 1 > RESEND_CODE_MAX_COUNT:
 				# DELETE ACCOUNT --> (USER HAS NEVER BEEN LOGGED IN BEFORE)
 				Handle.Error("ADEL", None, clientAddress, clientSocket, aesKey, True)
-				try:
-					# DELETE ALL DATA ASSOCIATED TO THE USERS ACCOUNT
-					cursor.execute("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";")
-					cursor.execute("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";")
-					cursor.execute("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";")
-					cursor.execute("DELETE FROM Tbl_user WHERE U_id = " + userID + ";")
-				except:
-					# SOMETHING WENT WRONG --> LOG ERROR MESSAGE AND ROLLBACK
-					connection.rollback()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
-					return
-				else:
-					# ALL GOOD --> COMMIT CHANGES
-					connection.commit()
-				finally:
-					# FREE RESOURCES
-					connection.close()
+				# DELETE ALL DATA ASSOCIATED TO THE USERS ACCOUNT
+				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";", clientSocket, aesKey)
+				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";", clientSocket, aesKey)
+				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";", clientSocket, aesKey)
+				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_user WHERE U_id = " + userID + ";", clientSocket, aesKey)
 				return
 			else:
 				# INCREMENT RESEND-CALL-COUNTER BY 1
-				try:
-					cursor.execute("UPDATE Tbl_user SET U_codeResend = " + str(codeResend + 1) + " WHERE U_id = " + userID + ";")
-				except Exception as e:
-					# SOMETHING WENT WRONG --> LOG ERROR MESSAGE AND ROLLBACK
-					connection.rollback()
-					# FREE RESOURCES
-					connection.close()
-					Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+				if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_codeResend = " + str(codeResend + 1) + " WHERE U_id = " + userID + ";", clientSocket, aesKey):
 					return
-				else:
-					# COMMIT CHANGES
-					connection.commit()
 		# ALL UNSPECIFIC CHECKS PASSED
 		# GENERATE NEW 2FA CODE
 		codeFinal = CodeGenerator()
 		# UPDATE DATABASE AND SET NEW CODE
-		try:
-			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\" WHERE U_id = " + userID + ";")
-		except Exception as e:
-			# ROLLBACK IN CASE OF ERROR
-			connection.rollback()
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey:
 			return
-		else:
-			# COMMIT CHANGES
-			connection.commit()
-		finally:
-			# FREE RESOURCES --> DATABASE ACCESS NOT NEEDED ANYMORE IN THIS THREAD
-			connection.close()
 		# INITIALZE VARIABLES FOR SWITCH CASE (MORE LIKE IF ELIF ... BECAUSE PYTHON :P)
 		subject = None
 		text = None
@@ -1749,34 +1593,17 @@ class Management():
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# USER IS LOGGED IN
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR OBJECT TO INTERACT WITH DATABASE
-		cursor = connection.cursor()
 		# INITIALIZE VARIABLE TO STORE RETURNED DATA
-		clientLog = None
-		try:
-			# QUERY THE DATABASE FOR THE ACCOUNT ACTIVITY
-			cursor.execute("SELECT L_event, L_ip, L_datetime, L_details FROM Tbl_clientLog, Tbl_user WHERE L_userid = U_id AND U_id = " + userID + ";")
-			clientLog = cursor.fetchall()
-		except Exception as e:
-			# AN SQL ERROR OCCURED --> LOG ERROR
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		clientLog = DatabaseHelper.UserData.Select("SELECT L_event, L_ip, L_datetime, L_details FROM Tbl_clientLog, Tbl_user WHERE L_userid = U_id AND U_id = " + userID + ";", clientSocket, aesKey)
+		if clientLog is False:
+			# SOMETHONG WENT WRONG --> SQL ERROR
+			Handle.Error("SQLE", "clientLog is False", clientAddress, clientSocket, aesKey, True)
 			return
-		else:
-			# CHECK IF DATA HAS BEEN FETCHED PROPERLY
-			if clientLog is None:
-				# SOMETHONG WENT WRONG --> SQL ERROR
-				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-				return
-			# RETURN DATA TO CLIENT
-			returnData = "DTALOGmode%eq$USER_REQUEST$§msg%eq$" + str(clientLog) + "$§"
-			# SEND DATA ENCRYPTED TO CLIENT
-			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-			PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
-		finally:
-			# FREE RESOURCES
-			connection.close()
+		# RETURN DATA TO CLIENT
+		returnData = "DTALOGmode%eq$USER_REQUEST$§msg%eq$" + str(clientLog) + "$§"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+		PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
 	
 	# CHANGES THE EMAIL ADDRESS IF THE ACCOUNT HAS NOT BEEN ACTIVATED / VERIFIED YET
 	def ChangeEmailAddress(command, clientAddress, clientSocket, aesKey):
@@ -1815,58 +1642,30 @@ class Management():
 		if not username or not newEmail or not cookie:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		# CREATE CONNECTION TO SQLITE DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR OBJECT
-		cursor = connection.cursor()
 		# INITIALIZE VARIABLE TO STORE ACCOUNT STATUS IN
 		isVerified = None
 		try:
 			# QUERY DATABASE FOR ACCOUNT STATUS
-			cursor.execute("SELECT U.U_isVerified FROM Tbl_user as U, Tbl_connectUserCookies as CUO, Tbl_cookies as C WHERE U.U_username = \"" + username + "\" and C.C_cookie = \"" + cookie + "\" and U.U_id = CUO.U_id and CUO.C_id = C.C_id;")
-			isVerified = cursor.fetchall()[0][0]
+			isVerified = DatabaseHelper.UserData.Select("SELECT U.U_isVerified FROM Tbl_user as U, Tbl_connectUserCookies as CUO, Tbl_cookies as C WHERE U.U_username = \"" + username + "\" and C.C_cookie = \"" + cookie + "\" and U.U_id = CUO.U_id and CUO.C_id = C.C_id;", clientSocket, aesKey)[0][0]
 		except IndexError:
 			# INDEX OUT OF RANGE --> COOKIE IS NOT BOUND TO ACCOUNT / ACCOUNT DOES NOT EXIST / COOKIE DOES NOT EXIST
-			# FREE RESOURCES
-			connection.close()
 			# LOG ERROR
 			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
 			return
-		except Exception as e:
-			# FREE RESOURCES
-			connection.close()
-			# LOG ERROR
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		except AttributeError:
 			return
 		# CHECK IF VARIABLE HAS BEEN SET AT ALL
 		if isVerified is None:
-			# FREE RESOURCES
-			connection.close()
 			# LOG ERROR
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+			Handle.Error("SQLE", "isVerified is None", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHACK IF ACCOUNT HAS ALREADY BEEN VERIFIED
 		if not isVerified == 0:
-			# FREE RESOURCES
-			connection.close()
 			# LOG ERROR
 			Handle.Error("ACCA", None, clientAddress, clientSocket, aesKey, True)
 			return
-		try:
-			# UPDATE EMAIL ADDRESS IN DATABASE
-			cursor.execute("UPDATE Tbl_user SET U_email = \"" + newEmail + "\" WHERE U_username = \"" + username + "\";")
-		except Exception as e:
-			# SOMETHING WENT WRONG --> ROLLBACK
-			connection.rollback()
-			# LOG ERROR
-			Handle.Error("SQLE", None, clientAddress, clientSocket, aesKey, True)
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_email = \"" + newEmail + "\" WHERE U_username = \"" + username + "\";", clientSocket, aesKey):
 			return
-		else:
-			# COMMIT CHANGES
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
 		PrintSendToAdmin("SERVER ---> EMAIL ADDRESS UPDATED      ---> " + clientAddress)
 		# RETURN STATUS TO CLIENT
 		returnData = "INFRETEMAIL_UPDATED"
@@ -1909,30 +1708,24 @@ class Management():
 		if not providedCode or not password or not cookie:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
 		# INITALIZE VARIABLES TO STORE VALUES FOR CODE VALIDATION
 		code = None
 		codeTime = None
 		codeType = None
 		codeAttempts = None
+		# QUERY DATABASE FOR VALIDATION CODES
+		data = DatabaseHelper.UserData.Select("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey)
 		try:
-			# QUERY DAATABASE FOR VALIDATION CODES
-			cursor.execute("SELECT U_code, U_codeTime, U_codeType, U_codeAttempts FROM Tbl_user WHERE U_username = \"__ADMIN__\";")
-			data = cursor.fetchall()
 			code = data[0][0]
 			codeTime = data[0][1]
 			codeType = data[0][2]
 			codeAttempts = data[0][3]
-		except Exception as e:
-			# SOMETHING SQL RELATED WENT WRONG / MIGHT ALSO BE INDEX OUT OF RANGE --> THROW EXCEPTION
-			connection.close()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		except IndexError as e:
+			# INDEX OUT OF RANGE --> THROW EXCEPTION
+			Handle.Error("UNKN", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF ALL VALIABLES HAVE BEEN INITIALIZED
-		if not code or not codeTime or codeAttempts is None or not codeType:
+		if code is None or codeTime is None or codeAttempts is None or codeType is None:
 			Handle.Error("SQLE", "VALIABLES_NOT_INITIALIZED", clientAddress, clientSocket, aesKey, True)
 			return
 		# CHECK IF NEW LOGIN HAS BEEN SCHEDULED
@@ -1951,18 +1744,8 @@ class Management():
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
 				codeAttempts += 1
-				try:
-					# UPDATE COUNTER IN DATABASE
-					cursor.execute("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";")
-				except Exception as e:
-					# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION, ROLLBACK AND FREE RESOURCES
-					connection.rollback()
-					connection.close()
-					Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-					return
-				else:
+				if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey):
 					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
-					connection.commit()
 					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
 					return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
@@ -1971,17 +1754,10 @@ class Management():
 			Handle.Error("E2FA", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CANCEL ACTIVE CODE
-		try:
-			cursor.execute("UPDATE Tbl_user SET U_codeAttempts = -1, U_codeType = \"NONE\";")
-		# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-		except Exception as e:
-			connection.rollback()
-			connection.close()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		# SOMETHING SQL RELATED WENT WRONG
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_codeAttempts = -1, U_codeType = \"NONE\";", clientSocket, aesKey):
 			return
-		# ACCOUNT SUCCESSFULLY VERIFIED --> COMMIT CHANGES
-		else:
-			connection.commit()
+		# DEVICE SUCCESSFULLY VERIFIED
 		# ALL CODE CHECKS PASSED
 		# HASH PASSWORD
 		hashedUsername = CryptoHelper.SHA256("__ADMIN__")
@@ -1991,32 +1767,16 @@ class Management():
 		try:
 			# CHECK IF CREDENTIALS ARE VALID
 			# QUERY FOR USER ID
-			cursor.execute("SELECT U_id FROM Tbl_user WHERE U_username = \"__ADMIN__\" AND U_password = \"" + hashedPassword + "\" LIMIT 1;")
-			# FETCH DATA
-			data = cursor.fetchall()
 			# GET USER ID
-			userID = str(data[0][0])
-		except:
-			connection.close()
+			userID = str(DatabaseHelper.UserData.Select("SELECT U_id FROM Tbl_user WHERE U_username = \"__ADMIN__\" AND U_password = \"" + hashedPassword + "\" LIMIT 1;", clientSocket, aesKey)[0][0])
+		except IndexError:
 			Log.ClientEventLog("LOGIN_ATTEMPT_FAILED", clientSocket)
 			# RETURN ERROR MESSAGE TO CLIENT
 			Handle.Error("ADMN", None, clientAddress, clientSocket, aesKey, True)
 			return
-		try:
-			# CREATE CONNECTION BETWEEN ACCOUNT ID AND COOKIE ID
-			cursor.execute("INSERT INTO Tbl_connectUserCookies (U_id, C_id) VALUES (" + userID + ", (SELECT C_id FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\"));")
-		except Exception as e:
-			# SQL ERROR --> ROLLBACK
-			connection.rollback()
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
-			return
-		else:
-			# COMMIT CHANGES 
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
 		# CREDENTIAL CHECK PASSED
+		if not DatabaseHelper.UserData.Modify("INSERT INTO Tbl_connectUserCookies (U_id, C_id) VALUES (" + userID + ", (SELECT C_id FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\"));", clientSocket, aesKey):
+			return
 		# CHECK FOR OTHER ADMINS
 		if not Server.admin is None:
 			# THROW ADMIN ALREADY LOGGED IN
@@ -2046,23 +1806,8 @@ class Management():
 			return
 		# GENERATE VERIFICATION CODE
 		codeFinal = CodeGenerator()
-		# CREATE CONNECTION TO DATABASE
-		connection = sqlite3.connect(Server.dataBase)
-		# CREATE CURSOR
-		cursor = connection.cursor()
-		try:
-			# UPDATE DATABASE AND SET THE NEW VERIFICATION CODE + ATTRIBUTES
-			cursor.execute("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + Timestamp() + "\", U_codeAttempts = 0, U_codeType = \"ADMIN_PASSWORD_CHANGE\" WHERE U_username = \"__ADMIN__\";")
-		except Exception as e:
-			connection.rollback()
-			# SOMETHING SQL RELATED WENT WRONG --> THROW EXCEPTION
-			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + Timestamp() + "\", U_codeAttempts = 0, U_codeType = \"ADMIN_PASSWORD_CHANGE\" WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey):
 			return
-		else:
-			connection.commit()
-		finally:
-			# FREE RESOURCES
-			connection.close()
 		details = GetDetails(clientSocket)
 		# ADAPT FORMATTING TO WORK IN HTML
 		Log.ServerEventLog("ADMIN_PASSWORD_CHANGE_REQUEST", details)
