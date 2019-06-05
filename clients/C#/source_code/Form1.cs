@@ -31,6 +31,7 @@ namespace pmdbs
         private char[] passwordCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
         private string MasterPassword;
         private bool GuiLoaded = false;
+        private bool IsDefaultIcon = true;
         private Size MaxSize;
         private Size MinSize;
         private string NickName;
@@ -586,6 +587,7 @@ namespace pmdbs
             await DataBaseHelper.ModifyData(Query);
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string oldUrl = LinkedRow["6"].ToString();
+            string oldHostname = LinkedRow["3"].ToString();
             if (!Website.Equals(oldUrl))
             {
                 new Thread(async delegate () {
@@ -594,8 +596,14 @@ namespace pmdbs
                     {
                         if (string.IsNullOrWhiteSpace(Website))
                         {
-                            // EXECUTE CODE IN CATCH
-                            throw new Exception();
+                            if (!Hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
+                            {
+                                favIcon = HelperMethods.GenerateIcon(Hostname);
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
                         else
                         {
@@ -615,7 +623,6 @@ namespace pmdbs
                     {
                         UpdateDetailsWindow(LinkedRow);
                         ReloadSingleEntry(LinkedRow);
-                        DataEditSaveAdvancedImageButton.Enabled = true;
                         DataFlowLayoutPanelEdit.SuspendLayout();
                         DataPanelDetails.BringToFront();
                         DataPanelDetails.ResumeLayout();
@@ -632,6 +639,7 @@ namespace pmdbs
             DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
+            DataEditSaveAdvancedImageButton.Enabled = true;
         }
 
         private void DataEditCancel_Click(object sender, EventArgs e)
@@ -816,6 +824,7 @@ namespace pmdbs
             AddEditFieldUsername.TextTextBox = "";
             AddEditFieldWebsite.TextTextBox = "";
             AddPictureBoxCheckIconIcon.Image = Resources._default;
+            IsDefaultIcon = true;
         }
 
         private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
@@ -835,12 +844,12 @@ namespace pmdbs
             }
             new Thread(async delegate() {
                 string favIcon = string.Empty;
-                if (!AddPictureBoxCheckIconIcon.Image.Equals(Resources._default))
+                if (!IsDefaultIcon)
                 {
                     using (Bitmap iconBmp = new Bitmap(AddPictureBoxCheckIconIcon.Image))
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        iconBmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        iconBmp.Save(ms, ImageFormat.Png);
                         favIcon = Convert.ToBase64String(ms.ToArray());
                     }
                 }
@@ -977,6 +986,7 @@ namespace pmdbs
                         AddPictureBoxCheckIconIcon.Image = icon.GetThumbnailImage(350, 350, null, new IntPtr());
                         icon.Dispose();
                     }
+                    IsDefaultIcon = false;
                     AddPanelAnimatedButtonCheckIcon.Enabled = true;
                 });
             }).Start();
