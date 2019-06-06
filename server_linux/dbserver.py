@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-4b.19"
+VERSION = "0.6-5b.19"
 BUILD = "development"
-DATE = "Jun 05 2019"
-TIME = "15:31"
+DATE = "Jun 06 2019"
+TIME = "14:18"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -44,7 +44,7 @@ if os.name == "nt":
 # CLEAR THE CONSOLE
 os.system("clear")
 # REQUIRED PACKAGES
-NATIVE_PACKAGES = ["socket", "threading", "base64", "os", "ast", "sqlite3", "argparse", "secrets", "hashlib", "glob", "datetime", "time", "subprocess", "select", "re", "errno", "smtplib", "sys", "getpass", "inspect", "email"]
+NATIVE_PACKAGES = ["socket", "threading", "base64", "os", "ast", "sqlite3", "argparse", "secrets", "hashlib", "glob", "datetime", "time", "subprocess", "select", "re", "errno", "smtplib", "sys", "getpass", "inspect", "email", "string", "random"]
 ADDITIONAL_PACKAGES = ["Crypto", "scrypt", "pygeoip", "defusedxml"]
 CUSTOM_PACKAGES = ["config"]
 print(CWHITE + "         Checking native packages ..." + ENDF)
@@ -120,6 +120,8 @@ try:
 	import sys
 	import getpass
 	import inspect
+	import string
+	import random
 	from email.mime.multipart import MIMEMultipart
 	from email.mime.text import MIMEText
 	from email.mime.image import MIMEImage
@@ -506,6 +508,10 @@ class Network():
 	# SEND DATA THREAD-SAFE USING ENCRYPTION
 	def SendEncryptedThreadSafe(clientSocket, aesKey, data):
 		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
 		address = client.address
 		while client.SOCKET_IN_USE:
 			time.sleep(0.1)
@@ -541,6 +547,10 @@ class Network():
 	# SEND DATA THREAD-SAFE WITHOUT ENCRYPTION
 	def SendThreadSafe(clientSocket, data):
 		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
 		address = client.address
 		while client.SOCKET_IN_USE:
 			time.sleep(0.1)
@@ -664,17 +674,21 @@ class DatabaseManagement():
 		# APPEND USER ID TO QUERY
 		query += "," + "D_userid"
 		values += "," + str(userID)
+		fullQuery = "INSERT INTO Tbl_data (" + query + ") VALUES (" + values + ");"
 		if not DatabaseHelper.UserData.Modify(fullQuery, clientSocket, aesKey):
 			return
 		HID = None
 		try:
-			HID = DatabaseHelper.UserData.Select(fullQuery, clientSocket, aesKey)[0][0]
-		except Exception as e:
+			HID = DatabaseHelper.UserData.Select("SELECT last_insert_rowid() FROM Tbl_data;", clientSocket, aesKey)[0][0]
+			print(HID)
+		except IndexError as e:
+			Handle.Error("UNKN", str(e), clientAddress, clientSocket, aesKey, True)
 			return
 		if HID is None:
 			Handle.Error("SQLE", "HID is None", clientAddress, clientSocket, aesKey, True)
 			return
-		hashedID = CryptoHelper.BLAKE2(str(HID) + Timestamp(), str(userID))
+		hashedID = CryptoHelper.BLAKE2(str(HID) + Timestamp() + ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits,k=30)), str(userID))
+		print(hashedID)
 		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";", clientSocket, aesKey):
 			return
 		Log.ClientEventLog("INSERT", clientSocket)
@@ -2018,7 +2032,7 @@ class Management():
 		time = None
 		duration = None
 		# GET VALUES FROM DATABASE AND STORE THEM IN VARIABLES
-		data = DatabaseHelper.UserData.Select("SELECT B_time, B_duration FROM Tbl_blacklist WHERE B_ip = \"" + ip + "\" ORDER BY B_id DESC LIMIT 1;", clientSocket, aesKey)
+		data = DatabaseHelper.ServerData.Select("SELECT B_time, B_duration FROM Tbl_blacklist WHERE B_ip = \"" + ip + "\" ORDER BY B_id DESC LIMIT 1;", clientAddress)
 		if data is False:
 			# SQL ERROR --> DISALLOW CONNECTION AND SEND STATUS TO ADMIN
 			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR", "data is False")
@@ -2840,7 +2854,12 @@ class Management():
 	# REMOVES CLIENT FROM CLIENT LIST
 	def Unlist(clientSocket):
 		# REMOVE CLIENT
-		Server.allClients.remove(GetClient(clientSocket))
+		try:
+			Server.allClients.remove(GetClient(clientSocket))
+		except:
+			return False
+		else:
+			return True
 
 	# DISCONNECT A CLIENT
 	def Disconnect(clientSocket, message, address, ignoreErrors):
@@ -3173,8 +3192,8 @@ class Management():
 		cookieExists = 0
 		isNewDevice = 1
 		data = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"__ADMIN__\");", clientSocket, aesKey)
-        if data is False:
-	        return
+		if data is False:
+			return
 		try:
 			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
 			cookieExists = data[0][0]
@@ -3234,8 +3253,8 @@ class Management():
 		credentialsAreValid = 0
 		# CHECK IF CREDENTIALS ARE VALID
 		data = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"__ADMIN__\" AND U_password = \"" + hashedPassword + "\");", clientSocket, aesKey)
-        if data is False:
-	        return
+		if data is False:
+			return
 		try:
 			# GET USER ID
 			credentialsAreValid = data[0][0]
@@ -3439,8 +3458,8 @@ class Management():
 		cookieExists = 0
 		isNewDevice = 1
 		data = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\") UNION ALL SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");", clientSocket, aesKey)
-        if data is False:
-	        return
+		if data is False:
+			return
 		try:
 			# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
 			cookieExists = data[0][0]
@@ -3461,8 +3480,8 @@ class Management():
 		banTime = None
 		banDuration = None
 		data = DatabaseHelper.UserData.Select("SELECT U_isBanned, U_banTime, U_banDuration FROM Tbl_user WHERE U_username = \"" + username + "\";", clientSocket, aesKey)
-        if data is False:
-	        return
+		if data is False:
+			return
 		try:
 			isBanned = data[0][0]
 			banTime = data[0][1]
@@ -3529,8 +3548,8 @@ class Management():
 		# CHECK IF CREDENTIALS ARE VALID
 		# QUERY FOR USER ID
 		data = DatabaseHelper.UserData.Select("SELECT U_id, U_isVerified FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_password = \"" + hashedPassword + "\";", clientSocket, aesKey)
-        if data is False:
-	        return
+		if data is False:
+			return
 		try:
 			# GET USER ID
 			userID = str(data[0][0])
@@ -3676,7 +3695,7 @@ class Client(object):
 	HMACkey = None
 	SOCKET_IN_USE = False
 	
-	def __init__(self, socket, address, aesKey):
+	def __init__(self, socket, address):
 		self.socket = socket
 		self.address = address
 		
