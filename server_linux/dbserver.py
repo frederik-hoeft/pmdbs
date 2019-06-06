@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-5b.19"
+VERSION = "0.6-6b.19"
 BUILD = "development"
 DATE = "Jun 06 2019"
-TIME = "14:18"
+TIME = "14:26"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -602,7 +602,7 @@ class DatabaseManagement():
 			for user in users:
 				# CHECK IF ACCOUNBT HAS NOT BEEN ACTIVATED AND IF THE CODE IS EXPIRED
 				if user[1] == 0 and user[2] == "ACTIVATE_ACCOUNT" and int(user[3]) + ACCOUNT_ACTIVATION_MAX_TIME < int(Timestamp().split(".")[0]):
-					U_id = entry[0]
+					U_id = user[0]
 					# DELETE ACCOUNT
 					DatabaseHelper.UserData.ModifySilent("DELETE FROM Tbl_user WHERE U_id = " + str(U_id) + ";", "GARBAGE_COLLECTION")
 		# THROW EXCEPTION AND LOG ERROR
@@ -3682,10 +3682,7 @@ def ConvertFromSeconds(_seconds):
 	
 def GetHMACkeys(clientSocket):
 	hmacKey = GetClient(clientSocket).HMACkey
-	if not hmacKey:
-		return False
-	else:
-		return [hmacKey[:32], hmacKey[32:]]
+	return False if hmacKey is False else [hmacKey[:32], hmacKey[32:]]
 		
 class Client(object):
 	socket = None
