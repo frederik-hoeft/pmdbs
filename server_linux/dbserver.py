@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-6b.19"
+VERSION = "0.6-7b.19"
 BUILD = "development"
 DATE = "Jun 06 2019"
-TIME = "14:26"
+TIME = "15:16"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -532,6 +532,12 @@ class Network():
 	
 	# SEND DATA USING ENCRYPTION
 	def SendEncrypted(clientSocket, aesKey, data):
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		address = client.address
 		try:
 			aesEncryptor = AESCipher(aesKey)
 			encryptedData = aesEncryptor.encrypt(data)
@@ -565,6 +571,12 @@ class Network():
 	
 	# SEND DATA WITHOUT ENCRYPTION
 	def Send(clientSocket, data):
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		address = client.address
 		try:
 			clientSocket.send(b'\x01' + bytes("U" + data, "utf-8") + b'\x04')
 		except Exception as e:
@@ -640,11 +652,6 @@ class DatabaseManagement():
 			Handle.Error("ICMD", "TOO_FEW_PARAMETERS", clientAddress, clientSocket, aesKey, True)
 			return
 		# INITIALIZE VARAIBLES
-		qUsername = None
-		qPassword = None
-		qHost = None
-		qEmail = None
-		qNotes = None
 		query = ""
 		values = ""
 		# ITERATE OVER QUERY PARAMETERS AND SET VARIABLES
@@ -679,8 +686,7 @@ class DatabaseManagement():
 			return
 		HID = None
 		try:
-			HID = DatabaseHelper.UserData.Select("SELECT last_insert_rowid() FROM Tbl_data;", clientSocket, aesKey)[0][0]
-			print(HID)
+			HID = DatabaseHelper.UserData.Select("SELECT D_id FROM Tbl_data ORDER BY D_id DESC LIMIT 1;", clientSocket, aesKey)[0][0]
 		except IndexError as e:
 			Handle.Error("UNKN", str(e), clientAddress, clientSocket, aesKey, True)
 			return
@@ -688,7 +694,6 @@ class DatabaseManagement():
 			Handle.Error("SQLE", "HID is None", clientAddress, clientSocket, aesKey, True)
 			return
 		hashedID = CryptoHelper.BLAKE2(str(HID) + Timestamp() + ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits,k=30)), str(userID))
-		print(hashedID)
 		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_data SET d_hid = \"" + hashedID + "\" WHERE D_id = " + str(HID) + ";", clientSocket, aesKey):
 			return
 		Log.ClientEventLog("INSERT", clientSocket)
@@ -3995,7 +4000,7 @@ class Server(Thread):
 					if os.path.isdir("keys"):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Directory \"keys\" created successfully." + ENDF)
 					else:
-						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Fatal: could not create doirectory \"keys\ in " + os.getcwd() + "." + ENDF)
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Fatal: could not create doirectory \"keys\" in " + os.getcwd() + "." + ENDF)
 						exit()
 				keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
 				if not keyFiles:
@@ -4140,9 +4145,9 @@ class Server(Thread):
 		print("                      _ _                       ")
 		print("                     | | |                      ")
 		print("  _ __  _ __ ___   __| | |__  ___   _ __  _   _ ")
-		print(" | '_ \| '_ ` _ \ / _` | '_ \/ __| | '_ \| | | |")
-		print(" | |_) | | | | | | (_| | |_) \__ \_| |_) | |_| |")
-		print(" | .__/|_| |_| |_|\__,_|_.__/|___(_) .__/ \__, |")
+		print(" | '_ \\| '_ ` _ \\ / _` | '_ \\/ __| | '_ \\| | | |")
+		print(" | |_) | | | | | | (_| | |_) \\__ \\_| |_) | |_| |")
+		print(" | .__/|_| |_| |_|\\__,_|_.__/|___(_) .__/ \\__, |")
 		print(" | |                               | |     __/ |")
 		print(" |_|                               |_|    |___/ ")
 		print("------------------------------------------------")
@@ -4643,7 +4648,8 @@ class ClientHandler():
 				# IF THERE IS NO MATCH THERE IS NO NEED TO SHOW THE MESSAGE AGAIN
 				if GetClient(clientSocket):
 					disconnectMessageShown = False
-				Management.Logout(clientAddress, clientSocket, aesKey, True)
+				if GetUser(clientSocket):
+					Management.Logout(clientAddress, clientSocket, aesKey, True)
 				clientAddress = clientAddress.replace("ADMIN(","").replace(")","")
 				# REMOVE CLIENT FROM LISTING
 				Management.Unlist(clientSocket)
@@ -4666,7 +4672,8 @@ class ClientHandler():
 				# LOGOUT CLIENT
 				if isDisconnected:
 					# REMOVE CLIENT FROM AUTHORIZED CLIENTS
-					Management.Logout(clientAddress, clientSocket, aesKey, False)
+					if GetUser(clientSocket):
+						Management.Logout(clientAddress, clientSocket, aesKey, False)
 					clientAddress = clientAddress.replace("ADMIN(","").replace(")","")
 					# REMOVE CLIENT FROM LISTING
 					Management.Unlist(clientSocket)
@@ -4676,10 +4683,12 @@ class ClientHandler():
 					clientSocket.close()
 					PrintSendToAdmin ("SERVER <-x- DISCONNECTED               -x-> " + clientAddress)
 				elif not Server.running:
-					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					if GetUser(clientSocket):
+						Management.Logout(clientAddress, clientSocket, aesKey, True)
 					Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, False)
 				else:
-					Management.Logout(clientAddress, clientSocket, aesKey, True)
+					if GetUser(clientSocket):
+						Management.Logout(clientAddress, clientSocket, aesKey, True)
 					Management.Disconnect(clientSocket, message, clientAddress, False)
 		
 # INITIALIZE THE SERVER
