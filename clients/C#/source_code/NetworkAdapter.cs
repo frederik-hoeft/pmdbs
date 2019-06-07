@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace pmdbs
 {
     /// <summary>
-    /// NetworkAdapter is a high-level API to interact with the PMDBS-server.
+    /// A high-level API to interact with the PMDBS-server.
     /// </summary>
     public static class NetworkAdapter
     {
         /// <summary>
-        /// CommandInterpreter contains all Methods for text-based command parsing.
+        /// Contains all Methods for text-based command parsing.
         /// </summary>
         public struct CommandInterpreter
         {
@@ -302,22 +299,30 @@ namespace pmdbs
             }
         }
         /// <summary>
-        /// MethodProvider contains all methods to interact with the remote server.
+        /// Contains all methods to interact with the remote server.
         /// </summary>
         public struct MethodProvider
         {
+            /// <summary>
+            /// Activates the newly created user account on the remote server by providing a 2FA code.
+            /// </summary>
+            /// <param name="code"></param>
             public static void ActivateAccount(string code)
             {
                 HelperMethods.InvokeOutputLabel("Activating account ...");
                 Network.SendEncrypted("MNGVERusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;");
             }
-
+            /// <summary>
+            /// Requests the remote server to validate this devices cookie.
+            /// </summary>
             public static void CheckCookie()
             {
                 HelperMethods.InvokeOutputLabel("Checking cookie ...");
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
-
+            /// <summary>
+            /// Creates a connection to the remote server.
+            /// </summary>
             public static void Connect()
             {
                 HelperMethods.InvokeOutputLabel("Connecting ...");
@@ -327,13 +332,19 @@ namespace pmdbs
                 };
                 connectionThread.Start();
             }
-
+            /// <summary>
+            /// Links a new device to the current user by providing a 2FA code.
+            /// </summary>
+            /// <param name="code">2FA code</param>
             public static void ConfirmNewDevice(string code)
             {
                 HelperMethods.InvokeOutputLabel("Adding device ...");
                 Network.SendEncrypted("MNGCNDusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
-
+            /// <summary>
+            /// Invokes a SQL-Delete call on the remote database.
+            /// </summary>
+            /// <param name="hids">The HIDs to delete.</param>
             public static void Delete(List<string> hids)
             {
                 HelperMethods.InvokeOutputLabel("Deleting data ...");
@@ -344,7 +355,9 @@ namespace pmdbs
                 }
                 Network.SendEncrypted("REQDEL" + hidsFormatted);
             }
-
+            /// <summary>
+            /// Terminates the connection to the remote server.
+            /// </summary>
             public static void Disconnect()
             {
                 HelperMethods.InvokeOutputLabel("Disconnecting ...");
@@ -355,7 +368,9 @@ namespace pmdbs
                 GlobalVarPool.clientSocket.Dispose();
                 GlobalVarPool.connected = false;
             }
-            
+            /// <summary>
+            /// Requests a new device cookie.
+            /// </summary>
             public static void GetCookie()
             {
                 HelperMethods.InvokeOutputLabel("Requested cookie.");
@@ -363,7 +378,7 @@ namespace pmdbs
             }
 
             /// <summary>
-            /// 
+            /// Invokes a SQL-Insert call on the remote database.
             /// </summary>
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Insert(List<string> account)
@@ -382,25 +397,34 @@ namespace pmdbs
                 string query = "local_id%eq!" + id + "!;host%eq!" + host + "!;password%eq!" + password + "!;datetime%eq!" + timestamp + "!;uname%eq!" + username + "!;email%eq!" + email + "!;notes%eq!" + notes + "!;url%eq!" + url + "!;icon%eq!" + icon + "!;";
                 Network.SendEncrypted("REQINS" + query);
             }
-
+            /// <summary>
+            /// Logs in as a user on the remote server.
+            /// </summary>
             public static void Login()
             {
                 HelperMethods.InvokeOutputLabel("Logging in ...");
                 Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
-
+            /// <summary>
+            /// Logs out from the currently active user on the remote server.
+            /// </summary>
             public static void Logout()
             {
                 HelperMethods.InvokeOutputLabel("Logging out ...");
                 Network.SendEncrypted("MNGLGO");
             }
-
+            /// <summary>
+            /// Creates a new user on the remote server.
+            /// </summary>
             public static void Register()
             {
                 HelperMethods.InvokeOutputLabel("Registering new user ...");
                 Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
-
+            /// <summary>
+            /// Invokes a SQL-Select call on the remote database.
+            /// </summary>
+            /// <param name="hids"></param>
             public static void Select(List<string> hids)
             {
                 HelperMethods.InvokeOutputLabel("Downloading data ...");
@@ -411,7 +435,9 @@ namespace pmdbs
                 }
                 Network.SendEncrypted("REQSEL" + hidsFormatted);
             }
-
+            /// <summary>
+            /// Initializes database syncing with the remote database.
+            /// </summary>
             public static void Sync()
             {
                 HelperMethods.InvokeOutputLabel("Synchronizing ...");
@@ -419,7 +445,7 @@ namespace pmdbs
             }
 
             /// <summary>
-            /// 
+            /// Invokes a SQL-Update call on the remote database.
             /// </summary>
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Update(List<string> account)
@@ -440,6 +466,7 @@ namespace pmdbs
         }
 
         /// <summary>
+        /// Allows interaction with the remote server through text-based commands.
         /// LEGACY CODE CURRENTLY NOT BEING USED. MAY BE USED BY THE INTEGRATED CLI IN THE FUTURE.
         /// </summary>
         private struct Commands
