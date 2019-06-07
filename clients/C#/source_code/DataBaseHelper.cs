@@ -8,19 +8,25 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Provides thread-safe database access
+    /// </summary>
     class DataBaseHelper
     {
         private static SQLiteConnection sql_con;
         private static SQLiteCommand sql_cmd;
-
+        /// <summary>
+        /// Opens the connection to the database
+        /// </summary>
+        /// <returns></returns>
         private static async Task SetConnection()
         {
             while (GlobalVarPool.databaseIsInUse)
             {
-                await Task.Delay(200);
+                await Task.Delay(100);
             }
             GlobalVarPool.databaseIsInUse = true;
-            string dataSource = "Resources\\localdata_windows.db";
+            string dataSource = @"Resources\localdata_windows.db";
 
             sql_con = new SQLiteConnection
             {
@@ -29,11 +35,11 @@ namespace pmdbs
             sql_con.Open();
         }
         /// <summary>
-        /// Returns result of SQLite database query as List<String> Object.
+        /// Returns result of SQLite database query as a list.
         /// </summary>
         /// <param name="query">SQLite query to be executed.</param>
         /// <param name="columns">Number of by query returned columns.</param>
-        /// <returns></returns
+        /// <returns></returns>
         public static async Task<List<string>> GetDataAsList(string query, int columns)
         {
             await SetConnection();
@@ -62,7 +68,7 @@ namespace pmdbs
             return DataList;
         }
         /// <summary>
-        /// Returns result of SQLite database query as List<List<String>> Object.
+        /// Returns result of SQLite database query as 2d string list.
         /// </summary>
         /// <param name="query">SQLite query to be executed.</param>
         /// <param name="columns">Number of by query returned columns.</param>
@@ -176,5 +182,14 @@ namespace pmdbs
             sql_con.Dispose();
             GlobalVarPool.databaseIsInUse = false;
         }
+    }
+    public enum ColumnCount
+    {
+        Tbl_user = 8,
+        Tbl_data = 10,
+        Tbl_commonPasswords = 2,
+        Tbl_settings = 5,
+        Tbl_delete = 2,
+        SingleColumn = 1
     }
 }
