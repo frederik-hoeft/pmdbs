@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Allows for functions or methods to be scheduled and executed upon completion of the previous task in a work queue.
+    /// </summary>
     public static class AutomatedTaskFramework
     {
+        /// <summary>
+        /// Keeps the tasks up to date by checking if their Failed / Finish conditions are met in a specific data set. Automatically starts the next task in queue if the previous task finished.
+        /// </summary>
+        /// <param name="data">The data set to check in for finish / failed conditions.</param>
         public static void DoTasks(string data)
         {
-            if (AutomatedTaskFramework.Tasks.Available())
+            if (Tasks.Available())
             {
-                AutomatedTaskFramework.Task currentTask = AutomatedTaskFramework.Tasks.GetCurrent();
+                Task currentTask = Tasks.GetCurrent();
                 if (currentTask.FailedCondition.Split('|').Where(failedCondition => data.Contains(failedCondition)).Count() == 0)
                 {
                     if (currentTask.SearchCondition == SearchCondition.Match)
@@ -21,9 +26,9 @@ namespace pmdbs
                         {
                             currentTask.Delete();
 
-                            if (AutomatedTaskFramework.Tasks.Available())
+                            if (Tasks.Available())
                             {
-                                AutomatedTaskFramework.Tasks.GetCurrent().Run();
+                                Tasks.GetCurrent().Run();
                             }
                         }
                     }
@@ -33,9 +38,9 @@ namespace pmdbs
                         {
                             currentTask.Delete();
 
-                            if (AutomatedTaskFramework.Tasks.Available())
+                            if (Tasks.Available())
                             {
-                                AutomatedTaskFramework.Tasks.GetCurrent().Run();
+                                Tasks.GetCurrent().Run();
                             }
                         }
                     }
@@ -45,9 +50,9 @@ namespace pmdbs
                         {
                             currentTask.Delete();
 
-                            if (AutomatedTaskFramework.Tasks.Available())
+                            if (Tasks.Available())
                             {
-                                AutomatedTaskFramework.Tasks.GetCurrent().Run();
+                                Tasks.GetCurrent().Run();
                             }
                         }
                     }
@@ -59,7 +64,7 @@ namespace pmdbs
         /// </summary>
         public sealed class Tasks
         {
-            private static readonly List<AutomatedTaskFramework.Task> taskList = new List<Task>();
+            private static readonly List<Task> taskList = new List<Task>();
             /// <summary>
             /// Gets the next scheduled task
             /// </summary>
@@ -146,30 +151,21 @@ namespace pmdbs
                 }
             }
         }
+        /// <summary>
+        /// The task object allows scheduling a specific action/function/method to be executed.
+        /// </summary>
         public partial class Task
         {
             private readonly Action _automatedAction = new Action(delegate { });
-            private readonly string _automatedTask = string.Empty;
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
             private readonly SearchCondition _searchCondition = SearchCondition.Match;
-            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command)
-            {
-                _automatedTask = Command;
-                _automatedTaskCondition = FinishedCondition;
-                _searchCondition = SearchCondition;
-                Tasks.Add(this);
-            }
-
-            private Task(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
-            {
-                _automatedTask = Command;
-                _automatedTaskCondition = FinishedCondition;
-                _searchCondition = SearchCondition;
-                _failedCondition = FailedCondition;
-                Tasks.Add(this);
-            }
-
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
             private Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 _automatedAction = TaskAction;
@@ -177,7 +173,13 @@ namespace pmdbs
                 _searchCondition = SearchCondition;
                 Tasks.Add(this);
             }
-
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FailedCondition"></param>
             private Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 _automatedAction = TaskAction;
@@ -186,61 +188,80 @@ namespace pmdbs
                 _failedCondition = FailedCondition;
                 Tasks.Add(this);
             }
-
+            /// <summary>
+            /// The function or method that is linked to the task.
+            /// </summary>
             public Action TaskAction
             {
                 get { return _automatedAction; }
             }
-
+            /// <summary>
+            /// The SearchCondition that is used to check for the FinishedCondition in the provided data set.
+            /// </summary>
             public SearchCondition SearchCondition
             {
                 get { return _searchCondition; }
             }
-
-            public string Command
-            {
-                get { return _automatedTask; }
-            }
-
+            /// <summary>
+            /// The condition that has to be met to consider the task completed.
+            /// </summary>
             public string FinishedCondition
             {
                 get { return _automatedTaskCondition; }
             }
-
+            /// <summary>
+            /// The condition that has to be met to consider the task failed.
+            /// </summary>
             public string FailedCondition
             {
                 get { return _failedCondition; }
             }
-
-            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command)
-            {
-                return new Task(SearchCondition, FinishedCondition, Command);
-            }
-
-            public static Task Create(SearchCondition SearchCondition, string FinishedCondition, string Command, string FailedCondition)
-            {
-                return new Task(SearchCondition, FinishedCondition, Command, FailedCondition);
-            }
-
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <returns>Returns the created Task object.</returns>
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 return new Task(SearchCondition, FinishedCondition, TaskAction);
             }
-
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FailedCondition">The condition that has to be met to consider the task failed.</param>
+            /// <returns>Returns the created Task object.</returns>
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 return new Task(SearchCondition, FinishedCondition, TaskAction, FailedCondition);
             }
-
+            /// <summary>
+            /// Cancels this task.
+            /// </summary>
             public void Delete()
             {
                 Tasks.Remove(this);
             }
-
+            /// <summary>
+            /// Executes the method or function that is linked to the task.
+            /// </summary>
             public void Run()
             {
                 _automatedAction();
             }
         }
+    }
+    /// <summary>
+    /// Defines how conditions should be searched for in the data set.
+    /// </summary>
+    public enum SearchCondition
+    {
+        Match = 1,
+        Contains = 2,
+        In = 3
     }
 }

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Contains all global variables that are needed for PMDBS.
+    /// </summary>
     public struct GlobalVarPool
     {
         // CONFIG FILE
@@ -19,8 +22,8 @@ namespace pmdbs
         public static string CONFIG_BUILD = null;
 
         // CLIENT VERSIONING
-        public static string CLIENT_VERSION = "0.4-1a.19";
-        public static string CLIENT_BUILD = "unstable";
+        public static readonly string CLIENT_VERSION = "0.6-8b.19";
+        public static readonly string CLIENT_BUILD = "development";
 
         // CRYPTO VARIABLES
         public static string XMLKey = string.Empty;
@@ -51,6 +54,7 @@ namespace pmdbs
 
         // SETTINGS
         public static bool wasOnline = false;
+        public static string firstUsage = string.Empty;
 
         // GLOBAL VARIABLES
         public static string name = "User";
@@ -58,6 +62,7 @@ namespace pmdbs
         public static string serverName = string.Empty;
         public static string username = string.Empty;
         public static string email = string.Empty;
+        public static string scryptHash = string.Empty;
         public static string promptCommand = string.Empty;
         public static List<string> selectedAccounts = new List<string>();
         public static System.Data.DataTable UserData = new System.Data.DataTable();
@@ -83,11 +88,5 @@ namespace pmdbs
 
         public static System.Windows.Forms.Label outputLabel = null;
         public static bool outputLabelIsValid = false;
-    }
-    public enum SearchCondition
-    {
-        Match = 1,
-        Contains = 2,
-        In = 3
     }
 }

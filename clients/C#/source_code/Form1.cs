@@ -243,47 +243,25 @@ namespace pmdbs
                     });
                 }
             });
-            Task<List<string>> Initialize = DataBaseHelper.GetDataAsList("SELECT U_wasOnline, U_name FROM Tbl_user;", 2);
-            List<string> Result = await Initialize;
-            try
-            {
-                if (Result[0].Equals("1"))
-                {
-                    GlobalVarPool.wasOnline = true;
-                    try
-                    {
-                        // GET SERVER SETTINGS
-                        Task<List<string>> getSettings = DataBaseHelper.GetDataAsList("SELECT S_server_ip, S_server_port FROM Tbl_settings LIMIT 1;",2);
-                        List<string> settingsList = await getSettings;
-                        GlobalVarPool.REMOTE_ADDRESS = settingsList[0];
-                        GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settingsList[1]);
-                        Task<List<string>> getUsername = DataBaseHelper.GetDataAsList("SELECT U_username FROM Tbl_user LIMIT 1;",(int)ColumnCount.SingleColumn);
-                        List<string> usernameList = await getUsername;
-                        GlobalVarPool.username = usernameList[0];
-                    }
-                    catch (Exception ex)
-                    {
-                        CustomException.ThrowNew.GenericException(ex.ToString());
-                    }
-                    //TODO: Check for Password Changes
-                }
-                NickName = Result[1];
-                LoginPictureBoxOnlineMain.SuspendLayout();
-                LoginPictureBoxOfflineMain.BringToFront();
-                LoginPictureBoxRegisterMain.SuspendLayout();
-                LoginPictureBoxLoadingMain.SuspendLayout();
-                if (!NickName.Equals(GlobalVarPool.name))
-                {
-                    GlobalVarPool.name = NickName;
-                    LoginLabelOfflineUsername.Text = NickName;
-                }
-            }
-            catch
+            await HelperMethods.LoadSettings();
+            //TODO: Check for Password Changes
+            if (GlobalVarPool.scryptHash.Equals(string.Empty))
             {
                 LoginPictureBoxOnlineMain.SuspendLayout();
                 LoginPictureBoxOfflineMain.SuspendLayout();
                 LoginPictureBoxRegisterMain.BringToFront();
                 LoginPictureBoxLoadingMain.SuspendLayout();
+            }
+            else
+            {
+                LoginPictureBoxOnlineMain.SuspendLayout();
+                LoginPictureBoxOfflineMain.BringToFront();
+                LoginPictureBoxRegisterMain.SuspendLayout();
+                LoginPictureBoxLoadingMain.SuspendLayout();
+                if (!GlobalVarPool.name.Equals("User"))
+                {
+                    LoginLabelOfflineUsername.Text = GlobalVarPool.name;
+                }
             }
             Thread.Sleep(1500); // SHOW SPLASHSCREEN
             GuiLoaded = true;
@@ -369,12 +347,11 @@ namespace pmdbs
         {
             if (bmp != null)
             {
-                float bw2 = bmp.Width / 2f;    // really ought..
-                float bh2 = bmp.Height / 2f;   // to be equal!!!
+                float bw2 = bmp.Width / 2f;
+                float bh2 = bmp.Height / 2f;
                 e.Graphics.TranslateTransform(bw2, bh2);
                 e.Graphics.RotateTransform(angle);
                 e.Graphics.TranslateTransform(-bw2, -bh2);
-                //e.Graphics.ScaleTransform(MenuSyncPictureBox.Width / bmp.Width, MenuSyncPictureBox.Height / bmp.Height);
                 e.Graphics.DrawImage(bmp, 0, 0);
                 e.Graphics.ResetTransform();
             }
@@ -833,6 +810,8 @@ namespace pmdbs
             
             if (Password.Equals("") || Hostname.Equals(""))
             {
+                CustomException.ThrowNew.GenericException("Please enter at least a hostname and a password to save this account!");
+                AddPanelAdvancedImageButtonSave.Enabled = true;
                 return;
             }
             new Thread(async delegate() {
@@ -1042,16 +1021,12 @@ namespace pmdbs
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxOfflineMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Loading Saved Hash...";
-            Task<List<String>> GetSavedHash = DataBaseHelper.GetDataAsList("SELECT U_password, U_firstUsage FROM Tbl_user ORDER BY U_id ASC LIMIT 1;", 2);
-            List<String> TrueHashList = await GetSavedHash;
-            string TrueHash = TrueHashList[0];
-            string FirstUsage = TrueHashList[1];
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, GlobalVarPool.firstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Checking Password...";
-            if (!Stage2PasswordHash.Equals(TrueHash))
+            if (!Stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
             {
                 LoginLabelOfflineError.ForeColor = Color.Firebrick;
                 LoginLabelOfflineError.Text = "Wrong Password!";
@@ -1064,7 +1039,7 @@ namespace pmdbs
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data ORDER BY D_datetime ASC;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;

@@ -577,5 +577,27 @@ namespace pmdbs
                 }
             }
         }
+        /// <summary>
+        /// Loads all Settings from the database into GlobalVarPool
+        /// </summary>
+        public static async Task LoadSettings()
+        {
+            Task<List<string>> getUserSettings = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_user LIMIT 1;", (int)ColumnCount.Tbl_user);
+            List<string> userSettings = await getUserSettings;
+            GlobalVarPool.username = userSettings[1];
+            GlobalVarPool.name = userSettings[2];
+            GlobalVarPool.scryptHash = userSettings[3];
+            GlobalVarPool.wasOnline = userSettings[4].Equals("1");
+            GlobalVarPool.firstUsage = userSettings[5];
+            GlobalVarPool.email = userSettings[6];
+            GlobalVarPool.cookie = userSettings[7];
+            if (GlobalVarPool.wasOnline)
+            {
+                Task<List<string>> getSettings = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_settings LIMIT 1;", (int)ColumnCount.Tbl_settings);
+                List<string> settings = await getSettings;
+                GlobalVarPool.REMOTE_ADDRESS = settings[1];
+                GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settings[2]);
+            }
+        }
     }
 }
