@@ -211,6 +211,7 @@
             this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
+            this.advancedComboBox1 = new AdvancedComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.metroComboBox1 = new MetroFramework.Controls.MetroComboBox();
             this.editField1 = new pmdbs.EditField();
@@ -2994,6 +2995,7 @@
             // WindowsHeaderPanelSubRight
             // 
             this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.advancedComboBox1);
             this.WindowsHeaderPanelSubRight.Controls.Add(this.label1);
             this.WindowsHeaderPanelSubRight.Controls.Add(this.metroComboBox1);
             this.WindowsHeaderPanelSubRight.Controls.Add(this.editField1);
@@ -3003,6 +3005,33 @@
             this.WindowsHeaderPanelSubRight.Name = "WindowsHeaderPanelSubRight";
             this.WindowsHeaderPanelSubRight.Size = new System.Drawing.Size(1765, 102);
             this.WindowsHeaderPanelSubRight.TabIndex = 11;
+            // 
+            // advancedComboBox1
+            // 
+            this.advancedComboBox1.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.advancedComboBox1.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.advancedComboBox1.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.advancedComboBox1.FormattingEnabled = true;
+            this.advancedComboBox1.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.advancedComboBox1.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.advancedComboBox1.HoverItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.advancedComboBox1.HoverItemForeColor = System.Drawing.Color.White;
+            this.advancedComboBox1.ItemFont = new System.Drawing.Font("Century Gothic", 8F);
+            this.advancedComboBox1.ItemHeight = 25;
+            this.advancedComboBox1.Items.AddRange(new object[] {
+            "Hostname... (A-Z)",
+            "Hostname... (Z-A)",
+            "Date... (oldest first)",
+            "Date... (newest first)"});
+            this.advancedComboBox1.Location = new System.Drawing.Point(1113, 60);
+            this.advancedComboBox1.Name = "advancedComboBox1";
+            this.advancedComboBox1.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.advancedComboBox1.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.advancedComboBox1.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.advancedComboBox1.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.advancedComboBox1.Size = new System.Drawing.Size(212, 31);
+            this.advancedComboBox1.TabIndex = 4;
+            this.advancedComboBox1.UseSelectable = true;
             // 
             // label1
             // 
@@ -4005,6 +4034,7 @@
         private EditField editField1;
         private System.Windows.Forms.Label label1;
         private MetroFramework.Controls.MetroComboBox metroComboBox1;
+        private AdvancedComboBox advancedComboBox1;
     }
 }
 
