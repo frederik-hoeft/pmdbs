@@ -211,7 +211,7 @@
             this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
-            this.advancedComboBox1 = new AdvancedComboBox();
+            this.advancedComboBox1 = new pmdbs.AdvancedComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.metroComboBox1 = new MetroFramework.Controls.MetroComboBox();
             this.editField1 = new pmdbs.EditField();
@@ -3025,10 +3025,11 @@
             "Date... (newest first)"});
             this.advancedComboBox1.Location = new System.Drawing.Point(1113, 60);
             this.advancedComboBox1.Name = "advancedComboBox1";
-            this.advancedComboBox1.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-            this.advancedComboBox1.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-            this.advancedComboBox1.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
-            this.advancedComboBox1.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(153)))), ((int)(((byte)(153)))));
+            this.advancedComboBox1.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.advancedComboBox1.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.advancedComboBox1.NormalItemForeColor = System.Drawing.Color.Black;
+            this.advancedComboBox1.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.advancedComboBox1.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.advancedComboBox1.Size = new System.Drawing.Size(212, 31);
             this.advancedComboBox1.TabIndex = 4;
             this.advancedComboBox1.UseSelectable = true;
