@@ -1,8 +1,4 @@
-﻿using MetroFramework;
-using MetroFramework.Components;
-using MetroFramework.Drawing;
-using MetroFramework.Interfaces;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -12,23 +8,7 @@ public class AdvancedComboBox : ComboBox
 
     private const int WM_PAINT = 15;
 
-    private MetroColorStyle metroStyle;
-
-    private MetroThemeStyle metroTheme;
-
-    private MetroStyleManager metroStyleManager;
-
-    private bool useCustomBackColor;
-
-    private bool useCustomForeColor;
-
-    private bool useStyleColors;
-
     private bool displayFocusRectangle;
-
-    private MetroComboBoxSize metroComboBoxSize = MetroComboBoxSize.Medium;
-
-    private MetroComboBoxWeight metroComboBoxWeight = MetroComboBoxWeight.Regular;
 
     private string promptText = "";
 
@@ -52,10 +32,10 @@ public class AdvancedComboBox : ComboBox
     private Color _DisabledBorderColor = Color.FromArgb(204, 204, 204);
     private Color _HoverItemColor = Color.FromArgb(255, 96, 49);
 
-    public override Font Font
+    public Font ItemFont
     {
         get { return _Font; }
-        set { _Font = value; }
+        set { _Font = value; this.Font = value; }
     }
     [Browsable(false)]
     public override Color ForeColor
@@ -166,34 +146,6 @@ public class AdvancedComboBox : ComboBox
         }
     }
 
-    [Category("Metro Appearance")]
-    [DefaultValue(MetroComboBoxSize.Medium)]
-    public MetroComboBoxSize FontSize
-    {
-        get
-        {
-            return metroComboBoxSize;
-        }
-        set
-        {
-            metroComboBoxSize = value;
-        }
-    }
-
-    [DefaultValue(MetroComboBoxWeight.Regular)]
-    [Category("Metro Appearance")]
-    public MetroComboBoxWeight FontWeight
-    {
-        get
-        {
-            return metroComboBoxWeight;
-        }
-        set
-        {
-            metroComboBoxWeight = value;
-        }
-    }
-
     [Browsable(true)]
     [EditorBrowsable(EditorBrowsableState.Always)]
     [DefaultValue("")]
@@ -257,10 +209,6 @@ public class AdvancedComboBox : ComboBox
         try
         {
             Color color = BackColor;
-            if (!useCustomBackColor)
-            {
-                color = MetroPaint.BackColor.Form(Theme);
-            }
             if (color.A == 255 && BackgroundImage == null)
             {
                 e.Graphics.Clear(color);
@@ -301,23 +249,23 @@ public class AdvancedComboBox : ComboBox
         Color color2;
         if (isHovered && !isPressed && base.Enabled)
         {
-            color = MetroPaint.ForeColor.ComboBox.Hover(Theme);
-            color2 = MetroPaint.BorderColor.ComboBox.Hover(Theme);
+            color = HoverForeColor;
+            color2 = HoverBorderColor;
         }
         else if (isHovered && isPressed && base.Enabled)
         {
-            color = MetroPaint.ForeColor.ComboBox.Press(Theme);
-            color2 = MetroPaint.BorderColor.ComboBox.Press(Theme);
+            color = PressForeColor;
+            color2 = PressBorderColor;
         }
         else if (!base.Enabled)
         {
-            color = MetroPaint.ForeColor.ComboBox.Disabled(Theme);
-            color2 = MetroPaint.BorderColor.ComboBox.Disabled(Theme);
+            color = DisabledForeColor;
+            color2 = DisabledBorderColor;
         }
         else
         {
-            color = MetroPaint.ForeColor.ComboBox.Normal(Theme);
-            color2 = MetroPaint.BorderColor.ComboBox.Normal(Theme);
+            color = NormalForeColor;
+            color2 = NormalBorderColor;
         }
         using (Pen pen = new Pen(color2))
         {
@@ -334,7 +282,7 @@ public class AdvancedComboBox : ComboBox
             });
         }
         Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
-        TextRenderer.DrawText(e.Graphics, Text, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, color, TextFormatFlags.VerticalCenter);
+        TextRenderer.DrawText(e.Graphics, Text, _Font, bounds, color, TextFormatFlags.VerticalCenter);
         OnCustomPaintForeground(new MetroPaintEventArgs(Color.Empty, color, e.Graphics));
         if (displayFocusRectangle && isFocused)
         {
@@ -351,10 +299,6 @@ public class AdvancedComboBox : ComboBox
         if (e.Index >= 0)
         {
             Color color = BackColor;
-            if (!useCustomBackColor)
-            {
-                color = MetroPaint.BackColor.Form(Theme);
-            }
             Color foreColor;
             if (e.State == (DrawItemState.NoAccelerator | DrawItemState.NoFocusRect) || e.State == DrawItemState.None)
             {
@@ -362,18 +306,18 @@ public class AdvancedComboBox : ComboBox
                 {
                     e.Graphics.FillRectangle(brush, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
                 }
-                foreColor = MetroPaint.ForeColor.Link.Normal(Theme);
+                foreColor = NormalForeColor;
             }
             else
             {
-                using (SolidBrush brush2 = new SolidBrush(MetroPaint.GetStyleColor(Style)))
+                using (SolidBrush brush2 = new SolidBrush(HoverItemColor))
                 {
                     e.Graphics.FillRectangle(brush2, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
                 }
-                foreColor = MetroPaint.ForeColor.Tile.Normal(Theme);
+                foreColor = HoverForeColor;
             }
             Rectangle bounds = new Rectangle(0, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height);
-            TextRenderer.DrawText(e.Graphics, base.GetItemText(base.Items[e.Index]), MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, foreColor, TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, base.GetItemText(base.Items[e.Index]), this.Font, bounds, foreColor, TextFormatFlags.VerticalCenter);
         }
         else
         {
@@ -392,12 +336,8 @@ public class AdvancedComboBox : ComboBox
     private void DrawTextPrompt(Graphics g)
     {
         Color backColor = BackColor;
-        if (!useCustomBackColor)
-        {
-            backColor = MetroPaint.BackColor.Form(Theme);
-        }
         Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
-        TextRenderer.DrawText(g, promptText, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, SystemColors.GrayText, backColor, TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter);
+        TextRenderer.DrawText(g, promptText, _Font, bounds, SystemColors.GrayText, backColor, TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter);
     }
 
     protected override void OnGotFocus(EventArgs e)
@@ -492,7 +432,7 @@ public class AdvancedComboBox : ComboBox
         {
             string text = (Text.Length > 0) ? Text : "MeasureText";
             proposedSize = new Size(2147483647, 2147483647);
-            Size result = TextRenderer.MeasureText(dc, text, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), proposedSize, TextFormatFlags.VerticalCenter | TextFormatFlags.LeftAndRightPadding);
+            Size result = TextRenderer.MeasureText(dc, text, _Font, proposedSize, TextFormatFlags.VerticalCenter | TextFormatFlags.LeftAndRightPadding);
             result.Height += 4;
             return result;
         }
@@ -515,6 +455,19 @@ public class AdvancedComboBox : ComboBox
         if (drawPrompt)
         {
             DrawTextPrompt();
+        }
+    }
+    public class MetroPaintEventArgs : EventArgs
+    {
+        public Color BackColor { get; private set; }
+        public Color ForeColor { get; private set; }
+        public Graphics Graphics { get; private set; }
+
+        public MetroPaintEventArgs(Color backColor, Color foreColor, Graphics g)
+        {
+            BackColor = backColor;
+            ForeColor = foreColor;
+            Graphics = g;
         }
     }
 }
