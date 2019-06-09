@@ -30,8 +30,8 @@
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.advancedTextBox1 = new pmdbs.AdvancedTextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.advancedImageButton1 = new pmdbs.AdvancedImageButton();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -63,25 +63,13 @@
             this.panel1.Size = new System.Drawing.Size(436, 111);
             this.panel1.TabIndex = 0;
             // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.White;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(436, 19);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "TextTitle";
-            this.textBox1.SizeChanged += new System.EventHandler(this.TextBox1_SizeChanged);
-            // 
             // advancedTextBox1
             // 
             this.advancedTextBox1.BackColor = System.Drawing.Color.White;
+            this.advancedTextBox1.BackgroundColor = System.Drawing.Color.White;
             this.advancedTextBox1.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.advancedTextBox1.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.advancedTextBox1.DefaultValue = "Enter some text...";
             this.advancedTextBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.advancedTextBox1.ForeColorFocus = System.Drawing.Color.Black;
             this.advancedTextBox1.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
@@ -89,8 +77,27 @@
             this.advancedTextBox1.Name = "advancedTextBox1";
             this.advancedTextBox1.Size = new System.Drawing.Size(436, 34);
             this.advancedTextBox1.TabIndex = 1;
+            this.advancedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
             this.advancedTextBox1.TextValue = "TextTextBox";
+            this.advancedTextBox1.UseColoredCaret = true;
+            this.advancedTextBox1.UseDefaultValue = true;
+            this.advancedTextBox1.UseSystemPasswordChar = false;
             this.advancedTextBox1.SizeChanged += new System.EventHandler(this.AdvancedTextBox1_SizeChanged);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.White;
+            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox1.Enabled = false;
+            this.textBox1.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.textBox1.Location = new System.Drawing.Point(0, 0);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(436, 20);
+            this.textBox1.TabIndex = 0;
+            this.textBox1.Text = "TextTitle";
+            this.textBox1.SizeChanged += new System.EventHandler(this.TextBox1_SizeChanged);
             // 
             // advancedImageButton1
             // 
