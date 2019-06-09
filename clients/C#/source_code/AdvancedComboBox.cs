@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using MetroFramework.Components;
 using MetroFramework.Drawing;
+using MetroFramework.Native;
 using MetroFramework.Interfaces;
 
 namespace pmdbs
@@ -29,7 +30,7 @@ namespace pmdbs
             drawPrompt = (SelectedIndex == -1);
             Font = new Font("Century Gothic", 8F);
             ForeColor = Color.Black;
-            BackColor = Color.FromArgb(255, 96, 49);
+            BackColor = Color.White;
             NormalForeColor = Color.FromArgb(153, 153, 153);
             HoverForeColor = Color.FromArgb(51, 51, 51);
             PressForeColor = Color.FromArgb(153, 153, 153);
@@ -38,7 +39,9 @@ namespace pmdbs
             HoverBorderColor = Color.FromArgb(51, 51, 51);
             PressBorderColor = Color.FromArgb(153, 153, 153);
             DisabledBorderColor = Color.FromArgb(204, 204, 204);
-            ThemeColor = Color.FromArgb(255, 96, 49);
+            HoverItemColor = Color.FromArgb(255, 96, 49);
+            NormalItemColor = Color.White;
+            
         }
 
         [Browsable(false)]
@@ -205,7 +208,7 @@ namespace pmdbs
                 });
             }
             Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
-            TextRenderer.DrawText(e.Graphics, Text, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, color, TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(e.Graphics, Text, this.Font, bounds, color, TextFormatFlags.VerticalCenter);
             OnCustomPaintForeground(new MetroPaintEventArgs(Color.Empty, color, e.Graphics));
             if (displayFocusRectangle && isFocused)
             {
@@ -227,7 +230,7 @@ namespace pmdbs
         {
             Color backColor = BackColor;
             Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
-            TextRenderer.DrawText(g, promptText, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, SystemColors.GrayText, backColor, TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter);
+            TextRenderer.DrawText(g, promptText, this.Font, bounds, SystemColors.GrayText, backColor, TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter);
         }
         protected override void OnSelectedIndexChanged(EventArgs e)
         {
@@ -267,18 +270,18 @@ namespace pmdbs
                     {
                         e.Graphics.FillRectangle(brush, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
                     }
-                    foreColor = MetroPaint.ForeColor.Link.Normal(Theme);
+                    foreColor = Color.White;
                 }
                 else
                 {
-                    using (SolidBrush brush2 = new SolidBrush(MetroPaint.GetStyleColor(Style)))
+                    using (SolidBrush brush2 = new SolidBrush(HoverItemColor)
                     {
                         e.Graphics.FillRectangle(brush2, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
                     }
-                    foreColor = MetroPaint.ForeColor.Tile.Normal(Theme);
+                    foreColor = ;
                 }
                 Rectangle bounds = new Rectangle(0, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height);
-                TextRenderer.DrawText(e.Graphics, base.GetItemText(base.Items[e.Index]), MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, foreColor, TextFormatFlags.VerticalCenter);
+                TextRenderer.DrawText(e.Graphics, base.GetItemText(base.Items[e.Index]), this.Font, bounds, foreColor, TextFormatFlags.VerticalCenter);
             }
             else
             {
