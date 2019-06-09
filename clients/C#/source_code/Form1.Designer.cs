@@ -63,12 +63,12 @@
             this.DataEditLabelPasswordGeneratorDescription = new System.Windows.Forms.Label();
             this.DataEditPanelBottom = new System.Windows.Forms.Panel();
             this.DataEditLabelNotes = new System.Windows.Forms.Label();
+            this.SettingsTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.SettingsPanelCenter = new System.Windows.Forms.Panel();
             this.AddPanelMain = new System.Windows.Forms.Panel();
             this.AddTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.AddPanelCenter = new System.Windows.Forms.Panel();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
-            this.SettingsTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.SettingsPanelCenter = new System.Windows.Forms.Panel();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.WindowHeaderPanel = new System.Windows.Forms.Panel();
             this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -77,24 +77,6 @@
             this.PanelMain = new System.Windows.Forms.Panel();
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.SyncAnimationTimer = new System.Windows.Forms.Timer(this.components);
-            this.AddPictureBoxLeft = new System.Windows.Forms.PictureBox();
-            this.AddPictureBoxRight = new System.Windows.Forms.PictureBox();
-            this.AddTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
-            this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
-            this.AddPanelContent = new System.Windows.Forms.Panel();
-            this.AddPanelGeneratePassword = new System.Windows.Forms.Panel();
-            this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
-            this.AddLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelNotes = new System.Windows.Forms.Panel();
-            this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelCheckIcon = new System.Windows.Forms.Panel();
-            this.AddPanelCheckIconContent = new System.Windows.Forms.Panel();
-            this.AddLabelCheckIconAvailableIcon = new System.Windows.Forms.Label();
-            this.AddPictureBoxCheckIconIcon = new System.Windows.Forms.PictureBox();
-            this.AddLabelCheckIconHeader = new System.Windows.Forms.Label();
-            this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
             this.DataPictureBoxBackgroundTop = new System.Windows.Forms.PictureBox();
             this.DataPictureBoxBackgroundBottom = new System.Windows.Forms.PictureBox();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
@@ -116,6 +98,14 @@
             this.SettingsPanelOfflineContent2 = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflineChangeNameDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangeName = new System.Windows.Forms.Label();
+            this.SettingsPanelPromptMain = new System.Windows.Forms.Panel();
+            this.SettingsLabelPromptAction = new System.Windows.Forms.Label();
+            this.SettingsLabelPromptMain = new System.Windows.Forms.Label();
+            this.SettingsLabelPromptMailInfo = new System.Windows.Forms.Label();
+            this.SettingsPanelPromptCenter = new System.Windows.Forms.Panel();
+            this.SettingsLabelPromptCode = new System.Windows.Forms.Label();
+            this.SettingsLabelPromptPrefix = new System.Windows.Forms.Label();
+            this.SettingsPictureBoxPromptLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelLogin = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelLoginContent = new System.Windows.Forms.Panel();
             this.SettingsLabelLoginAccountDesc = new System.Windows.Forms.Label();
@@ -130,14 +120,6 @@
             this.SettingsLabelRegisterServerSpec = new System.Windows.Forms.Label();
             this.SettingsLabelRegisterServerDesc = new System.Windows.Forms.Label();
             this.SettingsLabelRegisterMain = new System.Windows.Forms.Label();
-            this.SettingsPanelPromptMain = new System.Windows.Forms.Panel();
-            this.SettingsLabelPromptAction = new System.Windows.Forms.Label();
-            this.SettingsLabelPromptMain = new System.Windows.Forms.Label();
-            this.SettingsLabelPromptMailInfo = new System.Windows.Forms.Label();
-            this.SettingsPanelPromptCenter = new System.Windows.Forms.Panel();
-            this.SettingsLabelPromptCode = new System.Windows.Forms.Label();
-            this.SettingsLabelPromptPrefix = new System.Windows.Forms.Label();
-            this.SettingsPictureBoxPromptLogo = new System.Windows.Forms.PictureBox();
             this.SettingsPanelLoadingMain = new System.Windows.Forms.Panel();
             this.SettingsPanelLoadingCenter = new System.Windows.Forms.Panel();
             this.SettingsLabelLoadingStatus = new System.Windows.Forms.Label();
@@ -147,6 +129,24 @@
             this.label11 = new System.Windows.Forms.Label();
             this.panel6 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
+            this.AddPictureBoxLeft = new System.Windows.Forms.PictureBox();
+            this.AddPictureBoxRight = new System.Windows.Forms.PictureBox();
+            this.AddTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
+            this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
+            this.AddPanelContent = new System.Windows.Forms.Panel();
+            this.AddPanelGeneratePassword = new System.Windows.Forms.Panel();
+            this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
+            this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
+            this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
+            this.AddLabelTitle = new System.Windows.Forms.Label();
+            this.AddPanelNotes = new System.Windows.Forms.Panel();
+            this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
+            this.AddPanelCheckIcon = new System.Windows.Forms.Panel();
+            this.AddPanelCheckIconContent = new System.Windows.Forms.Panel();
+            this.AddLabelCheckIconAvailableIcon = new System.Windows.Forms.Label();
+            this.AddPictureBoxCheckIconIcon = new System.Windows.Forms.PictureBox();
+            this.AddLabelCheckIconHeader = new System.Windows.Forms.Label();
+            this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
             this.MenuSyncPictureBox = new System.Windows.Forms.PictureBox();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -177,35 +177,9 @@
             this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOnlineError = new System.Windows.Forms.Label();
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
-            this.SettingsAdvancedImageButtonFooterAbort = new pmdbs.AdvancedImageButton();
-            this.SettingsAdvancedImageButtonFooterSave = new pmdbs.AdvancedImageButton();
-            this.SettingsAnimatedButtonPromptSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldPromptCode = new pmdbs.EditField();
-            this.editField3 = new pmdbs.EditField();
-            this.SettingsAnimatedButtonChangePasswordSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldOfflineNewPassword = new pmdbs.EditField();
-            this.SettingsEditFieldOfflineNewPasswordConfirm = new pmdbs.EditField();
-            this.SettingsAnimatedButtonOfflineRegister = new pmdbs.AnimatedButton();
-            this.SettingsAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldOfflineName = new pmdbs.EditField();
-            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
-            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
-            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
-            this.SettingsAnimatedButtonSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldRegisterEmail = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterIP = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterName = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterPort = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterUsername = new pmdbs.EditField();
-            this.SettingsAdvancedProgressSpinnerLoading = new pmdbs.AdvancedProgressSpinner();
-            this.animatedButton3 = new pmdbs.AnimatedButton();
-            this.editField7 = new pmdbs.EditField();
-            this.editField9 = new pmdbs.EditField();
-            this.editField10 = new pmdbs.EditField();
-            this.editField8 = new pmdbs.EditField();
-            this.editField6 = new pmdbs.EditField();
+            this.metroComboBox1 = new MetroFramework.Controls.MetroComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
             this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
@@ -228,6 +202,35 @@
             this.DataEditEditFieldUsername = new pmdbs.EditField();
             this.DataEditEditFieldPassword = new pmdbs.EditField();
             this.DataEditAdvancedRichTextBoxNotes = new pmdbs.AdvancedRichTextBox();
+            this.SettingsAdvancedImageButtonFooterAbort = new pmdbs.AdvancedImageButton();
+            this.SettingsAdvancedImageButtonFooterSave = new pmdbs.AdvancedImageButton();
+            this.editField3 = new pmdbs.EditField();
+            this.SettingsAnimatedButtonChangePasswordSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldOfflineNewPassword = new pmdbs.EditField();
+            this.SettingsEditFieldOfflineNewPasswordConfirm = new pmdbs.EditField();
+            this.SettingsAnimatedButtonOfflineRegister = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldOfflineName = new pmdbs.EditField();
+            this.SettingsAnimatedButtonPromptSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldPromptCode = new pmdbs.EditField();
+            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
+            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
+            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
+            this.SettingsAnimatedButtonSubmit = new pmdbs.AnimatedButton();
+            this.SettingsEditFieldRegisterEmail = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterIP = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterName = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterPort = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterUsername = new pmdbs.EditField();
+            this.SettingsAdvancedProgressSpinnerLoading = new pmdbs.AdvancedProgressSpinner();
+            this.animatedButton3 = new pmdbs.AnimatedButton();
+            this.editField7 = new pmdbs.EditField();
+            this.editField9 = new pmdbs.EditField();
+            this.editField10 = new pmdbs.EditField();
+            this.editField8 = new pmdbs.EditField();
+            this.editField6 = new pmdbs.EditField();
             this.AddPanelGeneratePasswordAnimatedButtonGenerate = new pmdbs.AnimatedButton();
             this.AddPanelGeneratePasswordAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
             this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
@@ -243,6 +246,7 @@
             this.MenuMenuEntryHome = new pmdbs.MenuEntry();
             this.MenuMenuEntryPasswords = new pmdbs.MenuEntry();
             this.MenuMenuEntrySettings = new pmdbs.MenuEntry();
+            this.editField1 = new pmdbs.EditField();
             this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
             this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
             this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
@@ -273,27 +277,16 @@
             this.DataEditPanelTop.SuspendLayout();
             this.DataEditPanelPasswordGenerator.SuspendLayout();
             this.DataEditPanelBottom.SuspendLayout();
+            this.SettingsTableLayoutPanelMain.SuspendLayout();
+            this.SettingsPanelCenter.SuspendLayout();
             this.AddPanelMain.SuspendLayout();
             this.AddTableLayoutPanelMain.SuspendLayout();
             this.AddPanelCenter.SuspendLayout();
-            this.SettingsTableLayoutPanelMain.SuspendLayout();
-            this.SettingsPanelCenter.SuspendLayout();
             this.WindowHeaderPanel.SuspendLayout();
             this.WindowHeaderTableLayoutPanel.SuspendLayout();
             this.WindowsHeaderPanelSubRight.SuspendLayout();
             this.PanelMain.SuspendLayout();
             this.PanelLogin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxLeft)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxRight)).BeginInit();
-            this.AddTableLayoutPanelCenter.SuspendLayout();
-            this.AddFlowLayoutPanelCenter.SuspendLayout();
-            this.AddPanelContent.SuspendLayout();
-            this.AddPanelGeneratePassword.SuspendLayout();
-            this.AddPanelNotes.SuspendLayout();
-            this.AddPanelCheckIcon.SuspendLayout();
-            this.AddPanelCheckIconContent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).BeginInit();
-            this.AddPanelBottomMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxBackgroundTop)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxBackgroundBottom)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).BeginInit();
@@ -308,19 +301,30 @@
             this.SettingsPanelOfflineContent3.SuspendLayout();
             this.SettingsPanelOfflineContent1.SuspendLayout();
             this.SettingsPanelOfflineContent2.SuspendLayout();
+            this.SettingsPanelPromptMain.SuspendLayout();
+            this.SettingsPanelPromptCenter.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).BeginInit();
             this.SettingsFlowLayoutPanelLogin.SuspendLayout();
             this.SettingsPanelLoginContent.SuspendLayout();
             this.SettingsFlowLayoutPanelRegister.SuspendLayout();
             this.SettingsPanelRegisterContent.SuspendLayout();
-            this.SettingsPanelPromptMain.SuspendLayout();
-            this.SettingsPanelPromptCenter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).BeginInit();
             this.SettingsPanelLoadingMain.SuspendLayout();
             this.SettingsPanelLoadingCenter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLoadingLogo)).BeginInit();
             this.SettingsFlowLayoutPanelOnline.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxLeft)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxRight)).BeginInit();
+            this.AddTableLayoutPanelCenter.SuspendLayout();
+            this.AddFlowLayoutPanelCenter.SuspendLayout();
+            this.AddPanelContent.SuspendLayout();
+            this.AddPanelGeneratePassword.SuspendLayout();
+            this.AddPanelNotes.SuspendLayout();
+            this.AddPanelCheckIcon.SuspendLayout();
+            this.AddPanelCheckIconContent.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).BeginInit();
+            this.AddPanelBottomMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).BeginInit();
             this.LoginTableLayoutPanelMain.SuspendLayout();
@@ -763,6 +767,36 @@
             this.DataEditLabelNotes.TabIndex = 30;
             this.DataEditLabelNotes.Text = "Notes:";
             // 
+            // SettingsTableLayoutPanelMain
+            // 
+            this.SettingsTableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.SettingsTableLayoutPanelMain.ColumnCount = 4;
+            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1000F));
+            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.SettingsTableLayoutPanelMain.Controls.Add(this.SettingsPictureBoxLeft, 1, 0);
+            this.SettingsTableLayoutPanelMain.Controls.Add(this.SettingsPictureBoxRight, 3, 0);
+            this.SettingsTableLayoutPanelMain.Controls.Add(this.SettingsPanelCenter, 2, 0);
+            this.SettingsTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.SettingsTableLayoutPanelMain.Name = "SettingsTableLayoutPanelMain";
+            this.SettingsTableLayoutPanelMain.RowCount = 1;
+            this.SettingsTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.SettingsTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
+            this.SettingsTableLayoutPanelMain.TabIndex = 4;
+            // 
+            // SettingsPanelCenter
+            // 
+            this.SettingsPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SettingsPanelCenter.Controls.Add(this.SettingsTableLayoutPanelCenter);
+            this.SettingsPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsPanelCenter.Location = new System.Drawing.Point(312, 0);
+            this.SettingsPanelCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelCenter.Name = "SettingsPanelCenter";
+            this.SettingsPanelCenter.Size = new System.Drawing.Size(1000, 998);
+            this.SettingsPanelCenter.TabIndex = 2;
+            // 
             // AddPanelMain
             // 
             this.AddPanelMain.BackColor = System.Drawing.Color.White;
@@ -815,36 +849,6 @@
             this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
             this.AddPanelSeperator.TabIndex = 3;
             // 
-            // SettingsTableLayoutPanelMain
-            // 
-            this.SettingsTableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.SettingsTableLayoutPanelMain.ColumnCount = 4;
-            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1000F));
-            this.SettingsTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.SettingsTableLayoutPanelMain.Controls.Add(this.SettingsPictureBoxLeft, 1, 0);
-            this.SettingsTableLayoutPanelMain.Controls.Add(this.SettingsPictureBoxRight, 3, 0);
-            this.SettingsTableLayoutPanelMain.Controls.Add(this.SettingsPanelCenter, 2, 0);
-            this.SettingsTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.SettingsTableLayoutPanelMain.Name = "SettingsTableLayoutPanelMain";
-            this.SettingsTableLayoutPanelMain.RowCount = 1;
-            this.SettingsTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.SettingsTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
-            this.SettingsTableLayoutPanelMain.TabIndex = 4;
-            // 
-            // SettingsPanelCenter
-            // 
-            this.SettingsPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SettingsPanelCenter.Controls.Add(this.SettingsTableLayoutPanelCenter);
-            this.SettingsPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsPanelCenter.Location = new System.Drawing.Point(312, 0);
-            this.SettingsPanelCenter.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelCenter.Name = "SettingsPanelCenter";
-            this.SettingsPanelCenter.Size = new System.Drawing.Size(1000, 998);
-            this.SettingsPanelCenter.TabIndex = 2;
-            // 
             // WindowHeaderLabelLogo
             // 
             this.WindowHeaderLabelLogo.AutoSize = true;
@@ -891,7 +895,10 @@
             // WindowsHeaderPanelSubRight
             // 
             this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.WindowHeaderLabelTitle);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.label4);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.label1);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.metroComboBox1);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.editField1);
             this.WindowsHeaderPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WindowsHeaderPanelSubRight.Location = new System.Drawing.Point(277, 1);
             this.WindowsHeaderPanelSubRight.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
@@ -902,11 +909,11 @@
             // WindowHeaderLabelTitle
             // 
             this.WindowHeaderLabelTitle.AutoSize = true;
-            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold);
-            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.Black;
-            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(3, 25);
+            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(293, 14);
             this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
-            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(377, 56);
+            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(249, 38);
             this.WindowHeaderLabelTitle.TabIndex = 10;
             this.WindowHeaderLabelTitle.Text = "Some headline";
             // 
@@ -935,224 +942,6 @@
             // SyncAnimationTimer
             // 
             this.SyncAnimationTimer.Tick += new System.EventHandler(this.SyncAnimationTimer_Tick);
-            // 
-            // AddPictureBoxLeft
-            // 
-            this.AddPictureBoxLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.AddPictureBoxLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPictureBoxLeft.Image = ((System.Drawing.Image)(resources.GetObject("AddPictureBoxLeft.Image")));
-            this.AddPictureBoxLeft.Location = new System.Drawing.Point(10, 0);
-            this.AddPictureBoxLeft.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPictureBoxLeft.Name = "AddPictureBoxLeft";
-            this.AddPictureBoxLeft.Size = new System.Drawing.Size(302, 998);
-            this.AddPictureBoxLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.AddPictureBoxLeft.TabIndex = 0;
-            this.AddPictureBoxLeft.TabStop = false;
-            this.AddPictureBoxLeft.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
-            // 
-            // AddPictureBoxRight
-            // 
-            this.AddPictureBoxRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPictureBoxRight.Image = ((System.Drawing.Image)(resources.GetObject("AddPictureBoxRight.Image")));
-            this.AddPictureBoxRight.Location = new System.Drawing.Point(1312, 0);
-            this.AddPictureBoxRight.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPictureBoxRight.Name = "AddPictureBoxRight";
-            this.AddPictureBoxRight.Size = new System.Drawing.Size(303, 998);
-            this.AddPictureBoxRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.AddPictureBoxRight.TabIndex = 1;
-            this.AddPictureBoxRight.TabStop = false;
-            this.AddPictureBoxRight.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
-            // 
-            // AddTableLayoutPanelCenter
-            // 
-            this.AddTableLayoutPanelCenter.BackColor = System.Drawing.Color.White;
-            this.AddTableLayoutPanelCenter.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddTableLayoutPanelCenter.BackgroundImage")));
-            this.AddTableLayoutPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.AddTableLayoutPanelCenter.ColumnCount = 3;
-            this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
-            this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AddTableLayoutPanelCenter.Controls.Add(this.AddFlowLayoutPanelCenter, 1, 0);
-            this.AddTableLayoutPanelCenter.Controls.Add(this.AddPanelBottomMenu, 1, 1);
-            this.AddTableLayoutPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddTableLayoutPanelCenter.Location = new System.Drawing.Point(0, 0);
-            this.AddTableLayoutPanelCenter.Margin = new System.Windows.Forms.Padding(0);
-            this.AddTableLayoutPanelCenter.Name = "AddTableLayoutPanelCenter";
-            this.AddTableLayoutPanelCenter.RowCount = 2;
-            this.AddTableLayoutPanelCenter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.AddTableLayoutPanelCenter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.AddTableLayoutPanelCenter.Size = new System.Drawing.Size(1000, 998);
-            this.AddTableLayoutPanelCenter.TabIndex = 9;
-            // 
-            // AddFlowLayoutPanelCenter
-            // 
-            this.AddFlowLayoutPanelCenter.AutoScroll = true;
-            this.AddFlowLayoutPanelCenter.Controls.Add(this.AddPanelContent);
-            this.AddFlowLayoutPanelCenter.Controls.Add(this.AddPanelNotes);
-            this.AddFlowLayoutPanelCenter.Controls.Add(this.AddPanelCheckIcon);
-            this.AddFlowLayoutPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddFlowLayoutPanelCenter.Location = new System.Drawing.Point(150, 0);
-            this.AddFlowLayoutPanelCenter.Margin = new System.Windows.Forms.Padding(0);
-            this.AddFlowLayoutPanelCenter.Name = "AddFlowLayoutPanelCenter";
-            this.AddFlowLayoutPanelCenter.Size = new System.Drawing.Size(700, 898);
-            this.AddFlowLayoutPanelCenter.TabIndex = 11;
-            this.AddFlowLayoutPanelCenter.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
-            // 
-            // AddPanelContent
-            // 
-            this.AddPanelContent.BackColor = System.Drawing.Color.White;
-            this.AddPanelContent.Controls.Add(this.AddPanelGeneratePassword);
-            this.AddPanelContent.Controls.Add(this.AddEditFieldEmail);
-            this.AddPanelContent.Controls.Add(this.AddLabelTitle);
-            this.AddPanelContent.Controls.Add(this.AddEditFieldHostname);
-            this.AddPanelContent.Controls.Add(this.AddEditFieldWebsite);
-            this.AddPanelContent.Controls.Add(this.AddEditFieldUsername);
-            this.AddPanelContent.Controls.Add(this.AddEditFieldPassword);
-            this.AddPanelContent.Location = new System.Drawing.Point(0, 0);
-            this.AddPanelContent.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelContent.Name = "AddPanelContent";
-            this.AddPanelContent.Size = new System.Drawing.Size(670, 866);
-            this.AddPanelContent.TabIndex = 10;
-            // 
-            // AddPanelGeneratePassword
-            // 
-            this.AddPanelGeneratePassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordAnimatedButtonGenerate);
-            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelTitle);
-            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordAdvancedCheckBox);
-            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordeAdvancedNumericUpDown);
-            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelLength);
-            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelDescription);
-            this.AddPanelGeneratePassword.Location = new System.Drawing.Point(6, 436);
-            this.AddPanelGeneratePassword.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelGeneratePassword.Name = "AddPanelGeneratePassword";
-            this.AddPanelGeneratePassword.Size = new System.Drawing.Size(660, 197);
-            this.AddPanelGeneratePassword.TabIndex = 8;
-            // 
-            // AddPanelGeneratePasswordLabelTitle
-            // 
-            this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.AddPanelGeneratePasswordLabelTitle.Location = new System.Drawing.Point(3, 3);
-            this.AddPanelGeneratePasswordLabelTitle.Name = "AddPanelGeneratePasswordLabelTitle";
-            this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(394, 34);
-            this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
-            this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
-            // 
-            // AddPanelGeneratePasswordLabelLength
-            // 
-            this.AddPanelGeneratePasswordLabelLength.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelLength.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordLabelLength.Location = new System.Drawing.Point(323, 121);
-            this.AddPanelGeneratePasswordLabelLength.Name = "AddPanelGeneratePasswordLabelLength";
-            this.AddPanelGeneratePasswordLabelLength.Size = new System.Drawing.Size(94, 30);
-            this.AddPanelGeneratePasswordLabelLength.TabIndex = 17;
-            this.AddPanelGeneratePasswordLabelLength.Text = "Length";
-            // 
-            // AddPanelGeneratePasswordLabelDescription
-            // 
-            this.AddPanelGeneratePasswordLabelDescription.AutoSize = true;
-            this.AddPanelGeneratePasswordLabelDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordLabelDescription.Location = new System.Drawing.Point(9, 48);
-            this.AddPanelGeneratePasswordLabelDescription.Name = "AddPanelGeneratePasswordLabelDescription";
-            this.AddPanelGeneratePasswordLabelDescription.Size = new System.Drawing.Size(615, 63);
-            this.AddPanelGeneratePasswordLabelDescription.TabIndex = 16;
-            this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
-    "s as well as special characters and are at least 16\r\ncharacters long.";
-            // 
-            // AddLabelTitle
-            // 
-            this.AddLabelTitle.AutoSize = true;
-            this.AddLabelTitle.BackColor = System.Drawing.Color.White;
-            this.AddLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddLabelTitle.Location = new System.Drawing.Point(3, 67);
-            this.AddLabelTitle.Name = "AddLabelTitle";
-            this.AddLabelTitle.Size = new System.Drawing.Size(224, 38);
-            this.AddLabelTitle.TabIndex = 0;
-            this.AddLabelTitle.Text = "Add Account";
-            // 
-            // AddPanelNotes
-            // 
-            this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
-            this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
-            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
-            this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelNotes.Name = "AddPanelNotes";
-            this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
-            this.AddPanelNotes.TabIndex = 11;
-            // 
-            // AddPanelNotesLabelTitle
-            // 
-            this.AddPanelNotesLabelTitle.AutoSize = true;
-            this.AddPanelNotesLabelTitle.Font = new System.Drawing.Font("Century Gothic", 8F);
-            this.AddPanelNotesLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.AddPanelNotesLabelTitle.Location = new System.Drawing.Point(2, 9);
-            this.AddPanelNotesLabelTitle.Name = "AddPanelNotesLabelTitle";
-            this.AddPanelNotesLabelTitle.Size = new System.Drawing.Size(55, 21);
-            this.AddPanelNotesLabelTitle.TabIndex = 0;
-            this.AddPanelNotesLabelTitle.Text = "Notes";
-            // 
-            // AddPanelCheckIcon
-            // 
-            this.AddPanelCheckIcon.Controls.Add(this.AddPanelCheckIconContent);
-            this.AddPanelCheckIcon.Location = new System.Drawing.Point(0, 1047);
-            this.AddPanelCheckIcon.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelCheckIcon.Name = "AddPanelCheckIcon";
-            this.AddPanelCheckIcon.Size = new System.Drawing.Size(670, 300);
-            this.AddPanelCheckIcon.TabIndex = 13;
-            // 
-            // AddPanelCheckIconContent
-            // 
-            this.AddPanelCheckIconContent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AddPanelCheckIconContent.Controls.Add(this.AddLabelCheckIconAvailableIcon);
-            this.AddPanelCheckIconContent.Controls.Add(this.AddPictureBoxCheckIconIcon);
-            this.AddPanelCheckIconContent.Controls.Add(this.AddPanelAnimatedButtonCheckIcon);
-            this.AddPanelCheckIconContent.Controls.Add(this.AddLabelCheckIconHeader);
-            this.AddPanelCheckIconContent.Location = new System.Drawing.Point(6, 9);
-            this.AddPanelCheckIconContent.Name = "AddPanelCheckIconContent";
-            this.AddPanelCheckIconContent.Size = new System.Drawing.Size(660, 288);
-            this.AddPanelCheckIconContent.TabIndex = 19;
-            // 
-            // AddLabelCheckIconAvailableIcon
-            // 
-            this.AddLabelCheckIconAvailableIcon.AutoSize = true;
-            this.AddLabelCheckIconAvailableIcon.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.AddLabelCheckIconAvailableIcon.Location = new System.Drawing.Point(5, 59);
-            this.AddLabelCheckIconAvailableIcon.Name = "AddLabelCheckIconAvailableIcon";
-            this.AddLabelCheckIconAvailableIcon.Size = new System.Drawing.Size(136, 23);
-            this.AddLabelCheckIconAvailableIcon.TabIndex = 20;
-            this.AddLabelCheckIconAvailableIcon.Text = "Current Icon:";
-            // 
-            // AddPictureBoxCheckIconIcon
-            // 
-            this.AddPictureBoxCheckIconIcon.Image = global::pmdbs.Properties.Resources._default;
-            this.AddPictureBoxCheckIconIcon.Location = new System.Drawing.Point(13, 93);
-            this.AddPictureBoxCheckIconIcon.Name = "AddPictureBoxCheckIconIcon";
-            this.AddPictureBoxCheckIconIcon.Size = new System.Drawing.Size(128, 128);
-            this.AddPictureBoxCheckIconIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.AddPictureBoxCheckIconIcon.TabIndex = 19;
-            this.AddPictureBoxCheckIconIcon.TabStop = false;
-            // 
-            // AddLabelCheckIconHeader
-            // 
-            this.AddLabelCheckIconHeader.AutoSize = true;
-            this.AddLabelCheckIconHeader.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.AddLabelCheckIconHeader.Location = new System.Drawing.Point(3, 3);
-            this.AddLabelCheckIconHeader.Name = "AddLabelCheckIconHeader";
-            this.AddLabelCheckIconHeader.Size = new System.Drawing.Size(187, 34);
-            this.AddLabelCheckIconHeader.TabIndex = 18;
-            this.AddLabelCheckIconHeader.Text = "Icon Settings";
-            // 
-            // AddPanelBottomMenu
-            // 
-            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonAbort);
-            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonSave);
-            this.AddPanelBottomMenu.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelBottomMenu.Location = new System.Drawing.Point(150, 898);
-            this.AddPanelBottomMenu.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
-            this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
-            this.AddPanelBottomMenu.TabIndex = 12;
             // 
             // DataPictureBoxBackgroundTop
             // 
@@ -1408,6 +1197,98 @@
             this.SettingsLabelOfflineChangeName.TabIndex = 10;
             this.SettingsLabelOfflineChangeName.Text = "Change Your Display Name";
             // 
+            // SettingsPanelPromptMain
+            // 
+            this.SettingsPanelPromptMain.BackColor = System.Drawing.Color.White;
+            this.SettingsPanelPromptMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SettingsPanelPromptMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptAction);
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMain);
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMailInfo);
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsAnimatedButtonPromptSubmit);
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsPanelPromptCenter);
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsPictureBoxPromptLogo);
+            this.SettingsPanelPromptMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsPanelPromptMain.Location = new System.Drawing.Point(0, 0);
+            this.SettingsPanelPromptMain.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelPromptMain.Name = "SettingsPanelPromptMain";
+            this.SettingsPanelPromptMain.Size = new System.Drawing.Size(700, 898);
+            this.SettingsPanelPromptMain.TabIndex = 17;
+            // 
+            // SettingsLabelPromptAction
+            // 
+            this.SettingsLabelPromptAction.AutoSize = true;
+            this.SettingsLabelPromptAction.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.SettingsLabelPromptAction.Location = new System.Drawing.Point(44, 464);
+            this.SettingsLabelPromptAction.Name = "SettingsLabelPromptAction";
+            this.SettingsLabelPromptAction.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.SettingsLabelPromptAction.Size = new System.Drawing.Size(615, 30);
+            this.SettingsLabelPromptAction.TabIndex = 21;
+            this.SettingsLabelPromptAction.Text = "Looks like you\'re trying to login from a new device.";
+            // 
+            // SettingsLabelPromptMain
+            // 
+            this.SettingsLabelPromptMain.AutoSize = true;
+            this.SettingsLabelPromptMain.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelPromptMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLabelPromptMain.Location = new System.Drawing.Point(42, 417);
+            this.SettingsLabelPromptMain.Name = "SettingsLabelPromptMain";
+            this.SettingsLabelPromptMain.Size = new System.Drawing.Size(328, 38);
+            this.SettingsLabelPromptMain.TabIndex = 20;
+            this.SettingsLabelPromptMain.Text = "Confirm new device";
+            // 
+            // SettingsLabelPromptMailInfo
+            // 
+            this.SettingsLabelPromptMailInfo.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.SettingsLabelPromptMailInfo.Location = new System.Drawing.Point(44, 499);
+            this.SettingsLabelPromptMailInfo.Name = "SettingsLabelPromptMailInfo";
+            this.SettingsLabelPromptMailInfo.Size = new System.Drawing.Size(651, 72);
+            this.SettingsLabelPromptMailInfo.TabIndex = 19;
+            this.SettingsLabelPromptMailInfo.Text = "An email containing a verification code has been sent to example@gmail.com.";
+            // 
+            // SettingsPanelPromptCenter
+            // 
+            this.SettingsPanelPromptCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsLabelPromptCode);
+            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsEditFieldPromptCode);
+            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsLabelPromptPrefix);
+            this.SettingsPanelPromptCenter.Location = new System.Drawing.Point(132, 584);
+            this.SettingsPanelPromptCenter.Name = "SettingsPanelPromptCenter";
+            this.SettingsPanelPromptCenter.Size = new System.Drawing.Size(429, 130);
+            this.SettingsPanelPromptCenter.TabIndex = 17;
+            // 
+            // SettingsLabelPromptCode
+            // 
+            this.SettingsLabelPromptCode.AutoSize = true;
+            this.SettingsLabelPromptCode.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.SettingsLabelPromptCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.SettingsLabelPromptCode.Location = new System.Drawing.Point(12, 16);
+            this.SettingsLabelPromptCode.Name = "SettingsLabelPromptCode";
+            this.SettingsLabelPromptCode.Size = new System.Drawing.Size(118, 23);
+            this.SettingsLabelPromptCode.TabIndex = 17;
+            this.SettingsLabelPromptCode.Text = "Enter code";
+            // 
+            // SettingsLabelPromptPrefix
+            // 
+            this.SettingsLabelPromptPrefix.AutoSize = true;
+            this.SettingsLabelPromptPrefix.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLabelPromptPrefix.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsLabelPromptPrefix.Location = new System.Drawing.Point(7, 58);
+            this.SettingsLabelPromptPrefix.Name = "SettingsLabelPromptPrefix";
+            this.SettingsLabelPromptPrefix.Size = new System.Drawing.Size(96, 49);
+            this.SettingsLabelPromptPrefix.TabIndex = 16;
+            this.SettingsLabelPromptPrefix.Text = "PM-";
+            // 
+            // SettingsPictureBoxPromptLogo
+            // 
+            this.SettingsPictureBoxPromptLogo.Image = ((System.Drawing.Image)(resources.GetObject("SettingsPictureBoxPromptLogo.Image")));
+            this.SettingsPictureBoxPromptLogo.Location = new System.Drawing.Point(204, 93);
+            this.SettingsPictureBoxPromptLogo.Name = "SettingsPictureBoxPromptLogo";
+            this.SettingsPictureBoxPromptLogo.Size = new System.Drawing.Size(284, 272);
+            this.SettingsPictureBoxPromptLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.SettingsPictureBoxPromptLogo.TabIndex = 14;
+            this.SettingsPictureBoxPromptLogo.TabStop = false;
+            // 
             // SettingsFlowLayoutPanelLogin
             // 
             this.SettingsFlowLayoutPanelLogin.AutoScroll = true;
@@ -1576,98 +1457,6 @@
             this.SettingsLabelRegisterMain.TabIndex = 0;
             this.SettingsLabelRegisterMain.Text = "Register";
             // 
-            // SettingsPanelPromptMain
-            // 
-            this.SettingsPanelPromptMain.BackColor = System.Drawing.Color.White;
-            this.SettingsPanelPromptMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SettingsPanelPromptMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptAction);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMain);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMailInfo);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsAnimatedButtonPromptSubmit);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsPanelPromptCenter);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsPictureBoxPromptLogo);
-            this.SettingsPanelPromptMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsPanelPromptMain.Location = new System.Drawing.Point(0, 0);
-            this.SettingsPanelPromptMain.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelPromptMain.Name = "SettingsPanelPromptMain";
-            this.SettingsPanelPromptMain.Size = new System.Drawing.Size(700, 898);
-            this.SettingsPanelPromptMain.TabIndex = 17;
-            // 
-            // SettingsLabelPromptAction
-            // 
-            this.SettingsLabelPromptAction.AutoSize = true;
-            this.SettingsLabelPromptAction.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.SettingsLabelPromptAction.Location = new System.Drawing.Point(44, 464);
-            this.SettingsLabelPromptAction.Name = "SettingsLabelPromptAction";
-            this.SettingsLabelPromptAction.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.SettingsLabelPromptAction.Size = new System.Drawing.Size(615, 30);
-            this.SettingsLabelPromptAction.TabIndex = 21;
-            this.SettingsLabelPromptAction.Text = "Looks like you\'re trying to login from a new device.";
-            // 
-            // SettingsLabelPromptMain
-            // 
-            this.SettingsLabelPromptMain.AutoSize = true;
-            this.SettingsLabelPromptMain.BackColor = System.Drawing.Color.White;
-            this.SettingsLabelPromptMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelPromptMain.Location = new System.Drawing.Point(42, 417);
-            this.SettingsLabelPromptMain.Name = "SettingsLabelPromptMain";
-            this.SettingsLabelPromptMain.Size = new System.Drawing.Size(328, 38);
-            this.SettingsLabelPromptMain.TabIndex = 20;
-            this.SettingsLabelPromptMain.Text = "Confirm new device";
-            // 
-            // SettingsLabelPromptMailInfo
-            // 
-            this.SettingsLabelPromptMailInfo.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.SettingsLabelPromptMailInfo.Location = new System.Drawing.Point(44, 499);
-            this.SettingsLabelPromptMailInfo.Name = "SettingsLabelPromptMailInfo";
-            this.SettingsLabelPromptMailInfo.Size = new System.Drawing.Size(651, 72);
-            this.SettingsLabelPromptMailInfo.TabIndex = 19;
-            this.SettingsLabelPromptMailInfo.Text = "An email containing a verification code has been sent to example@gmail.com.";
-            // 
-            // SettingsPanelPromptCenter
-            // 
-            this.SettingsPanelPromptCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsLabelPromptCode);
-            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsEditFieldPromptCode);
-            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsLabelPromptPrefix);
-            this.SettingsPanelPromptCenter.Location = new System.Drawing.Point(132, 584);
-            this.SettingsPanelPromptCenter.Name = "SettingsPanelPromptCenter";
-            this.SettingsPanelPromptCenter.Size = new System.Drawing.Size(429, 130);
-            this.SettingsPanelPromptCenter.TabIndex = 17;
-            // 
-            // SettingsLabelPromptCode
-            // 
-            this.SettingsLabelPromptCode.AutoSize = true;
-            this.SettingsLabelPromptCode.Font = new System.Drawing.Font("Century Gothic", 10F);
-            this.SettingsLabelPromptCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.SettingsLabelPromptCode.Location = new System.Drawing.Point(12, 16);
-            this.SettingsLabelPromptCode.Name = "SettingsLabelPromptCode";
-            this.SettingsLabelPromptCode.Size = new System.Drawing.Size(118, 23);
-            this.SettingsLabelPromptCode.TabIndex = 17;
-            this.SettingsLabelPromptCode.Text = "Enter code";
-            // 
-            // SettingsLabelPromptPrefix
-            // 
-            this.SettingsLabelPromptPrefix.AutoSize = true;
-            this.SettingsLabelPromptPrefix.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelPromptPrefix.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsLabelPromptPrefix.Location = new System.Drawing.Point(7, 58);
-            this.SettingsLabelPromptPrefix.Name = "SettingsLabelPromptPrefix";
-            this.SettingsLabelPromptPrefix.Size = new System.Drawing.Size(96, 49);
-            this.SettingsLabelPromptPrefix.TabIndex = 16;
-            this.SettingsLabelPromptPrefix.Text = "PM-";
-            // 
-            // SettingsPictureBoxPromptLogo
-            // 
-            this.SettingsPictureBoxPromptLogo.Image = ((System.Drawing.Image)(resources.GetObject("SettingsPictureBoxPromptLogo.Image")));
-            this.SettingsPictureBoxPromptLogo.Location = new System.Drawing.Point(204, 93);
-            this.SettingsPictureBoxPromptLogo.Name = "SettingsPictureBoxPromptLogo";
-            this.SettingsPictureBoxPromptLogo.Size = new System.Drawing.Size(284, 272);
-            this.SettingsPictureBoxPromptLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.SettingsPictureBoxPromptLogo.TabIndex = 14;
-            this.SettingsPictureBoxPromptLogo.TabStop = false;
-            // 
             // SettingsPanelLoadingMain
             // 
             this.SettingsPanelLoadingMain.BackColor = System.Drawing.Color.White;
@@ -1774,6 +1563,224 @@
             this.label8.Size = new System.Drawing.Size(240, 38);
             this.label8.TabIndex = 5;
             this.label8.Text = "Server Settings";
+            // 
+            // AddPictureBoxLeft
+            // 
+            this.AddPictureBoxLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.AddPictureBoxLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPictureBoxLeft.Image = ((System.Drawing.Image)(resources.GetObject("AddPictureBoxLeft.Image")));
+            this.AddPictureBoxLeft.Location = new System.Drawing.Point(10, 0);
+            this.AddPictureBoxLeft.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPictureBoxLeft.Name = "AddPictureBoxLeft";
+            this.AddPictureBoxLeft.Size = new System.Drawing.Size(302, 998);
+            this.AddPictureBoxLeft.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.AddPictureBoxLeft.TabIndex = 0;
+            this.AddPictureBoxLeft.TabStop = false;
+            this.AddPictureBoxLeft.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
+            // 
+            // AddPictureBoxRight
+            // 
+            this.AddPictureBoxRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPictureBoxRight.Image = ((System.Drawing.Image)(resources.GetObject("AddPictureBoxRight.Image")));
+            this.AddPictureBoxRight.Location = new System.Drawing.Point(1312, 0);
+            this.AddPictureBoxRight.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPictureBoxRight.Name = "AddPictureBoxRight";
+            this.AddPictureBoxRight.Size = new System.Drawing.Size(303, 998);
+            this.AddPictureBoxRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.AddPictureBoxRight.TabIndex = 1;
+            this.AddPictureBoxRight.TabStop = false;
+            this.AddPictureBoxRight.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
+            // 
+            // AddTableLayoutPanelCenter
+            // 
+            this.AddTableLayoutPanelCenter.BackColor = System.Drawing.Color.White;
+            this.AddTableLayoutPanelCenter.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("AddTableLayoutPanelCenter.BackgroundImage")));
+            this.AddTableLayoutPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.AddTableLayoutPanelCenter.ColumnCount = 3;
+            this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
+            this.AddTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AddTableLayoutPanelCenter.Controls.Add(this.AddFlowLayoutPanelCenter, 1, 0);
+            this.AddTableLayoutPanelCenter.Controls.Add(this.AddPanelBottomMenu, 1, 1);
+            this.AddTableLayoutPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddTableLayoutPanelCenter.Location = new System.Drawing.Point(0, 0);
+            this.AddTableLayoutPanelCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.AddTableLayoutPanelCenter.Name = "AddTableLayoutPanelCenter";
+            this.AddTableLayoutPanelCenter.RowCount = 2;
+            this.AddTableLayoutPanelCenter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.AddTableLayoutPanelCenter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.AddTableLayoutPanelCenter.Size = new System.Drawing.Size(1000, 998);
+            this.AddTableLayoutPanelCenter.TabIndex = 9;
+            // 
+            // AddFlowLayoutPanelCenter
+            // 
+            this.AddFlowLayoutPanelCenter.AutoScroll = true;
+            this.AddFlowLayoutPanelCenter.Controls.Add(this.AddPanelContent);
+            this.AddFlowLayoutPanelCenter.Controls.Add(this.AddPanelNotes);
+            this.AddFlowLayoutPanelCenter.Controls.Add(this.AddPanelCheckIcon);
+            this.AddFlowLayoutPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddFlowLayoutPanelCenter.Location = new System.Drawing.Point(150, 0);
+            this.AddFlowLayoutPanelCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.AddFlowLayoutPanelCenter.Name = "AddFlowLayoutPanelCenter";
+            this.AddFlowLayoutPanelCenter.Size = new System.Drawing.Size(700, 898);
+            this.AddFlowLayoutPanelCenter.TabIndex = 11;
+            this.AddFlowLayoutPanelCenter.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
+            // 
+            // AddPanelContent
+            // 
+            this.AddPanelContent.BackColor = System.Drawing.Color.White;
+            this.AddPanelContent.Controls.Add(this.AddPanelGeneratePassword);
+            this.AddPanelContent.Controls.Add(this.AddEditFieldEmail);
+            this.AddPanelContent.Controls.Add(this.AddLabelTitle);
+            this.AddPanelContent.Controls.Add(this.AddEditFieldHostname);
+            this.AddPanelContent.Controls.Add(this.AddEditFieldWebsite);
+            this.AddPanelContent.Controls.Add(this.AddEditFieldUsername);
+            this.AddPanelContent.Controls.Add(this.AddEditFieldPassword);
+            this.AddPanelContent.Location = new System.Drawing.Point(0, 0);
+            this.AddPanelContent.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelContent.Name = "AddPanelContent";
+            this.AddPanelContent.Size = new System.Drawing.Size(670, 866);
+            this.AddPanelContent.TabIndex = 10;
+            // 
+            // AddPanelGeneratePassword
+            // 
+            this.AddPanelGeneratePassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordAnimatedButtonGenerate);
+            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelTitle);
+            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordAdvancedCheckBox);
+            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordeAdvancedNumericUpDown);
+            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelLength);
+            this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelDescription);
+            this.AddPanelGeneratePassword.Location = new System.Drawing.Point(6, 436);
+            this.AddPanelGeneratePassword.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelGeneratePassword.Name = "AddPanelGeneratePassword";
+            this.AddPanelGeneratePassword.Size = new System.Drawing.Size(660, 197);
+            this.AddPanelGeneratePassword.TabIndex = 8;
+            // 
+            // AddPanelGeneratePasswordLabelTitle
+            // 
+            this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.AddPanelGeneratePasswordLabelTitle.Location = new System.Drawing.Point(3, 3);
+            this.AddPanelGeneratePasswordLabelTitle.Name = "AddPanelGeneratePasswordLabelTitle";
+            this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(394, 34);
+            this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
+            this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
+            // 
+            // AddPanelGeneratePasswordLabelLength
+            // 
+            this.AddPanelGeneratePasswordLabelLength.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelLength.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordLabelLength.Location = new System.Drawing.Point(323, 121);
+            this.AddPanelGeneratePasswordLabelLength.Name = "AddPanelGeneratePasswordLabelLength";
+            this.AddPanelGeneratePasswordLabelLength.Size = new System.Drawing.Size(94, 30);
+            this.AddPanelGeneratePasswordLabelLength.TabIndex = 17;
+            this.AddPanelGeneratePasswordLabelLength.Text = "Length";
+            // 
+            // AddPanelGeneratePasswordLabelDescription
+            // 
+            this.AddPanelGeneratePasswordLabelDescription.AutoSize = true;
+            this.AddPanelGeneratePasswordLabelDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordLabelDescription.Location = new System.Drawing.Point(9, 48);
+            this.AddPanelGeneratePasswordLabelDescription.Name = "AddPanelGeneratePasswordLabelDescription";
+            this.AddPanelGeneratePasswordLabelDescription.Size = new System.Drawing.Size(615, 63);
+            this.AddPanelGeneratePasswordLabelDescription.TabIndex = 16;
+            this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
+    "s as well as special characters and are at least 16\r\ncharacters long.";
+            // 
+            // AddLabelTitle
+            // 
+            this.AddLabelTitle.AutoSize = true;
+            this.AddLabelTitle.BackColor = System.Drawing.Color.White;
+            this.AddLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddLabelTitle.Location = new System.Drawing.Point(3, 67);
+            this.AddLabelTitle.Name = "AddLabelTitle";
+            this.AddLabelTitle.Size = new System.Drawing.Size(224, 38);
+            this.AddLabelTitle.TabIndex = 0;
+            this.AddLabelTitle.Text = "Add Account";
+            // 
+            // AddPanelNotes
+            // 
+            this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
+            this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
+            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
+            this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelNotes.Name = "AddPanelNotes";
+            this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
+            this.AddPanelNotes.TabIndex = 11;
+            // 
+            // AddPanelNotesLabelTitle
+            // 
+            this.AddPanelNotesLabelTitle.AutoSize = true;
+            this.AddPanelNotesLabelTitle.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.AddPanelNotesLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.AddPanelNotesLabelTitle.Location = new System.Drawing.Point(2, 9);
+            this.AddPanelNotesLabelTitle.Name = "AddPanelNotesLabelTitle";
+            this.AddPanelNotesLabelTitle.Size = new System.Drawing.Size(55, 21);
+            this.AddPanelNotesLabelTitle.TabIndex = 0;
+            this.AddPanelNotesLabelTitle.Text = "Notes";
+            // 
+            // AddPanelCheckIcon
+            // 
+            this.AddPanelCheckIcon.Controls.Add(this.AddPanelCheckIconContent);
+            this.AddPanelCheckIcon.Location = new System.Drawing.Point(0, 1047);
+            this.AddPanelCheckIcon.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelCheckIcon.Name = "AddPanelCheckIcon";
+            this.AddPanelCheckIcon.Size = new System.Drawing.Size(670, 300);
+            this.AddPanelCheckIcon.TabIndex = 13;
+            // 
+            // AddPanelCheckIconContent
+            // 
+            this.AddPanelCheckIconContent.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AddPanelCheckIconContent.Controls.Add(this.AddLabelCheckIconAvailableIcon);
+            this.AddPanelCheckIconContent.Controls.Add(this.AddPictureBoxCheckIconIcon);
+            this.AddPanelCheckIconContent.Controls.Add(this.AddPanelAnimatedButtonCheckIcon);
+            this.AddPanelCheckIconContent.Controls.Add(this.AddLabelCheckIconHeader);
+            this.AddPanelCheckIconContent.Location = new System.Drawing.Point(6, 9);
+            this.AddPanelCheckIconContent.Name = "AddPanelCheckIconContent";
+            this.AddPanelCheckIconContent.Size = new System.Drawing.Size(660, 288);
+            this.AddPanelCheckIconContent.TabIndex = 19;
+            // 
+            // AddLabelCheckIconAvailableIcon
+            // 
+            this.AddLabelCheckIconAvailableIcon.AutoSize = true;
+            this.AddLabelCheckIconAvailableIcon.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.AddLabelCheckIconAvailableIcon.Location = new System.Drawing.Point(5, 59);
+            this.AddLabelCheckIconAvailableIcon.Name = "AddLabelCheckIconAvailableIcon";
+            this.AddLabelCheckIconAvailableIcon.Size = new System.Drawing.Size(136, 23);
+            this.AddLabelCheckIconAvailableIcon.TabIndex = 20;
+            this.AddLabelCheckIconAvailableIcon.Text = "Current Icon:";
+            // 
+            // AddPictureBoxCheckIconIcon
+            // 
+            this.AddPictureBoxCheckIconIcon.Image = global::pmdbs.Properties.Resources._default;
+            this.AddPictureBoxCheckIconIcon.Location = new System.Drawing.Point(13, 93);
+            this.AddPictureBoxCheckIconIcon.Name = "AddPictureBoxCheckIconIcon";
+            this.AddPictureBoxCheckIconIcon.Size = new System.Drawing.Size(128, 128);
+            this.AddPictureBoxCheckIconIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.AddPictureBoxCheckIconIcon.TabIndex = 19;
+            this.AddPictureBoxCheckIconIcon.TabStop = false;
+            // 
+            // AddLabelCheckIconHeader
+            // 
+            this.AddLabelCheckIconHeader.AutoSize = true;
+            this.AddLabelCheckIconHeader.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.AddLabelCheckIconHeader.Location = new System.Drawing.Point(3, 3);
+            this.AddLabelCheckIconHeader.Name = "AddLabelCheckIconHeader";
+            this.AddLabelCheckIconHeader.Size = new System.Drawing.Size(187, 34);
+            this.AddLabelCheckIconHeader.TabIndex = 18;
+            this.AddLabelCheckIconHeader.Text = "Icon Settings";
+            // 
+            // AddPanelBottomMenu
+            // 
+            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonAbort);
+            this.AddPanelBottomMenu.Controls.Add(this.AddPanelAdvancedImageButtonSave);
+            this.AddPanelBottomMenu.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelBottomMenu.Location = new System.Drawing.Point(150, 898);
+            this.AddPanelBottomMenu.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
+            this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
+            this.AddPanelBottomMenu.TabIndex = 12;
             // 
             // MenuSyncPictureBox
             // 
@@ -2144,6 +2151,379 @@
             this.LoginLabelOnlineTitle.TabIndex = 2;
             this.LoginLabelOnlineTitle.Text = "Online Login";
             // 
+            // metroComboBox1
+            // 
+            this.metroComboBox1.FontSize = MetroFramework.MetroComboBoxSize.Tall;
+            this.metroComboBox1.FormattingEnabled = true;
+            this.metroComboBox1.ItemHeight = 29;
+            this.metroComboBox1.Items.AddRange(new object[] {
+            "Hostname... (A-Z)",
+            "Hostname... (Z-A)",
+            "Date... (oldest first)",
+            "Date... (newest first)"});
+            this.metroComboBox1.Location = new System.Drawing.Point(818, 60);
+            this.metroComboBox1.Name = "metroComboBox1";
+            this.metroComboBox1.Size = new System.Drawing.Size(233, 35);
+            this.metroComboBox1.Style = MetroFramework.MetroColorStyle.Orange;
+            this.metroComboBox1.TabIndex = 2;
+            this.metroComboBox1.UseSelectable = true;
+            this.metroComboBox1.UseStyleColors = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.label1.Location = new System.Drawing.Point(814, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 20);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Sort by";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label4.Location = new System.Drawing.Point(95, 34);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(68, 30);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Filter";
+            // 
+            // DataSyncAdvancedImageButton
+            // 
+            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
+            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
+            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
+            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
+            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataSyncAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataRightAdvancedImageButton
+            // 
+            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
+            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
+            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
+            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataRightAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataAddAdvancedImageButton
+            // 
+            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
+            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
+            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
+            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataAddAdvancedImageButton.TabIndex = 15;
+            // 
+            // DataLeftAdvancedImageButton
+            // 
+            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
+            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
+            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
+            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
+            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataLeftAdvancedImageButton.TabIndex = 16;
+            // 
+            // DataDetailsCustomLabelNotes
+            // 
+            this.DataDetailsCustomLabelNotes.Content = "Some  generic notes";
+            this.DataDetailsCustomLabelNotes.Header = "Notes:";
+            this.DataDetailsCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
+            this.DataDetailsCustomLabelNotes.Name = "DataDetailsCustomLabelNotes";
+            this.DataDetailsCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
+            this.DataDetailsCustomLabelNotes.TabIndex = 23;
+            // 
+            // DataDetailsEntryUsername
+            // 
+            this.DataDetailsEntryUsername.Content = "-";
+            this.DataDetailsEntryUsername.Header = "Your Username:";
+            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
+            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
+            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
+            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
+            this.DataDetailsEntryUsername.RawText = null;
+            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryUsername.TabIndex = 22;
+            // 
+            // DataDetailsEntryPassword
+            // 
+            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.DataDetailsEntryPassword.Header = "Your Password:";
+            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
+            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
+            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
+            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
+            this.DataDetailsEntryPassword.RawText = null;
+            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryPassword.TabIndex = 21;
+            // 
+            // DataDetailsEditAdvancedImageButton
+            // 
+            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
+            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
+            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
+            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
+            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
+            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
+            // 
+            // DataDetailsRemoveAdvancedImageButton
+            // 
+            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
+            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
+            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
+            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
+            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
+            // 
+            // DataDetailsEntryEmail
+            // 
+            this.DataDetailsEntryEmail.Content = "example@gmail.com";
+            this.DataDetailsEntryEmail.Header = "Your Email:";
+            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
+            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
+            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
+            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
+            this.DataDetailsEntryEmail.RawText = null;
+            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryEmail.TabIndex = 20;
+            // 
+            // DataDetailsEntryWebsite
+            // 
+            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
+            this.DataDetailsEntryWebsite.Header = "Website:";
+            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
+            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
+            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
+            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
+            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
+    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
+    "iceLogin";
+            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryWebsite.TabIndex = 19;
+            // 
+            // DataEditSaveAdvancedImageButton
+            // 
+            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
+            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
+            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
+            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
+            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
+            // 
+            // DataEditCancelAdvancedImageButton
+            // 
+            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
+            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
+            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
+            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
+            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
+            // 
+            // DataEditAnimatedButtonGeneratePassword
+            // 
+            this.DataEditAnimatedButtonGeneratePassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataEditAnimatedButtonGeneratePassword.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAnimatedButtonGeneratePassword.Depth = 0;
+            this.DataEditAnimatedButtonGeneratePassword.Icon = null;
+            this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
+            this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataEditAnimatedButtonGeneratePassword.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
+            this.DataEditAnimatedButtonGeneratePassword.Primary = false;
+            this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
+            this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
+            this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
+            this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
+            this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
+            // 
+            // DataEditAdvancedCheckBox
+            // 
+            this.DataEditAdvancedCheckBox.AutoSize = true;
+            this.DataEditAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAdvancedCheckBox.Depth = 0;
+            this.DataEditAdvancedCheckBox.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.DataEditAdvancedCheckBox.FontText = new System.Drawing.Font("Century Gothic", 12F);
+            this.DataEditAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
+            this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
+            this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.DataEditAdvancedCheckBox.MouseState = pmdbs.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
+            this.DataEditAdvancedCheckBox.Ripple = true;
+            this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(304, 30);
+            this.DataEditAdvancedCheckBox.TabIndex = 13;
+            this.DataEditAdvancedCheckBox.Text = "Use special characters";
+            this.DataEditAdvancedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // DataEditAdvancedNumericUpDown
+            // 
+            this.DataEditAdvancedNumericUpDown.BackColor = System.Drawing.Color.Gainsboro;
+            this.DataEditAdvancedNumericUpDown.BorderColor = System.Drawing.Color.Gainsboro;
+            this.DataEditAdvancedNumericUpDown.ColorNormal = System.Drawing.Color.Gainsboro;
+            this.DataEditAdvancedNumericUpDown.FontStyle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditAdvancedNumericUpDown.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedNumericUpDown.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseHover")));
+            this.DataEditAdvancedNumericUpDown.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseNormal")));
+            this.DataEditAdvancedNumericUpDown.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseHover")));
+            this.DataEditAdvancedNumericUpDown.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseNormal")));
+            this.DataEditAdvancedNumericUpDown.Location = new System.Drawing.Point(328, 156);
+            this.DataEditAdvancedNumericUpDown.Maximum = "128";
+            this.DataEditAdvancedNumericUpDown.Minimum = "8";
+            this.DataEditAdvancedNumericUpDown.Name = "DataEditAdvancedNumericUpDown";
+            this.DataEditAdvancedNumericUpDown.Padding = new System.Windows.Forms.Padding(1);
+            this.DataEditAdvancedNumericUpDown.Size = new System.Drawing.Size(154, 30);
+            this.DataEditAdvancedNumericUpDown.TabIndex = 12;
+            this.DataEditAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.DataEditAdvancedNumericUpDown.TextValue = "20";
+            // 
+            // DataEditEditFieldHostname
+            // 
+            this.DataEditEditFieldHostname.AutoSize = true;
+            this.DataEditEditFieldHostname.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldHostname.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldHostname.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldHostname.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearHover")));
+            this.DataEditEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearNormal")));
+            this.DataEditEditFieldHostname.Location = new System.Drawing.Point(10, 116);
+            this.DataEditEditFieldHostname.Name = "DataEditEditFieldHostname";
+            this.DataEditEditFieldHostname.Size = new System.Drawing.Size(656, 96);
+            this.DataEditEditFieldHostname.TabIndex = 25;
+            this.DataEditEditFieldHostname.TextTextBox = "Gmail";
+            this.DataEditEditFieldHostname.TextTitle = "Hostname:";
+            this.DataEditEditFieldHostname.UseColoredCaret = true;
+            this.DataEditEditFieldHostname.UseDefaultValue = false;
+            this.DataEditEditFieldHostname.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldEmail
+            // 
+            this.DataEditEditFieldEmail.AutoSize = true;
+            this.DataEditEditFieldEmail.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldEmail.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldEmail.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldEmail.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearHover")));
+            this.DataEditEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearNormal")));
+            this.DataEditEditFieldEmail.Location = new System.Drawing.Point(10, 669);
+            this.DataEditEditFieldEmail.Name = "DataEditEditFieldEmail";
+            this.DataEditEditFieldEmail.Size = new System.Drawing.Size(656, 96);
+            this.DataEditEditFieldEmail.TabIndex = 28;
+            this.DataEditEditFieldEmail.TextTextBox = "example@gmail.com";
+            this.DataEditEditFieldEmail.TextTitle = "Email:";
+            this.DataEditEditFieldEmail.UseColoredCaret = true;
+            this.DataEditEditFieldEmail.UseDefaultValue = false;
+            this.DataEditEditFieldEmail.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldWebsite
+            // 
+            this.DataEditEditFieldWebsite.AutoSize = true;
+            this.DataEditEditFieldWebsite.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldWebsite.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldWebsite.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldWebsite.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearHover")));
+            this.DataEditEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearNormal")));
+            this.DataEditEditFieldWebsite.Location = new System.Drawing.Point(10, 782);
+            this.DataEditEditFieldWebsite.Name = "DataEditEditFieldWebsite";
+            this.DataEditEditFieldWebsite.Size = new System.Drawing.Size(656, 96);
+            this.DataEditEditFieldWebsite.TabIndex = 29;
+            this.DataEditEditFieldWebsite.TextTextBox = "https://mail.google.com";
+            this.DataEditEditFieldWebsite.TextTitle = "Website:";
+            this.DataEditEditFieldWebsite.UseColoredCaret = true;
+            this.DataEditEditFieldWebsite.UseDefaultValue = false;
+            this.DataEditEditFieldWebsite.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldUsername
+            // 
+            this.DataEditEditFieldUsername.AutoSize = true;
+            this.DataEditEditFieldUsername.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldUsername.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldUsername.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearHover")));
+            this.DataEditEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearNormal")));
+            this.DataEditEditFieldUsername.Location = new System.Drawing.Point(10, 229);
+            this.DataEditEditFieldUsername.Name = "DataEditEditFieldUsername";
+            this.DataEditEditFieldUsername.Size = new System.Drawing.Size(656, 96);
+            this.DataEditEditFieldUsername.TabIndex = 26;
+            this.DataEditEditFieldUsername.TextTextBox = "Us3r123";
+            this.DataEditEditFieldUsername.TextTitle = "Username:";
+            this.DataEditEditFieldUsername.UseColoredCaret = true;
+            this.DataEditEditFieldUsername.UseDefaultValue = false;
+            this.DataEditEditFieldUsername.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldPassword
+            // 
+            this.DataEditEditFieldPassword.AutoSize = true;
+            this.DataEditEditFieldPassword.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldPassword.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldPassword.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearHover")));
+            this.DataEditEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearNormal")));
+            this.DataEditEditFieldPassword.Location = new System.Drawing.Point(10, 342);
+            this.DataEditEditFieldPassword.Name = "DataEditEditFieldPassword";
+            this.DataEditEditFieldPassword.Size = new System.Drawing.Size(656, 96);
+            this.DataEditEditFieldPassword.TabIndex = 27;
+            this.DataEditEditFieldPassword.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.DataEditEditFieldPassword.TextTitle = "Password:";
+            this.DataEditEditFieldPassword.UseColoredCaret = true;
+            this.DataEditEditFieldPassword.UseDefaultValue = false;
+            this.DataEditEditFieldPassword.UseSystemPasswordChar = false;
+            // 
+            // DataEditAdvancedRichTextBoxNotes
+            // 
+            this.DataEditAdvancedRichTextBoxNotes.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAdvancedRichTextBoxNotes.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedRichTextBoxNotes.ForeColorFocus = System.Drawing.Color.Black;
+            this.DataEditAdvancedRichTextBoxNotes.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedRichTextBoxNotes.Location = new System.Drawing.Point(10, 34);
+            this.DataEditAdvancedRichTextBoxNotes.Name = "DataEditAdvancedRichTextBoxNotes";
+            this.DataEditAdvancedRichTextBoxNotes.Size = new System.Drawing.Size(656, 266);
+            this.DataEditAdvancedRichTextBoxNotes.TabIndex = 31;
+            this.DataEditAdvancedRichTextBoxNotes.TextValue = "";
+            // 
             // SettingsAdvancedImageButtonFooterAbort
             // 
             this.SettingsAdvancedImageButtonFooterAbort.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageHover")));
@@ -2161,48 +2541,6 @@
             this.SettingsAdvancedImageButtonFooterSave.Name = "SettingsAdvancedImageButtonFooterSave";
             this.SettingsAdvancedImageButtonFooterSave.Size = new System.Drawing.Size(72, 72);
             this.SettingsAdvancedImageButtonFooterSave.TabIndex = 0;
-            // 
-            // SettingsAnimatedButtonPromptSubmit
-            // 
-            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
-            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
-            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 742);
-            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonPromptSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
-            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
-            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
-            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
-            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
-            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
-            // 
-            // SettingsEditFieldPromptCode
-            // 
-            this.SettingsEditFieldPromptCode.AutoSize = true;
-            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
-            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Century Gothic", 20F);
-            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
-            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
-            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
-            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
-            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 104);
-            this.SettingsEditFieldPromptCode.TabIndex = 15;
-            this.SettingsEditFieldPromptCode.TextTextBox = "";
-            this.SettingsEditFieldPromptCode.TextTitle = "";
-            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
-            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
-            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
             // 
             // editField3
             // 
@@ -2369,6 +2707,48 @@
             this.SettingsEditFieldOfflineName.UseColoredCaret = true;
             this.SettingsEditFieldOfflineName.UseDefaultValue = false;
             this.SettingsEditFieldOfflineName.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonPromptSubmit
+            // 
+            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
+            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
+            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 742);
+            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonPromptSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
+            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
+            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
+            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
+            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
+            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
+            // 
+            // SettingsEditFieldPromptCode
+            // 
+            this.SettingsEditFieldPromptCode.AutoSize = true;
+            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
+            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Century Gothic", 20F);
+            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
+            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
+            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
+            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
+            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 104);
+            this.SettingsEditFieldPromptCode.TabIndex = 15;
+            this.SettingsEditFieldPromptCode.TextTextBox = "";
+            this.SettingsEditFieldPromptCode.TextTitle = "";
+            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
+            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
+            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
             // 
             // SettingsAnimatedButtonLoginSubmit
             // 
@@ -2758,340 +3138,6 @@
             this.editField6.UseDefaultValue = false;
             this.editField6.UseSystemPasswordChar = false;
             // 
-            // DataSyncAdvancedImageButton
-            // 
-            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
-            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
-            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
-            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
-            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataSyncAdvancedImageButton.TabIndex = 17;
-            // 
-            // DataRightAdvancedImageButton
-            // 
-            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
-            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
-            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
-            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataRightAdvancedImageButton.TabIndex = 17;
-            // 
-            // DataAddAdvancedImageButton
-            // 
-            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
-            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
-            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
-            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataAddAdvancedImageButton.TabIndex = 15;
-            // 
-            // DataLeftAdvancedImageButton
-            // 
-            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
-            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
-            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
-            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
-            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataLeftAdvancedImageButton.TabIndex = 16;
-            // 
-            // DataDetailsCustomLabelNotes
-            // 
-            this.DataDetailsCustomLabelNotes.Content = "Some  generic notes";
-            this.DataDetailsCustomLabelNotes.Header = "Notes:";
-            this.DataDetailsCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
-            this.DataDetailsCustomLabelNotes.Name = "DataDetailsCustomLabelNotes";
-            this.DataDetailsCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
-            this.DataDetailsCustomLabelNotes.TabIndex = 23;
-            // 
-            // DataDetailsEntryUsername
-            // 
-            this.DataDetailsEntryUsername.Content = "-";
-            this.DataDetailsEntryUsername.Header = "Your Username:";
-            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
-            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
-            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
-            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
-            this.DataDetailsEntryUsername.RawText = null;
-            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryUsername.TabIndex = 22;
-            // 
-            // DataDetailsEntryPassword
-            // 
-            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.DataDetailsEntryPassword.Header = "Your Password:";
-            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
-            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
-            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
-            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
-            this.DataDetailsEntryPassword.RawText = null;
-            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryPassword.TabIndex = 21;
-            // 
-            // DataDetailsEditAdvancedImageButton
-            // 
-            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
-            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
-            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
-            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
-            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
-            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
-            // 
-            // DataDetailsRemoveAdvancedImageButton
-            // 
-            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
-            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
-            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
-            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
-            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
-            // 
-            // DataDetailsEntryEmail
-            // 
-            this.DataDetailsEntryEmail.Content = "example@gmail.com";
-            this.DataDetailsEntryEmail.Header = "Your Email:";
-            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
-            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
-            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
-            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
-            this.DataDetailsEntryEmail.RawText = null;
-            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryEmail.TabIndex = 20;
-            // 
-            // DataDetailsEntryWebsite
-            // 
-            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
-            this.DataDetailsEntryWebsite.Header = "Website:";
-            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
-            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
-            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
-            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
-            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
-    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
-    "iceLogin";
-            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryWebsite.TabIndex = 19;
-            // 
-            // DataEditSaveAdvancedImageButton
-            // 
-            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
-            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
-            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
-            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
-            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
-            // 
-            // DataEditCancelAdvancedImageButton
-            // 
-            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
-            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
-            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
-            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
-            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
-            // 
-            // DataEditAnimatedButtonGeneratePassword
-            // 
-            this.DataEditAnimatedButtonGeneratePassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataEditAnimatedButtonGeneratePassword.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAnimatedButtonGeneratePassword.Depth = 0;
-            this.DataEditAnimatedButtonGeneratePassword.Icon = null;
-            this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
-            this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataEditAnimatedButtonGeneratePassword.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
-            this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
-            this.DataEditAnimatedButtonGeneratePassword.Primary = false;
-            this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
-            this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
-            this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
-            this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
-            this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
-            // 
-            // DataEditAdvancedCheckBox
-            // 
-            this.DataEditAdvancedCheckBox.AutoSize = true;
-            this.DataEditAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAdvancedCheckBox.Depth = 0;
-            this.DataEditAdvancedCheckBox.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.DataEditAdvancedCheckBox.FontText = new System.Drawing.Font("Century Gothic", 12F);
-            this.DataEditAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
-            this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
-            this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
-            this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.DataEditAdvancedCheckBox.MouseState = pmdbs.AdvancedCheckBox.MouseStateBase.HOVER;
-            this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
-            this.DataEditAdvancedCheckBox.Ripple = true;
-            this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(304, 30);
-            this.DataEditAdvancedCheckBox.TabIndex = 13;
-            this.DataEditAdvancedCheckBox.Text = "Use special characters";
-            this.DataEditAdvancedCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // DataEditAdvancedNumericUpDown
-            // 
-            this.DataEditAdvancedNumericUpDown.BackColor = System.Drawing.Color.Gainsboro;
-            this.DataEditAdvancedNumericUpDown.BorderColor = System.Drawing.Color.Gainsboro;
-            this.DataEditAdvancedNumericUpDown.ColorNormal = System.Drawing.Color.Gainsboro;
-            this.DataEditAdvancedNumericUpDown.FontStyle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditAdvancedNumericUpDown.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedNumericUpDown.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseHover")));
-            this.DataEditAdvancedNumericUpDown.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseNormal")));
-            this.DataEditAdvancedNumericUpDown.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseHover")));
-            this.DataEditAdvancedNumericUpDown.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseNormal")));
-            this.DataEditAdvancedNumericUpDown.Location = new System.Drawing.Point(328, 156);
-            this.DataEditAdvancedNumericUpDown.Maximum = "128";
-            this.DataEditAdvancedNumericUpDown.Minimum = "8";
-            this.DataEditAdvancedNumericUpDown.Name = "DataEditAdvancedNumericUpDown";
-            this.DataEditAdvancedNumericUpDown.Padding = new System.Windows.Forms.Padding(1);
-            this.DataEditAdvancedNumericUpDown.Size = new System.Drawing.Size(154, 30);
-            this.DataEditAdvancedNumericUpDown.TabIndex = 12;
-            this.DataEditAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.DataEditAdvancedNumericUpDown.TextValue = "20";
-            // 
-            // DataEditEditFieldHostname
-            // 
-            this.DataEditEditFieldHostname.AutoSize = true;
-            this.DataEditEditFieldHostname.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldHostname.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldHostname.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldHostname.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearHover")));
-            this.DataEditEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearNormal")));
-            this.DataEditEditFieldHostname.Location = new System.Drawing.Point(10, 116);
-            this.DataEditEditFieldHostname.Name = "DataEditEditFieldHostname";
-            this.DataEditEditFieldHostname.Size = new System.Drawing.Size(656, 96);
-            this.DataEditEditFieldHostname.TabIndex = 25;
-            this.DataEditEditFieldHostname.TextTextBox = "Gmail";
-            this.DataEditEditFieldHostname.TextTitle = "Hostname:";
-            this.DataEditEditFieldHostname.UseColoredCaret = true;
-            this.DataEditEditFieldHostname.UseDefaultValue = false;
-            this.DataEditEditFieldHostname.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldEmail
-            // 
-            this.DataEditEditFieldEmail.AutoSize = true;
-            this.DataEditEditFieldEmail.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldEmail.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldEmail.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldEmail.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearHover")));
-            this.DataEditEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearNormal")));
-            this.DataEditEditFieldEmail.Location = new System.Drawing.Point(10, 669);
-            this.DataEditEditFieldEmail.Name = "DataEditEditFieldEmail";
-            this.DataEditEditFieldEmail.Size = new System.Drawing.Size(656, 96);
-            this.DataEditEditFieldEmail.TabIndex = 28;
-            this.DataEditEditFieldEmail.TextTextBox = "example@gmail.com";
-            this.DataEditEditFieldEmail.TextTitle = "Email:";
-            this.DataEditEditFieldEmail.UseColoredCaret = true;
-            this.DataEditEditFieldEmail.UseDefaultValue = false;
-            this.DataEditEditFieldEmail.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldWebsite
-            // 
-            this.DataEditEditFieldWebsite.AutoSize = true;
-            this.DataEditEditFieldWebsite.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldWebsite.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldWebsite.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldWebsite.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearHover")));
-            this.DataEditEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearNormal")));
-            this.DataEditEditFieldWebsite.Location = new System.Drawing.Point(10, 782);
-            this.DataEditEditFieldWebsite.Name = "DataEditEditFieldWebsite";
-            this.DataEditEditFieldWebsite.Size = new System.Drawing.Size(656, 96);
-            this.DataEditEditFieldWebsite.TabIndex = 29;
-            this.DataEditEditFieldWebsite.TextTextBox = "https://mail.google.com";
-            this.DataEditEditFieldWebsite.TextTitle = "Website:";
-            this.DataEditEditFieldWebsite.UseColoredCaret = true;
-            this.DataEditEditFieldWebsite.UseDefaultValue = false;
-            this.DataEditEditFieldWebsite.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldUsername
-            // 
-            this.DataEditEditFieldUsername.AutoSize = true;
-            this.DataEditEditFieldUsername.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldUsername.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldUsername.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearHover")));
-            this.DataEditEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearNormal")));
-            this.DataEditEditFieldUsername.Location = new System.Drawing.Point(10, 229);
-            this.DataEditEditFieldUsername.Name = "DataEditEditFieldUsername";
-            this.DataEditEditFieldUsername.Size = new System.Drawing.Size(656, 96);
-            this.DataEditEditFieldUsername.TabIndex = 26;
-            this.DataEditEditFieldUsername.TextTextBox = "Us3r123";
-            this.DataEditEditFieldUsername.TextTitle = "Username:";
-            this.DataEditEditFieldUsername.UseColoredCaret = true;
-            this.DataEditEditFieldUsername.UseDefaultValue = false;
-            this.DataEditEditFieldUsername.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldPassword
-            // 
-            this.DataEditEditFieldPassword.AutoSize = true;
-            this.DataEditEditFieldPassword.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldPassword.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldPassword.FontTitle = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearHover")));
-            this.DataEditEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearNormal")));
-            this.DataEditEditFieldPassword.Location = new System.Drawing.Point(10, 342);
-            this.DataEditEditFieldPassword.Name = "DataEditEditFieldPassword";
-            this.DataEditEditFieldPassword.Size = new System.Drawing.Size(656, 96);
-            this.DataEditEditFieldPassword.TabIndex = 27;
-            this.DataEditEditFieldPassword.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.DataEditEditFieldPassword.TextTitle = "Password:";
-            this.DataEditEditFieldPassword.UseColoredCaret = true;
-            this.DataEditEditFieldPassword.UseDefaultValue = false;
-            this.DataEditEditFieldPassword.UseSystemPasswordChar = false;
-            // 
-            // DataEditAdvancedRichTextBoxNotes
-            // 
-            this.DataEditAdvancedRichTextBoxNotes.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAdvancedRichTextBoxNotes.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedRichTextBoxNotes.ForeColorFocus = System.Drawing.Color.Black;
-            this.DataEditAdvancedRichTextBoxNotes.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedRichTextBoxNotes.Location = new System.Drawing.Point(10, 34);
-            this.DataEditAdvancedRichTextBoxNotes.Name = "DataEditAdvancedRichTextBoxNotes";
-            this.DataEditAdvancedRichTextBoxNotes.Size = new System.Drawing.Size(656, 266);
-            this.DataEditAdvancedRichTextBoxNotes.TabIndex = 31;
-            this.DataEditAdvancedRichTextBoxNotes.TextValue = "";
-            // 
             // AddPanelGeneratePasswordAnimatedButtonGenerate
             // 
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -3381,6 +3427,31 @@
             this.MenuMenuEntrySettings.TabIndex = 5;
             this.MenuMenuEntrySettings.TextTitle = "Settings";
             // 
+            // editField1
+            // 
+            this.editField1.AutoSize = true;
+            this.editField1.BackColor = System.Drawing.Color.White;
+            this.editField1.BackGroundColor = System.Drawing.Color.White;
+            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField1.DefaultValue = "Enter Search Term";
+            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 12F);
+            this.editField1.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField1.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.editField1.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.editField1.Location = new System.Drawing.Point(314, 12);
+            this.editField1.Name = "editField1";
+            this.editField1.Size = new System.Drawing.Size(476, 83);
+            this.editField1.TabIndex = 0;
+            this.editField1.TextTextBox = "";
+            this.editField1.TextTitle = "Search";
+            this.editField1.UseColoredCaret = true;
+            this.editField1.UseDefaultValue = true;
+            this.editField1.UseSystemPasswordChar = false;
+            // 
             // LoginLoadingAdvancedProgressSpinner
             // 
             this.LoginLoadingAdvancedProgressSpinner.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
@@ -3588,8 +3659,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.WindowHeaderLabelTitle);
             this.Controls.Add(this.PanelMain);
+            this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3623,32 +3695,17 @@
             this.DataEditPanelPasswordGenerator.PerformLayout();
             this.DataEditPanelBottom.ResumeLayout(false);
             this.DataEditPanelBottom.PerformLayout();
+            this.SettingsTableLayoutPanelMain.ResumeLayout(false);
+            this.SettingsPanelCenter.ResumeLayout(false);
             this.AddPanelMain.ResumeLayout(false);
             this.AddTableLayoutPanelMain.ResumeLayout(false);
             this.AddPanelCenter.ResumeLayout(false);
-            this.SettingsTableLayoutPanelMain.ResumeLayout(false);
-            this.SettingsPanelCenter.ResumeLayout(false);
             this.WindowHeaderPanel.ResumeLayout(false);
             this.WindowHeaderTableLayoutPanel.ResumeLayout(false);
             this.WindowsHeaderPanelSubRight.ResumeLayout(false);
             this.WindowsHeaderPanelSubRight.PerformLayout();
             this.PanelMain.ResumeLayout(false);
             this.PanelLogin.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxLeft)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxRight)).EndInit();
-            this.AddTableLayoutPanelCenter.ResumeLayout(false);
-            this.AddFlowLayoutPanelCenter.ResumeLayout(false);
-            this.AddPanelContent.ResumeLayout(false);
-            this.AddPanelContent.PerformLayout();
-            this.AddPanelGeneratePassword.ResumeLayout(false);
-            this.AddPanelGeneratePassword.PerformLayout();
-            this.AddPanelNotes.ResumeLayout(false);
-            this.AddPanelNotes.PerformLayout();
-            this.AddPanelCheckIcon.ResumeLayout(false);
-            this.AddPanelCheckIconContent.ResumeLayout(false);
-            this.AddPanelCheckIconContent.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).EndInit();
-            this.AddPanelBottomMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxBackgroundTop)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxBackgroundBottom)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).EndInit();
@@ -3667,17 +3724,17 @@
             this.SettingsPanelOfflineContent1.PerformLayout();
             this.SettingsPanelOfflineContent2.ResumeLayout(false);
             this.SettingsPanelOfflineContent2.PerformLayout();
+            this.SettingsPanelPromptMain.ResumeLayout(false);
+            this.SettingsPanelPromptMain.PerformLayout();
+            this.SettingsPanelPromptCenter.ResumeLayout(false);
+            this.SettingsPanelPromptCenter.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).EndInit();
             this.SettingsFlowLayoutPanelLogin.ResumeLayout(false);
             this.SettingsPanelLoginContent.ResumeLayout(false);
             this.SettingsPanelLoginContent.PerformLayout();
             this.SettingsFlowLayoutPanelRegister.ResumeLayout(false);
             this.SettingsPanelRegisterContent.ResumeLayout(false);
             this.SettingsPanelRegisterContent.PerformLayout();
-            this.SettingsPanelPromptMain.ResumeLayout(false);
-            this.SettingsPanelPromptMain.PerformLayout();
-            this.SettingsPanelPromptCenter.ResumeLayout(false);
-            this.SettingsPanelPromptCenter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).EndInit();
             this.SettingsPanelLoadingMain.ResumeLayout(false);
             this.SettingsPanelLoadingCenter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLoadingLogo)).EndInit();
@@ -3686,6 +3743,21 @@
             this.panel3.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxLeft)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxRight)).EndInit();
+            this.AddTableLayoutPanelCenter.ResumeLayout(false);
+            this.AddFlowLayoutPanelCenter.ResumeLayout(false);
+            this.AddPanelContent.ResumeLayout(false);
+            this.AddPanelContent.PerformLayout();
+            this.AddPanelGeneratePassword.ResumeLayout(false);
+            this.AddPanelGeneratePassword.PerformLayout();
+            this.AddPanelNotes.ResumeLayout(false);
+            this.AddPanelNotes.PerformLayout();
+            this.AddPanelCheckIcon.ResumeLayout(false);
+            this.AddPanelCheckIconContent.ResumeLayout(false);
+            this.AddPanelCheckIconContent.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).EndInit();
+            this.AddPanelBottomMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).EndInit();
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
@@ -3943,6 +4015,10 @@
         private System.Windows.Forms.Label MenuSyncLabelStatus;
         private System.Windows.Forms.Timer SyncAnimationTimer;
         private System.Windows.Forms.PictureBox MenuSyncPictureBox;
+        private EditField editField1;
+        private MetroFramework.Controls.MetroComboBox metroComboBox1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label1;
     }
 }
 
