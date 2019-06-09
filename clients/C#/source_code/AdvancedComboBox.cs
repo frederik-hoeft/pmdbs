@@ -31,6 +31,8 @@ namespace pmdbs
             base.DrawMode = DrawMode.OwnerDrawFixed;
             base.DropDownStyle = ComboBoxStyle.DropDownList;
             drawPrompt = (SelectedIndex == -1);
+            ForeColor = Color.Black;
+            BorderColor = Color.Black;
         }
 
         [Browsable(false)]
@@ -77,6 +79,9 @@ namespace pmdbs
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public MetroStyleManager StyleManager { get; set; }
+        public Color BorderColor { get; set; }
+
+        public override Color ForeColor { get; set; }
 
         [Category("Metro Appearance")]
         public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
