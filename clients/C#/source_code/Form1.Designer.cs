@@ -213,7 +213,6 @@
             this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
             this.advancedComboBox1 = new pmdbs.AdvancedComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.metroComboBox1 = new MetroFramework.Controls.MetroComboBox();
             this.editField1 = new pmdbs.EditField();
             this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
@@ -2997,7 +2996,6 @@
             this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
             this.WindowsHeaderPanelSubRight.Controls.Add(this.advancedComboBox1);
             this.WindowsHeaderPanelSubRight.Controls.Add(this.label1);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.metroComboBox1);
             this.WindowsHeaderPanelSubRight.Controls.Add(this.editField1);
             this.WindowsHeaderPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WindowsHeaderPanelSubRight.Location = new System.Drawing.Point(277, 1);
@@ -3010,7 +3008,7 @@
             // 
             this.advancedComboBox1.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.advancedComboBox1.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.advancedComboBox1.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.advancedComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.advancedComboBox1.FormattingEnabled = true;
             this.advancedComboBox1.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
             this.advancedComboBox1.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
@@ -3023,7 +3021,7 @@
             "Hostname... (Z-A)",
             "Date... (oldest first)",
             "Date... (newest first)"});
-            this.advancedComboBox1.Location = new System.Drawing.Point(1113, 60);
+            this.advancedComboBox1.Location = new System.Drawing.Point(818, 64);
             this.advancedComboBox1.Name = "advancedComboBox1";
             this.advancedComboBox1.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.advancedComboBox1.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
@@ -3043,24 +3041,6 @@
             this.label1.Size = new System.Drawing.Size(59, 20);
             this.label1.TabIndex = 3;
             this.label1.Text = "Sort by";
-            // 
-            // metroComboBox1
-            // 
-            this.metroComboBox1.FontSize = MetroFramework.MetroComboBoxSize.Tall;
-            this.metroComboBox1.FormattingEnabled = true;
-            this.metroComboBox1.ItemHeight = 29;
-            this.metroComboBox1.Items.AddRange(new object[] {
-            "Hostname... (A-Z)",
-            "Hostname... (Z-A)",
-            "Date... (oldest first)",
-            "Date... (newest first)"});
-            this.metroComboBox1.Location = new System.Drawing.Point(818, 60);
-            this.metroComboBox1.Name = "metroComboBox1";
-            this.metroComboBox1.Size = new System.Drawing.Size(233, 35);
-            this.metroComboBox1.Style = MetroFramework.MetroColorStyle.Orange;
-            this.metroComboBox1.TabIndex = 2;
-            this.metroComboBox1.UseSelectable = true;
-            this.metroComboBox1.UseStyleColors = true;
             // 
             // editField1
             // 
@@ -4034,7 +4014,6 @@
         private System.Windows.Forms.PictureBox MenuSyncPictureBox;
         private EditField editField1;
         private System.Windows.Forms.Label label1;
-        private MetroFramework.Controls.MetroComboBox metroComboBox1;
         private AdvancedComboBox advancedComboBox1;
     }
 }
