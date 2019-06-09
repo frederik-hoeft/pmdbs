@@ -6,7 +6,6 @@ using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using MetroFramework;
 using MetroFramework.Components;
 using MetroFramework.Drawing;
 using MetroFramework.Interfaces;
@@ -16,8 +15,6 @@ namespace pmdbs
     [ToolboxBitmap(typeof(ComboBox))]
     public class AdvancedComboBox : ComboBox
     {
-        private MetroComboBoxSize metroComboBoxSize = MetroComboBoxSize.Medium;
-        private MetroComboBoxWeight metroComboBoxWeight = MetroComboBoxWeight.Regular;
         private string promptText = "";
         private bool drawPrompt;
         private bool isHovered;
@@ -30,15 +27,18 @@ namespace pmdbs
             base.DrawMode = DrawMode.OwnerDrawFixed;
             base.DropDownStyle = ComboBoxStyle.DropDownList;
             drawPrompt = (SelectedIndex == -1);
-            ForeColor = Color.Black;
-            BorderColor = Color.Black;
             Font = new Font("Century Gothic", 8F);
+            ForeColor = Color.Black;
             BackColor = Color.FromArgb(255, 96, 49);
             NormalForeColor = Color.FromArgb(153, 153, 153);
             HoverForeColor = Color.FromArgb(51, 51, 51);
             PressForeColor = Color.FromArgb(153, 153, 153);
             DisabledForeColor = Color.FromArgb(204, 204, 204);
-
+            NormalBorderColor = Color.FromArgb(153, 153, 153);
+            HoverBorderColor = Color.FromArgb(51, 51, 51);
+            PressBorderColor = Color.FromArgb(153, 153, 153);
+            DisabledBorderColor = Color.FromArgb(204, 204, 204);
+            ThemeColor = Color.FromArgb(255, 96, 49);
         }
 
         [Browsable(false)]
@@ -85,12 +85,16 @@ namespace pmdbs
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public MetroStyleManager StyleManager { get; set; }
-        public Color BorderColor { get; set; }
+        [Browsable(false)]
         public override Color ForeColor { get; set; }
         public Color NormalForeColor { get; set; }
         public Color HoverForeColor { get; set; }
         public Color PressForeColor { get; set; }
         public Color DisabledForeColor { get; set; }
+        public Color NormalBorderColor { get; set; }
+        public Color HoverBorderColor { get; set; }
+        public Color PressBorderColor { get; set; }
+        public Color DisabledBorderColor { get; set; }
 
         [Category("Metro Appearance")]
         public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
@@ -106,7 +110,7 @@ namespace pmdbs
             {
                 string text = (Text.Length > 0) ? Text : "MeasureText";
                 proposedSize = new Size(2147483647, 2147483647);
-                Size result = TextRenderer.MeasureText(dc, text, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), proposedSize, TextFormatFlags.VerticalCenter | TextFormatFlags.LeftAndRightPadding);
+                Size result = TextRenderer.MeasureText(dc, text, this.Font, proposedSize, TextFormatFlags.VerticalCenter | TextFormatFlags.LeftAndRightPadding);
                 result.Height += 4;
                 return result;
             }
@@ -168,23 +172,23 @@ namespace pmdbs
             Color color2;
             if (isHovered && !isPressed && base.Enabled)
             {
-                color = MetroPaint.ForeColor.ComboBox.Hover(Theme);
-                color2 = MetroPaint.BorderColor.ComboBox.Hover(Theme);
+                color = HoverForeColor;
+                color2 = HoverBorderColor;
             }
             else if (isHovered && isPressed && base.Enabled)
             {
-                color = MetroPaint.ForeColor.ComboBox.Press(Theme);
-                color2 = MetroPaint.BorderColor.ComboBox.Press(Theme);
+                color = PressForeColor;
+                color2 = PressBorderColor;
             }
             else if (!base.Enabled)
             {
-                color = MetroPaint.ForeColor.ComboBox.Disabled(Theme);
-                color2 = MetroPaint.BorderColor.ComboBox.Disabled(Theme);
+                color = DisabledForeColor;
+                color2 = DisabledBorderColor;
             }
             else
             {
-                color = MetroPaint.ForeColor.ComboBox.Normal(Theme);
-                color2 = MetroPaint.BorderColor.ComboBox.Normal(Theme);
+                color = NormalForeColor;
+                color2 = NormalBorderColor;
             }
             using (Pen pen = new Pen(color2))
             {
