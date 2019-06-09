@@ -1,15 +1,7 @@
-﻿#region Assembly MetroFramework, Version=1.4.0.0, Culture=neutral, PublicKeyToken=5f91a84759bf584a
-// L:\Programming\C#\pmdbs\packages\MetroModernUI.1.4.0.0\lib\net\MetroFramework.dll
-#endregion
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using MetroFramework.Components;
-using MetroFramework.Drawing;
-using MetroFramework.Native;
-using MetroFramework.Interfaces;
 
 namespace pmdbs
 {
@@ -20,7 +12,6 @@ namespace pmdbs
         private bool drawPrompt;
         private bool isHovered;
         private bool isPressed;
-        private bool displayFocusRectangle;
         private bool isFocused;
         public AdvancedComboBox()
         {
@@ -40,54 +31,8 @@ namespace pmdbs
             PressBorderColor = Color.FromArgb(153, 153, 153);
             DisabledBorderColor = Color.FromArgb(204, 204, 204);
             HoverItemColor = Color.FromArgb(255, 96, 49);
-            NormalItemColor = Color.White;
-            
         }
-
-        [Browsable(false)]
-        [DefaultValue(DrawMode.OwnerDrawFixed)]
-        public DrawMode DrawMode { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(MetroThemeStyle.Default)]
-        public MetroThemeStyle Theme { get; set; }
-        [Browsable(false)]
         public override Font Font { get; set; }
-        [Browsable(true)]
-        [Category("Metro Appearance")]
-        [DefaultValue("")]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        public string PromptText { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(MetroComboBoxWeight.Regular)]
-        public MetroComboBoxWeight FontWeight { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(MetroComboBoxSize.Medium)]
-        public MetroComboBoxSize FontSize { get; set; }
-        [Browsable(false)]
-        [DefaultValue(ComboBoxStyle.DropDownList)]
-        public ComboBoxStyle DropDownStyle { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(MetroColorStyle.Default)]
-        public MetroColorStyle Style { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(false)]
-        public bool DisplayFocus { get; set; }
-        [Browsable(false)]
-        [Category("Metro Behaviour")]
-        [DefaultValue(false)]
-        public bool UseSelectable { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(false)]
-        public bool UseStyleColors { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(false)]
-        public bool UseCustomForeColor { get; set; }
-        [Category("Metro Appearance")]
-        [DefaultValue(false)]
-        public bool UseCustomBackColor { get; set; }
-        [Browsable(false)]
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public MetroStyleManager StyleManager { get; set; }
         [Browsable(false)]
         public override Color ForeColor { get; set; }
         public Color NormalForeColor { get; set; }
@@ -98,6 +43,7 @@ namespace pmdbs
         public Color HoverBorderColor { get; set; }
         public Color PressBorderColor { get; set; }
         public Color DisabledBorderColor { get; set; }
+        public Color HoverItemColor { get; set; }
 
         [Category("Metro Appearance")]
         public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
@@ -210,7 +156,7 @@ namespace pmdbs
             Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
             TextRenderer.DrawText(e.Graphics, Text, this.Font, bounds, color, TextFormatFlags.VerticalCenter);
             OnCustomPaintForeground(new MetroPaintEventArgs(Color.Empty, color, e.Graphics));
-            if (displayFocusRectangle && isFocused)
+            if (isFocused)
             {
                 ControlPaint.DrawFocusRectangle(e.Graphics, base.ClientRectangle);
             }
@@ -270,15 +216,15 @@ namespace pmdbs
                     {
                         e.Graphics.FillRectangle(brush, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
                     }
-                    foreColor = Color.White;
+                    foreColor = NormalForeColor;
                 }
                 else
                 {
-                    using (SolidBrush brush2 = new SolidBrush(HoverItemColor)
+                    using (SolidBrush brush2 = new SolidBrush(HoverItemColor))
                     {
                         e.Graphics.FillRectangle(brush2, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
                     }
-                    foreColor = ;
+                    foreColor = HoverForeColor;
                 }
                 Rectangle bounds = new Rectangle(0, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height);
                 TextRenderer.DrawText(e.Graphics, base.GetItemText(base.Items[e.Index]), this.Font, bounds, foreColor, TextFormatFlags.VerticalCenter);
@@ -372,6 +318,19 @@ namespace pmdbs
             }
             base.Invalidate();
             base.OnMouseLeave(e);
+        }
+        public class MetroPaintEventArgs : EventArgs
+        {
+            public Color BackColor { get; private set; }
+            public Color ForeColor { get; private set; }
+            public Graphics Graphics { get; private set; }
+
+            public MetroPaintEventArgs(Color backColor, Color foreColor, Graphics g)
+            {
+                BackColor = backColor;
+                ForeColor = foreColor;
+                Graphics = g;
+            }
         }
     }
 }
