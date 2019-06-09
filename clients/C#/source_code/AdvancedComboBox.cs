@@ -20,7 +20,6 @@ namespace pmdbs
         private MetroComboBoxWeight metroComboBoxWeight = MetroComboBoxWeight.Regular;
         private string promptText = "";
         private bool drawPrompt;
-        private bool useCustomBackColor;
         private bool isHovered;
         private bool isPressed;
         private bool displayFocusRectangle;
@@ -33,6 +32,13 @@ namespace pmdbs
             drawPrompt = (SelectedIndex == -1);
             ForeColor = Color.Black;
             BorderColor = Color.Black;
+            Font = new Font("Century Gothic", 8F);
+            BackColor = Color.FromArgb(255, 96, 49);
+            NormalForeColor = Color.FromArgb(153, 153, 153);
+            HoverForeColor = Color.FromArgb(51, 51, 51);
+            PressForeColor = Color.FromArgb(153, 153, 153);
+            DisabledForeColor = Color.FromArgb(204, 204, 204);
+
         }
 
         [Browsable(false)]
@@ -80,8 +86,11 @@ namespace pmdbs
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public MetroStyleManager StyleManager { get; set; }
         public Color BorderColor { get; set; }
-
         public override Color ForeColor { get; set; }
+        public Color NormalForeColor { get; set; }
+        public Color HoverForeColor { get; set; }
+        public Color PressForeColor { get; set; }
+        public Color DisabledForeColor { get; set; }
 
         [Category("Metro Appearance")]
         public event EventHandler<MetroPaintEventArgs> CustomPaintForeground;
@@ -130,10 +139,6 @@ namespace pmdbs
             try
             {
                 Color color = BackColor;
-                if (!useCustomBackColor)
-                {
-                    color = MetroPaint.BackColor.Form(Theme);
-                }
                 if (color.A == 255 && BackgroundImage == null)
                 {
                     e.Graphics.Clear(color);
@@ -217,10 +222,6 @@ namespace pmdbs
         private void DrawTextPrompt(Graphics g)
         {
             Color backColor = BackColor;
-            if (!useCustomBackColor)
-            {
-                backColor = MetroPaint.BackColor.Form(Theme);
-            }
             Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
             TextRenderer.DrawText(g, promptText, MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, SystemColors.GrayText, backColor, TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter);
         }
@@ -248,6 +249,122 @@ namespace pmdbs
             {
                 DrawTextPrompt(g);
             }
+        }
+
+        protected override void OnDrawItem(DrawItemEventArgs e)
+        {
+            if (e.Index >= 0)
+            {
+                Color color = BackColor;
+                Color foreColor;
+                if (e.State == (DrawItemState.NoAccelerator | DrawItemState.NoFocusRect) || e.State == DrawItemState.None)
+                {
+                    using (SolidBrush brush = new SolidBrush(color))
+                    {
+                        e.Graphics.FillRectangle(brush, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
+                    }
+                    foreColor = MetroPaint.ForeColor.Link.Normal(Theme);
+                }
+                else
+                {
+                    using (SolidBrush brush2 = new SolidBrush(MetroPaint.GetStyleColor(Style)))
+                    {
+                        e.Graphics.FillRectangle(brush2, new Rectangle(e.Bounds.Left, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height));
+                    }
+                    foreColor = MetroPaint.ForeColor.Tile.Normal(Theme);
+                }
+                Rectangle bounds = new Rectangle(0, e.Bounds.Top, e.Bounds.Width, e.Bounds.Height);
+                TextRenderer.DrawText(e.Graphics, base.GetItemText(base.Items[e.Index]), MetroFonts.ComboBox(metroComboBoxSize, metroComboBoxWeight), bounds, foreColor, TextFormatFlags.VerticalCenter);
+            }
+            else
+            {
+                base.OnDrawItem(e);
+            }
+        }
+
+        protected override void OnGotFocus(EventArgs e)
+        {
+            isFocused = true;
+            isHovered = true;
+            base.Invalidate();
+            base.OnGotFocus(e);
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            isFocused = false;
+            isHovered = false;
+            isPressed = false;
+            base.Invalidate();
+            base.OnLostFocus(e);
+        }
+
+        protected override void OnEnter(EventArgs e)
+        {
+            isFocused = true;
+            isHovered = true;
+            base.Invalidate();
+            base.OnEnter(e);
+        }
+
+        protected override void OnLeave(EventArgs e)
+        {
+            isFocused = false;
+            isHovered = false;
+            isPressed = false;
+            base.Invalidate();
+            base.OnLeave(e);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Space)
+            {
+                isHovered = true;
+                isPressed = true;
+                base.Invalidate();
+            }
+            base.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.Invalidate();
+            base.OnKeyUp(e);
+        }
+
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            isHovered = true;
+            base.Invalidate();
+            base.OnMouseEnter(e);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                isPressed = true;
+                base.Invalidate();
+            }
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            isPressed = false;
+            base.Invalidate();
+            base.OnMouseUp(e);
+        }
+
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            if (!isFocused)
+            {
+                isHovered = false;
+            }
+            base.Invalidate();
+            base.OnMouseLeave(e);
         }
     }
 }
