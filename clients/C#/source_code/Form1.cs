@@ -1428,5 +1428,24 @@ namespace pmdbs
         #endregion
 
         #endregion
+
+        #region FilterPanel
+        private string previousTextBoxContent = string.Empty;
+
+        private void InitFilterPanel()
+        {
+            FilterAdvancedComboBoxSort.SelectedIndex = 2;
+        }
+        private void FilterEditFieldSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            string textBoxContent = FilterEditFieldSearch.TextTextBox;
+            if (!textBoxContent.Equals(previousTextBoxContent))
+            {
+                previousTextBoxContent = textBoxContent;
+
+                // Do things
+            }
+        }
+        #endregion
     }
 }

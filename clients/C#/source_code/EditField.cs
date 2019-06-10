@@ -13,7 +13,6 @@ namespace pmdbs
     public partial class EditField : UserControl
     {
         private Color bgColor = Color.White;
-        public event EventHandler<EventArgs> OnTextTextBoxChanged;
         public EditField()
         {
             InitializeComponent();
