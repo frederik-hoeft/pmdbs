@@ -66,6 +66,7 @@ namespace pmdbs
         public static string promptCommand = string.Empty;
         public static List<string> selectedAccounts = new List<string>();
         public static System.Data.DataTable UserData = new System.Data.DataTable();
+        public static System.Data.DataView FilteredUserData = new System.Data.DataView();
         public static Form1 Form1 = null;
         public static AdvancedImageButton SyncButton = null;
 
