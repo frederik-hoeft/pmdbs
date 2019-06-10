@@ -263,6 +263,7 @@ namespace pmdbs
                     LoginLabelOfflineUsername.Text = GlobalVarPool.name;
                 }
             }
+            InitFilterPanel();
             Thread.Sleep(1500); // SHOW SPLASHSCREEN
             GuiLoaded = true;
         }
@@ -1442,9 +1443,19 @@ namespace pmdbs
             if (!textBoxContent.Equals(previousTextBoxContent))
             {
                 previousTextBoxContent = textBoxContent;
-
                 // Do things
+                ApplyFilter();
             }
+        }
+        private void ApplyFilter()
+        {
+            string searchTerm = FilterEditFieldSearch.TextTextBox;
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                RefreshUserData(0);
+                return;
+            }
+
         }
         #endregion
     }
