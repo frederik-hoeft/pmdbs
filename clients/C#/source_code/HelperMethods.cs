@@ -44,36 +44,6 @@ namespace pmdbs
             return Parts;
         }
 
-        public static MethodInfo CompileFunction(string config_file)
-        {
-            string code = @"
-        using System;
-            
-        namespace pmdbs
-        {                
-            public class BinaryFunction
-            {                
-                public static bool Condition()
-                {
-                    return place_holder;
-                }
-            }
-        }
-    ";
-            string[] finalCode = new string[] { code.Replace("place_holder", config_file) };
-            
-            CSharpCodeProvider provider = new CSharpCodeProvider();
-            CompilerParameters parameters = new CompilerParameters
-            {
-                // True - memory generation, false - external file generation
-                GenerateInMemory = true
-            };
-            parameters.ReferencedAssemblies.Add(Assembly.GetEntryAssembly().Location);
-            CompilerResults results = provider.CompileAssemblyFromSource(parameters, finalCode);
-            Type binaryFunction = results.CompiledAssembly.GetType("pmdbs.BinaryFunction");
-            return binaryFunction.GetMethod("Condition");
-        }
-
         public static string GetOS()
         {
             return Environment.OSVersion.VersionString;
@@ -122,6 +92,7 @@ namespace pmdbs
             GlobalVarPool.commandError = false;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
+                GlobalVarPool.loadingSpinner.Start();
                 GlobalVarPool.loadingSpinner.Visible = true;
             });
             GlobalVarPool.loadingLogo.Invoke((System.Windows.Forms.MethodInvoker)delegate
@@ -155,18 +126,14 @@ namespace pmdbs
             System.Windows.Forms.Panel finalPanel = (System.Windows.Forms.Panel)paramsList[0];
             System.Windows.Forms.Label output = (System.Windows.Forms.Label)paramsList[1];
             bool showBackendOutput = (bool)paramsList[2];
-            string finishCondition = (string)paramsList[3];
+            Func<bool> finishCondition = (Func<bool>)paramsList[3];
 
             // SET GLOBAL VARIABLES
             GlobalVarPool.outputLabelIsValid = showBackendOutput;
             GlobalVarPool.outputLabel = output;
 
-            // COMPILE CONDITION AT RUNTIME BECAUSE IT'S IMPOSSIBLE TO PASS A LAMBDA EXPRESSION AS PARAMETER WHEN USING ParameterizedThreadStart()
-            // STUPID, OVERCOMPLICATED, OFFICIALLY CONSIDERED "UGLY" BUT IT WORKS ... SOMEHOW *sigh*
-            MethodInfo condition = CompileFunction(finishCondition);
-
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!(bool)condition.Invoke(null,null) && GlobalVarPool.connected && !GlobalVarPool.commandError)
+            while (!finishCondition() && GlobalVarPool.connected && !GlobalVarPool.commandError)
             {
                 Thread.Sleep(1000);
             }
@@ -196,6 +163,7 @@ namespace pmdbs
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingSpinner.Visible = false;
+                GlobalVarPool.loadingSpinner.Stop();
             });
             GlobalVarPool.loadingLogo.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
@@ -584,6 +552,10 @@ namespace pmdbs
         {
             Task<List<string>> getUserSettings = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_user LIMIT 1;", (int)ColumnCount.Tbl_user);
             List<string> userSettings = await getUserSettings;
+            if (userSettings.Count == 0)
+            {
+                return;
+            }
             GlobalVarPool.username = userSettings[1];
             GlobalVarPool.name = userSettings[2];
             GlobalVarPool.scryptHash = userSettings[3];
