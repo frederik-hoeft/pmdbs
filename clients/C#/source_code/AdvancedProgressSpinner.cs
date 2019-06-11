@@ -171,7 +171,6 @@ namespace pmdbs
             get { return backwards; }
             set { backwards = value; Refresh(); }
         }
-
         #endregion
 
         #region Constructor
@@ -183,7 +182,6 @@ namespace pmdbs
                 Interval = timerInterval
             };
             timer.Tick += Timer_Tick;
-            timer.Enabled = true;
             Width = 16;
             Height = 16;
             DoubleBuffered = true;
@@ -198,6 +196,15 @@ namespace pmdbs
             progress = minimum;
             angle = 270;
             Refresh();
+        }
+        public void Start()
+        {
+            timer.Start();
+        }
+
+        public void Stop()
+        {
+            timer.Stop();
         }
 
         #endregion

@@ -122,6 +122,7 @@ namespace pmdbs
             GlobalVarPool.commandError = false;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
+                GlobalVarPool.loadingSpinner.Start();
                 GlobalVarPool.loadingSpinner.Visible = true;
             });
             GlobalVarPool.loadingLogo.Invoke((System.Windows.Forms.MethodInvoker)delegate
@@ -196,6 +197,7 @@ namespace pmdbs
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingSpinner.Visible = false;
+                GlobalVarPool.loadingSpinner.Stop();
             });
             GlobalVarPool.loadingLogo.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
@@ -598,6 +600,22 @@ namespace pmdbs
                 GlobalVarPool.REMOTE_ADDRESS = settings[1];
                 GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settings[2]);
             }
+        }
+
+        public static string EscapeLikeValue(string valueWithoutWildcards)
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < valueWithoutWildcards.Length; i++)
+            {
+                char c = valueWithoutWildcards[i];
+                if (c == '*' || c == '%' || c == '[' || c == ']')
+                    sb.Append("[").Append(c).Append("]");
+                else if (c == '\'')
+                    sb.Append("''");
+                else
+                    sb.Append(c);
+            }
+            return sb.ToString();
         }
     }
 }

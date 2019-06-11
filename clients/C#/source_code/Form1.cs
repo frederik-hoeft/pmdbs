@@ -36,7 +36,7 @@ namespace pmdbs
         int MaxPages = 1;
         public static void InvokeReload()
         {
-            GlobalVarPool.Form1.RefreshUserData(0);
+            GlobalVarPool.Form1.ApplyFilter(0);
         }
 
         public static void InvokeSyncAnimationStop()
@@ -263,7 +263,6 @@ namespace pmdbs
                     LoginLabelOfflineUsername.Text = GlobalVarPool.name;
                 }
             }
-            InitFilterPanel();
             Thread.Sleep(1500); // SHOW SPLASHSCREEN
             GuiLoaded = true;
         }
@@ -405,9 +404,11 @@ namespace pmdbs
 
         private void ReloadSingleEntry(DataRow invalidatedRow)
         {
+            // TODO: IS THIS CORRECT?
+            // invalidatedEntry SEEMS TO BE NEVER USED
             int ID = Convert.ToInt32(invalidatedRow["0"]);
             ListEntry invalidatedEntry = entryList.Where(element => element.id == ID).First();
-            RefreshUserData(CurrentPage);
+            ApplyFilter(CurrentPage);
         }
 
         private void RefreshUserData(int page)
@@ -416,11 +417,15 @@ namespace pmdbs
             {
                 page = 0;
             }
-            MaxPages = Convert.ToInt32(Math.Floor((double)GlobalVarPool.UserData.Rows.Count / DataPerPage));
-            if (GlobalVarPool.UserData.Rows.Count % DataPerPage != 0)
+            DataTable userData = GlobalVarPool.FilteredUserData;
+            // GET MAXIMUM PAGES (FLOOR)
+            MaxPages = Convert.ToInt32(Math.Floor((double)userData.Rows.Count / DataPerPage));
+            if (userData.Rows.Count % DataPerPage != 0)
             {
+                // ADD ONE PAGE
                 MaxPages++;
             }
+            // CHECK IF PAGE IS WITHIN BOUNDARIES
             if (page < MaxPages)
             {
                 CurrentPage = page;
@@ -443,22 +448,22 @@ namespace pmdbs
             {
                 entryList[i].Hide();
             }
-            for (int i = CurrentPage * DataPerPage; ((CurrentPage * DataPerPage) + DataPerPage >= GlobalVarPool.UserData.Rows.Count) ? i < GlobalVarPool.UserData.Rows.Count : i < (CurrentPage * DataPerPage) + DataPerPage; i++)
+            for (int i = CurrentPage * DataPerPage; ((CurrentPage * DataPerPage) + DataPerPage >= userData.Rows.Count) ? i < userData.Rows.Count : i < (CurrentPage * DataPerPage) + DataPerPage; i++)
             {
-                int ID = Convert.ToInt32(GlobalVarPool.UserData.Rows[i]["0"]);
-                string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(GlobalVarPool.UserData.Rows[i]["2"].ToString())).ToString("u");
+                int ID = Convert.ToInt32(userData.Rows[i]["0"]);
+                string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(userData.Rows[i]["2"].ToString())).ToString("u");
                 strTimeStamp = strTimeStamp.Substring(0, strTimeStamp.Length - 1);
                 ListEntry entry = entryList[i % DataPerPage];
-                byte[] iconBytes = Convert.FromBase64String(GlobalVarPool.UserData.Rows[i]["9"].ToString());
+                byte[] iconBytes = Convert.FromBase64String(userData.Rows[i]["9"].ToString());
                 using (MemoryStream ms = new MemoryStream(iconBytes, 0, iconBytes.Length))
                 {
                     Image icon = Image.FromStream(ms, true);
                     entry.FavIcon = icon.GetThumbnailImage(350, 350, null, new IntPtr());
                     icon.Dispose();
                 }
-                entry.HostName = GlobalVarPool.UserData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : GlobalVarPool.UserData.Rows[i]["3"].ToString();
+                entry.HostName = userData.Rows[i]["3"].ToString().Equals("\x01") ? "-" : userData.Rows[i]["3"].ToString();
                 entry.TimeStamp = strTimeStamp;
-                entry.UserName = GlobalVarPool.UserData.Rows[i]["4"].ToString();
+                entry.UserName = userData.Rows[i]["4"].ToString();
                 entry.id = ID;
                 entry.Show();
                 CurrentContentCount++;
@@ -685,7 +690,7 @@ namespace pmdbs
             }
             await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
             GlobalVarPool.UserData.Rows.Remove(LinkedRow);
-            RefreshUserData(CurrentPage);
+            ApplyFilter(CurrentPage);
             DataPanelDetails.SuspendLayout();
             DataPanelNoSel.BringToFront();
             DataPanelNoSel.ResumeLayout();
@@ -913,7 +918,7 @@ namespace pmdbs
                     NewRow["7"] = Email.Equals("") ? "\x01" : Email;
                     NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
                     NewRow["9"] = favIcon;
-                    RefreshUserData(CurrentPage);
+                    ApplyFilter(CurrentPage);
                     AddPanelAdvancedImageButtonSave.Enabled = true;
                     AddPanelMain.SuspendLayout();
                     DataTableLayoutPanelMain.BringToFront();
@@ -1018,6 +1023,7 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
+            LoginLoadingAdvancedProgressSpinner.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxOfflineMain.SuspendLayout();
@@ -1035,6 +1041,7 @@ namespace pmdbs
                 LoginPictureBoxOfflineMain.ResumeLayout();
                 LoginPictureBoxOfflineMain.BringToFront();
                 LoginPictureBoxLoadingMain.SuspendLayout();
+                LoginLoadingAdvancedProgressSpinner.Stop();
                 return;
             }
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
@@ -1097,6 +1104,7 @@ namespace pmdbs
                 {
                     DataFlowLayoutPanelList.ResumeLayout();
                     FlowLayoutPanel1_Resize(this, null);
+                    LoginLoadingAdvancedProgressSpinner.Stop();
                     LoginPictureBoxOnlineMain.Dispose();
                     LoginPictureBoxOfflineMain.Dispose();
                     LoginPictureBoxRegisterMain.Dispose();
@@ -1106,7 +1114,8 @@ namespace pmdbs
                     this.MaximumSize = MaxSize;
                     this.MaximizeBox = true;
                     this.MinimizeBox = true;
-                    RefreshUserData(0);
+                    InitFilterPanel();
+                    ApplyFilter(0);
                 });
             }).Start();
         }
@@ -1152,6 +1161,7 @@ namespace pmdbs
                     LoginButtonDisabled = false;
                     return;
             }
+            LoginLoadingAdvancedProgressSpinner.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxRegisterMain.SuspendLayout();
@@ -1165,11 +1175,13 @@ namespace pmdbs
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            LoginLoadingAdvancedProgressSpinner.Stop();
             LoginPictureBoxOnlineMain.Dispose();
             LoginPictureBoxOfflineMain.Dispose();
             LoginPictureBoxRegisterMain.Dispose();
             PanelMain.BringToFront();
             PanelLogin.Dispose();
+            InitFilterPanel();
             this.MinimumSize = MinSize;
             this.MaximumSize = MaxSize;
         }
@@ -1437,26 +1449,74 @@ namespace pmdbs
         {
             FilterAdvancedComboBoxSort.SelectedIndex = 2;
         }
-        private void FilterEditFieldSearch_KeyPress(object sender, KeyPressEventArgs e)
+        private void FilterEditFieldSearch_KeyDown(object sender, KeyEventArgs e)
         {
             string textBoxContent = FilterEditFieldSearch.TextTextBox;
             if (!textBoxContent.Equals(previousTextBoxContent))
             {
                 previousTextBoxContent = textBoxContent;
                 // Do things
-                ApplyFilter();
+                ApplyFilter(0);
             }
         }
-        private void ApplyFilter()
+        private void FilterAdvancedComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string searchTerm = FilterEditFieldSearch.TextTextBox;
-            if (string.IsNullOrWhiteSpace(searchTerm))
+            if (GlobalVarPool.UserData.Rows.Count != 0)
             {
-                RefreshUserData(0);
-                return;
+                ApplyFilter(0);
             }
-
+        }
+        private void ApplyFilter(int page)
+        {
+            GlobalVarPool.FilteredUserData = GlobalVarPool.UserData.Copy();
+            string searchTerm = FilterEditFieldSearch.TextTextBox;
+            if (!string.IsNullOrWhiteSpace(searchTerm) || searchTerm.Equals("Enter Search Term"))
+            {
+                try
+                {
+                    GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().Where(row => row["3"].ToString().StartsWith(searchTerm)).CopyToDataTable();
+                }
+                catch (InvalidOperationException)
+                {
+                    // SEARCH TERM NOT FOUND
+                    GlobalVarPool.FilteredUserData = new DataTable();
+                }
+            }
+            if (GlobalVarPool.FilteredUserData.Rows.Count > 0)
+            {
+                switch (FilterAdvancedComboBoxSort.SelectedIndex)
+                {
+                    case 0:
+                        {
+                            GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().OrderBy(row => row["3"]).CopyToDataTable();
+                            break;
+                        }
+                    case 1:
+                        {
+                            GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().OrderByDescending(row => row["3"]).CopyToDataTable();
+                            break;
+                        }
+                    case 2:
+                        {
+                            GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().OrderBy(row => row["2"]).CopyToDataTable();
+                            break;
+                        }
+                    case 3:
+                        {
+                            GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().OrderByDescending(row => row["2"]).CopyToDataTable();
+                            break;
+                        }
+                    default:
+                        {
+                            GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().OrderBy(row => row["2"]).CopyToDataTable();
+                            break;
+                        }
+                }
+            }
+            RefreshUserData(page);
         }
         #endregion
+
+        
     }
 }
