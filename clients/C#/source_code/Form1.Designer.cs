@@ -206,19 +206,17 @@
             this.AddPanelAdvancedImageButtonAbort = new pmdbs.AdvancedImageButton();
             this.AddPanelAdvancedImageButtonSave = new pmdbs.AdvancedImageButton();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
+            this.WindowsHeaderOvalPanelTitle = new pmdbs.OvalPanel();
+            this.WindowHeaderPictureBoxIcon = new System.Windows.Forms.PictureBox();
+            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.WindowHeaderPanel = new System.Windows.Forms.Panel();
             this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
-            this.FilterPanelMain = new System.Windows.Forms.Panel();
-            this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.FilterEditFieldSearch = new pmdbs.EditField();
             this.FilterAdvancedComboBoxSort = new pmdbs.AdvancedComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.FilterLabelSort = new System.Windows.Forms.Label();
-            this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -324,13 +322,12 @@
             this.AddPanelCheckIconContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).BeginInit();
             this.AddPanelBottomMenu.SuspendLayout();
+            this.WindowsHeaderOvalPanelTitle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).BeginInit();
             this.WindowHeaderPanel.SuspendLayout();
             this.WindowHeaderTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).BeginInit();
             this.WindowsHeaderPanelSubRight.SuspendLayout();
-            this.FilterPanelMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
             this.PanelMain.SuspendLayout();
             this.PanelLogin.SuspendLayout();
             this.LoginTableLayoutPanelMain.SuspendLayout();
@@ -2943,6 +2940,41 @@
             this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
             this.AddPanelSeperator.TabIndex = 3;
             // 
+            // WindowsHeaderOvalPanelTitle
+            // 
+            this.WindowsHeaderOvalPanelTitle.BackColor = System.Drawing.Color.White;
+            this.WindowsHeaderOvalPanelTitle.BackgroundColor = System.Drawing.Color.White;
+            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderPictureBoxIcon);
+            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderLabelTitle);
+            this.WindowsHeaderOvalPanelTitle.EllipseColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowsHeaderOvalPanelTitle.Location = new System.Drawing.Point(14, 16);
+            this.WindowsHeaderOvalPanelTitle.Name = "WindowsHeaderOvalPanelTitle";
+            this.WindowsHeaderOvalPanelTitle.Size = new System.Drawing.Size(290, 72);
+            this.WindowsHeaderOvalPanelTitle.TabIndex = 2;
+            // 
+            // WindowHeaderPictureBoxIcon
+            // 
+            this.WindowHeaderPictureBoxIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderPictureBoxIcon.Image = ((System.Drawing.Image)(resources.GetObject("WindowHeaderPictureBoxIcon.Image")));
+            this.WindowHeaderPictureBoxIcon.Location = new System.Drawing.Point(33, 12);
+            this.WindowHeaderPictureBoxIcon.Name = "WindowHeaderPictureBoxIcon";
+            this.WindowHeaderPictureBoxIcon.Size = new System.Drawing.Size(48, 48);
+            this.WindowHeaderPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.WindowHeaderPictureBoxIcon.TabIndex = 23;
+            this.WindowHeaderPictureBoxIcon.TabStop = false;
+            // 
+            // WindowHeaderLabelTitle
+            // 
+            this.WindowHeaderLabelTitle.AutoSize = true;
+            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(87, 19);
+            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
+            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(153, 34);
+            this.WindowHeaderLabelTitle.TabIndex = 22;
+            this.WindowHeaderLabelTitle.Text = "Passwords";
+            // 
             // WindowHeaderLabelLogo
             // 
             this.WindowHeaderLabelLogo.AutoSize = true;
@@ -3002,39 +3034,16 @@
             // WindowsHeaderPanelSubRight
             // 
             this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterPanelMain);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterLabelSort);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterAdvancedComboBoxSort);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterEditFieldSearch);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.WindowsHeaderOvalPanelTitle);
             this.WindowsHeaderPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WindowsHeaderPanelSubRight.Location = new System.Drawing.Point(277, 1);
             this.WindowsHeaderPanelSubRight.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
             this.WindowsHeaderPanelSubRight.Name = "WindowsHeaderPanelSubRight";
             this.WindowsHeaderPanelSubRight.Size = new System.Drawing.Size(1765, 102);
             this.WindowsHeaderPanelSubRight.TabIndex = 11;
-            // 
-            // FilterPanelMain
-            // 
-            this.FilterPanelMain.Controls.Add(this.pictureBox5);
-            this.FilterPanelMain.Controls.Add(this.FilterEditFieldSearch);
-            this.FilterPanelMain.Controls.Add(this.FilterAdvancedComboBoxSort);
-            this.FilterPanelMain.Controls.Add(this.label5);
-            this.FilterPanelMain.Controls.Add(this.FilterLabelSort);
-            this.FilterPanelMain.Controls.Add(this.pictureBox6);
-            this.FilterPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.FilterPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.FilterPanelMain.Margin = new System.Windows.Forms.Padding(0);
-            this.FilterPanelMain.Name = "FilterPanelMain";
-            this.FilterPanelMain.Size = new System.Drawing.Size(1765, 102);
-            this.FilterPanelMain.TabIndex = 5;
-            // 
-            // pictureBox5
-            // 
-            this.pictureBox5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.pictureBox5.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox5.Image")));
-            this.pictureBox5.Location = new System.Drawing.Point(22, 25);
-            this.pictureBox5.Name = "pictureBox5";
-            this.pictureBox5.Size = new System.Drawing.Size(52, 52);
-            this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox5.TabIndex = 20;
-            this.pictureBox5.TabStop = false;
             // 
             // FilterEditFieldSearch
             // 
@@ -3051,9 +3060,9 @@
             this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.FilterEditFieldSearch.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
             this.FilterEditFieldSearch.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.FilterEditFieldSearch.Location = new System.Drawing.Point(278, 13);
+            this.FilterEditFieldSearch.Location = new System.Drawing.Point(351, 12);
             this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
-            this.FilterEditFieldSearch.Size = new System.Drawing.Size(409, 83);
+            this.FilterEditFieldSearch.Size = new System.Drawing.Size(542, 83);
             this.FilterEditFieldSearch.TabIndex = 0;
             this.FilterEditFieldSearch.TextTextBox = "";
             this.FilterEditFieldSearch.TextTitle = "Search";
@@ -3080,7 +3089,7 @@
             "Hostname... (Z-A)",
             "Date... (oldest first)",
             "Date... (newest first)"});
-            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(782, 65);
+            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(903, 60);
             this.FilterAdvancedComboBoxSort.Name = "FilterAdvancedComboBoxSort";
             this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
@@ -3092,48 +3101,15 @@
             this.FilterAdvancedComboBoxSort.UseSelectable = true;
             this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(71, 34);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(186, 34);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "Filter options";
-            // 
             // FilterLabelSort
             // 
             this.FilterLabelSort.AutoSize = true;
             this.FilterLabelSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterLabelSort.Location = new System.Drawing.Point(778, 13);
+            this.FilterLabelSort.Location = new System.Drawing.Point(899, 12);
             this.FilterLabelSort.Name = "FilterLabelSort";
             this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
             this.FilterLabelSort.TabIndex = 3;
             this.FilterLabelSort.Text = "Sort by";
-            // 
-            // pictureBox6
-            // 
-            this.pictureBox6.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox6.Image")));
-            this.pictureBox6.Location = new System.Drawing.Point(-5, 3);
-            this.pictureBox6.Name = "pictureBox6";
-            this.pictureBox6.Size = new System.Drawing.Size(275, 96);
-            this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox6.TabIndex = 21;
-            this.pictureBox6.TabStop = false;
-            // 
-            // WindowHeaderLabelTitle
-            // 
-            this.WindowHeaderLabelTitle.AutoSize = true;
-            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
-            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(293, 14);
-            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
-            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(249, 38);
-            this.WindowHeaderLabelTitle.TabIndex = 10;
-            this.WindowHeaderLabelTitle.Text = "Some headline";
             // 
             // PanelMain
             // 
@@ -3716,7 +3692,6 @@
             this.ControlBox = false;
             this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.PanelMain);
-            this.Controls.Add(this.WindowHeaderLabelTitle);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -3808,14 +3783,14 @@
             this.AddPanelCheckIconContent.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).EndInit();
             this.AddPanelBottomMenu.ResumeLayout(false);
+            this.WindowsHeaderOvalPanelTitle.ResumeLayout(false);
+            this.WindowsHeaderOvalPanelTitle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).EndInit();
             this.WindowHeaderPanel.ResumeLayout(false);
             this.WindowHeaderTableLayoutPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).EndInit();
             this.WindowsHeaderPanelSubRight.ResumeLayout(false);
-            this.FilterPanelMain.ResumeLayout(false);
-            this.FilterPanelMain.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            this.WindowsHeaderPanelSubRight.PerformLayout();
             this.PanelMain.ResumeLayout(false);
             this.PanelLogin.ResumeLayout(false);
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
@@ -3894,7 +3869,6 @@
         private System.Windows.Forms.PictureBox WindowPictureBoxIcon;
         private System.Windows.Forms.TableLayoutPanel WindowHeaderTableLayoutPanel;
         private System.Windows.Forms.Panel WindowsHeaderPanelSubRight;
-        private System.Windows.Forms.Label WindowHeaderLabelTitle;
         private System.Windows.Forms.FlowLayoutPanel MenuFlowLayoutPanel;
         private System.Windows.Forms.Panel MenuPanelHome;
         private MenuEntry MenuMenuEntryHome;
@@ -4076,10 +4050,9 @@
         private EditField FilterEditFieldSearch;
         private System.Windows.Forms.Label FilterLabelSort;
         private AdvancedComboBox FilterAdvancedComboBoxSort;
-        private System.Windows.Forms.Panel FilterPanelMain;
-        private System.Windows.Forms.PictureBox pictureBox5;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.PictureBox pictureBox6;
+        private OvalPanel WindowsHeaderOvalPanelTitle;
+        private System.Windows.Forms.PictureBox WindowHeaderPictureBoxIcon;
+        private System.Windows.Forms.Label WindowHeaderLabelTitle;
     }
 }
 
