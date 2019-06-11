@@ -34,6 +34,7 @@ namespace pmdbs
         private string defaultValue = "Enter some text...";
         private Boolean isEmpty = false;
         private Boolean useDefaultValue = true;
+        public event EventHandler TextChanged;
         public AdvancedTextBox()
         {
             InitializeComponent();
@@ -234,6 +235,15 @@ namespace pmdbs
                     this.Invalidate();
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            OnTextChange(e);
+        }
+        protected virtual void OnTextChange(EventArgs e)
+        {
+            TextChanged?.Invoke(this, e);
         }
     }
 }

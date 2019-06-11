@@ -216,6 +216,7 @@ namespace pmdbs
             windowButtonClose.OnClickEvent += WindowButtonClose_Click;
             SettingsAdvancedImageButtonFooterAbort.OnClickEvent += SettingsAdvancedImageButtonFooterAbort_Click;
             SettingsAdvancedImageButtonFooterSave.OnClickEvent += SettingsAdvancedImageButtonFooterSave_Click;
+            FilterEditFieldSearch.TextChanged += FilterEditFieldSearch_TextChanged;
             #endregion
             #endregion
         }
@@ -1449,7 +1450,7 @@ namespace pmdbs
         {
             FilterAdvancedComboBoxSort.SelectedIndex = 2;
         }
-        private void FilterEditFieldSearch_KeyDown(object sender, KeyEventArgs e)
+        private void FilterEditFieldSearch_TextChanged(object sender, EventArgs e)
         {
             string textBoxContent = FilterEditFieldSearch.TextTextBox;
             if (!textBoxContent.Equals(previousTextBoxContent))
@@ -1470,13 +1471,14 @@ namespace pmdbs
         {
             GlobalVarPool.FilteredUserData = GlobalVarPool.UserData.Copy();
             string searchTerm = FilterEditFieldSearch.TextTextBox;
-            if (!string.IsNullOrWhiteSpace(searchTerm) || searchTerm.Equals("Enter Search Term"))
+            if (!string.IsNullOrWhiteSpace(searchTerm) && !searchTerm.Equals(FilterEditFieldSearch.DefaultValue))
             {
-                try
+                EnumerableRowCollection<DataRow> searchResults = GlobalVarPool.FilteredUserData.AsEnumerable().Where(row => row["3"].ToString().StartsWith(searchTerm));
+                if (searchResults.Any())
                 {
-                    GlobalVarPool.FilteredUserData = GlobalVarPool.FilteredUserData.AsEnumerable().Where(row => row["3"].ToString().StartsWith(searchTerm)).CopyToDataTable();
+                    GlobalVarPool.FilteredUserData = searchResults.CopyToDataTable();
                 }
-                catch (InvalidOperationException)
+                else
                 {
                     // SEARCH TERM NOT FOUND
                     GlobalVarPool.FilteredUserData = new DataTable();
@@ -1516,7 +1518,5 @@ namespace pmdbs
             RefreshUserData(page);
         }
         #endregion
-
-        
     }
 }

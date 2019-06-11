@@ -3060,11 +3060,11 @@
             this.FilterEditFieldSearch.UseColoredCaret = true;
             this.FilterEditFieldSearch.UseDefaultValue = true;
             this.FilterEditFieldSearch.UseSystemPasswordChar = false;
-            this.FilterEditFieldSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FilterEditFieldSearch_KeyDown);
             // 
             // FilterAdvancedComboBoxSort
             // 
             this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.BackgroundColor = System.Drawing.Color.White;
             this.FilterAdvancedComboBoxSort.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.FilterAdvancedComboBoxSort.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.FilterAdvancedComboBoxSort.Font = new System.Drawing.Font("Century Gothic", 8F);
@@ -3714,8 +3714,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.WindowHeaderLabelTitle);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
