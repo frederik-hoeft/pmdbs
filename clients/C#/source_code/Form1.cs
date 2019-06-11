@@ -167,6 +167,7 @@ namespace pmdbs
         {
             InitializeComponent();
             #region LOAD
+            // PREVENT FLICKERING
             foreach (Control c in this.Controls)
             {
                 int style = NativeWinAPI.GetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE);
