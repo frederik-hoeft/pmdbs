@@ -304,7 +304,7 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
             DataTableLayoutPanelMain.BringToFront();
-            WindowHeaderLabelTitle.Text = "Your Accounts";
+            WindowHeaderLabelTitle.Text = "Passwords";
         }
 
         private void SyncAnimationStart()
@@ -1306,11 +1306,14 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
                     IsBackground = true
                 };
-                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition
+            });
+                AutomatedTaskFramework.Tasks.Clear();
                 if (GlobalVarPool.connected)
                 {
                     AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
@@ -1405,11 +1408,13 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
                     IsBackground = true
                 };
-                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, "GlobalVarPool.isUser" });
+                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
+                AutomatedTaskFramework.Tasks.Clear();
                 if (GlobalVarPool.connected)
                 {
                     AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
