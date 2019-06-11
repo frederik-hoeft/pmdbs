@@ -12,10 +12,6 @@ namespace pmdbs
 
         private bool displayFocusRectangle;
 
-        private string promptText = "";
-
-        private bool drawPrompt;
-
         private bool isHovered;
 
         private bool isPressed;
@@ -46,6 +42,11 @@ namespace pmdbs
         {
             get { return _ForeColor; }
             set { _ForeColor = value; }
+        }
+        public Color BackgroundColor
+        {
+            get { return _BackColor; }
+            set { _BackColor = value; }
         }
         public Color NormalItemForeColor
         {
@@ -159,24 +160,6 @@ namespace pmdbs
                 base.DropDownStyle = ComboBoxStyle.DropDownList;
             }
         }
-
-        [Browsable(true)]
-        [EditorBrowsable(EditorBrowsableState.Always)]
-        [DefaultValue("")]
-        [Category("Metro Appearance")]
-        public string PromptText
-        {
-            get
-            {
-                return promptText;
-            }
-            set
-            {
-                promptText = value.Trim();
-                base.Invalidate();
-            }
-        }
-
         [Category("Metro Appearance")]
         public event EventHandler<MetroPaintEventArgs> CustomPaintBackground;
 
@@ -215,7 +198,6 @@ namespace pmdbs
             base.SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.SupportsTransparentBackColor | ControlStyles.OptimizedDoubleBuffer, true);
             base.DrawMode = DrawMode.OwnerDrawFixed;
             base.DropDownStyle = ComboBoxStyle.DropDownList;
-            drawPrompt = (SelectedIndex == -1);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -302,10 +284,6 @@ namespace pmdbs
             {
                 ControlPaint.DrawFocusRectangle(e.Graphics, base.ClientRectangle);
             }
-            if (drawPrompt)
-            {
-                DrawTextPrompt(e.Graphics);
-            }
         }
 
         protected override void OnDrawItem(DrawItemEventArgs e)
@@ -337,21 +315,6 @@ namespace pmdbs
             {
                 base.OnDrawItem(e);
             }
-        }
-
-        private void DrawTextPrompt()
-        {
-            using (Graphics g = base.CreateGraphics())
-            {
-                DrawTextPrompt(g);
-            }
-        }
-
-        private void DrawTextPrompt(Graphics g)
-        {
-            Color backColor = BackColor;
-            Rectangle bounds = new Rectangle(2, 2, base.Width - 20, base.Height - 4);
-            TextRenderer.DrawText(g, promptText, _Font, bounds, SystemColors.GrayText, backColor, TextFormatFlags.EndEllipsis | TextFormatFlags.VerticalCenter);
         }
 
         protected override void OnGotFocus(EventArgs e)
@@ -455,7 +418,6 @@ namespace pmdbs
         protected override void OnSelectedIndexChanged(EventArgs e)
         {
             base.OnSelectedIndexChanged(e);
-            drawPrompt = (SelectedIndex == -1);
             base.Invalidate();
         }
 
@@ -465,10 +427,6 @@ namespace pmdbs
             if (m.Msg != 15 && m.Msg != 8465)
             {
                 return;
-            }
-            if (drawPrompt)
-            {
-                DrawTextPrompt();
             }
         }
         public class MetroPaintEventArgs : EventArgs

@@ -12,11 +12,13 @@ namespace pmdbs
 {
     public partial class EditField : UserControl
     {
+        public event EventHandler TextChanged;
         private Color bgColor = Color.White;
         public EditField()
         {
             InitializeComponent();
             advancedImageButton1.OnClickEvent += AdvancedImageButton1_Click;
+            advancedTextBox1.TextChanged += AdvancedtextBox1_TextChanged;
             OnResized();
         }
 
@@ -36,12 +38,6 @@ namespace pmdbs
             get { return advancedTextBox1.DefaultValue; }
             set { advancedTextBox1.DefaultValue = value; }
         }
-
-        /*public char PasswordChar
-        {
-            get { return advancedTextBox1.PasswordChar; }
-            set { advancedTextBox1.PasswordChar = value; }
-        }*/
 
         public Boolean UseSystemPasswordChar
         {
@@ -154,6 +150,15 @@ namespace pmdbs
         {
             advancedTextBox1.TextValue = "";
             OnResized();
+        }
+
+        private void AdvancedtextBox1_TextChanged(object sender, EventArgs e)
+        {
+            OnTextChange(e);
+        }
+        protected virtual void OnTextChange(EventArgs e)
+        {
+            TextChanged?.Invoke(this, e);
         }
     }
 }
