@@ -12,6 +12,7 @@ using System.Net;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
+using CustomMetroForms;
 
 namespace pmdbs
 {
@@ -217,7 +218,7 @@ namespace pmdbs
             windowButtonClose.OnClickEvent += WindowButtonClose_Click;
             SettingsAdvancedImageButtonFooterAbort.OnClickEvent += SettingsAdvancedImageButtonFooterAbort_Click;
             SettingsAdvancedImageButtonFooterSave.OnClickEvent += SettingsAdvancedImageButtonFooterSave_Click;
-            FilterEditFieldSearch.TextChanged += FilterEditFieldSearch_TextChanged;
+            FilterEditFieldSearch.TextBoxTextChanged += FilterEditFieldSearch_TextChanged;
             #endregion
             #endregion
         }

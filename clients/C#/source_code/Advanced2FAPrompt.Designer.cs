@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.advancedImageButton1 = new pmdbs.AdvancedImageButton();
+            this.advancedImageButton1 = new CustomMetroForms.AdvancedImageButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.advancedTextBox1 = new pmdbs.AdvancedTextBox();
+            this.advancedTextBox1 = new CustomMetroForms.AdvancedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -176,9 +176,9 @@
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
-        private AdvancedTextBox advancedTextBox1;
+        private CustomMetroForms.AdvancedTextBox advancedTextBox1;
         private System.Windows.Forms.TextBox textBox1;
-        private AdvancedImageButton advancedImageButton1;
+        private CustomMetroForms.AdvancedImageButton advancedImageButton1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Label label1;

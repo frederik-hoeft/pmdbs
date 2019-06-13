@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorForm));
-            this.ErrorFormWindowButtonClose = new pmdbs.WindowButton();
+            this.ErrorFormWindowButtonClose = new CustomMetroForms.WindowButton();
             this.ErrorFormMetroPanel = new MetroFramework.Controls.MetroPanel();
-            this.ErrorFormCustomLabel = new pmdbs.CustomLabel();
-            this.ErrorFormAnimatedButtonOK = new pmdbs.AnimatedButton();
+            this.ErrorFormCustomLabel = new CustomMetroForms.CustomLabel();
+            this.ErrorFormAnimatedButtonOK = new CustomMetroForms.AnimatedButton();
             this.ErrorFormMetroPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -85,7 +85,7 @@
             this.ErrorFormAnimatedButtonOK.Icon = null;
             this.ErrorFormAnimatedButtonOK.Location = new System.Drawing.Point(201, 211);
             this.ErrorFormAnimatedButtonOK.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.ErrorFormAnimatedButtonOK.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.ErrorFormAnimatedButtonOK.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.ErrorFormAnimatedButtonOK.Name = "ErrorFormAnimatedButtonOK";
             this.ErrorFormAnimatedButtonOK.Primary = false;
             this.ErrorFormAnimatedButtonOK.Size = new System.Drawing.Size(197, 68);
@@ -117,9 +117,9 @@
 
         #endregion
 
-        private WindowButton ErrorFormWindowButtonClose;
+        private CustomMetroForms.WindowButton ErrorFormWindowButtonClose;
         private MetroFramework.Controls.MetroPanel ErrorFormMetroPanel;
-        private CustomLabel ErrorFormCustomLabel;
-        private AnimatedButton ErrorFormAnimatedButtonOK;
+        private CustomMetroForms.CustomLabel ErrorFormCustomLabel;
+        private CustomMetroForms.AnimatedButton ErrorFormAnimatedButtonOK;
     }
 }

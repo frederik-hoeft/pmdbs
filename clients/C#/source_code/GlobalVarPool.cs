@@ -39,9 +39,9 @@ namespace pmdbs
         public static string onlinePassword = string.Empty;
 
         // GLOBAL CONTROLS
-        public static AdvancedProgressSpinner loadingSpinner = null;
-        public static AdvancedImageButton settingsSave = null;
-        public static AdvancedImageButton settingsAbort = null;
+        public static CustomMetroForms.AdvancedProgressSpinner loadingSpinner = null;
+        public static CustomMetroForms.AdvancedImageButton settingsSave = null;
+        public static CustomMetroForms.AdvancedImageButton settingsAbort = null;
         public static System.Windows.Forms.Panel loadingPanel = null;
         public static System.Windows.Forms.Label loadingLabel = null;
         public static System.Windows.Forms.PictureBox loadingLogo = null;
@@ -68,7 +68,7 @@ namespace pmdbs
         public static System.Data.DataTable UserData = new System.Data.DataTable();
         public static System.Data.DataTable FilteredUserData = new System.Data.DataTable();
         public static Form1 Form1 = null;
-        public static AdvancedImageButton SyncButton = null;
+        public static CustomMetroForms.AdvancedImageButton SyncButton = null;
 
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
