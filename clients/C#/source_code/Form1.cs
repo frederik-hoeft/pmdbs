@@ -577,7 +577,7 @@ namespace pmdbs
                         {
                             if (!Hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
                             {
-                                favIcon = HelperMethods.GenerateIcon(Hostname);
+                                favIcon = pmdbs.Icon.GenerateIcon(Hostname);
                             }
                             else
                             {
@@ -586,13 +586,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = WebHelper.GetFavIcons(Website);
+                            favIcon = pmdbs.Icon.GetFavIcons(Website);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = HelperMethods.GenerateIcon(Hostname);
+                        favIcon = pmdbs.Icon.GenerateIcon(Hostname);
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
@@ -845,13 +845,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = WebHelper.GetFavIcons(Website);
+                            favIcon = pmdbs.Icon.GetFavIcons(Website);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = HelperMethods.GenerateIcon(Hostname);
+                        favIcon = pmdbs.Icon.GenerateIcon(Hostname);
                     }
                 }
                 string[] Values = new string[]
@@ -952,11 +952,11 @@ namespace pmdbs
                 string base64Img;
                 try
                 {
-                    base64Img = WebHelper.GetFavIcons(AddEditFieldWebsite.TextTextBox);
+                    base64Img = pmdbs.Icon.GetFavIcons(AddEditFieldWebsite.TextTextBox);
                 }
                 catch
                 {
-                    base64Img = HelperMethods.GenerateIcon(AddEditFieldHostname.TextTextBox);
+                    base64Img = pmdbs.Icon.GenerateIcon(AddEditFieldHostname.TextTextBox);
                 }
                 byte[] iconBytes = Convert.FromBase64String(base64Img);
                 Invoke((MethodInvoker)delegate
