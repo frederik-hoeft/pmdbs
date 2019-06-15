@@ -26,9 +26,9 @@ namespace pmdbs
         private string MasterPassword;
         private bool GuiLoaded = false;
         private bool IsDefaultIcon = true;
+        private bool EditFieldShown = false;
         private Size MaxSize;
         private Size MinSize;
-        private string NickName;
         private string DataDetailsID;
         private IconData AddIcon = new IconData();
         private int DataPerPage = 25;
@@ -219,6 +219,7 @@ namespace pmdbs
             SettingsAdvancedImageButtonFooterAbort.OnClickEvent += SettingsAdvancedImageButtonFooterAbort_Click;
             SettingsAdvancedImageButtonFooterSave.OnClickEvent += SettingsAdvancedImageButtonFooterSave_Click;
             FilterEditFieldSearch.TextBoxTextChanged += FilterEditFieldSearch_TextChanged;
+            LoginEditFieldOfflinePassword.EnterKeyPressed += LoginEditFieldOfflinePassword_EnterKeyPressed;
             #endregion
             #endregion
         }
@@ -477,6 +478,20 @@ namespace pmdbs
 
         private void ListEntry_Click(object sender, EventArgs e)
         {
+            if (EditFieldShown)
+            {
+                // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
+                if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
+                {
+                    bool actionIsConfirmed = false;
+                    using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
+                    {
+                        actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                    }
+                    if (!actionIsConfirmed) { return; }
+                }
+                EditFieldShown = false;
+            }
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataPanelDetails.BringToFront();
             ListEntry SenderObject = (ListEntry)sender;
@@ -602,9 +617,6 @@ namespace pmdbs
                     {
                         UpdateDetailsWindow(LinkedRow);
                         ReloadSingleEntry(LinkedRow);
-                        DataFlowLayoutPanelEdit.SuspendLayout();
-                        DataPanelDetails.BringToFront();
-                        DataPanelDetails.ResumeLayout();
                     });
                 }).Start();
             }
@@ -619,13 +631,25 @@ namespace pmdbs
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
             DataEditSaveAdvancedImageButton.Enabled = true;
+            EditFieldShown = false;
         }
 
         private void DataEditCancel_Click(object sender, EventArgs e)
         {
+            // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
+            if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
+            {
+                bool actionIsConfirmed = false;
+                using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
+                {
+                    actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                }
+                if (!actionIsConfirmed) { return; }
+            }
             DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
+            EditFieldShown = false;
         }
 
         private void DataEditAdvancedImageButton_Click(object sender, EventArgs e)
@@ -648,6 +672,7 @@ namespace pmdbs
             DataPanelDetails.SuspendLayout();
             DataFlowLayoutPanelEdit.BringToFront();
             DataFlowLayoutPanelEdit.ResumeLayout();
+            EditFieldShown = true;
         }
 
         private void DataEditAnimatedButtonGeneratePassword_Click(object sender, EventArgs e)
@@ -685,6 +710,12 @@ namespace pmdbs
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
+            bool actionIsConfirmed = false;
+            using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("Do you really want to delete the selected account?",MessageBoxButtons.YesNo))
+            {
+                actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+            }
+            if (!actionIsConfirmed) { return; }
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string hid = LinkedRow["1"].ToString();
             if (!hid.Equals("EMPTY"))
@@ -757,6 +788,13 @@ namespace pmdbs
             {
                 System.Diagnostics.Process.Start(DataDetailsEntryWebsite.RawText);
             }
+        }
+
+        private void DataFilterResultsAnimatedButtonReset_Click(object sender, EventArgs e)
+        {
+            FilterEditFieldSearch.TextTextBox = string.Empty;
+            FilterEditFieldSearch.ShowDefaultValue();
+            DataPanelNoSel.BringToFront();
         }
         #endregion
 
@@ -1008,6 +1046,11 @@ namespace pmdbs
         private void LoginAnimatedButtonOnlineLogin_Click(object sender, EventArgs e)
         {
             CustomException.ThrowNew.GenericException();
+        }
+
+        private void LoginEditFieldOfflinePassword_EnterKeyPressed(object sender, EventArgs e)
+        {
+            LoginAnimatedButtonOfflineLogin_Click(sender, e);
         }
 
         private async void LoginAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
@@ -1452,6 +1495,9 @@ namespace pmdbs
 
         #region FilterPanel
         private string previousTextBoxContent = string.Empty;
+        private int previousIndex = 2;
+        private bool indexForceChange = false;
+        private bool textForceChange = false;
 
         private void InitFilterPanel()
         {
@@ -1459,6 +1505,30 @@ namespace pmdbs
         }
         private void FilterEditFieldSearch_TextChanged(object sender, EventArgs e)
         {
+            if (textForceChange)
+            {
+                textForceChange = false;
+                return;
+            }
+            if (EditFieldShown)
+            {
+                // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
+                if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
+                {
+                    bool actionIsConfirmed = false;
+                    using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
+                    {
+                        actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                    }
+                    if (!actionIsConfirmed)
+                    {
+                        textForceChange = true;
+                        FilterEditFieldSearch.TextTextBox = previousTextBoxContent;
+                        return;
+                    }
+                }
+                EditFieldShown = false;
+            }
             string textBoxContent = FilterEditFieldSearch.TextTextBox;
             if (!textBoxContent.Equals(previousTextBoxContent))
             {
@@ -1469,8 +1539,34 @@ namespace pmdbs
         }
         private void FilterAdvancedComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (GlobalVarPool.UserData.Rows.Count != 0)
+            if (indexForceChange)
             {
+                indexForceChange = false;
+                return;
+            }
+            if (EditFieldShown)
+            {
+                // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
+                if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
+                {
+                    bool actionIsConfirmed = false;
+                    using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
+                    {
+                        actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                    }
+                    if (!actionIsConfirmed)
+                    {
+                        indexForceChange = true;
+                        FilterAdvancedComboBoxSort.SelectedIndex = previousIndex;
+                        return;
+                    }
+                }
+                EditFieldShown = false;
+            }
+            int selectedIndex = FilterAdvancedComboBoxSort.SelectedIndex;
+            if (GlobalVarPool.UserData.Rows.Count != 0 && selectedIndex != previousIndex)
+            {
+                previousIndex = selectedIndex;
                 ApplyFilter(0);
             }
         }
@@ -1483,13 +1579,21 @@ namespace pmdbs
                 EnumerableRowCollection<DataRow> searchResults = GlobalVarPool.FilteredUserData.AsEnumerable().Where(row => row["3"].ToString().StartsWith(searchTerm));
                 if (searchResults.Any())
                 {
+                    DataFilterResultsLabelSearchTerm.Text = searchTerm;
+                    DataFilterResultsLabelSortTerm.Text = FilterAdvancedComboBoxSort.Items[FilterAdvancedComboBoxSort.SelectedIndex].ToString();
+                    DataFilterResultsPanel.BringToFront();
                     GlobalVarPool.FilteredUserData = searchResults.CopyToDataTable();
                 }
                 else
                 {
-                    // SEARCH TERM NOT FOUND
+                    DataFilterLabelSearchTerm.Text = searchTerm;
+                    DataFilterPanelNotFound.BringToFront();
                     GlobalVarPool.FilteredUserData = new DataTable();
                 }
+            }
+            else
+            {
+                DataPanelNoSel.BringToFront();
             }
             if (GlobalVarPool.FilteredUserData.Rows.Count > 0)
             {
