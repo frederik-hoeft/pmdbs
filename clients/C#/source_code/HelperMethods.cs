@@ -139,7 +139,7 @@ namespace pmdbs
             GlobalVarPool.outputLabel = output;
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!finishCondition() && !GlobalVarPool.connectionLost && !GlobalVarPool.commandError)
+            while (!finishCondition() && !GlobalVarPool.connectionLost && !GlobalVarPool.commandError  && !GlobalVarPool.finishedLoading)
             {
                 Thread.Sleep(1000);
             }
@@ -165,7 +165,10 @@ namespace pmdbs
                         break;
                     }
             }
-            
+            if (GlobalVarPool.finishedLoading)
+            {
+                GlobalVarPool.finishedLoading = false;
+            }
             if (GlobalVarPool.connectionLost)
             {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
@@ -239,7 +242,6 @@ namespace pmdbs
         }
         public static async void ChangeMasterPassword(string password)
         {
-            // TODO: CHECK PASSWORD STRENGTH
             InvokeOutputLabel("Creating stage 1 password hash ...");
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             string localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
