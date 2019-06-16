@@ -73,6 +73,7 @@ namespace pmdbs
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
 
+        public static bool connectionLost = false;
         public static bool commandError = false;
         public static bool countSyncPackets = false;
         public static bool connected = false;

@@ -133,11 +133,11 @@ namespace pmdbs
             GlobalVarPool.outputLabel = output;
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!finishCondition() && GlobalVarPool.connected && !GlobalVarPool.commandError)
+            while (!finishCondition() && !GlobalVarPool.connectionLost && !GlobalVarPool.commandError)
             {
                 Thread.Sleep(1000);
             }
-            if (!GlobalVarPool.connected)
+            if (GlobalVarPool.connectionLost)
             {
                 CustomException.ThrowNew.NetworkException("Connection lost!");
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
