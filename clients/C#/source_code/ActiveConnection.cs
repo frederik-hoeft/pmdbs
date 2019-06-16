@@ -123,6 +123,7 @@ namespace pmdbs
             catch (Exception e)
             {
                 CustomException.ThrowNew.NetworkException("Unable to resolve + " + ip + " Error message: " + e.ToString());
+                GlobalVarPool.connectionLost = true;
                 return;
             }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
@@ -133,12 +134,13 @@ namespace pmdbs
             }
             catch (Exception e)
             {
-                CustomException.ThrowNew.NetworkException("Could not connect to server:\n\n" + e.ToString());
+                CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.SyncButton.Enabled = true;
                     Form1.InvokeSyncAnimationStop();
                 });
+                GlobalVarPool.connectionLost = true;
                 return;
             }
             ip = ipAddress.ToString();
@@ -589,6 +591,12 @@ namespace pmdbs
                                                                             GlobalVarPool.commandError = true;
                                                                             CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
                                                                         }
+                                                                        break;
+                                                                    }
+                                                                case "UDNE":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException("This username does not exist." + Environment.NewLine + message);
                                                                         break;
                                                                     }
                                                                 default:
