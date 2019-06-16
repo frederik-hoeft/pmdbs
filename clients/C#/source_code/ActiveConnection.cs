@@ -14,7 +14,7 @@ namespace pmdbs
     {
         public static async void Start()
         {
-            // TODO: CLEAN THIS UP
+            GlobalVarPool.connectionLost = false;
             if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
             {
                 if (GlobalVarPool.USE_PERSISTENT_RSA_KEYS)
@@ -123,6 +123,7 @@ namespace pmdbs
             catch (Exception e)
             {
                 CustomException.ThrowNew.NetworkException("Unable to resolve + " + ip + " Error message: " + e.ToString());
+                GlobalVarPool.connectionLost = true;
                 return;
             }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
@@ -133,12 +134,13 @@ namespace pmdbs
             }
             catch (Exception e)
             {
-                CustomException.ThrowNew.NetworkException("Could not connect to server:\n\n" + e.ToString());
+                CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.SyncButton.Enabled = true;
                     Form1.InvokeSyncAnimationStop();
                 });
+                GlobalVarPool.connectionLost = true;
                 return;
             }
             ip = ipAddress.ToString();
@@ -591,6 +593,12 @@ namespace pmdbs
                                                                         }
                                                                         break;
                                                                     }
+                                                                case "UDNE":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException("This username does not exist." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
                                                                 default:
                                                                     {
                                                                         CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
@@ -755,6 +763,7 @@ namespace pmdbs
                 if (!GlobalVarPool.threadKilled)
                 {
                     CustomException.ThrowNew.NetworkException(se.ToString(), "Socket Error:");
+                    GlobalVarPool.connectionLost = true;
                 }
             }
             catch (Exception e)
@@ -762,6 +771,7 @@ namespace pmdbs
                 if (!GlobalVarPool.threadKilled)
                 {
                     CustomException.ThrowNew.GenericException(e.ToString());
+                    GlobalVarPool.connectionLost = true;
                 }
             }
             finally

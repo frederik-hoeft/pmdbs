@@ -51,6 +51,7 @@ namespace pmdbs
         public static System.Windows.Forms.Label promptEMail = null;
         public static System.Windows.Forms.Label promptAction = null;
         public static System.Windows.Forms.Panel promptPanel = null;
+        public static CustomMetroForms.AdvancedImageButton SyncButton = null;
 
         // SETTINGS
         public static bool wasOnline = false;
@@ -58,6 +59,7 @@ namespace pmdbs
 
         // GLOBAL VARIABLES
         public static string name = "User";
+        public static string plainMasterPassword = string.Empty;
         public static string currentUser = string.Empty;
         public static string serverName = string.Empty;
         public static string username = string.Empty;
@@ -65,14 +67,22 @@ namespace pmdbs
         public static string scryptHash = string.Empty;
         public static string promptCommand = string.Empty;
         public static List<string> selectedAccounts = new List<string>();
+        /// <summary>
+        /// Represents the decrypted database. Columns are D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon.
+        /// </summary>
         public static System.Data.DataTable UserData = new System.Data.DataTable();
+        /// <summary>
+        /// Represents the decrypted data with applied filters.
+        /// Columns are D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon.
+        /// </summary>
         public static System.Data.DataTable FilteredUserData = new System.Data.DataTable();
         public static Form1 Form1 = null;
-        public static CustomMetroForms.AdvancedImageButton SyncButton = null;
+        public static HelperMethods.LoadingType loadingType = HelperMethods.LoadingType.DEFAULT;
 
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
 
+        public static bool connectionLost = false;
         public static bool commandError = false;
         public static bool countSyncPackets = false;
         public static bool connected = false;
@@ -84,6 +94,7 @@ namespace pmdbs
         public static bool search = false;
         public static bool databaseIsInUse = false;
         public static bool promptFromBackgroundThread = false;
+        public static bool finishedLoading = false;
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
 
