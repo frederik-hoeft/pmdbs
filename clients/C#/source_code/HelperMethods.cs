@@ -237,29 +237,43 @@ namespace pmdbs
                 GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settings[2]);
             }
         }
-        public static void ChangeMasterPassword(string password)
+        public static async void ChangeMasterPassword(string password)
         {
+            // TODO: CHECK PASSWORD STRENGTH
+            InvokeOutputLabel("Creating stage 1 password hash ...");
+            string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
+            string localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
+            string onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
             DataTable encryptedUserData = GlobalVarPool.UserData.Copy();
             int columns = encryptedUserData.Columns.Count;
             int rowCounter = 0;
-            int fields = (columns - 3) * GlobalVarPool.UserData.Rows.Count;
-            foreach (DataRow Row in encryptedUserData.Rows)
+            int fields = (columns - 3) * encryptedUserData.Rows.Count;
+            foreach (DataRow row in encryptedUserData.Rows)
             {
                 for (int i = 3; i < columns; i++)
                 {
-                    string FieldValue = Row[i].ToString();
-                    if (!FieldValue.Equals("\x01"))
+                    string fieldValue = row[i].ToString();
+                    if (!fieldValue.Equals("\x01"))
                     {
-                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
-                        Row.BeginEdit();
-                        Row.SetField(i, decryptedData);
-                        Row.EndEdit();
+                        string encryptedData = CryptoHelper.AESEncrypt(fieldValue, localAESkey);
+                        row.BeginEdit();
+                        row.SetField(i, encryptedData);
+                        row.EndEdit();
                     }
-                    double Percentage = ((((double)rowCounter * ((double)columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
+                    double Percentage = ((((double)rowCounter * ((double)columns - (double)3)) + (double)i - 3) / (double)fields) * (double)100;
                     double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
-                    LoginLoadingLabelDetails.Text = "Decrypting Your Data... " + FinalPercentage.ToString() + "%";
+                    InvokeOutputLabel("Changing your password ... " + FinalPercentage.ToString() + "%");
                 }
                 rowCounter++;
+            }
+            InvokeOutputLabel("Creating stage 2 password hash ...");
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
+            string stage2PasswordHash = await ScryptTask;
+            InvokeOutputLabel("Setting new password ...");
+            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_password = \"" + stage2PasswordHash + "\"");
+            foreach (DataRow row in encryptedUserData.Rows)
+            {
+                
             }
         }
     }
