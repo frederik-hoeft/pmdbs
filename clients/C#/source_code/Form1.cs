@@ -1310,6 +1310,7 @@ namespace pmdbs
             string ip = SettingsEditFieldLoginIP.TextTextBox;
             string strPort = SettingsEditFieldLoginPort.TextTextBox;
             string username = SettingsEditFieldLoginUsername.TextTextBox;
+            string password = SettingsEditFieldLoginPassword.TextTextBox;
             bool isIP = false;
 
             if (string.IsNullOrEmpty(ip))
@@ -1327,6 +1328,11 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter your username.");
                 return;
             }
+            if (string.IsNullOrEmpty(password))
+            {
+                CustomException.ThrowNew.FormatException("Please enter your password.");
+                return;
+            }
             int port = Convert.ToInt32(strPort);
             if (port < 1 || port > 65536)
             {
@@ -1338,6 +1344,9 @@ namespace pmdbs
                 isIP = true;
                 GlobalVarPool.REMOTE_ADDRESS = ip;
             }
+            string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.plainMasterPassword = password;
             GlobalVarPool.username = username;
             try
             {
@@ -1508,7 +1517,7 @@ namespace pmdbs
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
-            HelperMethods.ChangeMasterPassword(password);
+            HelperMethods.ChangeMasterPassword(password, true);
             GlobalVarPool.finishedLoading = true;
         }
 

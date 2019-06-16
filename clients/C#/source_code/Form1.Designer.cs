@@ -309,7 +309,7 @@
             this.DataNoSelLabel4 = new System.Windows.Forms.Label();
             this.DataNoSelLabel5 = new System.Windows.Forms.Label();
             this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
-            this.editField1 = new CustomMetroForms.EditField();
+            this.SettingsEditFieldLoginPassword = new CustomMetroForms.EditField();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -1570,8 +1570,8 @@
             // 
             // SettingsPanelContentMain
             // 
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
@@ -2036,7 +2036,7 @@
             // SettingsPanelLoginContent
             // 
             this.SettingsPanelLoginContent.BackColor = System.Drawing.Color.White;
-            this.SettingsPanelLoginContent.Controls.Add(this.editField1);
+            this.SettingsPanelLoginContent.Controls.Add(this.SettingsEditFieldLoginPassword);
             this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccountDesc);
             this.SettingsPanelLoginContent.Controls.Add(this.SettingsAnimatedButtonLoginSubmit);
             this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccount);
@@ -4354,30 +4354,30 @@
             this.DataNoSelLabelHeader.TabIndex = 20;
             this.DataNoSelLabelHeader.Text = "You can";
             // 
-            // editField1
+            // SettingsEditFieldLoginPassword
             // 
-            this.editField1.AutoSize = true;
-            this.editField1.BackColor = System.Drawing.Color.White;
-            this.editField1.BackGroundColor = System.Drawing.Color.White;
-            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField1.DefaultValue = "";
-            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField1.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField1.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearHover")));
-            this.editField1.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearNormal")));
-            this.editField1.Location = new System.Drawing.Point(6, 640);
-            this.editField1.Name = "editField1";
-            this.editField1.Size = new System.Drawing.Size(660, 84);
-            this.editField1.TabIndex = 23;
-            this.editField1.TextTextBox = "";
-            this.editField1.TextTitle = "Password*";
-            this.editField1.UseColoredCaret = true;
-            this.editField1.UseDefaultValue = false;
-            this.editField1.UseSystemPasswordChar = true;
+            this.SettingsEditFieldLoginPassword.AutoSize = true;
+            this.SettingsEditFieldLoginPassword.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPassword.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginPassword.DefaultValue = "";
+            this.SettingsEditFieldLoginPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginPassword.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldLoginPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPassword.ImageClearHover")));
+            this.SettingsEditFieldLoginPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPassword.ImageClearNormal")));
+            this.SettingsEditFieldLoginPassword.Location = new System.Drawing.Point(6, 640);
+            this.SettingsEditFieldLoginPassword.Name = "SettingsEditFieldLoginPassword";
+            this.SettingsEditFieldLoginPassword.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldLoginPassword.TabIndex = 23;
+            this.SettingsEditFieldLoginPassword.TextTextBox = "";
+            this.SettingsEditFieldLoginPassword.TextTitle = "Password*";
+            this.SettingsEditFieldLoginPassword.UseColoredCaret = true;
+            this.SettingsEditFieldLoginPassword.UseDefaultValue = false;
+            this.SettingsEditFieldLoginPassword.UseSystemPasswordChar = true;
             // 
             // Form1
             // 
@@ -4827,7 +4827,7 @@
         private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel2;
         private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel1;
         private System.Windows.Forms.PictureBox DataNoSelPictureBox;
-        private CustomMetroForms.EditField editField1;
+        private CustomMetroForms.EditField SettingsEditFieldLoginPassword;
     }
 }
 

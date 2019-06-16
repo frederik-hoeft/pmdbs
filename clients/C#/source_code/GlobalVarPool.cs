@@ -59,6 +59,7 @@ namespace pmdbs
 
         // GLOBAL VARIABLES
         public static string name = "User";
+        public static string plainMasterPassword = string.Empty;
         public static string currentUser = string.Empty;
         public static string serverName = string.Empty;
         public static string username = string.Empty;
