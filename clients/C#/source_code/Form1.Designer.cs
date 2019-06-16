@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.MenuPanel = new System.Windows.Forms.Panel();
             this.MenuPanelSync = new System.Windows.Forms.Panel();
@@ -61,8 +60,6 @@
             this.DataPictureBoxBackgroundBottom = new System.Windows.Forms.PictureBox();
             this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
             this.DataPanelNoSel = new System.Windows.Forms.Panel();
-            this.DataNoSelLabel2 = new System.Windows.Forms.Label();
-            this.DataNoSelLabel1 = new System.Windows.Forms.Label();
             this.DataFilterResultsPanel = new System.Windows.Forms.Panel();
             this.DataFilterResultsLabelSortTerm = new System.Windows.Forms.Label();
             this.DataFilterResultsLabelSortHeader = new System.Windows.Forms.Label();
@@ -271,8 +268,48 @@
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
             this.LoginEditFieldOnlinePassword = new CustomMetroForms.EditField();
             this.LoginEditFieldOnlineUsername = new CustomMetroForms.EditField();
-            this.SyncAnimationTimer = new System.Windows.Forms.Timer(this.components);
             this.windowButtonClose = new CustomMetroForms.WindowButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.bulletPointLabel1 = new CustomMetroForms.BulletPointLabel();
+            this.bulletPointLabel2 = new CustomMetroForms.BulletPointLabel();
+            this.bulletPointLabel3 = new CustomMetroForms.BulletPointLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.angularGauge1 = new LiveCharts.WinForms.AngularGauge();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pieChart1 = new LiveCharts.WinForms.PieChart();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.DataNoSelPictureBox = new System.Windows.Forms.PictureBox();
+            this.DataNoSelBulletPointLabel1 = new CustomMetroForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel2 = new CustomMetroForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel3 = new CustomMetroForms.BulletPointLabel();
+            this.DataNoSelLabel1 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel2 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel3 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel4 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel5 = new System.Windows.Forms.Label();
+            this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -368,6 +405,21 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.panel10.SuspendLayout();
+            this.panel11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataNoSelPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -771,37 +823,21 @@
             // 
             // DataPanelNoSel
             // 
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabelHeader);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel5);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel4);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel3);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel2);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel1);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel3);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel2);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel1);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelPictureBox);
             this.DataPanelNoSel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelNoSel.Location = new System.Drawing.Point(0, 0);
             this.DataPanelNoSel.Name = "DataPanelNoSel";
             this.DataPanelNoSel.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelNoSel.TabIndex = 32;
-            // 
-            // DataNoSelLabel2
-            // 
-            this.DataNoSelLabel2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataNoSelLabel2.AutoSize = true;
-            this.DataNoSelLabel2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataNoSelLabel2.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataNoSelLabel2.Location = new System.Drawing.Point(152, 251);
-            this.DataNoSelLabel2.Name = "DataNoSelLabel2";
-            this.DataNoSelLabel2.Size = new System.Drawing.Size(133, 56);
-            this.DataNoSelLabel2.TabIndex = 1;
-            this.DataNoSelLabel2.Text = "(yet)";
-            // 
-            // DataNoSelLabel1
-            // 
-            this.DataNoSelLabel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataNoSelLabel1.AutoSize = true;
-            this.DataNoSelLabel1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataNoSelLabel1.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataNoSelLabel1.Location = new System.Drawing.Point(152, 195);
-            this.DataNoSelLabel1.Name = "DataNoSelLabel1";
-            this.DataNoSelLabel1.Size = new System.Drawing.Size(397, 56);
-            this.DataNoSelLabel1.TabIndex = 0;
-            this.DataNoSelLabel1.Text = "Nothing to show";
             // 
             // DataFilterResultsPanel
             // 
@@ -3323,6 +3359,7 @@
             // 
             this.PanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.PanelMain.Controls.Add(this.DataPanelMain);
+            this.PanelMain.Controls.Add(this.panel1);
             this.PanelMain.Controls.Add(this.MenuPanel);
             this.PanelMain.Controls.Add(this.WindowHeaderPanel);
             this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3876,10 +3913,6 @@
             this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
             this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
             // 
-            // SyncAnimationTimer
-            // 
-            this.SyncAnimationTimer.Tick += new System.EventHandler(this.SyncAnimationTimer_Tick);
-            // 
             // windowButtonClose
             // 
             this.windowButtonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -3891,6 +3924,443 @@
             this.windowButtonClose.Name = "windowButtonClose";
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(265, 114);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1615, 998);
+            this.panel1.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1615, 998);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.panel2.Controls.Add(this.panel11);
+            this.panel2.Controls.Add(this.panel10);
+            this.panel2.Controls.Add(this.panel9);
+            this.panel2.Controls.Add(this.panel8);
+            this.panel2.Controls.Add(this.panel7);
+            this.panel2.Controls.Add(this.panel5);
+            this.panel2.Controls.Add(this.panel4);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(11, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1604, 998);
+            this.panel2.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.pictureBox4);
+            this.panel4.Controls.Add(this.label1);
+            this.panel4.Location = new System.Drawing.Point(1, 0);
+            this.panel4.Margin = new System.Windows.Forms.Padding(0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(893, 410);
+            this.panel4.TabIndex = 0;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.White;
+            this.panel5.Controls.Add(this.label13);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Controls.Add(this.pictureBox3);
+            this.panel5.Controls.Add(this.label2);
+            this.panel5.Location = new System.Drawing.Point(1, 422);
+            this.panel5.Margin = new System.Windows.Forms.Padding(0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(493, 284);
+            this.panel5.TabIndex = 1;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.White;
+            this.panel7.Controls.Add(this.pictureBox2);
+            this.panel7.Controls.Add(this.label3);
+            this.panel7.Location = new System.Drawing.Point(509, 422);
+            this.panel7.Margin = new System.Windows.Forms.Padding(0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(530, 284);
+            this.panel7.TabIndex = 2;
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.White;
+            this.panel8.Controls.Add(this.pictureBox1);
+            this.panel8.Controls.Add(this.bulletPointLabel3);
+            this.panel8.Controls.Add(this.bulletPointLabel2);
+            this.panel8.Controls.Add(this.bulletPointLabel1);
+            this.panel8.Controls.Add(this.label5);
+            this.panel8.Location = new System.Drawing.Point(1056, 422);
+            this.panel8.Margin = new System.Windows.Forms.Padding(0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(544, 284);
+            this.panel8.TabIndex = 3;
+            // 
+            // panel9
+            // 
+            this.panel9.BackColor = System.Drawing.Color.White;
+            this.panel9.Controls.Add(this.label4);
+            this.panel9.Controls.Add(this.cartesianChart1);
+            this.panel9.Location = new System.Drawing.Point(908, 0);
+            this.panel9.Margin = new System.Windows.Forms.Padding(0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(692, 410);
+            this.panel9.TabIndex = 4;
+            // 
+            // cartesianChart1
+            // 
+            this.cartesianChart1.Location = new System.Drawing.Point(19, 17);
+            this.cartesianChart1.Name = "cartesianChart1";
+            this.cartesianChart1.Size = new System.Drawing.Size(646, 332);
+            this.cartesianChart1.TabIndex = 0;
+            this.cartesianChart1.Text = "cartesianChart1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 30F);
+            this.label1.Location = new System.Drawing.Point(10, 330);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(864, 74);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Welcome back <username>";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label2.Location = new System.Drawing.Point(183, 124);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(301, 49);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Your Accounts";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label3.Location = new System.Drawing.Point(206, 123);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(172, 49);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Settings";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label4.Location = new System.Drawing.Point(42, 352);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(271, 49);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Lorem Ipsum";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label5.Location = new System.Drawing.Point(32, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(199, 49);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Last Sync";
+            // 
+            // bulletPointLabel1
+            // 
+            this.bulletPointLabel1.AutoSize = true;
+            this.bulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.bulletPointLabel1.Location = new System.Drawing.Point(248, 52);
+            this.bulletPointLabel1.Name = "bulletPointLabel1";
+            this.bulletPointLabel1.Size = new System.Drawing.Size(160, 30);
+            this.bulletPointLabel1.TabIndex = 6;
+            this.bulletPointLabel1.Text = "  24 min ago";
+            // 
+            // bulletPointLabel2
+            // 
+            this.bulletPointLabel2.AutoSize = true;
+            this.bulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.bulletPointLabel2.Location = new System.Drawing.Point(248, 93);
+            this.bulletPointLabel2.Name = "bulletPointLabel2";
+            this.bulletPointLabel2.Size = new System.Drawing.Size(276, 30);
+            this.bulletPointLabel2.TabIndex = 7;
+            this.bulletPointLabel2.Text = "  th3fr3d.ddns.net:4447";
+            // 
+            // bulletPointLabel3
+            // 
+            this.bulletPointLabel3.AutoSize = true;
+            this.bulletPointLabel3.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.bulletPointLabel3.Location = new System.Drawing.Point(248, 136);
+            this.bulletPointLabel3.Name = "bulletPointLabel3";
+            this.bulletPointLabel3.Size = new System.Drawing.Size(265, 30);
+            this.bulletPointLabel3.TabIndex = 8;
+            this.bulletPointLabel3.Text = "  connected 21 times";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(70, 114);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(130, 127);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.pictureBox2.Location = new System.Drawing.Point(39, 85);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(130, 127);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::pmdbs.Properties.Resources.database;
+            this.pictureBox3.Location = new System.Drawing.Point(47, 85);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(130, 127);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 11;
+            this.pictureBox3.TabStop = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.label6.Location = new System.Drawing.Point(176, 240);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(314, 39);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "78 Accounts saved";
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackColor = System.Drawing.Color.White;
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(8, 8);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(882, 321);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 11;
+            this.pictureBox4.TabStop = false;
+            // 
+            // panel10
+            // 
+            this.panel10.BackColor = System.Drawing.Color.White;
+            this.panel10.Controls.Add(this.label9);
+            this.panel10.Controls.Add(this.label7);
+            this.panel10.Controls.Add(this.angularGauge1);
+            this.panel10.Location = new System.Drawing.Point(0, 724);
+            this.panel10.Margin = new System.Windows.Forms.Padding(0);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(767, 273);
+            this.panel10.TabIndex = 5;
+            // 
+            // panel11
+            // 
+            this.panel11.BackColor = System.Drawing.Color.White;
+            this.panel11.Controls.Add(this.label12);
+            this.panel11.Controls.Add(this.label10);
+            this.panel11.Controls.Add(this.pieChart1);
+            this.panel11.Location = new System.Drawing.Point(786, 726);
+            this.panel11.Margin = new System.Windows.Forms.Padding(0);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(818, 273);
+            this.panel11.TabIndex = 6;
+            // 
+            // angularGauge1
+            // 
+            this.angularGauge1.Location = new System.Drawing.Point(293, 12);
+            this.angularGauge1.Name = "angularGauge1";
+            this.angularGauge1.Size = new System.Drawing.Size(459, 244);
+            this.angularGauge1.TabIndex = 0;
+            this.angularGauge1.Text = "angularGauge1";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label7.Location = new System.Drawing.Point(30, 28);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(263, 49);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Server status";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.label9.Location = new System.Drawing.Point(9, 227);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(380, 34);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "Lorem ipsum dolor sit amet";
+            // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(487, 19);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(307, 229);
+            this.pieChart1.TabIndex = 0;
+            this.pieChart1.Text = "pieChart1";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.label10.Location = new System.Drawing.Point(3, 183);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(516, 78);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "At vero eos et accusam et justo \r\nduo dolores et ea rebum.";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label12.Location = new System.Drawing.Point(3, 10);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(345, 49);
+            this.label12.TabIndex = 6;
+            this.label12.Text = "Disk usage / user";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.label13.Location = new System.Drawing.Point(176, 202);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(192, 39);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "45 MB used";
+            // 
+            // DataNoSelPictureBox
+            // 
+            this.DataNoSelPictureBox.BackColor = System.Drawing.Color.White;
+            this.DataNoSelPictureBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DataNoSelPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("DataNoSelPictureBox.Image")));
+            this.DataNoSelPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.DataNoSelPictureBox.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.DataNoSelPictureBox.Name = "DataNoSelPictureBox";
+            this.DataNoSelPictureBox.Size = new System.Drawing.Size(700, 254);
+            this.DataNoSelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.DataNoSelPictureBox.TabIndex = 11;
+            this.DataNoSelPictureBox.TabStop = false;
+            // 
+            // DataNoSelBulletPointLabel1
+            // 
+            this.DataNoSelBulletPointLabel1.AutoSize = true;
+            this.DataNoSelBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel1.Location = new System.Drawing.Point(60, 419);
+            this.DataNoSelBulletPointLabel1.Name = "DataNoSelBulletPointLabel1";
+            this.DataNoSelBulletPointLabel1.Size = new System.Drawing.Size(88, 34);
+            this.DataNoSelBulletPointLabel1.TabIndex = 12;
+            this.DataNoSelBulletPointLabel1.Text = "  Add";
+            // 
+            // DataNoSelBulletPointLabel2
+            // 
+            this.DataNoSelBulletPointLabel2.AutoSize = true;
+            this.DataNoSelBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel2.Location = new System.Drawing.Point(60, 509);
+            this.DataNoSelBulletPointLabel2.Name = "DataNoSelBulletPointLabel2";
+            this.DataNoSelBulletPointLabel2.Size = new System.Drawing.Size(101, 34);
+            this.DataNoSelBulletPointLabel2.TabIndex = 13;
+            this.DataNoSelBulletPointLabel2.Text = "  Click";
+            // 
+            // DataNoSelBulletPointLabel3
+            // 
+            this.DataNoSelBulletPointLabel3.AutoSize = true;
+            this.DataNoSelBulletPointLabel3.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel3.Location = new System.Drawing.Point(62, 579);
+            this.DataNoSelBulletPointLabel3.Name = "DataNoSelBulletPointLabel3";
+            this.DataNoSelBulletPointLabel3.Size = new System.Drawing.Size(155, 34);
+            this.DataNoSelBulletPointLabel3.TabIndex = 14;
+            this.DataNoSelBulletPointLabel3.Text = "  Organize";
+            // 
+            // DataNoSelLabel1
+            // 
+            this.DataNoSelLabel1.AutoSize = true;
+            this.DataNoSelLabel1.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel1.Location = new System.Drawing.Point(142, 417);
+            this.DataNoSelLabel1.Name = "DataNoSelLabel1";
+            this.DataNoSelLabel1.Size = new System.Drawing.Size(445, 34);
+            this.DataNoSelLabel1.TabIndex = 15;
+            this.DataNoSelLabel1.Text = "accounts by clicking the + icon";
+            // 
+            // DataNoSelLabel2
+            // 
+            this.DataNoSelLabel2.AutoSize = true;
+            this.DataNoSelLabel2.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel2.Location = new System.Drawing.Point(76, 453);
+            this.DataNoSelLabel2.Name = "DataNoSelLabel2";
+            this.DataNoSelLabel2.Size = new System.Drawing.Size(259, 34);
+            this.DataNoSelLabel2.TabIndex = 16;
+            this.DataNoSelLabel2.Text = "in the bottom left.\r\n";
+            // 
+            // DataNoSelLabel3
+            // 
+            this.DataNoSelLabel3.AutoSize = true;
+            this.DataNoSelLabel3.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel3.Location = new System.Drawing.Point(152, 508);
+            this.DataNoSelLabel3.Name = "DataNoSelLabel3";
+            this.DataNoSelLabel3.Size = new System.Drawing.Size(389, 34);
+            this.DataNoSelLabel3.TabIndex = 17;
+            this.DataNoSelLabel3.Text = "on an item for more details.";
+            // 
+            // DataNoSelLabel4
+            // 
+            this.DataNoSelLabel4.AutoSize = true;
+            this.DataNoSelLabel4.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel4.Location = new System.Drawing.Point(212, 578);
+            this.DataNoSelLabel4.Name = "DataNoSelLabel4";
+            this.DataNoSelLabel4.Size = new System.Drawing.Size(422, 34);
+            this.DataNoSelLabel4.TabIndex = 18;
+            this.DataNoSelLabel4.Text = "items with the search bar and";
+            // 
+            // DataNoSelLabel5
+            // 
+            this.DataNoSelLabel5.AutoSize = true;
+            this.DataNoSelLabel5.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel5.Location = new System.Drawing.Point(81, 617);
+            this.DataNoSelLabel5.Name = "DataNoSelLabel5";
+            this.DataNoSelLabel5.Size = new System.Drawing.Size(365, 34);
+            this.DataNoSelLabel5.TabIndex = 19;
+            this.DataNoSelLabel5.Text = "sorting options at the top.";
+            // 
+            // DataNoSelLabelHeader
+            // 
+            this.DataNoSelLabelHeader.AutoSize = true;
+            this.DataNoSelLabelHeader.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.DataNoSelLabelHeader.Location = new System.Drawing.Point(24, 349);
+            this.DataNoSelLabelHeader.Name = "DataNoSelLabelHeader";
+            this.DataNoSelLabelHeader.Size = new System.Drawing.Size(183, 49);
+            this.DataNoSelLabelHeader.TabIndex = 20;
+            this.DataNoSelLabelHeader.Text = "You can";
             // 
             // Form1
             // 
@@ -4033,6 +4503,28 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.panel10.ResumeLayout(false);
+            this.panel10.PerformLayout();
+            this.panel11.ResumeLayout(false);
+            this.panel11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataNoSelPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4076,8 +4568,6 @@
         private CustomMetroForms.AdvancedImageButton DataEditSaveAdvancedImageButton;
         private CustomMetroForms.AdvancedImageButton DataEditCancelAdvancedImageButton;
         private System.Windows.Forms.Panel DataPanelNoSel;
-        private System.Windows.Forms.Label DataNoSelLabel2;
-        private System.Windows.Forms.Label DataNoSelLabel1;
         private System.Windows.Forms.Label WindowHeaderLabelLogo;
         private System.Windows.Forms.Panel WindowHeaderPanel;
         private System.Windows.Forms.PictureBox WindowPictureBoxIcon;
@@ -4259,7 +4749,6 @@
         private System.Windows.Forms.Panel MenuPanelSync;
         private System.Windows.Forms.Label MenuSyncLabelHeader;
         private System.Windows.Forms.Label MenuSyncLabelStatus;
-        private System.Windows.Forms.Timer SyncAnimationTimer;
         private System.Windows.Forms.PictureBox MenuSyncPictureBox;
         private CustomMetroForms.EditField FilterEditFieldSearch;
         private System.Windows.Forms.Label FilterLabelSort;
@@ -4282,6 +4771,47 @@
         private System.Windows.Forms.Label DataFilterResultsLabelSortTerm;
         private System.Windows.Forms.Label DataFilterResultsLabelSortHeader;
         private CustomMetroForms.AnimatedButton DataFilterAnimatedButtonReset;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label4;
+        private LiveCharts.WinForms.CartesianChart cartesianChart1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private CustomMetroForms.BulletPointLabel bulletPointLabel3;
+        private CustomMetroForms.BulletPointLabel bulletPointLabel2;
+        private CustomMetroForms.BulletPointLabel bulletPointLabel1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label10;
+        private LiveCharts.WinForms.PieChart pieChart1;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label7;
+        private LiveCharts.WinForms.AngularGauge angularGauge1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label DataNoSelLabelHeader;
+        private System.Windows.Forms.Label DataNoSelLabel5;
+        private System.Windows.Forms.Label DataNoSelLabel4;
+        private System.Windows.Forms.Label DataNoSelLabel3;
+        private System.Windows.Forms.Label DataNoSelLabel2;
+        private System.Windows.Forms.Label DataNoSelLabel1;
+        private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel3;
+        private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel2;
+        private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel1;
+        private System.Windows.Forms.PictureBox DataNoSelPictureBox;
     }
 }
 
