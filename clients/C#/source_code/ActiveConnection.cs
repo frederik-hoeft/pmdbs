@@ -14,7 +14,7 @@ namespace pmdbs
     {
         public static async void Start()
         {
-            // TODO: CLEAN THIS UP
+            GlobalVarPool.connectionLost = false;
             if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
             {
                 if (GlobalVarPool.USE_PERSISTENT_RSA_KEYS)
@@ -755,6 +755,7 @@ namespace pmdbs
                 if (!GlobalVarPool.threadKilled)
                 {
                     CustomException.ThrowNew.NetworkException(se.ToString(), "Socket Error:");
+                    GlobalVarPool.connectionLost = true;
                 }
             }
             catch (Exception e)
@@ -762,6 +763,7 @@ namespace pmdbs
                 if (!GlobalVarPool.threadKilled)
                 {
                     CustomException.ThrowNew.GenericException(e.ToString());
+                    GlobalVarPool.connectionLost = true;
                 }
             }
             finally

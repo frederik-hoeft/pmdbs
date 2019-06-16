@@ -137,6 +137,12 @@ namespace pmdbs
             {
                 Thread.Sleep(1000);
             }
+            if (!GlobalVarPool.connectionLost)
+            {
+                AutomatedTaskFramework.Tasks.Clear();
+                AutomatedTaskFramework
+            }
+            
             if (GlobalVarPool.connectionLost)
             {
                 CustomException.ThrowNew.NetworkException("Connection lost!");
