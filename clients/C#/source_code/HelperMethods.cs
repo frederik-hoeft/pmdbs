@@ -140,7 +140,13 @@ namespace pmdbs
             if (!GlobalVarPool.connectionLost)
             {
                 AutomatedTaskFramework.Tasks.Clear();
-                AutomatedTaskFramework
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Tasks.Execute();
+                while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                {
+                    Thread.Sleep(1000);
+                }
             }
             
             if (GlobalVarPool.connectionLost)
