@@ -1095,7 +1095,7 @@ namespace pmdbs
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data ORDER BY D_datetime ASC;", (int)ColumnCount.Tbl_data);
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
@@ -1350,6 +1350,7 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelLogin;
+                GlobalVarPool.loadingType = HelperMethods.LoadingType.LOGIN;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
@@ -1484,6 +1485,10 @@ namespace pmdbs
         private void SettingsAnimatedButtonOfflineRegister_Click(object sender, EventArgs e)
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
+        }
+        private void SettingsAnimatedButtonChangePasswordSubmit_Click(object sender, EventArgs e)
+        {
+
         }
 
         #endregion
@@ -1629,5 +1634,7 @@ namespace pmdbs
             RefreshUserData(page);
         }
         #endregion
+
+        
     }
 }

@@ -269,8 +269,7 @@
             this.LoginEditFieldOnlinePassword = new CustomMetroForms.EditField();
             this.LoginEditFieldOnlineUsername = new CustomMetroForms.EditField();
             this.windowButtonClose = new CustomMetroForms.WindowButton();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.DashboardTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
@@ -310,6 +309,7 @@
             this.DataNoSelLabel4 = new System.Windows.Forms.Label();
             this.DataNoSelLabel5 = new System.Windows.Forms.Label();
             this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
+            this.editField1 = new CustomMetroForms.EditField();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -405,8 +405,7 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.DashboardTableLayoutPanel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -622,8 +621,9 @@
             // DataPanelMain
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
-            this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
+            this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
+            this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelMain.Location = new System.Drawing.Point(265, 114);
@@ -1571,8 +1571,8 @@
             // SettingsPanelContentMain
             // 
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOnline);
@@ -1694,6 +1694,7 @@
             this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
             this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
             this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonChangePasswordSubmit_Click);
             // 
             // SettingsEditFieldOfflineNewPassword
             // 
@@ -2035,6 +2036,7 @@
             // SettingsPanelLoginContent
             // 
             this.SettingsPanelLoginContent.BackColor = System.Drawing.Color.White;
+            this.SettingsPanelLoginContent.Controls.Add(this.editField1);
             this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccountDesc);
             this.SettingsPanelLoginContent.Controls.Add(this.SettingsAnimatedButtonLoginSubmit);
             this.SettingsPanelLoginContent.Controls.Add(this.SettingsLabelLoginAccount);
@@ -2056,9 +2058,9 @@
             this.SettingsLabelLoginAccountDesc.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsLabelLoginAccountDesc.Location = new System.Drawing.Point(4, 490);
             this.SettingsLabelLoginAccountDesc.Name = "SettingsLabelLoginAccountDesc";
-            this.SettingsLabelLoginAccountDesc.Size = new System.Drawing.Size(603, 42);
+            this.SettingsLabelLoginAccountDesc.Size = new System.Drawing.Size(534, 42);
             this.SettingsLabelLoginAccountDesc.TabIndex = 22;
-            this.SettingsLabelLoginAccountDesc.Text = "Please create your master username below to log into your existing \r\naccount.";
+            this.SettingsLabelLoginAccountDesc.Text = "Please enter your credentials below to log into your existing \r\naccount.";
             // 
             // SettingsAnimatedButtonLoginSubmit
             // 
@@ -2179,7 +2181,7 @@
             this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter your username...";
             this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
             this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
@@ -3359,7 +3361,6 @@
             // 
             this.PanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.PanelMain.Controls.Add(this.DataPanelMain);
-            this.PanelMain.Controls.Add(this.panel1);
             this.PanelMain.Controls.Add(this.MenuPanel);
             this.PanelMain.Controls.Add(this.WindowHeaderPanel);
             this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3925,32 +3926,23 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
-            // panel1
+            // DashboardTableLayoutPanel
             // 
-            this.panel1.Controls.Add(this.tableLayoutPanel1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(265, 114);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1615, 998);
-            this.panel1.TabIndex = 2;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1615, 998);
-            this.tableLayoutPanel1.TabIndex = 1;
+            this.DashboardTableLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DashboardTableLayoutPanel.ColumnCount = 2;
+            this.DashboardTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.DashboardTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DashboardTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.DashboardTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.DashboardTableLayoutPanel.Controls.Add(this.panel2, 1, 0);
+            this.DashboardTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DashboardTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.DashboardTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardTableLayoutPanel.Name = "DashboardTableLayoutPanel";
+            this.DashboardTableLayoutPanel.RowCount = 1;
+            this.DashboardTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DashboardTableLayoutPanel.Size = new System.Drawing.Size(1615, 998);
+            this.DashboardTableLayoutPanel.TabIndex = 1;
             // 
             // panel2
             // 
@@ -4362,14 +4354,39 @@
             this.DataNoSelLabelHeader.TabIndex = 20;
             this.DataNoSelLabelHeader.Text = "You can";
             // 
+            // editField1
+            // 
+            this.editField1.AutoSize = true;
+            this.editField1.BackColor = System.Drawing.Color.White;
+            this.editField1.BackGroundColor = System.Drawing.Color.White;
+            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.editField1.DefaultValue = "";
+            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.editField1.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.editField1.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearHover")));
+            this.editField1.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField1.ImageClearNormal")));
+            this.editField1.Location = new System.Drawing.Point(6, 640);
+            this.editField1.Name = "editField1";
+            this.editField1.Size = new System.Drawing.Size(660, 84);
+            this.editField1.TabIndex = 23;
+            this.editField1.TextTextBox = "";
+            this.editField1.TextTitle = "Password*";
+            this.editField1.UseColoredCaret = true;
+            this.editField1.UseDefaultValue = false;
+            this.editField1.UseSystemPasswordChar = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.PanelMain);
+            this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -4503,8 +4520,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.DashboardTableLayoutPanel.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -4771,8 +4787,7 @@
         private System.Windows.Forms.Label DataFilterResultsLabelSortTerm;
         private System.Windows.Forms.Label DataFilterResultsLabelSortHeader;
         private CustomMetroForms.AnimatedButton DataFilterAnimatedButtonReset;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel DashboardTableLayoutPanel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel9;
         private System.Windows.Forms.Panel panel8;
@@ -4812,6 +4827,7 @@
         private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel2;
         private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel1;
         private System.Windows.Forms.PictureBox DataNoSelPictureBox;
+        private CustomMetroForms.EditField editField1;
     }
 }
 

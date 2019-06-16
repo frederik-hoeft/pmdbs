@@ -87,6 +87,12 @@ namespace pmdbs
             }
         }
 
+        public enum LoadingType
+        {
+            DEFAULT = 0,
+            LOGIN = 1
+        }
+
         public static void LoadingHelper(object parameters)
         {
             GlobalVarPool.commandError = false;
@@ -137,16 +143,27 @@ namespace pmdbs
             {
                 Thread.Sleep(1000);
             }
-            if (!GlobalVarPool.connectionLost)
+            switch (GlobalVarPool.loadingType)
             {
-                AutomatedTaskFramework.Tasks.Clear();
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
-                AutomatedTaskFramework.Tasks.Execute();
-                while (GlobalVarPool.connected && !GlobalVarPool.commandError)
-                {
-                    Thread.Sleep(1000);
-                }
+                case LoadingType.LOGIN:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        if (!GlobalVarPool.connectionLost)
+                        {
+                            AutomatedTaskFramework.Tasks.Clear();
+                            AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                            AutomatedTaskFramework.Tasks.Execute();
+                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            {
+                                Thread.Sleep(1000);
+                            }
+                        }
+                        break;
+                    }
             }
             
             if (GlobalVarPool.connectionLost)
@@ -218,6 +235,31 @@ namespace pmdbs
                 List<string> settings = await getSettings;
                 GlobalVarPool.REMOTE_ADDRESS = settings[1];
                 GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settings[2]);
+            }
+        }
+        public static void ChangeMasterPassword(string password)
+        {
+            DataTable encryptedUserData = GlobalVarPool.UserData.Copy();
+            int columns = encryptedUserData.Columns.Count;
+            int rowCounter = 0;
+            int fields = (columns - 3) * GlobalVarPool.UserData.Rows.Count;
+            foreach (DataRow Row in encryptedUserData.Rows)
+            {
+                for (int i = 3; i < columns; i++)
+                {
+                    string FieldValue = Row[i].ToString();
+                    if (!FieldValue.Equals("\x01"))
+                    {
+                        string decryptedData = CryptoHelper.AESDecrypt(FieldValue, GlobalVarPool.localAESkey);
+                        Row.BeginEdit();
+                        Row.SetField(i, decryptedData);
+                        Row.EndEdit();
+                    }
+                    double Percentage = ((((double)rowCounter * ((double)columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
+                    double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
+                    LoginLoadingLabelDetails.Text = "Decrypting Your Data... " + FinalPercentage.ToString() + "%";
+                }
+                rowCounter++;
             }
         }
     }
