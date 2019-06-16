@@ -220,6 +220,7 @@ namespace pmdbs
             SettingsAdvancedImageButtonFooterSave.OnClickEvent += SettingsAdvancedImageButtonFooterSave_Click;
             FilterEditFieldSearch.TextBoxTextChanged += FilterEditFieldSearch_TextChanged;
             LoginEditFieldOfflinePassword.EnterKeyPressed += LoginEditFieldOfflinePassword_EnterKeyPressed;
+            SyncAnimationTimer.Tick += SyncAnimationTimer_Tick;
             #endregion
             #endregion
         }
@@ -275,6 +276,7 @@ namespace pmdbs
         Bitmap bmp;
         float angle = 0f;
         bool showSyncAnimation = false;
+        private System.Windows.Forms.Timer SyncAnimationTimer = new System.Windows.Forms.Timer();
         private void MenuMenuEntryHome_Click(object sender, EventArgs e)
         {
             MenuPanelHomeIndicator.BackColor = Colors.Orange;
