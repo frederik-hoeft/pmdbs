@@ -1095,7 +1095,7 @@ namespace pmdbs
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data ORDER BY D_datetime ASC;", (int)ColumnCount.Tbl_data);
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
@@ -1283,8 +1283,6 @@ namespace pmdbs
                     {
                         AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
                         AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "LOGGED_OUT", NetworkAdapter.MethodProvider.Logout);
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                         break;
                     }
                 case "CONFIRM_NEW_DEVICE":
@@ -1312,6 +1310,7 @@ namespace pmdbs
             string ip = SettingsEditFieldLoginIP.TextTextBox;
             string strPort = SettingsEditFieldLoginPort.TextTextBox;
             string username = SettingsEditFieldLoginUsername.TextTextBox;
+            string password = SettingsEditFieldLoginPassword.TextTextBox;
             bool isIP = false;
 
             if (string.IsNullOrEmpty(ip))
@@ -1329,6 +1328,11 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter your username.");
                 return;
             }
+            if (string.IsNullOrEmpty(password))
+            {
+                CustomException.ThrowNew.FormatException("Please enter your password.");
+                return;
+            }
             int port = Convert.ToInt32(strPort);
             if (port < 1 || port > 65536)
             {
@@ -1340,6 +1344,9 @@ namespace pmdbs
                 isIP = true;
                 GlobalVarPool.REMOTE_ADDRESS = ip;
             }
+            string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.plainMasterPassword = password;
             GlobalVarPool.username = username;
             try
             {
@@ -1351,7 +1358,8 @@ namespace pmdbs
                     GlobalVarPool.REMOTE_ADDRESS = ipv4String;
                 }
                 GlobalVarPool.REMOTE_PORT = port;
-                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelLogin;
+                GlobalVarPool.loadingType = HelperMethods.LoadingType.LOGIN;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
@@ -1369,9 +1377,8 @@ namespace pmdbs
                     AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
                     AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                 AutomatedTaskFramework.Tasks.Execute();
+                await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT.ToString() + "\";");
             }
             catch (Exception ex)
             {
@@ -1471,6 +1478,7 @@ namespace pmdbs
                     AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
+                await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT.ToString() + "\";");
             }
             catch
             {
@@ -1486,6 +1494,31 @@ namespace pmdbs
         private void SettingsAnimatedButtonOfflineRegister_Click(object sender, EventArgs e)
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
+        }
+        private void SettingsAnimatedButtonChangePasswordSubmit_Click(object sender, EventArgs e)
+        {
+            // TODO: CHECK PASSWORD STRENGTH
+            string password = SettingsEditFieldOfflineNewPassword.TextTextBox;
+            string password2 = SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox;
+            if (!password.Equals(password2))
+            {
+                CustomException.ThrowNew.GenericException("These passwords don't match.");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                CustomException.ThrowNew.GenericException("Please enter a new master password.");
+                return;
+            }
+            GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
+            Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
+            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+            {
+                IsBackground = true
+            };
+            t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
+            HelperMethods.ChangeMasterPassword(password, true);
+            GlobalVarPool.finishedLoading = true;
         }
 
         #endregion
@@ -1631,5 +1664,7 @@ namespace pmdbs
             RefreshUserData(page);
         }
         #endregion
+
+        
     }
 }
