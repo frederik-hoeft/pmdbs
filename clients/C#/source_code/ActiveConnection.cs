@@ -479,7 +479,7 @@ namespace pmdbs
                                                                     // TODO: IMPLEMENT RETURN VALUE HANDLING
                                                                     case "INSERT":
                                                                         {
-                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.SetHid));
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(Sync.SetHid));
                                                                             t.Start((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                                                                             // HelperMethods.SetHid((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                                                                             if (GlobalVarPool.countSyncPackets)
@@ -497,7 +497,7 @@ namespace pmdbs
                                                                             string remoteHeaderString = content.Split(';').Where(element => element.Contains("headers")).FirstOrDefault();
                                                                             string deletedItemString = content.Split(';').Where(element => element.Contains("deleted")).FirstOrDefault();
                                                                             object parameters = new string[] { remoteHeaderString, deletedItemString };
-                                                                            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.Sync));
+                                                                            Thread t = new Thread(new ParameterizedThreadStart(Sync.Initialize));
                                                                             t.Start(parameters);
                                                                             break;
                                                                         }
@@ -538,7 +538,7 @@ namespace pmdbs
                                                                     AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                                                                     AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                                                                     AutomatedTaskFramework.Tasks.Execute();
-                                                                    new Thread(new ThreadStart(HelperMethods.FinishSync))
+                                                                    new Thread(new ThreadStart(Sync.Finish))
                                                                     {
                                                                         IsBackground = true
                                                                     }.Start();

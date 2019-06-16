@@ -29,24 +29,12 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorForm));
-            this.ErrorFormWindowButtonClose = new pmdbs.WindowButton();
             this.ErrorFormMetroPanel = new MetroFramework.Controls.MetroPanel();
-            this.ErrorFormCustomLabel = new pmdbs.CustomLabel();
-            this.ErrorFormAnimatedButtonOK = new pmdbs.AnimatedButton();
+            this.ErrorFormCustomLabel = new CustomMetroForms.CustomLabel();
+            this.ErrorFormAnimatedButtonOK = new CustomMetroForms.AnimatedButton();
+            this.ErrorFormWindowButtonClose = new CustomMetroForms.WindowButton();
             this.ErrorFormMetroPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ErrorFormWindowButtonClose
-            // 
-            this.ErrorFormWindowButtonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ErrorFormWindowButtonClose.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(71)))), ((int)(((byte)(71)))));
-            this.ErrorFormWindowButtonClose.BackgroundColorNormal = System.Drawing.Color.Empty;
-            this.ErrorFormWindowButtonClose.ImageHover = ((System.Drawing.Image)(resources.GetObject("ErrorFormWindowButtonClose.ImageHover")));
-            this.ErrorFormWindowButtonClose.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ErrorFormWindowButtonClose.ImageNormal")));
-            this.ErrorFormWindowButtonClose.Location = new System.Drawing.Point(578, 6);
-            this.ErrorFormWindowButtonClose.Name = "ErrorFormWindowButtonClose";
-            this.ErrorFormWindowButtonClose.Size = new System.Drawing.Size(60, 50);
-            this.ErrorFormWindowButtonClose.TabIndex = 13;
             // 
             // ErrorFormMetroPanel
             // 
@@ -85,7 +73,7 @@
             this.ErrorFormAnimatedButtonOK.Icon = null;
             this.ErrorFormAnimatedButtonOK.Location = new System.Drawing.Point(201, 211);
             this.ErrorFormAnimatedButtonOK.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.ErrorFormAnimatedButtonOK.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.ErrorFormAnimatedButtonOK.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.ErrorFormAnimatedButtonOK.Name = "ErrorFormAnimatedButtonOK";
             this.ErrorFormAnimatedButtonOK.Primary = false;
             this.ErrorFormAnimatedButtonOK.Size = new System.Drawing.Size(197, 68);
@@ -93,6 +81,18 @@
             this.ErrorFormAnimatedButtonOK.Text = "OK";
             this.ErrorFormAnimatedButtonOK.UseVisualStyleBackColor = true;
             this.ErrorFormAnimatedButtonOK.Click += new System.EventHandler(this.ErrorFormAnimatedButtonOK_Click);
+            // 
+            // ErrorFormWindowButtonClose
+            // 
+            this.ErrorFormWindowButtonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ErrorFormWindowButtonClose.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(71)))), ((int)(((byte)(71)))));
+            this.ErrorFormWindowButtonClose.BackgroundColorNormal = System.Drawing.Color.Empty;
+            this.ErrorFormWindowButtonClose.ImageHover = ((System.Drawing.Image)(resources.GetObject("ErrorFormWindowButtonClose.ImageHover")));
+            this.ErrorFormWindowButtonClose.ImageNormal = ((System.Drawing.Image)(resources.GetObject("ErrorFormWindowButtonClose.ImageNormal")));
+            this.ErrorFormWindowButtonClose.Location = new System.Drawing.Point(578, 6);
+            this.ErrorFormWindowButtonClose.Name = "ErrorFormWindowButtonClose";
+            this.ErrorFormWindowButtonClose.Size = new System.Drawing.Size(60, 50);
+            this.ErrorFormWindowButtonClose.TabIndex = 13;
             // 
             // ErrorForm
             // 
@@ -107,7 +107,9 @@
             this.MaximumSize = new System.Drawing.Size(640, 360);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(640, 360);
+            this.Movable = false;
             this.Name = "ErrorForm";
+            this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Red;
             this.Text = "ERROR_TYPE";
             this.ErrorFormMetroPanel.ResumeLayout(false);
@@ -117,9 +119,9 @@
 
         #endregion
 
-        private WindowButton ErrorFormWindowButtonClose;
+        private CustomMetroForms.WindowButton ErrorFormWindowButtonClose;
         private MetroFramework.Controls.MetroPanel ErrorFormMetroPanel;
-        private CustomLabel ErrorFormCustomLabel;
-        private AnimatedButton ErrorFormAnimatedButtonOK;
+        private CustomMetroForms.CustomLabel ErrorFormCustomLabel;
+        private CustomMetroForms.AnimatedButton ErrorFormAnimatedButtonOK;
     }
 }

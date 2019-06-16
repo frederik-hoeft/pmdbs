@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.MenuPanel = new System.Windows.Forms.Panel();
             this.MenuPanelSync = new System.Windows.Forms.Panel();
@@ -37,13 +36,13 @@
             this.MenuSyncLabelStatus = new System.Windows.Forms.Label();
             this.MenuFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.MenuPanelHome = new System.Windows.Forms.Panel();
-            this.MenuMenuEntryHome = new pmdbs.MenuEntry();
+            this.MenuMenuEntryHome = new CustomMetroForms.MenuEntry();
             this.MenuPanelHomeIndicator = new System.Windows.Forms.Panel();
             this.MenuPanelPasswords = new System.Windows.Forms.Panel();
-            this.MenuMenuEntryPasswords = new pmdbs.MenuEntry();
+            this.MenuMenuEntryPasswords = new CustomMetroForms.MenuEntry();
             this.MenuPanelPasswordsIndicator = new System.Windows.Forms.Panel();
             this.MenuPanelSettings = new System.Windows.Forms.Panel();
-            this.MenuMenuEntrySettings = new pmdbs.MenuEntry();
+            this.MenuMenuEntrySettings = new CustomMetroForms.MenuEntry();
             this.MenuPanelSettingsIndicator = new System.Windows.Forms.Panel();
             this.DataPanelMain = new System.Windows.Forms.Panel();
             this.DataTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -51,126 +50,139 @@
             this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
             this.DataTableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelFooterRight = new System.Windows.Forms.Panel();
-            this.DataSyncAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataRightAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataSyncAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
+            this.DataRightAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
             this.DataPanelFooterLeft = new System.Windows.Forms.Panel();
-            this.DataAddAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataLeftAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataAddAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
+            this.DataLeftAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
             this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
             this.DataPictureBoxBackgroundTop = new System.Windows.Forms.PictureBox();
             this.DataPictureBoxBackgroundBottom = new System.Windows.Forms.PictureBox();
             this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
             this.DataPanelNoSel = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.DataFilterResultsPanel = new System.Windows.Forms.Panel();
+            this.DataFilterResultsLabelSortTerm = new System.Windows.Forms.Label();
+            this.DataFilterResultsLabelSortHeader = new System.Windows.Forms.Label();
+            this.DataFilterResultsAnimatedButtonReset = new CustomMetroForms.AnimatedButton();
+            this.DataFilterResultsPictureBox = new System.Windows.Forms.PictureBox();
+            this.DataFilterResultsLabelSearchTerm = new System.Windows.Forms.Label();
+            this.DataFilterResultsHeader = new System.Windows.Forms.Label();
+            this.DataFilterPanelNotFound = new System.Windows.Forms.Panel();
+            this.DataFilterAnimatedButtonReset = new CustomMetroForms.AnimatedButton();
+            this.DataFilterBulletPointLabel2 = new CustomMetroForms.BulletPointLabel();
+            this.DataFilterBulletPointLabel1 = new CustomMetroForms.BulletPointLabel();
+            this.DataFilterLabelSuggestions = new System.Windows.Forms.Label();
+            this.DataFilterPictureBox = new System.Windows.Forms.PictureBox();
+            this.DataFilterLabelSearchTerm = new System.Windows.Forms.Label();
+            this.DataFilterLabelHeader = new System.Windows.Forms.Label();
             this.DataPanelDetails = new System.Windows.Forms.Panel();
-            this.DataDetailsCustomLabelNotes = new pmdbs.CustomLabel();
-            this.DataDetailsEntryUsername = new pmdbs.DetailsEntry();
-            this.DataDetailsEntryPassword = new pmdbs.DetailsEntry();
-            this.DataDetailsEditAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataDetailsRemoveAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataDetailsCustomLabelNotes = new CustomMetroForms.CustomLabel();
+            this.DataDetailsEntryUsername = new CustomMetroForms.DetailsEntry();
+            this.DataDetailsEntryPassword = new CustomMetroForms.DetailsEntry();
+            this.DataDetailsEditAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
+            this.DataDetailsRemoveAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
             this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
-            this.DataDetailsEntryEmail = new pmdbs.DetailsEntry();
-            this.DataDetailsEntryWebsite = new pmdbs.DetailsEntry();
+            this.DataDetailsEntryEmail = new CustomMetroForms.DetailsEntry();
+            this.DataDetailsEntryWebsite = new CustomMetroForms.DetailsEntry();
             this.DataFlowLayoutPanelEdit = new System.Windows.Forms.FlowLayoutPanel();
             this.DataEditPanelTop = new System.Windows.Forms.Panel();
-            this.DataEditSaveAdvancedImageButton = new pmdbs.AdvancedImageButton();
-            this.DataEditCancelAdvancedImageButton = new pmdbs.AdvancedImageButton();
+            this.DataEditSaveAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
+            this.DataEditCancelAdvancedImageButton = new CustomMetroForms.AdvancedImageButton();
             this.DataEditPanelPasswordGenerator = new System.Windows.Forms.Panel();
-            this.DataEditAnimatedButtonGeneratePassword = new pmdbs.AnimatedButton();
+            this.DataEditAnimatedButtonGeneratePassword = new CustomMetroForms.AnimatedButton();
             this.DataEditLabelPasswordGeneratorTitle = new System.Windows.Forms.Label();
-            this.DataEditAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
-            this.DataEditAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
+            this.DataEditAdvancedCheckBox = new CustomMetroForms.AdvancedCheckBox();
+            this.DataEditAdvancedNumericUpDown = new CustomMetroForms.AdvancedNumericUpDown();
             this.DataEditLabelPasswordGeneratorLengthTitle = new System.Windows.Forms.Label();
             this.DataEditLabelPasswordGeneratorDescription = new System.Windows.Forms.Label();
-            this.DataEditEditFieldHostname = new pmdbs.EditField();
+            this.DataEditEditFieldHostname = new CustomMetroForms.EditField();
             this.DataEditPictureBoxLogo = new System.Windows.Forms.PictureBox();
-            this.DataEditEditFieldEmail = new pmdbs.EditField();
-            this.DataEditEditFieldWebsite = new pmdbs.EditField();
-            this.DataEditEditFieldUsername = new pmdbs.EditField();
-            this.DataEditEditFieldPassword = new pmdbs.EditField();
+            this.DataEditEditFieldEmail = new CustomMetroForms.EditField();
+            this.DataEditEditFieldWebsite = new CustomMetroForms.EditField();
+            this.DataEditEditFieldUsername = new CustomMetroForms.EditField();
+            this.DataEditEditFieldPassword = new CustomMetroForms.EditField();
             this.DataEditPanelBottom = new System.Windows.Forms.Panel();
             this.DataEditLabelNotes = new System.Windows.Forms.Label();
-            this.DataEditAdvancedRichTextBoxNotes = new pmdbs.AdvancedRichTextBox();
+            this.DataEditAdvancedRichTextBoxNotes = new CustomMetroForms.AdvancedRichTextBox();
             this.SettingsTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPictureBoxLeft = new System.Windows.Forms.PictureBox();
             this.SettingsPictureBoxRight = new System.Windows.Forms.PictureBox();
             this.SettingsPanelCenter = new System.Windows.Forms.Panel();
             this.SettingsTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPanelFooter = new System.Windows.Forms.Panel();
-            this.SettingsAdvancedImageButtonFooterAbort = new pmdbs.AdvancedImageButton();
-            this.SettingsAdvancedImageButtonFooterSave = new pmdbs.AdvancedImageButton();
+            this.SettingsAdvancedImageButtonFooterAbort = new CustomMetroForms.AdvancedImageButton();
+            this.SettingsAdvancedImageButtonFooterSave = new CustomMetroForms.AdvancedImageButton();
             this.SettingsPanelContentMain = new System.Windows.Forms.Panel();
             this.SettingsFlowLayoutPanelOffline = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelOfflineContentHeader = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflineAccountHeader = new System.Windows.Forms.Label();
-            this.editField3 = new pmdbs.EditField();
+            this.editField3 = new CustomMetroForms.EditField();
             this.SettingsPanelOfflineContent3 = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflinePasswordDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangePassword = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonChangePasswordSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldOfflineNewPassword = new pmdbs.EditField();
-            this.SettingsEditFieldOfflineNewPasswordConfirm = new pmdbs.EditField();
+            this.SettingsAnimatedButtonChangePasswordSubmit = new CustomMetroForms.AnimatedButton();
+            this.SettingsEditFieldOfflineNewPassword = new CustomMetroForms.EditField();
+            this.SettingsEditFieldOfflineNewPasswordConfirm = new CustomMetroForms.EditField();
             this.SettingsPanelOfflineContent1 = new System.Windows.Forms.Panel();
-            this.SettingsAnimatedButtonOfflineRegister = new pmdbs.AnimatedButton();
-            this.SettingsAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineRegister = new CustomMetroForms.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineLogin = new CustomMetroForms.AnimatedButton();
             this.SettingsLabelOfflineGoOnlineDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineGoOnline = new System.Windows.Forms.Label();
             this.SettingsPanelOfflineContent2 = new System.Windows.Forms.Panel();
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new pmdbs.AnimatedButton();
-            this.SettingsEditFieldOfflineName = new pmdbs.EditField();
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new CustomMetroForms.AnimatedButton();
+            this.SettingsEditFieldOfflineName = new CustomMetroForms.EditField();
             this.SettingsLabelOfflineChangeNameDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangeName = new System.Windows.Forms.Label();
             this.SettingsPanelPromptMain = new System.Windows.Forms.Panel();
             this.SettingsLabelPromptAction = new System.Windows.Forms.Label();
             this.SettingsLabelPromptMain = new System.Windows.Forms.Label();
             this.SettingsLabelPromptMailInfo = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonPromptSubmit = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonPromptSubmit = new CustomMetroForms.AnimatedButton();
             this.SettingsPanelPromptCenter = new System.Windows.Forms.Panel();
             this.SettingsLabelPromptCode = new System.Windows.Forms.Label();
-            this.SettingsEditFieldPromptCode = new pmdbs.EditField();
+            this.SettingsEditFieldPromptCode = new CustomMetroForms.EditField();
             this.SettingsLabelPromptPrefix = new System.Windows.Forms.Label();
             this.SettingsPictureBoxPromptLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelLogin = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelLoginContent = new System.Windows.Forms.Panel();
             this.SettingsLabelLoginAccountDesc = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonLoginSubmit = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonLoginSubmit = new CustomMetroForms.AnimatedButton();
             this.SettingsLabelLoginAccount = new System.Windows.Forms.Label();
             this.SettingsLabelLoginServer = new System.Windows.Forms.Label();
             this.SettingsLabelLoginServerDesc = new System.Windows.Forms.Label();
             this.SettingsLabelLoginMain = new System.Windows.Forms.Label();
-            this.SettingsEditFieldLoginIP = new pmdbs.EditField();
-            this.SettingsEditFieldLoginPort = new pmdbs.EditField();
-            this.SettingsEditFieldLoginUsername = new pmdbs.EditField();
+            this.SettingsEditFieldLoginIP = new CustomMetroForms.EditField();
+            this.SettingsEditFieldLoginPort = new CustomMetroForms.EditField();
+            this.SettingsEditFieldLoginUsername = new CustomMetroForms.EditField();
             this.SettingsFlowLayoutPanelRegister = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelRegisterContent = new System.Windows.Forms.Panel();
             this.SettingsLabelRegisterAccountDesc = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonSubmit = new pmdbs.AnimatedButton();
+            this.SettingsAnimatedButtonSubmit = new CustomMetroForms.AnimatedButton();
             this.SettingsLabelRegisterAccount = new System.Windows.Forms.Label();
             this.SettingsLabelRegisterServerSpec = new System.Windows.Forms.Label();
             this.SettingsLabelRegisterServerDesc = new System.Windows.Forms.Label();
-            this.SettingsEditFieldRegisterEmail = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterEmail = new CustomMetroForms.EditField();
             this.SettingsLabelRegisterMain = new System.Windows.Forms.Label();
-            this.SettingsEditFieldRegisterIP = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterName = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterPort = new pmdbs.EditField();
-            this.SettingsEditFieldRegisterUsername = new pmdbs.EditField();
+            this.SettingsEditFieldRegisterIP = new CustomMetroForms.EditField();
+            this.SettingsEditFieldRegisterName = new CustomMetroForms.EditField();
+            this.SettingsEditFieldRegisterPort = new CustomMetroForms.EditField();
+            this.SettingsEditFieldRegisterUsername = new CustomMetroForms.EditField();
             this.SettingsPanelLoadingMain = new System.Windows.Forms.Panel();
             this.SettingsPanelLoadingCenter = new System.Windows.Forms.Panel();
             this.SettingsLabelLoadingStatus = new System.Windows.Forms.Label();
-            this.SettingsAdvancedProgressSpinnerLoading = new pmdbs.AdvancedProgressSpinner();
+            this.SettingsAdvancedProgressSpinnerLoading = new CustomMetroForms.AdvancedProgressSpinner();
             this.SettingsPictureBoxLoadingLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelOnline = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.animatedButton3 = new pmdbs.AnimatedButton();
+            this.animatedButton3 = new CustomMetroForms.AnimatedButton();
             this.label11 = new System.Windows.Forms.Label();
-            this.editField7 = new pmdbs.EditField();
-            this.editField9 = new pmdbs.EditField();
-            this.editField10 = new pmdbs.EditField();
+            this.editField7 = new CustomMetroForms.EditField();
+            this.editField9 = new CustomMetroForms.EditField();
+            this.editField10 = new CustomMetroForms.EditField();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.editField8 = new pmdbs.EditField();
-            this.editField6 = new pmdbs.EditField();
+            this.editField8 = new CustomMetroForms.EditField();
+            this.editField6 = new CustomMetroForms.EditField();
             this.label8 = new System.Windows.Forms.Label();
             this.AddPanelMain = new System.Windows.Forms.Panel();
             this.AddTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -181,32 +193,32 @@
             this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
             this.AddPanelContent = new System.Windows.Forms.Panel();
             this.AddPanelGeneratePassword = new System.Windows.Forms.Panel();
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate = new pmdbs.AnimatedButton();
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate = new CustomMetroForms.AnimatedButton();
             this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordAdvancedCheckBox = new pmdbs.AdvancedCheckBox();
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new pmdbs.AdvancedNumericUpDown();
+            this.AddPanelGeneratePasswordAdvancedCheckBox = new CustomMetroForms.AdvancedCheckBox();
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new CustomMetroForms.AdvancedNumericUpDown();
             this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
             this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
-            this.AddEditFieldEmail = new pmdbs.EditField();
+            this.AddEditFieldEmail = new CustomMetroForms.EditField();
             this.AddLabelTitle = new System.Windows.Forms.Label();
-            this.AddEditFieldHostname = new pmdbs.EditField();
-            this.AddEditFieldWebsite = new pmdbs.EditField();
-            this.AddEditFieldUsername = new pmdbs.EditField();
-            this.AddEditFieldPassword = new pmdbs.EditField();
+            this.AddEditFieldHostname = new CustomMetroForms.EditField();
+            this.AddEditFieldWebsite = new CustomMetroForms.EditField();
+            this.AddEditFieldUsername = new CustomMetroForms.EditField();
+            this.AddEditFieldPassword = new CustomMetroForms.EditField();
             this.AddPanelNotes = new System.Windows.Forms.Panel();
-            this.AddPanelNotesAdvancedRichTextBox = new pmdbs.AdvancedRichTextBox();
+            this.AddPanelNotesAdvancedRichTextBox = new CustomMetroForms.AdvancedRichTextBox();
             this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
             this.AddPanelCheckIcon = new System.Windows.Forms.Panel();
             this.AddPanelCheckIconContent = new System.Windows.Forms.Panel();
             this.AddLabelCheckIconAvailableIcon = new System.Windows.Forms.Label();
             this.AddPictureBoxCheckIconIcon = new System.Windows.Forms.PictureBox();
-            this.AddPanelAnimatedButtonCheckIcon = new pmdbs.AnimatedButton();
+            this.AddPanelAnimatedButtonCheckIcon = new CustomMetroForms.AnimatedButton();
             this.AddLabelCheckIconHeader = new System.Windows.Forms.Label();
             this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
-            this.AddPanelAdvancedImageButtonAbort = new pmdbs.AdvancedImageButton();
-            this.AddPanelAdvancedImageButtonSave = new pmdbs.AdvancedImageButton();
+            this.AddPanelAdvancedImageButtonAbort = new CustomMetroForms.AdvancedImageButton();
+            this.AddPanelAdvancedImageButtonSave = new CustomMetroForms.AdvancedImageButton();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
-            this.WindowsHeaderOvalPanelTitle = new pmdbs.OvalPanel();
+            this.WindowsHeaderOvalPanelTitle = new CustomMetroForms.OvalPanel();
             this.WindowHeaderPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
@@ -214,9 +226,9 @@
             this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
-            this.FilterEditFieldSearch = new pmdbs.EditField();
-            this.FilterAdvancedComboBoxSort = new pmdbs.AdvancedComboBox();
             this.FilterLabelSort = new System.Windows.Forms.Label();
+            this.FilterAdvancedComboBoxSort = new CustomMetroForms.AdvancedComboBox();
+            this.FilterEditFieldSearch = new CustomMetroForms.EditField();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -226,14 +238,14 @@
             this.LoginLoadingLabelMain = new System.Windows.Forms.Label();
             this.LoginLoadingPanelMain = new System.Windows.Forms.Panel();
             this.LoginLoadingLabelDetails = new System.Windows.Forms.Label();
-            this.LoginLoadingAdvancedProgressSpinner = new pmdbs.AdvancedProgressSpinner();
+            this.LoginLoadingAdvancedProgressSpinner = new CustomMetroForms.AdvancedProgressSpinner();
             this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
             this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOfflineError = new System.Windows.Forms.Label();
-            this.LoginEditFieldOfflinePassword = new pmdbs.EditField();
+            this.LoginEditFieldOfflinePassword = new CustomMetroForms.EditField();
             this.LoginLabelOfflineMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonOfflineLogin = new pmdbs.AnimatedButton();
+            this.LoginAnimatedButtonOfflineLogin = new CustomMetroForms.AnimatedButton();
             this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
             this.LoginPictureBoxRegisterMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelRegisterSignIn = new System.Windows.Forms.Label();
@@ -241,23 +253,63 @@
             this.LoginLabelRegisterDescription = new System.Windows.Forms.Label();
             this.LoginLabelRegisterError = new System.Windows.Forms.Label();
             this.LoginLabelRegisterTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldRegisterPassword2 = new pmdbs.EditField();
-            this.LoginEditFieldRegisterPassword = new pmdbs.EditField();
+            this.LoginEditFieldRegisterPassword2 = new CustomMetroForms.EditField();
+            this.LoginEditFieldRegisterPassword = new CustomMetroForms.EditField();
             this.LoginLabelRegisterMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonRegister = new pmdbs.AnimatedButton();
+            this.LoginAnimatedButtonRegister = new CustomMetroForms.AnimatedButton();
             this.LoginPictureBoxRegisterLogo = new System.Windows.Forms.PictureBox();
             this.LoginPictureBoxOnlineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOnlineRegister = new System.Windows.Forms.Label();
             this.LoginPictureBoxOnlineLogo = new System.Windows.Forms.PictureBox();
-            this.LoginAnimatedButtonOnlineLogin = new pmdbs.AnimatedButton();
+            this.LoginAnimatedButtonOnlineLogin = new CustomMetroForms.AnimatedButton();
             this.LoginLabelOnlineMain = new System.Windows.Forms.Label();
             this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOnlineError = new System.Windows.Forms.Label();
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldOnlinePassword = new pmdbs.EditField();
-            this.LoginEditFieldOnlineUsername = new pmdbs.EditField();
-            this.SyncAnimationTimer = new System.Windows.Forms.Timer(this.components);
-            this.windowButtonClose = new pmdbs.WindowButton();
+            this.LoginEditFieldOnlinePassword = new CustomMetroForms.EditField();
+            this.LoginEditFieldOnlineUsername = new CustomMetroForms.EditField();
+            this.windowButtonClose = new CustomMetroForms.WindowButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.panel7 = new System.Windows.Forms.Panel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.panel9 = new System.Windows.Forms.Panel();
+            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.bulletPointLabel1 = new CustomMetroForms.BulletPointLabel();
+            this.bulletPointLabel2 = new CustomMetroForms.BulletPointLabel();
+            this.bulletPointLabel3 = new CustomMetroForms.BulletPointLabel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.panel10 = new System.Windows.Forms.Panel();
+            this.panel11 = new System.Windows.Forms.Panel();
+            this.angularGauge1 = new LiveCharts.WinForms.AngularGauge();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pieChart1 = new LiveCharts.WinForms.PieChart();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.DataNoSelPictureBox = new System.Windows.Forms.PictureBox();
+            this.DataNoSelBulletPointLabel1 = new CustomMetroForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel2 = new CustomMetroForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel3 = new CustomMetroForms.BulletPointLabel();
+            this.DataNoSelLabel1 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel2 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel3 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel4 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel5 = new System.Windows.Forms.Label();
+            this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -276,6 +328,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxBackgroundBottom)).BeginInit();
             this.DataPanelSubRightMain.SuspendLayout();
             this.DataPanelNoSel.SuspendLayout();
+            this.DataFilterResultsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataFilterResultsPictureBox)).BeginInit();
+            this.DataFilterPanelNotFound.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataFilterPictureBox)).BeginInit();
             this.DataPanelDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).BeginInit();
             this.DataFlowLayoutPanelEdit.SuspendLayout();
@@ -349,6 +405,21 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel4.SuspendLayout();
+            this.panel5.SuspendLayout();
+            this.panel7.SuspendLayout();
+            this.panel8.SuspendLayout();
+            this.panel9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.panel10.SuspendLayout();
+            this.panel11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataNoSelPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -445,8 +516,8 @@
             this.MenuMenuEntryHome.ColorNormal = System.Drawing.Color.White;
             this.MenuMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
             this.MenuMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntryHome.ImageHover = ((System.Drawing.Image)(resources.GetObject("MenuMenuEntryHome.ImageHover")));
-            this.MenuMenuEntryHome.ImageNormal = ((System.Drawing.Image)(resources.GetObject("MenuMenuEntryHome.ImageNormal")));
+            this.MenuMenuEntryHome.ImageHover = global::pmdbs.Properties.Resources.home_normal_v2;
+            this.MenuMenuEntryHome.ImageNormal = global::pmdbs.Properties.Resources.home_normal_v2;
             this.MenuMenuEntryHome.Location = new System.Drawing.Point(13, 0);
             this.MenuMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
             this.MenuMenuEntryHome.Name = "MenuMenuEntryHome";
@@ -487,8 +558,8 @@
             this.MenuMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
             this.MenuMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
             this.MenuMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntryPasswords.ImageHover = ((System.Drawing.Image)(resources.GetObject("MenuMenuEntryPasswords.ImageHover")));
-            this.MenuMenuEntryPasswords.ImageNormal = ((System.Drawing.Image)(resources.GetObject("MenuMenuEntryPasswords.ImageNormal")));
+            this.MenuMenuEntryPasswords.ImageHover = global::pmdbs.Properties.Resources.database;
+            this.MenuMenuEntryPasswords.ImageNormal = global::pmdbs.Properties.Resources.database;
             this.MenuMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
             this.MenuMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
             this.MenuMenuEntryPasswords.Name = "MenuMenuEntryPasswords";
@@ -529,8 +600,8 @@
             this.MenuMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
             this.MenuMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
             this.MenuMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntrySettings.ImageHover = ((System.Drawing.Image)(resources.GetObject("MenuMenuEntrySettings.ImageHover")));
-            this.MenuMenuEntrySettings.ImageNormal = ((System.Drawing.Image)(resources.GetObject("MenuMenuEntrySettings.ImageNormal")));
+            this.MenuMenuEntrySettings.ImageHover = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.MenuMenuEntrySettings.ImageNormal = global::pmdbs.Properties.Resources.settings_normal_v2;
             this.MenuMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
             this.MenuMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
             this.MenuMenuEntrySettings.Name = "MenuMenuEntrySettings";
@@ -642,7 +713,7 @@
             // DataSyncAdvancedImageButton
             // 
             this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataSyncAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageHover")));
+            this.DataSyncAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.sync_hover_v5;
             this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
             this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
             this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
@@ -652,7 +723,7 @@
             // DataRightAdvancedImageButton
             // 
             this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataRightAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageHover")));
+            this.DataRightAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.right_hover_v2;
             this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
             this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
             this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
@@ -675,7 +746,7 @@
             // DataAddAdvancedImageButton
             // 
             this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataAddAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageHover")));
+            this.DataAddAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.add_hover_v5;
             this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
             this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
             this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
@@ -685,7 +756,7 @@
             // DataLeftAdvancedImageButton
             // 
             this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataLeftAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageHover")));
+            this.DataLeftAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.left_hover_v2;
             this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
             this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
             this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
@@ -739,6 +810,8 @@
             // DataPanelSubRightMain
             // 
             this.DataPanelSubRightMain.Controls.Add(this.DataPanelNoSel);
+            this.DataPanelSubRightMain.Controls.Add(this.DataFilterResultsPanel);
+            this.DataPanelSubRightMain.Controls.Add(this.DataFilterPanelNotFound);
             this.DataPanelSubRightMain.Controls.Add(this.DataPanelDetails);
             this.DataPanelSubRightMain.Controls.Add(this.DataFlowLayoutPanelEdit);
             this.DataPanelSubRightMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -750,37 +823,208 @@
             // 
             // DataPanelNoSel
             // 
-            this.DataPanelNoSel.Controls.Add(this.label3);
-            this.DataPanelNoSel.Controls.Add(this.label2);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabelHeader);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel5);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel4);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel3);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel2);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel1);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel3);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel2);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel1);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelPictureBox);
             this.DataPanelNoSel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelNoSel.Location = new System.Drawing.Point(0, 0);
             this.DataPanelNoSel.Name = "DataPanelNoSel";
             this.DataPanelNoSel.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelNoSel.TabIndex = 32;
             // 
-            // label3
+            // DataFilterResultsPanel
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label3.AutoSize = true;
-            this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(152, 251);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(133, 56);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "(yet)";
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSortTerm);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSortHeader);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsAnimatedButtonReset);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsPictureBox);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSearchTerm);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsHeader);
+            this.DataFilterResultsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataFilterResultsPanel.Location = new System.Drawing.Point(0, 0);
+            this.DataFilterResultsPanel.Name = "DataFilterResultsPanel";
+            this.DataFilterResultsPanel.Size = new System.Drawing.Size(700, 1000);
+            this.DataFilterResultsPanel.TabIndex = 34;
             // 
-            // label2
+            // DataFilterResultsLabelSortTerm
             // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label2.AutoSize = true;
-            this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(152, 195);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(397, 56);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Nothing to show";
+            this.DataFilterResultsLabelSortTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsLabelSortTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsLabelSortTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.DataFilterResultsLabelSortTerm.Location = new System.Drawing.Point(5, 592);
+            this.DataFilterResultsLabelSortTerm.Name = "DataFilterResultsLabelSortTerm";
+            this.DataFilterResultsLabelSortTerm.Size = new System.Drawing.Size(691, 93);
+            this.DataFilterResultsLabelSortTerm.TabIndex = 5;
+            this.DataFilterResultsLabelSortTerm.Text = "SORT_TERM";
+            this.DataFilterResultsLabelSortTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // DataFilterResultsLabelSortHeader
+            // 
+            this.DataFilterResultsLabelSortHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsLabelSortHeader.AutoSize = true;
+            this.DataFilterResultsLabelSortHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsLabelSortHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterResultsLabelSortHeader.Location = new System.Drawing.Point(215, 548);
+            this.DataFilterResultsLabelSortHeader.Name = "DataFilterResultsLabelSortHeader";
+            this.DataFilterResultsLabelSortHeader.Size = new System.Drawing.Size(270, 39);
+            this.DataFilterResultsLabelSortHeader.TabIndex = 4;
+            this.DataFilterResultsLabelSortHeader.Text = "Sorting results by";
+            // 
+            // DataFilterResultsAnimatedButtonReset
+            // 
+            this.DataFilterResultsAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataFilterResultsAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataFilterResultsAnimatedButtonReset.Depth = 0;
+            this.DataFilterResultsAnimatedButtonReset.Icon = null;
+            this.DataFilterResultsAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
+            this.DataFilterResultsAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataFilterResultsAnimatedButtonReset.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataFilterResultsAnimatedButtonReset.Name = "DataFilterResultsAnimatedButtonReset";
+            this.DataFilterResultsAnimatedButtonReset.Primary = false;
+            this.DataFilterResultsAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
+            this.DataFilterResultsAnimatedButtonReset.TabIndex = 3;
+            this.DataFilterResultsAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterResultsAnimatedButtonReset.UseVisualStyleBackColor = true;
+            this.DataFilterResultsAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
+            // 
+            // DataFilterResultsPictureBox
+            // 
+            this.DataFilterResultsPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("DataFilterResultsPictureBox.Image")));
+            this.DataFilterResultsPictureBox.Location = new System.Drawing.Point(222, 120);
+            this.DataFilterResultsPictureBox.Name = "DataFilterResultsPictureBox";
+            this.DataFilterResultsPictureBox.Size = new System.Drawing.Size(256, 256);
+            this.DataFilterResultsPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.DataFilterResultsPictureBox.TabIndex = 2;
+            this.DataFilterResultsPictureBox.TabStop = false;
+            // 
+            // DataFilterResultsLabelSearchTerm
+            // 
+            this.DataFilterResultsLabelSearchTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsLabelSearchTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsLabelSearchTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.DataFilterResultsLabelSearchTerm.Location = new System.Drawing.Point(5, 436);
+            this.DataFilterResultsLabelSearchTerm.Name = "DataFilterResultsLabelSearchTerm";
+            this.DataFilterResultsLabelSearchTerm.Size = new System.Drawing.Size(691, 93);
+            this.DataFilterResultsLabelSearchTerm.TabIndex = 1;
+            this.DataFilterResultsLabelSearchTerm.Text = "SEARCH_TERM";
+            this.DataFilterResultsLabelSearchTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // DataFilterResultsHeader
+            // 
+            this.DataFilterResultsHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsHeader.AutoSize = true;
+            this.DataFilterResultsHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterResultsHeader.Location = new System.Drawing.Point(200, 392);
+            this.DataFilterResultsHeader.Name = "DataFilterResultsHeader";
+            this.DataFilterResultsHeader.Size = new System.Drawing.Size(300, 39);
+            this.DataFilterResultsHeader.TabIndex = 0;
+            this.DataFilterResultsHeader.Text = "Showing results for";
+            // 
+            // DataFilterPanelNotFound
+            // 
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterAnimatedButtonReset);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterBulletPointLabel2);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterBulletPointLabel1);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelSuggestions);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterPictureBox);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelSearchTerm);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelHeader);
+            this.DataFilterPanelNotFound.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataFilterPanelNotFound.Location = new System.Drawing.Point(0, 0);
+            this.DataFilterPanelNotFound.Name = "DataFilterPanelNotFound";
+            this.DataFilterPanelNotFound.Size = new System.Drawing.Size(700, 1000);
+            this.DataFilterPanelNotFound.TabIndex = 33;
+            // 
+            // DataFilterAnimatedButtonReset
+            // 
+            this.DataFilterAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataFilterAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataFilterAnimatedButtonReset.Depth = 0;
+            this.DataFilterAnimatedButtonReset.Icon = null;
+            this.DataFilterAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
+            this.DataFilterAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataFilterAnimatedButtonReset.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataFilterAnimatedButtonReset.Name = "DataFilterAnimatedButtonReset";
+            this.DataFilterAnimatedButtonReset.Primary = false;
+            this.DataFilterAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
+            this.DataFilterAnimatedButtonReset.TabIndex = 17;
+            this.DataFilterAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterAnimatedButtonReset.UseVisualStyleBackColor = true;
+            this.DataFilterAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
+            // 
+            // DataFilterBulletPointLabel2
+            // 
+            this.DataFilterBulletPointLabel2.AutoSize = true;
+            this.DataFilterBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterBulletPointLabel2.Location = new System.Drawing.Point(178, 673);
+            this.DataFilterBulletPointLabel2.Name = "DataFilterBulletPointLabel2";
+            this.DataFilterBulletPointLabel2.Size = new System.Drawing.Size(345, 39);
+            this.DataFilterBulletPointLabel2.TabIndex = 16;
+            this.DataFilterBulletPointLabel2.Text = " Add a new account";
+            // 
+            // DataFilterBulletPointLabel1
+            // 
+            this.DataFilterBulletPointLabel1.AutoSize = true;
+            this.DataFilterBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterBulletPointLabel1.Location = new System.Drawing.Point(178, 628);
+            this.DataFilterBulletPointLabel1.Name = "DataFilterBulletPointLabel1";
+            this.DataFilterBulletPointLabel1.Size = new System.Drawing.Size(331, 39);
+            this.DataFilterBulletPointLabel1.TabIndex = 15;
+            this.DataFilterBulletPointLabel1.Text = " Check your spelling";
+            // 
+            // DataFilterLabelSuggestions
+            // 
+            this.DataFilterLabelSuggestions.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterLabelSuggestions.AutoSize = true;
+            this.DataFilterLabelSuggestions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterLabelSuggestions.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterLabelSuggestions.Location = new System.Drawing.Point(48, 569);
+            this.DataFilterLabelSuggestions.Name = "DataFilterLabelSuggestions";
+            this.DataFilterLabelSuggestions.Size = new System.Drawing.Size(199, 39);
+            this.DataFilterLabelSuggestions.TabIndex = 14;
+            this.DataFilterLabelSuggestions.Text = "Suggestions";
+            // 
+            // DataFilterPictureBox
+            // 
+            this.DataFilterPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("DataFilterPictureBox.Image")));
+            this.DataFilterPictureBox.Location = new System.Drawing.Point(222, 120);
+            this.DataFilterPictureBox.Name = "DataFilterPictureBox";
+            this.DataFilterPictureBox.Size = new System.Drawing.Size(256, 256);
+            this.DataFilterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.DataFilterPictureBox.TabIndex = 2;
+            this.DataFilterPictureBox.TabStop = false;
+            // 
+            // DataFilterLabelSearchTerm
+            // 
+            this.DataFilterLabelSearchTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterLabelSearchTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterLabelSearchTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.DataFilterLabelSearchTerm.Location = new System.Drawing.Point(5, 436);
+            this.DataFilterLabelSearchTerm.Name = "DataFilterLabelSearchTerm";
+            this.DataFilterLabelSearchTerm.Size = new System.Drawing.Size(691, 93);
+            this.DataFilterLabelSearchTerm.TabIndex = 1;
+            this.DataFilterLabelSearchTerm.Text = "SEARCH_TERM";
+            this.DataFilterLabelSearchTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // DataFilterLabelHeader
+            // 
+            this.DataFilterLabelHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterLabelHeader.AutoSize = true;
+            this.DataFilterLabelHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterLabelHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterLabelHeader.Location = new System.Drawing.Point(194, 392);
+            this.DataFilterLabelHeader.Name = "DataFilterLabelHeader";
+            this.DataFilterLabelHeader.Size = new System.Drawing.Size(312, 39);
+            this.DataFilterLabelHeader.TabIndex = 0;
+            this.DataFilterLabelHeader.Text = "No results found for";
             // 
             // DataPanelDetails
             // 
@@ -813,7 +1057,7 @@
             // 
             this.DataDetailsEntryUsername.Content = "-";
             this.DataDetailsEntryUsername.Header = "Your Username:";
-            this.DataDetailsEntryUsername.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageHover")));
+            this.DataDetailsEntryUsername.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
             this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
             this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
             this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
@@ -826,7 +1070,7 @@
             // 
             this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
             this.DataDetailsEntryPassword.Header = "Your Password:";
-            this.DataDetailsEntryPassword.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageHover")));
+            this.DataDetailsEntryPassword.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
             this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
             this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
             this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
@@ -837,7 +1081,7 @@
             // 
             // DataDetailsEditAdvancedImageButton
             // 
-            this.DataDetailsEditAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageHover")));
+            this.DataDetailsEditAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.edit_hover_v5;
             this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
             this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
             this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
@@ -847,8 +1091,8 @@
             // 
             // DataDetailsRemoveAdvancedImageButton
             // 
-            this.DataDetailsRemoveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageHover")));
-            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsRemoveAdvancedImageButton.ImageNormal")));
+            this.DataDetailsRemoveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.delete_hover_v2;
+            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = global::pmdbs.Properties.Resources.delete_normal;
             this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
             this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
             this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
@@ -877,7 +1121,7 @@
             // 
             this.DataDetailsEntryEmail.Content = "example@gmail.com";
             this.DataDetailsEntryEmail.Header = "Your Email:";
-            this.DataDetailsEntryEmail.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageHover")));
+            this.DataDetailsEntryEmail.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
             this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
             this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
             this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
@@ -890,7 +1134,7 @@
             // 
             this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
             this.DataDetailsEntryWebsite.Header = "Website:";
-            this.DataDetailsEntryWebsite.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageHover")));
+            this.DataDetailsEntryWebsite.ImageHover = global::pmdbs.Properties.Resources.link_hover;
             this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
             this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
             this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
@@ -932,7 +1176,7 @@
             // 
             // DataEditSaveAdvancedImageButton
             // 
-            this.DataEditSaveAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageHover")));
+            this.DataEditSaveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.save_hover;
             this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
             this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
             this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
@@ -941,7 +1185,7 @@
             // 
             // DataEditCancelAdvancedImageButton
             // 
-            this.DataEditCancelAdvancedImageButton.ImageHover = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageHover")));
+            this.DataEditCancelAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.remove_hover_v4;
             this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
             this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
             this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
@@ -971,7 +1215,7 @@
             this.DataEditAnimatedButtonGeneratePassword.Icon = null;
             this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
             this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataEditAnimatedButtonGeneratePassword.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.DataEditAnimatedButtonGeneratePassword.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
             this.DataEditAnimatedButtonGeneratePassword.Primary = false;
             this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
@@ -1001,7 +1245,7 @@
             this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
             this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
             this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.DataEditAdvancedCheckBox.MouseState = pmdbs.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.DataEditAdvancedCheckBox.MouseState = CustomMetroForms.AdvancedCheckBox.MouseStateBase.HOVER;
             this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
             this.DataEditAdvancedCheckBox.Ripple = true;
             this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(304, 30);
@@ -1443,7 +1687,7 @@
             this.SettingsAnimatedButtonChangePasswordSubmit.Icon = null;
             this.SettingsAnimatedButtonChangePasswordSubmit.Location = new System.Drawing.Point(207, 312);
             this.SettingsAnimatedButtonChangePasswordSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonChangePasswordSubmit.Name = "SettingsAnimatedButtonChangePasswordSubmit";
             this.SettingsAnimatedButtonChangePasswordSubmit.Primary = false;
             this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
@@ -1521,7 +1765,7 @@
             this.SettingsAnimatedButtonOfflineRegister.Icon = null;
             this.SettingsAnimatedButtonOfflineRegister.Location = new System.Drawing.Point(337, 262);
             this.SettingsAnimatedButtonOfflineRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineRegister.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonOfflineRegister.Name = "SettingsAnimatedButtonOfflineRegister";
             this.SettingsAnimatedButtonOfflineRegister.Primary = false;
             this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
@@ -1538,7 +1782,7 @@
             this.SettingsAnimatedButtonOfflineLogin.Icon = null;
             this.SettingsAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(99, 262);
             this.SettingsAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineLogin.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonOfflineLogin.Name = "SettingsAnimatedButtonOfflineLogin";
             this.SettingsAnimatedButtonOfflineLogin.Primary = false;
             this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
@@ -1588,7 +1832,7 @@
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Icon = null;
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Location = new System.Drawing.Point(218, 239);
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Name = "SettingsAnimatedButtonOfflineChangeNameSubmit";
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Primary = false;
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
@@ -1700,7 +1944,7 @@
             this.SettingsAnimatedButtonPromptSubmit.Icon = null;
             this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 742);
             this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonPromptSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonPromptSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
             this.SettingsAnimatedButtonPromptSubmit.Primary = false;
             this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
@@ -1824,7 +2068,7 @@
             this.SettingsAnimatedButtonLoginSubmit.Icon = null;
             this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
             this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonLoginSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonLoginSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
             this.SettingsAnimatedButtonLoginSubmit.Primary = false;
             this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
@@ -2001,7 +2245,7 @@
             this.SettingsAnimatedButtonSubmit.Icon = null;
             this.SettingsAnimatedButtonSubmit.Location = new System.Drawing.Point(178, 829);
             this.SettingsAnimatedButtonSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonSubmit.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonSubmit.Name = "SettingsAnimatedButtonSubmit";
             this.SettingsAnimatedButtonSubmit.Primary = false;
             this.SettingsAnimatedButtonSubmit.Size = new System.Drawing.Size(317, 56);
@@ -2275,7 +2519,7 @@
             this.animatedButton3.Icon = null;
             this.animatedButton3.Location = new System.Drawing.Point(223, 453);
             this.animatedButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton3.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButton3.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.animatedButton3.Name = "animatedButton3";
             this.animatedButton3.Primary = false;
             this.animatedButton3.Size = new System.Drawing.Size(213, 55);
@@ -2584,7 +2828,7 @@
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Icon = null;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Location = new System.Drawing.Point(489, 134);
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Name = "AddPanelGeneratePasswordAnimatedButtonGenerate";
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Primary = false;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Size = new System.Drawing.Size(165, 55);
@@ -2614,7 +2858,7 @@
             this.AddPanelGeneratePasswordAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
             this.AddPanelGeneratePasswordAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
             this.AddPanelGeneratePasswordAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.MouseState = pmdbs.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.MouseState = CustomMetroForms.AdvancedCheckBox.MouseStateBase.HOVER;
             this.AddPanelGeneratePasswordAdvancedCheckBox.Name = "AddPanelGeneratePasswordAdvancedCheckBox";
             this.AddPanelGeneratePasswordAdvancedCheckBox.Ripple = true;
             this.AddPanelGeneratePasswordAdvancedCheckBox.Size = new System.Drawing.Size(304, 30);
@@ -2882,7 +3126,7 @@
             this.AddPanelAnimatedButtonCheckIcon.Icon = null;
             this.AddPanelAnimatedButtonCheckIcon.Location = new System.Drawing.Point(216, 124);
             this.AddPanelAnimatedButtonCheckIcon.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AddPanelAnimatedButtonCheckIcon.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.AddPanelAnimatedButtonCheckIcon.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.AddPanelAnimatedButtonCheckIcon.Name = "AddPanelAnimatedButtonCheckIcon";
             this.AddPanelAnimatedButtonCheckIcon.Primary = false;
             this.AddPanelAnimatedButtonCheckIcon.Size = new System.Drawing.Size(236, 97);
@@ -3045,30 +3289,15 @@
             this.WindowsHeaderPanelSubRight.Size = new System.Drawing.Size(1765, 102);
             this.WindowsHeaderPanelSubRight.TabIndex = 11;
             // 
-            // FilterEditFieldSearch
+            // FilterLabelSort
             // 
-            this.FilterEditFieldSearch.AutoSize = true;
-            this.FilterEditFieldSearch.BackColor = System.Drawing.Color.White;
-            this.FilterEditFieldSearch.BackGroundColor = System.Drawing.Color.White;
-            this.FilterEditFieldSearch.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.FilterEditFieldSearch.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.FilterEditFieldSearch.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.FilterEditFieldSearch.DefaultValue = "Enter Search Term";
-            this.FilterEditFieldSearch.FontTextBox = new System.Drawing.Font("Century Gothic", 12F);
-            this.FilterEditFieldSearch.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FilterEditFieldSearch.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.FilterEditFieldSearch.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.FilterEditFieldSearch.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.FilterEditFieldSearch.Location = new System.Drawing.Point(351, 12);
-            this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
-            this.FilterEditFieldSearch.Size = new System.Drawing.Size(542, 83);
-            this.FilterEditFieldSearch.TabIndex = 0;
-            this.FilterEditFieldSearch.TextTextBox = "";
-            this.FilterEditFieldSearch.TextTitle = "Search";
-            this.FilterEditFieldSearch.UseColoredCaret = true;
-            this.FilterEditFieldSearch.UseDefaultValue = true;
-            this.FilterEditFieldSearch.UseSystemPasswordChar = false;
+            this.FilterLabelSort.AutoSize = true;
+            this.FilterLabelSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterLabelSort.Location = new System.Drawing.Point(899, 12);
+            this.FilterLabelSort.Name = "FilterLabelSort";
+            this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
+            this.FilterLabelSort.TabIndex = 3;
+            this.FilterLabelSort.Text = "Sort by";
             // 
             // FilterAdvancedComboBoxSort
             // 
@@ -3101,20 +3330,36 @@
             this.FilterAdvancedComboBoxSort.UseSelectable = true;
             this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
             // 
-            // FilterLabelSort
+            // FilterEditFieldSearch
             // 
-            this.FilterLabelSort.AutoSize = true;
-            this.FilterLabelSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterLabelSort.Location = new System.Drawing.Point(899, 12);
-            this.FilterLabelSort.Name = "FilterLabelSort";
-            this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
-            this.FilterLabelSort.TabIndex = 3;
-            this.FilterLabelSort.Text = "Sort by";
+            this.FilterEditFieldSearch.AutoSize = true;
+            this.FilterEditFieldSearch.BackColor = System.Drawing.Color.White;
+            this.FilterEditFieldSearch.BackGroundColor = System.Drawing.Color.White;
+            this.FilterEditFieldSearch.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.FilterEditFieldSearch.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.FilterEditFieldSearch.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.FilterEditFieldSearch.DefaultValue = "Enter Search Term";
+            this.FilterEditFieldSearch.FontTextBox = new System.Drawing.Font("Century Gothic", 12F);
+            this.FilterEditFieldSearch.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FilterEditFieldSearch.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.FilterEditFieldSearch.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.FilterEditFieldSearch.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.FilterEditFieldSearch.Location = new System.Drawing.Point(351, 12);
+            this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
+            this.FilterEditFieldSearch.Size = new System.Drawing.Size(542, 83);
+            this.FilterEditFieldSearch.TabIndex = 0;
+            this.FilterEditFieldSearch.TextTextBox = "";
+            this.FilterEditFieldSearch.TextTitle = "Search";
+            this.FilterEditFieldSearch.UseColoredCaret = true;
+            this.FilterEditFieldSearch.UseDefaultValue = true;
+            this.FilterEditFieldSearch.UseSystemPasswordChar = false;
             // 
             // PanelMain
             // 
             this.PanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.PanelMain.Controls.Add(this.DataPanelMain);
+            this.PanelMain.Controls.Add(this.panel1);
             this.PanelMain.Controls.Add(this.MenuPanel);
             this.PanelMain.Controls.Add(this.WindowHeaderPanel);
             this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3330,7 +3575,7 @@
             this.LoginAnimatedButtonOfflineLogin.Icon = null;
             this.LoginAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(220, 684);
             this.LoginAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOfflineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOfflineLogin.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.LoginAnimatedButtonOfflineLogin.Name = "LoginAnimatedButtonOfflineLogin";
             this.LoginAnimatedButtonOfflineLogin.Primary = false;
             this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
@@ -3496,7 +3741,7 @@
             this.LoginAnimatedButtonRegister.Icon = null;
             this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(220, 728);
             this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonRegister.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonRegister.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
             this.LoginAnimatedButtonRegister.Primary = false;
             this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
@@ -3563,7 +3808,7 @@
             this.LoginAnimatedButtonOnlineLogin.Icon = null;
             this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
             this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOnlineLogin.MouseState = pmdbs.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOnlineLogin.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
             this.LoginAnimatedButtonOnlineLogin.Primary = false;
             this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
@@ -3668,10 +3913,6 @@
             this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
             this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
             // 
-            // SyncAnimationTimer
-            // 
-            this.SyncAnimationTimer.Tick += new System.EventHandler(this.SyncAnimationTimer_Tick);
-            // 
             // windowButtonClose
             // 
             this.windowButtonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -3683,6 +3924,443 @@
             this.windowButtonClose.Name = "windowButtonClose";
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanel1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(265, 114);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1615, 998);
+            this.panel1.TabIndex = 2;
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1615, 998);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.panel2.Controls.Add(this.panel11);
+            this.panel2.Controls.Add(this.panel10);
+            this.panel2.Controls.Add(this.panel9);
+            this.panel2.Controls.Add(this.panel8);
+            this.panel2.Controls.Add(this.panel7);
+            this.panel2.Controls.Add(this.panel5);
+            this.panel2.Controls.Add(this.panel4);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(11, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(1604, 998);
+            this.panel2.TabIndex = 0;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.White;
+            this.panel4.Controls.Add(this.pictureBox4);
+            this.panel4.Controls.Add(this.label1);
+            this.panel4.Location = new System.Drawing.Point(1, 0);
+            this.panel4.Margin = new System.Windows.Forms.Padding(0);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(893, 410);
+            this.panel4.TabIndex = 0;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.White;
+            this.panel5.Controls.Add(this.label13);
+            this.panel5.Controls.Add(this.label6);
+            this.panel5.Controls.Add(this.pictureBox3);
+            this.panel5.Controls.Add(this.label2);
+            this.panel5.Location = new System.Drawing.Point(1, 422);
+            this.panel5.Margin = new System.Windows.Forms.Padding(0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(493, 284);
+            this.panel5.TabIndex = 1;
+            // 
+            // panel7
+            // 
+            this.panel7.BackColor = System.Drawing.Color.White;
+            this.panel7.Controls.Add(this.pictureBox2);
+            this.panel7.Controls.Add(this.label3);
+            this.panel7.Location = new System.Drawing.Point(509, 422);
+            this.panel7.Margin = new System.Windows.Forms.Padding(0);
+            this.panel7.Name = "panel7";
+            this.panel7.Size = new System.Drawing.Size(530, 284);
+            this.panel7.TabIndex = 2;
+            // 
+            // panel8
+            // 
+            this.panel8.BackColor = System.Drawing.Color.White;
+            this.panel8.Controls.Add(this.pictureBox1);
+            this.panel8.Controls.Add(this.bulletPointLabel3);
+            this.panel8.Controls.Add(this.bulletPointLabel2);
+            this.panel8.Controls.Add(this.bulletPointLabel1);
+            this.panel8.Controls.Add(this.label5);
+            this.panel8.Location = new System.Drawing.Point(1056, 422);
+            this.panel8.Margin = new System.Windows.Forms.Padding(0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(544, 284);
+            this.panel8.TabIndex = 3;
+            // 
+            // panel9
+            // 
+            this.panel9.BackColor = System.Drawing.Color.White;
+            this.panel9.Controls.Add(this.label4);
+            this.panel9.Controls.Add(this.cartesianChart1);
+            this.panel9.Location = new System.Drawing.Point(908, 0);
+            this.panel9.Margin = new System.Windows.Forms.Padding(0);
+            this.panel9.Name = "panel9";
+            this.panel9.Size = new System.Drawing.Size(692, 410);
+            this.panel9.TabIndex = 4;
+            // 
+            // cartesianChart1
+            // 
+            this.cartesianChart1.Location = new System.Drawing.Point(19, 17);
+            this.cartesianChart1.Name = "cartesianChart1";
+            this.cartesianChart1.Size = new System.Drawing.Size(646, 332);
+            this.cartesianChart1.TabIndex = 0;
+            this.cartesianChart1.Text = "cartesianChart1";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Century Gothic", 30F);
+            this.label1.Location = new System.Drawing.Point(10, 330);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(864, 74);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Welcome back <username>";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label2.Location = new System.Drawing.Point(183, 124);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(301, 49);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Your Accounts";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label3.Location = new System.Drawing.Point(206, 123);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(172, 49);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Settings";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label4.Location = new System.Drawing.Point(42, 352);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(271, 49);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Lorem Ipsum";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label5.Location = new System.Drawing.Point(32, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(199, 49);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Last Sync";
+            // 
+            // bulletPointLabel1
+            // 
+            this.bulletPointLabel1.AutoSize = true;
+            this.bulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.bulletPointLabel1.Location = new System.Drawing.Point(248, 52);
+            this.bulletPointLabel1.Name = "bulletPointLabel1";
+            this.bulletPointLabel1.Size = new System.Drawing.Size(160, 30);
+            this.bulletPointLabel1.TabIndex = 6;
+            this.bulletPointLabel1.Text = "  24 min ago";
+            // 
+            // bulletPointLabel2
+            // 
+            this.bulletPointLabel2.AutoSize = true;
+            this.bulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.bulletPointLabel2.Location = new System.Drawing.Point(248, 93);
+            this.bulletPointLabel2.Name = "bulletPointLabel2";
+            this.bulletPointLabel2.Size = new System.Drawing.Size(276, 30);
+            this.bulletPointLabel2.TabIndex = 7;
+            this.bulletPointLabel2.Text = "  th3fr3d.ddns.net:4447";
+            // 
+            // bulletPointLabel3
+            // 
+            this.bulletPointLabel3.AutoSize = true;
+            this.bulletPointLabel3.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.bulletPointLabel3.Location = new System.Drawing.Point(248, 136);
+            this.bulletPointLabel3.Name = "bulletPointLabel3";
+            this.bulletPointLabel3.Size = new System.Drawing.Size(265, 30);
+            this.bulletPointLabel3.TabIndex = 8;
+            this.bulletPointLabel3.Text = "  connected 21 times";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(70, 114);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(130, 127);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 9;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.pictureBox2.Location = new System.Drawing.Point(39, 85);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(130, 127);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 10;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::pmdbs.Properties.Resources.database;
+            this.pictureBox3.Location = new System.Drawing.Point(47, 85);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(130, 127);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 11;
+            this.pictureBox3.TabStop = false;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.label6.Location = new System.Drawing.Point(176, 240);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(314, 39);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "78 Accounts saved";
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackColor = System.Drawing.Color.White;
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(8, 8);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(882, 321);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 11;
+            this.pictureBox4.TabStop = false;
+            // 
+            // panel10
+            // 
+            this.panel10.BackColor = System.Drawing.Color.White;
+            this.panel10.Controls.Add(this.label9);
+            this.panel10.Controls.Add(this.label7);
+            this.panel10.Controls.Add(this.angularGauge1);
+            this.panel10.Location = new System.Drawing.Point(0, 724);
+            this.panel10.Margin = new System.Windows.Forms.Padding(0);
+            this.panel10.Name = "panel10";
+            this.panel10.Size = new System.Drawing.Size(767, 273);
+            this.panel10.TabIndex = 5;
+            // 
+            // panel11
+            // 
+            this.panel11.BackColor = System.Drawing.Color.White;
+            this.panel11.Controls.Add(this.label12);
+            this.panel11.Controls.Add(this.label10);
+            this.panel11.Controls.Add(this.pieChart1);
+            this.panel11.Location = new System.Drawing.Point(786, 726);
+            this.panel11.Margin = new System.Windows.Forms.Padding(0);
+            this.panel11.Name = "panel11";
+            this.panel11.Size = new System.Drawing.Size(818, 273);
+            this.panel11.TabIndex = 6;
+            // 
+            // angularGauge1
+            // 
+            this.angularGauge1.Location = new System.Drawing.Point(293, 12);
+            this.angularGauge1.Name = "angularGauge1";
+            this.angularGauge1.Size = new System.Drawing.Size(459, 244);
+            this.angularGauge1.TabIndex = 0;
+            this.angularGauge1.Text = "angularGauge1";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label7.Location = new System.Drawing.Point(30, 28);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(263, 49);
+            this.label7.TabIndex = 4;
+            this.label7.Text = "Server status";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.label9.Location = new System.Drawing.Point(9, 227);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(380, 34);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "Lorem ipsum dolor sit amet";
+            // 
+            // pieChart1
+            // 
+            this.pieChart1.Location = new System.Drawing.Point(487, 19);
+            this.pieChart1.Name = "pieChart1";
+            this.pieChart1.Size = new System.Drawing.Size(307, 229);
+            this.pieChart1.TabIndex = 0;
+            this.pieChart1.Text = "pieChart1";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.label10.Location = new System.Drawing.Point(3, 183);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(516, 78);
+            this.label10.TabIndex = 5;
+            this.label10.Text = "At vero eos et accusam et justo \r\nduo dolores et ea rebum.";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.label12.Location = new System.Drawing.Point(3, 10);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(345, 49);
+            this.label12.TabIndex = 6;
+            this.label12.Text = "Disk usage / user";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.label13.Location = new System.Drawing.Point(176, 202);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(192, 39);
+            this.label13.TabIndex = 13;
+            this.label13.Text = "45 MB used";
+            // 
+            // DataNoSelPictureBox
+            // 
+            this.DataNoSelPictureBox.BackColor = System.Drawing.Color.White;
+            this.DataNoSelPictureBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DataNoSelPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("DataNoSelPictureBox.Image")));
+            this.DataNoSelPictureBox.Location = new System.Drawing.Point(0, 0);
+            this.DataNoSelPictureBox.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
+            this.DataNoSelPictureBox.Name = "DataNoSelPictureBox";
+            this.DataNoSelPictureBox.Size = new System.Drawing.Size(700, 254);
+            this.DataNoSelPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.DataNoSelPictureBox.TabIndex = 11;
+            this.DataNoSelPictureBox.TabStop = false;
+            // 
+            // DataNoSelBulletPointLabel1
+            // 
+            this.DataNoSelBulletPointLabel1.AutoSize = true;
+            this.DataNoSelBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel1.Location = new System.Drawing.Point(60, 419);
+            this.DataNoSelBulletPointLabel1.Name = "DataNoSelBulletPointLabel1";
+            this.DataNoSelBulletPointLabel1.Size = new System.Drawing.Size(88, 34);
+            this.DataNoSelBulletPointLabel1.TabIndex = 12;
+            this.DataNoSelBulletPointLabel1.Text = "  Add";
+            // 
+            // DataNoSelBulletPointLabel2
+            // 
+            this.DataNoSelBulletPointLabel2.AutoSize = true;
+            this.DataNoSelBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel2.Location = new System.Drawing.Point(60, 509);
+            this.DataNoSelBulletPointLabel2.Name = "DataNoSelBulletPointLabel2";
+            this.DataNoSelBulletPointLabel2.Size = new System.Drawing.Size(101, 34);
+            this.DataNoSelBulletPointLabel2.TabIndex = 13;
+            this.DataNoSelBulletPointLabel2.Text = "  Click";
+            // 
+            // DataNoSelBulletPointLabel3
+            // 
+            this.DataNoSelBulletPointLabel3.AutoSize = true;
+            this.DataNoSelBulletPointLabel3.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel3.Location = new System.Drawing.Point(62, 579);
+            this.DataNoSelBulletPointLabel3.Name = "DataNoSelBulletPointLabel3";
+            this.DataNoSelBulletPointLabel3.Size = new System.Drawing.Size(155, 34);
+            this.DataNoSelBulletPointLabel3.TabIndex = 14;
+            this.DataNoSelBulletPointLabel3.Text = "  Organize";
+            // 
+            // DataNoSelLabel1
+            // 
+            this.DataNoSelLabel1.AutoSize = true;
+            this.DataNoSelLabel1.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel1.Location = new System.Drawing.Point(142, 417);
+            this.DataNoSelLabel1.Name = "DataNoSelLabel1";
+            this.DataNoSelLabel1.Size = new System.Drawing.Size(445, 34);
+            this.DataNoSelLabel1.TabIndex = 15;
+            this.DataNoSelLabel1.Text = "accounts by clicking the + icon";
+            // 
+            // DataNoSelLabel2
+            // 
+            this.DataNoSelLabel2.AutoSize = true;
+            this.DataNoSelLabel2.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel2.Location = new System.Drawing.Point(76, 453);
+            this.DataNoSelLabel2.Name = "DataNoSelLabel2";
+            this.DataNoSelLabel2.Size = new System.Drawing.Size(259, 34);
+            this.DataNoSelLabel2.TabIndex = 16;
+            this.DataNoSelLabel2.Text = "in the bottom left.\r\n";
+            // 
+            // DataNoSelLabel3
+            // 
+            this.DataNoSelLabel3.AutoSize = true;
+            this.DataNoSelLabel3.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel3.Location = new System.Drawing.Point(152, 508);
+            this.DataNoSelLabel3.Name = "DataNoSelLabel3";
+            this.DataNoSelLabel3.Size = new System.Drawing.Size(389, 34);
+            this.DataNoSelLabel3.TabIndex = 17;
+            this.DataNoSelLabel3.Text = "on an item for more details.";
+            // 
+            // DataNoSelLabel4
+            // 
+            this.DataNoSelLabel4.AutoSize = true;
+            this.DataNoSelLabel4.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel4.Location = new System.Drawing.Point(212, 578);
+            this.DataNoSelLabel4.Name = "DataNoSelLabel4";
+            this.DataNoSelLabel4.Size = new System.Drawing.Size(422, 34);
+            this.DataNoSelLabel4.TabIndex = 18;
+            this.DataNoSelLabel4.Text = "items with the search bar and";
+            // 
+            // DataNoSelLabel5
+            // 
+            this.DataNoSelLabel5.AutoSize = true;
+            this.DataNoSelLabel5.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel5.Location = new System.Drawing.Point(81, 617);
+            this.DataNoSelLabel5.Name = "DataNoSelLabel5";
+            this.DataNoSelLabel5.Size = new System.Drawing.Size(365, 34);
+            this.DataNoSelLabel5.TabIndex = 19;
+            this.DataNoSelLabel5.Text = "sorting options at the top.";
+            // 
+            // DataNoSelLabelHeader
+            // 
+            this.DataNoSelLabelHeader.AutoSize = true;
+            this.DataNoSelLabelHeader.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.DataNoSelLabelHeader.Location = new System.Drawing.Point(24, 349);
+            this.DataNoSelLabelHeader.Name = "DataNoSelLabelHeader";
+            this.DataNoSelLabelHeader.Size = new System.Drawing.Size(183, 49);
+            this.DataNoSelLabelHeader.TabIndex = 20;
+            this.DataNoSelLabelHeader.Text = "You can";
             // 
             // Form1
             // 
@@ -3719,6 +4397,12 @@
             this.DataPanelSubRightMain.ResumeLayout(false);
             this.DataPanelNoSel.ResumeLayout(false);
             this.DataPanelNoSel.PerformLayout();
+            this.DataFilterResultsPanel.ResumeLayout(false);
+            this.DataFilterResultsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataFilterResultsPictureBox)).EndInit();
+            this.DataFilterPanelNotFound.ResumeLayout(false);
+            this.DataFilterPanelNotFound.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataFilterPictureBox)).EndInit();
             this.DataPanelDetails.ResumeLayout(false);
             this.DataPanelDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).EndInit();
@@ -3819,6 +4503,28 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
+            this.panel5.ResumeLayout(false);
+            this.panel5.PerformLayout();
+            this.panel7.ResumeLayout(false);
+            this.panel7.PerformLayout();
+            this.panel8.ResumeLayout(false);
+            this.panel8.PerformLayout();
+            this.panel9.ResumeLayout(false);
+            this.panel9.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.panel10.ResumeLayout(false);
+            this.panel10.PerformLayout();
+            this.panel11.ResumeLayout(false);
+            this.panel11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DataNoSelPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3833,37 +4539,35 @@
         private System.Windows.Forms.TableLayoutPanel DataTableLayoutPanelSubLeft;
         private System.Windows.Forms.Label DataLabelDetailsHostname;
         private System.Windows.Forms.PictureBox DataPictureBoxDetailsLogo;
-        private AdvancedImageButton DataDetailsEditAdvancedImageButton;
-        private AdvancedImageButton DataDetailsRemoveAdvancedImageButton;
-        private AdvancedImageButton DataAddAdvancedImageButton;
-        private AdvancedImageButton DataRightAdvancedImageButton;
-        private AdvancedImageButton DataLeftAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataDetailsEditAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataDetailsRemoveAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataAddAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataRightAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataLeftAdvancedImageButton;
         private System.Windows.Forms.TableLayoutPanel DataTableLayoutPanelSubRight;
         private System.Windows.Forms.PictureBox DataPictureBoxBackgroundTop;
         private System.Windows.Forms.PictureBox DataPictureBoxBackgroundBottom;
         private System.Windows.Forms.TableLayoutPanel DataTableLayoutPanelFooter;
         private System.Windows.Forms.Panel DataPanelFooterRight;
         private System.Windows.Forms.Panel DataPanelFooterLeft;
-        private DetailsEntry DataDetailsEntryUsername;
-        private DetailsEntry DataDetailsEntryPassword;
-        private DetailsEntry DataDetailsEntryEmail;
-        private DetailsEntry DataDetailsEntryWebsite;
-        private CustomLabel DataDetailsCustomLabelNotes;
+        private CustomMetroForms.DetailsEntry DataDetailsEntryUsername;
+        private CustomMetroForms.DetailsEntry DataDetailsEntryPassword;
+        private CustomMetroForms.DetailsEntry DataDetailsEntryEmail;
+        private CustomMetroForms.DetailsEntry DataDetailsEntryWebsite;
+        private CustomMetroForms.CustomLabel DataDetailsCustomLabelNotes;
         private System.Windows.Forms.Panel DataPanelSubRightMain;
         private System.Windows.Forms.FlowLayoutPanel DataFlowLayoutPanelEdit;
         private System.Windows.Forms.PictureBox DataEditPictureBoxLogo;
-        private EditField DataEditEditFieldWebsite;
-        private EditField DataEditEditFieldEmail;
-        private EditField DataEditEditFieldPassword;
-        private EditField DataEditEditFieldUsername;
-        private EditField DataEditEditFieldHostname;
+        private CustomMetroForms.EditField DataEditEditFieldWebsite;
+        private CustomMetroForms.EditField DataEditEditFieldEmail;
+        private CustomMetroForms.EditField DataEditEditFieldPassword;
+        private CustomMetroForms.EditField DataEditEditFieldUsername;
+        private CustomMetroForms.EditField DataEditEditFieldHostname;
         private System.Windows.Forms.Label DataEditLabelNotes;
-        private AdvancedRichTextBox DataEditAdvancedRichTextBoxNotes;
-        private AdvancedImageButton DataEditSaveAdvancedImageButton;
-        private AdvancedImageButton DataEditCancelAdvancedImageButton;
+        private CustomMetroForms.AdvancedRichTextBox DataEditAdvancedRichTextBoxNotes;
+        private CustomMetroForms.AdvancedImageButton DataEditSaveAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataEditCancelAdvancedImageButton;
         private System.Windows.Forms.Panel DataPanelNoSel;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label WindowHeaderLabelLogo;
         private System.Windows.Forms.Panel WindowHeaderPanel;
         private System.Windows.Forms.PictureBox WindowPictureBoxIcon;
@@ -3871,15 +4575,15 @@
         private System.Windows.Forms.Panel WindowsHeaderPanelSubRight;
         private System.Windows.Forms.FlowLayoutPanel MenuFlowLayoutPanel;
         private System.Windows.Forms.Panel MenuPanelHome;
-        private MenuEntry MenuMenuEntryHome;
+        private CustomMetroForms.MenuEntry MenuMenuEntryHome;
         private System.Windows.Forms.Panel MenuPanelHomeIndicator;
         private System.Windows.Forms.Panel MenuPanelSettings;
-        private MenuEntry MenuMenuEntrySettings;
+        private CustomMetroForms.MenuEntry MenuMenuEntrySettings;
         private System.Windows.Forms.Panel MenuPanelSettingsIndicator;
         private System.Windows.Forms.Panel MenuPanelPasswords;
-        private MenuEntry MenuMenuEntryPasswords;
+        private CustomMetroForms.MenuEntry MenuMenuEntryPasswords;
         private System.Windows.Forms.Panel MenuPanelPasswordsIndicator;
-        private AdvancedImageButton DataSyncAdvancedImageButton;
+        private CustomMetroForms.AdvancedImageButton DataSyncAdvancedImageButton;
         private System.Windows.Forms.Panel PanelMain;
         private System.Windows.Forms.Panel AddPanelMain;
         private System.Windows.Forms.TableLayoutPanel AddTableLayoutPanelMain;
@@ -3887,33 +4591,33 @@
         private System.Windows.Forms.PictureBox AddPictureBoxRight;
         private System.Windows.Forms.Panel AddPanelCenter;
         private System.Windows.Forms.Label AddLabelTitle;
-        private EditField AddEditFieldEmail;
-        private EditField AddEditFieldPassword;
-        private EditField AddEditFieldUsername;
-        private EditField AddEditFieldHostname;
+        private CustomMetroForms.EditField AddEditFieldEmail;
+        private CustomMetroForms.EditField AddEditFieldPassword;
+        private CustomMetroForms.EditField AddEditFieldUsername;
+        private CustomMetroForms.EditField AddEditFieldHostname;
         private System.Windows.Forms.TableLayoutPanel AddTableLayoutPanelCenter;
         private System.Windows.Forms.Panel AddPanelContent;
-        private EditField AddEditFieldWebsite;
+        private CustomMetroForms.EditField AddEditFieldWebsite;
         private System.Windows.Forms.FlowLayoutPanel AddFlowLayoutPanelCenter;
         private System.Windows.Forms.Panel AddPanelSeperator;
-        private AdvancedNumericUpDown AddPanelGeneratePasswordeAdvancedNumericUpDown;
+        private CustomMetroForms.AdvancedNumericUpDown AddPanelGeneratePasswordeAdvancedNumericUpDown;
         private System.Windows.Forms.Panel AddPanelGeneratePassword;
-        private AdvancedCheckBox AddPanelGeneratePasswordAdvancedCheckBox;
+        private CustomMetroForms.AdvancedCheckBox AddPanelGeneratePasswordAdvancedCheckBox;
         private System.Windows.Forms.Label AddPanelGeneratePasswordLabelLength;
         private System.Windows.Forms.Label AddPanelGeneratePasswordLabelDescription;
         private System.Windows.Forms.Label AddPanelGeneratePasswordLabelTitle;
         private System.Windows.Forms.Panel AddPanelNotes;
         private System.Windows.Forms.Label AddPanelNotesLabelTitle;
-        private AdvancedRichTextBox AddPanelNotesAdvancedRichTextBox;
-        private AnimatedButton AddPanelGeneratePasswordAnimatedButtonGenerate;
+        private CustomMetroForms.AdvancedRichTextBox AddPanelNotesAdvancedRichTextBox;
+        private CustomMetroForms.AnimatedButton AddPanelGeneratePasswordAnimatedButtonGenerate;
         private System.Windows.Forms.Panel AddPanelBottomMenu;
-        private AdvancedImageButton AddPanelAdvancedImageButtonSave;
-        private AdvancedImageButton AddPanelAdvancedImageButtonAbort;
+        private CustomMetroForms.AdvancedImageButton AddPanelAdvancedImageButtonSave;
+        private CustomMetroForms.AdvancedImageButton AddPanelAdvancedImageButtonAbort;
         private System.Windows.Forms.Panel PanelLogin;
         private System.Windows.Forms.TableLayoutPanel LoginTableLayoutPanelMain;
         private System.Windows.Forms.Panel LoginPanelOnlineCredentials;
         private System.Windows.Forms.Label LoginLabelOnlineMain;
-        private AnimatedButton LoginAnimatedButtonOnlineLogin;
+        private CustomMetroForms.AnimatedButton LoginAnimatedButtonOnlineLogin;
         private System.Windows.Forms.PictureBox LoginPictureBoxOnlineLogo;
         private System.Windows.Forms.PictureBox LoginPictureBoxOnlineMain;
         private System.Windows.Forms.PictureBox LoginPictureBoxMain;
@@ -3921,45 +4625,45 @@
         private System.Windows.Forms.PictureBox LoginPictureBoxOfflineMain;
         private System.Windows.Forms.Panel LoginPanelOfflineCredentials;
         private System.Windows.Forms.Label LoginLabelOfflineError;
-        private EditField LoginEditFieldOfflinePassword;
+        private CustomMetroForms.EditField LoginEditFieldOfflinePassword;
         private System.Windows.Forms.Label LoginLabelOfflineMain;
-        private AnimatedButton LoginAnimatedButtonOfflineLogin;
+        private CustomMetroForms.AnimatedButton LoginAnimatedButtonOfflineLogin;
         private System.Windows.Forms.Label LoginLabelOfflineUsername;
         private System.Windows.Forms.Label LoginLabelOnlineError;
         private System.Windows.Forms.Label LoginLabelOnlineTitle;
-        private EditField LoginEditFieldOnlinePassword;
-        private EditField LoginEditFieldOnlineUsername;
+        private CustomMetroForms.EditField LoginEditFieldOnlinePassword;
+        private CustomMetroForms.EditField LoginEditFieldOnlineUsername;
         private System.Windows.Forms.PictureBox LoginPictureBoxRegisterMain;
         private System.Windows.Forms.Panel LoginPanelRegisterCredentials;
         private System.Windows.Forms.Label LoginLabelRegisterDescription;
         private System.Windows.Forms.Label LoginLabelRegisterError;
         private System.Windows.Forms.Label LoginLabelRegisterTitle;
-        private EditField LoginEditFieldRegisterPassword2;
-        private EditField LoginEditFieldRegisterPassword;
+        private CustomMetroForms.EditField LoginEditFieldRegisterPassword2;
+        private CustomMetroForms.EditField LoginEditFieldRegisterPassword;
         private System.Windows.Forms.Label LoginLabelRegisterMain;
-        private AnimatedButton LoginAnimatedButtonRegister;
+        private CustomMetroForms.AnimatedButton LoginAnimatedButtonRegister;
         private System.Windows.Forms.PictureBox LoginPictureBoxRegisterLogo;
         private System.Windows.Forms.Label LoginLabelRegisterSignIn;
         private System.Windows.Forms.Label LoginLabelOnlineRegister;
         private System.Windows.Forms.PictureBox LoginPictureBoxLoadingMain;
-        private AdvancedProgressSpinner LoginLoadingAdvancedProgressSpinner;
+        private CustomMetroForms.AdvancedProgressSpinner LoginLoadingAdvancedProgressSpinner;
         private System.Windows.Forms.Label LoginLoadingLabelMain;
         private System.Windows.Forms.Panel LoginLoadingPanelMain;
         private System.Windows.Forms.Label LoginLoadingLabelDetails;
         private System.Windows.Forms.PictureBox LoginLoadingPictureBoxLogo;
         private System.Windows.Forms.Panel DataEditPanelPasswordGenerator;
-        private AnimatedButton DataEditAnimatedButtonGeneratePassword;
+        private CustomMetroForms.AnimatedButton DataEditAnimatedButtonGeneratePassword;
         private System.Windows.Forms.Label DataEditLabelPasswordGeneratorTitle;
-        private AdvancedCheckBox DataEditAdvancedCheckBox;
-        private AdvancedNumericUpDown DataEditAdvancedNumericUpDown;
+        private CustomMetroForms.AdvancedCheckBox DataEditAdvancedCheckBox;
+        private CustomMetroForms.AdvancedNumericUpDown DataEditAdvancedNumericUpDown;
         private System.Windows.Forms.Label DataEditLabelPasswordGeneratorLengthTitle;
         private System.Windows.Forms.Label DataEditLabelPasswordGeneratorDescription;
         private System.Windows.Forms.Panel DataEditPanelTop;
         private System.Windows.Forms.Panel DataEditPanelBottom;
-        private WindowButton windowButtonClose;
+        private CustomMetroForms.WindowButton windowButtonClose;
         private System.Windows.Forms.Panel AddPanelCheckIcon;
         private System.Windows.Forms.Panel AddPanelCheckIconContent;
-        private AnimatedButton AddPanelAnimatedButtonCheckIcon;
+        private CustomMetroForms.AnimatedButton AddPanelAnimatedButtonCheckIcon;
         private System.Windows.Forms.Label AddLabelCheckIconHeader;
         private System.Windows.Forms.Label AddLabelCheckIconAvailableIcon;
         private System.Windows.Forms.PictureBox AddPictureBoxCheckIconIcon;
@@ -3969,90 +4673,145 @@
         private System.Windows.Forms.Panel SettingsPanelCenter;
         private System.Windows.Forms.TableLayoutPanel SettingsTableLayoutPanelCenter;
         private System.Windows.Forms.Panel SettingsPanelFooter;
-        private AdvancedImageButton SettingsAdvancedImageButtonFooterAbort;
-        private AdvancedImageButton SettingsAdvancedImageButtonFooterSave;
+        private CustomMetroForms.AdvancedImageButton SettingsAdvancedImageButtonFooterAbort;
+        private CustomMetroForms.AdvancedImageButton SettingsAdvancedImageButtonFooterSave;
         private System.Windows.Forms.Panel SettingsPanelContentMain;
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelOnline;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Label label11;
-        private EditField editField7;
-        private EditField editField9;
-        private EditField editField10;
+        private CustomMetroForms.EditField editField7;
+        private CustomMetroForms.EditField editField9;
+        private CustomMetroForms.EditField editField10;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelOffline;
         private System.Windows.Forms.Panel SettingsPanelOfflineContentHeader;
         private System.Windows.Forms.Label SettingsLabelOfflineAccountHeader;
-        private EditField editField3;
-        private EditField SettingsEditFieldOfflineNewPassword;
+        private CustomMetroForms.EditField editField3;
+        private CustomMetroForms.EditField SettingsEditFieldOfflineNewPassword;
         private System.Windows.Forms.Panel SettingsPanelOfflineContent3;
-        private AnimatedButton animatedButton3;
-        private EditField editField8;
-        private EditField editField6;
+        private CustomMetroForms.AnimatedButton animatedButton3;
+        private CustomMetroForms.EditField editField8;
+        private CustomMetroForms.EditField editField6;
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelRegister;
         private System.Windows.Forms.Panel SettingsPanelRegisterContent;
-        private AnimatedButton SettingsAnimatedButtonSubmit;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonSubmit;
         private System.Windows.Forms.Label SettingsLabelRegisterAccount;
         private System.Windows.Forms.Label SettingsLabelRegisterServerSpec;
         private System.Windows.Forms.Label SettingsLabelRegisterServerDesc;
-        private EditField SettingsEditFieldRegisterEmail;
+        private CustomMetroForms.EditField SettingsEditFieldRegisterEmail;
         private System.Windows.Forms.Label SettingsLabelRegisterMain;
-        private EditField SettingsEditFieldRegisterIP;
-        private EditField SettingsEditFieldRegisterName;
-        private EditField SettingsEditFieldRegisterPort;
-        private EditField SettingsEditFieldRegisterUsername;
+        private CustomMetroForms.EditField SettingsEditFieldRegisterIP;
+        private CustomMetroForms.EditField SettingsEditFieldRegisterName;
+        private CustomMetroForms.EditField SettingsEditFieldRegisterPort;
+        private CustomMetroForms.EditField SettingsEditFieldRegisterUsername;
         private System.Windows.Forms.Label SettingsLabelRegisterAccountDesc;
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelLogin;
         private System.Windows.Forms.Panel SettingsPanelLoginContent;
         private System.Windows.Forms.Label SettingsLabelLoginAccountDesc;
-        private AnimatedButton SettingsAnimatedButtonLoginSubmit;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonLoginSubmit;
         private System.Windows.Forms.Label SettingsLabelLoginAccount;
         private System.Windows.Forms.Label SettingsLabelLoginServer;
         private System.Windows.Forms.Label SettingsLabelLoginServerDesc;
         private System.Windows.Forms.Label SettingsLabelLoginMain;
-        private EditField SettingsEditFieldLoginIP;
-        private EditField SettingsEditFieldLoginPort;
-        private EditField SettingsEditFieldLoginUsername;
+        private CustomMetroForms.EditField SettingsEditFieldLoginIP;
+        private CustomMetroForms.EditField SettingsEditFieldLoginPort;
+        private CustomMetroForms.EditField SettingsEditFieldLoginUsername;
         private System.Windows.Forms.Panel SettingsPanelLoadingMain;
         private System.Windows.Forms.Panel SettingsPanelLoadingCenter;
         private System.Windows.Forms.Label SettingsLabelLoadingStatus;
-        private AdvancedProgressSpinner SettingsAdvancedProgressSpinnerLoading;
+        private CustomMetroForms.AdvancedProgressSpinner SettingsAdvancedProgressSpinnerLoading;
         private System.Windows.Forms.PictureBox SettingsPictureBoxLoadingLogo;
         private System.Windows.Forms.Panel SettingsPanelPromptMain;
         private System.Windows.Forms.PictureBox SettingsPictureBoxPromptLogo;
-        private EditField SettingsEditFieldPromptCode;
+        private CustomMetroForms.EditField SettingsEditFieldPromptCode;
         private System.Windows.Forms.Label SettingsLabelPromptPrefix;
         private System.Windows.Forms.Panel SettingsPanelPromptCenter;
         private System.Windows.Forms.Label SettingsLabelPromptCode;
         private System.Windows.Forms.Label SettingsLabelPromptAction;
         private System.Windows.Forms.Label SettingsLabelPromptMain;
         private System.Windows.Forms.Label SettingsLabelPromptMailInfo;
-        private AnimatedButton SettingsAnimatedButtonPromptSubmit;
-        private EditField SettingsEditFieldOfflineNewPasswordConfirm;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonPromptSubmit;
+        private CustomMetroForms.EditField SettingsEditFieldOfflineNewPasswordConfirm;
         private System.Windows.Forms.Label SettingsLabelOfflineChangePassword;
-        private AnimatedButton SettingsAnimatedButtonChangePasswordSubmit;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonChangePasswordSubmit;
         private System.Windows.Forms.Label SettingsLabelOfflinePasswordDescription;
         private System.Windows.Forms.Panel SettingsPanelOfflineContent2;
         private System.Windows.Forms.Label SettingsLabelOfflineChangeNameDescription;
         private System.Windows.Forms.Label SettingsLabelOfflineChangeName;
         private System.Windows.Forms.Panel SettingsPanelOfflineContent1;
-        private AnimatedButton SettingsAnimatedButtonOfflineRegister;
-        private AnimatedButton SettingsAnimatedButtonOfflineLogin;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonOfflineRegister;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonOfflineLogin;
         private System.Windows.Forms.Label SettingsLabelOfflineGoOnlineDescription;
         private System.Windows.Forms.Label SettingsLabelOfflineGoOnline;
-        private AnimatedButton SettingsAnimatedButtonOfflineChangeNameSubmit;
-        private EditField SettingsEditFieldOfflineName;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonOfflineChangeNameSubmit;
+        private CustomMetroForms.EditField SettingsEditFieldOfflineName;
         private System.Windows.Forms.Panel MenuPanelSync;
         private System.Windows.Forms.Label MenuSyncLabelHeader;
         private System.Windows.Forms.Label MenuSyncLabelStatus;
-        private System.Windows.Forms.Timer SyncAnimationTimer;
         private System.Windows.Forms.PictureBox MenuSyncPictureBox;
-        private EditField FilterEditFieldSearch;
+        private CustomMetroForms.EditField FilterEditFieldSearch;
         private System.Windows.Forms.Label FilterLabelSort;
-        private AdvancedComboBox FilterAdvancedComboBoxSort;
-        private OvalPanel WindowsHeaderOvalPanelTitle;
+        private CustomMetroForms.AdvancedComboBox FilterAdvancedComboBoxSort;
+        private CustomMetroForms.OvalPanel WindowsHeaderOvalPanelTitle;
         private System.Windows.Forms.PictureBox WindowHeaderPictureBoxIcon;
         private System.Windows.Forms.Label WindowHeaderLabelTitle;
+        private System.Windows.Forms.Panel DataFilterPanelNotFound;
+        private System.Windows.Forms.Label DataFilterLabelSearchTerm;
+        private System.Windows.Forms.Label DataFilterLabelHeader;
+        private System.Windows.Forms.Label DataFilterLabelSuggestions;
+        private System.Windows.Forms.PictureBox DataFilterPictureBox;
+        private CustomMetroForms.BulletPointLabel DataFilterBulletPointLabel2;
+        private CustomMetroForms.BulletPointLabel DataFilterBulletPointLabel1;
+        private System.Windows.Forms.Panel DataFilterResultsPanel;
+        private CustomMetroForms.AnimatedButton DataFilterResultsAnimatedButtonReset;
+        private System.Windows.Forms.PictureBox DataFilterResultsPictureBox;
+        private System.Windows.Forms.Label DataFilterResultsLabelSearchTerm;
+        private System.Windows.Forms.Label DataFilterResultsHeader;
+        private System.Windows.Forms.Label DataFilterResultsLabelSortTerm;
+        private System.Windows.Forms.Label DataFilterResultsLabelSortHeader;
+        private CustomMetroForms.AnimatedButton DataFilterAnimatedButtonReset;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel9;
+        private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel panel7;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Label label4;
+        private LiveCharts.WinForms.CartesianChart cartesianChart1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private CustomMetroForms.BulletPointLabel bulletPointLabel3;
+        private CustomMetroForms.BulletPointLabel bulletPointLabel2;
+        private CustomMetroForms.BulletPointLabel bulletPointLabel1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label10;
+        private LiveCharts.WinForms.PieChart pieChart1;
+        private System.Windows.Forms.Panel panel10;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label7;
+        private LiveCharts.WinForms.AngularGauge angularGauge1;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label DataNoSelLabelHeader;
+        private System.Windows.Forms.Label DataNoSelLabel5;
+        private System.Windows.Forms.Label DataNoSelLabel4;
+        private System.Windows.Forms.Label DataNoSelLabel3;
+        private System.Windows.Forms.Label DataNoSelLabel2;
+        private System.Windows.Forms.Label DataNoSelLabel1;
+        private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel3;
+        private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel2;
+        private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel1;
+        private System.Windows.Forms.PictureBox DataNoSelPictureBox;
     }
 }
 
