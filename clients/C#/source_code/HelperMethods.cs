@@ -90,7 +90,8 @@ namespace pmdbs
         public enum LoadingType
         {
             DEFAULT = 0,
-            LOGIN = 1
+            LOGIN = 1,
+            REGISTER = 2
         }
 
         public static async void LoadingHelper(object parameters)
@@ -163,7 +164,20 @@ namespace pmdbs
                 {
                     case LoadingType.LOGIN:
                         {
+                            GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             await ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
+                            AutomatedTaskFramework.Tasks.Clear();
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Tasks.Execute();
+                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            {
+                                Thread.Sleep(1000);
+                            }
+                            break;
+                        }
+                    case LoadingType.REGISTER:
+                        {
+                            GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();

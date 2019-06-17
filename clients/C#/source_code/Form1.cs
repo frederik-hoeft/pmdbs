@@ -1461,6 +1461,7 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                GlobalVarPool.loadingType = HelperMethods.LoadingType.REGISTER;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
@@ -1664,7 +1665,5 @@ namespace pmdbs
             RefreshUserData(page);
         }
         #endregion
-
-        
     }
 }
