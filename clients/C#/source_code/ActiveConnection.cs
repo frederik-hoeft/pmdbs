@@ -749,8 +749,9 @@ namespace pmdbs
                                                                     {
                                                                         break;
                                                                     }
-                                                                case "":
+                                                                case "BANNED":
                                                                     {
+                                                                        CustomException.ThrowNew.NetworkException("YOU HAVE BEEN BANNED.");
                                                                         break;
                                                                     }
                                                                 default:

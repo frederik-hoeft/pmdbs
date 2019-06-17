@@ -330,7 +330,7 @@ namespace pmdbs
                 HelperMethods.InvokeOutputLabel("Changing password ...");
                 string passwordHash = CryptoHelper.SHA256Hash(password);
                 string onlinePassword = passwordHash.Substring(0, 32);
-                Network.SendEncrypted("MNGCPCpassword%eq!" + onlinePassword + "!;code%eq!" + code + "!;");
+                Network.SendEncrypted("MNGCPCpassword%eq!" + onlinePassword + "!;code%eq!PM-" + code + "!;");
             }
             /// <summary>
             /// Creates a connection to the remote server.
