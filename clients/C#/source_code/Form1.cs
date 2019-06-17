@@ -1364,9 +1364,9 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelLogin;
-                GlobalVarPool.loadingType = HelperMethods.LoadingType.LOGIN;
+                GlobalVarPool.loadingType = LoadingHelper.LoadingType.LOGIN;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
-                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+                Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
                 {
                     IsBackground = true
                 };
@@ -1466,9 +1466,9 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
-                GlobalVarPool.loadingType = HelperMethods.LoadingType.REGISTER;
+                GlobalVarPool.loadingType = LoadingHelper.LoadingType.REGISTER;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
-                Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+                Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
                 {
                     IsBackground = true
                 };
@@ -1516,9 +1516,9 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Please enter a new master password.");
                 return;
             }
-            GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
+            GlobalVarPool.loadingType = LoadingHelper.LoadingType.DEFAULT;
             Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
-            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+            Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
             {
                 IsBackground = true
             };
@@ -1545,11 +1545,11 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Please enter a new master password.");
                 return;
             }
-            GlobalVarPool.loadingType = HelperMethods.LoadingType.PASSWORD_CHANGE;
+            GlobalVarPool.loadingType = LoadingHelper.LoadingType.PASSWORD_CHANGE;
             GlobalVarPool.plainMasterPassword = password;
             GlobalVarPool.previousPanel = SettingsFlowLayoutPanelOnline;
             Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
-            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+            Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
             {
                 IsBackground = true
             };
