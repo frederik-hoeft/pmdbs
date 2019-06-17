@@ -1517,14 +1517,14 @@ namespace pmdbs
                 return;
             }
             GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
-            Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
+            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
             {
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
             await HelperMethods.ChangeMasterPassword(password, true);
-            GlobalVarPool.finishedLoading = true;
+            GlobalVarPool.commandErrorCode = 0;
         }
 
         #endregion
@@ -1546,9 +1546,8 @@ namespace pmdbs
                 return;
             }
             GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
-            GlobalVarPool.finishedLoading = false;
             GlobalVarPool.plainMasterPassword = password;
-            Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
+            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
             {
                 IsBackground = true

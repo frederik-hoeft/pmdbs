@@ -94,7 +94,6 @@ namespace pmdbs
         public static bool search = false;
         public static bool databaseIsInUse = false;
         public static bool promptFromBackgroundThread = false;
-        public static bool finishedLoading = false;
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
 

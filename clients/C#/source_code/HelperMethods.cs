@@ -97,7 +97,7 @@ namespace pmdbs
 
         public static async void LoadingHelper(object parameters)
         {
-            GlobalVarPool.commandError = false;
+            GlobalVarPool.commandErrorCode = -1;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingSpinner.Start();
@@ -141,11 +141,25 @@ namespace pmdbs
             GlobalVarPool.outputLabel = output;
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!finishCondition() && !GlobalVarPool.connectionLost && !GlobalVarPool.commandError  && !GlobalVarPool.finishedLoading)
+            bool retry = true;
+            while (retry)
             {
-                Thread.Sleep(1000);
+                retry = false;
+                while (!finishCondition() && !GlobalVarPool.connectionLost && GlobalVarPool.commandErrorCode == -1 && GlobalVarPool.commandErrorCode != 0)
+                {
+                    Thread.Sleep(1000);
+                }
+                if (GlobalVarPool.commandErrorCode == 1)
+                {
+                    if (GlobalVarPool.promptCommand.Equals("CONFIRM_NEW_DEVICE"))
+                    {
+
+                    }
+                    Prompt("Confirm new device", "Looks like your trying to login from a new device.");
+                    retry = true;
+                }
             }
-            if (GlobalVarPool.commandError)
+            if (GlobalVarPool.commandErrorCode == -2)
             {
                 AutomatedTaskFramework.Tasks.Clear();
                 AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
@@ -170,7 +184,7 @@ namespace pmdbs
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
-                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                             {
                                 Thread.Sleep(1000);
                             }
@@ -182,7 +196,7 @@ namespace pmdbs
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
-                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                             {
                                 Thread.Sleep(1000);
                             }
@@ -203,7 +217,7 @@ namespace pmdbs
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
-                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                             {
                                 Thread.Sleep(1000);
                             }
@@ -217,7 +231,7 @@ namespace pmdbs
                                 AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                                 AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                                 AutomatedTaskFramework.Tasks.Execute();
-                                while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                                while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                                 {
                                     Thread.Sleep(1000);
                                 }
@@ -227,11 +241,11 @@ namespace pmdbs
                 }
             }
             GlobalVarPool.outputLabelIsValid = false;
-            if (GlobalVarPool.finishedLoading)
+            if (GlobalVarPool.commandErrorCode == 0)
             {
-                GlobalVarPool.finishedLoading = false;
+                GlobalVarPool.commandErrorCode = -1;
             }
-            if (GlobalVarPool.connectionLost || GlobalVarPool.commandError)
+            else if (GlobalVarPool.connectionLost || GlobalVarPool.commandErrorCode == -2)
             {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
