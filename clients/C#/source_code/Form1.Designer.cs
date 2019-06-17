@@ -629,8 +629,8 @@
             // DataPanelMain
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
-            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
+            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -4411,7 +4411,7 @@
             this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.SettingsEditFieldOnlinePasswordChangeNew.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOnlinePasswordChangeNew.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOnlinePasswordChangeNew.DefaultValue = "";
             this.SettingsEditFieldOnlinePasswordChangeNew.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsEditFieldOnlinePasswordChangeNew.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
             this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
@@ -4436,7 +4436,7 @@
             this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.DefaultValue = "";
             this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
             this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
@@ -4451,7 +4451,7 @@
             this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTitle = "Confirm New Password*";
             this.SettingsEditFieldOnlinePasswordChangeConfirm.UseColoredCaret = true;
             this.SettingsEditFieldOnlinePasswordChangeConfirm.UseDefaultValue = false;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseSystemPasswordChar = false;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseSystemPasswordChar = true;
             // 
             // SettingsPanelOnlineContentHeader
             // 
@@ -4480,8 +4480,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

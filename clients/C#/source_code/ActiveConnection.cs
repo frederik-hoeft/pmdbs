@@ -605,6 +605,12 @@ namespace pmdbs
                                                                         CustomException.ThrowNew.GenericException("Invalid credentials." + Environment.NewLine + message);
                                                                         break;
                                                                     }
+                                                                case "I2FA":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException("Invalid 2FA code." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
                                                                 default:
                                                                     {
                                                                         CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);

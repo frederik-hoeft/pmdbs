@@ -320,12 +320,16 @@ namespace pmdbs
                 HelperMethods.InvokeOutputLabel("Checking cookie ...");
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
-
+            /// <summary>
+            /// Changes the users password on the remote server by providing a valid 2FA code.
+            /// </summary>
+            /// <param name="password">The new password (plaintext)</param>
+            /// <param name="code">The 2FA code (PM-XXXXXX)</param>
             public static void CommitPasswordChange(string password, string code)
             {
                 HelperMethods.InvokeOutputLabel("Changing password ...");
                 string passwordHash = CryptoHelper.SHA256Hash(password);
-                string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
+                string onlinePassword = passwordHash.Substring(0, 32);
                 Network.SendEncrypted("MNGCPCpassword%eq!" + onlinePassword + "!;code%eq!" + code + "!;");
             }
             /// <summary>
