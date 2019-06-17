@@ -91,7 +91,8 @@ namespace pmdbs
         {
             DEFAULT = 0,
             LOGIN = 1,
-            REGISTER = 2
+            REGISTER = 2,
+            PASSWORD_CHANGE = 3
         }
 
         public static async void LoadingHelper(object parameters)
@@ -178,6 +179,27 @@ namespace pmdbs
                     case LoadingType.REGISTER:
                         {
                             GlobalVarPool.loadingType = LoadingType.DEFAULT;
+                            AutomatedTaskFramework.Tasks.Clear();
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Tasks.Execute();
+                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            {
+                                Thread.Sleep(1000);
+                            }
+                            break;
+                        }
+                    case LoadingType.PASSWORD_CHANGE:
+                        {
+                            GlobalVarPool.loadingType = LoadingType.DEFAULT;
+                            using (Task<List<string>> GetHids = DataBaseHelper.GetDataAsList("SELECT D_hid FROM Tbl_data;", 1))
+                            {
+                                List<string> hids = await GetHids;
+                                for (int i = 0; i < hids.Count; i++)
+                                {
+                                    await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hids[i] + "\");");
+                                }
+                            }
+                            await ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();

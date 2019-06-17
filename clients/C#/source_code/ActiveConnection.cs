@@ -730,6 +730,7 @@ namespace pmdbs
                                                                     }
                                                                 case "PASSWORD_CHANGED":
                                                                     {
+                                                                        GlobalVarPool.finishedLoading = true;
                                                                         break;
                                                                     }
                                                                 case "SELECT_FINISHED":

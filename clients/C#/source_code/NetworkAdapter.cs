@@ -320,6 +320,14 @@ namespace pmdbs
                 HelperMethods.InvokeOutputLabel("Checking cookie ...");
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
+
+            public static void CommitPasswordChange(string password, string code)
+            {
+                HelperMethods.InvokeOutputLabel("Changing password ...");
+                string passwordHash = CryptoHelper.SHA256Hash(password);
+                string onlinePassword = GlobalVarPool.passwordHash.Substring(0, 32);
+                Network.SendEncrypted("MNGCPCpassword%eq!" + onlinePassword + "!;code%eq!" + code + "!;");
+            }
             /// <summary>
             /// Creates a connection to the remote server.
             /// </summary>

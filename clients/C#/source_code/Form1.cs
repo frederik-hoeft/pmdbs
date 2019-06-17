@@ -1296,7 +1296,7 @@ namespace pmdbs
                     }
                 case "VERIFY_PASSWORD_CHANGE":
                     {
-
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
                         break;
                     }
             }
@@ -1530,7 +1530,7 @@ namespace pmdbs
         #endregion
 
         #region SettingsOnline
-        private async void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
+        private void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
         {
             // TODO: CHECK PASSWORD STRENGTH
             string password = SettingsEditFieldOnlinePasswordChangeNew.TextTextBox;
@@ -1547,6 +1547,7 @@ namespace pmdbs
             }
             GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
             GlobalVarPool.finishedLoading = false;
+            GlobalVarPool.plainMasterPassword = password;
             Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
             {
@@ -1564,17 +1565,6 @@ namespace pmdbs
             }
             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
             AutomatedTaskFramework.Tasks.Execute();
-            
-            
-            using (Task<List<string>> GetHids = DataBaseHelper.GetDataAsList("SELECT D_hid FROM Tbl_data;", 1))
-            {
-                List<string> hids = await GetHids;
-                for (int i = 0; i < hids.Count; i++)
-                {
-                    await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hids[i] + "\");");
-                }
-            }
-            await HelperMethods.ChangeMasterPassword(password, true);
         }
         #endregion
 
