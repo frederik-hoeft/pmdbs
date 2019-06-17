@@ -68,7 +68,7 @@ namespace pmdbs
         public static string promptCommand = string.Empty;
         public static List<string> selectedAccounts = new List<string>();
         /// <summary>
-        /// Represents the decrypted database. Columns are D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon.
+        /// Represents the decrypted database. Columns are [0]D_id, [1]D_hid, [2]D_datetime, [3]D_host, [4]D_uname, [5]D_password, [6]D_url, [7]D_email, [8]D_notes, [9]D_icon.
         /// </summary>
         public static System.Data.DataTable UserData = new System.Data.DataTable();
         /// <summary>
