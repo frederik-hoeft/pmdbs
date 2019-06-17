@@ -77,7 +77,7 @@ namespace pmdbs
         /// </summary>
         public static System.Data.DataTable FilteredUserData = new System.Data.DataTable();
         public static Form1 Form1 = null;
-        public static HelperMethods.LoadingType loadingType = HelperMethods.LoadingType.DEFAULT;
+        public static LoadingHelper.LoadingType loadingType = LoadingHelper.LoadingType.DEFAULT;
 
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
