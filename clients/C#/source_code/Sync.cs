@@ -177,7 +177,6 @@ namespace pmdbs
                 string[] accountParts = GlobalVarPool.selectedAccounts[i].Split(';');
                 try
                 {
-                    string icon_DEBUGGING = accountParts[7];
                     for (int j = 0; j < accountParts.Length; j++)
                     {
                         if (accountParts[j].Equals("mode%eq!SELECT!"))

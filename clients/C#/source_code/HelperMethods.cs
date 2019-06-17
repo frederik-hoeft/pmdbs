@@ -93,7 +93,7 @@ namespace pmdbs
             LOGIN = 1
         }
 
-        public static void LoadingHelper(object parameters)
+        public static async void LoadingHelper(object parameters)
         {
             GlobalVarPool.commandError = false;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
@@ -143,49 +143,59 @@ namespace pmdbs
             {
                 Thread.Sleep(1000);
             }
-            switch (GlobalVarPool.loadingType)
+            if (GlobalVarPool.commandError)
             {
-                case LoadingType.LOGIN:
-                    {
-                        ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
-                        AutomatedTaskFramework.Tasks.Clear();
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
-                        AutomatedTaskFramework.Tasks.Execute();
-                        while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                AutomatedTaskFramework.Tasks.Clear();
+                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Tasks.Execute();
+                while (GlobalVarPool.connected)
+                {
+                    Thread.Sleep(1000);
+                }
+            }
+            else if (GlobalVarPool.connectionLost)
+            {
+                AutomatedTaskFramework.Tasks.Clear();
+            }
+            else
+            {
+                switch (GlobalVarPool.loadingType)
+                {
+                    case LoadingType.LOGIN:
                         {
-                            Thread.Sleep(1000);
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        if (!GlobalVarPool.connectionLost)
-                        {
+                            await ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
-                            AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
                             while (GlobalVarPool.connected && !GlobalVarPool.commandError)
                             {
                                 Thread.Sleep(1000);
                             }
+                            break;
                         }
-                        break;
-                    }
+                    default:
+                        {
+                            if (!GlobalVarPool.connectionLost)
+                            {
+                                AutomatedTaskFramework.Tasks.Clear();
+                                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                                AutomatedTaskFramework.Tasks.Execute();
+                                while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                                {
+                                    Thread.Sleep(1000);
+                                }
+                            }
+                            break;
+                        }
+                }
             }
             GlobalVarPool.outputLabelIsValid = false;
             if (GlobalVarPool.finishedLoading)
             {
                 GlobalVarPool.finishedLoading = false;
             }
-            if (GlobalVarPool.connectionLost)
-            {
-                GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                {
-                    GlobalVarPool.previousPanel.BringToFront();
-                });
-            }
-            else if (GlobalVarPool.commandError)
+            if (GlobalVarPool.connectionLost || GlobalVarPool.commandError)
             {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
@@ -249,12 +259,14 @@ namespace pmdbs
                 GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settings[2]);
             }
         }
-        public static async void ChangeMasterPassword(string password, bool showLoadingScreen)
+        public static async Task ChangeMasterPassword(string password, bool showLoadingScreen)
         {
             InvokeOutputLabel("Creating stage 1 password hash ...");
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             string localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
             string onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.localAESkey = localAESkey;
+            GlobalVarPool.onlinePassword = onlinePassword;
             DataTable encryptedUserData = GlobalVarPool.UserData.Copy();
             int columns = encryptedUserData.Columns.Count;
             int rowCounter = 0;
@@ -284,10 +296,19 @@ namespace pmdbs
             await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_password = \"" + stage2PasswordHash + "\"");
             rowCounter = 0;
             int totalRowCount = encryptedUserData.Rows.Count;
+            // UPDATE DATABASE
             foreach (DataRow row in encryptedUserData.Rows)
             {
-                await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_host = \"" + row[3].ToString() + "\", D_url = \"" + row[6].ToString() + "\", D_uname = \"" + row[4].ToString() + "\", D_password = \"" + row[5].ToString() + "\", D_email = \"" + row[7].ToString() + "\", D_notes = \"" + row[8].ToString() + "\", D_icon = \"" + row[9].ToString() + "\", D_hid = \"EMPTY\" WHERE D_id = " + row[0].ToString() + ";");
+                await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_host = \"" + row[3].ToString() + "\", D_url = \"" + row[6].ToString() + "\", D_uname = \"" + row[4].ToString() + "\", D_password = \"" + row[5].ToString() + "\", D_email = \"" + row[7].ToString() + "\", D_notes = \"" + row[8].ToString() + "\", D_icon = \"" + row[9].ToString() + "\", D_hid = \"EMPTY\", D_datetime = \"" + TimeConverter.TimeStamp() + "\" WHERE D_id = " + row[0].ToString() + ";");
                 InvokeOutputLabel("Writing changes ... " + Math.Round(((float)rowCounter / (float)totalRowCount) * 100f,0,MidpointRounding.ToEven).ToString() + "%");
+            }
+            InvokeOutputLabel("Updating data source ...");
+            // UPDATE GlobalVarPool.UserData
+            foreach (DataRow row in GlobalVarPool.UserData.Rows)
+            {
+                row.BeginEdit();
+                row.SetField(1, "EMPTY");
+                row.EndEdit();
             }
         }
     }
