@@ -1525,6 +1525,30 @@ namespace pmdbs
         #endregion
 
         #region SettingsOnline
+        private async void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
+        {
+            // TODO: CHECK PASSWORD STRENGTH
+            string password = SettingsEditFieldOfflineNewPassword.TextTextBox;
+            string password2 = SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox;
+            if (!password.Equals(password2))
+            {
+                CustomException.ThrowNew.GenericException("These passwords don't match.");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                CustomException.ThrowNew.GenericException("Please enter a new master password.");
+                return;
+            }
+            GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
+            Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
+            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+            {
+                IsBackground = true
+            };
+            t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
+            await HelperMethods.ChangeMasterPassword(password, true);
+        }
         #endregion
 
         #endregion
