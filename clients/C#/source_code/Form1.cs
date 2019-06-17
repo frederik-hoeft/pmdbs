@@ -1528,8 +1528,8 @@ namespace pmdbs
         private async void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
         {
             // TODO: CHECK PASSWORD STRENGTH
-            string password = SettingsEditFieldOfflineNewPassword.TextTextBox;
-            string password2 = SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox;
+            string password = SettingsEditFieldOnlinePasswordChangeNew.TextTextBox;
+            string password2 = SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox;
             if (!password.Equals(password2))
             {
                 CustomException.ThrowNew.GenericException("These passwords don't match.");
@@ -1541,12 +1541,21 @@ namespace pmdbs
                 return;
             }
             GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
+            GlobalVarPool.finishedLoading = false;
             Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
             {
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
+            using (Task<List<string>> GetHids = DataBaseHelper.GetDataAsList("SELECT D_hid FROM Tbl_data;", 1))
+            {
+                List<string> hids = await GetHids;
+                for (int i = 0; i < hids.Count; i++)
+                {
+                    await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hids[i] + "\");");
+                }
+            }
             await HelperMethods.ChangeMasterPassword(password, true);
         }
         #endregion
