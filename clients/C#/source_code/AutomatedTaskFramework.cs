@@ -166,12 +166,11 @@ namespace pmdbs
             /// <param name="SearchCondition"></param>
             /// <param name="FinishedCondition"></param>
             /// <param name="TaskAction"></param>
-            private Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
+            public Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
-                Tasks.Add(this);
             }
             /// <summary>
             /// Task constructor
@@ -180,13 +179,12 @@ namespace pmdbs
             /// <param name="FinishedCondition"></param>
             /// <param name="TaskAction"></param>
             /// <param name="FailedCondition"></param>
-            private Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
+            public Task(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
                 _failedCondition = FailedCondition;
-                Tasks.Add(this);
             }
             /// <summary>
             /// The function or method that is linked to the task.
@@ -225,7 +223,9 @@ namespace pmdbs
             /// <returns>Returns the created Task object.</returns>
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
-                return new Task(SearchCondition, FinishedCondition, TaskAction);
+                Task task = new Task(SearchCondition, FinishedCondition, TaskAction);
+                Tasks.Add(task);
+                return task;
             }
             /// <summary>
             /// Creates a new Task object.
@@ -237,7 +237,9 @@ namespace pmdbs
             /// <returns>Returns the created Task object.</returns>
             public static Task Create(SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
-                return new Task(SearchCondition, FinishedCondition, TaskAction, FailedCondition);
+                Task task = new Task(SearchCondition, FinishedCondition, TaskAction, FailedCondition);
+                Tasks.Add(task);
+                return task;
             }
             /// <summary>
             /// Cancels this task.

@@ -747,7 +747,6 @@ namespace pmdbs
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            SyncAnimationStart();
             if (!GlobalVarPool.wasOnline)
             {
                 DataTableLayoutPanelMain.SuspendLayout();
@@ -755,6 +754,7 @@ namespace pmdbs
                 SettingsFlowLayoutPanelRegister.BringToFront();
                 return;
             }
+            SyncAnimationStart();
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
@@ -1275,7 +1275,7 @@ namespace pmdbs
                 return;
             }
             // DEEP COPY SCHEDULED TASKS
-            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => AutomatedTaskFramework.Task.Create(task.SearchCondition, task.FinishedCondition, task.TaskAction));
+            List<AutomatedTaskFramework.Task> scheduledTasks = scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => new AutomatedTaskFramework.Task(task.SearchCondition, task.FinishedCondition, task.TaskAction));
             AutomatedTaskFramework.Tasks.Clear();
             switch (GlobalVarPool.promptCommand)
             {
@@ -1495,7 +1495,7 @@ namespace pmdbs
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
-        private void SettingsAnimatedButtonChangePasswordSubmit_Click(object sender, EventArgs e)
+        private async void SettingsAnimatedButtonChangePasswordSubmit_Click(object sender, EventArgs e)
         {
             // TODO: CHECK PASSWORD STRENGTH
             string password = SettingsEditFieldOfflineNewPassword.TextTextBox;
@@ -1517,7 +1517,7 @@ namespace pmdbs
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
-            HelperMethods.ChangeMasterPassword(password, true);
+            await HelperMethods.ChangeMasterPassword(password, true);
             GlobalVarPool.finishedLoading = true;
         }
 
