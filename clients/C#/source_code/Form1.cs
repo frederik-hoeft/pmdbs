@@ -1545,7 +1545,7 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Please enter a new master password.");
                 return;
             }
-            GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
+            GlobalVarPool.loadingType = HelperMethods.LoadingType.PASSWORD_CHANGE;
             GlobalVarPool.plainMasterPassword = password;
             Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
