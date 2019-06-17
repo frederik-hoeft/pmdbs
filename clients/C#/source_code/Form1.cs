@@ -1547,6 +1547,7 @@ namespace pmdbs
             }
             GlobalVarPool.loadingType = HelperMethods.LoadingType.PASSWORD_CHANGE;
             GlobalVarPool.plainMasterPassword = password;
+            GlobalVarPool.previousPanel = SettingsFlowLayoutPanelOnline;
             Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
             {
