@@ -1294,6 +1294,11 @@ namespace pmdbs
                         }
                         break;
                     }
+                case "VERIFY_PASSWORD_CHANGE":
+                    {
+                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
+                        break;
+                    }
             }
             AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
@@ -1461,6 +1466,7 @@ namespace pmdbs
                 }
                 GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
+                GlobalVarPool.loadingType = HelperMethods.LoadingType.REGISTER;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
                 Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
                 {
@@ -1511,19 +1517,55 @@ namespace pmdbs
                 return;
             }
             GlobalVarPool.loadingType = HelperMethods.LoadingType.DEFAULT;
-            Func<bool> finishCondition = () => { return GlobalVarPool.finishedLoading; };
+            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
             Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
             {
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
             await HelperMethods.ChangeMasterPassword(password, true);
-            GlobalVarPool.finishedLoading = true;
+            GlobalVarPool.commandErrorCode = 0;
         }
 
         #endregion
 
         #region SettingsOnline
+        private void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
+        {
+            // TODO: CHECK PASSWORD STRENGTH
+            string password = SettingsEditFieldOnlinePasswordChangeNew.TextTextBox;
+            string password2 = SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox;
+            if (!password.Equals(password2))
+            {
+                CustomException.ThrowNew.GenericException("These passwords don't match.");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                CustomException.ThrowNew.GenericException("Please enter a new master password.");
+                return;
+            }
+            GlobalVarPool.loadingType = HelperMethods.LoadingType.PASSWORD_CHANGE;
+            GlobalVarPool.plainMasterPassword = password;
+            GlobalVarPool.previousPanel = SettingsFlowLayoutPanelOnline;
+            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
+            Thread t = new Thread(new ParameterizedThreadStart(HelperMethods.LoadingHelper))
+            {
+                IsBackground = true
+            };
+            t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
+            AutomatedTaskFramework.Tasks.Clear();
+            if (!GlobalVarPool.connected)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+            }
+            if (!GlobalVarPool.isUser)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+            }
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
+            AutomatedTaskFramework.Tasks.Execute();
+        }
         #endregion
 
         #endregion
@@ -1664,7 +1706,5 @@ namespace pmdbs
             RefreshUserData(page);
         }
         #endregion
-
-        
     }
 }

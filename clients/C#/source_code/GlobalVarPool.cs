@@ -83,7 +83,7 @@ namespace pmdbs
         public static int expectedPacketCount = 0;
 
         public static bool connectionLost = false;
-        public static bool commandError = false;
+        public static int commandErrorCode = -1;
         public static bool countSyncPackets = false;
         public static bool connected = false;
         public static bool bootCompleted = false;
@@ -94,7 +94,6 @@ namespace pmdbs
         public static bool search = false;
         public static bool databaseIsInUse = false;
         public static bool promptFromBackgroundThread = false;
-        public static bool finishedLoading = false;
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
 
