@@ -296,10 +296,19 @@ namespace pmdbs
             await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_password = \"" + stage2PasswordHash + "\"");
             rowCounter = 0;
             int totalRowCount = encryptedUserData.Rows.Count;
+            // UPDATE DATABASE
             foreach (DataRow row in encryptedUserData.Rows)
             {
                 await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_host = \"" + row[3].ToString() + "\", D_url = \"" + row[6].ToString() + "\", D_uname = \"" + row[4].ToString() + "\", D_password = \"" + row[5].ToString() + "\", D_email = \"" + row[7].ToString() + "\", D_notes = \"" + row[8].ToString() + "\", D_icon = \"" + row[9].ToString() + "\", D_hid = \"EMPTY\" WHERE D_id = " + row[0].ToString() + ";");
                 InvokeOutputLabel("Writing changes ... " + Math.Round(((float)rowCounter / (float)totalRowCount) * 100f,0,MidpointRounding.ToEven).ToString() + "%");
+            }
+            InvokeOutputLabel("Updating data source ...");
+            // UPDATE GlobalVarPool.UserData
+            foreach (DataRow row in GlobalVarPool.UserData.Rows)
+            {
+                row.BeginEdit();
+                row.SetField(1, "EMPTY");
+                row.EndEdit();
             }
         }
     }
