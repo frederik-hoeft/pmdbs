@@ -1275,8 +1275,12 @@ namespace pmdbs
                 return;
             }
             // DEEP COPY SCHEDULED TASKS
-            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => AutomatedTaskFramework.Task.Create(task.SearchCondition, task.FinishedCondition, task.TaskAction));
-            AutomatedTaskFramework.Tasks.Clear();
+            List<AutomatedTaskFramework.Task> scheduledTasks = new List<AutomatedTaskFramework.Task>();
+            if (AutomatedTaskFramework.Tasks.GetAll().Count > 1)
+            {
+                scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => AutomatedTaskFramework.Task.Create(task.SearchCondition, task.FinishedCondition, task.TaskAction));
+                AutomatedTaskFramework.Tasks.Clear();
+            }
             switch (GlobalVarPool.promptCommand)
             {
                 case "ACTIVATE_ACCOUNT":
