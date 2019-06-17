@@ -1552,7 +1552,7 @@ namespace pmdbs
             {
                 IsBackground = true
             };
-            t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
+            t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {

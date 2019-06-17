@@ -151,12 +151,11 @@ namespace pmdbs
                 }
                 if (GlobalVarPool.commandErrorCode == 1)
                 {
-                    if (GlobalVarPool.promptCommand.Equals("CONFIRM_NEW_DEVICE"))
+                    if (GlobalVarPool.promptCommand.Equals("VERIFY_PASSWORD_CHANGE"))
                     {
-
+                        Prompt("Verify password change", "Looks like your trying to change your password.");
+                        retry = true;
                     }
-                    Prompt("Confirm new device", "Looks like your trying to login from a new device.");
-                    retry = true;
                 }
             }
             if (GlobalVarPool.commandErrorCode == -2)
