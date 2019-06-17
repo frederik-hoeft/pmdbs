@@ -93,7 +93,7 @@ namespace pmdbs
             LOGIN = 1
         }
 
-        public static void LoadingHelper(object parameters)
+        public static async void LoadingHelper(object parameters)
         {
             GlobalVarPool.commandError = false;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
@@ -163,7 +163,7 @@ namespace pmdbs
                 {
                     case LoadingType.LOGIN:
                         {
-                            ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
+                            await ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
@@ -259,7 +259,7 @@ namespace pmdbs
                 GlobalVarPool.REMOTE_PORT = Convert.ToInt32(settings[2]);
             }
         }
-        public static async void ChangeMasterPassword(string password, bool showLoadingScreen)
+        public static async Task ChangeMasterPassword(string password, bool showLoadingScreen)
         {
             InvokeOutputLabel("Creating stage 1 password hash ...");
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);

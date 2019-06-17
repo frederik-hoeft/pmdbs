@@ -1495,7 +1495,7 @@ namespace pmdbs
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
-        private void SettingsAnimatedButtonChangePasswordSubmit_Click(object sender, EventArgs e)
+        private async void SettingsAnimatedButtonChangePasswordSubmit_Click(object sender, EventArgs e)
         {
             // TODO: CHECK PASSWORD STRENGTH
             string password = SettingsEditFieldOfflineNewPassword.TextTextBox;
@@ -1517,7 +1517,7 @@ namespace pmdbs
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
-            HelperMethods.ChangeMasterPassword(password, true);
+            await HelperMethods.ChangeMasterPassword(password, true);
             GlobalVarPool.finishedLoading = true;
         }
 
