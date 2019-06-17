@@ -716,6 +716,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_CHANGE_PASSWORD":
                                                                     {
+                                                                        GlobalVarPool.promptCommand = "VERIFY_PASSWORD_CHANGE";
+                                                                        HelperMethods.Prompt("Verify password change", "Looks like your trying to change your password.");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_DELETE_ACCOUNT":

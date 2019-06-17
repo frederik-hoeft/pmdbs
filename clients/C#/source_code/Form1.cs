@@ -1294,6 +1294,11 @@ namespace pmdbs
                         }
                         break;
                     }
+                case "VERIFY_PASSWORD_CHANGE":
+                    {
+
+                        break;
+                    }
             }
             AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
@@ -1548,6 +1553,19 @@ namespace pmdbs
                 IsBackground = true
             };
             t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
+            AutomatedTaskFramework.Tasks.Clear();
+            if (!GlobalVarPool.connected)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+            }
+            if (!GlobalVarPool.isUser)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+            }
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
+            AutomatedTaskFramework.Tasks.Execute();
+            
+            
             using (Task<List<string>> GetHids = DataBaseHelper.GetDataAsList("SELECT D_hid FROM Tbl_data;", 1))
             {
                 List<string> hids = await GetHids;

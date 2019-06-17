@@ -378,6 +378,15 @@ namespace pmdbs
             }
 
             /// <summary>
+            /// Requests a password change.
+            /// </summary>
+            public static void InitPasswordChange()
+            {
+                HelperMethods.InvokeOutputLabel("Initiated password change.");
+                Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;");
+            }
+
+            /// <summary>
             /// Invokes a SQL-Insert call on the remote database.
             /// </summary>
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
