@@ -143,49 +143,59 @@ namespace pmdbs
             {
                 Thread.Sleep(1000);
             }
-            switch (GlobalVarPool.loadingType)
+            if (GlobalVarPool.commandError)
             {
-                case LoadingType.LOGIN:
-                    {
-                        ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
-                        AutomatedTaskFramework.Tasks.Clear();
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
-                        AutomatedTaskFramework.Tasks.Execute();
-                        while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                AutomatedTaskFramework.Tasks.Clear();
+                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Tasks.Execute();
+                while (GlobalVarPool.connected)
+                {
+                    Thread.Sleep(1000);
+                }
+            }
+            else if (GlobalVarPool.connectionLost)
+            {
+                AutomatedTaskFramework.Tasks.Clear();
+            }
+            else
+            {
+                switch (GlobalVarPool.loadingType)
+                {
+                    case LoadingType.LOGIN:
                         {
-                            Thread.Sleep(1000);
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        if (!GlobalVarPool.connectionLost)
-                        {
+                            ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
-                            AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
                             while (GlobalVarPool.connected && !GlobalVarPool.commandError)
                             {
                                 Thread.Sleep(1000);
                             }
+                            break;
                         }
-                        break;
-                    }
+                    default:
+                        {
+                            if (!GlobalVarPool.connectionLost)
+                            {
+                                AutomatedTaskFramework.Tasks.Clear();
+                                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                                AutomatedTaskFramework.Tasks.Execute();
+                                while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                                {
+                                    Thread.Sleep(1000);
+                                }
+                            }
+                            break;
+                        }
+                }
             }
             GlobalVarPool.outputLabelIsValid = false;
             if (GlobalVarPool.finishedLoading)
             {
                 GlobalVarPool.finishedLoading = false;
             }
-            if (GlobalVarPool.connectionLost)
-            {
-                GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                {
-                    GlobalVarPool.previousPanel.BringToFront();
-                });
-            }
-            else if (GlobalVarPool.commandError)
+            if (GlobalVarPool.connectionLost || GlobalVarPool.commandError)
             {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {
@@ -255,6 +265,8 @@ namespace pmdbs
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             string localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
             string onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.localAESkey = localAESkey;
+            GlobalVarPool.onlinePassword = onlinePassword;
             DataTable encryptedUserData = GlobalVarPool.UserData.Copy();
             int columns = encryptedUserData.Columns.Count;
             int rowCounter = 0;

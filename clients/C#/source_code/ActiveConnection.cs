@@ -599,6 +599,12 @@ namespace pmdbs
                                                                         CustomException.ThrowNew.GenericException("This username does not exist." + Environment.NewLine + message);
                                                                         break;
                                                                     }
+                                                                case "CRED":
+                                                                    {
+                                                                        GlobalVarPool.commandError = true;
+                                                                        CustomException.ThrowNew.GenericException("Invalid credentials." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
                                                                 default:
                                                                     {
                                                                         CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);

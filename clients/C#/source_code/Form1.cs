@@ -747,7 +747,6 @@ namespace pmdbs
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            SyncAnimationStart();
             if (!GlobalVarPool.wasOnline)
             {
                 DataTableLayoutPanelMain.SuspendLayout();
@@ -755,6 +754,7 @@ namespace pmdbs
                 SettingsFlowLayoutPanelRegister.BringToFront();
                 return;
             }
+            SyncAnimationStart();
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
