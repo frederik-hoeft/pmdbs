@@ -90,12 +90,14 @@ namespace pmdbs
         public enum LoadingType
         {
             DEFAULT = 0,
-            LOGIN = 1
+            LOGIN = 1,
+            REGISTER = 2,
+            PASSWORD_CHANGE = 3
         }
 
         public static async void LoadingHelper(object parameters)
         {
-            GlobalVarPool.commandError = false;
+            GlobalVarPool.commandErrorCode = -1;
             GlobalVarPool.loadingSpinner.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingSpinner.Start();
@@ -139,11 +141,24 @@ namespace pmdbs
             GlobalVarPool.outputLabel = output;
 
             // WAIT FOR LOADING PROCEDURE TO COMPLETE
-            while (!finishCondition() && !GlobalVarPool.connectionLost && !GlobalVarPool.commandError  && !GlobalVarPool.finishedLoading)
+            bool retry = true;
+            while (retry)
             {
-                Thread.Sleep(1000);
+                retry = false;
+                while (!finishCondition() && !GlobalVarPool.connectionLost && GlobalVarPool.commandErrorCode == -1 && GlobalVarPool.commandErrorCode != 0)
+                {
+                    Thread.Sleep(1000);
+                }
+                if (GlobalVarPool.commandErrorCode == 1)
+                {
+                    if (GlobalVarPool.promptCommand.Equals("VERIFY_PASSWORD_CHANGE"))
+                    {
+                        Prompt("Verify password change", "Looks like your trying to change your password.");
+                        retry = true;
+                    }
+                }
             }
-            if (GlobalVarPool.commandError)
+            if (GlobalVarPool.commandErrorCode == -2)
             {
                 AutomatedTaskFramework.Tasks.Clear();
                 AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
@@ -163,11 +178,45 @@ namespace pmdbs
                 {
                     case LoadingType.LOGIN:
                         {
+                            GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             await ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
-                            while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
+                            {
+                                Thread.Sleep(1000);
+                            }
+                            break;
+                        }
+                    case LoadingType.REGISTER:
+                        {
+                            GlobalVarPool.loadingType = LoadingType.DEFAULT;
+                            AutomatedTaskFramework.Tasks.Clear();
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Tasks.Execute();
+                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
+                            {
+                                Thread.Sleep(1000);
+                            }
+                            break;
+                        }
+                    case LoadingType.PASSWORD_CHANGE:
+                        {
+                            GlobalVarPool.loadingType = LoadingType.DEFAULT;
+                            using (Task<List<string>> GetHids = DataBaseHelper.GetDataAsList("SELECT D_hid FROM Tbl_data;", 1))
+                            {
+                                List<string> hids = await GetHids;
+                                for (int i = 0; i < hids.Count; i++)
+                                {
+                                    await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hids[i] + "\");");
+                                }
+                            }
+                            await ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
+                            AutomatedTaskFramework.Tasks.Clear();
+                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Tasks.Execute();
+                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                             {
                                 Thread.Sleep(1000);
                             }
@@ -181,7 +230,7 @@ namespace pmdbs
                                 AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                                 AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
                                 AutomatedTaskFramework.Tasks.Execute();
-                                while (GlobalVarPool.connected && !GlobalVarPool.commandError)
+                                while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                                 {
                                     Thread.Sleep(1000);
                                 }
@@ -191,11 +240,11 @@ namespace pmdbs
                 }
             }
             GlobalVarPool.outputLabelIsValid = false;
-            if (GlobalVarPool.finishedLoading)
+            if (GlobalVarPool.commandErrorCode == 0)
             {
-                GlobalVarPool.finishedLoading = false;
+                GlobalVarPool.commandErrorCode = -1;
             }
-            if (GlobalVarPool.connectionLost || GlobalVarPool.commandError)
+            else if (GlobalVarPool.connectionLost || GlobalVarPool.commandErrorCode == -2)
             {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {

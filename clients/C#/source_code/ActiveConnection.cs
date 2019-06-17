@@ -580,7 +580,7 @@ namespace pmdbs
                                                             {
                                                                 case "UEXT":
                                                                     {
-                                                                        GlobalVarPool.commandError = true;
+                                                                        GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("This username is already in use." + Environment.NewLine + message);
                                                                         break;
                                                                     }
@@ -588,21 +588,33 @@ namespace pmdbs
                                                                     {
                                                                         if (message.Equals("EMAIL_ALREADY_IN_USE"))
                                                                         {
-                                                                            GlobalVarPool.commandError = true;
+                                                                            GlobalVarPool.commandErrorCode = -2;
                                                                             CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
                                                                         }
                                                                         break;
                                                                     }
                                                                 case "UDNE":
                                                                     {
-                                                                        GlobalVarPool.commandError = true;
+                                                                        GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("This username does not exist." + Environment.NewLine + message);
                                                                         break;
                                                                     }
                                                                 case "CRED":
                                                                     {
-                                                                        GlobalVarPool.commandError = true;
+                                                                        GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("Invalid credentials." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
+                                                                case "I2FA":
+                                                                    {
+                                                                        GlobalVarPool.commandErrorCode = 1;
+                                                                        CustomException.ThrowNew.GenericException("Invalid 2FA code." + Environment.NewLine + message);
+                                                                        break;
+                                                                    }
+                                                                case "E2FA":
+                                                                    {
+                                                                        GlobalVarPool.commandErrorCode = -2;
+                                                                        CustomException.ThrowNew.GenericException("Expired 2FA code." + Environment.NewLine + message);
                                                                         break;
                                                                     }
                                                                 default:
@@ -716,6 +728,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_CHANGE_PASSWORD":
                                                                     {
+                                                                        GlobalVarPool.promptCommand = "VERIFY_PASSWORD_CHANGE";
+                                                                        HelperMethods.Prompt("Verify password change", "Looks like your trying to change your password.");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_DELETE_ACCOUNT":
@@ -728,14 +742,16 @@ namespace pmdbs
                                                                     }
                                                                 case "PASSWORD_CHANGED":
                                                                     {
+                                                                        GlobalVarPool.commandErrorCode = 0;
                                                                         break;
                                                                     }
                                                                 case "SELECT_FINISHED":
                                                                     {
                                                                         break;
                                                                     }
-                                                                case "":
+                                                                case "BANNED":
                                                                     {
+                                                                        CustomException.ThrowNew.NetworkException("YOU HAVE BEEN BANNED.");
                                                                         break;
                                                                     }
                                                                 default:

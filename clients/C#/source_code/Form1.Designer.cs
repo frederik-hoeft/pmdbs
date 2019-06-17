@@ -69,7 +69,6 @@
             this.SettingsFlowLayoutPanelOffline = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelOfflineContentHeader = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflineAccountHeader = new System.Windows.Forms.Label();
-            this.editField3 = new CustomMetroForms.EditField();
             this.SettingsPanelOfflineContent3 = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflinePasswordDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangePassword = new System.Windows.Forms.Label();
@@ -117,7 +116,6 @@
             this.SettingsFlowLayoutPanelOnline = new System.Windows.Forms.FlowLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.animatedButton3 = new CustomMetroForms.AnimatedButton();
-            this.label11 = new System.Windows.Forms.Label();
             this.editField7 = new CustomMetroForms.EditField();
             this.editField9 = new CustomMetroForms.EditField();
             this.editField10 = new CustomMetroForms.EditField();
@@ -310,6 +308,14 @@
             this.LoginEditFieldOnlinePassword = new CustomMetroForms.EditField();
             this.LoginEditFieldOnlineUsername = new CustomMetroForms.EditField();
             this.windowButtonClose = new CustomMetroForms.WindowButton();
+            this.SettingsPanelOnlineContent1 = new System.Windows.Forms.Panel();
+            this.SettingsLabelOnlinePasswordChangeDescription = new System.Windows.Forms.Label();
+            this.SettingsLabelOnlinePasswordChangeHeader = new System.Windows.Forms.Label();
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit = new CustomMetroForms.AnimatedButton();
+            this.SettingsEditFieldOnlinePasswordChangeNew = new CustomMetroForms.EditField();
+            this.SettingsEditFieldOnlinePasswordChangeConfirm = new CustomMetroForms.EditField();
+            this.SettingsPanelOnlineContentHeader = new System.Windows.Forms.Panel();
+            this.SettingsLabelOnlineAccountHeader = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -419,6 +425,8 @@
             this.LoginPictureBoxOnlineMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
             this.LoginPanelOnlineCredentials.SuspendLayout();
+            this.SettingsPanelOnlineContent1.SuspendLayout();
+            this.SettingsPanelOnlineContentHeader.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -739,12 +747,12 @@
             // 
             // SettingsPanelContentMain
             // 
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOnline);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SettingsPanelContentMain.Location = new System.Drawing.Point(150, 0);
             this.SettingsPanelContentMain.Margin = new System.Windows.Forms.Padding(0);
@@ -971,7 +979,6 @@
             // 
             this.SettingsPanelOfflineContentHeader.BackColor = System.Drawing.Color.White;
             this.SettingsPanelOfflineContentHeader.Controls.Add(this.SettingsLabelOfflineAccountHeader);
-            this.SettingsPanelOfflineContentHeader.Controls.Add(this.editField3);
             this.SettingsPanelOfflineContentHeader.Location = new System.Drawing.Point(0, 0);
             this.SettingsPanelOfflineContentHeader.Margin = new System.Windows.Forms.Padding(0);
             this.SettingsPanelOfflineContentHeader.Name = "SettingsPanelOfflineContentHeader";
@@ -988,31 +995,6 @@
             this.SettingsLabelOfflineAccountHeader.Size = new System.Drawing.Size(410, 38);
             this.SettingsLabelOfflineAccountHeader.TabIndex = 0;
             this.SettingsLabelOfflineAccountHeader.Text = "Account Settings (Offline)";
-            // 
-            // editField3
-            // 
-            this.editField3.AutoSize = true;
-            this.editField3.BackColor = System.Drawing.Color.White;
-            this.editField3.BackGroundColor = System.Drawing.Color.White;
-            this.editField3.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField3.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField3.DefaultValue = "Enter some text...";
-            this.editField3.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField3.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
-            this.editField3.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField3.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField3.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearHover")));
-            this.editField3.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("editField3.ImageClearNormal")));
-            this.editField3.Location = new System.Drawing.Point(6, 755);
-            this.editField3.Name = "editField3";
-            this.editField3.Size = new System.Drawing.Size(660, 84);
-            this.editField3.TabIndex = 7;
-            this.editField3.TextTextBox = "";
-            this.editField3.TextTitle = "Url";
-            this.editField3.UseColoredCaret = true;
-            this.editField3.UseDefaultValue = false;
-            this.editField3.UseSystemPasswordChar = false;
             // 
             // SettingsPanelOfflineContent3
             // 
@@ -1684,6 +1666,8 @@
             // SettingsFlowLayoutPanelOnline
             // 
             this.SettingsFlowLayoutPanelOnline.AutoScroll = true;
+            this.SettingsFlowLayoutPanelOnline.Controls.Add(this.SettingsPanelOnlineContentHeader);
+            this.SettingsFlowLayoutPanelOnline.Controls.Add(this.SettingsPanelOnlineContent1);
             this.SettingsFlowLayoutPanelOnline.Controls.Add(this.panel3);
             this.SettingsFlowLayoutPanelOnline.Controls.Add(this.panel6);
             this.SettingsFlowLayoutPanelOnline.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1697,14 +1681,13 @@
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
             this.panel3.Controls.Add(this.animatedButton3);
-            this.panel3.Controls.Add(this.label11);
             this.panel3.Controls.Add(this.editField7);
             this.panel3.Controls.Add(this.editField9);
             this.panel3.Controls.Add(this.editField10);
-            this.panel3.Location = new System.Drawing.Point(0, 0);
+            this.panel3.Location = new System.Drawing.Point(0, 564);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(670, 866);
+            this.panel3.Size = new System.Drawing.Size(670, 508);
             this.panel3.TabIndex = 10;
             // 
             // animatedButton3
@@ -1722,17 +1705,6 @@
             this.animatedButton3.TabIndex = 5;
             this.animatedButton3.Text = "Update";
             this.animatedButton3.UseVisualStyleBackColor = true;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.White;
-            this.label11.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(3, 67);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(411, 38);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "Account Settings (Online)";
             // 
             // editField7
             // 
@@ -1814,7 +1786,7 @@
             this.panel6.Controls.Add(this.editField8);
             this.panel6.Controls.Add(this.editField6);
             this.panel6.Controls.Add(this.label8);
-            this.panel6.Location = new System.Drawing.Point(0, 866);
+            this.panel6.Location = new System.Drawing.Point(0, 1072);
             this.panel6.Margin = new System.Windows.Forms.Padding(0);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(670, 300);
@@ -4379,6 +4351,129 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
+            // SettingsPanelOnlineContent1
+            // 
+            this.SettingsPanelOnlineContent1.Controls.Add(this.SettingsLabelOnlinePasswordChangeDescription);
+            this.SettingsPanelOnlineContent1.Controls.Add(this.SettingsLabelOnlinePasswordChangeHeader);
+            this.SettingsPanelOnlineContent1.Controls.Add(this.SettingsAnimatedButtonOnlinePasswordChangeSubmit);
+            this.SettingsPanelOnlineContent1.Controls.Add(this.SettingsEditFieldOnlinePasswordChangeNew);
+            this.SettingsPanelOnlineContent1.Controls.Add(this.SettingsEditFieldOnlinePasswordChangeConfirm);
+            this.SettingsPanelOnlineContent1.Location = new System.Drawing.Point(0, 155);
+            this.SettingsPanelOnlineContent1.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelOnlineContent1.Name = "SettingsPanelOnlineContent1";
+            this.SettingsPanelOnlineContent1.Size = new System.Drawing.Size(670, 409);
+            this.SettingsPanelOnlineContent1.TabIndex = 14;
+            // 
+            // SettingsLabelOnlinePasswordChangeDescription
+            // 
+            this.SettingsLabelOnlinePasswordChangeDescription.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.SettingsLabelOnlinePasswordChangeDescription.ForeColor = System.Drawing.Color.Black;
+            this.SettingsLabelOnlinePasswordChangeDescription.Location = new System.Drawing.Point(3, 67);
+            this.SettingsLabelOnlinePasswordChangeDescription.Name = "SettingsLabelOnlinePasswordChangeDescription";
+            this.SettingsLabelOnlinePasswordChangeDescription.Size = new System.Drawing.Size(641, 60);
+            this.SettingsLabelOnlinePasswordChangeDescription.TabIndex = 11;
+            this.SettingsLabelOnlinePasswordChangeDescription.Text = "The Master Password is needed everytime you log into pmdbs. \r\nChoose a strong pas" +
+    "sword as this protects all your data!";
+            // 
+            // SettingsLabelOnlinePasswordChangeHeader
+            // 
+            this.SettingsLabelOnlinePasswordChangeHeader.AutoSize = true;
+            this.SettingsLabelOnlinePasswordChangeHeader.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelOnlinePasswordChangeHeader.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.SettingsLabelOnlinePasswordChangeHeader.Location = new System.Drawing.Point(3, 20);
+            this.SettingsLabelOnlinePasswordChangeHeader.Name = "SettingsLabelOnlinePasswordChangeHeader";
+            this.SettingsLabelOnlinePasswordChangeHeader.Size = new System.Drawing.Size(281, 28);
+            this.SettingsLabelOnlinePasswordChangeHeader.TabIndex = 10;
+            this.SettingsLabelOnlinePasswordChangeHeader.Text = "Change Your Password";
+            // 
+            // SettingsAnimatedButtonOnlinePasswordChangeSubmit
+            // 
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Depth = 0;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Icon = null;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Location = new System.Drawing.Point(207, 312);
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Name = "SettingsAnimatedButtonOnlinePasswordChangeSubmit";
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Primary = false;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Size = new System.Drawing.Size(255, 87);
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.TabIndex = 10;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click);
+            // 
+            // SettingsEditFieldOnlinePasswordChangeNew
+            // 
+            this.SettingsEditFieldOnlinePasswordChangeNew.AutoSize = true;
+            this.SettingsEditFieldOnlinePasswordChangeNew.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeNew.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOnlinePasswordChangeNew.DefaultValue = "";
+            this.SettingsEditFieldOnlinePasswordChangeNew.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOnlinePasswordChangeNew.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeNew.ImageClearHover")));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeNew.ImageClearNormal")));
+            this.SettingsEditFieldOnlinePasswordChangeNew.Location = new System.Drawing.Point(4, 132);
+            this.SettingsEditFieldOnlinePasswordChangeNew.Name = "SettingsEditFieldOnlinePasswordChangeNew";
+            this.SettingsEditFieldOnlinePasswordChangeNew.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldOnlinePasswordChangeNew.TabIndex = 4;
+            this.SettingsEditFieldOnlinePasswordChangeNew.TextTextBox = "";
+            this.SettingsEditFieldOnlinePasswordChangeNew.TextTitle = "New Password*";
+            this.SettingsEditFieldOnlinePasswordChangeNew.UseColoredCaret = true;
+            this.SettingsEditFieldOnlinePasswordChangeNew.UseDefaultValue = false;
+            this.SettingsEditFieldOnlinePasswordChangeNew.UseSystemPasswordChar = true;
+            // 
+            // SettingsEditFieldOnlinePasswordChangeConfirm
+            // 
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.AutoSize = true;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.DefaultValue = "";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearHover")));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearNormal")));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.Location = new System.Drawing.Point(4, 218);
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.Name = "SettingsEditFieldOnlinePasswordChangeConfirm";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.Size = new System.Drawing.Size(660, 84);
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.TabIndex = 8;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox = "";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTitle = "Confirm New Password*";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseColoredCaret = true;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseDefaultValue = false;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseSystemPasswordChar = true;
+            // 
+            // SettingsPanelOnlineContentHeader
+            // 
+            this.SettingsPanelOnlineContentHeader.BackColor = System.Drawing.Color.White;
+            this.SettingsPanelOnlineContentHeader.Controls.Add(this.SettingsLabelOnlineAccountHeader);
+            this.SettingsPanelOnlineContentHeader.Location = new System.Drawing.Point(0, 0);
+            this.SettingsPanelOnlineContentHeader.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelOnlineContentHeader.Name = "SettingsPanelOnlineContentHeader";
+            this.SettingsPanelOnlineContentHeader.Size = new System.Drawing.Size(670, 155);
+            this.SettingsPanelOnlineContentHeader.TabIndex = 15;
+            // 
+            // SettingsLabelOnlineAccountHeader
+            // 
+            this.SettingsLabelOnlineAccountHeader.AutoSize = true;
+            this.SettingsLabelOnlineAccountHeader.BackColor = System.Drawing.Color.White;
+            this.SettingsLabelOnlineAccountHeader.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsLabelOnlineAccountHeader.Location = new System.Drawing.Point(3, 67);
+            this.SettingsLabelOnlineAccountHeader.Name = "SettingsLabelOnlineAccountHeader";
+            this.SettingsLabelOnlineAccountHeader.Size = new System.Drawing.Size(411, 38);
+            this.SettingsLabelOnlineAccountHeader.TabIndex = 0;
+            this.SettingsLabelOnlineAccountHeader.Text = "Account Settings (Online)";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -4541,6 +4636,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
             this.LoginPanelOnlineCredentials.ResumeLayout(false);
             this.LoginPanelOnlineCredentials.PerformLayout();
+            this.SettingsPanelOnlineContent1.ResumeLayout(false);
+            this.SettingsPanelOnlineContent1.PerformLayout();
+            this.SettingsPanelOnlineContentHeader.ResumeLayout(false);
+            this.SettingsPanelOnlineContentHeader.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4694,7 +4793,6 @@
         private System.Windows.Forms.Panel SettingsPanelContentMain;
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelOnline;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label11;
         private CustomMetroForms.EditField editField7;
         private CustomMetroForms.EditField editField9;
         private CustomMetroForms.EditField editField10;
@@ -4703,7 +4801,6 @@
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelOffline;
         private System.Windows.Forms.Panel SettingsPanelOfflineContentHeader;
         private System.Windows.Forms.Label SettingsLabelOfflineAccountHeader;
-        private CustomMetroForms.EditField editField3;
         private CustomMetroForms.EditField SettingsEditFieldOfflineNewPassword;
         private System.Windows.Forms.Panel SettingsPanelOfflineContent3;
         private CustomMetroForms.AnimatedButton animatedButton3;
@@ -4828,6 +4925,14 @@
         private CustomMetroForms.BulletPointLabel DataNoSelBulletPointLabel1;
         private System.Windows.Forms.PictureBox DataNoSelPictureBox;
         private CustomMetroForms.EditField SettingsEditFieldLoginPassword;
+        private System.Windows.Forms.Panel SettingsPanelOnlineContentHeader;
+        private System.Windows.Forms.Label SettingsLabelOnlineAccountHeader;
+        private System.Windows.Forms.Panel SettingsPanelOnlineContent1;
+        private System.Windows.Forms.Label SettingsLabelOnlinePasswordChangeDescription;
+        private System.Windows.Forms.Label SettingsLabelOnlinePasswordChangeHeader;
+        private CustomMetroForms.AnimatedButton SettingsAnimatedButtonOnlinePasswordChangeSubmit;
+        private CustomMetroForms.EditField SettingsEditFieldOnlinePasswordChangeNew;
+        private CustomMetroForms.EditField SettingsEditFieldOnlinePasswordChangeConfirm;
     }
 }
 
