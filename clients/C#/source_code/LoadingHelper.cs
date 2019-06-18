@@ -160,7 +160,7 @@ namespace pmdbs
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
-                            while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
+                            while (GlobalVarPool.connected && new int[] { -1, 0 }.Contains(GlobalVarPool.commandErrorCode))
                             {
                                 Thread.Sleep(1000);
                             }
@@ -188,7 +188,7 @@ namespace pmdbs
             {
                 GlobalVarPool.commandErrorCode = -1;
             }
-            else if (GlobalVarPool.connectionLost || GlobalVarPool.commandErrorCode == -2)
+            if (GlobalVarPool.connectionLost || GlobalVarPool.commandErrorCode == -2)
             {
                 GlobalVarPool.previousPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {

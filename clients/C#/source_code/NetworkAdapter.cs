@@ -329,7 +329,7 @@ namespace pmdbs
             {
                 HelperMethods.InvokeOutputLabel("Changing password ...");
                 string passwordHash = CryptoHelper.SHA256Hash(password);
-                string onlinePassword = passwordHash.Substring(0, 32);
+                string onlinePassword = CryptoHelper.SHA256Hash(passwordHash.Substring(0, 32));
                 Network.SendEncrypted("MNGCPCpassword%eq!" + onlinePassword + "!;code%eq!PM-" + code + "!;");
             }
             /// <summary>
