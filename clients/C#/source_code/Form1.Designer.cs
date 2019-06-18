@@ -4464,9 +4464,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.windowButtonMinimize);
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
+            this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
