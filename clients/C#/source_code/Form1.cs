@@ -87,6 +87,11 @@ namespace pmdbs
             Application.Exit();
         }
 
+        private void windowButtonMinimize_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+
         private void WindowHeaderPanel_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -221,6 +226,7 @@ namespace pmdbs
             FilterEditFieldSearch.TextBoxTextChanged += FilterEditFieldSearch_TextChanged;
             LoginEditFieldOfflinePassword.EnterKeyPressed += LoginEditFieldOfflinePassword_EnterKeyPressed;
             SyncAnimationTimer.Tick += SyncAnimationTimer_Tick;
+            windowButtonMinimize.OnClickEvent += windowButtonMinimize_Click;
             #endregion
             #endregion
         }
@@ -1018,6 +1024,7 @@ namespace pmdbs
         #region LoginPanel
 
         private bool LoginButtonDisabled = false;
+
         private void InitializeTransparency()
         {
             Bitmap bmp = new Bitmap(LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
@@ -1031,6 +1038,7 @@ namespace pmdbs
             this.LoginPictureBoxOfflineMain.Image = bmp;
             this.LoginPictureBoxLoadingMain.Image = bmp;
         }
+
         private void LoginLabelOnlineRegister_Click(object sender, EventArgs e)
         {
             LoginPictureBoxOnlineMain.SuspendLayout();
@@ -1302,6 +1310,7 @@ namespace pmdbs
             }
             AutomatedTaskFramework.Tasks.Execute();
             SettingsPanelPromptMain.SendToBack();
+            SettingsEditFieldPromptCode.TextTextBox = string.Empty;
             if (GlobalVarPool.promptFromBackgroundThread)
             {
                 SettingsTableLayoutPanelMain.SendToBack();
@@ -1528,7 +1537,6 @@ namespace pmdbs
         }
 
         #endregion
-
         #region SettingsOnline
         private void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
         {
@@ -1547,6 +1555,8 @@ namespace pmdbs
             }
             GlobalVarPool.loadingType = LoadingHelper.LoadingType.PASSWORD_CHANGE;
             GlobalVarPool.plainMasterPassword = password;
+            SettingsEditFieldOnlinePasswordChangeNew.TextTextBox = string.Empty;
+            SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox = string.Empty;
             GlobalVarPool.previousPanel = SettingsFlowLayoutPanelOnline;
             Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
             Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
@@ -1567,9 +1577,7 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Execute();
         }
         #endregion
-
         #endregion
-
         #region FilterPanel
         private string previousTextBoxContent = string.Empty;
         private int previousIndex = 2;
