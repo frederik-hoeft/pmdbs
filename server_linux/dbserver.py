@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-7b.19"
+VERSION = "0.6-9b.19"
 BUILD = "development"
-DATE = "Jun 06 2019"
-TIME = "15:16"
+DATE = "Jun 24 2019"
+TIME = "17:03"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -636,7 +636,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not userID:
+		if userID is False:
 			return
 		# CREDENTIAL CHECK PASSED
 		# FORMAT PARAMETERS
@@ -714,7 +714,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if userID is None:
+		if userID is False:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -765,7 +765,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if userID is None:
+		if userID is False:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -825,7 +825,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if userID is None:
+		if userID is False:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -864,7 +864,7 @@ class DatabaseManagement():
 		# SECURITY CHECK PASSED
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not userID:
+		if userID is False:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# CREDENTIAL CHECK PASSED
@@ -1256,7 +1256,7 @@ class Handle():
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
-		Log.ServerEventLog("ERROR", info)
+		Log.ServerEventLog("ERROR", info.replace("\"", "").replace("'",""))
 		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
 		if clientSocket is None:
 			return
@@ -1269,6 +1269,68 @@ class Handle():
 		
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
+	
+	def GetAccountData(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# datetime%eq!150238534!;
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		# INITIALIZE VARIABLES TO STORE EXTRACTED DATA IN
+		datetime = None
+		# EXTRACT REQUIRED DATA FROM PARAMETER-ARRAY
+		try:
+			for parameter in parameters:
+				if parameter:
+					if "datetime" in parameter:
+						datetime = parameter.split("!")[1]
+					elif not parameter:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+		except Exception as e:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if not datetime:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		# GET USER ID AND CHECK IF USER IS LOGGED IN
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if userID is False:
+			# USER IS NOT LOGGED IN
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		name = None
+		email = None
+		datetimeServer = None
+		data = DatabaseHelper.UserData.Select("SELECT U_name, U_email, U_datetime FROM Tbl_user WHERE U_id = " + userID + ";", clientSocket, aesKey)
+		try:
+			name = data[0][0]
+			email = data[0][1]
+			datetimeServer = data[0][2]
+		except IndexError as e:
+			# IN CASE OF ERROR FREE RESOURCES AND THROW SQL EXCEPTION
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
+		if name is None or email is None or datetimeServer is None:
+			# SOMETHING WENT WRONG
+			Handle.Error("SQLE", "name is None or email is None or datetimeServer is None", clientAddress, clientSocket, aesKey, True)
+			return
+		returnData = None
+		if int(datetime) < int(datetimeServer):
+			returnData = "INFRETstatus%eq!OUTDATED!;datetime%eq!" + datetimeServer + "!;email%eq!" + email + "!;name%eq!" + name + "!;"
+		else:
+			returnData = "INFRETstatus%eq!UPTODATE!;"
+		PrintSendToAdmin("SERVER ---> ACCOUNT DATA               ---> " + clientAddress)
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+		
 	
 	# CHECK IF COOKIE EXISTS
 	def CheckCookie(command, clientAddress, clientSocket, aesKey):
@@ -1440,14 +1502,14 @@ class Management():
 		if not newName:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		# GET USER ID AND CHACK IF USER IS LOGGED IN
+		# GET USER ID AND CHECK IF USER IS LOGGED IN
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not userID:
+		if userID is False:
 			# USER IS NOT LOGGED IN
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# USER IS LOGGED IN
-		if DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_name = \"" + newName + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey):
+		if DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_name = \"" + newName + "\", U_datetime = \"" + Timestamp() + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey):
 			# RETURN SUCCESS STATUS TO CLIENT
 			returnData = "INFRETstatus%eq!NAME_CHANGED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
@@ -1628,7 +1690,7 @@ class Management():
 	def GetAccountActivity(clientAddress, clientSocket, aesKey):
 		# GET USER ID
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not userID:
+		if userID is False:
 			# USER IS NOT LOGGED IN
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -1704,11 +1766,11 @@ class Management():
 			# LOG ERROR
 			Handle.Error("ACCA", None, clientAddress, clientSocket, aesKey, True)
 			return
-		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_email = \"" + newEmail + "\" WHERE U_username = \"" + username + "\";", clientSocket, aesKey):
+		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_email = \"" + newEmail + "\", U_datetime = \"" + Timestamp() + "\" WHERE U_username = \"" + username + "\";", clientSocket, aesKey):
 			return
 		PrintSendToAdmin("SERVER ---> EMAIL ADDRESS UPDATED      ---> " + clientAddress)
 		# RETURN STATUS TO CLIENT
-		returnData = "INFRETEMAIL_UPDATED"
+		returnData = "INFRETmsg%eq!EMAIL_UPDATED!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			
@@ -1962,12 +2024,13 @@ class Management():
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 	
 	# BAN A USER (ADMIN PRIVILEGES NEEDED)
-	def BanAccount(command, clientAddress, clientSocket, aesKey):
+	def BanAccount(command, clientAddress, clientSocket, aesKey, isSystem):
 		# EXAMPLE COMMAND
-		# CHECK IF REQUEST ORIGINATES FROM ADMIN
-		if not clientSocket == Server.admin:
-			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
-			return
+		if not isSystem:
+			# CHECK IF REQUEST ORIGINATES FROM ADMIN
+			if not clientSocket == Server.admin:
+				Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+				return
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
@@ -2118,13 +2181,13 @@ class Management():
 			return
 		# GET TIMESTAMP
 		time = Timestamp()
-		if DatabaseHelper.UserData.Modify("INSERT INTO Tbl_blacklist (B_ip, B_time, B_duration) VALUES (\"" + ip + "\", \"" + time + "\", \"" + duration + "\")", clientSocket, aesKey) is False:
+		if DatabaseHelper.ServerData.Modify("INSERT INTO Tbl_blacklist (B_ip, B_time, B_duration) VALUES (\"" + ip + "\", \"" + time + "\", \"" + duration + "\")", clientAddress) is False:
 			return
 		Log.ServerEventLog("BAN_BY_IP", ip + " has been banned for " + duration + " seconds!")
 		Management.Kick("mode%eq!ip!;target%eq!" + ip + ";!", clientAddress, clientSocket, aesKey)
 		PrintSendToAdmin("SERVER ---> BANNED BY IP               ---> " + clientAddress)
 		# TELL CLIENT THAT HE'S BANNED
-		Network.SendEncryptedThreadSafe(clientSocket, aesKey, "INFRETBANNED")
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, "INFRETmsg%eq!BANNED!;")
 		if not isSystem:
 			PrintSendToAdmin("SERVER ---> ACKNOWLEDGE                ---> " + clientAddress)
 	
@@ -2134,7 +2197,7 @@ class Management():
 		# code%eq!code!;
 		# GET USER ID
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not userID:
+		if userID is False:
 			# USER IS NOT LOGGED IN
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -2481,7 +2544,7 @@ class Management():
 		# CHECK CREDENTIALS
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
 		# CHECK IF USER IS LOGGED IN
-		if not userID:
+		if userID is False:
 			# CHECK FAILED
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -2539,6 +2602,11 @@ class Management():
 		if codeAttempts == -1:
 			Handle.Error("NCES", "NO_PASSWORD_CHANGE_SCHEDULED", clientAddress, clientSocket, aesKey, True)
 			return
+		user = GetUser(clientSocket)
+		if user is False:
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		username = user.username
 		# CHECK IF VALIDATION CODE MATCHES PROVIDED CODE
 		if code != providedCode:
 			# CHECK IF NUMBER OF WRONG CODES HAS BEEN EXCEEDED
@@ -2546,7 +2614,7 @@ class Management():
 				# USER TRIES TO BRUTEFORCE VALIDATION CODE
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
 				# BAN DEVICE FOR 1H
-				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
+				Management.BanAccount("username%eq!" + username + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
 			else:
 				# INCREMENT COUNTER FOR WRONG ATTEMPTS
@@ -2580,7 +2648,7 @@ class Management():
 		# mode%eq!PASSWORD_CHANGE!; OR mode%eq!DELETE_ACCOUNT!;
 		# GET USER ID
 		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
-		if not userID:
+		if userID is False:
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# INITIALIZE VARIABLES TO STORE DATABASE QUERY RESULTS
@@ -3062,7 +3130,7 @@ class Management():
 			Handle.Error("MAIL","EMAIL_ALREADY_IN_USE", clientAddress, clientSocket, aesKey, True)
 			PrintSendToAdmin("SERVER ---> EMAIL ADDRESS IN USE       ---> " + clientAddress)
 			return
-		if not DatabaseHelper.UserData.ModifySilent("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned,U_codeResend) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0,0);", clientAddress):
+		if not DatabaseHelper.UserData.ModifySilent("INSERT INTO Tbl_user (U_username,U_password,U_email,U_name,U_isVerified,U_code,U_codeTime,U_codeType,U_codeAttempts,U_lastPasswordChange,U_isBanned,U_codeResend,U_datetime) VALUES (\"" + username + "\",\"" + hashedPassword + "\",\"" + email + "\",\"" + nickname + "\",0,\"" + codeFinal + "\",\"" + codeTime + "\",\"ACTIVATE_ACCOUNT\",0,\"" + Timestamp() + "\",0,0,\"" + Timestamp() + "\");", clientAddress):
 			# SEND ERROR MESSAGE
 			Handle.Error("UEXT", None, clientAddress, clientSocket, aesKey, True)
 			return
@@ -3637,11 +3705,12 @@ class Management():
 	def CheckCredentials(clientAddress, clientSocket, aesKey):
 		user = GetUser(clientSocket)
 		# USER IS NOT LOGGED IN
-		if not user:
+		if user is False:
 			# RETURN ERROR MESSAGE TO CLIENT
 			returnData = "INFERRNOT_LOGGED_IN"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+			return False
 		# RETURN ID OR NONE IF USER NOT WHITELISTED
 		return user.ID
 
@@ -3760,7 +3829,7 @@ class Server(Thread):
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
 		try:
-			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION is None or WRONG_CODE_AUTOBAN_DURATION_ADMIN is None or RESEND_CODE_MAX_COUNT is None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS is None or not PYTHON_VERSIONS:
+			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION is None or WRONG_CODE_AUTOBAN_DURATION_ADMIN is None or RESEND_CODE_MAX_COUNT is None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS is None or not PYTHON_VERSIONS or TABLE_DELETE_LENGTH is None or TABLE_BLACKLIST_LENGTH is None or TABLE_CLIENTLOG_LENGTH is None or TABLE_CONNECTUSERCOOKIES_LENGTH is None or TABLE_COOKIES_LENGTH is None or TABLE_DATA_LENGTH is None or TABLE_SERVERLOG_LENGTH is None or TABLE_USER_LENGTH is None:
 				if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 				else:
@@ -3895,16 +3964,18 @@ class Server(Thread):
 		connectUserCookiesLen = None
 		cookiesLen = None
 		dataLen = None
+		deleteLen = None
 		try:
 			clientLogLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_clientLog);", "BOOT_CHECK"))
 			connectUserCookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_connectUserCookies);", "BOOT_CHECK"))
 			cookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_cookies);", "BOOT_CHECK"))
 			dataLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_data);", "BOOT_CHECK"))
 			userLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_user);", "BOOT_CHECK"))
+			deleteLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_delete);", "BOOT_CHECK"))
 		except Exception as e:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID: " + str(e) + ENDF)
 			return
-		if not userLen == TABLE_USER_LENGTH or not blacklistLen == TABLE_BLACKLIST_LENGTH or not clientLogLen == TABLE_CLIENTLOG_LENGTH or not connectUserCookiesLen == TABLE_CONNECTUSERCOOKIES_LENGTH or not cookiesLen == TABLE_COOKIES_LENGTH or not dataLen == TABLE_DATA_LENGTH or not serverLogLen == TABLE_SERVERLOG_LENGTH:
+		if userLen != TABLE_USER_LENGTH or blacklistLen != TABLE_BLACKLIST_LENGTH or clientLogLen != TABLE_CLIENTLOG_LENGTH or connectUserCookiesLen != TABLE_CONNECTUSERCOOKIES_LENGTH or cookiesLen != TABLE_COOKIES_LENGTH or dataLen != TABLE_DATA_LENGTH or serverLogLen != TABLE_SERVERLOG_LENGTH or deleteLen != TABLE_DELETE_LENGTH:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID." + ENDF)
 			return
 		adminSet = 0
@@ -4608,6 +4679,11 @@ class ClientHandler():
 								elif packetSID == "CCR":
 									PrintSendToAdmin("SERVER <--- CREDENTIAL CHECK REQUEST   <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.CredentialCheckProvider, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# GET ACCOUNT DETAILS
+								elif packetSID == "GAD":
+									PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT DATA       <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.GetAccountData, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)

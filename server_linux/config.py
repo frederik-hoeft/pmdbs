@@ -1,26 +1,19 @@
 # CONFIG
-# VERSION INFO: 0.1-1.19
-
-# CHANGE SERVER SETTINGS HERE
-# ALL OF THESE VALUES *MUST* BE SET --> LIMITED ERROR HANDLING
-# IN ORDER FOR CHANGES TO TAKE EFFECT, THE SERVER MUST BE RESTARTED 
-
-
-REBOOT_TIME = 1											# TIME IN SECONDS TO WAIT INBETWEEN SHUTDOWN OR REBOOT STEPS (DEPENDING ON SERVER LAG AND USER COUNT YOU MIGHT WANT TO INCREMENT THIS VALUE)
-LOCAL_ADDRESS = ""									# LOCAL IPv4 ADDRESS OF HOSTING MACHINE (I.E. 192.168.X.X or 10.X.X.X)
-LOCAL_PORT = 0											# LOCAL PORT FOR THE HOSTING MACHINE TO LISTEN ON
-USE_PERSISTENT_RSA_KEYS = False			# SHOULD RSA KEYS BE SAVED OR GENERATED ON EACH SERVER RESTART?
-
-# SQL SETTINGS                      # LEAVE AS IS
-TABLE_USER_LENGTH = 15
+# SERVER SETTINGS
+REBOOT_TIME = 1
+LOCAL_ADDRESS = "X.X.X.X"
+LOCAL_PORT = 4447
+USE_PERSISTENT_RSA_KEYS = True
+# SQL SETTINGS
+TABLE_USER_LENGTH = 16
 TABLE_CLIENTLOG_LENGTH = 6
 TABLE_BLACKLIST_LENGTH = 4
 TABLE_CONNECTUSERCOOKIES_LENGTH = 2
 TABLE_COOKIES_LENGTH = 2
-TABLE_DATA_LENGTH = 10
+TABLE_DATA_LENGTH = 11
 TABLE_SERVERLOG_LENGTH = 4
-
-# 2FA SETTINGS                      # TIME IN SECONDS UNTIL 2FA CODES EXPIRE
+TABLE_DELETE_LENGTH = 3
+# 2FA SETTINGS
 ACCOUNT_ACTIVATION_MAX_TIME = 3600
 DELETE_ACCOUNT_CONFIRMATION_MAX_TIME = 1800
 MAX_CODE_ATTEMPTS = 3
@@ -32,18 +25,13 @@ PASSWORD_CHANGE_CONFIRMATION_MAX_TIME = 1800
 PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME = 1800
 WRONG_CODE_AUTOBAN_DURATION = 3600
 WRONG_CODE_AUTOBAN_DURATION_ADMIN = 86400
-
 # EMAIL SETTINGS
-SUPPORT_EMAIL_HOST = ""             # DOMAIN NAME OF SMTP SERVICE (I.E. smtp.gmail.com)
-SUPPORT_EMAIL_SSL_PORT = 0          # SSL ENABLED PORT OF SMTP SERVICE
-SUPPORT_EMAIL_ADDRESS = ""          # YOUR EMAIL ADDRESS
-SUPPORT_EMAIL_PASSWORD = ""         # YOUR EMAIL PASSWORD
+SUPPORT_EMAIL_HOST = "smtp.gmail.com"
+SUPPORT_EMAIL_SSL_PORT = 465
+SUPPORT_EMAIL_ADDRESS = ""
+SUPPORT_EMAIL_PASSWORD = ""
 SUPPORT_EMAIL_LOGO = "icon.png"
 SUPPORT_EMAIL_SENDER = "PMDBS Support"
-
-##################################################################################
-#								EMAIL PRESETS
-##################################################################################
 # DELETE ACCOUNT
 SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT = "[PMDBS] Delete your account?"
 SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT = "Dear %s,\n\nYou have requested to delete your account and all data associated to it.\nThe request originated from the following device:\n\n%s\n\nALL DATA WILL BE PERMANENTLY DELETED AND CANNOT BE RECOVERED!\nTo confirm your request, please enter the code below when prompted:\n\n%s\n\nTime left until the code expires: %s.\n\nBest regards,\nPMDBS Support Team"
@@ -69,6 +57,6 @@ SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT = "[PMDBS] Admin password change"
 SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT = "Hey Admin!\n\nYou have requested to change the admin password.\nThe request originated from the following device:\n\n%s\n\nTo change your password, please enter the code below when prompted:\n\n%s\n\nTime left until the code expires: %s.\nIf you did not request this email then there's someone out there playing around with admin privileges.\n*You should probably do something about that*\n\nBest regards,\nPMDBS Support Team"
 SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>%s<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>%s</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: %s.<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 # VERSION INFO
-PYTHON_VERSIONS = ["3.6.6", "3.6.7", "3.6.8rc1"]
-CONFIG_VERSION = "0.1-1.19"
+PYTHON_VERSIONS = ["3.6.6", "3.6.7", "3.6.8rc1", "3.7.2+", "3.7.3rc1", "3.7.3"]
+CONFIG_VERSION = "0.6-9b.19"
 CONFIG_BUILD = "development"
