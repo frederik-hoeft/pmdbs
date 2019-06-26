@@ -55,14 +55,6 @@ namespace pmdbs
             {
                 GlobalVarPool.loadingLabel.Visible = true;
             });
-            GlobalVarPool.settingsAbort.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.settingsAbort.Visible = false;
-            });
-            GlobalVarPool.settingsSave.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.settingsSave.Visible = false;
-            });
             GlobalVarPool.loadingPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingPanel.BringToFront();
@@ -125,6 +117,7 @@ namespace pmdbs
                             GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             await HelperMethods.ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
+                            AutomatedTaskFramework.Task.Create(SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails);
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
                             while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
@@ -215,14 +208,6 @@ namespace pmdbs
             GlobalVarPool.loadingLabel.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.loadingLabel.Visible = false;
-            });
-            GlobalVarPool.settingsAbort.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.settingsAbort.Visible = true;
-            });
-            GlobalVarPool.settingsSave.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.settingsSave.Visible = true;
             });
         }
     }

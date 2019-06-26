@@ -194,8 +194,6 @@ namespace pmdbs
             GlobalVarPool.loadingLogo = SettingsPictureBoxLoadingLogo;
             GlobalVarPool.loadingPanel = SettingsPanelLoadingMain;
             GlobalVarPool.settingsPanel = SettingsTableLayoutPanelMain;
-            GlobalVarPool.settingsAbort = SettingsAdvancedImageButtonFooterAbort;
-            GlobalVarPool.settingsSave = SettingsAdvancedImageButtonFooterSave;
             GlobalVarPool.promptAction = SettingsLabelPromptAction;
             GlobalVarPool.promptEMail = SettingsLabelPromptMailInfo;
             GlobalVarPool.promptMain = SettingsLabelPromptMain;
@@ -221,8 +219,6 @@ namespace pmdbs
             AddPanelAdvancedImageButtonSave.OnClickEvent += AddPanelAdvancedImageButtonSave_Click;
             AddPanelAdvancedImageButtonAbort.OnClickEvent += AddPanelAdvancedImageButtonAbort_Click;
             windowButtonClose.OnClickEvent += WindowButtonClose_Click;
-            SettingsAdvancedImageButtonFooterAbort.OnClickEvent += SettingsAdvancedImageButtonFooterAbort_Click;
-            SettingsAdvancedImageButtonFooterSave.OnClickEvent += SettingsAdvancedImageButtonFooterSave_Click;
             FilterEditFieldSearch.TextBoxTextChanged += FilterEditFieldSearch_TextChanged;
             LoginEditFieldOfflinePassword.EnterKeyPressed += LoginEditFieldOfflinePassword_EnterKeyPressed;
             SyncAnimationTimer.Tick += SyncAnimationTimer_Tick;
@@ -1245,17 +1241,6 @@ namespace pmdbs
         #endregion
 
         #region SettingsPanel
-        #region SettingsFooter
-        private void SettingsAdvancedImageButtonFooterSave_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void SettingsAdvancedImageButtonFooterAbort_Click(object sender, EventArgs e)
-        {
-
-        }
-        #endregion
         #region SettingsPrompt
         private void SettingsAnimatedButtonPromptSubmit_Click(object sender, EventArgs e)
         {
@@ -1316,6 +1301,16 @@ namespace pmdbs
                 SettingsTableLayoutPanelMain.SendToBack();
                 GlobalVarPool.promptFromBackgroundThread = false;
             }
+        }
+
+        private void SettingsLinkLabelPromptResendCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (!GlobalVarPool.connected)
+            {
+                CustomException.ThrowNew.NetworkException("Not connected.");
+                return;
+            }
+            NetworkAdapter.MethodProvider.ResendCode();
         }
         #endregion
         #region SettingsLogin
@@ -1714,5 +1709,7 @@ namespace pmdbs
             RefreshUserData(page);
         }
         #endregion
+
+        
     }
 }

@@ -88,6 +88,14 @@ namespace pmdbs
         }
 
         /// <summary>
+        /// Reloads the currently selected settings.
+        /// </summary>
+        public static void RefreshSettings()
+        {
+
+        }
+
+        /// <summary>
         /// Loads all Settings from the database into GlobalVarPool
         /// </summary>
         public static async Task LoadSettings()
