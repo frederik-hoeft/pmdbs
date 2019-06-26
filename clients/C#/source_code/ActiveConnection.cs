@@ -716,6 +716,7 @@ namespace pmdbs
                                                                     }
                                                                 case "CODE_RESENT":
                                                                     {
+                                                                        CustomException.ThrowNew.NotImplementedException("The code has been resent.");
                                                                         break;
                                                                     }
                                                                 case "CLIENT_NOT_FOUND":
@@ -752,6 +753,43 @@ namespace pmdbs
                                                                 case "BANNED":
                                                                     {
                                                                         CustomException.ThrowNew.NetworkException("YOU HAVE BEEN BANNED.");
+                                                                        break;
+                                                                    }
+                                                                case "AD_OUTDATED":
+                                                                    {
+                                                                        new Thread(async delegate ()
+                                                                        {
+                                                                            string[] details = decryptedData.Split(';');
+                                                                            string datetime = null, email = null, name = null;
+                                                                            for (int j = 0; j < details.Length; j++)
+                                                                            {
+                                                                                if (details[j].Contains("datetime"))
+                                                                                {
+                                                                                    datetime = details[j].Split('!')[1];
+                                                                                }
+                                                                                else if (details[j].Contains("email"))
+                                                                                {
+                                                                                    email = details[j].Split('!')[1];
+                                                                                }
+                                                                                else if (details[j].Contains("name"))
+                                                                                {
+                                                                                    name = details[j].Split('!')[1];
+                                                                                }
+                                                                            }
+                                                                            if (new string[] { datetime, email, name }.Contains(null))
+                                                                            {
+                                                                                CustomException.ThrowNew.FormatException("Missing parameters for AD_OUTDATED");
+                                                                                return;
+                                                                            }
+                                                                            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + name + "\", U_email = \"" + email + "\", U_datetime = \"" + datetime + "\";");
+                                                                            GlobalVarPool.email = email;
+                                                                            GlobalVarPool.name = name;
+                                                                            HelperMethods.RefreshSettings();
+                                                                        }).Start();
+                                                                        break;
+                                                                    }
+                                                                case "AD_UPTODATE":
+                                                                    {
                                                                         break;
                                                                     }
                                                                 default:
