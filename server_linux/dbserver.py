@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-9b.19"
+VERSION = "0.6-10b.19"
 BUILD = "development"
-DATE = "Jun 24 2019"
-TIME = "17:03"
+DATE = "Jun 26 2019"
+TIME = "14:55"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -111,7 +111,6 @@ try:
 	import datetime
 	from datetime import datetime as datetimealt
 	import time
-	import subprocess
 	import select
 	import re
 	import errno
@@ -1034,7 +1033,9 @@ class Log():
 			else:
 				PrintSendToAdmin(CWHITE + "└─╼ " + detail + ENDF)
 		# ADD DETAILS TO CLIENT PROFILE
-		GetClient(clientSocket).details = details
+		client = GetClient(clientSocket)
+		if not client is False:
+			client.details = details
 	
 	# CREATES LOG FOR CLIENT RELATED EVENTS 
 	def ClientEventLog(event, clientSocket):
@@ -1286,8 +1287,6 @@ class Management():
 				if parameter:
 					if "datetime" in parameter:
 						datetime = parameter.split("!")[1]
-					elif not parameter:
-						pass
 					else:
 						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
 						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
@@ -1325,9 +1324,9 @@ class Management():
 			return
 		returnData = None
 		if int(datetime) < int(datetimeServer):
-			returnData = "INFRETstatus%eq!OUTDATED!;datetime%eq!" + datetimeServer + "!;email%eq!" + email + "!;name%eq!" + name + "!;"
+			returnData = "INFRETmsg%eq!AD_OUTDATED!;datetime%eq!" + datetimeServer + "!;email%eq!" + email + "!;name%eq!" + name + "!;"
 		else:
-			returnData = "INFRETstatus%eq!UPTODATE!;"
+			returnData = "INFRETmsg%eq!AD_UPTODATE!;"
 		PrintSendToAdmin("SERVER ---> ACCOUNT DATA               ---> " + clientAddress)
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 		
@@ -1520,7 +1519,7 @@ class Management():
 	# ALLOWS TO RESEND ANY 2FA CODE IN CASE SOME ERROR OCCURED
 	def ResendCode(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
-		# username%eq!username!;name%eq!name!;email%eq!email!;
+		# username%eq!username!;email%eq!email!;
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
@@ -1528,7 +1527,6 @@ class Management():
 		# SECURITY CHECK PASSED
 		# INITIALIZE VARIABLES TO STORE EXTRACTED DATA IN
 		username = None
-		nickname = None
 		email = None
 		# EXTRACT REQUIRED DATA FROM PARAMETER-ARRAY
 		try:
@@ -1536,8 +1534,6 @@ class Management():
 				if parameter:
 					if "username" in parameter:
 						username = parameter.split("!")[1]
-					elif "name" in parameter:
-						nickname = parameter.split("!")[1]
 					elif "email" in parameter:
 						email = parameter.split("!")[1]
 					elif not parameter:
@@ -1551,7 +1547,7 @@ class Management():
 			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
-		if not username or not email or not nickname:
+		if username is None or email is None:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		# INITIALIZE VARIABLES
@@ -1561,8 +1557,9 @@ class Management():
 		codeResend = None
 		isVerified = None
 		userID = None
+		nickname = None
 		# POPULATE VARIABLES WITH VALUES FROM DATABASE
-		data = DatabaseHelper.UserData.Select("SELECT U_codeType, U_codeTime, U_codeAttempts, U_codeResend, U_isVerified, U_id FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_name = \"" + nickname + "\" AND U_email = \"" + email + "\";", clientSocket, aesKey)
+		data = DatabaseHelper.UserData.Select("SELECT U_codeType, U_codeTime, U_codeAttempts, U_codeResend, U_isVerified, U_id, U_name FROM Tbl_user WHERE U_username = \"" + username + "\" AND U_email = \"" + email + "\";", clientSocket, aesKey)
 		try:
 			codeType = data[0][0]
 			codeTime = data[0][1]
@@ -1570,12 +1567,13 @@ class Management():
 			codeResend = data[0][3]
 			isVerified = data[0][4]
 			userID = str(data[0][5])
+			nickname = data[0][6]
 		except IndexError as e:
 			# IN CASE OF ERROR FREE RESOURCES AND THROW SQL EXCEPTION
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VERIFY THAT ALL VARIABLES HAVE BEEN SET
-		if codeType is None or codeTime is None or codeAttempts is None or codeResend is None or isVerified is None or userID is None:
+		if codeType is None or codeTime is None or codeAttempts is None or codeResend is None or isVerified is None or userID is None or nickname is None:
 			# SOMETHING WENT WRONG
 			Handle.Error("SQLE", "codeType is None or codeTime is None or codeAttempts is None or codeResend is None or isVerified is None or userID is None", clientAddress, clientSocket, aesKey, True)
 			return
@@ -1593,6 +1591,7 @@ class Management():
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_connectUserCookies WHERE U_id = " + userID + ";", clientSocket, aesKey)
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_data WHERE D_userid = " + userID + ";", clientSocket, aesKey)
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_clientLog WHERE L_userid = " + userID + ";", clientSocket, aesKey)
+				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_delete WHERE DEL_userid = " + userID + ";", clientSocket, aesKey)
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_user WHERE U_id = " + userID + ";", clientSocket, aesKey)
 				return
 			else:
@@ -3714,7 +3713,7 @@ class Management():
 		# RETURN ID OR NONE IF USER NOT WHITELISTED
 		return user.ID
 
-# RETURNS A TIMESTAMP OF THE CURRENT DATETIME IN FORMAT YYYYMMDDHHMMSS		
+# RETURNS THE CURRENT DATETIME AS SECONDS SINCE 1970-01-01		
 def Timestamp():
 	return str(time.time()).split('.')[0]
 	
@@ -3742,7 +3741,7 @@ def PrintSendToAdmin(text):
 # GENERATES A 2 FACTOR AUTHENTICATION CODE
 def CodeGenerator():
 	code = str(secrets.randbelow(1000000))
-	while not len(code) >= 6:
+	while len(code) < 6:
 		code = "0" + code
 	return "PM-" + code
 
@@ -3830,7 +3829,7 @@ class Server(Thread):
 		print(CWHITE + "         Checking global variables ..." + ENDF)
 		try:
 			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION is None or WRONG_CODE_AUTOBAN_DURATION_ADMIN is None or RESEND_CODE_MAX_COUNT is None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS is None or not PYTHON_VERSIONS or TABLE_DELETE_LENGTH is None or TABLE_BLACKLIST_LENGTH is None or TABLE_CLIENTLOG_LENGTH is None or TABLE_CONNECTUSERCOOKIES_LENGTH is None or TABLE_COOKIES_LENGTH is None or TABLE_DATA_LENGTH is None or TABLE_SERVERLOG_LENGTH is None or TABLE_USER_LENGTH is None:
-				if CONFIG_VERSION and not CONFIG_VERSION == VERSION:
+				if CONFIG_VERSION and CONFIG_VERSION != VERSION:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 				else:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Undefined variables in config file." + ENDF)
@@ -3846,13 +3845,13 @@ class Server(Thread):
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Config is valid. " + ENDF)
 		print(CWHITE + "         Checking version info ..." + ENDF)
-		if not CONFIG_VERSION == VERSION:
+		if CONFIG_VERSION != VERSION:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 			return
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked version info. Current version: " + VERSION + ". " + ENDF)
 		print(CWHITE + "         Checking build info ..." + ENDF)
-		if not CONFIG_BUILD == BUILD:
+		if CONFIG_BUILD != BUILD:
 			print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Server is on " + BUILD + "-build but config file is for " + CONFIG_BUILD + "-build." + ENDF)
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked build info. Current build: " + BUILD + "-build. " + ENDF)
@@ -3998,7 +3997,7 @@ class Server(Thread):
 					hashedUsername = CryptoHelper.SHA256("__ADMIN__")
 					salt = CryptoHelper.SHA256(hashedUsername + adminPassword)
 					hashedPassword = CryptoHelper.Scrypt(adminPassword, salt)
-					if DatabaseHelper.UserData.ModifySilent("INSERT INTO Tbl_user (U_username, U_name, U_password, U_email, U_isVerified, U_lastPasswordChange, U_isBanned) VALUES (\"__ADMIN__\", \"__ADMIN__\", \"" + hashedPassword + "\", \"" + SUPPORT_EMAIL_ADDRESS + "\", 1, \"" + Timestamp() + "\",0);", "BOOT_CHECK"):
+					if DatabaseHelper.UserData.ModifySilent("INSERT INTO Tbl_user (U_username, U_name, U_password, U_email, U_isVerified, U_lastPasswordChange, U_isBanned, U_datetime) VALUES (\"__ADMIN__\", \"__ADMIN__\", \"" + hashedPassword + "\", \"" + SUPPORT_EMAIL_ADDRESS + "\", 1, \"" + Timestamp() + "\",0, \"" + Timestamp() + "\");", "BOOT_CHECK"):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Set admin password." + ENDF)
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Verified database structure." + ENDF)
 						noMatch = False
