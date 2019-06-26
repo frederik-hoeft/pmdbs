@@ -118,9 +118,6 @@
             this.SettingsPictureBoxRight = new System.Windows.Forms.PictureBox();
             this.SettingsPanelCenter = new System.Windows.Forms.Panel();
             this.SettingsTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
-            this.SettingsPanelFooter = new System.Windows.Forms.Panel();
-            this.SettingsAdvancedImageButtonFooterAbort = new CustomMetroForms.AdvancedImageButton();
-            this.SettingsAdvancedImageButtonFooterSave = new CustomMetroForms.AdvancedImageButton();
             this.SettingsPanelContentMain = new System.Windows.Forms.Panel();
             this.SettingsFlowLayoutPanelOnline = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelOnlineContentHeader = new System.Windows.Forms.Panel();
@@ -315,6 +312,7 @@
             this.LoginEditFieldOnlineUsername = new CustomMetroForms.EditField();
             this.windowButtonMinimize = new CustomMetroForms.WindowButton();
             this.windowButtonClose = new CustomMetroForms.WindowButton();
+            this.SettingsLinkLabelPromptResendCode = new System.Windows.Forms.LinkLabel();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -348,7 +346,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxRight)).BeginInit();
             this.SettingsPanelCenter.SuspendLayout();
             this.SettingsTableLayoutPanelCenter.SuspendLayout();
-            this.SettingsPanelFooter.SuspendLayout();
             this.SettingsPanelContentMain.SuspendLayout();
             this.SettingsFlowLayoutPanelOnline.SuspendLayout();
             this.SettingsPanelOnlineContentHeader.SuspendLayout();
@@ -1608,7 +1605,6 @@
             this.SettingsTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.SettingsTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
             this.SettingsTableLayoutPanelCenter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.SettingsTableLayoutPanelCenter.Controls.Add(this.SettingsPanelFooter, 1, 1);
             this.SettingsTableLayoutPanelCenter.Controls.Add(this.SettingsPanelContentMain, 1, 0);
             this.SettingsTableLayoutPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SettingsTableLayoutPanelCenter.Location = new System.Drawing.Point(0, 0);
@@ -1620,42 +1616,13 @@
             this.SettingsTableLayoutPanelCenter.Size = new System.Drawing.Size(1000, 998);
             this.SettingsTableLayoutPanelCenter.TabIndex = 9;
             // 
-            // SettingsPanelFooter
-            // 
-            this.SettingsPanelFooter.Controls.Add(this.SettingsAdvancedImageButtonFooterAbort);
-            this.SettingsPanelFooter.Controls.Add(this.SettingsAdvancedImageButtonFooterSave);
-            this.SettingsPanelFooter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsPanelFooter.Location = new System.Drawing.Point(150, 898);
-            this.SettingsPanelFooter.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelFooter.Name = "SettingsPanelFooter";
-            this.SettingsPanelFooter.Size = new System.Drawing.Size(700, 100);
-            this.SettingsPanelFooter.TabIndex = 12;
-            // 
-            // SettingsAdvancedImageButtonFooterAbort
-            // 
-            this.SettingsAdvancedImageButtonFooterAbort.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageHover")));
-            this.SettingsAdvancedImageButtonFooterAbort.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterAbort.ImageNormal")));
-            this.SettingsAdvancedImageButtonFooterAbort.Location = new System.Drawing.Point(625, 13);
-            this.SettingsAdvancedImageButtonFooterAbort.Name = "SettingsAdvancedImageButtonFooterAbort";
-            this.SettingsAdvancedImageButtonFooterAbort.Size = new System.Drawing.Size(72, 72);
-            this.SettingsAdvancedImageButtonFooterAbort.TabIndex = 1;
-            // 
-            // SettingsAdvancedImageButtonFooterSave
-            // 
-            this.SettingsAdvancedImageButtonFooterSave.ImageHover = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterSave.ImageHover")));
-            this.SettingsAdvancedImageButtonFooterSave.ImageNormal = ((System.Drawing.Image)(resources.GetObject("SettingsAdvancedImageButtonFooterSave.ImageNormal")));
-            this.SettingsAdvancedImageButtonFooterSave.Location = new System.Drawing.Point(3, 13);
-            this.SettingsAdvancedImageButtonFooterSave.Name = "SettingsAdvancedImageButtonFooterSave";
-            this.SettingsAdvancedImageButtonFooterSave.Size = new System.Drawing.Size(72, 72);
-            this.SettingsAdvancedImageButtonFooterSave.TabIndex = 0;
-            // 
             // SettingsPanelContentMain
             // 
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOnline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SettingsPanelContentMain.Location = new System.Drawing.Point(150, 0);
@@ -2689,6 +2656,7 @@
             this.SettingsPanelPromptMain.BackColor = System.Drawing.Color.White;
             this.SettingsPanelPromptMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.SettingsPanelPromptMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLinkLabelPromptResendCode);
             this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptAction);
             this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMain);
             this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMailInfo);
@@ -2739,7 +2707,7 @@
             this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
             this.SettingsAnimatedButtonPromptSubmit.Icon = null;
-            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 742);
+            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 763);
             this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.SettingsAnimatedButtonPromptSubmit.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
             this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
@@ -4458,6 +4426,21 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
+            // SettingsLinkLabelPromptResendCode
+            // 
+            this.SettingsLinkLabelPromptResendCode.ActiveLinkColor = System.Drawing.Color.Blue;
+            this.SettingsLinkLabelPromptResendCode.AutoSize = true;
+            this.SettingsLinkLabelPromptResendCode.DisabledLinkColor = System.Drawing.Color.Blue;
+            this.SettingsLinkLabelPromptResendCode.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.SettingsLinkLabelPromptResendCode.Location = new System.Drawing.Point(260, 723);
+            this.SettingsLinkLabelPromptResendCode.Name = "SettingsLinkLabelPromptResendCode";
+            this.SettingsLinkLabelPromptResendCode.Size = new System.Drawing.Size(172, 30);
+            this.SettingsLinkLabelPromptResendCode.TabIndex = 22;
+            this.SettingsLinkLabelPromptResendCode.TabStop = true;
+            this.SettingsLinkLabelPromptResendCode.Text = "Resend code";
+            this.SettingsLinkLabelPromptResendCode.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.SettingsLinkLabelPromptResendCode.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SettingsLinkLabelPromptResendCode_LinkClicked);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -4473,6 +4456,7 @@
             this.MaximumSize = new System.Drawing.Size(1920, 1192);
             this.MinimumSize = new System.Drawing.Size(1920, 1192);
             this.Name = "Form1";
+            this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -4516,7 +4500,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxRight)).EndInit();
             this.SettingsPanelCenter.ResumeLayout(false);
             this.SettingsTableLayoutPanelCenter.ResumeLayout(false);
-            this.SettingsPanelFooter.ResumeLayout(false);
             this.SettingsPanelContentMain.ResumeLayout(false);
             this.SettingsFlowLayoutPanelOnline.ResumeLayout(false);
             this.SettingsPanelOnlineContentHeader.ResumeLayout(false);
@@ -4769,9 +4752,6 @@
         private System.Windows.Forms.PictureBox SettingsPictureBoxRight;
         private System.Windows.Forms.Panel SettingsPanelCenter;
         private System.Windows.Forms.TableLayoutPanel SettingsTableLayoutPanelCenter;
-        private System.Windows.Forms.Panel SettingsPanelFooter;
-        private CustomMetroForms.AdvancedImageButton SettingsAdvancedImageButtonFooterAbort;
-        private CustomMetroForms.AdvancedImageButton SettingsAdvancedImageButtonFooterSave;
         private System.Windows.Forms.Panel SettingsPanelContentMain;
         private System.Windows.Forms.FlowLayoutPanel SettingsFlowLayoutPanelOnline;
         private System.Windows.Forms.Panel panel3;
@@ -4916,6 +4896,7 @@
         private CustomMetroForms.EditField SettingsEditFieldOnlinePasswordChangeNew;
         private CustomMetroForms.EditField SettingsEditFieldOnlinePasswordChangeConfirm;
         private CustomMetroForms.WindowButton windowButtonMinimize;
+        private System.Windows.Forms.LinkLabel SettingsLinkLabelPromptResendCode;
     }
 }
 

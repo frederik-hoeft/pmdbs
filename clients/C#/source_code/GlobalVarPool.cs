@@ -40,8 +40,6 @@ namespace pmdbs
 
         // GLOBAL CONTROLS
         public static CustomMetroForms.AdvancedProgressSpinner loadingSpinner = null;
-        public static CustomMetroForms.AdvancedImageButton settingsSave = null;
-        public static CustomMetroForms.AdvancedImageButton settingsAbort = null;
         public static System.Windows.Forms.Panel loadingPanel = null;
         public static System.Windows.Forms.Label loadingLabel = null;
         public static System.Windows.Forms.PictureBox loadingLogo = null;

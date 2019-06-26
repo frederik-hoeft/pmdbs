@@ -381,6 +381,16 @@ namespace pmdbs
                 GlobalVarPool.connected = false;
             }
             /// <summary>
+            /// Checks if nickname and email are up to date.
+            /// </summary>
+            public static async void GetAccountDetails()
+            {
+                HelperMethods.InvokeOutputLabel("Validating account details ...");
+                System.Threading.Tasks.Task<string> GetDateTime = DataBaseHelper.GetSingleOrDefault("SELECT U_datetime FROM Tbl_user LIMIT 1;");
+                string datetime = await GetDateTime;
+                Network.SendEncrypted("MNGGADdatetime%eq!" + datetime + "!;");
+            }
+            /// <summary>
             /// Requests a new device cookie.
             /// </summary>
             public static void GetCookie()
@@ -441,6 +451,14 @@ namespace pmdbs
             {
                 HelperMethods.InvokeOutputLabel("Registering new user ...");
                 Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
+            }
+            /// <summary>
+            /// Requests the remote server to resend the last 2FA email.
+            /// </summary>
+            public static void ResendCode()
+            {
+                HelperMethods.InvokeOutputLabel("Resending code ...");
+                Network.SendEncrypted("MNGRTCusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;");
             }
             /// <summary>
             /// Invokes a SQL-Select call on the remote database.
