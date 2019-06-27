@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-10b.19"
+VERSION = "0.6-11b.19"
 BUILD = "development"
-DATE = "Jun 26 2019"
-TIME = "14:55"
+DATE = "Jun 27 2019"
+TIME = "22:02"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -968,22 +968,6 @@ class Log():
 			address = address.split(":")[0]
 		else:
 			details = "IP: " + address
-		# CHECK IF SERVER SUPPORTS NMAP SCANS
-		if Server.nmap:
-			# USE COMMON PORTS FOR OS DETECTION
-			command = ["nmap", "-p", "22,80,445,65123,56123,54674", "-O", address]
-			# START NMAP IN SUBPROCESS
-			resultArray = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0].decode("utf-8").split("\n")
-			# PARSE NMAP RESULTS
-			for info in resultArray:
-				if "MAC Address:" in info:
-					details += "\n" + info
-				elif "Running:" in info or "Aggressive OS guesses:" in info:
-					details += "\n" + info.replace("Running:","OS:")
-				elif "Nmap scan report for" in info:
-					details += "\nDNS: " + info.split(" ")[4]
-				elif "Host is up" in info:
-					details += "\nPing: " + info.split(" ")[3].replace("(","")
 		if Server.geolocatingAvailable:
 			NetLocator = pygeoip.GeoIP("GeoDataBases/GeoIPASNum.dat", pygeoip.MEMORY_CACHE)
 			GeoLocator = pygeoip.GeoIP("GeoDataBases/GeoLiteCity.dat", pygeoip.MEMORY_CACHE)
@@ -1023,18 +1007,9 @@ class Log():
 					details += city
 				if postalCode:
 					details += postalCode
-		# USE SOME FANCY FORMATTING FOR THE OUTPUT
-		PrintSendToAdmin(CWHITE + "┌─[" + CRED + "DETAILS FOR " + address + CWHITE + "]" + ENDF)
-		detailArray = details.split("\n")
-		detailCount = len(detailArray)
-		for index, detail in enumerate(detailArray):
-			if not index == (detailCount - 1):
-				PrintSendToAdmin(CWHITE + "├─╼ " + detail + ENDF)
-			else:
-				PrintSendToAdmin(CWHITE + "└─╼ " + detail + ENDF)
 		# ADD DETAILS TO CLIENT PROFILE
 		client = GetClient(clientSocket)
-		if not client is False:
+		if client is not False:
 			client.details = details
 	
 	# CREATES LOG FOR CLIENT RELATED EVENTS 
@@ -1115,6 +1090,7 @@ class Handle():
 		# [ERRNO 31] IMAC				--> INVALID MESSAGE AUTHENTICATION CODE
 		# [ERRNO 32] MAIL				--> ERROR OCCURED DURING SendMail()
 		# [ERRNO 33] SQLX				--> UNKNOWN SQL EXCEPTION
+		# [ERRNO 34] AUTH				--> CLIENT IS NOT AUTHORIZED
 		#
 		#------------------------------------------------------------------------------#
 		errorNo = None
@@ -1254,6 +1230,10 @@ class Handle():
 			errorNo = "33"
 			if not message:
 				message = "GENERIC_SQL_EXCEPTION"
+		elif errorID == "AUTH":
+			errorNo = "34"
+			if not message:
+				message = "CLIENT_NOT_AUTHORIZED"
 		else:
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
@@ -1271,6 +1251,117 @@ class Handle():
 # CONTAINS EVERYTHING ACCOUNT AND SERVER RELATED
 class Management():
 	
+	# AUTHORIZES THE CLIENT TO LOG IN
+	def Authorize(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE COMMAND
+		# cookie%eq!cookie!;device%eq!device_info!;is_mobile%eq!bool!;version%eq!version!;
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# SECURITY CHECK PASSED
+		cookie = None
+		device = None
+		isMobile = None
+		version = None
+		# EXTRACT REQUIRED DATA FROM PARAMETER-ARRAY
+		try:
+			for parameter in parameters:
+				if parameter:
+					if "cookie" in parameter:
+						cookie = parameter.split("!")[1]
+					elif "device" in parameter:
+						device = parameter.split("!")[1]
+					elif "is_mobile" in parameter:
+						isMobile = parameter.split("!")[1] == "True"
+					elif "version" in parameter:
+						version = parameter.split("!")[1]
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return	
+		except Exception as e:
+			# COMMAND HAS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if None in [cookie, device, isMobile, version]:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		Log.ServerEventLog("CLIENT AUTHORIZATION", client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version)
+		client.details = client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version
+		loggingThread = Thread(target = Management.BackgroundCheck, args = (clientAddress, clientSocket))
+		loggingThread.start()
+		data = DatabaseHelper.UserData.SelectSilent("SELECT bc.BC_time, bc.BC_duration FROM Tbl_cookies as c, Tbl_blockedCookies as bc WHERE c.C_cookie = \"" + cookie + "\" AND c.C_id = bc.BC_cookie LIMIT 1;", clientAddress)
+		if data is False:
+			return
+		time = None
+		duration = None
+		if data:
+			try:
+				time = data[0][0]
+				duration = data[0][1]
+			except IndexError as e:
+				# IN CASE OF ERROR FREE RESOURCES AND THROW SQL EXCEPTION
+				Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
+				return
+			currentTime = Timestamp()
+			if int(currentTime < int(time) + int(duration)):
+				# IS ALLOWED
+				if DatabaseHelper.UserData.ModifySilent("DELETE FROM Tbl_blockedCookies WHERE BC_cookie IN(SELECT C_id FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\")"):
+					client.IS_AUTHORIZED = True
+			else:
+				# IS BANNED
+				PrintSendToAdmin("SERVER ---> AUTHORIZATION FAILED       ---> " + clientAddress)
+				Network.SendEncrypted("INFRETmsg%eq!DEVICE_BANNED!;")
+				Management.Disconnect(clientSocket, "DEVICE_BANNED", clientAddress, False)
+				return
+		else:
+			client.IS_AUTHORIZED = True
+		PrintSendToAdmin("SERVER ---> AUTHORIZATION SUCCESSFUL   ---> " + clientAddress)
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, "INFRETmsg%eq!DEVICE_AUTHORIZED!;")
+		
+	def BackgroundCheck(clientAddress, clientSocket):
+		address = clientAddress.split(":")[0]
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		details = client.details
+		# CHECK IF SERVER SUPPORTS NMAP SCANS
+		if Server.nmap:
+			# USE COMMON PORTS FOR OS DETECTION
+			command = ["nmap", "-p", "22,80,445,65123,56123,54674", "-O", address]
+			# START NMAP IN SUBPROCESS
+			resultArray = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0].decode("utf-8").split("\n")
+			# PARSE NMAP RESULTS
+			for info in resultArray:
+				if "MAC Address:" in info:
+					details += "\n" + info
+				elif "Running:" in info or "Aggressive OS guesses:" in info:
+					details += "\n" + info.replace("Running:","OS guesses:")
+				elif "Nmap scan report for" in info:
+					details += "\nDNS: " + info.split(" ")[4]
+				elif "Host is up" in info:
+					details += "\nPing: " + info.split(" ")[3].replace("(","")
+		client.details = details
+		# USE SOME FANCY FORMATTING FOR THE OUTPUT
+		PrintSendToAdmin(CWHITE + "┌─[" + CRED + "DETAILS FOR " + address + CWHITE + "]" + ENDF)
+		detailArray = details.split("\n")
+		detailCount = len(detailArray)
+		for index, detail in enumerate(detailArray):
+			if not index == (detailCount - 1):
+				PrintSendToAdmin(CWHITE + "├─╼ " + detail + ENDF)
+			else:
+				PrintSendToAdmin(CWHITE + "└─╼ " + detail + ENDF)
+			
+	# SYNC ACCOUNT INFORMATION
 	def GetAccountData(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
 		# datetime%eq!150238534!;
@@ -1510,7 +1601,7 @@ class Management():
 		# USER IS LOGGED IN
 		if DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_name = \"" + newName + "\", U_datetime = \"" + Timestamp() + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey):
 			# RETURN SUCCESS STATUS TO CLIENT
-			returnData = "INFRETstatus%eq!NAME_CHANGED!;"
+			returnData = "INFRETmsg%eq!NAME_CHANGED!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			# GET SOME DEBUG OUTPUT HAPPENING
@@ -1777,6 +1868,14 @@ class Management():
 	def LoginNewAdmin(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
 		# code%eq!code!;password%eq!password!;cookie%eq!cookie!;
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		if client.IS_AUTHORIZED is False:
+			Handle.Error("AUTH", None, clientAddress, clientSocket, aesKey, True)
+			return
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
@@ -2085,8 +2184,7 @@ class Management():
 		handlerThread.start()
 		# ADD CLIENT DO CONNECTED CLIENTS
 		Server.allClients.append(Client(clientSocket, clientAddress))
-		logThread = Thread(target = Log.SetDetails, args = (clientAddress, clientSocket))
-		logThread.start()
+		Log.SetDetails(clientAddress, clientSocket)
 	
 	# CHECKS IF CLIENT IS BANNED
 	def SetupNewClient(clientAddress, clientSocket):
@@ -2285,6 +2383,14 @@ class Management():
 	def LoginNewDevice(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
 		# username%eq!username!;code%eq!code!;password%eq!password!;cookie%eq!cookie!;
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		if client.IS_AUTHORIZED is False:
+			Handle.Error("AUTH", None, clientAddress, clientSocket, aesKey, True)
+			return
 		creds = command.split(";")
 		# CHECK FOR SQL INJECTION
 		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
@@ -3076,6 +3182,14 @@ class Management():
 	# REGISTER A NEW USER 
 	def Register(command, clientAddress, clientSocket, aesKey):
 		# username%eq!username!;password%eq!password!;email%eq!email!;nickname%eq!nickname!;cookie%eq!cookie!;
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		if client.IS_AUTHORIZED is False:
+			Handle.Error("AUTH", None, clientAddress, clientSocket, aesKey, True)
+			return
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# GET THE CREDENTIALS FROM ARRAY
@@ -3225,6 +3339,14 @@ class Management():
 	# ALLOWS TO LOG IN AS A REMOTE ADMIN
 	def LoginAdmin(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE command = "password%eq!password!;cookie%eq!cookie!;"
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		if client.IS_AUTHORIZED is False:
+			Handle.Error("AUTH", None, clientAddress, clientSocket, aesKey, True)
+			return
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# CHECK IF USER IS ADMIN
@@ -3478,6 +3600,14 @@ class Management():
 	
 	# LOGIN A CLIENT AND ADD HIM TO AUTHORIZED CLIENTS (SAVES EXPENSIVE DATABASE LOOKUPS)
 	def Login(command, clientAddress, clientSocket, aesKey):
+		client = GetClient(clientSocket)
+		if client is False:
+			Log.ServerEventLog("SOCKET_ERROR", "client is False")
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
+			return
+		if client.IS_AUTHORIZED is False:
+			Handle.Error("AUTH", None, clientAddress, clientSocket, aesKey, True)
+			return
 		# CHECK IF USER IS ADMIN
 		if clientSocket == Server.admin:
 			returnData = "You are already Admin. Use \'logout\' and try again."
@@ -3761,6 +3891,7 @@ class Client(object):
 	socket = None
 	address = None
 	IS_ADMIN = False
+	IS_AUTHORIZED = False
 	details = None
 	HMACkey = None
 	SOCKET_IN_USE = False
@@ -3964,6 +4095,7 @@ class Server(Thread):
 		cookiesLen = None
 		dataLen = None
 		deleteLen = None
+		blockedCookiesLen = None
 		try:
 			clientLogLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_clientLog);", "BOOT_CHECK"))
 			connectUserCookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_connectUserCookies);", "BOOT_CHECK"))
@@ -3971,18 +4103,15 @@ class Server(Thread):
 			dataLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_data);", "BOOT_CHECK"))
 			userLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_user);", "BOOT_CHECK"))
 			deleteLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_delete);", "BOOT_CHECK"))
+			blockedCookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_blockedCookies);", "BOOT_CHECK"))
 		except Exception as e:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID: " + str(e) + ENDF)
 			return
-		if userLen != TABLE_USER_LENGTH or blacklistLen != TABLE_BLACKLIST_LENGTH or clientLogLen != TABLE_CLIENTLOG_LENGTH or connectUserCookiesLen != TABLE_CONNECTUSERCOOKIES_LENGTH or cookiesLen != TABLE_COOKIES_LENGTH or dataLen != TABLE_DATA_LENGTH or serverLogLen != TABLE_SERVERLOG_LENGTH or deleteLen != TABLE_DELETE_LENGTH:
+		if userLen != TABLE_USER_LENGTH or blacklistLen != TABLE_BLACKLIST_LENGTH or clientLogLen != TABLE_CLIENTLOG_LENGTH or connectUserCookiesLen != TABLE_CONNECTUSERCOOKIES_LENGTH or cookiesLen != TABLE_COOKIES_LENGTH or dataLen != TABLE_DATA_LENGTH or serverLogLen != TABLE_SERVERLOG_LENGTH or deleteLen != TABLE_DELETE_LENGTH or blockedCookiesLen != TABLE_BLOCKEDCOOKIES_LENGTH:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID." + ENDF)
 			return
 		adminSet = 0
-		#try:
 		adminSet = DatabaseHelper.UserData.SelectSilent("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"__ADMIN__\");", "BOOT_CHECK")[0][0]
-		#except Exception as e:
-		#	print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID: " + str(e) + ENDF)
-		#	return
 		if adminSet == 0:
 			noMatch = True
 			while noMatch:
@@ -4644,11 +4773,6 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <--- COMMIT ADMIN-PW CHANGE     <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.AdminPasswordChange, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
-								# REQUEST MASTER-PASSWORD HASH --> DANGEROUS!!! use CredentialCheckProvider() INSTEAD
-								#elif packetSID == "PWH":
-								#	PrintSendToAdmin("SERVER <--- REQUEST PASSWORD HASH      <--- " + clientAddress)
-								#	mgmtThread = Thread(target = Management.MasterPasswordRequest, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
-								#	mgmtThread.start()
 								# CHANGE EMAIL ADDRESS (ONLY IF ACCOUNT IS NOT YET ACTIVATED)
 								elif packetSID == "CEA":
 									PrintSendToAdmin("SERVER <--- CHANGE EMAIL ADDRESS       <--- " + clientAddress)
@@ -4683,6 +4807,11 @@ class ClientHandler():
 								elif packetSID == "GAD":
 									PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT DATA       <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.GetAccountData, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# AUTHORIZE CLIENT TO LOG IN
+								elif packetSID == "ATH":
+									PrintSendToAdmin("SERVER <--- REQUEST AUTHORIZATION      <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.Authorize, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
 								else:
 									PrintSendToAdmin("SERVER <-#- [ERRNO 06] ISID             -#-> " + clientAddress)
