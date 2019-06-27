@@ -22,7 +22,7 @@ namespace pmdbs
         public static string CONFIG_BUILD = null;
 
         // CLIENT VERSIONING
-        public static readonly string CLIENT_VERSION = "0.6-8b.19";
+        public static readonly string CLIENT_VERSION = "0.6-11b.19";
         public static readonly string CLIENT_BUILD = "development";
 
         // CRYPTO VARIABLES

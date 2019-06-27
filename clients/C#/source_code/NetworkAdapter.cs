@@ -306,11 +306,28 @@ namespace pmdbs
             /// <summary>
             /// Activates the newly created user account on the remote server by providing a 2FA code.
             /// </summary>
-            /// <param name="code"></param>
+            /// <param name="code">The 2FA code to use.</param>
             public static void ActivateAccount(string code)
             {
                 HelperMethods.InvokeOutputLabel("Activating account ...");
                 Network.SendEncrypted("MNGVERusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;");
+            }
+            /// <summary>
+            /// Requests authorization to log into the remote server.
+            /// </summary>
+            public static void Authorize()
+            {
+                string device = HelperMethods.GetOS();
+                Network.SendEncrypted("MNGATHcookie%eq!" + GlobalVarPool.cookie + "!;device%eq!" + device + "!;is_mobile%eq!False!;version%eq!" + GlobalVarPool.CLIENT_VERSION + "!;");
+            }
+            /// <summary>
+            /// Changes the user's nickname to a new name.
+            /// </summary>
+            /// <param name="newName">The new name.</param>
+            public static void ChangeName(string newName)
+            {
+                HelperMethods.InvokeOutputLabel("Changing name ...");
+                Network.SendEncrypted("MNGCHNnew_name%eq!" + newName + "!;");
             }
             /// <summary>
             /// Requests the remote server to validate this devices cookie.
