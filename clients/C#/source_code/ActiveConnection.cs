@@ -110,15 +110,8 @@ namespace pmdbs
             IPAddress ipAddress;
             try
             {
-                if (GlobalVarPool.ADDRESS_IS_DNS)
-                {
-                    IPHostEntry entry = Dns.GetHostEntry(ip);
-                    ipAddress = entry.AddressList[0];
-                }
-                else
-                {
-                    ipAddress = IPAddress.Parse(ip);
-                }
+                IPHostEntry entry = Dns.GetHostEntry(ip);
+                ipAddress = entry.AddressList[0];
             }
             catch (Exception e)
             {
@@ -369,8 +362,6 @@ namespace pmdbs
                             case 'E':
                                 {
                                     Thread.Sleep(100); // <-- APPARENTLY THERE'S SOME NASTY BUG SOMEWHERE. DONT KNOW DONT CARE. USING "Thread.Sleep(100);" SEEMS TO FIX IT SOMEHOW. JUST MICROSOFT THINGS *sigh*
-                                    // File.AppendAllText("log1.txt", dataString + Environment.NewLine);
-                                    File.WriteAllText("debug.txt", "HMAC = " + GlobalVarPool.hmac + "\nAESKEY = " + GlobalVarPool.aesKey + "\n" + dataString.Substring(1));
                                     if (!CryptoHelper.VerifyHMAC(GlobalVarPool.hmac, dataString.Substring(1)))
                                     {
                                         CustomException.ThrowNew.NetworkException("Received an invalid HMAC checksum.", "[ERRNO 31] IMAC");
@@ -384,15 +375,8 @@ namespace pmdbs
                                     {
                                         Console.WriteLine("SERVER: " + decryptedData);
                                     }
-                                    // File.AppendAllText("log1.txt", decryptedData + Environment.NewLine + Environment.NewLine);
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
-                                    // LOGIN TASK RELIES ON "DTACKI" AND WOULD START BEFORE THE COOKIE HAS BEEN SET. THEREFORE SET THE COOKIE BEFORE INVOKING THE AUTOMATED TASK FRAMEWORK
-                                    if (packetID.Equals("DTA") && packetSID.Equals("CKI"))
-                                    {
-                                        GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
-                                        await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_cookie = \"" + GlobalVarPool.cookie + "\";");
-                                    }
                                     // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
                                     AutomatedTaskFramework.DoTasks(decryptedData);
                                     switch (packetID)
@@ -552,6 +536,13 @@ namespace pmdbs
                                                             }
                                                             break;
                                                         }
+                                                    case "CKI":
+                                                        {
+                                                            GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
+                                                            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_cookie = \"" + GlobalVarPool.cookie + "\";");
+                                                            NetworkAdapter.MethodProvider.Authorize();
+                                                            break;
+                                                        }
                                                 }
                                                 break;
                                             }
@@ -682,6 +673,7 @@ namespace pmdbs
                                                                     }
                                                                 case "COOKIE_DOES_EXIST":
                                                                     {
+                                                                        NetworkAdapter.MethodProvider.Authorize();
                                                                         break;
                                                                     }
                                                                 case "COOKIE_DOES_NOT_EXIST":
@@ -750,6 +742,7 @@ namespace pmdbs
                                                                     {
                                                                         break;
                                                                     }
+                                                                case "DEVICE_BANNED":
                                                                 case "BANNED":
                                                                     {
                                                                         CustomException.ThrowNew.NetworkException("YOU HAVE BEEN BANNED.");
@@ -790,6 +783,13 @@ namespace pmdbs
                                                                     }
                                                                 case "AD_UPTODATE":
                                                                     {
+                                                                        break;
+                                                                    }
+                                                                case "NAME_CHANGED":
+                                                                    {
+                                                                        GlobalVarPool.commandErrorCode = 0;
+                                                                        // TODO: CREATE NOTIFICATION
+                                                                        CustomException.ThrowNew.GenericException("Name changed successfully.");
                                                                         break;
                                                                     }
                                                                 default:
