@@ -92,7 +92,7 @@ namespace pmdbs
         /// </summary>
         public static void RefreshSettings()
         {
-
+            // TODO: IMPLEMENT
         }
 
         /// <summary>

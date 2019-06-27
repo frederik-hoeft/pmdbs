@@ -760,7 +760,7 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
@@ -1383,7 +1383,7 @@ namespace pmdbs
                 }
                 else
                 {
-                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
                     AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
@@ -1484,7 +1484,7 @@ namespace pmdbs
                 }
                 else
                 {
-                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
                     AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
@@ -1531,6 +1531,12 @@ namespace pmdbs
             GlobalVarPool.commandErrorCode = 0;
         }
 
+        private void SettingsAnimatedButtonOfflineChangeNameSubmit_Click(object sender, EventArgs e)
+        {
+            string name = GetNameOrDefault(SettingsEditFieldOfflineName.TextTextBox);
+            ChangeLocalName(name);
+        }
+
         #endregion
         #region SettingsOnline
         private void SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click(object sender, EventArgs e)
@@ -1562,7 +1568,7 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "COOKIE_DOES_EXIST|DTACKI", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
@@ -1571,7 +1577,40 @@ namespace pmdbs
             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
             AutomatedTaskFramework.Tasks.Execute();
         }
+        private void SettingsAnimatedButtonOnlineChangeName_Click(object sender, EventArgs e)
+        {
+            string name = GetNameOrDefault(SettingsEditFieldOnlineChangeName.TextTextBox);
+            ChangeLocalName(name);
+            GlobalVarPool.loadingType = LoadingHelper.LoadingType.DEFAULT;
+            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
+            Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
+            {
+                IsBackground = true
+            };
+            t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
+            AutomatedTaskFramework.Tasks.Clear();
+            if (!GlobalVarPool.connected)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+            }
+            if (!GlobalVarPool.isUser)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+            }
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "NAME_CHANGED", () => NetworkAdapter.MethodProvider.ChangeName(name));
+            AutomatedTaskFramework.Tasks.Execute();
+        }
         #endregion
+        private async void ChangeLocalName(string name)
+        {
+            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + name + "\";");
+            GlobalVarPool.name = name;
+            HelperMethods.RefreshSettings();
+        }
+        private string GetNameOrDefault(string name)
+        {
+            return string.IsNullOrWhiteSpace(name)? "User" : name;
+        }
         #endregion
         #region FilterPanel
         private string previousTextBoxContent = string.Empty;
@@ -1708,8 +1747,7 @@ namespace pmdbs
             }
             RefreshUserData(page);
         }
-        #endregion
 
-        
+        #endregion
     }
 }
