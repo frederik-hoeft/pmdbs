@@ -13,6 +13,7 @@ TABLE_COOKIES_LENGTH = 2
 TABLE_DATA_LENGTH = 11
 TABLE_SERVERLOG_LENGTH = 4
 TABLE_DELETE_LENGTH = 3
+TABLE_BLOCKEDCOOKIES_LENGTH = 4
 # 2FA SETTINGS
 ACCOUNT_ACTIVATION_MAX_TIME = 3600
 DELETE_ACCOUNT_CONFIRMATION_MAX_TIME = 1800
@@ -58,5 +59,5 @@ SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT = "Hey Admin!\n\nYou have request
 SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT = "<html><head><style>table.main {width:800px;background-color:#212121;color:#FFFFFF;margin:auto;border-collapse:collapse;}td.top {padding: 50px 50px 0px 50px;}td.header {background-color:#212121;color:#FF6031;padding: 0px 50px 0px 50px;}td.text {padding: 0px 50px 0px 50px;}td.bottom {padding: 0px 50px 50px 50px;}</style></head><body><table class=\"main\"><tr><td class=\"top\" align=\"center\"><img src=\"cid:icon1\" width=\"100\" height=\"100\"></td></tr><tr><td class=\"header\"><h3>Hey Admin!</h3></td></tr><tr><td class=\"text\"><p>You have requested to change the admin password.<br>The request originated from the following device:<br><br>%s<br><br>To change your password, please enter the code below when prompted:</p></td></tr><tr><td class=\"header\"><p align=\"center\"><b>%s</b></p></td></tr><tr><td class=\"bottom\"><p><br>Time left until the code expires: %s.<br>If you did not request this email then there's someone out there playing around with admin privileges.<br><b>*You should probably do something about that*</b><br><br>Best regards,<br>PMDBS Support Team</p></td></tr></table></body></html>"
 # VERSION INFO
 PYTHON_VERSIONS = ["3.6.6", "3.6.7", "3.6.8rc1", "3.7.2+", "3.7.3rc1", "3.7.3"]
-CONFIG_VERSION = "0.6-9b.19"
+CONFIG_VERSION = "0.6-11b.19"
 CONFIG_BUILD = "development"
