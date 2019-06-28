@@ -10,8 +10,14 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Handles the connection to a remote server.
+    /// </summary>
     public struct ActiveConnection
     {
+        /// <summary>
+        /// Initializes the connection to a remote server using the PPHSS protocol
+        /// </summary>
         public static async void Start()
         {
             GlobalVarPool.connectionLost = false;
@@ -125,7 +131,7 @@ namespace pmdbs
             {
                 GlobalVarPool.clientSocket.Connect(server);
             }
-            catch (Exception e)
+            catch
             {
                 CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
@@ -539,7 +545,7 @@ namespace pmdbs
                                                     case "CKI":
                                                         {
                                                             GlobalVarPool.cookie = decryptedData.Substring(6).Split('!')[1];
-                                                            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_cookie = \"" + GlobalVarPool.cookie + "\";");
+                                                            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_cookie = \"", GlobalVarPool.cookie, "\";" }));
                                                             NetworkAdapter.MethodProvider.Authorize();
                                                             break;
                                                         }
@@ -627,8 +633,8 @@ namespace pmdbs
                                                                         {
                                                                             new Thread(async delegate ()
                                                                             {
-                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_wasOnline = 1, U_username = \"" + GlobalVarPool.username + "\";");
-                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT + "\";");
+                                                                                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_wasOnline = 1, U_username = \"", GlobalVarPool.username, "\";" }));
+                                                                                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
                                                                                 GlobalVarPool.wasOnline = true;
                                                                             }).Start();
                                                                         }
@@ -687,7 +693,7 @@ namespace pmdbs
                                                                         {
                                                                             new Thread(async delegate ()
                                                                             {
-                                                                                await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + GlobalVarPool.name + "\";");
+                                                                                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_name = \"", GlobalVarPool.name, "\";" }));
                                                                             }).Start();
                                                                         }
                                                                         break;
@@ -774,10 +780,13 @@ namespace pmdbs
                                                                                 CustomException.ThrowNew.FormatException("Missing parameters for AD_OUTDATED");
                                                                                 return;
                                                                             }
-                                                                            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + name + "\", U_email = \"" + email + "\", U_datetime = \"" + datetime + "\";");
+                                                                            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_name = \"", name, "\", U_email = \"", email, "\", U_datetime = \"", datetime, "\";" }));
                                                                             GlobalVarPool.email = email;
                                                                             GlobalVarPool.name = name;
-                                                                            HelperMethods.RefreshSettings();
+                                                                            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                                                                            {
+                                                                                Form1.InvokeRefreshSettings();
+                                                                            });
                                                                         }).Start();
                                                                         break;
                                                                     }

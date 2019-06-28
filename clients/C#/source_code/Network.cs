@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
-    public struct Network
+    /// <summary>
+    /// Provides methods for data transmission using the PMDBS Packet Handling System protocol
+    /// </summary>
+    public static class Network
     {
+        /// <summary>
+        /// Sends data using the unencrypted PPHS protocol. Used for initial key exchange in PPHSS.
+        /// </summary>
+        /// <param name="data">The data to be sent.</param>
         public static void Send(string data)
         {
             try
@@ -28,6 +35,10 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// Sends data using the encrypted PPHSS protocol.
+        /// </summary>
+        /// <param name="data">The data to be sent.</param>
         public static void SendEncrypted(string data)
         {
             try
@@ -49,13 +60,6 @@ namespace pmdbs
                     CustomException.ThrowNew.NetworkException(e.ToString());
                 }
             }
-        }
-
-        public static string GetHost(string ip)
-        {
-            IPAddress hostIPAddress = IPAddress.Parse(ip);
-            IPHostEntry hostInfo = Dns.GetHostEntry(hostIPAddress);
-            return hostInfo.HostName;
         }
     }
 }
