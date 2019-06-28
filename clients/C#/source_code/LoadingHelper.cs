@@ -128,6 +128,7 @@ namespace pmdbs
                         }
                     case LoadingType.REGISTER:
                         {
+                            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_email = \"", GlobalVarPool.email, "\"" }));
                             GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
@@ -146,7 +147,7 @@ namespace pmdbs
                                 List<string> hids = await GetHids;
                                 for (int i = 0; i < hids.Count; i++)
                                 {
-                                    await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hids[i] + "\");");
+                                    await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_delete (DEL_hid) VALUES (\"", hids[i], "\");" }));
                                 }
                             }
                             await HelperMethods.ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);

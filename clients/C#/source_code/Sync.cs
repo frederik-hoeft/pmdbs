@@ -34,7 +34,7 @@ namespace pmdbs
                 {
                     if (hids.Contains(deletedItems[i]))
                     {
-                        await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_hid = \"" + deletedItems[i] + "\";");
+                        await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "DELETE FROM Tbl_data WHERE D_hid = \"", deletedItems[i], "\";" }));
                         refresh = true;
                     }
                 }
@@ -100,7 +100,7 @@ namespace pmdbs
                 for (int i = 0; i < remoteHeaders.Count; i++)
                 {
                     string hid = remoteHeaders[i][0];
-                    Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList("SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"" + hid + "\" LIMIT 1);", 1);
+                    Task<List<string>> TaskCheckExists = DataBaseHelper.GetDataAsList(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "SELECT EXISTS (SELECT 1 FROM Tbl_delete WHERE DEL_hid = \"", hid, "\" LIMIT 1);" }), 1);
                     List<string> TaskCheckExistsResult = await TaskCheckExists;
                     bool isDeleted = Convert.ToBoolean(Convert.ToInt32(TaskCheckExistsResult[0]));
                     if (isDeleted)
@@ -128,7 +128,7 @@ namespace pmdbs
             for (int i = 0; i < localHeaders.Count; i++)
             {
                 string id = localHeaders[i][2];
-                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_data WHERE D_id = \"" + id + "\" LIMIT 1;", (int)ColumnCount.Tbl_data);
+                Task<List<string>> GetAccount = DataBaseHelper.GetDataAsList(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "SELECT * FROM Tbl_data WHERE D_id = \"", id, "\" LIMIT 1;" }), (int)ColumnCount.Tbl_data);
                 List<string> account = await GetAccount;
                 // UPLOAD DATA
                 NetworkAdapter.MethodProvider.Insert(account);
@@ -187,7 +187,7 @@ namespace pmdbs
                         {
                             if (accountParts[j].Contains(account[k]))
                             {
-                                values.SetValue(accountParts[j].Split('!')[1], k);
+                                values.SetValue(DataBaseHelper.Security.SQLInjectionCheck(accountParts[j].Split('!')[1]), k);
                                 break;
                             }
                         }
@@ -204,7 +204,7 @@ namespace pmdbs
                 }
                 for (int j = 0; j < account.Length; j++)
                 {
-                    account.SetValue(account[j].Replace("%eq", ""), j);
+                    account.SetValue(DataBaseHelper.Security.SQLInjectionCheck(account[j].Replace("%eq", "")), j);
                 }
                 Task<List<string>> CheckHidExistsTask = DataBaseHelper.GetDataAsList("SELECT EXISTS(SELECT 1 FROM Tbl_data WHERE D_hid = \"" + values[7] + "\");", 1);
                 List<string> hidExists = await CheckHidExistsTask;
@@ -307,7 +307,7 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Missing parameter in SetHid().");
                 return;
             }
-            await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_hid = \"" + hid + "\" WHERE D_id = " + localID + ";");
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_hid = \"", hid, "\" WHERE D_id = ", localID, ";" }));
         }
 
         private static async void ReloadData()

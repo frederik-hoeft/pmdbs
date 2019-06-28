@@ -87,13 +87,7 @@ namespace pmdbs
             }
         }
 
-        /// <summary>
-        /// Reloads the currently selected settings.
-        /// </summary>
-        public static void RefreshSettings()
-        {
-            // TODO: IMPLEMENT
-        }
+        
 
         /// <summary>
         /// Loads all Settings from the database into GlobalVarPool
@@ -155,13 +149,13 @@ namespace pmdbs
             Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
             string stage2PasswordHash = await ScryptTask;
             InvokeOutputLabel("Setting new password ...");
-            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_password = \"" + stage2PasswordHash + "\"");
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\"" }));
             rowCounter = 0;
             int totalRowCount = encryptedUserData.Rows.Count;
             // UPDATE DATABASE
             foreach (DataRow row in encryptedUserData.Rows)
             {
-                await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_host = \"" + row[3].ToString() + "\", D_url = \"" + row[6].ToString() + "\", D_uname = \"" + row[4].ToString() + "\", D_password = \"" + row[5].ToString() + "\", D_email = \"" + row[7].ToString() + "\", D_notes = \"" + row[8].ToString() + "\", D_icon = \"" + row[9].ToString() + "\", D_hid = \"EMPTY\", D_datetime = \"" + TimeConverter.TimeStamp() + "\" WHERE D_id = " + row[0].ToString() + ";");
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_host = \"", row[3].ToString(), "\", D_url = \"", row[6].ToString(), "\", D_uname = \"", row[4].ToString(), "\", D_password = \"", row[5].ToString(), "\", D_email = \"", row[7].ToString(), "\", D_notes = \"", row[8].ToString(), "\", D_icon = \"", row[9].ToString(), "\", D_hid = \"EMPTY\", D_datetime = \"", TimeConverter.TimeStamp(), "\" WHERE D_id = ", row[0].ToString(), ";" }));
                 InvokeOutputLabel("Writing changes ... " + Math.Round(((float)rowCounter / (float)totalRowCount) * 100f,0,MidpointRounding.ToEven).ToString() + "%");
             }
             InvokeOutputLabel("Updating data source ...");

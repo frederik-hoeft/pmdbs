@@ -44,6 +44,11 @@ namespace pmdbs
         {
             GlobalVarPool.Form1.SyncAnimationStop();
         }
+
+        public static void InvokeRefreshSettings()
+        {
+            GlobalVarPool.Form1.RefreshSettings();
+        }
         #endregion
 
         #region FUNCTIONALITY_METHODS_AND_OTHER_UGLY_CODE
@@ -534,12 +539,12 @@ namespace pmdbs
         {
             DataEditSaveAdvancedImageButton.Enabled = false;
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
-            string Hostname = DataEditEditFieldHostname.TextTextBox;
-            string Username = DataEditEditFieldUsername.TextTextBox;
-            string Password = DataEditEditFieldPassword.TextTextBox;
-            string Email = DataEditEditFieldEmail.TextTextBox;
-            string Website = DataEditEditFieldWebsite.TextTextBox;
-            string Notes = DataEditAdvancedRichTextBoxNotes.TextValue;
+            string Hostname = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldHostname.TextTextBox);
+            string Username = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldUsername.TextTextBox);
+            string Password = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldPassword.TextTextBox);
+            string Email = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldEmail.TextTextBox);
+            string Website = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldWebsite.TextTextBox);
+            string Notes = DataBaseHelper.Security.SQLInjectionCheck(DataEditAdvancedRichTextBoxNotes.TextValue);
             string DateTime = TimeConverter.TimeStamp();
             string[] Values = new string[]
             {
@@ -615,7 +620,7 @@ namespace pmdbs
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
-                    Query = "UPDATE Tbl_data SET D_icon = \"" + encryptedFavIcon + "\" WHERE D_id = " + DataDetailsID + ";";
+                    Query = DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_icon = \"", encryptedFavIcon, "\" WHERE D_id = ", DataDetailsID + ";" });
                     await DataBaseHelper.ModifyData(Query);
                     Invoke((MethodInvoker)delegate
                     {
@@ -724,9 +729,9 @@ namespace pmdbs
             string hid = LinkedRow["1"].ToString();
             if (!hid.Equals("EMPTY"))
             {
-                await DataBaseHelper.ModifyData("INSERT INTO Tbl_delete (DEL_hid) VALUES (\"" + hid + "\");");
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_delete (DEL_hid) VALUES (\"", hid, "\");" }));
             }
-            await DataBaseHelper.ModifyData("DELETE FROM Tbl_data WHERE D_id = " + DataDetailsID + ";");
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "DELETE FROM Tbl_data WHERE D_id = ", DataDetailsID, ";" }));
             GlobalVarPool.UserData.Rows.Remove(LinkedRow);
             ApplyFilter(CurrentPage);
             DataPanelDetails.SuspendLayout();
@@ -851,12 +856,12 @@ namespace pmdbs
         private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
         {
             AddPanelAdvancedImageButtonSave.Enabled = false;
-            string Hostname = AddEditFieldHostname.TextTextBox;
-            string Username = AddEditFieldUsername.TextTextBox;
-            string Password = AddEditFieldPassword.TextTextBox;
-            string Email = AddEditFieldEmail.TextTextBox;
-            string Website = AddEditFieldWebsite.TextTextBox;
-            string Notes = AddPanelNotesAdvancedRichTextBox.TextValue;
+            string Hostname = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldHostname.TextTextBox);
+            string Username = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldUsername.TextTextBox);
+            string Password = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldPassword.TextTextBox);
+            string Email = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldEmail.TextTextBox);
+            string Website = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldWebsite.TextTextBox);
+            string Notes = DataBaseHelper.Security.SQLInjectionCheck(AddPanelNotesAdvancedRichTextBox.TextValue);
             string DateTime = TimeConverter.TimeStamp();
             
             if (Password.Equals("") || Hostname.Equals(""))
@@ -1223,7 +1228,7 @@ namespace pmdbs
             Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
-            await DataBaseHelper.ModifyData("INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"" + Stage2PasswordHash + "\", 0, \"" + FirstUsage + "\");");
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"", Stage2PasswordHash, "\", 0, \"", FirstUsage, "\");" }));
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
@@ -1387,7 +1392,7 @@ namespace pmdbs
                     AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
-                await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT.ToString() + "\";");
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
             }
             catch (Exception ex)
             {
@@ -1488,7 +1493,7 @@ namespace pmdbs
                     AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
-                await DataBaseHelper.ModifyData("UPDATE Tbl_settings SET S_server_ip = \"" + GlobalVarPool.REMOTE_ADDRESS + "\", S_server_port = \"" + GlobalVarPool.REMOTE_PORT.ToString() + "\";");
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
             }
             catch
             {
@@ -1497,11 +1502,11 @@ namespace pmdbs
         }
         #endregion
         #region SettingsOffline
-        private void SettingsAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
+        private void SettingsAnimatedButtonLogin_Click(object sender, EventArgs e)
         {
             SettingsFlowLayoutPanelLogin.BringToFront();
         }
-        private void SettingsAnimatedButtonOfflineRegister_Click(object sender, EventArgs e)
+        private void SettingsAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
             SettingsFlowLayoutPanelRegister.BringToFront();
         }
@@ -1603,13 +1608,29 @@ namespace pmdbs
         #endregion
         private async void ChangeLocalName(string name)
         {
-            await DataBaseHelper.ModifyData("UPDATE Tbl_user SET U_name = \"" + name + "\";");
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_name = \"", name, "\";" }));
             GlobalVarPool.name = name;
-            HelperMethods.RefreshSettings();
+            RefreshSettings();
         }
         private string GetNameOrDefault(string name)
         {
             return string.IsNullOrWhiteSpace(name)? "User" : name;
+        }
+
+        private void RefreshSettings()
+        {
+            if (GlobalVarPool.wasOnline)
+            {
+                SettingsEditFieldOnlineChangeName.TextTextBox = GlobalVarPool.name;
+                SettingsEditFieldRegisterIP.TextTextBox = GlobalVarPool.REMOTE_ADDRESS;
+                SettingsEditFieldRegisterPort.TextTextBox = GlobalVarPool.REMOTE_PORT.ToString();
+                SettingsEditFieldLoginIP.TextTextBox = GlobalVarPool.REMOTE_ADDRESS;
+                SettingsEditFieldLoginPort.TextTextBox = GlobalVarPool.REMOTE_PORT.ToString();
+            }
+            else
+            {
+                SettingsEditFieldOfflineName.TextTextBox = GlobalVarPool.name;
+            }
         }
         #endregion
         #region FilterPanel
