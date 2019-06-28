@@ -34,6 +34,7 @@ namespace pmdbs
             };
             sql_con.Open();
         }
+
         /// <summary>
         /// Returns result of SQLite database query as a list.
         /// </summary>
@@ -102,7 +103,11 @@ namespace pmdbs
             GlobalVarPool.databaseIsInUse = false;
             return OuterList;
         }
-
+        /// <summary>
+        /// Returns result of SQLite database query as string or Empty string if 0 or more than one field is returned.
+        /// </summary>
+        /// <param name="query">SQLite query to be executed.</param>
+        /// <returns></returns>
         public static async Task<string> GetSingleOrDefault(string query)
         {
             await SetConnection();
@@ -181,6 +186,44 @@ namespace pmdbs
             sql_con.Close();
             sql_con.Dispose();
             GlobalVarPool.databaseIsInUse = false;
+        }
+        /// <summary>
+        /// Provides database security related methods.
+        /// </summary>
+        public static class Security
+        {
+            /// <summary>
+            /// Turns an unsafe string into a SQL injection safe string.
+            /// </summary>
+            /// <param name="unsafeString">The string to check.</param>
+            /// <returns>SQLI safe string.</returns>
+            public static string SQLInjectionCheck(string unsafeString)
+            {
+                return unsafeString.Replace("\'", "\'\'").Replace("\"", "\"\"");
+            }
+            /// <summary>
+            /// Turns an unsafe SQL query into a SQL injection safe query.
+            /// </summary>
+            /// <param name="unsafeQuery">The SQL query to check. NOTE: Every even idex is considered to be a SQL statement.</param>
+            /// <returns>SQLI safe query.</returns>
+            public static string SQLInjectionCheckQuery(string[] unsafeQuery)
+            {
+                int queryLength = unsafeQuery.Length;
+                if (queryLength == 0 || queryLength % 2 == 0)
+                {
+                    throw new ArgumentException("There must be an odd number of arguments.");
+                }
+                for (int i = 1; i < queryLength; i += 2)
+                {
+                    unsafeQuery[i] = unsafeQuery[i].Replace("\'", "\'\'").Replace("\"", "\"\"");
+                }
+                string query = string.Empty;
+                for (int i = 0; i < queryLength; i++)
+                {
+                    query += unsafeQuery[i];
+                }
+                return query;
+            }
         }
     }
     public enum ColumnCount
