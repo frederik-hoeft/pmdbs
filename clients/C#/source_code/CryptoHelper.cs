@@ -179,18 +179,36 @@ namespace pmdbs
             return hex.ToString();
         }
         #endregion
+        #region SHA1
+        public static string SHA1Hash(string plaintext)
+        {
+            using (SHA1 sha = new SHA1Cng())
+            {
+                byte[] hashedBytes = sha.ComputeHash(Encoding.UTF8.GetBytes(plaintext));
+
+                // Loop through each byte of the hashed data 
+                // and format each one as a hexadecimal string.
+                string hashedPassword = string.Empty;
+                foreach (byte b in hashedBytes)
+                {
+                    hashedPassword += string.Format("{0:x2}", b);
+                }
+                return hashedPassword;
+            }
+        }
+        #endregion
         #region SHA256
         public static string SHA256Hash(string plainPassword)
         {
             SHA256Cng ShaHashFunction = new SHA256Cng();
             byte[] plainBytes = Encoding.UTF8.GetBytes(plainPassword);
             byte[] hashedBytes = ShaHashFunction.ComputeHash(plainBytes);
-            string cryptedPassword = string.Empty;
+            string hashedPassword = string.Empty;
             foreach (byte b in hashedBytes)
             {
-                cryptedPassword += string.Format("{0:x2}", b);
+                hashedPassword += string.Format("{0:x2}", b);
             }
-            return cryptedPassword;
+            return hashedPassword;
         }
         public static string SHA256HashBase64(string text)
         {
