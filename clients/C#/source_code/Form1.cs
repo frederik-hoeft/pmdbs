@@ -32,8 +32,8 @@ namespace pmdbs
         private string DataDetailsID;
         private IconData AddIcon = new IconData();
         private int DataPerPage = 25;
-        private int CurrentPage = 0;
-        private int CurrentContentCount = 0;
+        private int PreviousColorPage = 0;
+        private int PreviousColorContentCount = 0;
         int MaxPages = 1;
         public static void InvokeReload()
         {
@@ -229,7 +229,10 @@ namespace pmdbs
             SyncAnimationTimer.Tick += SyncAnimationTimer_Tick;
             windowButtonMinimize.OnClickEvent += windowButtonMinimize_Click;
             #endregion
+
             #endregion
+            AnimationTimer.Tick += AnimationTimer_Tick;
+            AnimationTimer.Interval = 10;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -374,7 +377,7 @@ namespace pmdbs
         #region DataPanel
         private void AddSingleEntry(DataRow newRow)
         {
-            if (CurrentContentCount > 24)
+            if (PreviousColorContentCount > 24)
             {
                 return;
             }
@@ -421,7 +424,7 @@ namespace pmdbs
             // invalidatedEntry SEEMS TO BE NEVER USED
             int ID = Convert.ToInt32(invalidatedRow["0"]);
             ListEntry invalidatedEntry = entryList.Where(element => element.id == ID).First();
-            ApplyFilter(CurrentPage);
+            ApplyFilter(PreviousColorPage);
         }
 
         private void RefreshUserData(int page)
@@ -441,27 +444,27 @@ namespace pmdbs
             // CHECK IF PAGE IS WITHIN BOUNDARIES
             if (page < MaxPages)
             {
-                CurrentPage = page;
+                PreviousColorPage = page;
             }
             else
             {
-                if (CurrentPage == MaxPages - 1)
+                if (PreviousColorPage == MaxPages - 1)
                 {
                     return;
                 }
                 else
                 {
-                    CurrentPage = MaxPages - 1 < 0 ? 0 : MaxPages - 1;
+                    PreviousColorPage = MaxPages - 1 < 0 ? 0 : MaxPages - 1;
                 }
             }
-            CurrentContentCount = 0;
+            PreviousColorContentCount = 0;
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataFlowLayoutPanelList.SuspendLayout();
             for (int i = 0; i < entryList.Count; i++)
             {
                 entryList[i].Hide();
             }
-            for (int i = CurrentPage * DataPerPage; ((CurrentPage * DataPerPage) + DataPerPage >= userData.Rows.Count) ? i < userData.Rows.Count : i < (CurrentPage * DataPerPage) + DataPerPage; i++)
+            for (int i = PreviousColorPage * DataPerPage; ((PreviousColorPage * DataPerPage) + DataPerPage >= userData.Rows.Count) ? i < userData.Rows.Count : i < (PreviousColorPage * DataPerPage) + DataPerPage; i++)
             {
                 int ID = Convert.ToInt32(userData.Rows[i]["0"]);
                 string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(userData.Rows[i]["2"].ToString())).ToString("u");
@@ -479,7 +482,7 @@ namespace pmdbs
                 entry.UserName = userData.Rows[i]["4"].ToString();
                 entry.id = ID;
                 entry.Show();
-                CurrentContentCount++;
+                PreviousColorContentCount++;
             }
             DataFlowLayoutPanelList.ResumeLayout();
             FlowLayoutPanel1_Resize(this, null);
@@ -733,7 +736,7 @@ namespace pmdbs
             }
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "DELETE FROM Tbl_data WHERE D_id = ", DataDetailsID, ";" }));
             GlobalVarPool.UserData.Rows.Remove(LinkedRow);
-            ApplyFilter(CurrentPage);
+            ApplyFilter(PreviousColorPage);
             DataPanelDetails.SuspendLayout();
             DataPanelNoSel.BringToFront();
             DataPanelNoSel.ResumeLayout();
@@ -741,15 +744,15 @@ namespace pmdbs
 
         private void DataLeftAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            if (CurrentPage != 0)
+            if (PreviousColorPage != 0)
             {
-                RefreshUserData(CurrentPage - 1);
+                RefreshUserData(PreviousColorPage - 1);
             }
         }
 
         private void DataRightAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            RefreshUserData(CurrentPage + 1);
+            RefreshUserData(PreviousColorPage + 1);
         }
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
@@ -968,7 +971,7 @@ namespace pmdbs
                     NewRow["7"] = Email.Equals("") ? "\x01" : Email;
                     NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
                     NewRow["9"] = favIcon;
-                    ApplyFilter(CurrentPage);
+                    ApplyFilter(PreviousColorPage);
                     AddPanelAdvancedImageButtonSave.Enabled = true;
                     AddPanelMain.SuspendLayout();
                     DataTableLayoutPanelMain.BringToFront();
@@ -1195,23 +1198,15 @@ namespace pmdbs
                 return;
             }
             LoginLabelRegisterError.ForeColor = Color.Firebrick;
-            List<object> PasswordStrength = PasswordChecker.chkPass(Password1);
-            int score = (int)PasswordStrength[0];
-            string meaning = (string)PasswordStrength[1];
-            LoginLabelRegisterError.Text = meaning + " (" + score.ToString() + " points)";
+            // Password.Result result = Password.Security.Check(Password1);
+            // int score = (int)PasswordStrength[0];
+            // string meaning = (string)PasswordStrength[1];
+            // LoginLabelRegisterError.Text = meaning + " (" + score.ToString() + " points)";
             PasswordScore Strength = PasswordAdvisor.CheckStrength(Password1);
             switch (Strength)
             {
                 case PasswordScore.Blank:
-                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
-                    LoginLabelRegisterError.Text = "Password too weak.";
-                    LoginButtonDisabled = false;
-                    return;
                 case PasswordScore.VeryWeak:
-                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
-                    LoginLabelRegisterError.Text = "Password too weak.";
-                    LoginButtonDisabled = false;
-                    return;
                 case PasswordScore.Weak:
                     LoginLabelRegisterError.ForeColor = Color.Firebrick;
                     LoginLabelRegisterError.Text = "Password too weak.";
@@ -1633,6 +1628,7 @@ namespace pmdbs
             }
         }
         #endregion
+
         #region FilterPanel
         private string previousTextBoxContent = string.Empty;
         private int previousIndex = 2;
@@ -1770,5 +1766,206 @@ namespace pmdbs
         }
 
         #endregion
+
+        private Color[] colors = new Color[] { Color.FromArgb(255, 0, 0), Color.FromArgb(255, 42, 0), Color.FromArgb(255, 84, 0), Color.FromArgb(255, 126, 0), Color.FromArgb(255, 168, 0), Color.FromArgb(255, 210, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(204, 255, 0), Color.FromArgb(153, 255, 0), Color.FromArgb(102, 255, 0), Color.FromArgb(51, 255, 0), Color.FromArgb(0, 255, 0) };
+        private Color PreviousColor = Color.Red;
+        private Color CurrentColor = Color.Red;
+        private Color NextColor = Color.Orange;
+        int astep, rstep, gstep, bstep;
+        private int steps = 20;
+        private int step = 0;
+        private int _AnimationInterval = 20;
+        private bool timerRunning = false;
+        private System.Windows.Forms.Timer AnimationTimer = new System.Windows.Forms.Timer();
+        private bool progress = false;
+        private int previousLength = 0;
+        private int globalIndex = 1;
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Brush brush = new SolidBrush(CurrentColor);
+            g.FillRectangle(brush, 0, 0, globalIndex * (panel1.Width / colors.Length), panel1.Height);
+            label14.ForeColor = CurrentColor;
+        }
+
+        private void editField1_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            string text = editField1.TextTextBox;
+            Password.Result result = Password.Security.Check(text);
+            int length = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
+            label14.Text = "Your password is " + result.Complexity + "!";
+            if (result.TimesSeen != 0)
+            {
+                length = 0;
+                label8.Visible = true;
+                label11.Visible = true;
+                label11.Text = "This password has been seen " + result.TimesSeen.ToString() + " times before";
+            }
+            else
+            {
+                label8.Visible = false;
+                label11.Visible = false;
+            }
+            globalIndex = length + 1;
+            progress = previousLength < length;
+            previousLength = length;
+            if (length < colors.Length)
+            {
+                if (progress)
+                {
+                    NextColor = colors[length];
+                    astep = Convert.ToInt32(NextColor.A - PreviousColor.A > 0 ? Math.Ceiling((double)(NextColor.A - PreviousColor.A) / (double)steps) : Math.Floor((double)(NextColor.A - PreviousColor.A) / (double)steps));
+                    rstep = Convert.ToInt32(NextColor.R - PreviousColor.R > 0 ? Math.Ceiling((double)(NextColor.R - PreviousColor.R) / (double)steps) : Math.Floor((double)(NextColor.R - PreviousColor.R) / (double)steps));
+                    gstep = Convert.ToInt32(NextColor.G - PreviousColor.G > 0 ? Math.Ceiling((double)(NextColor.G - PreviousColor.G) / (double)steps) : Math.Floor((double)(NextColor.G - PreviousColor.G) / (double)steps));
+                    bstep = Convert.ToInt32(NextColor.B - PreviousColor.B > 0 ? Math.Ceiling((double)(NextColor.B - PreviousColor.B) / (double)steps) : Math.Floor((double)(NextColor.B - PreviousColor.B) / (double)steps));
+                }
+                else
+                {
+                    PreviousColor = colors[length];
+                    astep = Convert.ToInt32(PreviousColor.A - NextColor.A > 0 ? Math.Ceiling((double)(PreviousColor.A - NextColor.A) / (double)steps) : Math.Floor((double)(PreviousColor.A - NextColor.A) / (double)steps));
+                    rstep = Convert.ToInt32(PreviousColor.R - NextColor.R > 0 ? Math.Ceiling((double)(PreviousColor.R - NextColor.R) / (double)steps) : Math.Floor((double)(PreviousColor.R - NextColor.R) / (double)steps));
+                    gstep = Convert.ToInt32(PreviousColor.G - NextColor.G > 0 ? Math.Ceiling((double)(PreviousColor.G - NextColor.G) / (double)steps) : Math.Floor((double)(PreviousColor.G - NextColor.G) / (double)steps));
+                    bstep = Convert.ToInt32(PreviousColor.B - NextColor.B > 0 ? Math.Ceiling((double)(PreviousColor.B - NextColor.B) / (double)steps) : Math.Floor((double)(PreviousColor.B - NextColor.B) / (double)steps));
+                }
+
+                if (!timerRunning)
+                {
+                    timerRunning = true;
+                    AnimationTimer.Start();
+                }
+            }
+        }
+
+        private void panel1_Click(object sender, EventArgs e)
+        {
+            
+        }
+        
+        private void AnimationTimer_Tick(object sender, EventArgs e)
+        {
+            int A, R, G, B;
+            if (progress)
+            {
+                if (NextColor.A > CurrentColor.A)
+                {
+                    A = (CurrentColor.A + astep > NextColor.A ? NextColor.A : CurrentColor.A + astep);
+                }
+                else if (NextColor.A < CurrentColor.A)
+                {
+                    A = (CurrentColor.A + astep < NextColor.A ? NextColor.A : CurrentColor.A + astep);
+                }
+                else
+                {
+                    A = NextColor.A;
+                }
+                if (NextColor.R > CurrentColor.R)
+                {
+                    R = (CurrentColor.R + rstep > NextColor.R ? NextColor.R : CurrentColor.R + rstep);
+                }
+                else if (NextColor.R < CurrentColor.R)
+                {
+                    R = (CurrentColor.R + rstep < NextColor.R ? NextColor.R : CurrentColor.R + rstep);
+                }
+                else
+                {
+                    R = NextColor.R;
+                }
+                if (NextColor.G > CurrentColor.G)
+                {
+                    G = (CurrentColor.G + gstep > NextColor.G ? NextColor.G : CurrentColor.G + gstep);
+                }
+                else if (NextColor.G < CurrentColor.G)
+                {
+                    G = (CurrentColor.G + gstep < NextColor.G ? NextColor.G : CurrentColor.G + gstep);
+                }
+                else
+                {
+                    G = NextColor.G;
+                }
+                if (NextColor.B > CurrentColor.B)
+                {
+                    B = (CurrentColor.B + bstep > NextColor.B ? NextColor.B : CurrentColor.B + bstep);
+                }
+                else if (NextColor.B < CurrentColor.B)
+                {
+                    B = (CurrentColor.B + bstep < NextColor.B ? NextColor.B : CurrentColor.B + bstep);
+                }
+                else
+                {
+                    B = NextColor.B;
+                }
+            }
+            else
+            {
+                if (PreviousColor.A > CurrentColor.A)
+                {
+                    A = (CurrentColor.A + astep > PreviousColor.A ? PreviousColor.A : CurrentColor.A + astep);
+                }
+                else if (PreviousColor.A < CurrentColor.A)
+                {
+                    A = (CurrentColor.A + astep < PreviousColor.A ? PreviousColor.A : CurrentColor.A + astep);
+                }
+                else
+                {
+                    A = PreviousColor.A;
+                }
+                if (PreviousColor.R > CurrentColor.R)
+                {
+                    R = CurrentColor.R + rstep > PreviousColor.R ? PreviousColor.R : CurrentColor.R + rstep;
+                }
+                else if (PreviousColor.R < CurrentColor.R)
+                {
+                    R = CurrentColor.R + rstep < PreviousColor.R ? PreviousColor.R : CurrentColor.R + rstep;
+                }
+                else
+                {
+                    R = PreviousColor.R;
+                }
+                if (PreviousColor.G > CurrentColor.G)
+                {
+                    G = CurrentColor.G + gstep > PreviousColor.G ? PreviousColor.G : CurrentColor.G + gstep;
+                }
+                else if (PreviousColor.G < CurrentColor.G)
+                {
+                    G = CurrentColor.G + gstep < PreviousColor.G ? PreviousColor.G : CurrentColor.G + gstep;
+                }
+                else
+                {
+                    G = PreviousColor.G;
+                }
+                if (PreviousColor.B > CurrentColor.B)
+                {
+                    B = CurrentColor.B + bstep > PreviousColor.B ? PreviousColor.B : CurrentColor.B + bstep;
+                }
+                else if (PreviousColor.B < CurrentColor.B)
+                {
+                    B = CurrentColor.B + bstep < PreviousColor.B ? PreviousColor.B : CurrentColor.B + bstep;
+                }
+                else
+                {
+                    B = PreviousColor.B;
+                }
+            }
+            CurrentColor = Color.FromArgb(R, G, B);
+            // panel1.BackColor = CurrentColor;
+            if (progress)
+            {
+                if (CurrentColor.Equals(NextColor))
+                {
+                    AnimationTimer.Stop();
+                    timerRunning = false;
+                }
+            }
+            else
+            {
+                if (CurrentColor.Equals(PreviousColor))
+                {
+                    AnimationTimer.Stop();
+                    timerRunning = false;
+                }
+            }
+            panel1.Invalidate();
+        }
     }
 }

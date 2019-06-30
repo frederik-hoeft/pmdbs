@@ -44,6 +44,13 @@ namespace pmdbs
             return Parts;
         }
 
+        public static string ReverseString(string s)
+        {
+            char[] arr = s.ToCharArray();
+            Array.Reverse(arr);
+            return new string(arr);
+        }
+
         public static string GetOS()
         {
             return Environment.OSVersion.VersionString;
