@@ -206,6 +206,14 @@ namespace pmdbs
                             Deduction amount is based on total password length divided by the
                             difference of distance between currently selected match
                             */
+                            if (symbols.Contains(password[a]))
+                            {
+                                repeatedCharacterDeduction += symbolMultiplier;
+                            }
+                            else if (!Regex.Match(password[a].ToString(), @"[A-Za-z0-9]").Success)
+                            {
+                                repeatedCharacterDeduction += unicodeMultiplier;
+                            }
                             repeatedCharacterDeduction += Math.Abs(passwordLength / (b - a));
                         }
                     }
