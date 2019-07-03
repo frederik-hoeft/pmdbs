@@ -70,18 +70,19 @@ namespace pmdbs
         }
         public static class Security
         {
+            private static StreamReader reader = null;
             public static Result OnlineCheck(string password)
             {
                 Result result = new Result(null, null, -1);
                 int isCompromized = -1;
                 int timesSeen = 0;
-                try
-                {
+                // try
+                // {
                     int[] onlineResult = IsCompromised(password);
                     isCompromized = onlineResult[0];
                     timesSeen = onlineResult[1];
-                }
-                catch { }
+                // }
+                // catch { }
                 return new Result(result, isCompromized, timesSeen);
             }
             public static Result SimpleCheck(string password)
@@ -102,16 +103,21 @@ namespace pmdbs
                 catch { }
                 return new Result(offlineResult, isCompromized, timesSeen);
             }
-            private static void CompromisedCheck(string password)
+            private static void DoWithResponse(WebRequest request, Action<WebResponse> responseAction)
             {
-                string result = CryptoHelper.SHA1Hash(password).ToUpper();
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                // get a list of all the possible passwords where the first 5 digits of the hash are the same
-                string url = "https://api.pwnedpasswords.com/range/" + result.Substring(0, 5);
-                int isCompromised = -1;
-                int timesSeen = 0;
-                WebRequest request = WebRequest.Create(url);
-                using (Stream response = request.BeginGetResponse(new AsyncCallback()).GetResponseStream())
+                Action wrapperAction = () =>
+                {
+                    request.BeginGetResponse(new AsyncCallback((iar) =>
+                    {
+                        var response = ((WebRequest)iar.AsyncState).EndGetResponse(iar);
+                        responseAction(response);
+                    }), request);
+                };
+                wrapperAction.BeginInvoke(new AsyncCallback((iar) =>
+                {
+                    var action = (Action)iar.AsyncState;
+                    action.EndInvoke(iar);
+                }), wrapperAction);
             }
             private static int[] IsCompromised(string password)
             {
@@ -122,26 +128,26 @@ namespace pmdbs
                 int isCompromised = -1;
                 int timesSeen = 0;
                 WebRequest request = WebRequest.Create(url);
-                using (Stream response = request.BeginGetResponse(new AsyncCallback()).GetResponseStream())
-                using (StreamReader reader = new StreamReader(response))
+                // init your request...then:
+                DoWithResponse(request, (response) => {
+                    Security.reader = new StreamReader(response.GetResponseStream());
+                });
+                // look at each possibility and compare the rest of the hash to see if there is a match
+                string hashToCheck = result.Substring(5);
+                while (true)
                 {
-                    // look at each possibility and compare the rest of the hash to see if there is a match
-                    string hashToCheck = result.Substring(5);
-                    while (true)
+                    string line = reader.ReadLine();
+                    if (line == null)
                     {
-                        string line = reader.ReadLine();
-                        if (line == null)
-                        {
-                            isCompromised = 0;
-                            break;
-                        }
-                        string[] parts = line.Split(':');
-                        if (parts[0].Equals(hashToCheck))
-                        {
-                            isCompromised = 1;
-                            timesSeen = Convert.ToInt32(parts[1]);
-                            break;
-                        }
+                        isCompromised = 0;
+                        break;
+                    }
+                    string[] parts = line.Split(':');
+                    if (parts[0].Equals(hashToCheck))
+                    {
+                        isCompromised = 1;
+                        timesSeen = Convert.ToInt32(parts[1]);
+                        break;
                     }
                 }
                 return new int[] { isCompromised, timesSeen };

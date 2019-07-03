@@ -1188,6 +1188,29 @@ namespace pmdbs
             LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
             Password.Result result = Password.Security.OnlineCheck(Password1);
+            LoginLabelRegisterError.ForeColor = Color.Firebrick;
+            string status = string.Empty;
+            switch (result.IsCompromised)
+            {
+                case 0:
+                    {
+                        status = "NOT compromised";
+                        break;
+                    }
+                case 1:
+                    {
+                        status = "COMPROMISED (" + result.TimesSeen.ToString() + " times)";
+                        break;
+                    }
+                default:
+                    {
+                        status = "error";
+                        break;
+                    }
+            }
+            LoginLabelRegisterError.Text = "This passwords is " + status;
+            LoginButtonDisabled = false;
+            return;
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
             if (!Password1.Equals(Password2))
             {
