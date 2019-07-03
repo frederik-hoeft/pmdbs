@@ -225,6 +225,14 @@ public class Password
                         Deduction amount is based on total password length divided by the
                         difference of distance between currently selected match
                         */
+						if (symbols.contains(passwordArray[a]))
+						{
+							repeatedCharacterDeduction += symbolMultiplier;
+						}
+						else if (!passwordArray[a].matches("[A-Za-z0-9]"))
+						{
+							repeatedCharacterDeduction += unicodeMultiplier;
+						}
                         repeatedCharacterDeduction += Math.abs(passwordLength / (b - a));
                     }
                 }
