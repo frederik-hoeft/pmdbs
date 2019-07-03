@@ -70,6 +70,28 @@ namespace pmdbs
         }
         public static class Security
         {
+            public static Task<Result> OnlineCheckAsync(string password)
+            {
+                return Task.Run(() => OnlineCheck(password));
+            }
+            public static Result OnlineCheck(string password)
+            {
+                Result result = new Result(null, null, -1);
+                int isCompromized = -1;
+                int timesSeen = 0;
+                try
+                {
+                    int[] onlineResult = IsCompromised(password);
+                    isCompromized = onlineResult[0];
+                    timesSeen = onlineResult[1];
+                }
+                catch { }
+                return new Result(result, isCompromized, timesSeen);
+            }
+            public static Result SimpleCheck(string password)
+            {
+                return Analyze(password);
+            }
             public static Result Check(string password)
             {
                 Result offlineResult = Analyze(password);
@@ -121,12 +143,12 @@ namespace pmdbs
             {
                 // Originally created by: Jeff Todnem (http://www.todnem.com/) in Javascript
                 // Ported to C# by Frederik Höft
-                int score = 0, upperCaseCount = 0, lowerCaseCount = 0, numberCount = 0, symbolCount = 0, unicodeCount = 0, middleSpecialCharacterCount = 0, nRequirements = 0, nAlphasOnly = 0, nNumbersOnly = 0, uniqueCharacterCount = 0, repeatedCharacterCount = 0, repeatedCharacterDeduction = 0, consecutiveUpperCaseCount = 0, consecutiveLowerCaseCount = 0, consecutiveNumberCount = 0, consecutiveSymbolCount = 0, consecutiveUnicodeCount = 0, consecutiveCharacterTypeCount = 0, sequentialLetterCount = 0, sequentialNumberCount = 0, sequentialSymbolCount = 0, sequentialUnicodeCount = 0, sequentialCharacterCount = 0, fulfilledRequirementsCount = 0;
-                int middleSpecialCharacterMultiplier = 2, consecutiveUpperCaseMultiplier = 2, consecutiveLowerCaseMultiplier = 2, consecutiveNumberMultiplier = 2, unicodeMultiplier = 25;
-                int sequentialLetterMultiplier = 3, sequentialNumberMultiplier = 3, sequentialSymbolMultiplier = 2;
-                int lengthMultipier = 4, numberMultiplier = 4;
-                int symbolMultiplier = 6;
-                int upperCaseLastIndex = 0, lowerCaseLastIndex = 0, numberLastIndex = 0, symbolLastIndex = 0, unicodeLastIndex = 0;
+                int score = 0, upperCaseCount = 0, lowerCaseCount = 0, numberCount = 0, symbolCount = 0, unicodeCount = 0, middleSpecialCharacterCount = 0, nRequirements = 0, uniqueCharacterCount = 0, repeatedCharacterCount = 0, repeatedCharacterDeduction = 0, consecutiveUpperCaseCount = 0, consecutiveLowerCaseCount = 0, consecutiveNumberCount = 0, sequentialLetterCount = 0, sequentialNumberCount = 0, sequentialSymbolCount = 0, sequentialUnicodeCount = 0, sequentialCharacterCount = 0, fulfilledRequirementsCount = 0;
+                int middleSpecialCharacterMultiplier = 2, consecutiveUpperCaseMultiplier = 2, consecutiveLowerCaseMultiplier = 2, consecutiveNumberMultiplier = 2, unicodeMultiplier = 30;
+                int sequentialLetterMultiplier = 3, sequentialNumberMultiplier = 3, sequentialSymbolMultiplier = 2, sequentialUnicodeMultiplier = 1;
+                int lengthMultipier = 6, numberMultiplier = 4;
+                int symbolMultiplier = 8;
+                int upperCaseLastIndex = -1, lowerCaseLastIndex = -1, numberLastIndex = -1;
                 string alphabet = "abcdefghijklmnopqrstuvwxyz";
                 string keyboard = "qwertyuiopasdfghjklzxcvbnm";
                 string numbers = "01234567890";
@@ -145,7 +167,6 @@ namespace pmdbs
                         if (upperCaseLastIndex != 0 && (upperCaseLastIndex + 1) == a)
                         {
                             consecutiveUpperCaseCount++;
-                            consecutiveCharacterTypeCount++;
                         }
                         upperCaseLastIndex = a;
                         upperCaseCount++;
@@ -156,7 +177,6 @@ namespace pmdbs
                         if (lowerCaseLastIndex != 0 && (lowerCaseLastIndex + 1) == a)
                         {
                             consecutiveLowerCaseCount++;
-                            consecutiveCharacterTypeCount++;
                         }
                         lowerCaseLastIndex = a;
                         lowerCaseCount++;
@@ -171,7 +191,6 @@ namespace pmdbs
                         if (numberLastIndex != 0 && (numberLastIndex + 1) == a)
                         {
                             consecutiveNumberCount++;
-                            consecutiveCharacterTypeCount++;
                         }
                         numberLastIndex = a;
                         numberCount++;
@@ -182,13 +201,6 @@ namespace pmdbs
                         {
                             middleSpecialCharacterCount++;
                         }
-                        // Check if previous character was a symbol as well
-                        if (symbolLastIndex != 0 && (symbolLastIndex + 1) == a)
-                        {
-                            consecutiveSymbolCount++;
-                            consecutiveCharacterTypeCount++;
-                        }
-                        symbolLastIndex = a;
                         symbolCount++;
                     }
                     else
@@ -197,13 +209,6 @@ namespace pmdbs
                         {
                             middleSpecialCharacterCount++;
                         }
-                        // Check if previous character was unicode as well
-                        if (unicodeLastIndex != 0 && (unicodeLastIndex + 1) == a)
-                        {
-                            consecutiveUnicodeCount++;
-                            consecutiveCharacterTypeCount++;
-                        }
-                        unicodeLastIndex = a;
                         unicodeCount++;
                     }
                     /* Internal loop through password to check for repeat characters */
@@ -219,6 +224,14 @@ namespace pmdbs
                             Deduction amount is based on total password length divided by the
                             difference of distance between currently selected match
                             */
+                            if (symbols.Contains(password[a]))
+                            {
+                                repeatedCharacterDeduction += symbolMultiplier;
+                            }
+                            else if (!Regex.Match(password[a].ToString(), @"[A-Za-z0-9]").Success)
+                            {
+                                repeatedCharacterDeduction += unicodeMultiplier;
+                            }
                             repeatedCharacterDeduction += Math.Abs(passwordLength / (b - a));
                         }
                     }
@@ -267,20 +280,6 @@ namespace pmdbs
                         sequentialCharacterCount++;
                     }
                 }
-                if (unicodeCount != 0)
-                {
-                    /* Check for sequential unicode string patterns (forward and reverse) */
-                    for (int i = 0; i < 131069; i++)
-                    {
-                        string sequence = i.ToString("X8") + (i + 1).ToString("X8") + (i + 2).ToString("X8");
-                        string reversedSequence = HelperMethods.ReverseString(sequence);
-                        if (password.ToLower().Contains(sequence.ToLower()) || password.ToLower().Contains(reversedSequence.ToLower()))
-                        {
-                            sequentialUnicodeCount++;
-                            sequentialCharacterCount++;
-                        }
-                    }
-                }
 
                 /* Modify overall score value based on usage vs requirements */
 
@@ -313,12 +312,10 @@ namespace pmdbs
                 if ((lowerCaseCount > 0 || upperCaseCount > 0) && symbolCount == 0 && numberCount == 0)
                 {  // Only Letters
                     score = score - passwordLength;
-                    nAlphasOnly = passwordLength;
                 }
                 if (lowerCaseCount == 0 && upperCaseCount == 0 && symbolCount == 0 && numberCount > 0)
                 {  // Only Numbers
                     score = score - passwordLength;
-                    nNumbersOnly = passwordLength;
                 }
                 if (repeatedCharacterCount > 0)
                 {  // Same character exists more than once
@@ -347,6 +344,14 @@ namespace pmdbs
                 if (sequentialSymbolCount > 0)
                 {  // Sequential symbol strings exist (3 characters or more)
                     score = score - (sequentialSymbolCount * sequentialSymbolMultiplier);
+                }
+                if (sequentialUnicodeCount > 0)
+                {  // Sequential unicode strings exist (3 characters or more)
+                    score = score - (sequentialUnicodeCount * sequentialUnicodeMultiplier);
+                }
+                if (sequentialCharacterCount > 0)
+                {  // Sequential characters exist (3 characters or more)
+                    score = score - sequentialCharacterCount;
                 }
 
                 /* Determine if mandatory requirements have been met and set image indicators accordingly */
