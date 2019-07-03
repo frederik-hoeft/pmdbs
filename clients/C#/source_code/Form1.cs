@@ -1247,6 +1247,9 @@ namespace pmdbs
             }
             Password.Result result = Password.Security.SimpleCheck(password);
             int strength = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
+            LoginPasswordStrengthIndicatorRegister.SetIndex(strength);
+            LoginLabelRegisterPasswordStrengthIndicator.ForeColor = LoginPasswordStrengthIndicatorRegister.Colors[strength];
+            LoginLabelRegisterPasswordStrengthIndicator.Text = result.Complexity;
         }
 
         #endregion
@@ -1777,42 +1780,5 @@ namespace pmdbs
         }
 
         #endregion
-
-        private void editField1_TextBoxTextChanged(object sender, EventArgs e)
-        {
-            string text = editField1.TextTextBox;
-            Password.Result result = Password.Security.Check(text);
-            int length = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
-            label14.Text = "Your password is " + result.Complexity + " (" + result.Score.ToString() + " points)!";
-            if (result.TimesSeen != 0)
-            {
-                length = 0;
-                label8.Visible = true;
-                label11.Visible = true;
-                label11.Text = "This password has been seen " + result.TimesSeen.ToString() + " times before";
-            }
-            else
-            {
-                label8.Visible = false;
-                label11.Visible = false;
-            }
-            passwordStrengthIndicator1.SetIndex(length);
-            /*globalIndex = length + 1;
-            progress = previousLength < length;
-            previousLength = length;
-            if (length < colors.Length)
-            {
-                if (progress)
-                {
-                    
-                }
-                else
-                {
-                    passwordStrengthIndicator1
-                }
-            }*/
-        }
-
-        
     }
 }
