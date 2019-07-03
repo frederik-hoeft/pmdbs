@@ -1243,6 +1243,7 @@ namespace pmdbs
             {
                 LoginLabelRegisterPasswordStrengthIndicator.Text = "...";
                 LoginLabelRegisterPasswordStrengthIndicator.ForeColor = Color.White;
+                LoginPasswordStrengthIndicatorRegister.SetIndex(0);
                 return;
             }
             Password.Result result = Password.Security.SimpleCheck(password);
