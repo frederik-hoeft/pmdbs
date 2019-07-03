@@ -231,8 +231,6 @@ namespace pmdbs
             #endregion
 
             #endregion
-            AnimationTimer.Tick += AnimationTimer_Tick;
-            AnimationTimer.Interval = 10;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -1767,34 +1765,12 @@ namespace pmdbs
 
         #endregion
 
-        private Color[] colors = new Color[] { Color.FromArgb(255, 0, 0), Color.FromArgb(255, 42, 0), Color.FromArgb(255, 84, 0), Color.FromArgb(255, 126, 0), Color.FromArgb(255, 168, 0), Color.FromArgb(255, 210, 0), Color.FromArgb(255, 255, 0), Color.FromArgb(204, 255, 0), Color.FromArgb(153, 255, 0), Color.FromArgb(102, 255, 0), Color.FromArgb(51, 255, 0), Color.FromArgb(0, 255, 0) };
-        private Color PreviousColor = Color.Red;
-        private Color CurrentColor = Color.Red;
-        private Color NextColor = Color.Orange;
-        int astep, rstep, gstep, bstep;
-        private int steps = 20;
-        private int step = 0;
-        private int _AnimationInterval = 20;
-        private bool timerRunning = false;
-        private System.Windows.Forms.Timer AnimationTimer = new System.Windows.Forms.Timer();
-        private bool progress = false;
-        private int previousLength = 0;
-        private int globalIndex = 1;
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics g = e.Graphics;
-            Brush brush = new SolidBrush(CurrentColor);
-            g.FillRectangle(brush, 0, 0, globalIndex * (panel1.Width / colors.Length), panel1.Height);
-            label14.ForeColor = CurrentColor;
-        }
-
         private void editField1_TextBoxTextChanged(object sender, EventArgs e)
         {
             string text = editField1.TextTextBox;
             Password.Result result = Password.Security.Check(text);
             int length = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
-            label14.Text = "Your password is " + result.Complexity + "!";
+            label14.Text = "Your password is " + result.Complexity + " (" + result.Score.ToString() + " points)!";
             if (result.TimesSeen != 0)
             {
                 length = 0;
@@ -1807,165 +1783,21 @@ namespace pmdbs
                 label8.Visible = false;
                 label11.Visible = false;
             }
-            globalIndex = length + 1;
+            passwordStrengthIndicator1.SetIndex(length);
+            /*globalIndex = length + 1;
             progress = previousLength < length;
             previousLength = length;
             if (length < colors.Length)
             {
                 if (progress)
                 {
-                    NextColor = colors[length];
-                    astep = Convert.ToInt32(NextColor.A - PreviousColor.A > 0 ? Math.Ceiling((double)(NextColor.A - PreviousColor.A) / (double)steps) : Math.Floor((double)(NextColor.A - PreviousColor.A) / (double)steps));
-                    rstep = Convert.ToInt32(NextColor.R - PreviousColor.R > 0 ? Math.Ceiling((double)(NextColor.R - PreviousColor.R) / (double)steps) : Math.Floor((double)(NextColor.R - PreviousColor.R) / (double)steps));
-                    gstep = Convert.ToInt32(NextColor.G - PreviousColor.G > 0 ? Math.Ceiling((double)(NextColor.G - PreviousColor.G) / (double)steps) : Math.Floor((double)(NextColor.G - PreviousColor.G) / (double)steps));
-                    bstep = Convert.ToInt32(NextColor.B - PreviousColor.B > 0 ? Math.Ceiling((double)(NextColor.B - PreviousColor.B) / (double)steps) : Math.Floor((double)(NextColor.B - PreviousColor.B) / (double)steps));
+                    
                 }
                 else
                 {
-                    PreviousColor = colors[length];
-                    astep = Convert.ToInt32(PreviousColor.A - NextColor.A > 0 ? Math.Ceiling((double)(PreviousColor.A - NextColor.A) / (double)steps) : Math.Floor((double)(PreviousColor.A - NextColor.A) / (double)steps));
-                    rstep = Convert.ToInt32(PreviousColor.R - NextColor.R > 0 ? Math.Ceiling((double)(PreviousColor.R - NextColor.R) / (double)steps) : Math.Floor((double)(PreviousColor.R - NextColor.R) / (double)steps));
-                    gstep = Convert.ToInt32(PreviousColor.G - NextColor.G > 0 ? Math.Ceiling((double)(PreviousColor.G - NextColor.G) / (double)steps) : Math.Floor((double)(PreviousColor.G - NextColor.G) / (double)steps));
-                    bstep = Convert.ToInt32(PreviousColor.B - NextColor.B > 0 ? Math.Ceiling((double)(PreviousColor.B - NextColor.B) / (double)steps) : Math.Floor((double)(PreviousColor.B - NextColor.B) / (double)steps));
+                    passwordStrengthIndicator1
                 }
-
-                if (!timerRunning)
-                {
-                    timerRunning = true;
-                    AnimationTimer.Start();
-                }
-            }
-        }
-
-        private void panel1_Click(object sender, EventArgs e)
-        {
-            
-        }
-        
-        private void AnimationTimer_Tick(object sender, EventArgs e)
-        {
-            int A, R, G, B;
-            if (progress)
-            {
-                if (NextColor.A > CurrentColor.A)
-                {
-                    A = (CurrentColor.A + astep > NextColor.A ? NextColor.A : CurrentColor.A + astep);
-                }
-                else if (NextColor.A < CurrentColor.A)
-                {
-                    A = (CurrentColor.A + astep < NextColor.A ? NextColor.A : CurrentColor.A + astep);
-                }
-                else
-                {
-                    A = NextColor.A;
-                }
-                if (NextColor.R > CurrentColor.R)
-                {
-                    R = (CurrentColor.R + rstep > NextColor.R ? NextColor.R : CurrentColor.R + rstep);
-                }
-                else if (NextColor.R < CurrentColor.R)
-                {
-                    R = (CurrentColor.R + rstep < NextColor.R ? NextColor.R : CurrentColor.R + rstep);
-                }
-                else
-                {
-                    R = NextColor.R;
-                }
-                if (NextColor.G > CurrentColor.G)
-                {
-                    G = (CurrentColor.G + gstep > NextColor.G ? NextColor.G : CurrentColor.G + gstep);
-                }
-                else if (NextColor.G < CurrentColor.G)
-                {
-                    G = (CurrentColor.G + gstep < NextColor.G ? NextColor.G : CurrentColor.G + gstep);
-                }
-                else
-                {
-                    G = NextColor.G;
-                }
-                if (NextColor.B > CurrentColor.B)
-                {
-                    B = (CurrentColor.B + bstep > NextColor.B ? NextColor.B : CurrentColor.B + bstep);
-                }
-                else if (NextColor.B < CurrentColor.B)
-                {
-                    B = (CurrentColor.B + bstep < NextColor.B ? NextColor.B : CurrentColor.B + bstep);
-                }
-                else
-                {
-                    B = NextColor.B;
-                }
-            }
-            else
-            {
-                if (PreviousColor.A > CurrentColor.A)
-                {
-                    A = (CurrentColor.A + astep > PreviousColor.A ? PreviousColor.A : CurrentColor.A + astep);
-                }
-                else if (PreviousColor.A < CurrentColor.A)
-                {
-                    A = (CurrentColor.A + astep < PreviousColor.A ? PreviousColor.A : CurrentColor.A + astep);
-                }
-                else
-                {
-                    A = PreviousColor.A;
-                }
-                if (PreviousColor.R > CurrentColor.R)
-                {
-                    R = CurrentColor.R + rstep > PreviousColor.R ? PreviousColor.R : CurrentColor.R + rstep;
-                }
-                else if (PreviousColor.R < CurrentColor.R)
-                {
-                    R = CurrentColor.R + rstep < PreviousColor.R ? PreviousColor.R : CurrentColor.R + rstep;
-                }
-                else
-                {
-                    R = PreviousColor.R;
-                }
-                if (PreviousColor.G > CurrentColor.G)
-                {
-                    G = CurrentColor.G + gstep > PreviousColor.G ? PreviousColor.G : CurrentColor.G + gstep;
-                }
-                else if (PreviousColor.G < CurrentColor.G)
-                {
-                    G = CurrentColor.G + gstep < PreviousColor.G ? PreviousColor.G : CurrentColor.G + gstep;
-                }
-                else
-                {
-                    G = PreviousColor.G;
-                }
-                if (PreviousColor.B > CurrentColor.B)
-                {
-                    B = CurrentColor.B + bstep > PreviousColor.B ? PreviousColor.B : CurrentColor.B + bstep;
-                }
-                else if (PreviousColor.B < CurrentColor.B)
-                {
-                    B = CurrentColor.B + bstep < PreviousColor.B ? PreviousColor.B : CurrentColor.B + bstep;
-                }
-                else
-                {
-                    B = PreviousColor.B;
-                }
-            }
-            CurrentColor = Color.FromArgb(R, G, B);
-            // panel1.BackColor = CurrentColor;
-            if (progress)
-            {
-                if (CurrentColor.Equals(NextColor))
-                {
-                    AnimationTimer.Stop();
-                    timerRunning = false;
-                }
-            }
-            else
-            {
-                if (CurrentColor.Equals(PreviousColor))
-                {
-                    AnimationTimer.Stop();
-                    timerRunning = false;
-                }
-            }
-            panel1.Invalidate();
-        }
+            }*/
+        } 
     }
 }

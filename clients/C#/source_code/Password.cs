@@ -70,6 +70,10 @@ namespace pmdbs
         }
         public static class Security
         {
+            public static Result SimpleCheck(string password)
+            {
+                return Analyze(password);
+            }
             public static Result Check(string password)
             {
                 Result offlineResult = Analyze(password);

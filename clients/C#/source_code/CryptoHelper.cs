@@ -10,7 +10,7 @@ using CryptSharp.Utility;
 
 namespace pmdbs
 {
-    class CryptoHelper
+    public static class CryptoHelper
     {
         #region AES
         // using AES with:

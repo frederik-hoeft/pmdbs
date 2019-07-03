@@ -58,8 +58,10 @@
             this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
             this.DataPanelNoSel = new System.Windows.Forms.Panel();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.editField1 = new CustomMetroForms.EditField();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
             this.DataNoSelLabel5 = new System.Windows.Forms.Label();
             this.DataNoSelLabel4 = new System.Windows.Forms.Label();
@@ -316,9 +318,7 @@
             this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
             this.windowButtonMinimize = new CustomMetroForms.WindowButton();
             this.windowButtonClose = new CustomMetroForms.WindowButton();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
+            this.passwordStrengthIndicator1 = new CustomMetroForms.PasswordStrengthIndicator();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -804,11 +804,11 @@
             // 
             // DataPanelNoSel
             // 
+            this.DataPanelNoSel.Controls.Add(this.passwordStrengthIndicator1);
             this.DataPanelNoSel.Controls.Add(this.label14);
             this.DataPanelNoSel.Controls.Add(this.label11);
             this.DataPanelNoSel.Controls.Add(this.label8);
             this.DataPanelNoSel.Controls.Add(this.editField1);
-            this.DataPanelNoSel.Controls.Add(this.panel1);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabelHeader);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel5);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel4);
@@ -824,6 +824,44 @@
             this.DataPanelNoSel.Name = "DataPanelNoSel";
             this.DataPanelNoSel.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelNoSel.TabIndex = 32;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.BackColor = System.Drawing.Color.White;
+            this.label14.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.label14.ForeColor = System.Drawing.Color.Red;
+            this.label14.Location = new System.Drawing.Point(44, 724);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(378, 28);
+            this.label14.TabIndex = 25;
+            this.label14.Text = "Your password is Embarrassing!";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.White;
+            this.label11.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
+            this.label11.ForeColor = System.Drawing.Color.Red;
+            this.label11.Location = new System.Drawing.Point(47, 888);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(620, 28);
+            this.label11.TabIndex = 24;
+            this.label11.Text = "This password has been seen 3,645,804 times before.";
+            this.label11.Visible = false;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.White;
+            this.label8.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Bold);
+            this.label8.ForeColor = System.Drawing.Color.Red;
+            this.label8.Location = new System.Drawing.Point(11, 798);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(31, 47);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "!";
+            this.label8.Visible = false;
             // 
             // editField1
             // 
@@ -850,16 +888,6 @@
             this.editField1.UseDefaultValue = true;
             this.editField1.UseSystemPasswordChar = false;
             this.editField1.TextBoxTextChanged += new System.EventHandler(this.editField1_TextBoxTextChanged);
-            // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Location = new System.Drawing.Point(49, 852);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(511, 14);
-            this.panel1.TabIndex = 21;
-            this.panel1.Click += new System.EventHandler(this.panel1_Click);
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // DataNoSelLabelHeader
             // 
@@ -4456,43 +4484,26 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
-            // label8
+            // passwordStrengthIndicator1
             // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.White;
-            this.label8.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Bold);
-            this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(11, 798);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 47);
-            this.label8.TabIndex = 23;
-            this.label8.Text = "!";
-            this.label8.Visible = false;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.White;
-            this.label11.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label11.ForeColor = System.Drawing.Color.Red;
-            this.label11.Location = new System.Drawing.Point(47, 888);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(620, 28);
-            this.label11.TabIndex = 24;
-            this.label11.Text = "This password has been seen 3,645,804 times before.";
-            this.label11.Visible = false;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.BackColor = System.Drawing.Color.White;
-            this.label14.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label14.ForeColor = System.Drawing.Color.Red;
-            this.label14.Location = new System.Drawing.Point(44, 724);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(378, 28);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "Your password is Embarrassing!";
+            this.passwordStrengthIndicator1.Colors = new System.Drawing.Color[] {
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
+            this.passwordStrengthIndicator1.CurrentColor = System.Drawing.Color.Red;
+            this.passwordStrengthIndicator1.Location = new System.Drawing.Point(50, 859);
+            this.passwordStrengthIndicator1.Name = "passwordStrengthIndicator1";
+            this.passwordStrengthIndicator1.Size = new System.Drawing.Size(510, 10);
+            this.passwordStrengthIndicator1.TabIndex = 26;
             // 
             // Form1
             // 
@@ -4951,11 +4962,11 @@
         private CustomMetroForms.AnimatedButton SettingsAnimatedButtonOnlineChangeServerLogin;
         private System.Windows.Forms.Label SettingsLabelOnlineChangeServerDescription;
         private System.Windows.Forms.Label SettingsLabelOnlineChangeServer;
-        private System.Windows.Forms.Panel panel1;
         private CustomMetroForms.EditField editField1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label14;
+        private CustomMetroForms.PasswordStrengthIndicator passwordStrengthIndicator1;
     }
 }
 
