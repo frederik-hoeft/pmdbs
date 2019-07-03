@@ -70,6 +70,20 @@ namespace pmdbs
         }
         public static class Security
         {
+            public static Result OnlineCheck(string password)
+            {
+                Result result = new Result(null, null, -1);
+                int isCompromized = -1;
+                int timesSeen = 0;
+                try
+                {
+                    int[] onlineResult = IsCompromised(password);
+                    isCompromized = onlineResult[0];
+                    timesSeen = onlineResult[1];
+                }
+                catch { }
+                return new Result(result, isCompromized, timesSeen);
+            }
             public static Result SimpleCheck(string password)
             {
                 return Analyze(password);
@@ -88,6 +102,17 @@ namespace pmdbs
                 catch { }
                 return new Result(offlineResult, isCompromized, timesSeen);
             }
+            private static void CompromisedCheck(string password)
+            {
+                string result = CryptoHelper.SHA1Hash(password).ToUpper();
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                // get a list of all the possible passwords where the first 5 digits of the hash are the same
+                string url = "https://api.pwnedpasswords.com/range/" + result.Substring(0, 5);
+                int isCompromised = -1;
+                int timesSeen = 0;
+                WebRequest request = WebRequest.Create(url);
+                using (Stream response = request.BeginGetResponse(new AsyncCallback()).GetResponseStream())
+            }
             private static int[] IsCompromised(string password)
             {
                 string result = CryptoHelper.SHA1Hash(password).ToUpper();
@@ -97,7 +122,7 @@ namespace pmdbs
                 int isCompromised = -1;
                 int timesSeen = 0;
                 WebRequest request = WebRequest.Create(url);
-                using (Stream response = request.GetResponse().GetResponseStream())
+                using (Stream response = request.BeginGetResponse(new AsyncCallback()).GetResponseStream())
                 using (StreamReader reader = new StreamReader(response))
                 {
                     // look at each possibility and compare the rest of the hash to see if there is a match

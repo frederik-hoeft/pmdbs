@@ -2498,9 +2498,9 @@
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterTitle);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword2);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword);
-            this.LoginPanelRegisterCredentials.Location = new System.Drawing.Point(64, 245);
+            this.LoginPanelRegisterCredentials.Location = new System.Drawing.Point(64, 240);
             this.LoginPanelRegisterCredentials.Name = "LoginPanelRegisterCredentials";
-            this.LoginPanelRegisterCredentials.Size = new System.Drawing.Size(523, 463);
+            this.LoginPanelRegisterCredentials.Size = new System.Drawing.Size(523, 468);
             this.LoginPanelRegisterCredentials.TabIndex = 4;
             // 
             // LoginLabelRegisterDescription
@@ -2508,7 +2508,7 @@
             this.LoginLabelRegisterDescription.AutoSize = true;
             this.LoginLabelRegisterDescription.Font = new System.Drawing.Font("Century Gothic", 9F);
             this.LoginLabelRegisterDescription.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterDescription.Location = new System.Drawing.Point(29, 64);
+            this.LoginLabelRegisterDescription.Location = new System.Drawing.Point(29, 66);
             this.LoginLabelRegisterDescription.Name = "LoginLabelRegisterDescription";
             this.LoginLabelRegisterDescription.Size = new System.Drawing.Size(491, 84);
             this.LoginLabelRegisterDescription.TabIndex = 4;
@@ -2521,7 +2521,7 @@
             this.LoginLabelRegisterError.AutoSize = true;
             this.LoginLabelRegisterError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginLabelRegisterError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginLabelRegisterError.Location = new System.Drawing.Point(30, 418);
+            this.LoginLabelRegisterError.Location = new System.Drawing.Point(30, 416);
             this.LoginLabelRegisterError.Name = "LoginLabelRegisterError";
             this.LoginLabelRegisterError.Size = new System.Drawing.Size(211, 30);
             this.LoginLabelRegisterError.TabIndex = 3;
@@ -2532,7 +2532,7 @@
             this.LoginLabelRegisterTitle.AutoSize = true;
             this.LoginLabelRegisterTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.LoginLabelRegisterTitle.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterTitle.Location = new System.Drawing.Point(29, 18);
+            this.LoginLabelRegisterTitle.Location = new System.Drawing.Point(29, 21);
             this.LoginLabelRegisterTitle.Name = "LoginLabelRegisterTitle";
             this.LoginLabelRegisterTitle.Size = new System.Drawing.Size(248, 28);
             this.LoginLabelRegisterTitle.TabIndex = 2;
@@ -2544,7 +2544,7 @@
             this.LoginLabelRegisterMain.BackColor = System.Drawing.Color.Transparent;
             this.LoginLabelRegisterMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginLabelRegisterMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterMain.Location = new System.Drawing.Point(237, 197);
+            this.LoginLabelRegisterMain.Location = new System.Drawing.Point(237, 192);
             this.LoginLabelRegisterMain.Name = "LoginLabelRegisterMain";
             this.LoginLabelRegisterMain.Size = new System.Drawing.Size(177, 39);
             this.LoginLabelRegisterMain.TabIndex = 8;

@@ -1187,6 +1187,7 @@ namespace pmdbs
             LoginButtonDisabled = true;
             LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
+            Password.Result result = Password.Security.OnlineCheck(Password1);
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
             if (!Password1.Equals(Password2))
             {
