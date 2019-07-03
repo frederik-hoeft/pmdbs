@@ -148,7 +148,7 @@ public class Password
             int sequentialLetterMultiplier = 3, sequentialNumberMultiplier = 3, sequentialSymbolMultiplier = 2, sequentialUnicodeMultiplier = 1;
             int lengthMultipier = 6, numberMultiplier = 4;
             int symbolMultiplier = 8;
-            int upperCaseLastIndex = -1, lowerCaseLastIndex = -1, numberLastIndex = -1, symbolLastIndex = -1, unicodeLastIndex = -1;
+            int upperCaseLastIndex = -1, lowerCaseLastIndex = -1, numberLastIndex = -1;
             String alphabet = "abcdefghijklmnopqrstuvwxyz";
             String keyboard = "qwertyuiopasdfghjklzxcvbnm";
             String numbers = "01234567890";
@@ -202,11 +202,6 @@ public class Password
                     {
                         middleSpecialCharacterCount++;
                     }
-                    // Check if previous character was a symbol as well
-                    if (symbolLastIndex != -1 && (symbolLastIndex + 1) == a)
-                    {
-                    }
-                    symbolLastIndex = a;
                     symbolCount++;
                 }
                 else
@@ -215,11 +210,6 @@ public class Password
                     {
                         middleSpecialCharacterCount++;
                     }
-                    // Check if previous character was unicode as well
-                    if (unicodeLastIndex != 0 && (unicodeLastIndex + 1) == a)
-                    {
-                    }
-                    unicodeLastIndex = a;
                     unicodeCount++;
                 }
                 /* Internal loop through password to check for repeat characters */
