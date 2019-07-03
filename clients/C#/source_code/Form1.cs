@@ -1236,6 +1236,19 @@ namespace pmdbs
             this.MaximumSize = MaxSize;
         }
 
+        private void LoginEditFieldRegisterPassword_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            string password = LoginEditFieldRegisterPassword.TextTextBox;
+            if (string.IsNullOrEmpty(password))
+            {
+                LoginLabelRegisterPasswordStrengthIndicator.Text = "...";
+                LoginLabelRegisterPasswordStrengthIndicator.ForeColor = Color.White;
+                return;
+            }
+            Password.Result result = Password.Security.SimpleCheck(password);
+            int strength = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
+        }
+
         #endregion
 
         #region SettingsPanel
@@ -1798,6 +1811,8 @@ namespace pmdbs
                     passwordStrengthIndicator1
                 }
             }*/
-        } 
+        }
+
+        
     }
 }

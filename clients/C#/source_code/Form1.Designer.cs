@@ -58,10 +58,6 @@
             this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
             this.DataPanelNoSel = new System.Windows.Forms.Panel();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.editField1 = new CustomMetroForms.EditField();
             this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
             this.DataNoSelLabel5 = new System.Windows.Forms.Label();
             this.DataNoSelLabel4 = new System.Windows.Forms.Label();
@@ -318,7 +314,9 @@
             this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
             this.windowButtonMinimize = new CustomMetroForms.WindowButton();
             this.windowButtonClose = new CustomMetroForms.WindowButton();
-            this.passwordStrengthIndicator1 = new CustomMetroForms.PasswordStrengthIndicator();
+            this.LoginPasswordStrengthIndicatorRegister = new CustomMetroForms.PasswordStrengthIndicator();
+            this.LoginLabelRegisterPasswordStrengthHeader = new System.Windows.Forms.Label();
+            this.LoginLabelRegisterPasswordStrengthIndicator = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -804,11 +802,6 @@
             // 
             // DataPanelNoSel
             // 
-            this.DataPanelNoSel.Controls.Add(this.passwordStrengthIndicator1);
-            this.DataPanelNoSel.Controls.Add(this.label14);
-            this.DataPanelNoSel.Controls.Add(this.label11);
-            this.DataPanelNoSel.Controls.Add(this.label8);
-            this.DataPanelNoSel.Controls.Add(this.editField1);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabelHeader);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel5);
             this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel4);
@@ -824,70 +817,6 @@
             this.DataPanelNoSel.Name = "DataPanelNoSel";
             this.DataPanelNoSel.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelNoSel.TabIndex = 32;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.BackColor = System.Drawing.Color.White;
-            this.label14.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label14.ForeColor = System.Drawing.Color.Red;
-            this.label14.Location = new System.Drawing.Point(44, 724);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(378, 28);
-            this.label14.TabIndex = 25;
-            this.label14.Text = "Your password is Embarrassing!";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.BackColor = System.Drawing.Color.White;
-            this.label11.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
-            this.label11.ForeColor = System.Drawing.Color.Red;
-            this.label11.Location = new System.Drawing.Point(47, 888);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(620, 28);
-            this.label11.TabIndex = 24;
-            this.label11.Text = "This password has been seen 3,645,804 times before.";
-            this.label11.Visible = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.BackColor = System.Drawing.Color.White;
-            this.label8.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Bold);
-            this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(11, 798);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 47);
-            this.label8.TabIndex = 23;
-            this.label8.Text = "!";
-            this.label8.Visible = false;
-            // 
-            // editField1
-            // 
-            this.editField1.AutoSize = true;
-            this.editField1.BackColor = System.Drawing.Color.White;
-            this.editField1.BackGroundColor = System.Drawing.Color.White;
-            this.editField1.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.editField1.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField1.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.editField1.DefaultValue = "";
-            this.editField1.FontTextBox = new System.Drawing.Font("Century Gothic", 12F);
-            this.editField1.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editField1.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.editField1.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.editField1.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.editField1.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.editField1.Location = new System.Drawing.Point(49, 765);
-            this.editField1.Name = "editField1";
-            this.editField1.Size = new System.Drawing.Size(542, 83);
-            this.editField1.TabIndex = 22;
-            this.editField1.TextTextBox = "";
-            this.editField1.TextTitle = "Search";
-            this.editField1.UseColoredCaret = true;
-            this.editField1.UseDefaultValue = true;
-            this.editField1.UseSystemPasswordChar = false;
-            this.editField1.TextBoxTextChanged += new System.EventHandler(this.editField1_TextBoxTextChanged);
             // 
             // DataNoSelLabelHeader
             // 
@@ -3990,14 +3919,17 @@
             // LoginPanelRegisterCredentials
             // 
             this.LoginPanelRegisterCredentials.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterPasswordStrengthIndicator);
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterPasswordStrengthHeader);
+            this.LoginPanelRegisterCredentials.Controls.Add(this.LoginPasswordStrengthIndicatorRegister);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterDescription);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterError);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginLabelRegisterTitle);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword2);
             this.LoginPanelRegisterCredentials.Controls.Add(this.LoginEditFieldRegisterPassword);
-            this.LoginPanelRegisterCredentials.Location = new System.Drawing.Point(64, 282);
+            this.LoginPanelRegisterCredentials.Location = new System.Drawing.Point(64, 245);
             this.LoginPanelRegisterCredentials.Name = "LoginPanelRegisterCredentials";
-            this.LoginPanelRegisterCredentials.Size = new System.Drawing.Size(523, 426);
+            this.LoginPanelRegisterCredentials.Size = new System.Drawing.Size(523, 463);
             this.LoginPanelRegisterCredentials.TabIndex = 4;
             // 
             // LoginLabelRegisterDescription
@@ -4018,7 +3950,7 @@
             this.LoginLabelRegisterError.AutoSize = true;
             this.LoginLabelRegisterError.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginLabelRegisterError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginLabelRegisterError.Location = new System.Drawing.Point(29, 388);
+            this.LoginLabelRegisterError.Location = new System.Drawing.Point(29, 416);
             this.LoginLabelRegisterError.Name = "LoginLabelRegisterError";
             this.LoginLabelRegisterError.Size = new System.Drawing.Size(211, 30);
             this.LoginLabelRegisterError.TabIndex = 3;
@@ -4029,7 +3961,7 @@
             this.LoginLabelRegisterTitle.AutoSize = true;
             this.LoginLabelRegisterTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Bold);
             this.LoginLabelRegisterTitle.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterTitle.Location = new System.Drawing.Point(29, 11);
+            this.LoginLabelRegisterTitle.Location = new System.Drawing.Point(29, 18);
             this.LoginLabelRegisterTitle.Name = "LoginLabelRegisterTitle";
             this.LoginLabelRegisterTitle.Size = new System.Drawing.Size(248, 28);
             this.LoginLabelRegisterTitle.TabIndex = 2;
@@ -4050,7 +3982,7 @@
             this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
             this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
             this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 292);
+            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 320);
             this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
             this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
             this.LoginEditFieldRegisterPassword2.TabIndex = 1;
@@ -4075,7 +4007,7 @@
             this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
             this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
             this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 197);
+            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 223);
             this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
             this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
             this.LoginEditFieldRegisterPassword.TabIndex = 0;
@@ -4084,6 +4016,7 @@
             this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
             this.LoginEditFieldRegisterPassword.UseDefaultValue = false;
             this.LoginEditFieldRegisterPassword.UseSystemPasswordChar = true;
+            this.LoginEditFieldRegisterPassword.TextBoxTextChanged += new System.EventHandler(this.LoginEditFieldRegisterPassword_TextBoxTextChanged);
             // 
             // LoginLabelRegisterMain
             // 
@@ -4091,7 +4024,7 @@
             this.LoginLabelRegisterMain.BackColor = System.Drawing.Color.Transparent;
             this.LoginLabelRegisterMain.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LoginLabelRegisterMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelRegisterMain.Location = new System.Drawing.Point(237, 223);
+            this.LoginLabelRegisterMain.Location = new System.Drawing.Point(237, 197);
             this.LoginLabelRegisterMain.Name = "LoginLabelRegisterMain";
             this.LoginLabelRegisterMain.Size = new System.Drawing.Size(177, 39);
             this.LoginLabelRegisterMain.TabIndex = 8;
@@ -4117,7 +4050,7 @@
             // LoginPictureBoxRegisterLogo
             // 
             this.LoginPictureBoxRegisterLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxRegisterLogo.Image")));
-            this.LoginPictureBoxRegisterLogo.Location = new System.Drawing.Point(238, 29);
+            this.LoginPictureBoxRegisterLogo.Location = new System.Drawing.Point(238, 14);
             this.LoginPictureBoxRegisterLogo.Name = "LoginPictureBoxRegisterLogo";
             this.LoginPictureBoxRegisterLogo.Size = new System.Drawing.Size(175, 175);
             this.LoginPictureBoxRegisterLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -4484,9 +4417,9 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
-            // passwordStrengthIndicator1
+            // LoginPasswordStrengthIndicatorRegister
             // 
-            this.passwordStrengthIndicator1.Colors = new System.Drawing.Color[] {
+            this.LoginPasswordStrengthIndicatorRegister.Colors = new System.Drawing.Color[] {
         System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
@@ -4499,11 +4432,33 @@
         System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
         System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
-            this.passwordStrengthIndicator1.CurrentColor = System.Drawing.Color.Red;
-            this.passwordStrengthIndicator1.Location = new System.Drawing.Point(50, 859);
-            this.passwordStrengthIndicator1.Name = "passwordStrengthIndicator1";
-            this.passwordStrengthIndicator1.Size = new System.Drawing.Size(510, 10);
-            this.passwordStrengthIndicator1.TabIndex = 26;
+            this.LoginPasswordStrengthIndicatorRegister.CurrentColor = System.Drawing.Color.Red;
+            this.LoginPasswordStrengthIndicatorRegister.Location = new System.Drawing.Point(33, 203);
+            this.LoginPasswordStrengthIndicatorRegister.Name = "LoginPasswordStrengthIndicatorRegister";
+            this.LoginPasswordStrengthIndicatorRegister.Size = new System.Drawing.Size(457, 10);
+            this.LoginPasswordStrengthIndicatorRegister.TabIndex = 5;
+            // 
+            // LoginLabelRegisterPasswordStrengthHeader
+            // 
+            this.LoginLabelRegisterPasswordStrengthHeader.AutoSize = true;
+            this.LoginLabelRegisterPasswordStrengthHeader.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.LoginLabelRegisterPasswordStrengthHeader.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelRegisterPasswordStrengthHeader.Location = new System.Drawing.Point(29, 166);
+            this.LoginLabelRegisterPasswordStrengthHeader.Name = "LoginLabelRegisterPasswordStrengthHeader";
+            this.LoginLabelRegisterPasswordStrengthHeader.Size = new System.Drawing.Size(172, 23);
+            this.LoginLabelRegisterPasswordStrengthHeader.TabIndex = 6;
+            this.LoginLabelRegisterPasswordStrengthHeader.Text = "Your password is";
+            // 
+            // LoginLabelRegisterPasswordStrengthIndicator
+            // 
+            this.LoginLabelRegisterPasswordStrengthIndicator.AutoSize = true;
+            this.LoginLabelRegisterPasswordStrengthIndicator.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.LoginLabelRegisterPasswordStrengthIndicator.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelRegisterPasswordStrengthIndicator.Location = new System.Drawing.Point(197, 167);
+            this.LoginLabelRegisterPasswordStrengthIndicator.Name = "LoginLabelRegisterPasswordStrengthIndicator";
+            this.LoginLabelRegisterPasswordStrengthIndicator.Size = new System.Drawing.Size(25, 23);
+            this.LoginLabelRegisterPasswordStrengthIndicator.TabIndex = 7;
+            this.LoginLabelRegisterPasswordStrengthIndicator.Text = "...";
             // 
             // Form1
             // 
@@ -4511,8 +4466,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
@@ -4962,11 +4917,9 @@
         private CustomMetroForms.AnimatedButton SettingsAnimatedButtonOnlineChangeServerLogin;
         private System.Windows.Forms.Label SettingsLabelOnlineChangeServerDescription;
         private System.Windows.Forms.Label SettingsLabelOnlineChangeServer;
-        private CustomMetroForms.EditField editField1;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label14;
-        private CustomMetroForms.PasswordStrengthIndicator passwordStrengthIndicator1;
+        private System.Windows.Forms.Label LoginLabelRegisterPasswordStrengthIndicator;
+        private System.Windows.Forms.Label LoginLabelRegisterPasswordStrengthHeader;
+        private CustomMetroForms.PasswordStrengthIndicator LoginPasswordStrengthIndicatorRegister;
     }
 }
 
