@@ -1187,19 +1187,20 @@ namespace pmdbs
             LoginButtonDisabled = true;
             LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
-            Password.Result result = Password.Security.OnlineCheck(Password1);
+            Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
+            Password.Result result = await GetResult;
             LoginLabelRegisterError.ForeColor = Color.Firebrick;
             string status = string.Empty;
             switch (result.IsCompromised)
             {
                 case 0:
                     {
-                        status = "NOT compromised";
+                        status = "NOT been leaked.";
                         break;
                     }
                 case 1:
                     {
-                        status = "COMPROMISED (" + result.TimesSeen.ToString() + " times)";
+                        status = "been LEAKED (" + result.TimesSeen.ToString() + " times)";
                         break;
                     }
                 default:
@@ -1208,7 +1209,7 @@ namespace pmdbs
                         break;
                     }
             }
-            LoginLabelRegisterError.Text = "This passwords is " + status;
+            LoginLabelRegisterError.Text = "This pw has " + status;
             LoginButtonDisabled = false;
             return;
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
