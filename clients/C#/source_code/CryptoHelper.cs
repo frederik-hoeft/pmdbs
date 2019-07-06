@@ -162,7 +162,6 @@ namespace pmdbs
             byte[] bytesPlainTextData = csp.Decrypt(bytesCipherText, true);
 
             //get our original plainText back...
-            //string plainText = UTF8Encoding.Unicode.GetString(bytesPlainTextData);// <-- DOES NOT WORK :P
             string plainText = Encoding.UTF8.GetString(bytesPlainTextData);// <-- Encoding.UTF8 WORKS!!!! \(^_^)/
             return plainText;
         }

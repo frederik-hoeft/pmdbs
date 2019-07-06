@@ -1185,61 +1185,80 @@ namespace pmdbs
                 return;
             }
             LoginButtonDisabled = true;
-            LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
-            Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
-            Password.Result result = await GetResult;
-            LoginLabelRegisterError.ForeColor = Color.Firebrick;
-            string status = string.Empty;
-            switch (result.IsCompromised)
-            {
-                case 0:
-                    {
-                        status = "NOT been leaked.";
-                        break;
-                    }
-                case 1:
-                    {
-                        status = "been LEAKED (" + result.TimesSeen.ToString() + " times)";
-                        break;
-                    }
-                default:
-                    {
-                        status = "error";
-                        break;
-                    }
-            }
-            LoginLabelRegisterError.Text = "This pw has " + status;
-            LoginButtonDisabled = false;
-            return;
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
             if (!Password1.Equals(Password2))
             {
-                LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                LoginLabelRegisterError.Visible = true;
                 LoginLabelRegisterError.Text = "These passwords don't match!";
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLabelRegisterError.ForeColor = Color.Firebrick;
-            // Password.Result result = Password.Security.Check(Password1);
-            // int score = (int)PasswordStrength[0];
-            // string meaning = (string)PasswordStrength[1];
-            // LoginLabelRegisterError.Text = meaning + " (" + score.ToString() + " points)";
-            PasswordScore Strength = PasswordAdvisor.CheckStrength(Password1);
-            switch (Strength)
-            {
-                case PasswordScore.Blank:
-                case PasswordScore.VeryWeak:
-                case PasswordScore.Weak:
-                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
-                    LoginLabelRegisterError.Text = "Password too weak.";
-                    LoginButtonDisabled = false;
-                    return;
+            Password.Result offlineResult = Password.Security.SimpleCheck(Password1);
+            if (offlineResult.Score < 110)
+                {
+                using (ErrorForm errorForm = new ErrorForm("It should be at least \"Okay\".\n\nTry adding more numbers, special characters or even unicode characters to increase the password strength.", "Security Exception", "Your password is too weak!", true))
+                {
+                    errorForm.ShowDialog();
+                }
+                LoginLabelRegisterError.Visible = true;
+                LoginLabelRegisterError.Text = "Password too weak.";
+                LoginButtonDisabled = false;
+                return;
             }
             LoginLoadingAdvancedProgressSpinner.Start();
+            dottedProgressSpinner1.Start();
+            coloredProgressSpinner1.Start();
+            dottedProgressSpinner2.Start();
+            dottedProgressSpinner3.Start();
+            dottedProgressSpinner4.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxRegisterMain.SuspendLayout();
+            LoginLoadingLabelDetails.Text = "Checking Password Strength ...";
+            return;
+            Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
+            Password.Result result = await GetResult;
+            LoginLabelRegisterError.ForeColor = Color.Firebrick;
+            switch (result.IsCompromised)
+            {
+                case 0:
+                    {
+                        break;
+                    }
+                case 1:
+                    {
+                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
+                        {
+                            errorForm.ShowDialog();
+                        }
+                        LoginLoadingAdvancedProgressSpinner.Stop();
+                        LoginPictureBoxLoadingMain.SuspendLayout();
+                        LoginPictureBoxRegisterMain.ResumeLayout();
+                        LoginPictureBoxRegisterMain.BringToFront();
+                        LoginButtonDisabled = false;
+                        return;
+                    }
+                default:
+                    {
+                        // CONNECTION ERROR
+                        bool actionIsConfirmed = true;
+                        using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?","Security Warning", MessageBoxButtons.YesNo, true))
+                        {
+                            actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                        }
+                        if (!actionIsConfirmed)
+                        {
+                            LoginLoadingAdvancedProgressSpinner.Stop();
+                            LoginPictureBoxLoadingMain.SuspendLayout();
+                            LoginPictureBoxRegisterMain.ResumeLayout();
+                            LoginPictureBoxRegisterMain.BringToFront();
+                            LoginButtonDisabled = false;
+                            return;
+                        }
+                        break;
+                    }
+            }
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
             string FirstUsage = TimeConverter.TimeStamp();
@@ -1260,9 +1279,19 @@ namespace pmdbs
             this.MinimumSize = MinSize;
             this.MaximumSize = MaxSize;
         }
-
+        private void LoginEditFieldRegisterPassword2_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            if (LoginLabelRegisterError.Visible)
+            {
+                LoginLabelRegisterError.Visible = false;
+            }
+        }
         private void LoginEditFieldRegisterPassword_TextBoxTextChanged(object sender, EventArgs e)
         {
+            if (LoginLabelRegisterError.Visible)
+            {
+                LoginLabelRegisterError.Visible = false;
+            }
             string password = LoginEditFieldRegisterPassword.TextTextBox;
             if (string.IsNullOrEmpty(password))
             {
@@ -1804,6 +1833,7 @@ namespace pmdbs
             }
             RefreshUserData(page);
         }
+
 
         #endregion
     }
