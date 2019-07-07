@@ -7,8 +7,18 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Provides several methods for converting colors and color formats.
+    /// </summary>
     public static class ColorExtensions
     {
+        /// <summary>
+        /// Convert a color from the HSB representation to it's ARGB equivalent.
+        /// </summary>
+        /// <param name="hue">The hue of the color to convert.</param>
+        /// <param name="saturation">The saturation of the color to convert.</param>
+        /// <param name="brightness">The brightness of the color to convert.</param>
+        /// <returns>The color in the ARGB format.</returns>
         public static Color HSBToRGBConversion(float hue, float saturation, float brightness)
         {
             float red, green, blue;
@@ -39,10 +49,16 @@ namespace pmdbs
             return p;
         }
         static readonly Random _randomizer = new Random();
+        /// <summary>
+        /// Gets the contrasting color to a provided source color.
+        /// </summary>
+        /// <param name="Source">The color to find the contrasting color for.</param>
+        /// <param name="PreserveOpacity">Should opacity be preserved.</param>
+        /// <returns>The contrasting color.</returns>
         public static Color GetContrast(this Color Source, bool PreserveOpacity)
         {
             Color inputColor = Source;
-            //if RGB values are close to each other by a diff less than 10%, then if RGB values are lighter side, decrease the blue by 50% (eventually it will increase in conversion below), if RBB values are on darker side, decrease yellow by about 50% (it will increase in conversion)
+            //if RGB values are close to each other by a diff less than 10%, then if RGB values are lighter side, decrease the blue by 50% (eventually it will increase in conversion below), if RGB values are on darker side, decrease yellow by about 50% (it will increase in conversion)
             byte avgColorValue = (byte)((Source.R + Source.G + Source.B) / 3);
             int diff_r = Math.Abs(Source.R - avgColorValue);
             int diff_g = Math.Abs(Source.G - avgColorValue);
@@ -85,8 +101,8 @@ namespace pmdbs
         /// <summary>
         /// Removes the alpha component of a color.
         /// </summary>
-        /// <param name="color"></param>
-        /// <returns></returns>
+        /// <param name="color">The color to remove the alpha component from.</param>
+        /// <returns>The color without alpha component.</returns>
         public static Color RemoveAlpha(this Color color)
         {
             return Color.FromArgb(color.R, color.G, color.B);

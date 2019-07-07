@@ -355,7 +355,7 @@ namespace pmdbs
             public static void Connect()
             {
                 HelperMethods.InvokeOutputLabel("Connecting ...");
-                Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                Thread connectionThread = new Thread(new ThreadStart(PDTPClient.Connect))
                 {
                     IsBackground = true
                 };
@@ -2113,7 +2113,7 @@ namespace pmdbs
                 }
                 else
                 {
-                    Thread connectionThread = new Thread(new ThreadStart(ActiveConnection.Start))
+                    Thread connectionThread = new Thread(new ThreadStart(PDTPClient.Connect))
                     {
                         IsBackground = true
                     };

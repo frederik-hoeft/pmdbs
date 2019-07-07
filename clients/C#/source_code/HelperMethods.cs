@@ -153,7 +153,7 @@ namespace pmdbs
                 rowCounter++;
             }
             InvokeOutputLabel("Creating stage 2 password hash ...");
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
             string stage2PasswordHash = await ScryptTask;
             InvokeOutputLabel("Setting new password ...");
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\"" }));

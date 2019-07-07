@@ -29,32 +29,15 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmationForm));
-            this.MetroPanel = new MetroFramework.Controls.MetroPanel();
-            this.animatedButtonCancel = new CustomMetroForms.AnimatedButton();
-            this.CustomLabel = new CustomMetroForms.CustomLabel();
-            this.AnimatedButtonOk = new CustomMetroForms.AnimatedButton();
-            this.WindowButtonClose = new CustomMetroForms.WindowButton();
-            this.MetroPanel.SuspendLayout();
+            this.animatedButtonCancel = new LunaForms.AnimatedButton();
+            this.AnimatedButtonOk = new LunaForms.AnimatedButton();
+            this.LabelContent = new System.Windows.Forms.Label();
+            this.WindowButtonClose = new LunaForms.WindowButton();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // MetroPanel
-            // 
-            this.MetroPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.MetroPanel.Controls.Add(this.animatedButtonCancel);
-            this.MetroPanel.Controls.Add(this.CustomLabel);
-            this.MetroPanel.Controls.Add(this.AnimatedButtonOk);
-            this.MetroPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MetroPanel.HorizontalScrollbarBarColor = true;
-            this.MetroPanel.HorizontalScrollbarHighlightOnWheel = false;
-            this.MetroPanel.HorizontalScrollbarSize = 10;
-            this.MetroPanel.Location = new System.Drawing.Point(20, 60);
-            this.MetroPanel.Name = "MetroPanel";
-            this.MetroPanel.Size = new System.Drawing.Size(600, 280);
-            this.MetroPanel.TabIndex = 15;
-            this.MetroPanel.Theme = MetroFramework.MetroThemeStyle.Light;
-            this.MetroPanel.VerticalScrollbarBarColor = false;
-            this.MetroPanel.VerticalScrollbarHighlightOnWheel = false;
-            this.MetroPanel.VerticalScrollbarSize = 10;
             // 
             // animatedButtonCancel
             // 
@@ -64,9 +47,9 @@
             this.animatedButtonCancel.Depth = 0;
             this.animatedButtonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.animatedButtonCancel.Icon = null;
-            this.animatedButtonCancel.Location = new System.Drawing.Point(402, 211);
+            this.animatedButtonCancel.Location = new System.Drawing.Point(419, 266);
             this.animatedButtonCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButtonCancel.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButtonCancel.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
             this.animatedButtonCancel.Name = "animatedButtonCancel";
             this.animatedButtonCancel.Primary = false;
             this.animatedButtonCancel.Size = new System.Drawing.Size(197, 68);
@@ -74,15 +57,6 @@
             this.animatedButtonCancel.Text = "Cancel";
             this.animatedButtonCancel.UseVisualStyleBackColor = true;
             this.animatedButtonCancel.Click += new System.EventHandler(this.animatedButtonCancel_Click);
-            // 
-            // CustomLabel
-            // 
-            this.CustomLabel.Content = "CONFIRM_ACTION";
-            this.CustomLabel.Header = "";
-            this.CustomLabel.Location = new System.Drawing.Point(3, 3);
-            this.CustomLabel.Name = "CustomLabel";
-            this.CustomLabel.Size = new System.Drawing.Size(593, 199);
-            this.CustomLabel.TabIndex = 3;
             // 
             // AnimatedButtonOk
             // 
@@ -92,9 +66,9 @@
             this.AnimatedButtonOk.Depth = 0;
             this.AnimatedButtonOk.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.AnimatedButtonOk.Icon = null;
-            this.AnimatedButtonOk.Location = new System.Drawing.Point(-1, 211);
+            this.AnimatedButtonOk.Location = new System.Drawing.Point(24, 266);
             this.AnimatedButtonOk.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AnimatedButtonOk.MouseState = CustomMetroForms.AnimatedButton.MouseStateBase.HOVER;
+            this.AnimatedButtonOk.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
             this.AnimatedButtonOk.Name = "AnimatedButtonOk";
             this.AnimatedButtonOk.Primary = false;
             this.AnimatedButtonOk.Size = new System.Drawing.Size(197, 68);
@@ -103,25 +77,75 @@
             this.AnimatedButtonOk.UseVisualStyleBackColor = true;
             this.AnimatedButtonOk.Click += new System.EventHandler(this.AnimatedButtonOk_Click);
             // 
+            // LabelContent
+            // 
+            this.LabelContent.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.LabelContent.ForeColor = System.Drawing.Color.White;
+            this.LabelContent.Location = new System.Drawing.Point(27, 64);
+            this.LabelContent.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.LabelContent.Name = "LabelContent";
+            this.LabelContent.Size = new System.Drawing.Size(590, 185);
+            this.LabelContent.TabIndex = 6;
+            this.LabelContent.Text = "Content";
+            // 
             // WindowButtonClose
             // 
             this.WindowButtonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.WindowButtonClose.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.WindowButtonClose.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(71)))), ((int)(((byte)(71)))));
-            this.WindowButtonClose.BackgroundColorNormal = System.Drawing.Color.Empty;
+            this.WindowButtonClose.BackgroundColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.WindowButtonClose.ImageHover = ((System.Drawing.Image)(resources.GetObject("WindowButtonClose.ImageHover")));
-            this.WindowButtonClose.ImageNormal = ((System.Drawing.Image)(resources.GetObject("WindowButtonClose.ImageNormal")));
-            this.WindowButtonClose.Location = new System.Drawing.Point(581, 6);
+            this.WindowButtonClose.ImageNormal = global::pmdbs.Properties.Resources.close;
+            this.WindowButtonClose.Location = new System.Drawing.Point(575, 5);
             this.WindowButtonClose.Name = "WindowButtonClose";
             this.WindowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.WindowButtonClose.TabIndex = 14;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(640, 5);
+            this.panel1.TabIndex = 15;
+            // 
+            // panel2
+            // 
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(5, 360);
+            this.panel2.TabIndex = 16;
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.panel3.Location = new System.Drawing.Point(635, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(5, 360);
+            this.panel3.TabIndex = 16;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.panel4.Location = new System.Drawing.Point(0, 355);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(640, 5);
+            this.panel4.TabIndex = 16;
             // 
             // ConfirmationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 360);
-            this.Controls.Add(this.MetroPanel);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel4);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.WindowButtonClose);
+            this.Controls.Add(this.LabelContent);
+            this.Controls.Add(this.AnimatedButtonOk);
+            this.Controls.Add(this.animatedButtonCancel);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(640, 360);
             this.MinimizeBox = false;
@@ -131,17 +155,19 @@
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Orange;
             this.Text = "Please Confirm";
-            this.MetroPanel.ResumeLayout(false);
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private MetroFramework.Controls.MetroPanel MetroPanel;
-        private CustomMetroForms.CustomLabel CustomLabel;
-        private CustomMetroForms.AnimatedButton AnimatedButtonOk;
-        private CustomMetroForms.WindowButton WindowButtonClose;
-        private CustomMetroForms.AnimatedButton animatedButtonCancel;
+        private LunaForms.AnimatedButton AnimatedButtonOk;
+        private LunaForms.WindowButton WindowButtonClose;
+        private LunaForms.AnimatedButton animatedButtonCancel;
+        private System.Windows.Forms.Label LabelContent;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
     }
 }

@@ -262,8 +262,17 @@ namespace pmdbs
     /// </summary>
     public enum SearchCondition
     {
+        /// <summary>
+        /// Tha data set has to match the provided string exactly.
+        /// </summary>
         Match = 1,
+        /// <summary>
+        /// The data set has to contain the provided string.
+        /// </summary>
         Contains = 2,
+        /// <summary>
+        /// The data set has to contain one or more of the provided search terms seperated by the | character.
+        /// </summary>
         In = 3
     }
 }
