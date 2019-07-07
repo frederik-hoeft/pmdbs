@@ -12,7 +12,7 @@ using System.Net;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
-using CustomMetroForms;
+using LunaForms;
 
 namespace pmdbs
 {
@@ -194,7 +194,7 @@ namespace pmdbs
             MinSize = this.MinimumSize;
             this.MinimumSize = this.Size;
             this.MaximumSize = this.Size;
-            GlobalVarPool.loadingSpinner = SettingsAdvancedProgressSpinnerLoading;
+            GlobalVarPool.loadingSpinner = SettingsLunaProgressSpinnerFading;
             GlobalVarPool.loadingLabel = SettingsLabelLoadingStatus;
             GlobalVarPool.loadingLogo = SettingsPictureBoxLoadingLogo;
             GlobalVarPool.loadingPanel = SettingsPanelLoadingMain;
@@ -602,7 +602,7 @@ namespace pmdbs
                         {
                             if (!Hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
                             {
-                                favIcon = pmdbs.Icon.GenerateIcon(Hostname);
+                                favIcon = pmdbs.Icon.Generate(Hostname);
                             }
                             else
                             {
@@ -611,13 +611,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.GetFavIcons(Website);
+                            favIcon = pmdbs.Icon.Get(Website);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.GenerateIcon(Hostname);
+                        favIcon = pmdbs.Icon.Generate(Hostname);
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
@@ -893,13 +893,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.GetFavIcons(Website);
+                            favIcon = pmdbs.Icon.Get(Website);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.GenerateIcon(Hostname);
+                        favIcon = pmdbs.Icon.Generate(Hostname);
                     }
                 }
                 string[] Values = new string[]
@@ -1000,11 +1000,11 @@ namespace pmdbs
                 string base64Img;
                 try
                 {
-                    base64Img = pmdbs.Icon.GetFavIcons(AddEditFieldWebsite.TextTextBox);
+                    base64Img = pmdbs.Icon.Get(AddEditFieldWebsite.TextTextBox);
                 }
                 catch
                 {
-                    base64Img = pmdbs.Icon.GenerateIcon(AddEditFieldHostname.TextTextBox);
+                    base64Img = pmdbs.Icon.Generate(AddEditFieldHostname.TextTextBox);
                 }
                 byte[] iconBytes = Convert.FromBase64String(base64Img);
                 Invoke((MethodInvoker)delegate
@@ -1081,14 +1081,14 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLoadingAdvancedProgressSpinner.Start();
+            LoginLunaProgressSpinnerFading.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxOfflineMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Loading Saved Hash...";
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, GlobalVarPool.firstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, GlobalVarPool.firstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Checking Password...";
             if (!Stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
@@ -1099,7 +1099,7 @@ namespace pmdbs
                 LoginPictureBoxOfflineMain.ResumeLayout();
                 LoginPictureBoxOfflineMain.BringToFront();
                 LoginPictureBoxLoadingMain.SuspendLayout();
-                LoginLoadingAdvancedProgressSpinner.Stop();
+                LoginLunaProgressSpinnerFading.Stop();
                 return;
             }
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
@@ -1162,7 +1162,7 @@ namespace pmdbs
                 {
                     DataFlowLayoutPanelList.ResumeLayout();
                     FlowLayoutPanel1_Resize(this, null);
-                    LoginLoadingAdvancedProgressSpinner.Stop();
+                    LoginLunaProgressSpinnerFading.Stop();
                     LoginPictureBoxOnlineMain.Dispose();
                     LoginPictureBoxOfflineMain.Dispose();
                     LoginPictureBoxRegisterMain.Dispose();
@@ -1185,72 +1185,85 @@ namespace pmdbs
                 return;
             }
             LoginButtonDisabled = true;
-            LoginLabelRegisterError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password1 = LoginEditFieldRegisterPassword.TextTextBox;
-            Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
-            Password.Result result = await GetResult;
-            LoginLabelRegisterError.ForeColor = Color.Firebrick;
-            string status = string.Empty;
-            switch (result.IsCompromised)
-            {
-                case 0:
-                    {
-                        status = "NOT been leaked.";
-                        break;
-                    }
-                case 1:
-                    {
-                        status = "been LEAKED (" + result.TimesSeen.ToString() + " times)";
-                        break;
-                    }
-                default:
-                    {
-                        status = "error";
-                        break;
-                    }
-            }
-            LoginLabelRegisterError.Text = "This pw has " + status;
-            LoginButtonDisabled = false;
-            return;
             string Password2 = LoginEditFieldRegisterPassword2.TextTextBox;
             if (!Password1.Equals(Password2))
             {
-                LoginLabelRegisterError.ForeColor = Color.Firebrick;
+                LoginLabelRegisterError.Visible = true;
                 LoginLabelRegisterError.Text = "These passwords don't match!";
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLabelRegisterError.ForeColor = Color.Firebrick;
-            // Password.Result result = Password.Security.Check(Password1);
-            // int score = (int)PasswordStrength[0];
-            // string meaning = (string)PasswordStrength[1];
-            // LoginLabelRegisterError.Text = meaning + " (" + score.ToString() + " points)";
-            PasswordScore Strength = PasswordAdvisor.CheckStrength(Password1);
-            switch (Strength)
-            {
-                case PasswordScore.Blank:
-                case PasswordScore.VeryWeak:
-                case PasswordScore.Weak:
-                    LoginLabelRegisterError.ForeColor = Color.Firebrick;
-                    LoginLabelRegisterError.Text = "Password too weak.";
-                    LoginButtonDisabled = false;
-                    return;
+            Password.Result offlineResult = Password.Security.SimpleCheck(Password1);
+            if (offlineResult.Score < 110)
+                {
+                using (ErrorForm errorForm = new ErrorForm("It should be at least \"Okay\".\n\nTry adding more numbers, special characters or even unicode characters to increase the password strength.", "Security Exception", "Your password is too weak!", true))
+                {
+                    errorForm.ShowDialog();
+                }
+                LoginLabelRegisterError.Visible = true;
+                LoginLabelRegisterError.Text = "Password too weak.";
+                LoginButtonDisabled = false;
+                return;
             }
-            LoginLoadingAdvancedProgressSpinner.Start();
+            LoginLunaProgressSpinnerFading.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxRegisterMain.SuspendLayout();
+            LoginLoadingLabelDetails.Text = "Checking Password Strength ...";
+            Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
+            Password.Result result = await GetResult;
+            LoginLabelRegisterError.ForeColor = Color.Firebrick;
+            switch (result.IsCompromised)
+            {
+                case 0:
+                    {
+                        break;
+                    }
+                case 1:
+                    {
+                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
+                        {
+                            errorForm.ShowDialog();
+                        }
+                        LoginLunaProgressSpinnerFading.Stop();
+                        LoginPictureBoxLoadingMain.SuspendLayout();
+                        LoginPictureBoxRegisterMain.ResumeLayout();
+                        LoginPictureBoxRegisterMain.BringToFront();
+                        LoginButtonDisabled = false;
+                        return;
+                    }
+                default:
+                    {
+                        // CONNECTION ERROR
+                        bool actionIsConfirmed = true;
+                        using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?","Security Warning", MessageBoxButtons.YesNo, true))
+                        {
+                            actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                        }
+                        if (!actionIsConfirmed)
+                        {
+                            LoginLunaProgressSpinnerFading.Stop();
+                            LoginPictureBoxLoadingMain.SuspendLayout();
+                            LoginPictureBoxRegisterMain.ResumeLayout();
+                            LoginPictureBoxRegisterMain.BringToFront();
+                            LoginButtonDisabled = false;
+                            return;
+                        }
+                        break;
+                    }
+            }
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
             string FirstUsage = TimeConverter.TimeStamp();
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            Task<String> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"", Stage2PasswordHash, "\", 0, \"", FirstUsage, "\");" }));
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
-            LoginLoadingAdvancedProgressSpinner.Stop();
+            LoginLunaProgressSpinnerFading.Stop();
             LoginPictureBoxOnlineMain.Dispose();
             LoginPictureBoxOfflineMain.Dispose();
             LoginPictureBoxRegisterMain.Dispose();
@@ -1260,9 +1273,19 @@ namespace pmdbs
             this.MinimumSize = MinSize;
             this.MaximumSize = MaxSize;
         }
-
+        private void LoginEditFieldRegisterPassword2_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            if (LoginLabelRegisterError.Visible)
+            {
+                LoginLabelRegisterError.Visible = false;
+            }
+        }
         private void LoginEditFieldRegisterPassword_TextBoxTextChanged(object sender, EventArgs e)
         {
+            if (LoginLabelRegisterError.Visible)
+            {
+                LoginLabelRegisterError.Visible = false;
+            }
             string password = LoginEditFieldRegisterPassword.TextTextBox;
             if (string.IsNullOrEmpty(password))
             {
@@ -1804,6 +1827,7 @@ namespace pmdbs
             }
             RefreshUserData(page);
         }
+
 
         #endregion
     }

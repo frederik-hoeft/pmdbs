@@ -10,6 +10,9 @@ using CryptSharp.Utility;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Provides a pool of cryptographic functions to be used throughout pmdbs.
+    /// </summary>
     public static class CryptoHelper
     {
         #region AES
@@ -19,6 +22,12 @@ namespace pmdbs
         // Block Size: 128 Bit
         // Input Vector (IV): 128 Bit
         // Mode of Operation: Cipher-Block Chaining (CBC)
+        /// <summary>
+        /// Encrypts a plain text with a password using AES-256 CBC with SHA-256.
+        /// </summary>
+        /// <param name="plainText">The text to be encrypted.</param>
+        /// <param name="password">The password to encrypt the text with.</param>
+        /// <returns>The encrypted text.</returns>
         public static string AESEncrypt(string plainText, string password)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
@@ -47,7 +56,12 @@ namespace pmdbs
             }
             return Convert.ToBase64String(encryptedBytes);
         }
-
+        /// <summary>
+        /// Decrypts a cipher text with a password using AES-256 CBC with SHA-256.
+        /// </summary>
+        /// <param name="cipherText">The cipher text to be decrypted.</param>
+        /// <param name="password">The password to decrypt the cipher text with.</param>
+        /// <returns>The decrypted text.</returns>
         public static string AESDecrypt(string cipherText, string password)
         {
             byte[] iv = new byte[16];
@@ -77,14 +91,23 @@ namespace pmdbs
             }
             return Encoding.UTF8.GetString(decryptedBytes);
         }
+        /// <summary>
+        /// Generates cryptographically secure random bytes.
+        /// </summary>
+        /// <param name="saltLength">The number of bytes to be generated.</param>
+        /// <returns>Cryptographically secure random bytes.</returns>
         public static byte[] GetRandomBytes(int saltLength)
         {
             byte[] randomBytes = new byte[saltLength];
-            RNGCryptoServiceProvider.Create().GetBytes(randomBytes);
+            RandomNumberGenerator.Create().GetBytes(randomBytes);
             return randomBytes;
         }
         #endregion
         #region RSA
+        /// <summary>
+        /// Generates a 4096 bit RSA key pair.
+        /// </summary>
+        /// <returns>RSA public and private key.</returns>
         public static string[] RSAKeyPairGenerator()
         {
             //lets take a new CSP with a new 4096 bit rsa key pair
@@ -122,6 +145,12 @@ namespace pmdbs
             string[] keyPair = new string[] { pubKeyString, privKeyString };
             return keyPair;
         }
+        /// <summary>
+        /// Encrypts a string using a provided RSA public key in XML format.
+        /// </summary>
+        /// <param name="ForeignKeyString">The public key as XML string.</param>
+        /// <param name="content">The text to be encrypted.</param>
+        /// <returns>The encrypted text as base64 string.</returns>
         public static string RSAEncrypt(string ForeignKeyString, string content)
         {
 
@@ -145,6 +174,12 @@ namespace pmdbs
             string cipherText = Convert.ToBase64String(bytesCipherText);
             return cipherText;
         }
+        /// <summary>
+        /// Decrypts a cipher string using a provided RSA private key in XML format.
+        /// </summary>
+        /// <param name="PrivateKeyString">The private key as XML string.</param>
+        /// <param name="cipherText">The cipher text to be decrypted.</param>
+        /// <returns>The decrypted plain text.</returns>
         public static string RSADecrypt(string PrivateKeyString, string cipherText)
         {
             byte[] bytesCipherText = Convert.FromBase64String(cipherText);
@@ -162,13 +197,18 @@ namespace pmdbs
             byte[] bytesPlainTextData = csp.Decrypt(bytesCipherText, true);
 
             //get our original plainText back...
-            //string plainText = UTF8Encoding.Unicode.GetString(bytesPlainTextData);// <-- DOES NOT WORK :P
             string plainText = Encoding.UTF8.GetString(bytesPlainTextData);// <-- Encoding.UTF8 WORKS!!!! \(^_^)/
             return plainText;
         }
         #endregion
         #region SCrypt
-        public static String SCryptHash(string password, string salt)
+        /// <summary>
+        /// Creates the scrypt hash of a password and salt.
+        /// </summary>
+        /// <param name="password">The password to be hashed.</param>
+        /// <param name="salt">The salt ta be used for the password hash.</param>
+        /// <returns>The hex encoded salted scrypt hash of the password.</returns>
+        public static string ScryptHash(string password, string salt)
         {
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
             byte[] saltBytes = Encoding.UTF8.GetBytes(salt);
@@ -180,6 +220,11 @@ namespace pmdbs
         }
         #endregion
         #region SHA1
+        /// <summary>
+        /// Creates the SHA-1 hash of a string.
+        /// </summary>
+        /// <param name="plaintext">The string to be hashed.</param>
+        /// <returns>The hax encoded SHA-1 hash of the plain text.</returns>
         public static string SHA1Hash(string plaintext)
         {
             using (SHA1 sha = new SHA1Cng())
@@ -198,10 +243,15 @@ namespace pmdbs
         }
         #endregion
         #region SHA256
-        public static string SHA256Hash(string plainPassword)
+        /// <summary>
+        /// Creates the SHA-256 hash of a password.
+        /// </summary>
+        /// <param name="password">The password to be hashed.</param>
+        /// <returns>The hex encoded SHA-256 hashed password.</returns>
+        public static string SHA256Hash(string password)
         {
             SHA256Cng ShaHashFunction = new SHA256Cng();
-            byte[] plainBytes = Encoding.UTF8.GetBytes(plainPassword);
+            byte[] plainBytes = Encoding.UTF8.GetBytes(password);
             byte[] hashedBytes = ShaHashFunction.ComputeHash(plainBytes);
             string hashedPassword = string.Empty;
             foreach (byte b in hashedBytes)
@@ -210,20 +260,36 @@ namespace pmdbs
             }
             return hashedPassword;
         }
-        public static string SHA256HashBase64(string text)
+        /// <summary>
+        /// Creates the SHA-256 hash of a password.
+        /// </summary>
+        /// <param name="password">The password to be hashed.</param>
+        /// <returns>The base64 encoded SHA-256 hashed password.</returns>
+        public static string SHA256HashBase64(string password)
         {
             SHA256Cng ShaHashFunction = new SHA256Cng();
-            byte[] plainBytes = Encoding.UTF8.GetBytes(text);
+            byte[] plainBytes = Encoding.UTF8.GetBytes(password);
             byte[] hashedBytes = ShaHashFunction.ComputeHash(plainBytes);
             return Convert.ToBase64String(hashedBytes);
         }
         #endregion
         #region HMAC
+        /// <summary>
+        /// Calculates the Hashed keyed Message Authentication Code of a message.
+        /// </summary>
+        /// <param name="hmacKey">The key to be used in the HMAC.</param>
+        /// <param name="message">The message to be HMAC'd.</param>
+        /// <returns>The </returns>
         public static string CalculateHMAC(string hmacKey, string message)
         {
             return SHA256HashBase64(hmacKey.Substring(32, 32) + SHA256HashBase64(hmacKey.Substring(0, 32) + message));
         }
-
+        /// <summary>
+        /// Verifies the Hashed keyed Message Authentication Code of a message.
+        /// </summary>
+        /// <param name="hmacKey">The key to be used in the validation process.</param>
+        /// <param name="fullMessage">The complete message including HMAC.</param>
+        /// <returns>true if the HMAC is valid.</returns>
         public static bool VerifyHMAC(string hmacKey, string fullMessage)
         {
             string hmac = fullMessage.Substring(fullMessage.Length - 44, 44);
@@ -240,6 +306,10 @@ namespace pmdbs
         }
         #endregion
         #region SecureRandomGenerator
+        /// <summary>
+        /// Generates a cryptographically secure random hex string.
+        /// </summary>
+        /// <returns>The random hex string.</returns>
         public static string RandomString()
         {
             byte[] randomBytes = new Byte[64];
