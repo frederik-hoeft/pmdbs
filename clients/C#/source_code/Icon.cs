@@ -1,4 +1,4 @@
-﻿using HtmlAgilityPack;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,9 +13,22 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Responsible for providing an icon for an account.
+    /// </summary>
     public static class Icon
     {
-        private static string Get(string uri)
+        private class GetResponse
+        {
+            public string url = string.Empty;
+            public Favicon[] icons = new Favicon[] { };
+        }
+        private class Favicon
+        {
+            public string url = string.Empty, format = string.Empty, error = string.Empty, sha1sum = string.Empty;
+            public int height = -1, width = -1;
+        }
+        private static string _get(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -27,34 +40,27 @@ namespace pmdbs
                 return reader.ReadToEnd();
             }
         }
-
-        public static string GetFavIcons(string Url)
+        /// <summary>
+        /// Downloads the favicon of the given url.
+        /// </summary>
+        /// <param name="url">The url to get the favicon for.</param>
+        /// <returns>The best favicon available.</returns>
+        public static string Get(string url)
         {
-            string domain = string.Empty;
-            try
+            bool urlIsValid = Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            if (!urlIsValid)
             {
-                Uri UriToResolve = new Uri(Url);
-                domain = UriToResolve.Host.Replace("www.", "");
+                throw new ArgumentException("Invalid url.");
             }
-            catch
-            {
-                throw new ArgumentException("Invalid url"); // TODO : CATCH EXCEPTION IN SCOPE ABOVE AND HANDLE ERROR MESSAGE RETURN
-            }
-            if (!IsValidDomainName(domain))
-            {
-                throw new InvalidDomainException(); // TODO : CATCH EXCEPTION IN SCOPE ABOVE AND HANDLE ERROR MESSAGE RETURN
-            }
-            string uri = "https://i.olsh.me/icons?url=" + domain + "#result";
-            string HtmlCode = Get(uri).Split(new string[] { "<table" }, StringSplitOptions.None).Last();
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(HtmlCode);
-            //string BestImage = doc.DocumentNode.SelectNodes("//img")[0].GetAttributeValue("src", null);
-            HtmlNodeCollection Icons = doc.DocumentNode.SelectNodes("//img");
+            string uri = "https://besticon-demo.herokuapp.com/allicons.json?url=" + url;
+            string HtmlCode = _get(uri);
+            GetResponse response = JsonConvert.DeserializeObject<GetResponse>(HtmlCode);
+            Favicon[] favicons = response.icons;
             string base64Image = string.Empty;
             bool successful = false;
-            foreach (HtmlNode Icon in Icons)
+            foreach (Favicon icon in favicons)
             {
-                string iconLink = Icon.GetAttributeValue("src", null);
+                string iconLink = icon.url;
                 string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
                 ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
                 SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
@@ -75,7 +81,7 @@ namespace pmdbs
                             bmpIcon = (Bitmap)bmpIcon.GetThumbnailImage(350, 350, null, new IntPtr());
                             using (MemoryStream ms = new MemoryStream())
                             {
-                                bmpIcon.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                bmpIcon.Save(ms, ImageFormat.Png);
                                 base64Image = Convert.ToBase64String(ms.ToArray());
                             }
                         }
@@ -112,8 +118,12 @@ namespace pmdbs
 
             return false;
         }
-
-        public static string GenerateIcon(string Hostname)
+        /// <summary>
+        /// Generates an icon for a given hostname.
+        /// </summary>
+        /// <param name="Hostname">The hostname to generate the icon for.</param>
+        /// <returns>An icon of the first letter of the hostname.</returns>
+        public static string Generate(string Hostname)
         {
             char[] alphabet = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
             char letter = Hostname.ToUpper()[0];
@@ -137,15 +147,10 @@ namespace pmdbs
                 // string name = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
                 using (MemoryStream ms = new MemoryStream())
                 {
-                    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    bmp.Save(ms, ImageFormat.Png);
                     return Convert.ToBase64String(ms.ToArray());
                 }
             }
-        }
-
-        private static bool IsValidDomainName(string name)
-        {
-            return Uri.CheckHostName(name) != UriHostNameType.Unknown;
         }
     }
 }

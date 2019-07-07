@@ -12,7 +12,7 @@ using System.Net;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
-using CustomMetroForms;
+using LunaForms;
 
 namespace pmdbs
 {
@@ -194,7 +194,7 @@ namespace pmdbs
             MinSize = this.MinimumSize;
             this.MinimumSize = this.Size;
             this.MaximumSize = this.Size;
-            GlobalVarPool.loadingSpinner = SettingsAdvancedProgressSpinnerLoading;
+            GlobalVarPool.loadingSpinner = SettingsLunaProgressSpinnerFading;
             GlobalVarPool.loadingLabel = SettingsLabelLoadingStatus;
             GlobalVarPool.loadingLogo = SettingsPictureBoxLoadingLogo;
             GlobalVarPool.loadingPanel = SettingsPanelLoadingMain;
@@ -602,7 +602,7 @@ namespace pmdbs
                         {
                             if (!Hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
                             {
-                                favIcon = pmdbs.Icon.GenerateIcon(Hostname);
+                                favIcon = pmdbs.Icon.Generate(Hostname);
                             }
                             else
                             {
@@ -611,13 +611,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.GetFavIcons(Website);
+                            favIcon = pmdbs.Icon.Get(Website);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.GenerateIcon(Hostname);
+                        favIcon = pmdbs.Icon.Generate(Hostname);
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
@@ -893,13 +893,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.GetFavIcons(Website);
+                            favIcon = pmdbs.Icon.Get(Website);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.GenerateIcon(Hostname);
+                        favIcon = pmdbs.Icon.Generate(Hostname);
                     }
                 }
                 string[] Values = new string[]
@@ -1000,11 +1000,11 @@ namespace pmdbs
                 string base64Img;
                 try
                 {
-                    base64Img = pmdbs.Icon.GetFavIcons(AddEditFieldWebsite.TextTextBox);
+                    base64Img = pmdbs.Icon.Get(AddEditFieldWebsite.TextTextBox);
                 }
                 catch
                 {
-                    base64Img = pmdbs.Icon.GenerateIcon(AddEditFieldHostname.TextTextBox);
+                    base64Img = pmdbs.Icon.Generate(AddEditFieldHostname.TextTextBox);
                 }
                 byte[] iconBytes = Convert.FromBase64String(base64Img);
                 Invoke((MethodInvoker)delegate
@@ -1081,14 +1081,14 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLoadingAdvancedProgressSpinner.Start();
+            LoginLunaProgressSpinnerFading.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxOfflineMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Loading Saved Hash...";
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, GlobalVarPool.firstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, GlobalVarPool.firstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Checking Password...";
             if (!Stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
@@ -1099,7 +1099,7 @@ namespace pmdbs
                 LoginPictureBoxOfflineMain.ResumeLayout();
                 LoginPictureBoxOfflineMain.BringToFront();
                 LoginPictureBoxLoadingMain.SuspendLayout();
-                LoginLoadingAdvancedProgressSpinner.Stop();
+                LoginLunaProgressSpinnerFading.Stop();
                 return;
             }
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
@@ -1162,7 +1162,7 @@ namespace pmdbs
                 {
                     DataFlowLayoutPanelList.ResumeLayout();
                     FlowLayoutPanel1_Resize(this, null);
-                    LoginLoadingAdvancedProgressSpinner.Stop();
+                    LoginLunaProgressSpinnerFading.Stop();
                     LoginPictureBoxOnlineMain.Dispose();
                     LoginPictureBoxOfflineMain.Dispose();
                     LoginPictureBoxRegisterMain.Dispose();
@@ -1206,17 +1206,11 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLoadingAdvancedProgressSpinner.Start();
-            dottedProgressSpinner1.Start();
-            coloredProgressSpinner1.Start();
-            dottedProgressSpinner2.Start();
-            dottedProgressSpinner3.Start();
-            dottedProgressSpinner4.Start();
+            LoginLunaProgressSpinnerFading.Start();
             LoginPictureBoxLoadingMain.ResumeLayout();
             LoginPictureBoxLoadingMain.BringToFront();
             LoginPictureBoxRegisterMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Checking Password Strength ...";
-            return;
             Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
             Password.Result result = await GetResult;
             LoginLabelRegisterError.ForeColor = Color.Firebrick;
@@ -1232,7 +1226,7 @@ namespace pmdbs
                         {
                             errorForm.ShowDialog();
                         }
-                        LoginLoadingAdvancedProgressSpinner.Stop();
+                        LoginLunaProgressSpinnerFading.Stop();
                         LoginPictureBoxLoadingMain.SuspendLayout();
                         LoginPictureBoxRegisterMain.ResumeLayout();
                         LoginPictureBoxRegisterMain.BringToFront();
@@ -1249,7 +1243,7 @@ namespace pmdbs
                         }
                         if (!actionIsConfirmed)
                         {
-                            LoginLoadingAdvancedProgressSpinner.Stop();
+                            LoginLunaProgressSpinnerFading.Stop();
                             LoginPictureBoxLoadingMain.SuspendLayout();
                             LoginPictureBoxRegisterMain.ResumeLayout();
                             LoginPictureBoxRegisterMain.BringToFront();
@@ -1262,14 +1256,14 @@ namespace pmdbs
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
             string FirstUsage = TimeConverter.TimeStamp();
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.SCryptHash(Stage1PasswordHash, FirstUsage));
+            Task<String> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"", Stage2PasswordHash, "\", 0, \"", FirstUsage, "\");" }));
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
-            LoginLoadingAdvancedProgressSpinner.Stop();
+            LoginLunaProgressSpinnerFading.Stop();
             LoginPictureBoxOnlineMain.Dispose();
             LoginPictureBoxOfflineMain.Dispose();
             LoginPictureBoxRegisterMain.Dispose();

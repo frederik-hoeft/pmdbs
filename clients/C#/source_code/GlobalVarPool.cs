@@ -39,7 +39,7 @@ namespace pmdbs
         public static string onlinePassword = string.Empty;
 
         // GLOBAL CONTROLS
-        public static CustomMetroForms.AdvancedProgressSpinner loadingSpinner = null;
+        public static LunaForms.LunaProgressSpinnerFading loadingSpinner = null;
         public static System.Windows.Forms.Panel loadingPanel = null;
         public static System.Windows.Forms.Label loadingLabel = null;
         public static System.Windows.Forms.PictureBox loadingLogo = null;
@@ -49,7 +49,7 @@ namespace pmdbs
         public static System.Windows.Forms.Label promptEMail = null;
         public static System.Windows.Forms.Label promptAction = null;
         public static System.Windows.Forms.Panel promptPanel = null;
-        public static CustomMetroForms.AdvancedImageButton SyncButton = null;
+        public static LunaForms.AdvancedImageButton SyncButton = null;
 
         // SETTINGS
         public static bool wasOnline = false;
