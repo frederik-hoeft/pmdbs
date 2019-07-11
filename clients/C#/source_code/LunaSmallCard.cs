@@ -21,6 +21,7 @@ namespace pmdbs
         private Point _headerLocation = new Point(70, 0);
         private Point _infoLocation = new Point(72, 35);
         private bool _showInfo = true;
+        public event EventHandler OnClickEvent;
         public LunaSmallCard()
         {
             InitializeComponent();
@@ -39,12 +40,25 @@ namespace pmdbs
 
         private void LunaSmallCard_SizeChanged(object sender, EventArgs e)
         {
-
+            if (Height != 60)
+            {
+                Height = 60;
+            }
         }
 
         private void LunaSmallCard_Click(object sender, EventArgs e)
         {
+            ClickEvent(e);
+        }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            ClickEvent(e);
+        }
+
+        protected virtual void ClickEvent(EventArgs e)
+        {
+            OnClickEvent?.Invoke(this, e);
         }
 
         private void LunaSmallCard_MouseEnter(object sender, EventArgs e)
