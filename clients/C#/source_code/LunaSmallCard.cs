@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// A small info card containing an image, a header text and an optional info text.
+    /// </summary>
     public partial class LunaSmallCard : UserControl
     {
         private string _header = "LunaSmallCard";
@@ -20,6 +23,7 @@ namespace pmdbs
         private Color _foreColorInfo = Color.FromArgb(100, 100, 100);
         private Color _backColorHover = Color.FromArgb(220, 220, 220);
         private Color _backColor = Color.White;
+        private Color _backColorImage = Color.Orange;
         private Color currentColor = Color.White;
         private Point _headerLocation = new Point(70, 0);
         private Point _infoLocation = new Point(72, 35);
@@ -32,8 +36,14 @@ namespace pmdbs
         private bool hasFocus = false;
         private int astep, rstep, gstep, bstep;
 
+        /// <summary>
+        /// Occurs when the component is clicked. Should be used instead of LunaSmallCard.Click
+        /// </summary>
         public event EventHandler OnClickEvent;
 
+        /// <summary>
+        /// A small info card containing an image, a header text and an optional info text.
+        /// </summary>
         public LunaSmallCard()
         {
             InitializeComponent();
@@ -118,6 +128,9 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// The background color of the LunaSmallCard.
+        /// </summary>
         public override Color BackColor
         {
             get { return _backColor; }
@@ -128,12 +141,36 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// The background color of the LunaSmallCard when the user hovers over it.
+        /// </summary>
         public Color BackColorHover
         {
             get { return _backColorHover; }
             set { _backColorHover = value; }
         }
 
+        /// <summary>
+        /// The background color of the PictureBox.
+        /// </summary>
+        public Color BackColorImage
+        {
+            get { return _backColorImage; }
+            set { _backColorImage = value; }
+        }
+
+        /// <summary>
+        /// The image shown in the LunaSmallCard.
+        /// </summary>
+        public Image Image
+        {
+            get { return pictureBox1.Image; }
+            set { pictureBox1.Image = value; }
+        }
+
+        /// <summary>
+        /// The location of the top left corner of the header text.
+        /// </summary>
         public Point HeaderLocation
         {
             get { return _headerLocation; }
@@ -144,6 +181,9 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// The location of the top left corner of the info text.
+        /// </summary>
         public Point InfoLocation
         {
             get { return _infoLocation; }
@@ -154,6 +194,9 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// Controls whether the info text is drawn or not.
+        /// </summary>
         [DefaultValue(true)]
         public bool ShowInfo
         {
@@ -165,6 +208,9 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// Controls how smooth the color transition is from the BackColor to BackColorHover. More steps means smoother transition.
+        /// </summary>
         [DefaultValue(20)]
         public int AnimationSteps
         {
