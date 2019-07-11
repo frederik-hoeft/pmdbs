@@ -24,7 +24,7 @@ namespace pmdbs
         private Color _backColorHover = Color.FromArgb(220, 220, 220);
         private Color _backColor = Color.White;
         private Color _backColorImage = Color.Orange;
-        private Color currentColor = Color.White;
+        private Color normalColor = Color.White;
         private Point _headerLocation = new Point(70, 0);
         private Point _infoLocation = new Point(72, 35);
         private bool _showInfo = false;
@@ -52,7 +52,7 @@ namespace pmdbs
             animationTimer.Interval = _animationInterval;
             if (!_showInfo)
             {
-                _headerLocation = new Point(70, 18);
+                _headerLocation = new Point(70, 10);
                 Refresh();
             }
         }
@@ -138,6 +138,7 @@ namespace pmdbs
             {
                 base.BackColor = value;
                 _backColor = value;
+                normalColor = value;
             }
         }
 
@@ -204,12 +205,21 @@ namespace pmdbs
             set
             {
                 _showInfo = value;
+                if (_showInfo)
+                {
+                    _headerLocation = new Point(70, 0);
+                    _infoLocation = new Point(72, 35);
+                }
+                else
+                {
+                    _headerLocation = new Point(70, 10);
+                }
                 Refresh();
             }
         }
 
         /// <summary>
-        /// Controls how smooth the color transition is from the BackColor to BackColorHover. More steps means smoother transition.
+        /// Controls how smooth the color transition is from the BackColor to BackColorHover. More _steps means smoother transition.
         /// </summary>
         [DefaultValue(20)]
         public int AnimationSteps
@@ -277,12 +287,11 @@ namespace pmdbs
 
         private void MouseEnterEvent()
         {
-            currentColor = _backColor;
             hasFocus = true;
-            astep = Convert.ToInt32(_backColorHover.A - _backColor.A > 0 ? Math.Ceiling((double)(_backColorHover.A - _backColor.A) / (double)_steps) : Math.Floor((double)(_backColorHover.A - _backColor.A) / (double)_steps));
-            rstep = Convert.ToInt32(_backColorHover.R - _backColor.R > 0 ? Math.Ceiling((double)(_backColorHover.R - _backColor.R) / (double)_steps) : Math.Floor((double)(_backColorHover.R - _backColor.R) / (double)_steps));
-            gstep = Convert.ToInt32(_backColorHover.G - _backColor.G > 0 ? Math.Ceiling((double)(_backColorHover.G - _backColor.G) / (double)_steps) : Math.Floor((double)(_backColorHover.G - _backColor.G) / (double)_steps));
-            bstep = Convert.ToInt32(_backColorHover.B - _backColor.B > 0 ? Math.Ceiling((double)(_backColorHover.B - _backColor.B) / (double)_steps) : Math.Floor((double)(_backColorHover.B - _backColor.B) / (double)_steps));
+            astep = Convert.ToInt32(_backColorHover.A - normalColor.A > 0 ? Math.Ceiling((double)(_backColorHover.A - normalColor.A) / (double)_steps) : Math.Floor((double)(_backColorHover.A - normalColor.A) / (double)_steps));
+            rstep = Convert.ToInt32(_backColorHover.R - normalColor.R > 0 ? Math.Ceiling((double)(_backColorHover.R - normalColor.R) / (double)_steps) : Math.Floor((double)(_backColorHover.R - normalColor.R) / (double)_steps));
+            gstep = Convert.ToInt32(_backColorHover.G - normalColor.G > 0 ? Math.Ceiling((double)(_backColorHover.G - normalColor.G) / (double)_steps) : Math.Floor((double)(_backColorHover.G - normalColor.G) / (double)_steps));
+            bstep = Convert.ToInt32(_backColorHover.B - normalColor.B > 0 ? Math.Ceiling((double)(_backColorHover.B - normalColor.B) / (double)_steps) : Math.Floor((double)(_backColorHover.B - normalColor.B) / (double)_steps));
             if (!timerRunning)
             {
                 timerRunning = true;
@@ -292,12 +301,11 @@ namespace pmdbs
 
         private void MouseLeaveEvent()
         {
-            currentColor = _backColor;
             hasFocus = false;
-            astep = Convert.ToInt32(_backColor.A - _backColorHover.A > 0 ? Math.Ceiling((double)(_backColor.A - _backColorHover.A) / (double)_steps) : Math.Floor((double)(_backColor.A - _backColorHover.A) / (double)_steps));
-            rstep = Convert.ToInt32(_backColor.R - _backColorHover.R > 0 ? Math.Ceiling((double)(_backColor.R - _backColorHover.R) / (double)_steps) : Math.Floor((double)(_backColor.R - _backColorHover.R) / (double)_steps));
-            gstep = Convert.ToInt32(_backColor.G - _backColorHover.G > 0 ? Math.Ceiling((double)(_backColor.G - _backColorHover.G) / (double)_steps) : Math.Floor((double)(_backColor.G - _backColorHover.G) / (double)_steps));
-            bstep = Convert.ToInt32(_backColor.B - _backColorHover.B > 0 ? Math.Ceiling((double)(_backColor.B - _backColorHover.B) / (double)_steps) : Math.Floor((double)(_backColor.B - _backColorHover.B) / (double)_steps));
+            astep = Convert.ToInt32(normalColor.A - _backColorHover.A > 0 ? Math.Ceiling((double)(normalColor.A - _backColorHover.A) / (double)_steps) : Math.Floor((double)(normalColor.A - _backColorHover.A) / (double)_steps));
+            rstep = Convert.ToInt32(normalColor.R - _backColorHover.R > 0 ? Math.Ceiling((double)(normalColor.R - _backColorHover.R) / (double)_steps) : Math.Floor((double)(normalColor.R - _backColorHover.R) / (double)_steps));
+            gstep = Convert.ToInt32(normalColor.G - _backColorHover.G > 0 ? Math.Ceiling((double)(normalColor.G - _backColorHover.G) / (double)_steps) : Math.Floor((double)(normalColor.G - _backColorHover.G) / (double)_steps));
+            bstep = Convert.ToInt32(normalColor.B - _backColorHover.B > 0 ? Math.Ceiling((double)(normalColor.B - _backColorHover.B) / (double)_steps) : Math.Floor((double)(normalColor.B - _backColorHover.B) / (double)_steps));
             if (!timerRunning)
             {
                 timerRunning = true;
@@ -310,49 +318,49 @@ namespace pmdbs
             int A, R, G, B;
             if (hasFocus)
             {
-                if (_backColorHover.A > currentColor.A)
+                if (_backColorHover.A > _backColor.A)
                 {
-                    A = (currentColor.A + astep > _backColorHover.A ? _backColorHover.A : currentColor.A + astep);
+                    A = (_backColor.A + astep > _backColorHover.A ? _backColorHover.A : _backColor.A + astep);
                 }
-                else if (_backColorHover.A < currentColor.A)
+                else if (_backColorHover.A < _backColor.A)
                 {
-                    A = (currentColor.A + astep < _backColorHover.A ? _backColorHover.A : currentColor.A + astep);
+                    A = (_backColor.A + astep < _backColorHover.A ? _backColorHover.A : _backColor.A + astep);
                 }
                 else
                 {
                     A = _backColorHover.A;
                 }
-                if (_backColorHover.R > currentColor.R)
+                if (_backColorHover.R > _backColor.R)
                 {
-                    R = (currentColor.R + rstep > _backColorHover.R ? _backColorHover.R : currentColor.R + rstep);
+                    R = (_backColor.R + rstep > _backColorHover.R ? _backColorHover.R : _backColor.R + rstep);
                 }
-                else if (_backColorHover.R < currentColor.R)
+                else if (_backColorHover.R < _backColor.R)
                 {
-                    R = (currentColor.R + rstep < _backColorHover.R ? _backColorHover.R : currentColor.R + rstep);
+                    R = (_backColor.R + rstep < _backColorHover.R ? _backColorHover.R : _backColor.R + rstep);
                 }
                 else
                 {
                     R = _backColorHover.R;
                 }
-                if (_backColorHover.G > currentColor.G)
+                if (_backColorHover.G > _backColor.G)
                 {
-                    G = (currentColor.G + gstep > _backColorHover.G ? _backColorHover.G : currentColor.G + gstep);
+                    G = (_backColor.G + gstep > _backColorHover.G ? _backColorHover.G : _backColor.G + gstep);
                 }
-                else if (_backColorHover.G < currentColor.G)
+                else if (_backColorHover.G < _backColor.G)
                 {
-                    G = (currentColor.G + gstep < _backColorHover.G ? _backColorHover.G : currentColor.G + gstep);
+                    G = (_backColor.G + gstep < _backColorHover.G ? _backColorHover.G : _backColor.G + gstep);
                 }
                 else
                 {
                     G = _backColorHover.G;
                 }
-                if (_backColorHover.B > currentColor.B)
+                if (_backColorHover.B > _backColor.B)
                 {
-                    B = (currentColor.B + bstep > _backColorHover.B ? _backColorHover.B : currentColor.B + bstep);
+                    B = (_backColor.B + bstep > _backColorHover.B ? _backColorHover.B : _backColor.B + bstep);
                 }
-                else if (_backColorHover.B < currentColor.B)
+                else if (_backColorHover.B < _backColor.B)
                 {
-                    B = (currentColor.B + bstep < _backColorHover.B ? _backColorHover.B : currentColor.B + bstep);
+                    B = (_backColor.B + bstep < _backColorHover.B ? _backColorHover.B : _backColor.B + bstep);
                 }
                 else
                 {
@@ -361,60 +369,60 @@ namespace pmdbs
             }
             else
             {
-                if (_backColor.A > currentColor.A)
+                if (normalColor.A > _backColor.A)
                 {
-                    A = (currentColor.A + astep > _backColor.A ? _backColor.A : currentColor.A + astep);
+                    A = (_backColor.A + astep > normalColor.A ? normalColor.A : _backColor.A + astep);
                 }
-                else if (_backColor.A < currentColor.A)
+                else if (normalColor.A < _backColor.A)
                 {
-                    A = (currentColor.A + astep < _backColor.A ? _backColor.A : currentColor.A + astep);
-                }
-                else
-                {
-                    A = _backColor.A;
-                }
-                if (_backColor.R > currentColor.R)
-                {
-                    R = currentColor.R + rstep > _backColor.R ? _backColor.R : currentColor.R + rstep;
-                }
-                else if (_backColor.R < currentColor.R)
-                {
-                    R = currentColor.R + rstep < _backColor.R ? _backColor.R : currentColor.R + rstep;
+                    A = (_backColor.A + astep < normalColor.A ? normalColor.A : _backColor.A + astep);
                 }
                 else
                 {
-                    R = _backColor.R;
+                    A = normalColor.A;
                 }
-                if (_backColor.G > currentColor.G)
+                if (normalColor.R > _backColor.R)
                 {
-                    G = currentColor.G + gstep > _backColor.G ? _backColor.G : currentColor.G + gstep;
+                    R = _backColor.R + rstep > normalColor.R ? normalColor.R : _backColor.R + rstep;
                 }
-                else if (_backColor.G < currentColor.G)
+                else if (normalColor.R < _backColor.R)
                 {
-                    G = currentColor.G + gstep < _backColor.G ? _backColor.G : currentColor.G + gstep;
-                }
-                else
-                {
-                    G = _backColor.G;
-                }
-                if (_backColor.B > currentColor.B)
-                {
-                    B = currentColor.B + bstep > _backColor.B ? _backColor.B : currentColor.B + bstep;
-                }
-                else if (_backColor.B < currentColor.B)
-                {
-                    B = currentColor.B + bstep < _backColor.B ? _backColor.B : currentColor.B + bstep;
+                    R = _backColor.R + rstep < normalColor.R ? normalColor.R : _backColor.R + rstep;
                 }
                 else
                 {
-                    B = _backColor.B;
+                    R = normalColor.R;
+                }
+                if (normalColor.G > _backColor.G)
+                {
+                    G = _backColor.G + gstep > normalColor.G ? normalColor.G : _backColor.G + gstep;
+                }
+                else if (normalColor.G < _backColor.G)
+                {
+                    G = _backColor.G + gstep < normalColor.G ? normalColor.G : _backColor.G + gstep;
+                }
+                else
+                {
+                    G = normalColor.G;
+                }
+                if (normalColor.B > _backColor.B)
+                {
+                    B = _backColor.B + bstep > normalColor.B ? normalColor.B : _backColor.B + bstep;
+                }
+                else if (normalColor.B < _backColor.B)
+                {
+                    B = _backColor.B + bstep < normalColor.B ? normalColor.B : _backColor.B + bstep;
+                }
+                else
+                {
+                    B = normalColor.B;
                 }
             }
-            currentColor = Color.FromArgb(R, G, B);
-            BackColor = currentColor;
+            _backColor = Color.FromArgb(R, G, B);
+            BackColor = _backColor;
             if (hasFocus)
             {
-                if (currentColor.Equals(_backColorHover))
+                if (_backColor.Equals(_backColorHover))
                 {
                     animationTimer.Stop();
                     timerRunning = false;
@@ -422,7 +430,7 @@ namespace pmdbs
             }
             else
             {
-                if (currentColor.Equals(_backColor))
+                if (_backColor.Equals(normalColor))
                 {
                     animationTimer.Stop();
                     timerRunning = false;
