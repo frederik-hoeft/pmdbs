@@ -4446,17 +4446,18 @@
             // lunaSmallCard1
             // 
             this.lunaSmallCard1.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaSmallCard1.BackColorImage = System.Drawing.Color.Orange;
+            this.lunaSmallCard1.BackColorImage = System.Drawing.Color.White;
+            this.lunaSmallCard1.BackColorNormal = System.Drawing.Color.White;
             this.lunaSmallCard1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lunaSmallCard1.ForeColorHeader = System.Drawing.Color.Orange;
             this.lunaSmallCard1.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lunaSmallCard1.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCard1.Image = null;
+            this.lunaSmallCard1.Image = global::pmdbs.Properties.Resources.devices_colored_linux;
             this.lunaSmallCard1.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard1.Location = new System.Drawing.Point(6, 275);
+            this.lunaSmallCard1.Location = new System.Drawing.Point(3, 315);
             this.lunaSmallCard1.Name = "lunaSmallCard1";
             this.lunaSmallCard1.ShowInfo = false;
-            this.lunaSmallCard1.Size = new System.Drawing.Size(252, 60);
+            this.lunaSmallCard1.Size = new System.Drawing.Size(258, 60);
             this.lunaSmallCard1.TabIndex = 0;
             // 
             // Form1

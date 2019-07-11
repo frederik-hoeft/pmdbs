@@ -23,13 +23,11 @@ namespace pmdbs
         private Color _foreColorInfo = Color.FromArgb(100, 100, 100);
         private Color _backColorHover = Color.FromArgb(220, 220, 220);
         private Color _backColor = Color.White;
-        private Color _backColorImage = Color.Orange;
         private Color normalColor = Color.White;
         private Point _headerLocation = new Point(70, 0);
         private Point _infoLocation = new Point(72, 35);
         private bool _showInfo = false;
         private int _steps = 20;
-        private int step = 0;
         private int _animationInterval = 10;
         private Timer animationTimer = new Timer();
         private bool timerRunning = false;
@@ -131,12 +129,11 @@ namespace pmdbs
         /// <summary>
         /// The background color of the LunaSmallCard.
         /// </summary>
-        public override Color BackColor
+        public Color BackColorNormal
         {
             get { return _backColor; }
             set
             {
-                base.BackColor = value;
                 _backColor = value;
                 normalColor = value;
             }
@@ -156,8 +153,8 @@ namespace pmdbs
         /// </summary>
         public Color BackColorImage
         {
-            get { return _backColorImage; }
-            set { _backColorImage = value; }
+            get { return pictureBox1.BackColor; }
+            set { pictureBox1.BackColor = value; }
         }
 
         /// <summary>
@@ -228,6 +225,15 @@ namespace pmdbs
             set { _steps = value; }
         }
 
+        /// <summary>
+        /// The interval in ms in which the Animations goes through it's animation steps. The total animation duration is AnimationInterval * AnimationSteps.
+        /// </summary>
+        [DefaultValue(10)]
+        public int AnimationInterval
+        {
+            get { return _animationInterval; }
+            set { _animationInterval = value; }
+        }
 
         #endregion
         private void LunaSmallCard_Paint(object sender, PaintEventArgs e)
