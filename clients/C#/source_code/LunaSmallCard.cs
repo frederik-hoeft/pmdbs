@@ -24,7 +24,7 @@ namespace pmdbs
         private Point _headerLocation = new Point(70, 0);
         private Point _infoLocation = new Point(72, 35);
         private bool _showInfo = false;
-        private int steps = 20;
+        private int _steps = 20;
         private int step = 0;
         private int _animationInterval = 10;
         private Timer animationTimer = new Timer();
@@ -48,12 +48,131 @@ namespace pmdbs
         }
 
         #region Getters / Setters
+        /// <summary>
+        /// The main text to be displayed.
+        /// </summary>
         [DefaultValue("LunaSmallCard")]
         public string Header
         {
             get { return _header; }
             set { _header = value; }
         }
+
+        /// <summary>
+        /// Additional information to be displayed.
+        /// </summary>
+        [DefaultValue("Info")]
+        public string Info
+        {
+            get { return _info; }
+            set { _info = value; }
+        }
+
+        /// <summary>
+        /// The font top be used to draw both Header and Info.
+        /// </summary>
+        public override Font Font
+        {
+            get { return _font; }
+            set
+            {
+                base.Font = value;
+                _font = value;
+                Refresh();
+            }
+        }
+
+        /// <summary>
+        /// The font size in pixels of the info text.
+        /// </summary>
+        [DefaultValue(15)]
+        public int InfoFontSizePx
+        {
+            get { return _infoFontSizePx; }
+            set { _infoFontSizePx = value; }
+        }
+
+        /// <summary>
+        /// The foreground color of the header text.
+        /// </summary>
+        public Color ForeColorHeader
+        {
+            get { return _foreColorHeader; }
+            set
+            {
+                _foreColorHeader = value;
+                Refresh();
+            }
+        }
+
+        /// <summary>
+        /// The foreground color of the info text.
+        /// </summary>
+        public Color ForeColorInfo
+        {
+            get { return _foreColorInfo; }
+            set
+            {
+                _foreColorInfo = value;
+                Refresh();
+            }
+        }
+
+        public override Color BackColor
+        {
+            get { return _backColor; }
+            set
+            {
+                base.BackColor = value;
+                _backColor = value;
+            }
+        }
+
+        public Color BackColorHover
+        {
+            get { return _backColorHover; }
+            set { _backColorHover = value; }
+        }
+
+        public Point HeaderLocation
+        {
+            get { return _headerLocation; }
+            set
+            {
+                _headerLocation = value;
+                Refresh();
+            }
+        }
+
+        public Point InfoLocation
+        {
+            get { return _infoLocation; }
+            set
+            {
+                _infoLocation = value;
+                Refresh();
+            }
+        }
+
+        [DefaultValue(true)]
+        public bool ShowInfo
+        {
+            get { return _showInfo; }
+            set
+            {
+                _showInfo = value;
+                Refresh();
+            }
+        }
+
+        [DefaultValue(20)]
+        public int AnimationSteps
+        {
+            get { return _steps; }
+            set { _steps = value; }
+        }
+
+
         #endregion
         private void LunaSmallCard_Paint(object sender, PaintEventArgs e)
         {
@@ -112,12 +231,12 @@ namespace pmdbs
 
         private void MouseEnterEvent()
         {
-            currentColor = BackColor;
+            currentColor = _backColor;
             hasFocus = true;
-            astep = Convert.ToInt32(_backColorHover.A - _backColor.A > 0 ? Math.Ceiling((double)(_backColorHover.A - _backColor.A) / (double)steps) : Math.Floor((double)(_backColorHover.A - _backColor.A) / (double)steps));
-            rstep = Convert.ToInt32(_backColorHover.R - _backColor.R > 0 ? Math.Ceiling((double)(_backColorHover.R - _backColor.R) / (double)steps) : Math.Floor((double)(_backColorHover.R - _backColor.R) / (double)steps));
-            gstep = Convert.ToInt32(_backColorHover.G - _backColor.G > 0 ? Math.Ceiling((double)(_backColorHover.G - _backColor.G) / (double)steps) : Math.Floor((double)(_backColorHover.G - _backColor.G) / (double)steps));
-            bstep = Convert.ToInt32(_backColorHover.B - _backColor.B > 0 ? Math.Ceiling((double)(_backColorHover.B - _backColor.B) / (double)steps) : Math.Floor((double)(_backColorHover.B - _backColor.B) / (double)steps));
+            astep = Convert.ToInt32(_backColorHover.A - _backColor.A > 0 ? Math.Ceiling((double)(_backColorHover.A - _backColor.A) / (double)_steps) : Math.Floor((double)(_backColorHover.A - _backColor.A) / (double)_steps));
+            rstep = Convert.ToInt32(_backColorHover.R - _backColor.R > 0 ? Math.Ceiling((double)(_backColorHover.R - _backColor.R) / (double)_steps) : Math.Floor((double)(_backColorHover.R - _backColor.R) / (double)_steps));
+            gstep = Convert.ToInt32(_backColorHover.G - _backColor.G > 0 ? Math.Ceiling((double)(_backColorHover.G - _backColor.G) / (double)_steps) : Math.Floor((double)(_backColorHover.G - _backColor.G) / (double)_steps));
+            bstep = Convert.ToInt32(_backColorHover.B - _backColor.B > 0 ? Math.Ceiling((double)(_backColorHover.B - _backColor.B) / (double)_steps) : Math.Floor((double)(_backColorHover.B - _backColor.B) / (double)_steps));
             if (!timerRunning)
             {
                 timerRunning = true;
@@ -127,12 +246,12 @@ namespace pmdbs
 
         private void MouseLeaveEvent()
         {
-            currentColor = BackColor;
+            currentColor = _backColor;
             hasFocus = false;
-            astep = Convert.ToInt32(_backColor.A - _backColorHover.A > 0 ? Math.Ceiling((double)(_backColor.A - _backColorHover.A) / (double)steps) : Math.Floor((double)(_backColor.A - _backColorHover.A) / (double)steps));
-            rstep = Convert.ToInt32(_backColor.R - _backColorHover.R > 0 ? Math.Ceiling((double)(_backColor.R - _backColorHover.R) / (double)steps) : Math.Floor((double)(_backColor.R - _backColorHover.R) / (double)steps));
-            gstep = Convert.ToInt32(_backColor.G - _backColorHover.G > 0 ? Math.Ceiling((double)(_backColor.G - _backColorHover.G) / (double)steps) : Math.Floor((double)(_backColor.G - _backColorHover.G) / (double)steps));
-            bstep = Convert.ToInt32(_backColor.B - _backColorHover.B > 0 ? Math.Ceiling((double)(_backColor.B - _backColorHover.B) / (double)steps) : Math.Floor((double)(_backColor.B - _backColorHover.B) / (double)steps));
+            astep = Convert.ToInt32(_backColor.A - _backColorHover.A > 0 ? Math.Ceiling((double)(_backColor.A - _backColorHover.A) / (double)_steps) : Math.Floor((double)(_backColor.A - _backColorHover.A) / (double)_steps));
+            rstep = Convert.ToInt32(_backColor.R - _backColorHover.R > 0 ? Math.Ceiling((double)(_backColor.R - _backColorHover.R) / (double)_steps) : Math.Floor((double)(_backColor.R - _backColorHover.R) / (double)_steps));
+            gstep = Convert.ToInt32(_backColor.G - _backColorHover.G > 0 ? Math.Ceiling((double)(_backColor.G - _backColorHover.G) / (double)_steps) : Math.Floor((double)(_backColor.G - _backColorHover.G) / (double)_steps));
+            bstep = Convert.ToInt32(_backColor.B - _backColorHover.B > 0 ? Math.Ceiling((double)(_backColor.B - _backColorHover.B) / (double)_steps) : Math.Floor((double)(_backColor.B - _backColorHover.B) / (double)_steps));
             if (!timerRunning)
             {
                 timerRunning = true;
