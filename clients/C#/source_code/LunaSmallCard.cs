@@ -21,15 +21,25 @@ namespace pmdbs
         private Color _backColorHover = Color.FromArgb(220, 220, 220);
         private Color _backColor = Color.White;
         private Color currentColor = Color.White;
-        private Color normalColor = Color.White;
         private Point _headerLocation = new Point(70, 0);
         private Point _infoLocation = new Point(72, 35);
         private bool _showInfo = false;
+        private int steps = 20;
+        private int step = 0;
+        private int _animationInterval = 10;
+        private Timer animationTimer = new Timer();
+        private bool timerRunning = false;
+        private bool hasFocus = false;
+        private int astep, rstep, gstep, bstep;
+
         public event EventHandler OnClickEvent;
+
         public LunaSmallCard()
         {
             InitializeComponent();
             pictureBox1.BackColor = _foreColorHeader;
+            animationTimer.Tick += new EventHandler(AnimationTimer_Tick);
+            animationTimer.Interval = _animationInterval;
             if (!_showInfo)
             {
                 _headerLocation = new Point(70, 18);
@@ -37,13 +47,21 @@ namespace pmdbs
             }
         }
 
+        #region Getters / Setters
+        [DefaultValue("LunaSmallCard")]
+        public string Header
+        {
+            get { return _header; }
+            set { _header = value; }
+        }
+        #endregion
         private void LunaSmallCard_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             g.DrawString(_header, _font, new SolidBrush(_foreColorHeader), _headerLocation);
             if (_showInfo)
             {
-                g.DrawString(_info, new Font(_font.FontFamily, _infoFontSize, GraphicsUnit.Pixel), new SolidBrush(_foreColorInfo), _infoLocation);
+                g.DrawString(_info, new Font(_font.FontFamily, _infoFontSizePx, GraphicsUnit.Pixel), new SolidBrush(_foreColorInfo), _infoLocation);
             }
         }
 
@@ -54,7 +72,7 @@ namespace pmdbs
                 Height = 60;
             }
         }
-
+        #region Click event
         private void LunaSmallCard_Click(object sender, EventArgs e)
         {
             ClickEvent(e);
@@ -69,29 +87,41 @@ namespace pmdbs
         {
             OnClickEvent?.Invoke(this, e);
         }
+        #endregion
 
+        #region Hover effects
         private void LunaSmallCard_MouseEnter(object sender, EventArgs e)
         {
-
+            MouseEnterEvent();
         }
 
         private void LunaSmallCard_MouseLeave(object sender, EventArgs e)
         {
+            MouseLeaveEvent();
+        }
 
+        private void pictureBox1_MouseEnter(object sender, EventArgs e)
+        {
+            MouseEnterEvent();
+        }
+
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            MouseLeaveEvent();
         }
 
         private void MouseEnterEvent()
         {
             currentColor = BackColor;
             hasFocus = true;
-            astep = Convert.ToInt32(_backColorHover.A - normalColor.A > 0 ? Math.Ceiling((double)(_backColorHover.A - normalColor.A) / (double)steps) : Math.Floor((double)(_backColorHover.A - normalColor.A) / (double)steps));
-            rstep = Convert.ToInt32(_backColorHover.R - normalColor.R > 0 ? Math.Ceiling((double)(_backColorHover.R - normalColor.R) / (double)steps) : Math.Floor((double)(_backColorHover.R - normalColor.R) / (double)steps));
-            gstep = Convert.ToInt32(_backColorHover.G - normalColor.G > 0 ? Math.Ceiling((double)(_backColorHover.G - normalColor.G) / (double)steps) : Math.Floor((double)(_backColorHover.G - normalColor.G) / (double)steps));
-            bstep = Convert.ToInt32(_backColorHover.B - normalColor.B > 0 ? Math.Ceiling((double)(_backColorHover.B - normalColor.B) / (double)steps) : Math.Floor((double)(_backColorHover.B - normalColor.B) / (double)steps));
+            astep = Convert.ToInt32(_backColorHover.A - _backColor.A > 0 ? Math.Ceiling((double)(_backColorHover.A - _backColor.A) / (double)steps) : Math.Floor((double)(_backColorHover.A - _backColor.A) / (double)steps));
+            rstep = Convert.ToInt32(_backColorHover.R - _backColor.R > 0 ? Math.Ceiling((double)(_backColorHover.R - _backColor.R) / (double)steps) : Math.Floor((double)(_backColorHover.R - _backColor.R) / (double)steps));
+            gstep = Convert.ToInt32(_backColorHover.G - _backColor.G > 0 ? Math.Ceiling((double)(_backColorHover.G - _backColor.G) / (double)steps) : Math.Floor((double)(_backColorHover.G - _backColor.G) / (double)steps));
+            bstep = Convert.ToInt32(_backColorHover.B - _backColor.B > 0 ? Math.Ceiling((double)(_backColorHover.B - _backColor.B) / (double)steps) : Math.Floor((double)(_backColorHover.B - _backColor.B) / (double)steps));
             if (!timerRunning)
             {
                 timerRunning = true;
-                AnimationTimer.Start();
+                animationTimer.Start();
             }
         }
 
@@ -99,14 +129,14 @@ namespace pmdbs
         {
             currentColor = BackColor;
             hasFocus = false;
-            astep = Convert.ToInt32(normalColor.A - _backColorHover.A > 0 ? Math.Ceiling((double)(normalColor.A - _backColorHover.A) / (double)steps) : Math.Floor((double)(normalColor.A - _backColorHover.A) / (double)steps));
-            rstep = Convert.ToInt32(normalColor.R - _backColorHover.R > 0 ? Math.Ceiling((double)(normalColor.R - _backColorHover.R) / (double)steps) : Math.Floor((double)(normalColor.R - _backColorHover.R) / (double)steps));
-            gstep = Convert.ToInt32(normalColor.G - _backColorHover.G > 0 ? Math.Ceiling((double)(normalColor.G - _backColorHover.G) / (double)steps) : Math.Floor((double)(normalColor.G - _backColorHover.G) / (double)steps));
-            bstep = Convert.ToInt32(normalColor.B - _backColorHover.B > 0 ? Math.Ceiling((double)(normalColor.B - _backColorHover.B) / (double)steps) : Math.Floor((double)(normalColor.B - _backColorHover.B) / (double)steps));
+            astep = Convert.ToInt32(_backColor.A - _backColorHover.A > 0 ? Math.Ceiling((double)(_backColor.A - _backColorHover.A) / (double)steps) : Math.Floor((double)(_backColor.A - _backColorHover.A) / (double)steps));
+            rstep = Convert.ToInt32(_backColor.R - _backColorHover.R > 0 ? Math.Ceiling((double)(_backColor.R - _backColorHover.R) / (double)steps) : Math.Floor((double)(_backColor.R - _backColorHover.R) / (double)steps));
+            gstep = Convert.ToInt32(_backColor.G - _backColorHover.G > 0 ? Math.Ceiling((double)(_backColor.G - _backColorHover.G) / (double)steps) : Math.Floor((double)(_backColor.G - _backColorHover.G) / (double)steps));
+            bstep = Convert.ToInt32(_backColor.B - _backColorHover.B > 0 ? Math.Ceiling((double)(_backColor.B - _backColorHover.B) / (double)steps) : Math.Floor((double)(_backColor.B - _backColorHover.B) / (double)steps));
             if (!timerRunning)
             {
                 timerRunning = true;
-                AnimationTimer.Start();
+                animationTimer.Start();
             }
         }
 
@@ -115,125 +145,126 @@ namespace pmdbs
             int A, R, G, B;
             if (hasFocus)
             {
-                if (HoverColor.A > CurrentColor.A)
+                if (_backColorHover.A > currentColor.A)
                 {
-                    A = (CurrentColor.A + astep > HoverColor.A ? HoverColor.A : CurrentColor.A + astep);
+                    A = (currentColor.A + astep > _backColorHover.A ? _backColorHover.A : currentColor.A + astep);
                 }
-                else if (HoverColor.A < CurrentColor.A)
+                else if (_backColorHover.A < currentColor.A)
                 {
-                    A = (CurrentColor.A + astep < HoverColor.A ? HoverColor.A : CurrentColor.A + astep);
-                }
-                else
-                {
-                    A = HoverColor.A;
-                }
-                if (HoverColor.R > CurrentColor.R)
-                {
-                    R = (CurrentColor.R + rstep > HoverColor.R ? HoverColor.R : CurrentColor.R + rstep);
-                }
-                else if (HoverColor.R < CurrentColor.R)
-                {
-                    R = (CurrentColor.R + rstep < HoverColor.R ? HoverColor.R : CurrentColor.R + rstep);
+                    A = (currentColor.A + astep < _backColorHover.A ? _backColorHover.A : currentColor.A + astep);
                 }
                 else
                 {
-                    R = HoverColor.R;
+                    A = _backColorHover.A;
                 }
-                if (HoverColor.G > CurrentColor.G)
+                if (_backColorHover.R > currentColor.R)
                 {
-                    G = (CurrentColor.G + gstep > HoverColor.G ? HoverColor.G : CurrentColor.G + gstep);
+                    R = (currentColor.R + rstep > _backColorHover.R ? _backColorHover.R : currentColor.R + rstep);
                 }
-                else if (HoverColor.G < CurrentColor.G)
+                else if (_backColorHover.R < currentColor.R)
                 {
-                    G = (CurrentColor.G + gstep < HoverColor.G ? HoverColor.G : CurrentColor.G + gstep);
-                }
-                else
-                {
-                    G = HoverColor.G;
-                }
-                if (HoverColor.B > CurrentColor.B)
-                {
-                    B = (CurrentColor.B + bstep > HoverColor.B ? HoverColor.B : CurrentColor.B + bstep);
-                }
-                else if (HoverColor.B < CurrentColor.B)
-                {
-                    B = (CurrentColor.B + bstep < HoverColor.B ? HoverColor.B : CurrentColor.B + bstep);
+                    R = (currentColor.R + rstep < _backColorHover.R ? _backColorHover.R : currentColor.R + rstep);
                 }
                 else
                 {
-                    B = HoverColor.B;
+                    R = _backColorHover.R;
+                }
+                if (_backColorHover.G > currentColor.G)
+                {
+                    G = (currentColor.G + gstep > _backColorHover.G ? _backColorHover.G : currentColor.G + gstep);
+                }
+                else if (_backColorHover.G < currentColor.G)
+                {
+                    G = (currentColor.G + gstep < _backColorHover.G ? _backColorHover.G : currentColor.G + gstep);
+                }
+                else
+                {
+                    G = _backColorHover.G;
+                }
+                if (_backColorHover.B > currentColor.B)
+                {
+                    B = (currentColor.B + bstep > _backColorHover.B ? _backColorHover.B : currentColor.B + bstep);
+                }
+                else if (_backColorHover.B < currentColor.B)
+                {
+                    B = (currentColor.B + bstep < _backColorHover.B ? _backColorHover.B : currentColor.B + bstep);
+                }
+                else
+                {
+                    B = _backColorHover.B;
                 }
             }
             else
             {
-                if (NormalColor.A > CurrentColor.A)
+                if (_backColor.A > currentColor.A)
                 {
-                    A = (CurrentColor.A + astep > NormalColor.A ? NormalColor.A : CurrentColor.A + astep);
+                    A = (currentColor.A + astep > _backColor.A ? _backColor.A : currentColor.A + astep);
                 }
-                else if (NormalColor.A < CurrentColor.A)
+                else if (_backColor.A < currentColor.A)
                 {
-                    A = (CurrentColor.A + astep < NormalColor.A ? NormalColor.A : CurrentColor.A + astep);
-                }
-                else
-                {
-                    A = NormalColor.A;
-                }
-                if (NormalColor.R > CurrentColor.R)
-                {
-                    R = CurrentColor.R + rstep > NormalColor.R ? NormalColor.R : CurrentColor.R + rstep;
-                }
-                else if (NormalColor.R < CurrentColor.R)
-                {
-                    R = CurrentColor.R + rstep < NormalColor.R ? NormalColor.R : CurrentColor.R + rstep;
+                    A = (currentColor.A + astep < _backColor.A ? _backColor.A : currentColor.A + astep);
                 }
                 else
                 {
-                    R = NormalColor.R;
+                    A = _backColor.A;
                 }
-                if (NormalColor.G > CurrentColor.G)
+                if (_backColor.R > currentColor.R)
                 {
-                    G = CurrentColor.G + gstep > NormalColor.G ? NormalColor.G : CurrentColor.G + gstep;
+                    R = currentColor.R + rstep > _backColor.R ? _backColor.R : currentColor.R + rstep;
                 }
-                else if (NormalColor.G < CurrentColor.G)
+                else if (_backColor.R < currentColor.R)
                 {
-                    G = CurrentColor.G + gstep < NormalColor.G ? NormalColor.G : CurrentColor.G + gstep;
-                }
-                else
-                {
-                    G = NormalColor.G;
-                }
-                if (NormalColor.B > CurrentColor.B)
-                {
-                    B = CurrentColor.B + bstep > NormalColor.B ? NormalColor.B : CurrentColor.B + bstep;
-                }
-                else if (NormalColor.B < CurrentColor.B)
-                {
-                    B = CurrentColor.B + bstep < NormalColor.B ? NormalColor.B : CurrentColor.B + bstep;
+                    R = currentColor.R + rstep < _backColor.R ? _backColor.R : currentColor.R + rstep;
                 }
                 else
                 {
-                    B = NormalColor.B;
+                    R = _backColor.R;
+                }
+                if (_backColor.G > currentColor.G)
+                {
+                    G = currentColor.G + gstep > _backColor.G ? _backColor.G : currentColor.G + gstep;
+                }
+                else if (_backColor.G < currentColor.G)
+                {
+                    G = currentColor.G + gstep < _backColor.G ? _backColor.G : currentColor.G + gstep;
+                }
+                else
+                {
+                    G = _backColor.G;
+                }
+                if (_backColor.B > currentColor.B)
+                {
+                    B = currentColor.B + bstep > _backColor.B ? _backColor.B : currentColor.B + bstep;
+                }
+                else if (_backColor.B < currentColor.B)
+                {
+                    B = currentColor.B + bstep < _backColor.B ? _backColor.B : currentColor.B + bstep;
+                }
+                else
+                {
+                    B = _backColor.B;
                 }
             }
-            CurrentColor = Color.FromArgb(R, G, B);
-            BackColor = CurrentColor;
+            currentColor = Color.FromArgb(R, G, B);
+            BackColor = currentColor;
             if (hasFocus)
             {
-                if (CurrentColor.Equals(HoverColor))
+                if (currentColor.Equals(_backColorHover))
                 {
-                    AnimationTimer.Stop();
+                    animationTimer.Stop();
                     timerRunning = false;
                 }
             }
             else
             {
-                if (CurrentColor.Equals(NormalColor))
+                if (currentColor.Equals(_backColor))
                 {
-                    AnimationTimer.Stop();
+                    animationTimer.Stop();
                     timerRunning = false;
                 }
             }
             this.Refresh();
         }
+        #endregion
     }
 }
