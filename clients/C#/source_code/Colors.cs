@@ -33,6 +33,11 @@ namespace pmdbs
         {
             get { return Color.FromArgb(33, 33, 33); }
         }
+        
+        public static Color Blue
+        {
+            get { return Color.FromArgb(38, 128, 235); }
+        }
         /// <summary>
         /// Gets a user-defined color that has an ARGB value of #FFDCDCDC.
         /// </summary>
