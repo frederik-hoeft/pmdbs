@@ -231,6 +231,7 @@ namespace pmdbs
             #endregion
 
             #endregion
+            lunaSmallCardList1.OnClickEvent += card_click;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -1829,6 +1830,21 @@ namespace pmdbs
         }
 
 
+        #endregion
+
+        #region Dashboard
+        private int t = 0;
+        private void animatedButton1_Click(object sender, EventArgs e)
+        {
+            lunaSmallCardList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t);
+            t++;
+        }
+
+        private void card_click(object sender, EventArgs e)
+        {
+            LunaSmallCardItem item = (LunaSmallCardItem)sender;
+            CustomException.ThrowNew.NotImplementedException(item.Id.ToString());
+        }
         #endregion
     }
 }
