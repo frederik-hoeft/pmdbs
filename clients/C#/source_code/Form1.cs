@@ -1844,7 +1844,7 @@ namespace pmdbs
         private int t = 0;
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            lunaSmallCardList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString());
+            lunaSmallCardList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
             t++;
         }
 
@@ -1881,6 +1881,7 @@ namespace pmdbs
             }
             Task<List<string>> GetIgnoredBreaches = DataBaseHelper.GetDataAsList("SELECT B_hash FROM Tbl_breaches;",(int)ColumnCount.SingleColumn);
             List<string> ignoredBreaches = await GetIgnoredBreaches;
+            int index = 0;
             for (int i = 0; i < breaches.Count; i++)
             {
                 Breaches.Breach breach = breaches[i];
@@ -1893,7 +1894,8 @@ namespace pmdbs
                     string hash = CryptoHelper.SHA256HashBase64(breach.Name + breach.BreachDate);
                     if (!ignoredBreaches.Contains(hash))
                     {
-                        lunaSmallCardList3.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash);
+                        lunaSmallCardList3.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash, index);
+                        index++;
                     }
                 }
             }
