@@ -293,6 +293,9 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             WindowHeaderLabelTitle.Text = "Dashboard";
+            FilterAdvancedComboBoxSort.Visible = false;
+            FilterEditFieldSearch.Visible = false;
+            DashboardTableLayoutPanel.BringToFront();
         }
 
         private void MenuMenuEntrySettings_Click(object sender, EventArgs e)
@@ -301,6 +304,8 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Colors.Orange;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             SettingsTableLayoutPanelMain.BringToFront();
+            FilterAdvancedComboBoxSort.Visible = false;
+            FilterEditFieldSearch.Visible = false;
             if (GlobalVarPool.wasOnline)
             {
                 SettingsFlowLayoutPanelOnline.BringToFront();
@@ -317,6 +322,8 @@ namespace pmdbs
             MenuPanelHomeIndicator.BackColor = Color.White;
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
+            FilterAdvancedComboBoxSort.Visible = true;
+            FilterEditFieldSearch.Visible = true;
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Passwords";
         }

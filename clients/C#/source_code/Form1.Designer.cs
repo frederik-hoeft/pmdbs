@@ -49,7 +49,6 @@
             this.animatedButton1 = new LunaForms.AnimatedButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.cartesianChart1 = new LiveCharts.WinForms.CartesianChart();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
@@ -338,7 +337,6 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
@@ -606,15 +604,14 @@
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 5;
+            this.tableLayoutPanel1.ColumnCount = 3;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 264F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 264F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel6, 4, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(539, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
@@ -642,7 +639,7 @@
             this.lunaSmallCardList1.ImageLocation = new System.Drawing.Point(1, 1);
             this.lunaSmallCardList1.Location = new System.Drawing.Point(0, 67);
             this.lunaSmallCardList1.LunaSmallCardAnimationSteps = 10;
-            this.lunaSmallCardList1.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lunaSmallCardList1.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.lunaSmallCardList1.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
             this.lunaSmallCardList1.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lunaSmallCardList1.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
@@ -700,43 +697,37 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(528, 709);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(802, 709);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
-            this.panel3.Controls.Add(this.cartesianChart1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(528, 349);
+            this.panel3.Size = new System.Drawing.Size(802, 349);
             this.panel3.TabIndex = 2;
-            // 
-            // cartesianChart1
-            // 
-            this.cartesianChart1.Location = new System.Drawing.Point(17, 67);
-            this.cartesianChart1.Name = "cartesianChart1";
-            this.cartesianChart1.Size = new System.Drawing.Size(483, 239);
-            this.cartesianChart1.TabIndex = 0;
-            this.cartesianChart1.Text = "cartesianChart1";
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.ColumnCount = 3;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnCount = 5;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel3.Controls.Add(this.panel4, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.panel5, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.panel6, 4, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 359);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(528, 350);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(802, 350);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // panel4
@@ -751,7 +742,7 @@
             this.panel4.Location = new System.Drawing.Point(0, 0);
             this.panel4.Margin = new System.Windows.Forms.Padding(0);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(259, 350);
+            this.panel4.Size = new System.Drawing.Size(260, 350);
             this.panel4.TabIndex = 2;
             // 
             // label15
@@ -814,10 +805,10 @@
             this.panel5.Controls.Add(this.label17);
             this.panel5.Controls.Add(this.lunaSmallCardList2);
             this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(269, 0);
+            this.panel5.Location = new System.Drawing.Point(270, 0);
             this.panel5.Margin = new System.Windows.Forms.Padding(0);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(259, 350);
+            this.panel5.Size = new System.Drawing.Size(260, 350);
             this.panel5.TabIndex = 3;
             // 
             // label17
@@ -858,10 +849,10 @@
             this.panel6.Controls.Add(this.lunaSmallCardList3);
             this.panel6.Controls.Add(this.label16);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(812, 0);
+            this.panel6.Location = new System.Drawing.Point(540, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(0);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(264, 709);
+            this.panel6.Size = new System.Drawing.Size(262, 350);
             this.panel6.TabIndex = 3;
             // 
             // lunaSmallCardList3
@@ -869,13 +860,13 @@
             this.lunaSmallCardList3.ImageLocation = new System.Drawing.Point(1, 1);
             this.lunaSmallCardList3.Location = new System.Drawing.Point(0, 67);
             this.lunaSmallCardList3.LunaSmallCardAnimationSteps = 10;
-            this.lunaSmallCardList3.LunaSmallCardBackColorHover = System.Drawing.Color.White;
+            this.lunaSmallCardList3.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
             this.lunaSmallCardList3.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
             this.lunaSmallCardList3.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lunaSmallCardList3.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCardList3.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(87)))), ((int)(((byte)(76)))));
+            this.lunaSmallCardList3.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Black;
             this.lunaSmallCardList3.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCardList3.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(87)))), ((int)(((byte)(76)))));
+            this.lunaSmallCardList3.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lunaSmallCardList3.LunaSmallCardHeader = "LunaSmallCard";
             this.lunaSmallCardList3.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
             this.lunaSmallCardList3.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
@@ -883,7 +874,7 @@
             this.lunaSmallCardList3.Margin = new System.Windows.Forms.Padding(0);
             this.lunaSmallCardList3.Name = "lunaSmallCardList3";
             this.lunaSmallCardList3.SeperatorVerticalPadding = 6;
-            this.lunaSmallCardList3.Size = new System.Drawing.Size(264, 642);
+            this.lunaSmallCardList3.Size = new System.Drawing.Size(264, 283);
             this.lunaSmallCardList3.TabIndex = 7;
             // 
             // label16
@@ -4708,7 +4699,6 @@
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
@@ -5136,7 +5126,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private LiveCharts.WinForms.CartesianChart cartesianChart1;
         private LunaForms.AnimatedButton animatedButton1;
         private System.Windows.Forms.Label label11;
         private LunaForms.LunaTriangle lunaTriangle1;
