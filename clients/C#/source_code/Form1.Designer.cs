@@ -31,18 +31,14 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.MenuPanel = new System.Windows.Forms.Panel();
             this.MenuPanelSync = new System.Windows.Forms.Panel();
-            this.MenuSyncPictureBox = new System.Windows.Forms.PictureBox();
             this.MenuSyncLabelHeader = new System.Windows.Forms.Label();
             this.MenuSyncLabelStatus = new System.Windows.Forms.Label();
             this.MenuFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.MenuPanelHome = new System.Windows.Forms.Panel();
-            this.MenuMenuEntryHome = new LunaForms.MenuEntry();
             this.MenuPanelHomeIndicator = new System.Windows.Forms.Panel();
             this.MenuPanelPasswords = new System.Windows.Forms.Panel();
-            this.MenuMenuEntryPasswords = new LunaForms.MenuEntry();
             this.MenuPanelPasswordsIndicator = new System.Windows.Forms.Panel();
             this.MenuPanelSettings = new System.Windows.Forms.Panel();
-            this.MenuMenuEntrySettings = new LunaForms.MenuEntry();
             this.MenuPanelSettingsIndicator = new System.Windows.Forms.Panel();
             this.DataPanelMain = new System.Windows.Forms.Panel();
             this.DashboardTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -65,23 +61,8 @@
             this.label17 = new System.Windows.Forms.Label();
             this.lunaSmallCardList2 = new LunaForms.LunaSmallCardList();
             this.panel6 = new System.Windows.Forms.Panel();
+            this.lunaSmallCardList3 = new LunaForms.LunaSmallCardList();
             this.label16 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-            this.lunaSmallCard8 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator7 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard9 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator8 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard10 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator9 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard11 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator10 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard12 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator11 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard13 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator12 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard14 = new LunaForms.LunaSmallCard();
-            this.lunaSeperator13 = new LunaForms.LunaSeperator();
-            this.lunaSmallCard15 = new LunaForms.LunaSmallCard();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -89,21 +70,80 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.panel8 = new System.Windows.Forms.Panel();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.panel9 = new System.Windows.Forms.Panel();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label8 = new System.Windows.Forms.Label();
             this.SettingsTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.SettingsPanelCenter = new System.Windows.Forms.Panel();
+            this.DataTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.DataTableLayoutPanelSubLeft = new System.Windows.Forms.TableLayoutPanel();
+            this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
+            this.DataTableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
+            this.DataPanelFooterRight = new System.Windows.Forms.Panel();
+            this.DataPanelFooterLeft = new System.Windows.Forms.Panel();
+            this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
+            this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
+            this.DataPanelNoSel = new System.Windows.Forms.Panel();
+            this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
+            this.DataNoSelLabel5 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel4 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel3 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel2 = new System.Windows.Forms.Label();
+            this.DataNoSelLabel1 = new System.Windows.Forms.Label();
+            this.DataNoSelBulletPointLabel3 = new LunaForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel2 = new LunaForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel1 = new LunaForms.BulletPointLabel();
+            this.DataFilterResultsPanel = new System.Windows.Forms.Panel();
+            this.DataFilterResultsLabelSortTerm = new System.Windows.Forms.Label();
+            this.DataFilterResultsLabelSortHeader = new System.Windows.Forms.Label();
+            this.DataFilterResultsAnimatedButtonReset = new LunaForms.AnimatedButton();
+            this.DataFilterResultsLabelSearchTerm = new System.Windows.Forms.Label();
+            this.DataFilterResultsHeader = new System.Windows.Forms.Label();
+            this.DataFilterPanelNotFound = new System.Windows.Forms.Panel();
+            this.DataFilterAnimatedButtonReset = new LunaForms.AnimatedButton();
+            this.DataFilterBulletPointLabel2 = new LunaForms.BulletPointLabel();
+            this.DataFilterBulletPointLabel1 = new LunaForms.BulletPointLabel();
+            this.DataFilterLabelSuggestions = new System.Windows.Forms.Label();
+            this.DataFilterLabelSearchTerm = new System.Windows.Forms.Label();
+            this.DataFilterLabelHeader = new System.Windows.Forms.Label();
+            this.DataPanelDetails = new System.Windows.Forms.Panel();
+            this.DataDetailsCustomLabelNotes = new LunaForms.CustomLabel();
+            this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
+            this.DataFlowLayoutPanelEdit = new System.Windows.Forms.FlowLayoutPanel();
+            this.DataEditPanelTop = new System.Windows.Forms.Panel();
+            this.DataEditPanelPasswordGenerator = new System.Windows.Forms.Panel();
+            this.DataEditAnimatedButtonGeneratePassword = new LunaForms.AnimatedButton();
+            this.DataEditLabelPasswordGeneratorTitle = new System.Windows.Forms.Label();
+            this.DataEditAdvancedCheckBox = new LunaForms.AdvancedCheckBox();
+            this.DataEditLabelPasswordGeneratorLengthTitle = new System.Windows.Forms.Label();
+            this.DataEditLabelPasswordGeneratorDescription = new System.Windows.Forms.Label();
+            this.DataEditPanelBottom = new System.Windows.Forms.Panel();
+            this.DataEditLabelNotes = new System.Windows.Forms.Label();
+            this.DataEditAdvancedRichTextBoxNotes = new LunaForms.AdvancedRichTextBox();
+            this.AddPanelMain = new System.Windows.Forms.Panel();
+            this.AddTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.AddPanelCenter = new System.Windows.Forms.Panel();
+            this.AddPanelSeperator = new System.Windows.Forms.Panel();
+            this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
+            this.WindowHeaderPanel = new System.Windows.Forms.Panel();
+            this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
+            this.FilterLabelSort = new System.Windows.Forms.Label();
+            this.FilterAdvancedComboBoxSort = new LunaForms.AdvancedComboBox();
+            this.WindowsHeaderOvalPanelTitle = new LunaForms.OvalPanel();
+            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
+            this.PanelMain = new System.Windows.Forms.Panel();
+            this.PanelLogin = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.SettingsPictureBoxLeft = new System.Windows.Forms.PictureBox();
             this.SettingsPictureBoxRight = new System.Windows.Forms.PictureBox();
-            this.SettingsPanelCenter = new System.Windows.Forms.Panel();
             this.SettingsTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPanelContentMain = new System.Windows.Forms.Panel();
             this.SettingsFlowLayoutPanelOnline = new System.Windows.Forms.FlowLayoutPanel();
@@ -185,79 +225,31 @@
             this.SettingsEditFieldLoginIP = new LunaForms.EditField();
             this.SettingsEditFieldLoginPort = new LunaForms.EditField();
             this.SettingsEditFieldLoginUsername = new LunaForms.EditField();
-            this.DataTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.DataTableLayoutPanelSubLeft = new System.Windows.Forms.TableLayoutPanel();
-            this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
-            this.DataTableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
-            this.DataPanelFooterRight = new System.Windows.Forms.Panel();
             this.DataSyncAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataRightAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataPanelFooterLeft = new System.Windows.Forms.Panel();
             this.DataAddAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataLeftAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
-            this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
-            this.DataPanelNoSel = new System.Windows.Forms.Panel();
-            this.DataNoSelLabelHeader = new System.Windows.Forms.Label();
-            this.DataNoSelLabel5 = new System.Windows.Forms.Label();
-            this.DataNoSelLabel4 = new System.Windows.Forms.Label();
-            this.DataNoSelLabel3 = new System.Windows.Forms.Label();
-            this.DataNoSelLabel2 = new System.Windows.Forms.Label();
-            this.DataNoSelLabel1 = new System.Windows.Forms.Label();
-            this.DataNoSelBulletPointLabel3 = new LunaForms.BulletPointLabel();
-            this.DataNoSelBulletPointLabel2 = new LunaForms.BulletPointLabel();
-            this.DataNoSelBulletPointLabel1 = new LunaForms.BulletPointLabel();
             this.DataNoSelPictureBox = new System.Windows.Forms.PictureBox();
-            this.DataFilterResultsPanel = new System.Windows.Forms.Panel();
-            this.DataFilterResultsLabelSortTerm = new System.Windows.Forms.Label();
-            this.DataFilterResultsLabelSortHeader = new System.Windows.Forms.Label();
-            this.DataFilterResultsAnimatedButtonReset = new LunaForms.AnimatedButton();
             this.DataFilterResultsPictureBox = new System.Windows.Forms.PictureBox();
-            this.DataFilterResultsLabelSearchTerm = new System.Windows.Forms.Label();
-            this.DataFilterResultsHeader = new System.Windows.Forms.Label();
-            this.DataFilterPanelNotFound = new System.Windows.Forms.Panel();
-            this.DataFilterAnimatedButtonReset = new LunaForms.AnimatedButton();
-            this.DataFilterBulletPointLabel2 = new LunaForms.BulletPointLabel();
-            this.DataFilterBulletPointLabel1 = new LunaForms.BulletPointLabel();
-            this.DataFilterLabelSuggestions = new System.Windows.Forms.Label();
             this.DataFilterPictureBox = new System.Windows.Forms.PictureBox();
-            this.DataFilterLabelSearchTerm = new System.Windows.Forms.Label();
-            this.DataFilterLabelHeader = new System.Windows.Forms.Label();
-            this.DataPanelDetails = new System.Windows.Forms.Panel();
-            this.DataDetailsCustomLabelNotes = new LunaForms.CustomLabel();
             this.DataDetailsEntryUsername = new LunaForms.DetailsEntry();
             this.DataDetailsEntryPassword = new LunaForms.DetailsEntry();
             this.DataDetailsEditAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataDetailsRemoveAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
             this.DataDetailsEntryEmail = new LunaForms.DetailsEntry();
             this.DataDetailsEntryWebsite = new LunaForms.DetailsEntry();
-            this.DataFlowLayoutPanelEdit = new System.Windows.Forms.FlowLayoutPanel();
-            this.DataEditPanelTop = new System.Windows.Forms.Panel();
             this.DataEditSaveAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataEditCancelAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataEditPanelPasswordGenerator = new System.Windows.Forms.Panel();
-            this.DataEditAnimatedButtonGeneratePassword = new LunaForms.AnimatedButton();
-            this.DataEditLabelPasswordGeneratorTitle = new System.Windows.Forms.Label();
-            this.DataEditAdvancedCheckBox = new LunaForms.AdvancedCheckBox();
             this.DataEditAdvancedNumericUpDown = new LunaForms.AdvancedNumericUpDown();
-            this.DataEditLabelPasswordGeneratorLengthTitle = new System.Windows.Forms.Label();
-            this.DataEditLabelPasswordGeneratorDescription = new System.Windows.Forms.Label();
             this.DataEditEditFieldHostname = new LunaForms.EditField();
             this.DataEditPictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.DataEditEditFieldEmail = new LunaForms.EditField();
             this.DataEditEditFieldWebsite = new LunaForms.EditField();
             this.DataEditEditFieldUsername = new LunaForms.EditField();
             this.DataEditEditFieldPassword = new LunaForms.EditField();
-            this.DataEditPanelBottom = new System.Windows.Forms.Panel();
-            this.DataEditLabelNotes = new System.Windows.Forms.Label();
-            this.DataEditAdvancedRichTextBoxNotes = new LunaForms.AdvancedRichTextBox();
-            this.AddPanelMain = new System.Windows.Forms.Panel();
-            this.AddTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.AddPictureBoxLeft = new System.Windows.Forms.PictureBox();
             this.AddPictureBoxRight = new System.Windows.Forms.PictureBox();
-            this.AddPanelCenter = new System.Windows.Forms.Panel();
             this.AddTableLayoutPanelCenter = new System.Windows.Forms.TableLayoutPanel();
             this.AddFlowLayoutPanelCenter = new System.Windows.Forms.FlowLayoutPanel();
             this.AddPanelContent = new System.Windows.Forms.Panel();
@@ -286,20 +278,13 @@
             this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
             this.AddPanelAdvancedImageButtonAbort = new LunaForms.AdvancedImageButton();
             this.AddPanelAdvancedImageButtonSave = new LunaForms.AdvancedImageButton();
-            this.AddPanelSeperator = new System.Windows.Forms.Panel();
-            this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
-            this.WindowHeaderPanel = new System.Windows.Forms.Panel();
-            this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.MenuSyncPictureBox = new System.Windows.Forms.PictureBox();
+            this.MenuMenuEntryHome = new LunaForms.MenuEntry();
+            this.MenuMenuEntryPasswords = new LunaForms.MenuEntry();
+            this.MenuMenuEntrySettings = new LunaForms.MenuEntry();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
-            this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
-            this.FilterLabelSort = new System.Windows.Forms.Label();
-            this.FilterAdvancedComboBoxSort = new LunaForms.AdvancedComboBox();
             this.FilterEditFieldSearch = new LunaForms.EditField();
-            this.WindowsHeaderOvalPanelTitle = new LunaForms.OvalPanel();
             this.WindowHeaderPictureBoxIcon = new System.Windows.Forms.PictureBox();
-            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
-            this.PanelMain = new System.Windows.Forms.Panel();
-            this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.LoginPictureBoxMain = new System.Windows.Forms.PictureBox();
             this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
@@ -344,7 +329,6 @@
             this.windowButtonClose = new LunaForms.WindowButton();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
             this.MenuFlowLayoutPanel.SuspendLayout();
             this.MenuPanelHome.SuspendLayout();
             this.MenuPanelPasswords.SuspendLayout();
@@ -359,19 +343,42 @@
             this.panel4.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
-            this.flowLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.panel8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.panel9.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.SettingsTableLayoutPanelMain.SuspendLayout();
+            this.SettingsPanelCenter.SuspendLayout();
+            this.DataTableLayoutPanelMain.SuspendLayout();
+            this.DataTableLayoutPanelSubLeft.SuspendLayout();
+            this.DataTableLayoutPanelFooter.SuspendLayout();
+            this.DataPanelFooterRight.SuspendLayout();
+            this.DataPanelFooterLeft.SuspendLayout();
+            this.DataTableLayoutPanelSubRight.SuspendLayout();
+            this.DataPanelSubRightMain.SuspendLayout();
+            this.DataPanelNoSel.SuspendLayout();
+            this.DataFilterResultsPanel.SuspendLayout();
+            this.DataFilterPanelNotFound.SuspendLayout();
+            this.DataPanelDetails.SuspendLayout();
+            this.DataFlowLayoutPanelEdit.SuspendLayout();
+            this.DataEditPanelTop.SuspendLayout();
+            this.DataEditPanelPasswordGenerator.SuspendLayout();
+            this.DataEditPanelBottom.SuspendLayout();
+            this.AddPanelMain.SuspendLayout();
+            this.AddTableLayoutPanelMain.SuspendLayout();
+            this.AddPanelCenter.SuspendLayout();
+            this.WindowHeaderPanel.SuspendLayout();
+            this.WindowHeaderTableLayoutPanel.SuspendLayout();
+            this.WindowsHeaderPanelSubRight.SuspendLayout();
+            this.WindowsHeaderOvalPanelTitle.SuspendLayout();
+            this.PanelMain.SuspendLayout();
+            this.PanelLogin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxRight)).BeginInit();
-            this.SettingsPanelCenter.SuspendLayout();
             this.SettingsTableLayoutPanelCenter.SuspendLayout();
             this.SettingsPanelContentMain.SuspendLayout();
             this.SettingsFlowLayoutPanelOnline.SuspendLayout();
@@ -394,31 +401,13 @@
             this.SettingsPanelRegisterContent.SuspendLayout();
             this.SettingsFlowLayoutPanelLogin.SuspendLayout();
             this.SettingsPanelLoginContent.SuspendLayout();
-            this.DataTableLayoutPanelMain.SuspendLayout();
-            this.DataTableLayoutPanelSubLeft.SuspendLayout();
-            this.DataTableLayoutPanelFooter.SuspendLayout();
-            this.DataPanelFooterRight.SuspendLayout();
-            this.DataPanelFooterLeft.SuspendLayout();
-            this.DataTableLayoutPanelSubRight.SuspendLayout();
-            this.DataPanelSubRightMain.SuspendLayout();
-            this.DataPanelNoSel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataNoSelPictureBox)).BeginInit();
-            this.DataFilterResultsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataFilterResultsPictureBox)).BeginInit();
-            this.DataFilterPanelNotFound.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataFilterPictureBox)).BeginInit();
-            this.DataPanelDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).BeginInit();
-            this.DataFlowLayoutPanelEdit.SuspendLayout();
-            this.DataEditPanelTop.SuspendLayout();
-            this.DataEditPanelPasswordGenerator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataEditPictureBoxLogo)).BeginInit();
-            this.DataEditPanelBottom.SuspendLayout();
-            this.AddPanelMain.SuspendLayout();
-            this.AddTableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxLeft)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxRight)).BeginInit();
-            this.AddPanelCenter.SuspendLayout();
             this.AddTableLayoutPanelCenter.SuspendLayout();
             this.AddFlowLayoutPanelCenter.SuspendLayout();
             this.AddPanelContent.SuspendLayout();
@@ -428,14 +417,9 @@
             this.AddPanelCheckIconContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).BeginInit();
             this.AddPanelBottomMenu.SuspendLayout();
-            this.WindowHeaderPanel.SuspendLayout();
-            this.WindowHeaderTableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).BeginInit();
-            this.WindowsHeaderPanelSubRight.SuspendLayout();
-            this.WindowsHeaderOvalPanelTitle.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).BeginInit();
-            this.PanelMain.SuspendLayout();
-            this.PanelLogin.SuspendLayout();
             this.LoginTableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).BeginInit();
             this.LoginPictureBoxMain.SuspendLayout();
@@ -481,17 +465,6 @@
             this.MenuPanelSync.Name = "MenuPanelSync";
             this.MenuPanelSync.Size = new System.Drawing.Size(265, 177);
             this.MenuPanelSync.TabIndex = 9;
-            // 
-            // MenuSyncPictureBox
-            // 
-            this.MenuSyncPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("MenuSyncPictureBox.Image")));
-            this.MenuSyncPictureBox.Location = new System.Drawing.Point(84, 40);
-            this.MenuSyncPictureBox.Name = "MenuSyncPictureBox";
-            this.MenuSyncPictureBox.Size = new System.Drawing.Size(96, 96);
-            this.MenuSyncPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.MenuSyncPictureBox.TabIndex = 4;
-            this.MenuSyncPictureBox.TabStop = false;
-            this.MenuSyncPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MenuSyncPictureBox_Paint);
             // 
             // MenuSyncLabelHeader
             // 
@@ -540,26 +513,6 @@
             this.MenuPanelHome.Size = new System.Drawing.Size(269, 75);
             this.MenuPanelHome.TabIndex = 7;
             // 
-            // MenuMenuEntryHome
-            // 
-            this.MenuMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
-            this.MenuMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryHome.ColorHover = System.Drawing.Color.White;
-            this.MenuMenuEntryHome.ColorNormal = System.Drawing.Color.White;
-            this.MenuMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MenuMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntryHome.ImageHover = global::pmdbs.Properties.Resources.home_normal_v2;
-            this.MenuMenuEntryHome.ImageNormal = global::pmdbs.Properties.Resources.home_normal_v2;
-            this.MenuMenuEntryHome.Location = new System.Drawing.Point(13, 0);
-            this.MenuMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryHome.Name = "MenuMenuEntryHome";
-            this.MenuMenuEntryHome.Size = new System.Drawing.Size(255, 74);
-            this.MenuMenuEntryHome.TabIndex = 5;
-            this.MenuMenuEntryHome.TextTitle = "Home";
-            // 
             // MenuPanelHomeIndicator
             // 
             this.MenuPanelHomeIndicator.BackColor = System.Drawing.Color.White;
@@ -582,26 +535,6 @@
             this.MenuPanelPasswords.Size = new System.Drawing.Size(269, 75);
             this.MenuPanelPasswords.TabIndex = 8;
             // 
-            // MenuMenuEntryPasswords
-            // 
-            this.MenuMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
-            this.MenuMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
-            this.MenuMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
-            this.MenuMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MenuMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntryPasswords.ImageHover = global::pmdbs.Properties.Resources.database;
-            this.MenuMenuEntryPasswords.ImageNormal = global::pmdbs.Properties.Resources.database;
-            this.MenuMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
-            this.MenuMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryPasswords.Name = "MenuMenuEntryPasswords";
-            this.MenuMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
-            this.MenuMenuEntryPasswords.TabIndex = 5;
-            this.MenuMenuEntryPasswords.TextTitle = "Passwords";
-            // 
             // MenuPanelPasswordsIndicator
             // 
             this.MenuPanelPasswordsIndicator.BackColor = System.Drawing.Color.White;
@@ -623,26 +556,6 @@
             this.MenuPanelSettings.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
             this.MenuPanelSettings.Size = new System.Drawing.Size(269, 75);
             this.MenuPanelSettings.TabIndex = 8;
-            // 
-            // MenuMenuEntrySettings
-            // 
-            this.MenuMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
-            this.MenuMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntrySettings.ColorHover = System.Drawing.Color.White;
-            this.MenuMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
-            this.MenuMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MenuMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntrySettings.ImageHover = global::pmdbs.Properties.Resources.settings_normal_v2;
-            this.MenuMenuEntrySettings.ImageNormal = global::pmdbs.Properties.Resources.settings_normal_v2;
-            this.MenuMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
-            this.MenuMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntrySettings.Name = "MenuMenuEntrySettings";
-            this.MenuMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
-            this.MenuMenuEntrySettings.TabIndex = 5;
-            this.MenuMenuEntrySettings.TextTitle = "Settings";
             // 
             // MenuPanelSettingsIndicator
             // 
@@ -726,13 +639,16 @@
             // 
             // lunaSmallCardList1
             // 
+            this.lunaSmallCardList1.ImageLocation = new System.Drawing.Point(1, 1);
             this.lunaSmallCardList1.Location = new System.Drawing.Point(0, 67);
             this.lunaSmallCardList1.LunaSmallCardAnimationSteps = 10;
             this.lunaSmallCardList1.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lunaSmallCardList1.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
             this.lunaSmallCardList1.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lunaSmallCardList1.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
+            this.lunaSmallCardList1.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Black;
             this.lunaSmallCardList1.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardList1.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lunaSmallCardList1.LunaSmallCardHeader = "LunaSmallCard";
             this.lunaSmallCardList1.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
             this.lunaSmallCardList1.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
@@ -911,39 +827,64 @@
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.label17.Location = new System.Drawing.Point(10, 17);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(173, 32);
+            this.label17.Size = new System.Drawing.Size(133, 32);
             this.label17.TabIndex = 8;
-            this.label17.Text = "YOUR DEVICES";
+            this.label17.Text = "HOTSPOTS";
             // 
             // lunaSmallCardList2
             // 
-            this.lunaSmallCardList2.Location = new System.Drawing.Point(0, 80);
+            this.lunaSmallCardList2.ImageLocation = new System.Drawing.Point(1, 1);
+            this.lunaSmallCardList2.Location = new System.Drawing.Point(0, 67);
             this.lunaSmallCardList2.LunaSmallCardAnimationSteps = 10;
             this.lunaSmallCardList2.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
             this.lunaSmallCardList2.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
             this.lunaSmallCardList2.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
             this.lunaSmallCardList2.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
+            this.lunaSmallCardList2.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Orange;
             this.lunaSmallCardList2.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardList2.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lunaSmallCardList2.LunaSmallCardHeader = "LunaSmallCard";
             this.lunaSmallCardList2.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
             this.lunaSmallCardList2.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
             this.lunaSmallCardList2.LunaSmallCardShowInfo = false;
             this.lunaSmallCardList2.Name = "lunaSmallCardList2";
             this.lunaSmallCardList2.SeperatorVerticalPadding = 6;
-            this.lunaSmallCardList2.Size = new System.Drawing.Size(259, 270);
+            this.lunaSmallCardList2.Size = new System.Drawing.Size(259, 283);
             this.lunaSmallCardList2.TabIndex = 7;
             // 
             // panel6
             // 
             this.panel6.BackColor = System.Drawing.Color.White;
+            this.panel6.Controls.Add(this.lunaSmallCardList3);
             this.panel6.Controls.Add(this.label16);
-            this.panel6.Controls.Add(this.flowLayoutPanel2);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel6.Location = new System.Drawing.Point(812, 0);
             this.panel6.Margin = new System.Windows.Forms.Padding(0);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(264, 709);
             this.panel6.TabIndex = 3;
+            // 
+            // lunaSmallCardList3
+            // 
+            this.lunaSmallCardList3.ImageLocation = new System.Drawing.Point(1, 1);
+            this.lunaSmallCardList3.Location = new System.Drawing.Point(0, 67);
+            this.lunaSmallCardList3.LunaSmallCardAnimationSteps = 10;
+            this.lunaSmallCardList3.LunaSmallCardBackColorHover = System.Drawing.Color.White;
+            this.lunaSmallCardList3.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
+            this.lunaSmallCardList3.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lunaSmallCardList3.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
+            this.lunaSmallCardList3.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(87)))), ((int)(((byte)(76)))));
+            this.lunaSmallCardList3.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardList3.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(87)))), ((int)(((byte)(76)))));
+            this.lunaSmallCardList3.LunaSmallCardHeader = "LunaSmallCard";
+            this.lunaSmallCardList3.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
+            this.lunaSmallCardList3.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
+            this.lunaSmallCardList3.LunaSmallCardShowInfo = false;
+            this.lunaSmallCardList3.Margin = new System.Windows.Forms.Padding(0);
+            this.lunaSmallCardList3.Name = "lunaSmallCardList3";
+            this.lunaSmallCardList3.SeperatorVerticalPadding = 6;
+            this.lunaSmallCardList3.Size = new System.Drawing.Size(264, 642);
+            this.lunaSmallCardList3.TabIndex = 7;
             // 
             // label16
             // 
@@ -955,257 +896,7 @@
             this.label16.Size = new System.Drawing.Size(236, 32);
             this.label16.TabIndex = 6;
             this.label16.Text = "SECURITY BREACHES";
-            // 
-            // flowLayoutPanel2
-            // 
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard8);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator7);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard9);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator8);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard10);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator9);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard11);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator10);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard12);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator11);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard13);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator12);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard14);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSeperator13);
-            this.flowLayoutPanel2.Controls.Add(this.lunaSmallCard15);
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 80);
-            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(264, 629);
-            this.flowLayoutPanel2.TabIndex = 5;
-            // 
-            // lunaSmallCard8
-            // 
-            this.lunaSmallCard8.AnimationSteps = 10;
-            this.lunaSmallCard8.BackColorHover = System.Drawing.Color.White;
-            this.lunaSmallCard8.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard8.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard8.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard8.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.lunaSmallCard8.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard8.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.lunaSmallCard8.Header = "Linux x86_64";
-            this.lunaSmallCard8.HeaderLocation = new System.Drawing.Point(70, 0);
-            this.lunaSmallCard8.Image = global::pmdbs.Properties.Resources.devices_colored_linux;
-            this.lunaSmallCard8.Info = "2019-07-12";
-            this.lunaSmallCard8.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard8.Location = new System.Drawing.Point(3, 3);
-            this.lunaSmallCard8.Name = "lunaSmallCard8";
-            this.lunaSmallCard8.ShowBorder = false;
-            this.lunaSmallCard8.ShowInfo = true;
-            this.lunaSmallCard8.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard8.TabIndex = 0;
-            // 
-            // lunaSeperator7
-            // 
-            this.lunaSeperator7.Location = new System.Drawing.Point(0, 66);
-            this.lunaSeperator7.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator7.Name = "lunaSeperator7";
-            this.lunaSeperator7.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator7.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator7.TabIndex = 1;
-            // 
-            // lunaSmallCard9
-            // 
-            this.lunaSmallCard9.AnimationSteps = 10;
-            this.lunaSmallCard9.BackColorHover = System.Drawing.Color.White;
-            this.lunaSmallCard9.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard9.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard9.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard9.ForeColorHeaderHover = System.Drawing.Color.Red;
-            this.lunaSmallCard9.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard9.ForeColorInfoHover = System.Drawing.Color.Red;
-            this.lunaSmallCard9.Header = "Windows 7 SP1";
-            this.lunaSmallCard9.HeaderLocation = new System.Drawing.Point(70, 0);
-            this.lunaSmallCard9.Image = global::pmdbs.Properties.Resources.devices_colored_windows;
-            this.lunaSmallCard9.Info = "2019-07-12";
-            this.lunaSmallCard9.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard9.Location = new System.Drawing.Point(3, 76);
-            this.lunaSmallCard9.Name = "lunaSmallCard9";
-            this.lunaSmallCard9.ShowBorder = false;
-            this.lunaSmallCard9.ShowInfo = true;
-            this.lunaSmallCard9.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard9.TabIndex = 2;
-            // 
-            // lunaSeperator8
-            // 
-            this.lunaSeperator8.Location = new System.Drawing.Point(0, 139);
-            this.lunaSeperator8.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator8.Name = "lunaSeperator8";
-            this.lunaSeperator8.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator8.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator8.TabIndex = 3;
-            // 
-            // lunaSmallCard10
-            // 
-            this.lunaSmallCard10.AnimationSteps = 10;
-            this.lunaSmallCard10.BackColorHover = System.Drawing.Color.White;
-            this.lunaSmallCard10.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard10.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard10.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard10.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.lunaSmallCard10.ForeColorInfo = System.Drawing.Color.Black;
-            this.lunaSmallCard10.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.lunaSmallCard10.Header = "Android 9.0.1";
-            this.lunaSmallCard10.HeaderLocation = new System.Drawing.Point(70, 0);
-            this.lunaSmallCard10.Image = global::pmdbs.Properties.Resources.devices_colored_android;
-            this.lunaSmallCard10.Info = "2019-07-12s";
-            this.lunaSmallCard10.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard10.Location = new System.Drawing.Point(3, 149);
-            this.lunaSmallCard10.Name = "lunaSmallCard10";
-            this.lunaSmallCard10.ShowBorder = false;
-            this.lunaSmallCard10.ShowInfo = true;
-            this.lunaSmallCard10.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard10.TabIndex = 4;
-            // 
-            // lunaSeperator9
-            // 
-            this.lunaSeperator9.Location = new System.Drawing.Point(0, 212);
-            this.lunaSeperator9.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator9.Name = "lunaSeperator9";
-            this.lunaSeperator9.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator9.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator9.TabIndex = 5;
-            // 
-            // lunaSmallCard11
-            // 
-            this.lunaSmallCard11.AnimationSteps = 10;
-            this.lunaSmallCard11.BackColorHover = System.Drawing.Color.White;
-            this.lunaSmallCard11.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard11.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard11.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard11.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard11.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard11.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard11.Header = "Windows 10";
-            this.lunaSmallCard11.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCard11.Image = global::pmdbs.Properties.Resources.devices_colored_windows;
-            this.lunaSmallCard11.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard11.Location = new System.Drawing.Point(3, 222);
-            this.lunaSmallCard11.Name = "lunaSmallCard11";
-            this.lunaSmallCard11.ShowBorder = false;
-            this.lunaSmallCard11.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard11.TabIndex = 6;
-            // 
-            // lunaSeperator10
-            // 
-            this.lunaSeperator10.Location = new System.Drawing.Point(0, 285);
-            this.lunaSeperator10.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator10.Name = "lunaSeperator10";
-            this.lunaSeperator10.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator10.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator10.TabIndex = 7;
-            // 
-            // lunaSmallCard12
-            // 
-            this.lunaSmallCard12.AnimationSteps = 10;
-            this.lunaSmallCard12.BackColorHover = System.Drawing.Color.White;
-            this.lunaSmallCard12.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard12.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard12.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard12.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard12.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard12.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard12.Header = "Android 4.4.2";
-            this.lunaSmallCard12.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCard12.Image = global::pmdbs.Properties.Resources.devices_colored_android;
-            this.lunaSmallCard12.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard12.Location = new System.Drawing.Point(3, 295);
-            this.lunaSmallCard12.Name = "lunaSmallCard12";
-            this.lunaSmallCard12.ShowBorder = false;
-            this.lunaSmallCard12.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard12.TabIndex = 8;
-            // 
-            // lunaSeperator11
-            // 
-            this.lunaSeperator11.Location = new System.Drawing.Point(0, 358);
-            this.lunaSeperator11.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator11.Name = "lunaSeperator11";
-            this.lunaSeperator11.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator11.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator11.TabIndex = 9;
-            // 
-            // lunaSmallCard13
-            // 
-            this.lunaSmallCard13.AnimationSteps = 10;
-            this.lunaSmallCard13.BackColorHover = System.Drawing.Color.White;
-            this.lunaSmallCard13.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard13.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard13.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard13.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard13.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard13.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard13.Header = "Windows 10";
-            this.lunaSmallCard13.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCard13.Image = global::pmdbs.Properties.Resources.devices_colored_windows;
-            this.lunaSmallCard13.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard13.Location = new System.Drawing.Point(3, 368);
-            this.lunaSmallCard13.Name = "lunaSmallCard13";
-            this.lunaSmallCard13.ShowBorder = false;
-            this.lunaSmallCard13.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard13.TabIndex = 10;
-            // 
-            // lunaSeperator12
-            // 
-            this.lunaSeperator12.Location = new System.Drawing.Point(0, 431);
-            this.lunaSeperator12.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator12.Name = "lunaSeperator12";
-            this.lunaSeperator12.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator12.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator12.TabIndex = 11;
-            // 
-            // lunaSmallCard14
-            // 
-            this.lunaSmallCard14.AnimationSteps = 10;
-            this.lunaSmallCard14.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaSmallCard14.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard14.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard14.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard14.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard14.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard14.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard14.Header = "Windows Vista :)";
-            this.lunaSmallCard14.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCard14.Image = global::pmdbs.Properties.Resources.devices_colored_windows;
-            this.lunaSmallCard14.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard14.Location = new System.Drawing.Point(3, 441);
-            this.lunaSmallCard14.Name = "lunaSmallCard14";
-            this.lunaSmallCard14.ShowBorder = false;
-            this.lunaSmallCard14.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard14.TabIndex = 12;
-            // 
-            // lunaSeperator13
-            // 
-            this.lunaSeperator13.Location = new System.Drawing.Point(0, 504);
-            this.lunaSeperator13.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator13.Name = "lunaSeperator13";
-            this.lunaSeperator13.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator13.Size = new System.Drawing.Size(258, 7);
-            this.lunaSeperator13.TabIndex = 13;
-            // 
-            // lunaSmallCard15
-            // 
-            this.lunaSmallCard15.AnimationSteps = 10;
-            this.lunaSmallCard15.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaSmallCard15.BackColorImage = System.Drawing.Color.White;
-            this.lunaSmallCard15.BackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCard15.ForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCard15.ForeColorHeaderHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard15.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCard15.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCard15.Header = "Windows Vista :)";
-            this.lunaSmallCard15.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCard15.Image = global::pmdbs.Properties.Resources.devices_colored_windows;
-            this.lunaSmallCard15.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCard15.Location = new System.Drawing.Point(3, 514);
-            this.lunaSmallCard15.Name = "lunaSmallCard15";
-            this.lunaSmallCard15.ShowBorder = false;
-            this.lunaSmallCard15.Size = new System.Drawing.Size(258, 60);
-            this.lunaSmallCard15.TabIndex = 14;
+            this.label16.Click += new System.EventHandler(this.label16_Click);
             // 
             // panel1
             // 
@@ -1290,16 +981,6 @@
             this.panel7.Size = new System.Drawing.Size(518, 279);
             this.panel7.TabIndex = 2;
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(40, 65);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(150, 150);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 6;
-            this.pictureBox1.TabStop = false;
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -1352,16 +1033,6 @@
             this.panel8.Size = new System.Drawing.Size(533, 279);
             this.panel8.TabIndex = 3;
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::pmdbs.Properties.Resources.link;
-            this.pictureBox2.Location = new System.Drawing.Point(40, 65);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(150, 150);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 7;
-            this.pictureBox2.TabStop = false;
-            // 
             // label10
             // 
             this.label10.AutoSize = true;
@@ -1396,16 +1067,6 @@
             this.panel9.Size = new System.Drawing.Size(533, 279);
             this.panel9.TabIndex = 4;
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
-            this.pictureBox3.Location = new System.Drawing.Point(40, 65);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(150, 150);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox3.TabIndex = 8;
-            this.pictureBox3.TabStop = false;
-            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -1436,6 +1097,821 @@
             this.SettingsTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
             this.SettingsTableLayoutPanelMain.TabIndex = 4;
             // 
+            // SettingsPanelCenter
+            // 
+            this.SettingsPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.SettingsPanelCenter.Controls.Add(this.SettingsTableLayoutPanelCenter);
+            this.SettingsPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SettingsPanelCenter.Location = new System.Drawing.Point(312, 0);
+            this.SettingsPanelCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.SettingsPanelCenter.Name = "SettingsPanelCenter";
+            this.SettingsPanelCenter.Size = new System.Drawing.Size(1000, 998);
+            this.SettingsPanelCenter.TabIndex = 2;
+            // 
+            // DataTableLayoutPanelMain
+            // 
+            this.DataTableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DataTableLayoutPanelMain.ColumnCount = 4;
+            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
+            this.DataTableLayoutPanelMain.Controls.Add(this.DataTableLayoutPanelSubLeft, 1, 0);
+            this.DataTableLayoutPanelMain.Controls.Add(this.DataTableLayoutPanelSubRight, 3, 0);
+            this.DataTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.DataTableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
+            this.DataTableLayoutPanelMain.Name = "DataTableLayoutPanelMain";
+            this.DataTableLayoutPanelMain.RowCount = 1;
+            this.DataTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
+            this.DataTableLayoutPanelMain.TabIndex = 0;
+            // 
+            // DataTableLayoutPanelSubLeft
+            // 
+            this.DataTableLayoutPanelSubLeft.ColumnCount = 1;
+            this.DataTableLayoutPanelSubLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelSubLeft.Controls.Add(this.DataFlowLayoutPanelList, 0, 0);
+            this.DataTableLayoutPanelSubLeft.Controls.Add(this.DataTableLayoutPanelFooter, 0, 2);
+            this.DataTableLayoutPanelSubLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTableLayoutPanelSubLeft.Location = new System.Drawing.Point(11, 0);
+            this.DataTableLayoutPanelSubLeft.Margin = new System.Windows.Forms.Padding(0);
+            this.DataTableLayoutPanelSubLeft.Name = "DataTableLayoutPanelSubLeft";
+            this.DataTableLayoutPanelSubLeft.RowCount = 3;
+            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
+            this.DataTableLayoutPanelSubLeft.Size = new System.Drawing.Size(894, 998);
+            this.DataTableLayoutPanelSubLeft.TabIndex = 4;
+            // 
+            // DataFlowLayoutPanelList
+            // 
+            this.DataFlowLayoutPanelList.AutoScroll = true;
+            this.DataFlowLayoutPanelList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DataFlowLayoutPanelList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataFlowLayoutPanelList.Location = new System.Drawing.Point(0, 0);
+            this.DataFlowLayoutPanelList.Margin = new System.Windows.Forms.Padding(0);
+            this.DataFlowLayoutPanelList.Name = "DataFlowLayoutPanelList";
+            this.DataFlowLayoutPanelList.Size = new System.Drawing.Size(894, 904);
+            this.DataFlowLayoutPanelList.TabIndex = 4;
+            this.DataFlowLayoutPanelList.MouseEnter += new System.EventHandler(this.DataFlowLayoutPanelList_MouseEnter);
+            this.DataFlowLayoutPanelList.Resize += new System.EventHandler(this.FlowLayoutPanel1_Resize);
+            // 
+            // DataTableLayoutPanelFooter
+            // 
+            this.DataTableLayoutPanelFooter.BackColor = System.Drawing.Color.White;
+            this.DataTableLayoutPanelFooter.ColumnCount = 2;
+            this.DataTableLayoutPanelFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DataTableLayoutPanelFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DataTableLayoutPanelFooter.Controls.Add(this.DataPanelFooterRight, 1, 0);
+            this.DataTableLayoutPanelFooter.Controls.Add(this.DataPanelFooterLeft, 0, 0);
+            this.DataTableLayoutPanelFooter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTableLayoutPanelFooter.Location = new System.Drawing.Point(1, 915);
+            this.DataTableLayoutPanelFooter.Margin = new System.Windows.Forms.Padding(1, 1, 0, 1);
+            this.DataTableLayoutPanelFooter.Name = "DataTableLayoutPanelFooter";
+            this.DataTableLayoutPanelFooter.RowCount = 1;
+            this.DataTableLayoutPanelFooter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DataTableLayoutPanelFooter.Size = new System.Drawing.Size(893, 82);
+            this.DataTableLayoutPanelFooter.TabIndex = 5;
+            // 
+            // DataPanelFooterRight
+            // 
+            this.DataPanelFooterRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DataPanelFooterRight.Controls.Add(this.DataSyncAdvancedImageButton);
+            this.DataPanelFooterRight.Controls.Add(this.DataRightAdvancedImageButton);
+            this.DataPanelFooterRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataPanelFooterRight.Location = new System.Drawing.Point(446, 0);
+            this.DataPanelFooterRight.Margin = new System.Windows.Forms.Padding(0);
+            this.DataPanelFooterRight.Name = "DataPanelFooterRight";
+            this.DataPanelFooterRight.Size = new System.Drawing.Size(447, 82);
+            this.DataPanelFooterRight.TabIndex = 1;
+            // 
+            // DataPanelFooterLeft
+            // 
+            this.DataPanelFooterLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.DataPanelFooterLeft.Controls.Add(this.DataAddAdvancedImageButton);
+            this.DataPanelFooterLeft.Controls.Add(this.DataLeftAdvancedImageButton);
+            this.DataPanelFooterLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataPanelFooterLeft.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.DataPanelFooterLeft.Location = new System.Drawing.Point(0, 0);
+            this.DataPanelFooterLeft.Margin = new System.Windows.Forms.Padding(0);
+            this.DataPanelFooterLeft.Name = "DataPanelFooterLeft";
+            this.DataPanelFooterLeft.Size = new System.Drawing.Size(446, 82);
+            this.DataPanelFooterLeft.TabIndex = 0;
+            // 
+            // DataTableLayoutPanelSubRight
+            // 
+            this.DataTableLayoutPanelSubRight.BackColor = System.Drawing.Color.White;
+            this.DataTableLayoutPanelSubRight.ColumnCount = 1;
+            this.DataTableLayoutPanelSubRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.DataTableLayoutPanelSubRight.Controls.Add(this.DataPanelSubRightMain, 0, 1);
+            this.DataTableLayoutPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataTableLayoutPanelSubRight.Location = new System.Drawing.Point(915, 0);
+            this.DataTableLayoutPanelSubRight.Margin = new System.Windows.Forms.Padding(0);
+            this.DataTableLayoutPanelSubRight.Name = "DataTableLayoutPanelSubRight";
+            this.DataTableLayoutPanelSubRight.RowCount = 3;
+            this.DataTableLayoutPanelSubRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DataTableLayoutPanelSubRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1000F));
+            this.DataTableLayoutPanelSubRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.DataTableLayoutPanelSubRight.Size = new System.Drawing.Size(700, 998);
+            this.DataTableLayoutPanelSubRight.TabIndex = 5;
+            // 
+            // DataPanelSubRightMain
+            // 
+            this.DataPanelSubRightMain.Controls.Add(this.DataPanelNoSel);
+            this.DataPanelSubRightMain.Controls.Add(this.DataFilterResultsPanel);
+            this.DataPanelSubRightMain.Controls.Add(this.DataFilterPanelNotFound);
+            this.DataPanelSubRightMain.Controls.Add(this.DataPanelDetails);
+            this.DataPanelSubRightMain.Controls.Add(this.DataFlowLayoutPanelEdit);
+            this.DataPanelSubRightMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataPanelSubRightMain.Location = new System.Drawing.Point(0, -1);
+            this.DataPanelSubRightMain.Margin = new System.Windows.Forms.Padding(0);
+            this.DataPanelSubRightMain.Name = "DataPanelSubRightMain";
+            this.DataPanelSubRightMain.Size = new System.Drawing.Size(700, 1000);
+            this.DataPanelSubRightMain.TabIndex = 6;
+            // 
+            // DataPanelNoSel
+            // 
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabelHeader);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel5);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel4);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel3);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel2);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel1);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel3);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel2);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel1);
+            this.DataPanelNoSel.Controls.Add(this.DataNoSelPictureBox);
+            this.DataPanelNoSel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataPanelNoSel.Location = new System.Drawing.Point(0, 0);
+            this.DataPanelNoSel.Name = "DataPanelNoSel";
+            this.DataPanelNoSel.Size = new System.Drawing.Size(700, 1000);
+            this.DataPanelNoSel.TabIndex = 32;
+            // 
+            // DataNoSelLabelHeader
+            // 
+            this.DataNoSelLabelHeader.AutoSize = true;
+            this.DataNoSelLabelHeader.Font = new System.Drawing.Font("Century Gothic", 20F);
+            this.DataNoSelLabelHeader.Location = new System.Drawing.Point(24, 349);
+            this.DataNoSelLabelHeader.Name = "DataNoSelLabelHeader";
+            this.DataNoSelLabelHeader.Size = new System.Drawing.Size(183, 49);
+            this.DataNoSelLabelHeader.TabIndex = 20;
+            this.DataNoSelLabelHeader.Text = "You can";
+            // 
+            // DataNoSelLabel5
+            // 
+            this.DataNoSelLabel5.AutoSize = true;
+            this.DataNoSelLabel5.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel5.Location = new System.Drawing.Point(81, 617);
+            this.DataNoSelLabel5.Name = "DataNoSelLabel5";
+            this.DataNoSelLabel5.Size = new System.Drawing.Size(365, 34);
+            this.DataNoSelLabel5.TabIndex = 19;
+            this.DataNoSelLabel5.Text = "sorting options at the top.";
+            // 
+            // DataNoSelLabel4
+            // 
+            this.DataNoSelLabel4.AutoSize = true;
+            this.DataNoSelLabel4.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel4.Location = new System.Drawing.Point(212, 578);
+            this.DataNoSelLabel4.Name = "DataNoSelLabel4";
+            this.DataNoSelLabel4.Size = new System.Drawing.Size(422, 34);
+            this.DataNoSelLabel4.TabIndex = 18;
+            this.DataNoSelLabel4.Text = "items with the search bar and";
+            // 
+            // DataNoSelLabel3
+            // 
+            this.DataNoSelLabel3.AutoSize = true;
+            this.DataNoSelLabel3.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel3.Location = new System.Drawing.Point(152, 508);
+            this.DataNoSelLabel3.Name = "DataNoSelLabel3";
+            this.DataNoSelLabel3.Size = new System.Drawing.Size(389, 34);
+            this.DataNoSelLabel3.TabIndex = 17;
+            this.DataNoSelLabel3.Text = "on an item for more details.";
+            // 
+            // DataNoSelLabel2
+            // 
+            this.DataNoSelLabel2.AutoSize = true;
+            this.DataNoSelLabel2.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel2.Location = new System.Drawing.Point(76, 453);
+            this.DataNoSelLabel2.Name = "DataNoSelLabel2";
+            this.DataNoSelLabel2.Size = new System.Drawing.Size(259, 34);
+            this.DataNoSelLabel2.TabIndex = 16;
+            this.DataNoSelLabel2.Text = "in the bottom left.\r\n";
+            // 
+            // DataNoSelLabel1
+            // 
+            this.DataNoSelLabel1.AutoSize = true;
+            this.DataNoSelLabel1.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.DataNoSelLabel1.Location = new System.Drawing.Point(142, 417);
+            this.DataNoSelLabel1.Name = "DataNoSelLabel1";
+            this.DataNoSelLabel1.Size = new System.Drawing.Size(445, 34);
+            this.DataNoSelLabel1.TabIndex = 15;
+            this.DataNoSelLabel1.Text = "accounts by clicking the + icon";
+            // 
+            // DataNoSelBulletPointLabel3
+            // 
+            this.DataNoSelBulletPointLabel3.AutoSize = true;
+            this.DataNoSelBulletPointLabel3.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel3.Location = new System.Drawing.Point(62, 579);
+            this.DataNoSelBulletPointLabel3.Name = "DataNoSelBulletPointLabel3";
+            this.DataNoSelBulletPointLabel3.Size = new System.Drawing.Size(155, 34);
+            this.DataNoSelBulletPointLabel3.TabIndex = 14;
+            this.DataNoSelBulletPointLabel3.Text = "  Organize";
+            // 
+            // DataNoSelBulletPointLabel2
+            // 
+            this.DataNoSelBulletPointLabel2.AutoSize = true;
+            this.DataNoSelBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel2.Location = new System.Drawing.Point(60, 509);
+            this.DataNoSelBulletPointLabel2.Name = "DataNoSelBulletPointLabel2";
+            this.DataNoSelBulletPointLabel2.Size = new System.Drawing.Size(101, 34);
+            this.DataNoSelBulletPointLabel2.TabIndex = 13;
+            this.DataNoSelBulletPointLabel2.Text = "  Click";
+            // 
+            // DataNoSelBulletPointLabel1
+            // 
+            this.DataNoSelBulletPointLabel1.AutoSize = true;
+            this.DataNoSelBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel1.Location = new System.Drawing.Point(60, 419);
+            this.DataNoSelBulletPointLabel1.Name = "DataNoSelBulletPointLabel1";
+            this.DataNoSelBulletPointLabel1.Size = new System.Drawing.Size(88, 34);
+            this.DataNoSelBulletPointLabel1.TabIndex = 12;
+            this.DataNoSelBulletPointLabel1.Text = "  Add";
+            // 
+            // DataFilterResultsPanel
+            // 
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSortTerm);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSortHeader);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsAnimatedButtonReset);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsPictureBox);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSearchTerm);
+            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsHeader);
+            this.DataFilterResultsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataFilterResultsPanel.Location = new System.Drawing.Point(0, 0);
+            this.DataFilterResultsPanel.Name = "DataFilterResultsPanel";
+            this.DataFilterResultsPanel.Size = new System.Drawing.Size(700, 1000);
+            this.DataFilterResultsPanel.TabIndex = 34;
+            // 
+            // DataFilterResultsLabelSortTerm
+            // 
+            this.DataFilterResultsLabelSortTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsLabelSortTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsLabelSortTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.DataFilterResultsLabelSortTerm.Location = new System.Drawing.Point(5, 592);
+            this.DataFilterResultsLabelSortTerm.Name = "DataFilterResultsLabelSortTerm";
+            this.DataFilterResultsLabelSortTerm.Size = new System.Drawing.Size(691, 93);
+            this.DataFilterResultsLabelSortTerm.TabIndex = 5;
+            this.DataFilterResultsLabelSortTerm.Text = "SORT_TERM";
+            this.DataFilterResultsLabelSortTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // DataFilterResultsLabelSortHeader
+            // 
+            this.DataFilterResultsLabelSortHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsLabelSortHeader.AutoSize = true;
+            this.DataFilterResultsLabelSortHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsLabelSortHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterResultsLabelSortHeader.Location = new System.Drawing.Point(215, 548);
+            this.DataFilterResultsLabelSortHeader.Name = "DataFilterResultsLabelSortHeader";
+            this.DataFilterResultsLabelSortHeader.Size = new System.Drawing.Size(270, 39);
+            this.DataFilterResultsLabelSortHeader.TabIndex = 4;
+            this.DataFilterResultsLabelSortHeader.Text = "Sorting results by";
+            // 
+            // DataFilterResultsAnimatedButtonReset
+            // 
+            this.DataFilterResultsAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataFilterResultsAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataFilterResultsAnimatedButtonReset.Depth = 0;
+            this.DataFilterResultsAnimatedButtonReset.Icon = null;
+            this.DataFilterResultsAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
+            this.DataFilterResultsAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataFilterResultsAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataFilterResultsAnimatedButtonReset.Name = "DataFilterResultsAnimatedButtonReset";
+            this.DataFilterResultsAnimatedButtonReset.Primary = false;
+            this.DataFilterResultsAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
+            this.DataFilterResultsAnimatedButtonReset.TabIndex = 3;
+            this.DataFilterResultsAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterResultsAnimatedButtonReset.UseVisualStyleBackColor = true;
+            this.DataFilterResultsAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
+            // 
+            // DataFilterResultsLabelSearchTerm
+            // 
+            this.DataFilterResultsLabelSearchTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsLabelSearchTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsLabelSearchTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.DataFilterResultsLabelSearchTerm.Location = new System.Drawing.Point(5, 436);
+            this.DataFilterResultsLabelSearchTerm.Name = "DataFilterResultsLabelSearchTerm";
+            this.DataFilterResultsLabelSearchTerm.Size = new System.Drawing.Size(691, 93);
+            this.DataFilterResultsLabelSearchTerm.TabIndex = 1;
+            this.DataFilterResultsLabelSearchTerm.Text = "SEARCH_TERM";
+            this.DataFilterResultsLabelSearchTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // DataFilterResultsHeader
+            // 
+            this.DataFilterResultsHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterResultsHeader.AutoSize = true;
+            this.DataFilterResultsHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterResultsHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterResultsHeader.Location = new System.Drawing.Point(200, 392);
+            this.DataFilterResultsHeader.Name = "DataFilterResultsHeader";
+            this.DataFilterResultsHeader.Size = new System.Drawing.Size(300, 39);
+            this.DataFilterResultsHeader.TabIndex = 0;
+            this.DataFilterResultsHeader.Text = "Showing results for";
+            // 
+            // DataFilterPanelNotFound
+            // 
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterAnimatedButtonReset);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterBulletPointLabel2);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterBulletPointLabel1);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelSuggestions);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterPictureBox);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelSearchTerm);
+            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelHeader);
+            this.DataFilterPanelNotFound.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataFilterPanelNotFound.Location = new System.Drawing.Point(0, 0);
+            this.DataFilterPanelNotFound.Name = "DataFilterPanelNotFound";
+            this.DataFilterPanelNotFound.Size = new System.Drawing.Size(700, 1000);
+            this.DataFilterPanelNotFound.TabIndex = 33;
+            // 
+            // DataFilterAnimatedButtonReset
+            // 
+            this.DataFilterAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataFilterAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataFilterAnimatedButtonReset.Depth = 0;
+            this.DataFilterAnimatedButtonReset.Icon = null;
+            this.DataFilterAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
+            this.DataFilterAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataFilterAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataFilterAnimatedButtonReset.Name = "DataFilterAnimatedButtonReset";
+            this.DataFilterAnimatedButtonReset.Primary = false;
+            this.DataFilterAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
+            this.DataFilterAnimatedButtonReset.TabIndex = 17;
+            this.DataFilterAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterAnimatedButtonReset.UseVisualStyleBackColor = true;
+            this.DataFilterAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
+            // 
+            // DataFilterBulletPointLabel2
+            // 
+            this.DataFilterBulletPointLabel2.AutoSize = true;
+            this.DataFilterBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterBulletPointLabel2.Location = new System.Drawing.Point(178, 673);
+            this.DataFilterBulletPointLabel2.Name = "DataFilterBulletPointLabel2";
+            this.DataFilterBulletPointLabel2.Size = new System.Drawing.Size(345, 39);
+            this.DataFilterBulletPointLabel2.TabIndex = 16;
+            this.DataFilterBulletPointLabel2.Text = " Add a new account";
+            // 
+            // DataFilterBulletPointLabel1
+            // 
+            this.DataFilterBulletPointLabel1.AutoSize = true;
+            this.DataFilterBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterBulletPointLabel1.Location = new System.Drawing.Point(178, 628);
+            this.DataFilterBulletPointLabel1.Name = "DataFilterBulletPointLabel1";
+            this.DataFilterBulletPointLabel1.Size = new System.Drawing.Size(331, 39);
+            this.DataFilterBulletPointLabel1.TabIndex = 15;
+            this.DataFilterBulletPointLabel1.Text = " Check your spelling";
+            // 
+            // DataFilterLabelSuggestions
+            // 
+            this.DataFilterLabelSuggestions.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterLabelSuggestions.AutoSize = true;
+            this.DataFilterLabelSuggestions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterLabelSuggestions.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterLabelSuggestions.Location = new System.Drawing.Point(48, 569);
+            this.DataFilterLabelSuggestions.Name = "DataFilterLabelSuggestions";
+            this.DataFilterLabelSuggestions.Size = new System.Drawing.Size(199, 39);
+            this.DataFilterLabelSuggestions.TabIndex = 14;
+            this.DataFilterLabelSuggestions.Text = "Suggestions";
+            // 
+            // DataFilterLabelSearchTerm
+            // 
+            this.DataFilterLabelSearchTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterLabelSearchTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterLabelSearchTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
+            this.DataFilterLabelSearchTerm.Location = new System.Drawing.Point(5, 436);
+            this.DataFilterLabelSearchTerm.Name = "DataFilterLabelSearchTerm";
+            this.DataFilterLabelSearchTerm.Size = new System.Drawing.Size(691, 93);
+            this.DataFilterLabelSearchTerm.TabIndex = 1;
+            this.DataFilterLabelSearchTerm.Text = "SEARCH_TERM";
+            this.DataFilterLabelSearchTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // DataFilterLabelHeader
+            // 
+            this.DataFilterLabelHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.DataFilterLabelHeader.AutoSize = true;
+            this.DataFilterLabelHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.DataFilterLabelHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
+            this.DataFilterLabelHeader.Location = new System.Drawing.Point(194, 392);
+            this.DataFilterLabelHeader.Name = "DataFilterLabelHeader";
+            this.DataFilterLabelHeader.Size = new System.Drawing.Size(312, 39);
+            this.DataFilterLabelHeader.TabIndex = 0;
+            this.DataFilterLabelHeader.Text = "No results found for";
+            // 
+            // DataPanelDetails
+            // 
+            this.DataPanelDetails.BackColor = System.Drawing.Color.White;
+            this.DataPanelDetails.Controls.Add(this.DataDetailsCustomLabelNotes);
+            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryUsername);
+            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryPassword);
+            this.DataPanelDetails.Controls.Add(this.DataDetailsEditAdvancedImageButton);
+            this.DataPanelDetails.Controls.Add(this.DataDetailsRemoveAdvancedImageButton);
+            this.DataPanelDetails.Controls.Add(this.DataLabelDetailsHostname);
+            this.DataPanelDetails.Controls.Add(this.DataPictureBoxDetailsLogo);
+            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryEmail);
+            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryWebsite);
+            this.DataPanelDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataPanelDetails.Location = new System.Drawing.Point(0, 0);
+            this.DataPanelDetails.Name = "DataPanelDetails";
+            this.DataPanelDetails.Size = new System.Drawing.Size(700, 1000);
+            this.DataPanelDetails.TabIndex = 3;
+            // 
+            // DataDetailsCustomLabelNotes
+            // 
+            this.DataDetailsCustomLabelNotes.Content = "Some  generic notes";
+            this.DataDetailsCustomLabelNotes.Header = "Notes:";
+            this.DataDetailsCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
+            this.DataDetailsCustomLabelNotes.Name = "DataDetailsCustomLabelNotes";
+            this.DataDetailsCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
+            this.DataDetailsCustomLabelNotes.TabIndex = 23;
+            // 
+            // DataLabelDetailsHostname
+            // 
+            this.DataLabelDetailsHostname.AutoSize = true;
+            this.DataLabelDetailsHostname.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataLabelDetailsHostname.Location = new System.Drawing.Point(144, 33);
+            this.DataLabelDetailsHostname.Name = "DataLabelDetailsHostname";
+            this.DataLabelDetailsHostname.Size = new System.Drawing.Size(168, 47);
+            this.DataLabelDetailsHostname.TabIndex = 1;
+            this.DataLabelDetailsHostname.Text = "Google";
+            // 
+            // DataFlowLayoutPanelEdit
+            // 
+            this.DataFlowLayoutPanelEdit.AutoScroll = true;
+            this.DataFlowLayoutPanelEdit.Controls.Add(this.DataEditPanelTop);
+            this.DataFlowLayoutPanelEdit.Controls.Add(this.DataEditPanelBottom);
+            this.DataFlowLayoutPanelEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataFlowLayoutPanelEdit.Location = new System.Drawing.Point(0, 0);
+            this.DataFlowLayoutPanelEdit.Name = "DataFlowLayoutPanelEdit";
+            this.DataFlowLayoutPanelEdit.Size = new System.Drawing.Size(700, 1000);
+            this.DataFlowLayoutPanelEdit.TabIndex = 4;
+            this.DataFlowLayoutPanelEdit.MouseEnter += new System.EventHandler(this.DataFlowLayoutPanelEdit_MouseEnter);
+            // 
+            // DataEditPanelTop
+            // 
+            this.DataEditPanelTop.Controls.Add(this.DataEditSaveAdvancedImageButton);
+            this.DataEditPanelTop.Controls.Add(this.DataEditCancelAdvancedImageButton);
+            this.DataEditPanelTop.Controls.Add(this.DataEditPanelPasswordGenerator);
+            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldHostname);
+            this.DataEditPanelTop.Controls.Add(this.DataEditPictureBoxLogo);
+            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldEmail);
+            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldWebsite);
+            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldUsername);
+            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldPassword);
+            this.DataEditPanelTop.Location = new System.Drawing.Point(3, 3);
+            this.DataEditPanelTop.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.DataEditPanelTop.Name = "DataEditPanelTop";
+            this.DataEditPanelTop.Size = new System.Drawing.Size(666, 897);
+            this.DataEditPanelTop.TabIndex = 0;
+            // 
+            // DataEditPanelPasswordGenerator
+            // 
+            this.DataEditPanelPasswordGenerator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditAnimatedButtonGeneratePassword);
+            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditLabelPasswordGeneratorTitle);
+            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditAdvancedCheckBox);
+            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditAdvancedNumericUpDown);
+            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditLabelPasswordGeneratorLengthTitle);
+            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditLabelPasswordGeneratorDescription);
+            this.DataEditPanelPasswordGenerator.Location = new System.Drawing.Point(10, 455);
+            this.DataEditPanelPasswordGenerator.Margin = new System.Windows.Forms.Padding(0);
+            this.DataEditPanelPasswordGenerator.Name = "DataEditPanelPasswordGenerator";
+            this.DataEditPanelPasswordGenerator.Size = new System.Drawing.Size(653, 197);
+            this.DataEditPanelPasswordGenerator.TabIndex = 32;
+            // 
+            // DataEditAnimatedButtonGeneratePassword
+            // 
+            this.DataEditAnimatedButtonGeneratePassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataEditAnimatedButtonGeneratePassword.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAnimatedButtonGeneratePassword.Depth = 0;
+            this.DataEditAnimatedButtonGeneratePassword.Icon = null;
+            this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
+            this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataEditAnimatedButtonGeneratePassword.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
+            this.DataEditAnimatedButtonGeneratePassword.Primary = false;
+            this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
+            this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
+            this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
+            this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
+            this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
+            // 
+            // DataEditLabelPasswordGeneratorTitle
+            // 
+            this.DataEditLabelPasswordGeneratorTitle.AutoSize = true;
+            this.DataEditLabelPasswordGeneratorTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
+            this.DataEditLabelPasswordGeneratorTitle.Location = new System.Drawing.Point(3, 3);
+            this.DataEditLabelPasswordGeneratorTitle.Name = "DataEditLabelPasswordGeneratorTitle";
+            this.DataEditLabelPasswordGeneratorTitle.Size = new System.Drawing.Size(394, 34);
+            this.DataEditLabelPasswordGeneratorTitle.TabIndex = 15;
+            this.DataEditLabelPasswordGeneratorTitle.Text = "Generate random password";
+            // 
+            // DataEditAdvancedCheckBox
+            // 
+            this.DataEditAdvancedCheckBox.AutoSize = true;
+            this.DataEditAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAdvancedCheckBox.Depth = 0;
+            this.DataEditAdvancedCheckBox.Font = new System.Drawing.Font("Century Gothic", 12F);
+            this.DataEditAdvancedCheckBox.FontText = new System.Drawing.Font("Century Gothic", 12F);
+            this.DataEditAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
+            this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
+            this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.DataEditAdvancedCheckBox.MouseState = LunaForms.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
+            this.DataEditAdvancedCheckBox.Ripple = true;
+            this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(304, 30);
+            this.DataEditAdvancedCheckBox.TabIndex = 13;
+            this.DataEditAdvancedCheckBox.Text = "Use special characters";
+            this.DataEditAdvancedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // DataEditLabelPasswordGeneratorLengthTitle
+            // 
+            this.DataEditLabelPasswordGeneratorLengthTitle.AutoSize = true;
+            this.DataEditLabelPasswordGeneratorLengthTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditLabelPasswordGeneratorLengthTitle.Location = new System.Drawing.Point(323, 121);
+            this.DataEditLabelPasswordGeneratorLengthTitle.Name = "DataEditLabelPasswordGeneratorLengthTitle";
+            this.DataEditLabelPasswordGeneratorLengthTitle.Size = new System.Drawing.Size(94, 30);
+            this.DataEditLabelPasswordGeneratorLengthTitle.TabIndex = 17;
+            this.DataEditLabelPasswordGeneratorLengthTitle.Text = "Length";
+            // 
+            // DataEditLabelPasswordGeneratorDescription
+            // 
+            this.DataEditLabelPasswordGeneratorDescription.AutoSize = true;
+            this.DataEditLabelPasswordGeneratorDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditLabelPasswordGeneratorDescription.Location = new System.Drawing.Point(9, 48);
+            this.DataEditLabelPasswordGeneratorDescription.Name = "DataEditLabelPasswordGeneratorDescription";
+            this.DataEditLabelPasswordGeneratorDescription.Size = new System.Drawing.Size(615, 63);
+            this.DataEditLabelPasswordGeneratorDescription.TabIndex = 16;
+            this.DataEditLabelPasswordGeneratorDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
+    "s as well as special characters and are at least 16\r\ncharacters long.";
+            // 
+            // DataEditPanelBottom
+            // 
+            this.DataEditPanelBottom.Controls.Add(this.DataEditLabelNotes);
+            this.DataEditPanelBottom.Controls.Add(this.DataEditAdvancedRichTextBoxNotes);
+            this.DataEditPanelBottom.Location = new System.Drawing.Point(3, 900);
+            this.DataEditPanelBottom.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
+            this.DataEditPanelBottom.Name = "DataEditPanelBottom";
+            this.DataEditPanelBottom.Size = new System.Drawing.Size(666, 312);
+            this.DataEditPanelBottom.TabIndex = 1;
+            // 
+            // DataEditLabelNotes
+            // 
+            this.DataEditLabelNotes.AutoSize = true;
+            this.DataEditLabelNotes.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditLabelNotes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DataEditLabelNotes.Location = new System.Drawing.Point(10, 6);
+            this.DataEditLabelNotes.Name = "DataEditLabelNotes";
+            this.DataEditLabelNotes.Size = new System.Drawing.Size(79, 25);
+            this.DataEditLabelNotes.TabIndex = 30;
+            this.DataEditLabelNotes.Text = "Notes:";
+            // 
+            // DataEditAdvancedRichTextBoxNotes
+            // 
+            this.DataEditAdvancedRichTextBoxNotes.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAdvancedRichTextBoxNotes.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedRichTextBoxNotes.ForeColorFocus = System.Drawing.Color.Black;
+            this.DataEditAdvancedRichTextBoxNotes.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedRichTextBoxNotes.Location = new System.Drawing.Point(10, 34);
+            this.DataEditAdvancedRichTextBoxNotes.Name = "DataEditAdvancedRichTextBoxNotes";
+            this.DataEditAdvancedRichTextBoxNotes.Size = new System.Drawing.Size(656, 266);
+            this.DataEditAdvancedRichTextBoxNotes.TabIndex = 31;
+            this.DataEditAdvancedRichTextBoxNotes.TextValue = "";
+            // 
+            // AddPanelMain
+            // 
+            this.AddPanelMain.BackColor = System.Drawing.Color.White;
+            this.AddPanelMain.Controls.Add(this.AddTableLayoutPanelMain);
+            this.AddPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.AddPanelMain.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelMain.Name = "AddPanelMain";
+            this.AddPanelMain.Size = new System.Drawing.Size(1615, 998);
+            this.AddPanelMain.TabIndex = 2;
+            // 
+            // AddTableLayoutPanelMain
+            // 
+            this.AddTableLayoutPanelMain.ColumnCount = 4;
+            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1000F));
+            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.AddTableLayoutPanelMain.Controls.Add(this.AddPictureBoxLeft, 1, 0);
+            this.AddTableLayoutPanelMain.Controls.Add(this.AddPictureBoxRight, 3, 0);
+            this.AddTableLayoutPanelMain.Controls.Add(this.AddPanelCenter, 2, 0);
+            this.AddTableLayoutPanelMain.Controls.Add(this.AddPanelSeperator, 0, 0);
+            this.AddTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.AddTableLayoutPanelMain.Name = "AddTableLayoutPanelMain";
+            this.AddTableLayoutPanelMain.RowCount = 1;
+            this.AddTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.AddTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 998F));
+            this.AddTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
+            this.AddTableLayoutPanelMain.TabIndex = 0;
+            // 
+            // AddPanelCenter
+            // 
+            this.AddPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.AddPanelCenter.Controls.Add(this.AddTableLayoutPanelCenter);
+            this.AddPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelCenter.Location = new System.Drawing.Point(312, 0);
+            this.AddPanelCenter.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelCenter.Name = "AddPanelCenter";
+            this.AddPanelCenter.Size = new System.Drawing.Size(1000, 998);
+            this.AddPanelCenter.TabIndex = 2;
+            // 
+            // AddPanelSeperator
+            // 
+            this.AddPanelSeperator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.AddPanelSeperator.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AddPanelSeperator.Location = new System.Drawing.Point(0, 0);
+            this.AddPanelSeperator.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelSeperator.Name = "AddPanelSeperator";
+            this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
+            this.AddPanelSeperator.TabIndex = 3;
+            // 
+            // WindowHeaderLabelLogo
+            // 
+            this.WindowHeaderLabelLogo.AutoSize = true;
+            this.WindowHeaderLabelLogo.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WindowHeaderLabelLogo.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelLogo.Location = new System.Drawing.Point(13, 14);
+            this.WindowHeaderLabelLogo.Name = "WindowHeaderLabelLogo";
+            this.WindowHeaderLabelLogo.Size = new System.Drawing.Size(124, 38);
+            this.WindowHeaderLabelLogo.TabIndex = 9;
+            this.WindowHeaderLabelLogo.Text = "pmdbs";
+            this.WindowHeaderLabelLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowHeaderLabelLogo_MouseDown);
+            // 
+            // WindowHeaderPanel
+            // 
+            this.WindowHeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.WindowHeaderPanel.Controls.Add(this.WindowHeaderTableLayoutPanel);
+            this.WindowHeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.WindowHeaderPanel.Location = new System.Drawing.Point(0, 0);
+            this.WindowHeaderPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.WindowHeaderPanel.Name = "WindowHeaderPanel";
+            this.WindowHeaderPanel.Size = new System.Drawing.Size(1880, 114);
+            this.WindowHeaderPanel.TabIndex = 0;
+            this.WindowHeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowHeaderPanel_MouseDown);
+            // 
+            // WindowHeaderTableLayoutPanel
+            // 
+            this.WindowHeaderTableLayoutPanel.ColumnCount = 3;
+            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 267F));
+            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1765F));
+            this.WindowHeaderTableLayoutPanel.Controls.Add(this.WindowPictureBoxIcon, 0, 0);
+            this.WindowHeaderTableLayoutPanel.Controls.Add(this.WindowsHeaderPanelSubRight, 2, 0);
+            this.WindowHeaderTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WindowHeaderTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.WindowHeaderTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.WindowHeaderTableLayoutPanel.Name = "WindowHeaderTableLayoutPanel";
+            this.WindowHeaderTableLayoutPanel.RowCount = 2;
+            this.WindowHeaderTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
+            this.WindowHeaderTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.WindowHeaderTableLayoutPanel.Size = new System.Drawing.Size(1880, 114);
+            this.WindowHeaderTableLayoutPanel.TabIndex = 0;
+            // 
+            // WindowsHeaderPanelSubRight
+            // 
+            this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterLabelSort);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterAdvancedComboBoxSort);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterEditFieldSearch);
+            this.WindowsHeaderPanelSubRight.Controls.Add(this.WindowsHeaderOvalPanelTitle);
+            this.WindowsHeaderPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.WindowsHeaderPanelSubRight.Location = new System.Drawing.Point(277, 1);
+            this.WindowsHeaderPanelSubRight.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
+            this.WindowsHeaderPanelSubRight.Name = "WindowsHeaderPanelSubRight";
+            this.WindowsHeaderPanelSubRight.Size = new System.Drawing.Size(1765, 102);
+            this.WindowsHeaderPanelSubRight.TabIndex = 11;
+            // 
+            // FilterLabelSort
+            // 
+            this.FilterLabelSort.AutoSize = true;
+            this.FilterLabelSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterLabelSort.Location = new System.Drawing.Point(899, 12);
+            this.FilterLabelSort.Name = "FilterLabelSort";
+            this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
+            this.FilterLabelSort.TabIndex = 3;
+            this.FilterLabelSort.Text = "Sort by";
+            // 
+            // FilterAdvancedComboBoxSort
+            // 
+            this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.BackgroundColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.FilterAdvancedComboBoxSort.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.FilterAdvancedComboBoxSort.Font = new System.Drawing.Font("Century Gothic", 8F);
+            this.FilterAdvancedComboBoxSort.FormattingEnabled = true;
+            this.FilterAdvancedComboBoxSort.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.FilterAdvancedComboBoxSort.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.FilterAdvancedComboBoxSort.HoverItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(119)))), ((int)(((byte)(53)))));
+            this.FilterAdvancedComboBoxSort.HoverItemForeColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.ItemFont = new System.Drawing.Font("Century Gothic", 8F);
+            this.FilterAdvancedComboBoxSort.ItemHeight = 25;
+            this.FilterAdvancedComboBoxSort.Items.AddRange(new object[] {
+            "Hostname... (A-Z)",
+            "Hostname... (Z-A)",
+            "Date... (oldest first)",
+            "Date... (newest first)"});
+            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(903, 60);
+            this.FilterAdvancedComboBoxSort.Name = "FilterAdvancedComboBoxSort";
+            this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.NormalItemForeColor = System.Drawing.Color.Black;
+            this.FilterAdvancedComboBoxSort.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.Size = new System.Drawing.Size(212, 31);
+            this.FilterAdvancedComboBoxSort.TabIndex = 4;
+            this.FilterAdvancedComboBoxSort.UseSelectable = true;
+            this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
+            // 
+            // WindowsHeaderOvalPanelTitle
+            // 
+            this.WindowsHeaderOvalPanelTitle.BackColor = System.Drawing.Color.White;
+            this.WindowsHeaderOvalPanelTitle.BackgroundColor = System.Drawing.Color.White;
+            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderPictureBoxIcon);
+            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderLabelTitle);
+            this.WindowsHeaderOvalPanelTitle.EllipseColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowsHeaderOvalPanelTitle.Location = new System.Drawing.Point(14, 16);
+            this.WindowsHeaderOvalPanelTitle.Name = "WindowsHeaderOvalPanelTitle";
+            this.WindowsHeaderOvalPanelTitle.Size = new System.Drawing.Size(290, 72);
+            this.WindowsHeaderOvalPanelTitle.TabIndex = 2;
+            // 
+            // WindowHeaderLabelTitle
+            // 
+            this.WindowHeaderLabelTitle.AutoSize = true;
+            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(87, 19);
+            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
+            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(153, 34);
+            this.WindowHeaderLabelTitle.TabIndex = 22;
+            this.WindowHeaderLabelTitle.Text = "Passwords";
+            // 
+            // PanelMain
+            // 
+            this.PanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.PanelMain.Controls.Add(this.DataPanelMain);
+            this.PanelMain.Controls.Add(this.MenuPanel);
+            this.PanelMain.Controls.Add(this.WindowHeaderPanel);
+            this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelMain.Location = new System.Drawing.Point(20, 60);
+            this.PanelMain.Name = "PanelMain";
+            this.PanelMain.Size = new System.Drawing.Size(1880, 1112);
+            this.PanelMain.TabIndex = 10;
+            // 
+            // PanelLogin
+            // 
+            this.PanelLogin.Controls.Add(this.LoginTableLayoutPanelMain);
+            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
+            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
+            this.PanelLogin.Name = "PanelLogin";
+            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
+            this.PanelLogin.TabIndex = 11;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(40, 65);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(150, 150);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::pmdbs.Properties.Resources.link;
+            this.pictureBox2.Location = new System.Drawing.Point(40, 65);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(150, 150);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 7;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox3.Image")));
+            this.pictureBox3.Location = new System.Drawing.Point(40, 65);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(150, 150);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 8;
+            this.pictureBox3.TabStop = false;
+            // 
             // SettingsPictureBoxLeft
             // 
             this.SettingsPictureBoxLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -1460,17 +1936,6 @@
             this.SettingsPictureBoxRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.SettingsPictureBoxRight.TabIndex = 1;
             this.SettingsPictureBoxRight.TabStop = false;
-            // 
-            // SettingsPanelCenter
-            // 
-            this.SettingsPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SettingsPanelCenter.Controls.Add(this.SettingsTableLayoutPanelCenter);
-            this.SettingsPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsPanelCenter.Location = new System.Drawing.Point(312, 0);
-            this.SettingsPanelCenter.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelCenter.Name = "SettingsPanelCenter";
-            this.SettingsPanelCenter.Size = new System.Drawing.Size(1000, 998);
-            this.SettingsPanelCenter.TabIndex = 2;
             // 
             // SettingsTableLayoutPanelCenter
             // 
@@ -2706,84 +3171,6 @@
             this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
             this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
             // 
-            // DataTableLayoutPanelMain
-            // 
-            this.DataTableLayoutPanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.DataTableLayoutPanelMain.ColumnCount = 4;
-            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
-            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.DataTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 700F));
-            this.DataTableLayoutPanelMain.Controls.Add(this.DataTableLayoutPanelSubLeft, 1, 0);
-            this.DataTableLayoutPanelMain.Controls.Add(this.DataTableLayoutPanelSubRight, 3, 0);
-            this.DataTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.DataTableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
-            this.DataTableLayoutPanelMain.Name = "DataTableLayoutPanelMain";
-            this.DataTableLayoutPanelMain.RowCount = 1;
-            this.DataTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DataTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
-            this.DataTableLayoutPanelMain.TabIndex = 0;
-            // 
-            // DataTableLayoutPanelSubLeft
-            // 
-            this.DataTableLayoutPanelSubLeft.ColumnCount = 1;
-            this.DataTableLayoutPanelSubLeft.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DataTableLayoutPanelSubLeft.Controls.Add(this.DataFlowLayoutPanelList, 0, 0);
-            this.DataTableLayoutPanelSubLeft.Controls.Add(this.DataTableLayoutPanelFooter, 0, 2);
-            this.DataTableLayoutPanelSubLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataTableLayoutPanelSubLeft.Location = new System.Drawing.Point(11, 0);
-            this.DataTableLayoutPanelSubLeft.Margin = new System.Windows.Forms.Padding(0);
-            this.DataTableLayoutPanelSubLeft.Name = "DataTableLayoutPanelSubLeft";
-            this.DataTableLayoutPanelSubLeft.RowCount = 3;
-            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.DataTableLayoutPanelSubLeft.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.DataTableLayoutPanelSubLeft.Size = new System.Drawing.Size(894, 998);
-            this.DataTableLayoutPanelSubLeft.TabIndex = 4;
-            // 
-            // DataFlowLayoutPanelList
-            // 
-            this.DataFlowLayoutPanelList.AutoScroll = true;
-            this.DataFlowLayoutPanelList.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.DataFlowLayoutPanelList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataFlowLayoutPanelList.Location = new System.Drawing.Point(0, 0);
-            this.DataFlowLayoutPanelList.Margin = new System.Windows.Forms.Padding(0);
-            this.DataFlowLayoutPanelList.Name = "DataFlowLayoutPanelList";
-            this.DataFlowLayoutPanelList.Size = new System.Drawing.Size(894, 904);
-            this.DataFlowLayoutPanelList.TabIndex = 4;
-            this.DataFlowLayoutPanelList.MouseEnter += new System.EventHandler(this.DataFlowLayoutPanelList_MouseEnter);
-            this.DataFlowLayoutPanelList.Resize += new System.EventHandler(this.FlowLayoutPanel1_Resize);
-            // 
-            // DataTableLayoutPanelFooter
-            // 
-            this.DataTableLayoutPanelFooter.BackColor = System.Drawing.Color.White;
-            this.DataTableLayoutPanelFooter.ColumnCount = 2;
-            this.DataTableLayoutPanelFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.DataTableLayoutPanelFooter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.DataTableLayoutPanelFooter.Controls.Add(this.DataPanelFooterRight, 1, 0);
-            this.DataTableLayoutPanelFooter.Controls.Add(this.DataPanelFooterLeft, 0, 0);
-            this.DataTableLayoutPanelFooter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataTableLayoutPanelFooter.Location = new System.Drawing.Point(1, 915);
-            this.DataTableLayoutPanelFooter.Margin = new System.Windows.Forms.Padding(1, 1, 0, 1);
-            this.DataTableLayoutPanelFooter.Name = "DataTableLayoutPanelFooter";
-            this.DataTableLayoutPanelFooter.RowCount = 1;
-            this.DataTableLayoutPanelFooter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.DataTableLayoutPanelFooter.Size = new System.Drawing.Size(893, 82);
-            this.DataTableLayoutPanelFooter.TabIndex = 5;
-            // 
-            // DataPanelFooterRight
-            // 
-            this.DataPanelFooterRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.DataPanelFooterRight.Controls.Add(this.DataSyncAdvancedImageButton);
-            this.DataPanelFooterRight.Controls.Add(this.DataRightAdvancedImageButton);
-            this.DataPanelFooterRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataPanelFooterRight.Location = new System.Drawing.Point(446, 0);
-            this.DataPanelFooterRight.Margin = new System.Windows.Forms.Padding(0);
-            this.DataPanelFooterRight.Name = "DataPanelFooterRight";
-            this.DataPanelFooterRight.Size = new System.Drawing.Size(447, 82);
-            this.DataPanelFooterRight.TabIndex = 1;
-            // 
             // DataSyncAdvancedImageButton
             // 
             this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -2803,19 +3190,6 @@
             this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
             this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
             this.DataRightAdvancedImageButton.TabIndex = 17;
-            // 
-            // DataPanelFooterLeft
-            // 
-            this.DataPanelFooterLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.DataPanelFooterLeft.Controls.Add(this.DataAddAdvancedImageButton);
-            this.DataPanelFooterLeft.Controls.Add(this.DataLeftAdvancedImageButton);
-            this.DataPanelFooterLeft.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataPanelFooterLeft.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DataPanelFooterLeft.Location = new System.Drawing.Point(0, 0);
-            this.DataPanelFooterLeft.Margin = new System.Windows.Forms.Padding(0);
-            this.DataPanelFooterLeft.Name = "DataPanelFooterLeft";
-            this.DataPanelFooterLeft.Size = new System.Drawing.Size(446, 82);
-            this.DataPanelFooterLeft.TabIndex = 0;
             // 
             // DataAddAdvancedImageButton
             // 
@@ -2837,145 +3211,6 @@
             this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
             this.DataLeftAdvancedImageButton.TabIndex = 16;
             // 
-            // DataTableLayoutPanelSubRight
-            // 
-            this.DataTableLayoutPanelSubRight.BackColor = System.Drawing.Color.White;
-            this.DataTableLayoutPanelSubRight.ColumnCount = 1;
-            this.DataTableLayoutPanelSubRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.DataTableLayoutPanelSubRight.Controls.Add(this.DataPanelSubRightMain, 0, 1);
-            this.DataTableLayoutPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataTableLayoutPanelSubRight.Location = new System.Drawing.Point(915, 0);
-            this.DataTableLayoutPanelSubRight.Margin = new System.Windows.Forms.Padding(0);
-            this.DataTableLayoutPanelSubRight.Name = "DataTableLayoutPanelSubRight";
-            this.DataTableLayoutPanelSubRight.RowCount = 3;
-            this.DataTableLayoutPanelSubRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.DataTableLayoutPanelSubRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 1000F));
-            this.DataTableLayoutPanelSubRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.DataTableLayoutPanelSubRight.Size = new System.Drawing.Size(700, 998);
-            this.DataTableLayoutPanelSubRight.TabIndex = 5;
-            // 
-            // DataPanelSubRightMain
-            // 
-            this.DataPanelSubRightMain.Controls.Add(this.DataPanelNoSel);
-            this.DataPanelSubRightMain.Controls.Add(this.DataFilterResultsPanel);
-            this.DataPanelSubRightMain.Controls.Add(this.DataFilterPanelNotFound);
-            this.DataPanelSubRightMain.Controls.Add(this.DataPanelDetails);
-            this.DataPanelSubRightMain.Controls.Add(this.DataFlowLayoutPanelEdit);
-            this.DataPanelSubRightMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataPanelSubRightMain.Location = new System.Drawing.Point(0, -1);
-            this.DataPanelSubRightMain.Margin = new System.Windows.Forms.Padding(0);
-            this.DataPanelSubRightMain.Name = "DataPanelSubRightMain";
-            this.DataPanelSubRightMain.Size = new System.Drawing.Size(700, 1000);
-            this.DataPanelSubRightMain.TabIndex = 6;
-            // 
-            // DataPanelNoSel
-            // 
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabelHeader);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel5);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel4);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel3);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel2);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelLabel1);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel3);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel2);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelBulletPointLabel1);
-            this.DataPanelNoSel.Controls.Add(this.DataNoSelPictureBox);
-            this.DataPanelNoSel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataPanelNoSel.Location = new System.Drawing.Point(0, 0);
-            this.DataPanelNoSel.Name = "DataPanelNoSel";
-            this.DataPanelNoSel.Size = new System.Drawing.Size(700, 1000);
-            this.DataPanelNoSel.TabIndex = 32;
-            // 
-            // DataNoSelLabelHeader
-            // 
-            this.DataNoSelLabelHeader.AutoSize = true;
-            this.DataNoSelLabelHeader.Font = new System.Drawing.Font("Century Gothic", 20F);
-            this.DataNoSelLabelHeader.Location = new System.Drawing.Point(24, 349);
-            this.DataNoSelLabelHeader.Name = "DataNoSelLabelHeader";
-            this.DataNoSelLabelHeader.Size = new System.Drawing.Size(183, 49);
-            this.DataNoSelLabelHeader.TabIndex = 20;
-            this.DataNoSelLabelHeader.Text = "You can";
-            // 
-            // DataNoSelLabel5
-            // 
-            this.DataNoSelLabel5.AutoSize = true;
-            this.DataNoSelLabel5.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.DataNoSelLabel5.Location = new System.Drawing.Point(81, 617);
-            this.DataNoSelLabel5.Name = "DataNoSelLabel5";
-            this.DataNoSelLabel5.Size = new System.Drawing.Size(365, 34);
-            this.DataNoSelLabel5.TabIndex = 19;
-            this.DataNoSelLabel5.Text = "sorting options at the top.";
-            // 
-            // DataNoSelLabel4
-            // 
-            this.DataNoSelLabel4.AutoSize = true;
-            this.DataNoSelLabel4.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.DataNoSelLabel4.Location = new System.Drawing.Point(212, 578);
-            this.DataNoSelLabel4.Name = "DataNoSelLabel4";
-            this.DataNoSelLabel4.Size = new System.Drawing.Size(422, 34);
-            this.DataNoSelLabel4.TabIndex = 18;
-            this.DataNoSelLabel4.Text = "items with the search bar and";
-            // 
-            // DataNoSelLabel3
-            // 
-            this.DataNoSelLabel3.AutoSize = true;
-            this.DataNoSelLabel3.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.DataNoSelLabel3.Location = new System.Drawing.Point(152, 508);
-            this.DataNoSelLabel3.Name = "DataNoSelLabel3";
-            this.DataNoSelLabel3.Size = new System.Drawing.Size(389, 34);
-            this.DataNoSelLabel3.TabIndex = 17;
-            this.DataNoSelLabel3.Text = "on an item for more details.";
-            // 
-            // DataNoSelLabel2
-            // 
-            this.DataNoSelLabel2.AutoSize = true;
-            this.DataNoSelLabel2.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.DataNoSelLabel2.Location = new System.Drawing.Point(76, 453);
-            this.DataNoSelLabel2.Name = "DataNoSelLabel2";
-            this.DataNoSelLabel2.Size = new System.Drawing.Size(259, 34);
-            this.DataNoSelLabel2.TabIndex = 16;
-            this.DataNoSelLabel2.Text = "in the bottom left.\r\n";
-            // 
-            // DataNoSelLabel1
-            // 
-            this.DataNoSelLabel1.AutoSize = true;
-            this.DataNoSelLabel1.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.DataNoSelLabel1.Location = new System.Drawing.Point(142, 417);
-            this.DataNoSelLabel1.Name = "DataNoSelLabel1";
-            this.DataNoSelLabel1.Size = new System.Drawing.Size(445, 34);
-            this.DataNoSelLabel1.TabIndex = 15;
-            this.DataNoSelLabel1.Text = "accounts by clicking the + icon";
-            // 
-            // DataNoSelBulletPointLabel3
-            // 
-            this.DataNoSelBulletPointLabel3.AutoSize = true;
-            this.DataNoSelBulletPointLabel3.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.DataNoSelBulletPointLabel3.Location = new System.Drawing.Point(62, 579);
-            this.DataNoSelBulletPointLabel3.Name = "DataNoSelBulletPointLabel3";
-            this.DataNoSelBulletPointLabel3.Size = new System.Drawing.Size(155, 34);
-            this.DataNoSelBulletPointLabel3.TabIndex = 14;
-            this.DataNoSelBulletPointLabel3.Text = "  Organize";
-            // 
-            // DataNoSelBulletPointLabel2
-            // 
-            this.DataNoSelBulletPointLabel2.AutoSize = true;
-            this.DataNoSelBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.DataNoSelBulletPointLabel2.Location = new System.Drawing.Point(60, 509);
-            this.DataNoSelBulletPointLabel2.Name = "DataNoSelBulletPointLabel2";
-            this.DataNoSelBulletPointLabel2.Size = new System.Drawing.Size(101, 34);
-            this.DataNoSelBulletPointLabel2.TabIndex = 13;
-            this.DataNoSelBulletPointLabel2.Text = "  Click";
-            // 
-            // DataNoSelBulletPointLabel1
-            // 
-            this.DataNoSelBulletPointLabel1.AutoSize = true;
-            this.DataNoSelBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.DataNoSelBulletPointLabel1.Location = new System.Drawing.Point(60, 419);
-            this.DataNoSelBulletPointLabel1.Name = "DataNoSelBulletPointLabel1";
-            this.DataNoSelBulletPointLabel1.Size = new System.Drawing.Size(88, 34);
-            this.DataNoSelBulletPointLabel1.TabIndex = 12;
-            this.DataNoSelBulletPointLabel1.Text = "  Add";
-            // 
             // DataNoSelPictureBox
             // 
             this.DataNoSelPictureBox.BackColor = System.Drawing.Color.White;
@@ -2989,61 +3224,6 @@
             this.DataNoSelPictureBox.TabIndex = 11;
             this.DataNoSelPictureBox.TabStop = false;
             // 
-            // DataFilterResultsPanel
-            // 
-            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSortTerm);
-            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSortHeader);
-            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsAnimatedButtonReset);
-            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsPictureBox);
-            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsLabelSearchTerm);
-            this.DataFilterResultsPanel.Controls.Add(this.DataFilterResultsHeader);
-            this.DataFilterResultsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataFilterResultsPanel.Location = new System.Drawing.Point(0, 0);
-            this.DataFilterResultsPanel.Name = "DataFilterResultsPanel";
-            this.DataFilterResultsPanel.Size = new System.Drawing.Size(700, 1000);
-            this.DataFilterResultsPanel.TabIndex = 34;
-            // 
-            // DataFilterResultsLabelSortTerm
-            // 
-            this.DataFilterResultsLabelSortTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterResultsLabelSortTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterResultsLabelSortTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
-            this.DataFilterResultsLabelSortTerm.Location = new System.Drawing.Point(5, 592);
-            this.DataFilterResultsLabelSortTerm.Name = "DataFilterResultsLabelSortTerm";
-            this.DataFilterResultsLabelSortTerm.Size = new System.Drawing.Size(691, 93);
-            this.DataFilterResultsLabelSortTerm.TabIndex = 5;
-            this.DataFilterResultsLabelSortTerm.Text = "SORT_TERM";
-            this.DataFilterResultsLabelSortTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DataFilterResultsLabelSortHeader
-            // 
-            this.DataFilterResultsLabelSortHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterResultsLabelSortHeader.AutoSize = true;
-            this.DataFilterResultsLabelSortHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterResultsLabelSortHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
-            this.DataFilterResultsLabelSortHeader.Location = new System.Drawing.Point(215, 548);
-            this.DataFilterResultsLabelSortHeader.Name = "DataFilterResultsLabelSortHeader";
-            this.DataFilterResultsLabelSortHeader.Size = new System.Drawing.Size(270, 39);
-            this.DataFilterResultsLabelSortHeader.TabIndex = 4;
-            this.DataFilterResultsLabelSortHeader.Text = "Sorting results by";
-            // 
-            // DataFilterResultsAnimatedButtonReset
-            // 
-            this.DataFilterResultsAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataFilterResultsAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataFilterResultsAnimatedButtonReset.Depth = 0;
-            this.DataFilterResultsAnimatedButtonReset.Icon = null;
-            this.DataFilterResultsAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
-            this.DataFilterResultsAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataFilterResultsAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.DataFilterResultsAnimatedButtonReset.Name = "DataFilterResultsAnimatedButtonReset";
-            this.DataFilterResultsAnimatedButtonReset.Primary = false;
-            this.DataFilterResultsAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
-            this.DataFilterResultsAnimatedButtonReset.TabIndex = 3;
-            this.DataFilterResultsAnimatedButtonReset.Text = "reset filter";
-            this.DataFilterResultsAnimatedButtonReset.UseVisualStyleBackColor = true;
-            this.DataFilterResultsAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
-            // 
             // DataFilterResultsPictureBox
             // 
             this.DataFilterResultsPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("DataFilterResultsPictureBox.Image")));
@@ -3054,94 +3234,6 @@
             this.DataFilterResultsPictureBox.TabIndex = 2;
             this.DataFilterResultsPictureBox.TabStop = false;
             // 
-            // DataFilterResultsLabelSearchTerm
-            // 
-            this.DataFilterResultsLabelSearchTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterResultsLabelSearchTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterResultsLabelSearchTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
-            this.DataFilterResultsLabelSearchTerm.Location = new System.Drawing.Point(5, 436);
-            this.DataFilterResultsLabelSearchTerm.Name = "DataFilterResultsLabelSearchTerm";
-            this.DataFilterResultsLabelSearchTerm.Size = new System.Drawing.Size(691, 93);
-            this.DataFilterResultsLabelSearchTerm.TabIndex = 1;
-            this.DataFilterResultsLabelSearchTerm.Text = "SEARCH_TERM";
-            this.DataFilterResultsLabelSearchTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DataFilterResultsHeader
-            // 
-            this.DataFilterResultsHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterResultsHeader.AutoSize = true;
-            this.DataFilterResultsHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterResultsHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
-            this.DataFilterResultsHeader.Location = new System.Drawing.Point(200, 392);
-            this.DataFilterResultsHeader.Name = "DataFilterResultsHeader";
-            this.DataFilterResultsHeader.Size = new System.Drawing.Size(300, 39);
-            this.DataFilterResultsHeader.TabIndex = 0;
-            this.DataFilterResultsHeader.Text = "Showing results for";
-            // 
-            // DataFilterPanelNotFound
-            // 
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterAnimatedButtonReset);
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterBulletPointLabel2);
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterBulletPointLabel1);
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelSuggestions);
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterPictureBox);
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelSearchTerm);
-            this.DataFilterPanelNotFound.Controls.Add(this.DataFilterLabelHeader);
-            this.DataFilterPanelNotFound.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataFilterPanelNotFound.Location = new System.Drawing.Point(0, 0);
-            this.DataFilterPanelNotFound.Name = "DataFilterPanelNotFound";
-            this.DataFilterPanelNotFound.Size = new System.Drawing.Size(700, 1000);
-            this.DataFilterPanelNotFound.TabIndex = 33;
-            // 
-            // DataFilterAnimatedButtonReset
-            // 
-            this.DataFilterAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataFilterAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataFilterAnimatedButtonReset.Depth = 0;
-            this.DataFilterAnimatedButtonReset.Icon = null;
-            this.DataFilterAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
-            this.DataFilterAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataFilterAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.DataFilterAnimatedButtonReset.Name = "DataFilterAnimatedButtonReset";
-            this.DataFilterAnimatedButtonReset.Primary = false;
-            this.DataFilterAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
-            this.DataFilterAnimatedButtonReset.TabIndex = 17;
-            this.DataFilterAnimatedButtonReset.Text = "reset filter";
-            this.DataFilterAnimatedButtonReset.UseVisualStyleBackColor = true;
-            this.DataFilterAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
-            // 
-            // DataFilterBulletPointLabel2
-            // 
-            this.DataFilterBulletPointLabel2.AutoSize = true;
-            this.DataFilterBulletPointLabel2.Font = new System.Drawing.Font("Century Gothic", 16F);
-            this.DataFilterBulletPointLabel2.Location = new System.Drawing.Point(178, 673);
-            this.DataFilterBulletPointLabel2.Name = "DataFilterBulletPointLabel2";
-            this.DataFilterBulletPointLabel2.Size = new System.Drawing.Size(345, 39);
-            this.DataFilterBulletPointLabel2.TabIndex = 16;
-            this.DataFilterBulletPointLabel2.Text = " Add a new account";
-            // 
-            // DataFilterBulletPointLabel1
-            // 
-            this.DataFilterBulletPointLabel1.AutoSize = true;
-            this.DataFilterBulletPointLabel1.Font = new System.Drawing.Font("Century Gothic", 16F);
-            this.DataFilterBulletPointLabel1.Location = new System.Drawing.Point(178, 628);
-            this.DataFilterBulletPointLabel1.Name = "DataFilterBulletPointLabel1";
-            this.DataFilterBulletPointLabel1.Size = new System.Drawing.Size(331, 39);
-            this.DataFilterBulletPointLabel1.TabIndex = 15;
-            this.DataFilterBulletPointLabel1.Text = " Check your spelling";
-            // 
-            // DataFilterLabelSuggestions
-            // 
-            this.DataFilterLabelSuggestions.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterLabelSuggestions.AutoSize = true;
-            this.DataFilterLabelSuggestions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterLabelSuggestions.Font = new System.Drawing.Font("Century Gothic", 16F);
-            this.DataFilterLabelSuggestions.Location = new System.Drawing.Point(48, 569);
-            this.DataFilterLabelSuggestions.Name = "DataFilterLabelSuggestions";
-            this.DataFilterLabelSuggestions.Size = new System.Drawing.Size(199, 39);
-            this.DataFilterLabelSuggestions.TabIndex = 14;
-            this.DataFilterLabelSuggestions.Text = "Suggestions";
-            // 
             // DataFilterPictureBox
             // 
             this.DataFilterPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("DataFilterPictureBox.Image")));
@@ -3151,57 +3243,6 @@
             this.DataFilterPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.DataFilterPictureBox.TabIndex = 2;
             this.DataFilterPictureBox.TabStop = false;
-            // 
-            // DataFilterLabelSearchTerm
-            // 
-            this.DataFilterLabelSearchTerm.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterLabelSearchTerm.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterLabelSearchTerm.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold);
-            this.DataFilterLabelSearchTerm.Location = new System.Drawing.Point(5, 436);
-            this.DataFilterLabelSearchTerm.Name = "DataFilterLabelSearchTerm";
-            this.DataFilterLabelSearchTerm.Size = new System.Drawing.Size(691, 93);
-            this.DataFilterLabelSearchTerm.TabIndex = 1;
-            this.DataFilterLabelSearchTerm.Text = "SEARCH_TERM";
-            this.DataFilterLabelSearchTerm.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DataFilterLabelHeader
-            // 
-            this.DataFilterLabelHeader.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.DataFilterLabelHeader.AutoSize = true;
-            this.DataFilterLabelHeader.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.DataFilterLabelHeader.Font = new System.Drawing.Font("Century Gothic", 16F);
-            this.DataFilterLabelHeader.Location = new System.Drawing.Point(194, 392);
-            this.DataFilterLabelHeader.Name = "DataFilterLabelHeader";
-            this.DataFilterLabelHeader.Size = new System.Drawing.Size(312, 39);
-            this.DataFilterLabelHeader.TabIndex = 0;
-            this.DataFilterLabelHeader.Text = "No results found for";
-            // 
-            // DataPanelDetails
-            // 
-            this.DataPanelDetails.BackColor = System.Drawing.Color.White;
-            this.DataPanelDetails.Controls.Add(this.DataDetailsCustomLabelNotes);
-            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryUsername);
-            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryPassword);
-            this.DataPanelDetails.Controls.Add(this.DataDetailsEditAdvancedImageButton);
-            this.DataPanelDetails.Controls.Add(this.DataDetailsRemoveAdvancedImageButton);
-            this.DataPanelDetails.Controls.Add(this.DataLabelDetailsHostname);
-            this.DataPanelDetails.Controls.Add(this.DataPictureBoxDetailsLogo);
-            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryEmail);
-            this.DataPanelDetails.Controls.Add(this.DataDetailsEntryWebsite);
-            this.DataPanelDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataPanelDetails.Location = new System.Drawing.Point(0, 0);
-            this.DataPanelDetails.Name = "DataPanelDetails";
-            this.DataPanelDetails.Size = new System.Drawing.Size(700, 1000);
-            this.DataPanelDetails.TabIndex = 3;
-            // 
-            // DataDetailsCustomLabelNotes
-            // 
-            this.DataDetailsCustomLabelNotes.Content = "Some  generic notes";
-            this.DataDetailsCustomLabelNotes.Header = "Notes:";
-            this.DataDetailsCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
-            this.DataDetailsCustomLabelNotes.Name = "DataDetailsCustomLabelNotes";
-            this.DataDetailsCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
-            this.DataDetailsCustomLabelNotes.TabIndex = 23;
             // 
             // DataDetailsEntryUsername
             // 
@@ -3248,16 +3289,6 @@
             this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
             this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
             // 
-            // DataLabelDetailsHostname
-            // 
-            this.DataLabelDetailsHostname.AutoSize = true;
-            this.DataLabelDetailsHostname.Font = new System.Drawing.Font("Century Gothic", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataLabelDetailsHostname.Location = new System.Drawing.Point(144, 33);
-            this.DataLabelDetailsHostname.Name = "DataLabelDetailsHostname";
-            this.DataLabelDetailsHostname.Size = new System.Drawing.Size(168, 47);
-            this.DataLabelDetailsHostname.TabIndex = 1;
-            this.DataLabelDetailsHostname.Text = "Google";
-            // 
             // DataPictureBoxDetailsLogo
             // 
             this.DataPictureBoxDetailsLogo.Location = new System.Drawing.Point(10, 30);
@@ -3295,35 +3326,6 @@
             this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
             this.DataDetailsEntryWebsite.TabIndex = 19;
             // 
-            // DataFlowLayoutPanelEdit
-            // 
-            this.DataFlowLayoutPanelEdit.AutoScroll = true;
-            this.DataFlowLayoutPanelEdit.Controls.Add(this.DataEditPanelTop);
-            this.DataFlowLayoutPanelEdit.Controls.Add(this.DataEditPanelBottom);
-            this.DataFlowLayoutPanelEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataFlowLayoutPanelEdit.Location = new System.Drawing.Point(0, 0);
-            this.DataFlowLayoutPanelEdit.Name = "DataFlowLayoutPanelEdit";
-            this.DataFlowLayoutPanelEdit.Size = new System.Drawing.Size(700, 1000);
-            this.DataFlowLayoutPanelEdit.TabIndex = 4;
-            this.DataFlowLayoutPanelEdit.MouseEnter += new System.EventHandler(this.DataFlowLayoutPanelEdit_MouseEnter);
-            // 
-            // DataEditPanelTop
-            // 
-            this.DataEditPanelTop.Controls.Add(this.DataEditSaveAdvancedImageButton);
-            this.DataEditPanelTop.Controls.Add(this.DataEditCancelAdvancedImageButton);
-            this.DataEditPanelTop.Controls.Add(this.DataEditPanelPasswordGenerator);
-            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldHostname);
-            this.DataEditPanelTop.Controls.Add(this.DataEditPictureBoxLogo);
-            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldEmail);
-            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldWebsite);
-            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldUsername);
-            this.DataEditPanelTop.Controls.Add(this.DataEditEditFieldPassword);
-            this.DataEditPanelTop.Location = new System.Drawing.Point(3, 3);
-            this.DataEditPanelTop.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.DataEditPanelTop.Name = "DataEditPanelTop";
-            this.DataEditPanelTop.Size = new System.Drawing.Size(666, 897);
-            this.DataEditPanelTop.TabIndex = 0;
-            // 
             // DataEditSaveAdvancedImageButton
             // 
             this.DataEditSaveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.save_hover;
@@ -3341,67 +3343,6 @@
             this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
             this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
             this.DataEditCancelAdvancedImageButton.TabIndex = 24;
-            // 
-            // DataEditPanelPasswordGenerator
-            // 
-            this.DataEditPanelPasswordGenerator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditAnimatedButtonGeneratePassword);
-            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditLabelPasswordGeneratorTitle);
-            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditAdvancedCheckBox);
-            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditAdvancedNumericUpDown);
-            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditLabelPasswordGeneratorLengthTitle);
-            this.DataEditPanelPasswordGenerator.Controls.Add(this.DataEditLabelPasswordGeneratorDescription);
-            this.DataEditPanelPasswordGenerator.Location = new System.Drawing.Point(10, 455);
-            this.DataEditPanelPasswordGenerator.Margin = new System.Windows.Forms.Padding(0);
-            this.DataEditPanelPasswordGenerator.Name = "DataEditPanelPasswordGenerator";
-            this.DataEditPanelPasswordGenerator.Size = new System.Drawing.Size(653, 197);
-            this.DataEditPanelPasswordGenerator.TabIndex = 32;
-            // 
-            // DataEditAnimatedButtonGeneratePassword
-            // 
-            this.DataEditAnimatedButtonGeneratePassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataEditAnimatedButtonGeneratePassword.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAnimatedButtonGeneratePassword.Depth = 0;
-            this.DataEditAnimatedButtonGeneratePassword.Icon = null;
-            this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
-            this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataEditAnimatedButtonGeneratePassword.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
-            this.DataEditAnimatedButtonGeneratePassword.Primary = false;
-            this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
-            this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
-            this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
-            this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
-            this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
-            // 
-            // DataEditLabelPasswordGeneratorTitle
-            // 
-            this.DataEditLabelPasswordGeneratorTitle.AutoSize = true;
-            this.DataEditLabelPasswordGeneratorTitle.Font = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Bold);
-            this.DataEditLabelPasswordGeneratorTitle.Location = new System.Drawing.Point(3, 3);
-            this.DataEditLabelPasswordGeneratorTitle.Name = "DataEditLabelPasswordGeneratorTitle";
-            this.DataEditLabelPasswordGeneratorTitle.Size = new System.Drawing.Size(394, 34);
-            this.DataEditLabelPasswordGeneratorTitle.TabIndex = 15;
-            this.DataEditLabelPasswordGeneratorTitle.Text = "Generate random password";
-            // 
-            // DataEditAdvancedCheckBox
-            // 
-            this.DataEditAdvancedCheckBox.AutoSize = true;
-            this.DataEditAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAdvancedCheckBox.Depth = 0;
-            this.DataEditAdvancedCheckBox.Font = new System.Drawing.Font("Century Gothic", 12F);
-            this.DataEditAdvancedCheckBox.FontText = new System.Drawing.Font("Century Gothic", 12F);
-            this.DataEditAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
-            this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
-            this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
-            this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.DataEditAdvancedCheckBox.MouseState = LunaForms.AdvancedCheckBox.MouseStateBase.HOVER;
-            this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
-            this.DataEditAdvancedCheckBox.Ripple = true;
-            this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(304, 30);
-            this.DataEditAdvancedCheckBox.TabIndex = 13;
-            this.DataEditAdvancedCheckBox.Text = "Use special characters";
-            this.DataEditAdvancedCheckBox.UseVisualStyleBackColor = true;
             // 
             // DataEditAdvancedNumericUpDown
             // 
@@ -3423,27 +3364,6 @@
             this.DataEditAdvancedNumericUpDown.TabIndex = 12;
             this.DataEditAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.DataEditAdvancedNumericUpDown.TextValue = "20";
-            // 
-            // DataEditLabelPasswordGeneratorLengthTitle
-            // 
-            this.DataEditLabelPasswordGeneratorLengthTitle.AutoSize = true;
-            this.DataEditLabelPasswordGeneratorLengthTitle.Font = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditLabelPasswordGeneratorLengthTitle.Location = new System.Drawing.Point(323, 121);
-            this.DataEditLabelPasswordGeneratorLengthTitle.Name = "DataEditLabelPasswordGeneratorLengthTitle";
-            this.DataEditLabelPasswordGeneratorLengthTitle.Size = new System.Drawing.Size(94, 30);
-            this.DataEditLabelPasswordGeneratorLengthTitle.TabIndex = 17;
-            this.DataEditLabelPasswordGeneratorLengthTitle.Text = "Length";
-            // 
-            // DataEditLabelPasswordGeneratorDescription
-            // 
-            this.DataEditLabelPasswordGeneratorDescription.AutoSize = true;
-            this.DataEditLabelPasswordGeneratorDescription.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditLabelPasswordGeneratorDescription.Location = new System.Drawing.Point(9, 48);
-            this.DataEditLabelPasswordGeneratorDescription.Name = "DataEditLabelPasswordGeneratorDescription";
-            this.DataEditLabelPasswordGeneratorDescription.Size = new System.Drawing.Size(615, 63);
-            this.DataEditLabelPasswordGeneratorDescription.TabIndex = 16;
-            this.DataEditLabelPasswordGeneratorDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
-    "s as well as special characters and are at least 16\r\ncharacters long.";
             // 
             // DataEditEditFieldHostname
             // 
@@ -3580,70 +3500,6 @@
             this.DataEditEditFieldPassword.UseDefaultValue = false;
             this.DataEditEditFieldPassword.UseSystemPasswordChar = false;
             // 
-            // DataEditPanelBottom
-            // 
-            this.DataEditPanelBottom.Controls.Add(this.DataEditLabelNotes);
-            this.DataEditPanelBottom.Controls.Add(this.DataEditAdvancedRichTextBoxNotes);
-            this.DataEditPanelBottom.Location = new System.Drawing.Point(3, 900);
-            this.DataEditPanelBottom.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
-            this.DataEditPanelBottom.Name = "DataEditPanelBottom";
-            this.DataEditPanelBottom.Size = new System.Drawing.Size(666, 312);
-            this.DataEditPanelBottom.TabIndex = 1;
-            // 
-            // DataEditLabelNotes
-            // 
-            this.DataEditLabelNotes.AutoSize = true;
-            this.DataEditLabelNotes.Font = new System.Drawing.Font("Century Gothic", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditLabelNotes.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DataEditLabelNotes.Location = new System.Drawing.Point(10, 6);
-            this.DataEditLabelNotes.Name = "DataEditLabelNotes";
-            this.DataEditLabelNotes.Size = new System.Drawing.Size(79, 25);
-            this.DataEditLabelNotes.TabIndex = 30;
-            this.DataEditLabelNotes.Text = "Notes:";
-            // 
-            // DataEditAdvancedRichTextBoxNotes
-            // 
-            this.DataEditAdvancedRichTextBoxNotes.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAdvancedRichTextBoxNotes.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedRichTextBoxNotes.ForeColorFocus = System.Drawing.Color.Black;
-            this.DataEditAdvancedRichTextBoxNotes.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedRichTextBoxNotes.Location = new System.Drawing.Point(10, 34);
-            this.DataEditAdvancedRichTextBoxNotes.Name = "DataEditAdvancedRichTextBoxNotes";
-            this.DataEditAdvancedRichTextBoxNotes.Size = new System.Drawing.Size(656, 266);
-            this.DataEditAdvancedRichTextBoxNotes.TabIndex = 31;
-            this.DataEditAdvancedRichTextBoxNotes.TextValue = "";
-            // 
-            // AddPanelMain
-            // 
-            this.AddPanelMain.BackColor = System.Drawing.Color.White;
-            this.AddPanelMain.Controls.Add(this.AddTableLayoutPanelMain);
-            this.AddPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.AddPanelMain.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelMain.Name = "AddPanelMain";
-            this.AddPanelMain.Size = new System.Drawing.Size(1615, 998);
-            this.AddPanelMain.TabIndex = 2;
-            // 
-            // AddTableLayoutPanelMain
-            // 
-            this.AddTableLayoutPanelMain.ColumnCount = 4;
-            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1000F));
-            this.AddTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.AddTableLayoutPanelMain.Controls.Add(this.AddPictureBoxLeft, 1, 0);
-            this.AddTableLayoutPanelMain.Controls.Add(this.AddPictureBoxRight, 3, 0);
-            this.AddTableLayoutPanelMain.Controls.Add(this.AddPanelCenter, 2, 0);
-            this.AddTableLayoutPanelMain.Controls.Add(this.AddPanelSeperator, 0, 0);
-            this.AddTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
-            this.AddTableLayoutPanelMain.Name = "AddTableLayoutPanelMain";
-            this.AddTableLayoutPanelMain.RowCount = 1;
-            this.AddTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.AddTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 998F));
-            this.AddTableLayoutPanelMain.Size = new System.Drawing.Size(1615, 998);
-            this.AddTableLayoutPanelMain.TabIndex = 0;
-            // 
             // AddPictureBoxLeft
             // 
             this.AddPictureBoxLeft.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -3670,17 +3526,6 @@
             this.AddPictureBoxRight.TabIndex = 1;
             this.AddPictureBoxRight.TabStop = false;
             this.AddPictureBoxRight.MouseEnter += new System.EventHandler(this.AddFlowLayoutPanelCenter_MouseEnter);
-            // 
-            // AddPanelCenter
-            // 
-            this.AddPanelCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.AddPanelCenter.Controls.Add(this.AddTableLayoutPanelCenter);
-            this.AddPanelCenter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelCenter.Location = new System.Drawing.Point(312, 0);
-            this.AddPanelCenter.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelCenter.Name = "AddPanelCenter";
-            this.AddPanelCenter.Size = new System.Drawing.Size(1000, 998);
-            this.AddPanelCenter.TabIndex = 2;
             // 
             // AddTableLayoutPanelCenter
             // 
@@ -4102,58 +3947,76 @@
             this.AddPanelAdvancedImageButtonSave.Size = new System.Drawing.Size(72, 72);
             this.AddPanelAdvancedImageButtonSave.TabIndex = 0;
             // 
-            // AddPanelSeperator
+            // MenuSyncPictureBox
             // 
-            this.AddPanelSeperator.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.AddPanelSeperator.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AddPanelSeperator.Location = new System.Drawing.Point(0, 0);
-            this.AddPanelSeperator.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelSeperator.Name = "AddPanelSeperator";
-            this.AddPanelSeperator.Size = new System.Drawing.Size(10, 998);
-            this.AddPanelSeperator.TabIndex = 3;
+            this.MenuSyncPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("MenuSyncPictureBox.Image")));
+            this.MenuSyncPictureBox.Location = new System.Drawing.Point(84, 40);
+            this.MenuSyncPictureBox.Name = "MenuSyncPictureBox";
+            this.MenuSyncPictureBox.Size = new System.Drawing.Size(96, 96);
+            this.MenuSyncPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.MenuSyncPictureBox.TabIndex = 4;
+            this.MenuSyncPictureBox.TabStop = false;
+            this.MenuSyncPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MenuSyncPictureBox_Paint);
             // 
-            // WindowHeaderLabelLogo
+            // MenuMenuEntryHome
             // 
-            this.WindowHeaderLabelLogo.AutoSize = true;
-            this.WindowHeaderLabelLogo.Font = new System.Drawing.Font("Century Gothic", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.WindowHeaderLabelLogo.ForeColor = System.Drawing.Color.White;
-            this.WindowHeaderLabelLogo.Location = new System.Drawing.Point(13, 14);
-            this.WindowHeaderLabelLogo.Name = "WindowHeaderLabelLogo";
-            this.WindowHeaderLabelLogo.Size = new System.Drawing.Size(124, 38);
-            this.WindowHeaderLabelLogo.TabIndex = 9;
-            this.WindowHeaderLabelLogo.Text = "pmdbs";
-            this.WindowHeaderLabelLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowHeaderLabelLogo_MouseDown);
+            this.MenuMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
+            this.MenuMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryHome.ColorHover = System.Drawing.Color.White;
+            this.MenuMenuEntryHome.ColorNormal = System.Drawing.Color.White;
+            this.MenuMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MenuMenuEntryHome.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuMenuEntryHome.ImageHover = global::pmdbs.Properties.Resources.home_normal_v2;
+            this.MenuMenuEntryHome.ImageNormal = global::pmdbs.Properties.Resources.home_normal_v2;
+            this.MenuMenuEntryHome.Location = new System.Drawing.Point(13, 0);
+            this.MenuMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryHome.Name = "MenuMenuEntryHome";
+            this.MenuMenuEntryHome.Size = new System.Drawing.Size(255, 74);
+            this.MenuMenuEntryHome.TabIndex = 5;
+            this.MenuMenuEntryHome.TextTitle = "Home";
             // 
-            // WindowHeaderPanel
+            // MenuMenuEntryPasswords
             // 
-            this.WindowHeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.WindowHeaderPanel.Controls.Add(this.WindowHeaderTableLayoutPanel);
-            this.WindowHeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.WindowHeaderPanel.Location = new System.Drawing.Point(0, 0);
-            this.WindowHeaderPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.WindowHeaderPanel.Name = "WindowHeaderPanel";
-            this.WindowHeaderPanel.Size = new System.Drawing.Size(1880, 114);
-            this.WindowHeaderPanel.TabIndex = 0;
-            this.WindowHeaderPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowHeaderPanel_MouseDown);
+            this.MenuMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
+            this.MenuMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
+            this.MenuMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
+            this.MenuMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MenuMenuEntryPasswords.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuMenuEntryPasswords.ImageHover = global::pmdbs.Properties.Resources.database;
+            this.MenuMenuEntryPasswords.ImageNormal = global::pmdbs.Properties.Resources.database;
+            this.MenuMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
+            this.MenuMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryPasswords.Name = "MenuMenuEntryPasswords";
+            this.MenuMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
+            this.MenuMenuEntryPasswords.TabIndex = 5;
+            this.MenuMenuEntryPasswords.TextTitle = "Passwords";
             // 
-            // WindowHeaderTableLayoutPanel
+            // MenuMenuEntrySettings
             // 
-            this.WindowHeaderTableLayoutPanel.ColumnCount = 3;
-            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 267F));
-            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1765F));
-            this.WindowHeaderTableLayoutPanel.Controls.Add(this.WindowPictureBoxIcon, 0, 0);
-            this.WindowHeaderTableLayoutPanel.Controls.Add(this.WindowsHeaderPanelSubRight, 2, 0);
-            this.WindowHeaderTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WindowHeaderTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.WindowHeaderTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.WindowHeaderTableLayoutPanel.Name = "WindowHeaderTableLayoutPanel";
-            this.WindowHeaderTableLayoutPanel.RowCount = 2;
-            this.WindowHeaderTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
-            this.WindowHeaderTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.WindowHeaderTableLayoutPanel.Size = new System.Drawing.Size(1880, 114);
-            this.WindowHeaderTableLayoutPanel.TabIndex = 0;
+            this.MenuMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
+            this.MenuMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntrySettings.ColorHover = System.Drawing.Color.White;
+            this.MenuMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
+            this.MenuMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MenuMenuEntrySettings.FontTitle = new System.Drawing.Font("Century Gothic", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuMenuEntrySettings.ImageHover = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.MenuMenuEntrySettings.ImageNormal = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.MenuMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
+            this.MenuMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntrySettings.Name = "MenuMenuEntrySettings";
+            this.MenuMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
+            this.MenuMenuEntrySettings.TabIndex = 5;
+            this.MenuMenuEntrySettings.TextTitle = "Settings";
             // 
             // WindowPictureBoxIcon
             // 
@@ -4167,61 +4030,6 @@
             this.WindowPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.WindowPictureBoxIcon.TabIndex = 10;
             this.WindowPictureBoxIcon.TabStop = false;
-            // 
-            // WindowsHeaderPanelSubRight
-            // 
-            this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterLabelSort);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterAdvancedComboBoxSort);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterEditFieldSearch);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.WindowsHeaderOvalPanelTitle);
-            this.WindowsHeaderPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WindowsHeaderPanelSubRight.Location = new System.Drawing.Point(277, 1);
-            this.WindowsHeaderPanelSubRight.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.WindowsHeaderPanelSubRight.Name = "WindowsHeaderPanelSubRight";
-            this.WindowsHeaderPanelSubRight.Size = new System.Drawing.Size(1765, 102);
-            this.WindowsHeaderPanelSubRight.TabIndex = 11;
-            // 
-            // FilterLabelSort
-            // 
-            this.FilterLabelSort.AutoSize = true;
-            this.FilterLabelSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterLabelSort.Location = new System.Drawing.Point(899, 12);
-            this.FilterLabelSort.Name = "FilterLabelSort";
-            this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
-            this.FilterLabelSort.TabIndex = 3;
-            this.FilterLabelSort.Text = "Sort by";
-            // 
-            // FilterAdvancedComboBoxSort
-            // 
-            this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.White;
-            this.FilterAdvancedComboBoxSort.BackgroundColor = System.Drawing.Color.White;
-            this.FilterAdvancedComboBoxSort.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.FilterAdvancedComboBoxSort.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.FilterAdvancedComboBoxSort.Font = new System.Drawing.Font("Century Gothic", 8F);
-            this.FilterAdvancedComboBoxSort.FormattingEnabled = true;
-            this.FilterAdvancedComboBoxSort.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.FilterAdvancedComboBoxSort.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.FilterAdvancedComboBoxSort.HoverItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(119)))), ((int)(((byte)(53)))));
-            this.FilterAdvancedComboBoxSort.HoverItemForeColor = System.Drawing.Color.White;
-            this.FilterAdvancedComboBoxSort.ItemFont = new System.Drawing.Font("Century Gothic", 8F);
-            this.FilterAdvancedComboBoxSort.ItemHeight = 25;
-            this.FilterAdvancedComboBoxSort.Items.AddRange(new object[] {
-            "Hostname... (A-Z)",
-            "Hostname... (Z-A)",
-            "Date... (oldest first)",
-            "Date... (newest first)"});
-            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(903, 60);
-            this.FilterAdvancedComboBoxSort.Name = "FilterAdvancedComboBoxSort";
-            this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.NormalItemForeColor = System.Drawing.Color.Black;
-            this.FilterAdvancedComboBoxSort.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.Size = new System.Drawing.Size(212, 31);
-            this.FilterAdvancedComboBoxSort.TabIndex = 4;
-            this.FilterAdvancedComboBoxSort.UseSelectable = true;
-            this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
             // 
             // FilterEditFieldSearch
             // 
@@ -4248,18 +4056,6 @@
             this.FilterEditFieldSearch.UseDefaultValue = true;
             this.FilterEditFieldSearch.UseSystemPasswordChar = false;
             // 
-            // WindowsHeaderOvalPanelTitle
-            // 
-            this.WindowsHeaderOvalPanelTitle.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderOvalPanelTitle.BackgroundColor = System.Drawing.Color.White;
-            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderPictureBoxIcon);
-            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderLabelTitle);
-            this.WindowsHeaderOvalPanelTitle.EllipseColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowsHeaderOvalPanelTitle.Location = new System.Drawing.Point(14, 16);
-            this.WindowsHeaderOvalPanelTitle.Name = "WindowsHeaderOvalPanelTitle";
-            this.WindowsHeaderOvalPanelTitle.Size = new System.Drawing.Size(290, 72);
-            this.WindowsHeaderOvalPanelTitle.TabIndex = 2;
-            // 
             // WindowHeaderPictureBoxIcon
             // 
             this.WindowHeaderPictureBoxIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
@@ -4270,40 +4066,6 @@
             this.WindowHeaderPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.WindowHeaderPictureBoxIcon.TabIndex = 23;
             this.WindowHeaderPictureBoxIcon.TabStop = false;
-            // 
-            // WindowHeaderLabelTitle
-            // 
-            this.WindowHeaderLabelTitle.AutoSize = true;
-            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Century Gothic", 14F);
-            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
-            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(87, 19);
-            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
-            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(153, 34);
-            this.WindowHeaderLabelTitle.TabIndex = 22;
-            this.WindowHeaderLabelTitle.Text = "Passwords";
-            // 
-            // PanelMain
-            // 
-            this.PanelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.PanelMain.Controls.Add(this.DataPanelMain);
-            this.PanelMain.Controls.Add(this.MenuPanel);
-            this.PanelMain.Controls.Add(this.WindowHeaderPanel);
-            this.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelMain.Location = new System.Drawing.Point(20, 60);
-            this.PanelMain.Name = "PanelMain";
-            this.PanelMain.Size = new System.Drawing.Size(1880, 1112);
-            this.PanelMain.TabIndex = 10;
-            // 
-            // PanelLogin
-            // 
-            this.PanelLogin.Controls.Add(this.LoginTableLayoutPanelMain);
-            this.PanelLogin.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelLogin.Location = new System.Drawing.Point(20, 60);
-            this.PanelLogin.Margin = new System.Windows.Forms.Padding(0);
-            this.PanelLogin.Name = "PanelLogin";
-            this.PanelLogin.Size = new System.Drawing.Size(1880, 1112);
-            this.PanelLogin.TabIndex = 11;
             // 
             // LoginTableLayoutPanelMain
             // 
@@ -4936,7 +4698,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanelSync.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).EndInit();
             this.MenuFlowLayoutPanel.ResumeLayout(false);
             this.MenuPanelHome.ResumeLayout(false);
             this.MenuPanelPasswords.ResumeLayout(false);
@@ -4955,23 +4716,55 @@
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
-            this.flowLayoutPanel2.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel7.ResumeLayout(false);
             this.panel7.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.panel8.ResumeLayout(false);
             this.panel8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.SettingsTableLayoutPanelMain.ResumeLayout(false);
+            this.SettingsPanelCenter.ResumeLayout(false);
+            this.DataTableLayoutPanelMain.ResumeLayout(false);
+            this.DataTableLayoutPanelSubLeft.ResumeLayout(false);
+            this.DataTableLayoutPanelFooter.ResumeLayout(false);
+            this.DataPanelFooterRight.ResumeLayout(false);
+            this.DataPanelFooterLeft.ResumeLayout(false);
+            this.DataTableLayoutPanelSubRight.ResumeLayout(false);
+            this.DataPanelSubRightMain.ResumeLayout(false);
+            this.DataPanelNoSel.ResumeLayout(false);
+            this.DataPanelNoSel.PerformLayout();
+            this.DataFilterResultsPanel.ResumeLayout(false);
+            this.DataFilterResultsPanel.PerformLayout();
+            this.DataFilterPanelNotFound.ResumeLayout(false);
+            this.DataFilterPanelNotFound.PerformLayout();
+            this.DataPanelDetails.ResumeLayout(false);
+            this.DataPanelDetails.PerformLayout();
+            this.DataFlowLayoutPanelEdit.ResumeLayout(false);
+            this.DataEditPanelTop.ResumeLayout(false);
+            this.DataEditPanelTop.PerformLayout();
+            this.DataEditPanelPasswordGenerator.ResumeLayout(false);
+            this.DataEditPanelPasswordGenerator.PerformLayout();
+            this.DataEditPanelBottom.ResumeLayout(false);
+            this.DataEditPanelBottom.PerformLayout();
+            this.AddPanelMain.ResumeLayout(false);
+            this.AddTableLayoutPanelMain.ResumeLayout(false);
+            this.AddPanelCenter.ResumeLayout(false);
+            this.WindowHeaderPanel.ResumeLayout(false);
+            this.WindowHeaderTableLayoutPanel.ResumeLayout(false);
+            this.WindowsHeaderPanelSubRight.ResumeLayout(false);
+            this.WindowsHeaderPanelSubRight.PerformLayout();
+            this.WindowsHeaderOvalPanelTitle.ResumeLayout(false);
+            this.WindowsHeaderOvalPanelTitle.PerformLayout();
+            this.PanelMain.ResumeLayout(false);
+            this.PanelLogin.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxRight)).EndInit();
-            this.SettingsPanelCenter.ResumeLayout(false);
             this.SettingsTableLayoutPanelCenter.ResumeLayout(false);
             this.SettingsPanelContentMain.ResumeLayout(false);
             this.SettingsFlowLayoutPanelOnline.ResumeLayout(false);
@@ -5006,38 +4799,13 @@
             this.SettingsFlowLayoutPanelLogin.ResumeLayout(false);
             this.SettingsPanelLoginContent.ResumeLayout(false);
             this.SettingsPanelLoginContent.PerformLayout();
-            this.DataTableLayoutPanelMain.ResumeLayout(false);
-            this.DataTableLayoutPanelSubLeft.ResumeLayout(false);
-            this.DataTableLayoutPanelFooter.ResumeLayout(false);
-            this.DataPanelFooterRight.ResumeLayout(false);
-            this.DataPanelFooterLeft.ResumeLayout(false);
-            this.DataTableLayoutPanelSubRight.ResumeLayout(false);
-            this.DataPanelSubRightMain.ResumeLayout(false);
-            this.DataPanelNoSel.ResumeLayout(false);
-            this.DataPanelNoSel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataNoSelPictureBox)).EndInit();
-            this.DataFilterResultsPanel.ResumeLayout(false);
-            this.DataFilterResultsPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataFilterResultsPictureBox)).EndInit();
-            this.DataFilterPanelNotFound.ResumeLayout(false);
-            this.DataFilterPanelNotFound.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataFilterPictureBox)).EndInit();
-            this.DataPanelDetails.ResumeLayout(false);
-            this.DataPanelDetails.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataPictureBoxDetailsLogo)).EndInit();
-            this.DataFlowLayoutPanelEdit.ResumeLayout(false);
-            this.DataEditPanelTop.ResumeLayout(false);
-            this.DataEditPanelTop.PerformLayout();
-            this.DataEditPanelPasswordGenerator.ResumeLayout(false);
-            this.DataEditPanelPasswordGenerator.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataEditPictureBoxLogo)).EndInit();
-            this.DataEditPanelBottom.ResumeLayout(false);
-            this.DataEditPanelBottom.PerformLayout();
-            this.AddPanelMain.ResumeLayout(false);
-            this.AddTableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxLeft)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxRight)).EndInit();
-            this.AddPanelCenter.ResumeLayout(false);
             this.AddTableLayoutPanelCenter.ResumeLayout(false);
             this.AddFlowLayoutPanelCenter.ResumeLayout(false);
             this.AddPanelContent.ResumeLayout(false);
@@ -5051,16 +4819,9 @@
             this.AddPanelCheckIconContent.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AddPictureBoxCheckIconIcon)).EndInit();
             this.AddPanelBottomMenu.ResumeLayout(false);
-            this.WindowHeaderPanel.ResumeLayout(false);
-            this.WindowHeaderTableLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).EndInit();
-            this.WindowsHeaderPanelSubRight.ResumeLayout(false);
-            this.WindowsHeaderPanelSubRight.PerformLayout();
-            this.WindowsHeaderOvalPanelTitle.ResumeLayout(false);
-            this.WindowsHeaderOvalPanelTitle.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).EndInit();
-            this.PanelMain.ResumeLayout(false);
-            this.PanelLogin.ResumeLayout(false);
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).EndInit();
             this.LoginPictureBoxMain.ResumeLayout(false);
@@ -5384,28 +5145,13 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private LunaForms.LunaSmallCard lunaSmallCard8;
-        private LunaForms.LunaSeperator lunaSeperator7;
-        private LunaForms.LunaSmallCard lunaSmallCard9;
-        private LunaForms.LunaSeperator lunaSeperator8;
-        private LunaForms.LunaSmallCard lunaSmallCard10;
-        private LunaForms.LunaSeperator lunaSeperator9;
-        private LunaForms.LunaSmallCard lunaSmallCard11;
-        private LunaForms.LunaSeperator lunaSeperator10;
-        private LunaForms.LunaSmallCard lunaSmallCard12;
-        private LunaForms.LunaSeperator lunaSeperator11;
-        private LunaForms.LunaSmallCard lunaSmallCard13;
-        private LunaForms.LunaSeperator lunaSeperator12;
-        private LunaForms.LunaSmallCard lunaSmallCard14;
-        private LunaForms.LunaSeperator lunaSeperator13;
-        private LunaForms.LunaSmallCard lunaSmallCard15;
         private LunaForms.LunaSmallCardList lunaSmallCardList1;
         private System.Windows.Forms.Label label17;
         private LunaForms.LunaSmallCardList lunaSmallCardList2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
+        private LunaForms.LunaSmallCardList lunaSmallCardList3;
     }
 }
 

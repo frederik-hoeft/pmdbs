@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -28,32 +29,24 @@ namespace pmdbs
             public string url = string.Empty, format = string.Empty, error = string.Empty, sha1sum = string.Empty;
             public int height = -1, width = -1;
         }
-        private static string _get(string uri)
-        {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            using (Stream stream = response.GetResponseStream())
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
-        }
+        
         /// <summary>
         /// Downloads the favicon of the given url.
         /// </summary>
         /// <param name="url">The url to get the favicon for.</param>
         /// <returns>The best favicon available.</returns>
-        public static string Get(string url)
+        public static string Get(string url, bool checkUrl)
         {
-            bool urlIsValid = Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-            if (!urlIsValid)
+            if (checkUrl)
             {
-                throw new ArgumentException("Invalid url.");
+                bool urlIsValid = Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                if (!urlIsValid)
+                {
+                    throw new ArgumentException("Invalid url.");
+                }
             }
             string uri = "https://besticon-demo.herokuapp.com/allicons.json?url=" + url;
-            string HtmlCode = _get(uri);
+            string HtmlCode = HttpHelper.Get(uri);
             GetResponse response = JsonConvert.DeserializeObject<GetResponse>(HtmlCode);
             Favicon[] favicons = response.icons;
             string base64Image = string.Empty;
@@ -61,7 +54,6 @@ namespace pmdbs
             foreach (Favicon icon in favicons)
             {
                 string iconLink = icon.url;
-                string imageFileExtension = iconLink.Split('.').Last().Split('?')[0];
                 ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
                 SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
                 
@@ -102,6 +94,79 @@ namespace pmdbs
                 throw new Exception("No Icon found");
             }
             return base64Image;
+        }
+
+        public static Image GetFromUrl(string url)
+        {
+            Image image = new Bitmap(1,1);
+            bool successful = false;
+            ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+            //SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
+
+            //for (int i = 0; i < protocolTypes.Length; i++)
+            //{
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
+                    {
+                        Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
+                        bmpIcon = (Bitmap)bmpIcon.GetThumbnailImage(350, 350, null, new IntPtr());
+                        image = bmpIcon;
+                    }
+                    successful = true;
+                    //break;
+                }
+                catch { }
+            //}
+            if (successful)
+            {
+                return image;
+            }
+            return null;
+        }
+
+        public static unsafe bool IsWhiteOnly(Image image)
+        {
+            using (Bitmap bmp = new Bitmap(image.Width, image.Height, PixelFormat.Format32bppArgb))
+            {
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.DrawImage(image, 0, 0);
+                }
+
+                BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
+
+                int* pt = (int*)data.Scan0;
+                bool res = true;
+                for (int i = 0; i < data.Height * data.Width; i++)
+                {
+                    Color color = Color.FromArgb(pt[i]);
+
+                    if (color.A == 255 && (color.R < 200 || color.G < 200 || color.B < 200))
+                    {
+                        res = false;
+                        break;
+                    }
+                }
+
+                bmp.UnlockBits(data);
+
+                return res;
+            }
+        }
+
+        public static Image RemoveTransparency(Bitmap bmp, Color newColor)
+        {
+            Bitmap target = new Bitmap(bmp.Size.Width, bmp.Size.Height);
+            Graphics g = Graphics.FromImage(target);
+
+            g.Clear(newColor);
+            g.CompositingMode = CompositingMode.SourceOver;
+            g.DrawImage(bmp, 0, 0);
+
+            return target;
         }
 
         private static bool ValidateRemoteCertificate(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors error)
