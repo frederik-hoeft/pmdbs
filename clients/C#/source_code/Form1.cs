@@ -231,7 +231,7 @@ namespace pmdbs
             #endregion
 
             #endregion
-            lunaSmallCardList1.OnCardClicked += card_click;
+            lunaItemList1.LunaItemClicked += card_click;
             lunaSmallCardList3.OnCardClicked += card_click2;
         }
 
@@ -1844,13 +1844,13 @@ namespace pmdbs
         private int t = 0;
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            lunaSmallCardList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
+            lunaItemList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
             t++;
         }
 
         private void card_click(object sender, EventArgs e)
         {
-            LunaSmallCardItem item = (LunaSmallCardItem)sender;
+            LunaItem item = (LunaItem)sender;
             CustomException.ThrowNew.NotImplementedException("item[" + item.Id.ToString() + "]");
         }
         #endregion

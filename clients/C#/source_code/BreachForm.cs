@@ -1,4 +1,5 @@
-﻿using System;
+﻿using pmdbs.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,12 +22,29 @@ namespace pmdbs
             this.metroScrollBar1.LargeChange = metroScrollBar1.Maximum / metroScrollBar1.Height + this.flowLayoutPanel1.Height;
             this.metroScrollBar1.SmallChange = 15;
             this.metroScrollBar1.Value = Math.Abs(this.flowLayoutPanel1.AutoScrollPosition.Y);
+            lunaItemList1.LunaItemClicked += card_click;
+        }
+        private int a = 0;
+        private void label5_Click(object sender, EventArgs e)
+        {
+            lunaItemList1.Add("Test item", Resources.breach, "Infotest", a.ToString(), a);
+            a++;
+        }
+        private void card_click(object sender, EventArgs e)
+        {
+            LunaItem item = (LunaItem)sender;
+            CustomException.ThrowNew.NotImplementedException("item[" + item.Index.ToString() + "]");
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+            lunaItemList1.Refresh();
         }
 
         private void metroScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             flowLayoutPanel1.AutoScrollPosition = new Point(0, metroScrollBar1.Value);
-            // metroScrollBar1.Invalidate();
+            metroScrollBar1.Invalidate();
             Application.DoEvents();
         }
     }
