@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BreachForm));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.lunaItemList1 = new pmdbs.LunaItemList();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -40,18 +40,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.windowButtonClose = new LunaForms.WindowButton();
-            this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.lunaItem2 = new pmdbs.LunaItem();
-            this.lunaItem3 = new pmdbs.LunaItem();
-            this.lunaItem5 = new pmdbs.LunaItem();
-            this.lunaItem1 = new pmdbs.LunaItem();
-            this.lunaItem4 = new pmdbs.LunaItem();
-            this.lunaItemList1 = new pmdbs.LunaItemList();
-            this.metroScrollBar1 = new MetroFramework.Controls.MetroScrollBar();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
+            this.windowButtonClose = new LunaForms.WindowButton();
+            this.windowButtonMinimize = new LunaForms.WindowButton();
             this.panel1.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -59,8 +53,6 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.metroScrollBar1);
-            this.panel1.Controls.Add(this.flowLayoutPanel1);
             this.panel1.Controls.Add(this.lunaItemList1);
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.label8);
@@ -78,18 +70,32 @@
             this.panel1.Size = new System.Drawing.Size(1160, 920);
             this.panel1.TabIndex = 0;
             // 
-            // flowLayoutPanel1
+            // lunaItemList1
             // 
-            this.flowLayoutPanel1.AutoScroll = true;
-            this.flowLayoutPanel1.Controls.Add(this.lunaItem2);
-            this.flowLayoutPanel1.Controls.Add(this.lunaItem3);
-            this.flowLayoutPanel1.Controls.Add(this.lunaItem5);
-            this.flowLayoutPanel1.Controls.Add(this.lunaItem1);
-            this.flowLayoutPanel1.Controls.Add(this.lunaItem4);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(352, 262);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 247);
-            this.flowLayoutPanel1.TabIndex = 13;
+            this.lunaItemList1.ImageLocation = new System.Drawing.Point(1, 1);
+            this.lunaItemList1.IsScrollable = true;
+            this.lunaItemList1.Location = new System.Drawing.Point(29, 557);
+            this.lunaItemList1.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lunaItemList1.LunaItemBackColorNormal = System.Drawing.Color.White;
+            this.lunaItemList1.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lunaItemList1.LunaItemForeColorHeader = System.Drawing.Color.Black;
+            this.lunaItemList1.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
+            this.lunaItemList1.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaItemList1.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lunaItemList1.LunaItemHeader = "Item";
+            this.lunaItemList1.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
+            this.lunaItemList1.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
+            this.lunaItemList1.LunaItemShowInfo = false;
+            this.lunaItemList1.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
+            this.lunaItemList1.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.lunaItemList1.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.lunaItemList1.Margin = new System.Windows.Forms.Padding(0);
+            this.lunaItemList1.Name = "lunaItemList1";
+            this.lunaItemList1.ScrollBarMargin = 30;
+            this.lunaItemList1.SeperatorVerticalPadding = 6;
+            this.lunaItemList1.ShowBorderOnScrollBarShown = true;
+            this.lunaItemList1.Size = new System.Drawing.Size(500, 332);
+            this.lunaItemList1.TabIndex = 11;
             // 
             // label7
             // 
@@ -98,10 +104,9 @@
             this.label7.Location = new System.Drawing.Point(23, 435);
             this.label7.MaximumSize = new System.Drawing.Size(500, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(199, 54);
+            this.label7.Size = new System.Drawing.Size(217, 54);
             this.label7.TabIndex = 10;
-            this.label7.Text = "14936670";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+            this.label7.Text = "14.936.670";
             // 
             // label8
             // 
@@ -142,7 +147,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 15F);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(619, 262);
+            this.label4.Location = new System.Drawing.Point(633, 262);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 41);
             this.label4.TabIndex = 4;
@@ -152,12 +157,12 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label3.Location = new System.Drawing.Point(620, 317);
+            this.label3.Location = new System.Drawing.Point(634, 315);
             this.label3.MaximumSize = new System.Drawing.Size(500, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(498, 384);
+            this.label3.Size = new System.Drawing.Size(290, 32);
             this.label3.TabIndex = 3;
-            this.label3.Text = resources.GetString("label3.Text");
+            this.label3.Text = "#DYNAMIC_DESCRIPTION";
             // 
             // label2
             // 
@@ -184,12 +189,37 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.panel2.Controls.Add(this.lunaItem2);
             this.panel2.Controls.Add(this.pictureBox1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1160, 150);
             this.panel2.TabIndex = 0;
+            // 
+            // lunaItem2
+            // 
+            this.lunaItem2.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.lunaItem2.BackColorImage = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.lunaItem2.BackColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.lunaItem2.ForeColorHeader = System.Drawing.Color.White;
+            this.lunaItem2.ForeColorHeaderHover = System.Drawing.Color.White;
+            this.lunaItem2.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaItem2.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaItem2.Header = "Verified";
+            this.lunaItem2.HeaderLocation = new System.Drawing.Point(70, 13);
+            this.lunaItem2.Id = "-1";
+            this.lunaItem2.Image = global::pmdbs.Properties.Resources.confirmed2;
+            this.lunaItem2.ImageLocation = new System.Drawing.Point(1, 4);
+            this.lunaItem2.Index = -1;
+            this.lunaItem2.InfoLocation = new System.Drawing.Point(72, 35);
+            this.lunaItem2.Location = new System.Drawing.Point(936, 84);
+            this.lunaItem2.Margin = new System.Windows.Forms.Padding(0);
+            this.lunaItem2.Name = "lunaItem2";
+            this.lunaItem2.ShowBorder = false;
+            this.lunaItem2.Size = new System.Drawing.Size(224, 66);
+            this.lunaItem2.TabIndex = 13;
+            this.lunaItem2.VerticalPadding = 6;
             // 
             // pictureBox1
             // 
@@ -200,6 +230,17 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            // 
+            // WindowHeaderLabelLogo
+            // 
+            this.WindowHeaderLabelLogo.AutoSize = true;
+            this.WindowHeaderLabelLogo.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.WindowHeaderLabelLogo.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelLogo.Location = new System.Drawing.Point(13, 11);
+            this.WindowHeaderLabelLogo.Name = "WindowHeaderLabelLogo";
+            this.WindowHeaderLabelLogo.Size = new System.Drawing.Size(288, 45);
+            this.WindowHeaderLabelLogo.TabIndex = 14;
+            this.WindowHeaderLabelLogo.Text = "pmdbs breach info";
             // 
             // windowButtonClose
             // 
@@ -213,188 +254,39 @@
             this.windowButtonClose.Name = "windowButtonClose";
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 13;
+            this.windowButtonClose.OnClickEvent += new System.EventHandler(this.windowButtonClose_OnClickEvent);
             // 
-            // WindowHeaderLabelLogo
+            // windowButtonMinimize
             // 
-            this.WindowHeaderLabelLogo.AutoSize = true;
-            this.WindowHeaderLabelLogo.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.WindowHeaderLabelLogo.ForeColor = System.Drawing.Color.White;
-            this.WindowHeaderLabelLogo.Location = new System.Drawing.Point(13, 11);
-            this.WindowHeaderLabelLogo.Name = "WindowHeaderLabelLogo";
-            this.WindowHeaderLabelLogo.Size = new System.Drawing.Size(288, 45);
-            this.WindowHeaderLabelLogo.TabIndex = 14;
-            this.WindowHeaderLabelLogo.Text = "pmdbs breach info";
-            // 
-            // lunaItem2
-            // 
-            this.lunaItem2.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItem2.BackColorImage = System.Drawing.Color.Orange;
-            this.lunaItem2.BackColorNormal = System.Drawing.Color.White;
-            this.lunaItem2.ForeColorHeader = System.Drawing.Color.Orange;
-            this.lunaItem2.ForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.lunaItem2.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItem2.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItem2.Header = "LunaSmallCard";
-            this.lunaItem2.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItem2.Id = "-1";
-            this.lunaItem2.Image = null;
-            this.lunaItem2.ImageLocation = new System.Drawing.Point(1, 4);
-            this.lunaItem2.Index = -1;
-            this.lunaItem2.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItem2.Location = new System.Drawing.Point(0, 0);
-            this.lunaItem2.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItem2.Name = "lunaItem2";
-            this.lunaItem2.Size = new System.Drawing.Size(174, 66);
-            this.lunaItem2.TabIndex = 1;
-            this.lunaItem2.VerticalPadding = 6;
-            // 
-            // lunaItem3
-            // 
-            this.lunaItem3.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItem3.BackColorImage = System.Drawing.Color.Orange;
-            this.lunaItem3.BackColorNormal = System.Drawing.Color.White;
-            this.lunaItem3.ForeColorHeader = System.Drawing.Color.Orange;
-            this.lunaItem3.ForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.lunaItem3.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItem3.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItem3.Header = "LunaSmallCard";
-            this.lunaItem3.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItem3.Id = "-1";
-            this.lunaItem3.Image = null;
-            this.lunaItem3.ImageLocation = new System.Drawing.Point(1, 4);
-            this.lunaItem3.Index = -1;
-            this.lunaItem3.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItem3.Location = new System.Drawing.Point(0, 66);
-            this.lunaItem3.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItem3.Name = "lunaItem3";
-            this.lunaItem3.Size = new System.Drawing.Size(174, 66);
-            this.lunaItem3.TabIndex = 2;
-            this.lunaItem3.VerticalPadding = 6;
-            // 
-            // lunaItem5
-            // 
-            this.lunaItem5.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItem5.BackColorImage = System.Drawing.Color.Orange;
-            this.lunaItem5.BackColorNormal = System.Drawing.Color.White;
-            this.lunaItem5.ForeColorHeader = System.Drawing.Color.Orange;
-            this.lunaItem5.ForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.lunaItem5.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItem5.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItem5.Header = "LunaSmallCard";
-            this.lunaItem5.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItem5.Id = "-1";
-            this.lunaItem5.Image = null;
-            this.lunaItem5.ImageLocation = new System.Drawing.Point(1, 4);
-            this.lunaItem5.Index = -1;
-            this.lunaItem5.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItem5.Location = new System.Drawing.Point(0, 132);
-            this.lunaItem5.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItem5.Name = "lunaItem5";
-            this.lunaItem5.Size = new System.Drawing.Size(174, 66);
-            this.lunaItem5.TabIndex = 4;
-            this.lunaItem5.VerticalPadding = 6;
-            // 
-            // lunaItem1
-            // 
-            this.lunaItem1.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItem1.BackColorImage = System.Drawing.Color.Orange;
-            this.lunaItem1.BackColorNormal = System.Drawing.Color.White;
-            this.lunaItem1.ForeColorHeader = System.Drawing.Color.Orange;
-            this.lunaItem1.ForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.lunaItem1.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItem1.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItem1.Header = "LunaSmallCard";
-            this.lunaItem1.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItem1.Id = "-1";
-            this.lunaItem1.Image = null;
-            this.lunaItem1.ImageLocation = new System.Drawing.Point(1, 4);
-            this.lunaItem1.Index = -1;
-            this.lunaItem1.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItem1.Location = new System.Drawing.Point(0, 198);
-            this.lunaItem1.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItem1.Name = "lunaItem1";
-            this.lunaItem1.Size = new System.Drawing.Size(174, 66);
-            this.lunaItem1.TabIndex = 5;
-            this.lunaItem1.VerticalPadding = 6;
-            // 
-            // lunaItem4
-            // 
-            this.lunaItem4.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItem4.BackColorImage = System.Drawing.Color.Orange;
-            this.lunaItem4.BackColorNormal = System.Drawing.Color.White;
-            this.lunaItem4.ForeColorHeader = System.Drawing.Color.Orange;
-            this.lunaItem4.ForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.lunaItem4.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItem4.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItem4.Header = "LunaSmallCard";
-            this.lunaItem4.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItem4.Id = "-1";
-            this.lunaItem4.Image = null;
-            this.lunaItem4.ImageLocation = new System.Drawing.Point(1, 4);
-            this.lunaItem4.Index = -1;
-            this.lunaItem4.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItem4.Location = new System.Drawing.Point(0, 264);
-            this.lunaItem4.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItem4.Name = "lunaItem4";
-            this.lunaItem4.Size = new System.Drawing.Size(174, 66);
-            this.lunaItem4.TabIndex = 6;
-            this.lunaItem4.VerticalPadding = 6;
-            // 
-            // lunaItemList1
-            // 
-            this.lunaItemList1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lunaItemList1.ImageLocation = new System.Drawing.Point(1, 1);
-            this.lunaItemList1.IsScrollable = true;
-            this.lunaItemList1.Location = new System.Drawing.Point(32, 537);
-            this.lunaItemList1.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItemList1.LunaItemBackColorNormal = System.Drawing.Color.White;
-            this.lunaItemList1.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lunaItemList1.LunaItemForeColorHeader = System.Drawing.Color.Black;
-            this.lunaItemList1.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
-            this.lunaItemList1.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItemList1.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItemList1.LunaItemHeader = "Item";
-            this.lunaItemList1.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItemList1.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItemList1.LunaItemShowInfo = false;
-            this.lunaItemList1.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
-            this.lunaItemList1.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.lunaItemList1.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.lunaItemList1.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItemList1.Name = "lunaItemList1";
-            this.lunaItemList1.SeperatorVerticalPadding = 6;
-            this.lunaItemList1.Size = new System.Drawing.Size(271, 358);
-            this.lunaItemList1.TabIndex = 11;
-            // 
-            // metroScrollBar1
-            // 
-            this.metroScrollBar1.LargeChange = 10;
-            this.metroScrollBar1.Location = new System.Drawing.Point(570, 262);
-            this.metroScrollBar1.Maximum = 100;
-            this.metroScrollBar1.Minimum = 0;
-            this.metroScrollBar1.MouseWheelBarPartitions = 10;
-            this.metroScrollBar1.Name = "metroScrollBar1";
-            this.metroScrollBar1.Orientation = MetroFramework.Controls.MetroScrollOrientation.Vertical;
-            this.metroScrollBar1.ScrollbarSize = 10;
-            this.metroScrollBar1.Size = new System.Drawing.Size(10, 247);
-            this.metroScrollBar1.TabIndex = 14;
-            this.metroScrollBar1.UseSelectable = true;
-            this.metroScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.metroScrollBar1_Scroll);
+            this.windowButtonMinimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.windowButtonMinimize.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.windowButtonMinimize.BackgroundColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.windowButtonMinimize.BackgroundColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.windowButtonMinimize.ImageHover = ((System.Drawing.Image)(resources.GetObject("windowButtonMinimize.ImageHover")));
+            this.windowButtonMinimize.ImageNormal = ((System.Drawing.Image)(resources.GetObject("windowButtonMinimize.ImageNormal")));
+            this.windowButtonMinimize.Location = new System.Drawing.Point(1078, 7);
+            this.windowButtonMinimize.Name = "windowButtonMinimize";
+            this.windowButtonMinimize.Size = new System.Drawing.Size(60, 50);
+            this.windowButtonMinimize.TabIndex = 15;
+            this.windowButtonMinimize.OnClickEvent += new System.EventHandler(this.windowButtonMinimize_OnClickEvent);
             // 
             // BreachForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1200, 1000);
+            this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.panel1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "BreachForm";
+            this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -418,12 +310,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private LunaItemList lunaItemList1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private LunaForms.WindowButton windowButtonMinimize;
         private LunaItem lunaItem2;
-        private LunaItem lunaItem3;
-        private LunaItem lunaItem5;
-        private LunaItem lunaItem1;
-        private LunaItem lunaItem4;
-        private MetroFramework.Controls.MetroScrollBar metroScrollBar1;
     }
 }

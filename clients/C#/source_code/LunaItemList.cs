@@ -21,6 +21,7 @@ namespace pmdbs
         private List<LunaItem> _items = new List<LunaItem>();
         private List<Control> controls = new List<Control>();
         private int _seperatorVerticalPadding = 6;
+        private bool _showBorderOnScrollBarShown = false;
         private Color _backColor = Color.White;
         #endregion
         #region LunaItem
@@ -69,13 +70,7 @@ namespace pmdbs
             {
                 Size = new Size(200, 100);
             }
-            Point pt = new Point(this.flowLayoutPanel1.AutoScrollPosition.X, this.flowLayoutPanel1.AutoScrollPosition.Y);
-            this.lunaScrollBar1.Minimum = 0;
-            this.lunaScrollBar1.Maximum = this.flowLayoutPanel1.DisplayRectangle.Height;
-            this.lunaScrollBar1.LargeChange = lunaScrollBar1.Maximum / lunaScrollBar1.Height + this.flowLayoutPanel1.Height;
-            this.lunaScrollBar1.SmallChange = 15;
-            this.lunaScrollBar1.Value = Math.Abs(this.flowLayoutPanel1.AutoScrollPosition.Y);
-            LunaItemList_SizeChanged(this, null);
+            Controls_Changed();
         }
 
         #region Getters / Setters
@@ -278,20 +273,30 @@ namespace pmdbs
         #endregion
         #region LunaItemList
 
+        public bool ShowBorderOnScrollBarShown
+        {
+            get { return _showBorderOnScrollBarShown; }
+            set
+            {
+                _showBorderOnScrollBarShown = value;
+                Controls_Changed();
+            }
+        }
+
         public int ScrollBarMargin
         {
             get { return _scrollBarMargin; }
             set
             {
                 _scrollBarMargin = value;
-                LunaItemList_SizeChanged(this, null);
+                Controls_Changed();
             }
         }
 
         public override void Refresh()
         {
             base.Refresh();
-            LunaItemList_SizeChanged(this, null);
+            Controls_Changed();
         }
 
         public bool IsScrollable
@@ -355,11 +360,6 @@ namespace pmdbs
                 {
                     return;
                 }
-                if (!showScrollBar)
-                {
-                    showScrollBar = true;
-                    LunaItemList_SizeChanged(this, null);
-                }
             }
             if (_items.Count > 0)
             {
@@ -400,12 +400,8 @@ namespace pmdbs
                 Index = index
             };
             item.OnClickEvent += Control_clicked;
+            item.MouseEnter += LunaItem_MouseEnter;
             flowLayoutPanel1.Controls.Add(item);
-            if (showScrollBar)
-            {
-                lunaScrollBar1.Refresh();
-            }
-            LunaItemList_SizeChanged(this, null);
             controls.Add(item);
             _items.Add(item);
             item.Refresh();
@@ -425,11 +421,6 @@ namespace pmdbs
                 if (!_isScrollable)
                 {
                     return;
-                }
-                if (!showScrollBar)
-                {
-                    showScrollBar = true;
-                    LunaItemList_SizeChanged(this, null);
                 }
             }
             if (_items.Count > 0)
@@ -474,12 +465,8 @@ namespace pmdbs
             item.VerticalPadding = 0;
             item.VerticalPadding = _seperatorVerticalPadding;
             item.OnClickEvent += Control_clicked;
+            item.MouseEnter += LunaItem_MouseEnter;
             flowLayoutPanel1.Controls.Add(item);
-            if (showScrollBar)
-            {
-                lunaScrollBar1.Refresh();
-            }
-            LunaItemList_SizeChanged(this, null);
             _items.Add(item);
             item.Refresh();
         }
@@ -491,28 +478,26 @@ namespace pmdbs
         public void RemoveAt(int index)
         {
             _items.RemoveAt(index);
+            Control control = flowLayoutPanel1.Controls[index];
+            // REMOVE EVENTHANDLERS
+            if (control is LunaItem item)
+            {
+                item.MouseEnter -= LunaItem_MouseEnter;
+                item.OnClickEvent -= Control_clicked;
+            }
             flowLayoutPanel1.Controls.RemoveAt(index);
-            controls[index].Dispose();
+            control.Dispose();
             if (index < 0)
             {
+                control = flowLayoutPanel1.Controls[index - 1];
+                if (control is LunaItem)
+                {
+                    item = (LunaItem)control;
+                    item.MouseEnter -= LunaItem_MouseEnter;
+                    item.OnClickEvent -= Control_clicked;
+                }
                 flowLayoutPanel1.Controls.RemoveAt(index - 1);
-                controls[index - 1].Dispose();
-            }
-            if (checkCapacity())
-            {
-                if (!_isScrollable)
-                {
-                    return;
-                }
-                if (showScrollBar)
-                {
-                    showScrollBar = false;
-                    LunaItemList_SizeChanged(this, null);
-                }
-            }
-            if (showScrollBar)
-            {
-                lunaScrollBar1.Refresh();
+                control.Dispose();
             }
         }
 
@@ -523,28 +508,18 @@ namespace pmdbs
         {
             _items = new List<LunaItem>();
             int count = flowLayoutPanel1.Controls.Count;
-            for (int i = 0; i < count; i++)
+            flowLayoutPanel1.Controls.Clear();
+            for (int i = count; i <= 0; i--)
             {
-                flowLayoutPanel1.Controls.RemoveAt(i);
-                controls[i].Dispose();
+                Control control = controls[i];
+                if (control is LunaItem item)
+                {
+                    item.MouseEnter -= LunaItem_MouseEnter;
+                    item.OnClickEvent -= Control_clicked;
+                }
+                control.Dispose();
             }
             controls = new List<Control>();
-            if (checkCapacity())
-            {
-                if (!_isScrollable)
-                {
-                    return;
-                }
-                if (showScrollBar)
-                {
-                    showScrollBar = false;
-                    LunaItemList_SizeChanged(this, null);
-                }
-            }
-            if (showScrollBar)
-            {
-                lunaScrollBar1.Refresh();
-            }
         }
 
         /// <summary>
@@ -579,6 +554,7 @@ namespace pmdbs
             panel1.Height = Height;
             panel1.Width = showScrollBar ? Width - _scrollBarMargin : Width;
             lunaScrollBar1.Location = new Point(Width - lunaScrollBar1.ScrollbarSize - 1, 0);
+            lunaScrollBar1.Height = Height;
             Resize_Items();
         }
 
@@ -598,7 +574,6 @@ namespace pmdbs
                     controls[i].Width = flowLayoutPanel1.Width;
                 }
             }
-            ShowScrollBar(flowLayoutPanel1.Handle, (int)ScrollBarDirection.SB_HORZ, false);
         }
 
         private void lunaScrollBar1_Scroll(object sender, ScrollEventArgs e)
@@ -606,6 +581,66 @@ namespace pmdbs
             flowLayoutPanel1.AutoScrollPosition = new Point(0, lunaScrollBar1.Value);
             lunaScrollBar1.Invalidate();
             Application.DoEvents();
+        }
+
+        private void flowLayoutPanel1_Scroll(object sender, ScrollEventArgs e)
+        {
+            lunaScrollBar1.Value = flowLayoutPanel1.AutoScrollPosition.Y;
+        }
+
+        private void flowLayoutPanel1_ControlAdded(object sender, ControlEventArgs e)
+        {
+            Controls_Changed();
+        }
+
+        private void flowLayoutPanel1_ControlRemoved(object sender, ControlEventArgs e)
+        {
+            Controls_Changed();
+        }
+
+        private void LunaItem_MouseEnter(object sender, EventArgs e)
+        {
+            if (showScrollBar)
+            {
+                lunaScrollBar1.Focus();
+            }
+        }
+
+        private void Controls_Changed()
+        {
+            if (flowLayoutPanel1.VerticalScroll.Visible)
+            {
+                if (!showScrollBar)
+                {
+                    showScrollBar = true;
+                    LunaItemList_SizeChanged(this, null);
+                    if (_showBorderOnScrollBarShown)
+                    {
+                        BorderStyle = BorderStyle.FixedSingle;
+                    }
+                }
+            }
+            else
+            {
+                if (showScrollBar)
+                {
+                    showScrollBar = false;
+                    LunaItemList_SizeChanged(this, null);
+                    if (_showBorderOnScrollBarShown)
+                    {
+                        BorderStyle = BorderStyle.None;
+                    }
+                }
+            }
+            lunaScrollBar1.Maximum = flowLayoutPanel1.VerticalScroll.Maximum;
+            lunaScrollBar1.Value = flowLayoutPanel1.VerticalScroll.Value;
+            lunaScrollBar1.Minimum = flowLayoutPanel1.VerticalScroll.Minimum;
+            lunaScrollBar1.LargeChange = flowLayoutPanel1.VerticalScroll.LargeChange;
+            lunaScrollBar1.SmallChange = flowLayoutPanel1.VerticalScroll.SmallChange;
+            if (flowLayoutPanel1.HorizontalScroll.Visible)
+            {
+                ShowScrollBar(flowLayoutPanel1.Handle, (int)ScrollBarDirection.SB_HORZ, false);
+            }
         }
         #endregion
     }

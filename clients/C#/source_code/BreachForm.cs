@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,18 +17,37 @@ namespace pmdbs
         public BreachForm()
         {
             InitializeComponent();
-            Point pt = new Point(this.flowLayoutPanel1.AutoScrollPosition.X, this.flowLayoutPanel1.AutoScrollPosition.Y);
-            this.metroScrollBar1.Minimum = 0;
-            this.metroScrollBar1.Maximum = this.flowLayoutPanel1.DisplayRectangle.Height;
-            this.metroScrollBar1.LargeChange = metroScrollBar1.Maximum / metroScrollBar1.Height + this.flowLayoutPanel1.Height;
-            this.metroScrollBar1.SmallChange = 15;
-            this.metroScrollBar1.Value = Math.Abs(this.flowLayoutPanel1.AutoScrollPosition.Y);
-            lunaItemList1.LunaItemClicked += card_click;
         }
+
+        public BreachForm(string date, string title, Image image, string[] data, string description, int pwnedAccounts, bool isVerified)
+        {
+            InitializeComponent();
+            lunaItemList1.LunaItemClicked += card_click;
+            label3.Text = Regex.Replace(description, @"<[^>]*>", "").Replace("&quot;", "\"");
+            pictureBox1.Image = image;
+            label6.Text = date;
+            label1.Text = title;
+            label7.Text = string.Format("{0:#,0}", pwnedAccounts.ToString());
+            if (isVerified)
+            {
+                lunaItem2.Image = Resources.confirmed2;
+                lunaItem2.Header = "Verified";
+            }
+            else
+            {
+                lunaItem2.Image = Resources.breach;
+                lunaItem2.Header = "Unverified";
+            }
+            for (int i = 0; i < data.Length; i++)
+            {
+                lunaItemList1.Add(data[i], Resources.breach, i.ToString(), i);
+            }
+        }
+
         private int a = 0;
         private void label5_Click(object sender, EventArgs e)
         {
-            lunaItemList1.Add("Test item", Resources.breach, "Infotest", a.ToString(), a);
+            lunaItemList1.Add("Test item", Resources.breach, a.ToString(), a);
             a++;
         }
         private void card_click(object sender, EventArgs e)
@@ -36,16 +56,17 @@ namespace pmdbs
             CustomException.ThrowNew.NotImplementedException("item[" + item.Index.ToString() + "]");
         }
 
-        private void label7_Click(object sender, EventArgs e)
+        private void windowButtonClose_OnClickEvent(object sender, EventArgs e)
         {
-            lunaItemList1.Refresh();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+            this.Dispose();
+            // Application.Exit();
         }
 
-        private void metroScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        private void windowButtonMinimize_OnClickEvent(object sender, EventArgs e)
         {
-            flowLayoutPanel1.AutoScrollPosition = new Point(0, metroScrollBar1.Value);
-            metroScrollBar1.Invalidate();
-            Application.DoEvents();
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

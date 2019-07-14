@@ -1854,7 +1854,7 @@ namespace pmdbs
             CustomException.ThrowNew.NotImplementedException("item[" + item.Id.ToString() + "]");
         }
         #endregion
-
+        private List<Breaches.Breach> breaches;
         private async void label16_Click(object sender, EventArgs e)
         {
             lunaSmallCardList3.RemoveAll();
@@ -1868,7 +1868,6 @@ namespace pmdbs
                     domains.Add(domain);
                 }
             }
-            List<Breaches.Breach> breaches;
             try
             {
                 Task<List<Breaches.Breach>> GetBreaches = Breaches.FetchAllAsync();
@@ -1881,7 +1880,6 @@ namespace pmdbs
             }
             Task<List<string>> GetIgnoredBreaches = DataBaseHelper.GetDataAsList("SELECT B_hash FROM Tbl_breaches;",(int)ColumnCount.SingleColumn);
             List<string> ignoredBreaches = await GetIgnoredBreaches;
-            int index = 0;
             for (int i = 0; i < breaches.Count; i++)
             {
                 Breaches.Breach breach = breaches[i];
@@ -1894,8 +1892,7 @@ namespace pmdbs
                     string hash = CryptoHelper.SHA256HashBase64(breach.Name + breach.BreachDate);
                     if (!ignoredBreaches.Contains(hash))
                     {
-                        lunaSmallCardList3.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash, index);
-                        index++;
+                        lunaSmallCardList3.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash, i);
                     }
                 }
             }
@@ -1904,7 +1901,9 @@ namespace pmdbs
         private void card_click2(object sender, EventArgs e)
         {
             LunaSmallCardItem item = (LunaSmallCardItem)sender;
-            CustomException.ThrowNew.NotImplementedException("item[" + item.Id.ToString() + "]");
+            Breaches.Breach breach = breaches[item.Index];
+            Image icon = pmdbs.Icon.GetFromUrl(breach.LogoPath);
+            new BreachForm(breach.BreachDate,breach.Title, icon ?? Resources.breach, breach.DataClasses,breach.Description, breach.PwnCount,breach.IsVerified).ShowDialog();
         }
     }
 }
