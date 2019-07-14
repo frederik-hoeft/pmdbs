@@ -296,6 +296,7 @@ namespace pmdbs
         public override void Refresh()
         {
             base.Refresh();
+            LunaItemList_SizeChanged(this, null);
             Controls_Changed();
         }
 
@@ -412,6 +413,131 @@ namespace pmdbs
         /// </summary>
         /// <param name="header">The Header of the LunaItem.</param>
         /// <param name="image">The Image of the LunaItem.</param>
+        /// <param name="id">The ID of the LunaItem.</param>
+        public void Add(string header, Image image, string id, int index, int index2)
+        {
+            if (!checkCapacity())
+            {
+                if (!_isScrollable)
+                {
+                    return;
+                }
+            }
+            if (_items.Count > 0)
+            {
+                LunaSeperator seperator = new LunaSeperator
+                {
+                    Location = new Point(0, 66),
+                    Padding = new Padding(5, 0, 5, 0),
+                    Size = new Size(Width, 7),
+                    TabIndex = 1
+                };
+                flowLayoutPanel1.Controls.Add(seperator);
+                controls.Add(seperator);
+                seperator.Refresh();
+            }
+            LunaItem item = new LunaItem
+            {
+                ShowInfo = false,
+                AnimationInterval = _itemAnimationInterval,
+                AnimationSteps = _itemSteps,
+                BackColorHover = _itemBackColorHover,
+                BackColorImage = Color.White,
+                BackColorNormal = _backColor,
+                ForeColorHeader = _itemForeColorHeader,
+                ForeColorInfo = _itemForeColorInfo,
+                Font = _itemFont,
+                InfoFontSizePx = _infoFontSizePx,
+                Header = header,
+                HeaderLocation = _itemHeaderLocation,
+                Image = image,
+                InfoLocation = _itemInfoLocation,
+                ShowBorder = false,
+                Size = new Size(showScrollBar ? flowLayoutPanel1.Width - _scrollBarMargin : flowLayoutPanel1.Width, 60),
+                Id = id,
+                VerticalPadding = _seperatorVerticalPadding,
+                ImageLocation = _itemImageLocation,
+                ForeColorHeaderHover = _itemForeColorHeaderHover,
+                ForeColorInfoHover = _itemForeColorInfoHover,
+                Index = index,
+                Index2 = index2
+            };
+            item.OnClickEvent += Control_clicked;
+            item.MouseEnter += LunaItem_MouseEnter;
+            flowLayoutPanel1.Controls.Add(item);
+            controls.Add(item);
+            _items.Add(item);
+            item.Refresh();
+        }
+
+        /// <summary>
+        /// Adds a LunaItem to the end of the List.
+        /// </summary>
+        /// <param name="header">The Header of the LunaItem.</param>
+        /// <param name="image">The Image of the LunaItem.</param>
+        /// <param name="id">The ID of the LunaItem.</param>
+        public void Add(string header, Image image, string id, int index, int index2, int index3)
+        {
+            if (!checkCapacity())
+            {
+                if (!_isScrollable)
+                {
+                    return;
+                }
+            }
+            if (_items.Count > 0)
+            {
+                LunaSeperator seperator = new LunaSeperator
+                {
+                    Location = new Point(0, 66),
+                    Padding = new Padding(5, 0, 5, 0),
+                    Size = new Size(Width, 7),
+                    TabIndex = 1
+                };
+                flowLayoutPanel1.Controls.Add(seperator);
+                controls.Add(seperator);
+                seperator.Refresh();
+            }
+            LunaItem item = new LunaItem
+            {
+                ShowInfo = false,
+                AnimationInterval = _itemAnimationInterval,
+                AnimationSteps = _itemSteps,
+                BackColorHover = _itemBackColorHover,
+                BackColorImage = Color.White,
+                BackColorNormal = _backColor,
+                ForeColorHeader = _itemForeColorHeader,
+                ForeColorInfo = _itemForeColorInfo,
+                Font = _itemFont,
+                InfoFontSizePx = _infoFontSizePx,
+                Header = header,
+                HeaderLocation = _itemHeaderLocation,
+                Image = image,
+                InfoLocation = _itemInfoLocation,
+                ShowBorder = false,
+                Size = new Size(showScrollBar ? flowLayoutPanel1.Width - _scrollBarMargin : flowLayoutPanel1.Width, 60),
+                Id = id,
+                VerticalPadding = _seperatorVerticalPadding,
+                ImageLocation = _itemImageLocation,
+                ForeColorHeaderHover = _itemForeColorHeaderHover,
+                ForeColorInfoHover = _itemForeColorInfoHover,
+                Index = index,
+                Index2 = index2,
+                Index3 = index3
+            };
+            item.OnClickEvent += Control_clicked;
+            item.MouseEnter += LunaItem_MouseEnter;
+            flowLayoutPanel1.Controls.Add(item);
+            controls.Add(item);
+            _items.Add(item);
+            item.Refresh();
+        }
+
+        /// <summary>
+        /// Adds a LunaItem to the end of the List.
+        /// </summary>
+        /// <param name="header">The Header of the LunaItem.</param>
+        /// <param name="image">The Image of the LunaItem.</param>
         /// <param name="info">The Info of the LunaItem.</param>
         /// <param name="id">The ID of the LunaItem.</param>
         public void Add(string header, Image image, string info, string id, int index)
@@ -472,6 +598,137 @@ namespace pmdbs
         }
 
         /// <summary>
+        /// Adds a LunaItem to the end of the List.
+        /// </summary>
+        /// <param name="header">The Header of the LunaItem.</param>
+        /// <param name="image">The Image of the LunaItem.</param>
+        /// <param name="info">The Info of the LunaItem.</param>
+        /// <param name="id">The ID of the LunaItem.</param>
+        public void Add(string header, Image image, string info, string id, int index, int index2)
+        {
+            if (!checkCapacity())
+            {
+                if (!_isScrollable)
+                {
+                    return;
+                }
+            }
+            if (_items.Count > 0)
+            {
+                LunaSeperator seperator = new LunaSeperator
+                {
+                    Location = new Point(0, 66),
+                    Padding = new Padding(5, 0, 5, 0),
+                    Size = new Size(Width, 7),
+                    TabIndex = 1
+                };
+                flowLayoutPanel1.Controls.Add(seperator);
+                seperator.Refresh();
+            }
+            LunaItem item = new LunaItem
+            {
+                ShowInfo = true,
+                AnimationInterval = _itemAnimationInterval,
+                AnimationSteps = _itemSteps,
+                BackColorHover = _itemBackColorHover,
+                BackColorImage = Color.White,
+                BackColorNormal = _backColor,
+                ForeColorHeader = _itemForeColorHeader,
+                ForeColorInfo = _itemForeColorInfo,
+                Font = _itemFont,
+                InfoFontSizePx = _infoFontSizePx,
+                Header = header,
+                HeaderLocation = _itemHeaderLocation,
+                Image = image,
+                Info = info,
+                InfoLocation = _itemInfoLocation,
+                ShowBorder = false,
+                Size = new Size(showScrollBar ? flowLayoutPanel1.Width - _scrollBarMargin : flowLayoutPanel1.Width, 60),
+                Id = id,
+                VerticalPadding = _seperatorVerticalPadding,
+                ImageLocation = _itemImageLocation,
+                ForeColorHeaderHover = _itemForeColorHeaderHover,
+                ForeColorInfoHover = _itemForeColorInfoHover,
+                Index = index,
+                Index2 = index2
+            };
+            item.ShowInfo = true;
+            item.VerticalPadding = 0;
+            item.VerticalPadding = _seperatorVerticalPadding;
+            item.OnClickEvent += Control_clicked;
+            item.MouseEnter += LunaItem_MouseEnter;
+            flowLayoutPanel1.Controls.Add(item);
+            _items.Add(item);
+            item.Refresh();
+        }
+
+        /// <summary>
+        /// Adds a LunaItem to the end of the List.
+        /// </summary>
+        /// <param name="header">The Header of the LunaItem.</param>
+        /// <param name="image">The Image of the LunaItem.</param>
+        /// <param name="info">The Info of the LunaItem.</param>
+        /// <param name="id">The ID of the LunaItem.</param>
+        public void Add(string header, Image image, string info, string id, int index, int index2, int index3)
+        {
+            if (!checkCapacity())
+            {
+                if (!_isScrollable)
+                {
+                    return;
+                }
+            }
+            if (_items.Count > 0)
+            {
+                LunaSeperator seperator = new LunaSeperator
+                {
+                    Location = new Point(0, 66),
+                    Padding = new Padding(5, 0, 5, 0),
+                    Size = new Size(Width, 7),
+                    TabIndex = 1
+                };
+                flowLayoutPanel1.Controls.Add(seperator);
+                seperator.Refresh();
+            }
+            LunaItem item = new LunaItem
+            {
+                ShowInfo = true,
+                AnimationInterval = _itemAnimationInterval,
+                AnimationSteps = _itemSteps,
+                BackColorHover = _itemBackColorHover,
+                BackColorImage = Color.White,
+                BackColorNormal = _backColor,
+                ForeColorHeader = _itemForeColorHeader,
+                ForeColorInfo = _itemForeColorInfo,
+                Font = _itemFont,
+                InfoFontSizePx = _infoFontSizePx,
+                Header = header,
+                HeaderLocation = _itemHeaderLocation,
+                Image = image,
+                Info = info,
+                InfoLocation = _itemInfoLocation,
+                ShowBorder = false,
+                Size = new Size(showScrollBar ? flowLayoutPanel1.Width - _scrollBarMargin : flowLayoutPanel1.Width, 60),
+                Id = id,
+                VerticalPadding = _seperatorVerticalPadding,
+                ImageLocation = _itemImageLocation,
+                ForeColorHeaderHover = _itemForeColorHeaderHover,
+                ForeColorInfoHover = _itemForeColorInfoHover,
+                Index = index,
+                Index2 = index2,
+                Index3 = index3
+            };
+            item.ShowInfo = true;
+            item.VerticalPadding = 0;
+            item.VerticalPadding = _seperatorVerticalPadding;
+            item.OnClickEvent += Control_clicked;
+            item.MouseEnter += LunaItem_MouseEnter;
+            flowLayoutPanel1.Controls.Add(item);
+            _items.Add(item);
+            item.Refresh();
+        }
+
+        /// <summary>
         /// Removes the LunaItem at the specified index.
         /// </summary>
         /// <param name="index">The inted to remove the LunaItem at.</param>
@@ -509,7 +766,7 @@ namespace pmdbs
             _items = new List<LunaItem>();
             int count = flowLayoutPanel1.Controls.Count;
             flowLayoutPanel1.Controls.Clear();
-            for (int i = count; i <= 0; i--)
+            for (int i = count - 1; i >= 0; i--)
             {
                 Control control = controls[i];
                 if (control is LunaItem item)

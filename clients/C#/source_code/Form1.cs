@@ -232,7 +232,7 @@ namespace pmdbs
 
             #endregion
             lunaItemList1.LunaItemClicked += card_click;
-            lunaSmallCardList3.OnCardClicked += card_click2;
+            DashboardLunaItemListBreaches.LunaItemClicked += card_click2;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -1857,7 +1857,7 @@ namespace pmdbs
         private List<Breaches.Breach> breaches;
         private async void label16_Click(object sender, EventArgs e)
         {
-            lunaSmallCardList3.RemoveAll();
+            DashboardLunaItemListBreaches.RemoveAll();
             List<string> domains = new List<string>();
             int rowCount = GlobalVarPool.UserData.Rows.Count;
             for (int i = 0; i < rowCount; i++)
@@ -1880,30 +1880,34 @@ namespace pmdbs
             }
             Task<List<string>> GetIgnoredBreaches = DataBaseHelper.GetDataAsList("SELECT B_hash FROM Tbl_breaches;",(int)ColumnCount.SingleColumn);
             List<string> ignoredBreaches = await GetIgnoredBreaches;
+            int index = 0;
             for (int i = 0; i < breaches.Count; i++)
             {
                 Breaches.Breach breach = breaches[i];
                 if (domains.Contains(breach.Domain))
                 {
-                    if (!lunaSmallCardList3.CheckCapacity())
-                    {
-                        break;
-                    }
                     string hash = CryptoHelper.SHA256HashBase64(breach.Name + breach.BreachDate);
                     if (!ignoredBreaches.Contains(hash))
                     {
-                        lunaSmallCardList3.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash, i);
+                        DashboardLunaItemListBreaches.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash, i, index);
+                        index++;
                     }
                 }
             }
         }
 
-        private void card_click2(object sender, EventArgs e)
+        private async void card_click2(object sender, EventArgs e)
         {
-            LunaSmallCardItem item = (LunaSmallCardItem)sender;
+            LunaItem item = (LunaItem)sender;
             Breaches.Breach breach = breaches[item.Index];
-            Image icon = pmdbs.Icon.GetFromUrl(breach.LogoPath);
-            new BreachForm(breach.BreachDate,breach.Title, icon ?? Resources.breach, breach.DataClasses,breach.Description, breach.PwnCount,breach.IsVerified).ShowDialog();
+            Task<Image> GetIcon = pmdbs.Icon.GetFromUrlAsync(breach.LogoPath);
+            Image icon = await GetIcon;
+            DialogResult result = new BreachForm(breach.BreachDate, breach.Title, icon ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain).ShowDialog();
+            if (result == DialogResult.Ignore)
+            {
+                await DataBaseHelper.ModifyData("INSERT INTO Tbl_breaches (B_hash) VALUES (\"" + item.Id + "\");");
+                DashboardLunaItemListBreaches.RemoveAt(item.Index2);
+            }
         }
     }
 }

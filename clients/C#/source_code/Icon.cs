@@ -96,30 +96,29 @@ namespace pmdbs
             return base64Image;
         }
 
+        public static Task<Image> GetFromUrlAsync(string url)
+        {
+            return Task.Run(() => GetFromUrl(url));
+        }
+
         public static Image GetFromUrl(string url)
         {
             Image image = new Bitmap(1,1);
             bool successful = false;
             ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
-            //SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
-
-            //for (int i = 0; i < protocolTypes.Length; i++)
-            //{
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                try
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            try
+            {
+                using (WebClient client = new WebClient())
+                using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
                 {
-                    using (WebClient client = new WebClient())
-                    using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
-                    {
-                        Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
-                        bmpIcon = (Bitmap)bmpIcon.GetThumbnailImage(350, 350, null, new IntPtr());
-                        image = bmpIcon;
-                    }
-                    successful = true;
-                    //break;
+                    Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
+                    bmpIcon = (Bitmap)bmpIcon.GetThumbnailImage(350, 350, null, new IntPtr());
+                    image = bmpIcon;
                 }
-                catch { }
-            //}
+                successful = true;
+            }
+            catch { }
             if (successful)
             {
                 return image;
