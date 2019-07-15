@@ -93,6 +93,7 @@
             this.animatedButtonClose.TabIndex = 19;
             this.animatedButtonClose.Text = "Close";
             this.animatedButtonClose.UseVisualStyleBackColor = true;
+            this.animatedButtonClose.Click += new System.EventHandler(this.animatedButtonClose_Click);
             // 
             // animatedButtonIgnore
             // 
@@ -109,6 +110,7 @@
             this.animatedButtonIgnore.TabIndex = 18;
             this.animatedButtonIgnore.Text = "Ignore this breach";
             this.animatedButtonIgnore.UseVisualStyleBackColor = true;
+            this.animatedButtonIgnore.Click += new System.EventHandler(this.animatedButtonIgnore_Click);
             // 
             // labelInfo
             // 
@@ -207,7 +209,6 @@
             this.labelDataHeader.Size = new System.Drawing.Size(281, 41);
             this.labelDataHeader.TabIndex = 7;
             this.labelDataHeader.Text = "Compromized data:";
-            this.labelDataHeader.Click += new System.EventHandler(this.label5_Click);
             // 
             // labelBreachDate
             // 
@@ -230,7 +231,6 @@
             this.labelDescriptionHeader.Size = new System.Drawing.Size(176, 41);
             this.labelDescriptionHeader.TabIndex = 4;
             this.labelDescriptionHeader.Text = "Description:";
-            this.labelDescriptionHeader.Click += new System.EventHandler(this.labelDescriptionHeader_Click);
             // 
             // labelBreachDateHeader
             // 
@@ -279,11 +279,11 @@
             this.lunaSmallCardIsVerified.Image = global::pmdbs.Properties.Resources.confirmed2;
             this.lunaSmallCardIsVerified.ImageLocation = new System.Drawing.Point(1, 1);
             this.lunaSmallCardIsVerified.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCardIsVerified.Location = new System.Drawing.Point(936, 90);
+            this.lunaSmallCardIsVerified.Location = new System.Drawing.Point(954, 90);
             this.lunaSmallCardIsVerified.Margin = new System.Windows.Forms.Padding(0);
             this.lunaSmallCardIsVerified.Name = "lunaSmallCardIsVerified";
             this.lunaSmallCardIsVerified.ShowBorder = false;
-            this.lunaSmallCardIsVerified.Size = new System.Drawing.Size(224, 60);
+            this.lunaSmallCardIsVerified.Size = new System.Drawing.Size(206, 60);
             this.lunaSmallCardIsVerified.TabIndex = 14;
             // 
             // pictureBoxLogo
@@ -350,7 +350,7 @@
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Load += new System.EventHandler(this.BreachForm_Load);
+            this.Shown += new System.EventHandler(this.BreachForm_Shown);
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
             this.panelHeader.ResumeLayout(false);

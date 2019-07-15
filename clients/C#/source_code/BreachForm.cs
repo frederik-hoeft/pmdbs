@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -24,12 +25,11 @@ namespace pmdbs
         public BreachForm(string date, string title, Image image, string[] data, string description, int pwnedAccounts, bool isVerified, string domain)
         {
             InitializeComponent();
-            lunaItemListData.LunaItemClicked += card_click;
             lunaTextPanelDescription.Text = Regex.Replace(description, @"<[^>]*>", "").Replace("&quot;", "\"");
             pictureBoxLogo.Image = image;
             labelBreachDate.Text = date;
             labelTitle.Text = title;
-            labelPwnCount.Text = string.Format("{0:#,0}", pwnedAccounts.ToString());
+            labelPwnCount.Text = pwnedAccounts.ToString("N0", CultureInfo.InvariantCulture);
             if (isVerified)
             {
                 lunaSmallCardIsVerified.Image = Resources.confirmed2;
@@ -52,26 +52,13 @@ namespace pmdbs
                 style |= NativeWinAPI.WS_EX_COMPOSITED;
                 NativeWinAPI.SetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE, style);
             }
-            lunaItemListData.Refresh();
-            lunaTextPanelDescription.Refresh();
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-            lunaItemListData.Refresh();
-        }
-        private void card_click(object sender, EventArgs e)
-        {
-            LunaItem item = (LunaItem)sender;
-            CustomException.ThrowNew.NotImplementedException("item[" + item.Index.ToString() + "]");
         }
 
         private void windowButtonClose_OnClickEvent(object sender, EventArgs e)
         {
-            // this.DialogResult = DialogResult.Cancel;
-            // this.Close();
-            // this.Dispose();
-            Application.Exit();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+            this.Dispose();
         }
 
         private void windowButtonMinimize_OnClickEvent(object sender, EventArgs e)
@@ -79,15 +66,24 @@ namespace pmdbs
             this.WindowState = FormWindowState.Minimized;
         }
 
-        private void labelDescriptionHeader_Click(object sender, EventArgs e)
-        {
-            lunaTextPanelDescription.Refresh();
-        }
-
-        private void BreachForm_Load(object sender, EventArgs e)
+        private void BreachForm_Shown(object sender, EventArgs e)
         {
             lunaItemListData.Refresh();
             lunaTextPanelDescription.Refresh();
+        }
+
+        private void animatedButtonIgnore_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Ignore;
+            this.Close();
+            this.Dispose();
+        }
+
+        private void animatedButtonClose_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+            this.Dispose();
         }
     }
 }

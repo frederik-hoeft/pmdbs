@@ -29,6 +29,45 @@ namespace pmdbs
             public string url = string.Empty, format = string.Empty, error = string.Empty, sha1sum = string.Empty;
             public int height = -1, width = -1;
         }
+
+        public static string Temp()
+        {
+            string iconLink = "https://protonmail.com/favicon.ico"; // <-- 128 x 128 PX FAVICON
+            ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
+            SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
+            string base64Image = string.Empty;
+            bool successful = false;
+            for (int i = 0; i < protocolTypes.Length; i++)
+            {
+                ServicePointManager.SecurityProtocol = protocolTypes[i];
+                try
+                {
+                    using (WebClient client = new WebClient())
+                    using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink)))
+                    {
+                        Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
+                        if (bmpIcon.Width < 48 || bmpIcon.Height < 48) // <-- THIS CHECK FAILS, DEBUGGER SAYS 16 x 16 PX!
+                        {
+                            break;
+                        }
+                        bmpIcon = (Bitmap)bmpIcon.GetThumbnailImage(350, 350, null, new IntPtr());
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            bmpIcon.Save(ms, ImageFormat.Png);
+                            base64Image = Convert.ToBase64String(ms.ToArray());
+                        }
+                    }
+                    successful = true;
+                    break;
+                }
+                catch { }
+            }
+            if (!successful)
+            {
+                throw new Exception("No Icon found");
+            }
+            return base64Image;
+        }
         
         /// <summary>
         /// Downloads the favicon of the given url.
@@ -66,7 +105,7 @@ namespace pmdbs
                         using (MemoryStream stream = new MemoryStream(client.DownloadData(iconLink)))
                         {
                             Bitmap bmpIcon = new Bitmap(Image.FromStream(stream, true, true));
-                            if (bmpIcon.Width < 60 || bmpIcon.Height < 60)
+                            if (bmpIcon.Width < 48 || bmpIcon.Height < 48)
                             {
                                 break;
                             }

@@ -232,7 +232,7 @@ namespace pmdbs
 
             #endregion
             lunaItemList1.LunaItemClicked += card_click;
-            DashboardLunaItemListBreaches.LunaItemClicked += card_click2;
+            DashboardLunaItemListBreaches.LunaItemClicked += Breach_Clicked;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -1010,6 +1010,7 @@ namespace pmdbs
                 try
                 {
                     base64Img = pmdbs.Icon.Get(AddEditFieldWebsite.TextTextBox, true);
+                    // base64Img = pmdbs.Icon.Temp();
                 }
                 catch
                 {
@@ -1855,7 +1856,12 @@ namespace pmdbs
         }
         #endregion
         private List<Breaches.Breach> breaches;
-        private async void label16_Click(object sender, EventArgs e)
+        private void label16_Click(object sender, EventArgs e)
+        {
+            UpdateBreaches();
+        }
+
+        private async void UpdateBreaches()
         {
             DashboardLunaItemListBreaches.RemoveAll();
             List<string> domains = new List<string>();
@@ -1878,7 +1884,7 @@ namespace pmdbs
                 CustomException.ThrowNew.NetworkException(ex.ToString());
                 return;
             }
-            Task<List<string>> GetIgnoredBreaches = DataBaseHelper.GetDataAsList("SELECT B_hash FROM Tbl_breaches;",(int)ColumnCount.SingleColumn);
+            Task<List<string>> GetIgnoredBreaches = DataBaseHelper.GetDataAsList("SELECT B_hash FROM Tbl_breaches;", (int)ColumnCount.SingleColumn);
             List<string> ignoredBreaches = await GetIgnoredBreaches;
             int index = 0;
             for (int i = 0; i < breaches.Count; i++)
@@ -1896,7 +1902,7 @@ namespace pmdbs
             }
         }
 
-        private async void card_click2(object sender, EventArgs e)
+        private async void Breach_Clicked(object sender, EventArgs e)
         {
             LunaItem item = (LunaItem)sender;
             Breaches.Breach breach = breaches[item.Index];
