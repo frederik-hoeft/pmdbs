@@ -26,6 +26,14 @@ namespace pmdbs
         {
             get { return Color.FromArgb(64, 64, 64); }
         }
+
+        public static Color Red
+        {
+            get { return Color.FromArgb(226, 87, 76); }
+        }
+
+        public static Color Green => Color.FromArgb(144, 197, 100);
+
         /// <summary>
         /// Gets a user-defined color that has an ARGB value of #FF212121.
         /// </summary>
