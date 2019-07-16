@@ -79,7 +79,7 @@
             // 
             // LabelContent
             // 
-            this.LabelContent.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.LabelContent.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.LabelContent.ForeColor = System.Drawing.Color.White;
             this.LabelContent.Location = new System.Drawing.Point(27, 64);
             this.LabelContent.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);

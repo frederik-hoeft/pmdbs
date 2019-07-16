@@ -137,7 +137,7 @@ namespace pmdbs
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.SyncButton.Enabled = true;
-                    Form1.InvokeSyncAnimationStop();
+                    MainForm.InvokeSyncAnimationStop();
                 });
                 GlobalVarPool.connectionLost = true;
                 return;
@@ -785,7 +785,7 @@ namespace pmdbs
                                                                             GlobalVarPool.name = name;
                                                                             GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
                                                                             {
-                                                                                Form1.InvokeRefreshSettings();
+                                                                                MainForm.InvokeRefreshSettings();
                                                                             });
                                                                         }).Start();
                                                                         break;

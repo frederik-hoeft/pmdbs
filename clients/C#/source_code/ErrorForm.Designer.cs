@@ -44,7 +44,7 @@
             // ErrorFormLabelHeader
             // 
             this.ErrorFormLabelHeader.AutoSize = true;
-            this.ErrorFormLabelHeader.Font = new System.Drawing.Font("Century Gothic", 14F);
+            this.ErrorFormLabelHeader.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.ErrorFormLabelHeader.Location = new System.Drawing.Point(23, 60);
             this.ErrorFormLabelHeader.Name = "ErrorFormLabelHeader";
             this.ErrorFormLabelHeader.Size = new System.Drawing.Size(99, 34);
@@ -72,7 +72,7 @@
             // 
             // ErrorFormLabelContent
             // 
-            this.ErrorFormLabelContent.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.ErrorFormLabelContent.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.ErrorFormLabelContent.Location = new System.Drawing.Point(27, 108);
             this.ErrorFormLabelContent.Name = "ErrorFormLabelContent";
             this.ErrorFormLabelContent.Size = new System.Drawing.Size(590, 161);

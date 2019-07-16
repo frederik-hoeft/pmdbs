@@ -39,7 +39,7 @@ namespace pmdbs
             return Color.FromArgb((int)Math.Round(red * 255), (int)Math.Round(green * 255), (int)Math.Round(blue * 255));
         }
 
-        public static float hue2rgb(float p, float q, float t)
+        private static float hue2rgb(float p, float q, float t)
         {
             if (t < 0) t += 1;
             if (t > 1) t -= 1;
