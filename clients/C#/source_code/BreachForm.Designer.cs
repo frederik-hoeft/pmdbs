@@ -34,8 +34,8 @@
             this.animatedButtonIgnore = new LunaForms.AnimatedButton();
             this.labelInfo = new System.Windows.Forms.Label();
             this.labelInfoHeader = new System.Windows.Forms.Label();
-            this.lunaTextPanelDescription = new pmdbs.LunaTextPanel();
-            this.lunaItemListData = new pmdbs.LunaItemList();
+            this.lunaTextPanelDescription = new LunaForms.LunaTextPanel();
+            this.lunaItemListData = new LunaForms.LunaItemList();
             this.labelPwnCount = new System.Windows.Forms.Label();
             this.labelPwnCountHeader = new System.Windows.Forms.Label();
             this.labelDataHeader = new System.Windows.Forms.Label();
@@ -374,9 +374,9 @@
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Panel panelHeader;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
-        private LunaItemList lunaItemListData;
+        private LunaForms.LunaItemList lunaItemListData;
         private LunaForms.WindowButton windowButtonMinimize;
-        private LunaTextPanel lunaTextPanelDescription;
+        private LunaForms.LunaTextPanel lunaTextPanelDescription;
         private System.Windows.Forms.Label labelInfo;
         private System.Windows.Forms.Label labelInfoHeader;
         private LunaForms.AnimatedButton animatedButtonClose;

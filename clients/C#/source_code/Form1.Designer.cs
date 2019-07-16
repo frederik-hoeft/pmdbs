@@ -53,7 +53,7 @@
             this.animatedButton1 = new LunaForms.AnimatedButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.lunaItemList1 = new pmdbs.LunaItemList();
+            this.lunaItemList1 = new LunaForms.LunaItemList();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.label15 = new System.Windows.Forms.Label();
@@ -65,7 +65,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.lunaSmallCardList2 = new LunaForms.LunaSmallCardList();
             this.panel6 = new System.Windows.Forms.Panel();
-            this.DashboardLunaItemListBreaches = new pmdbs.LunaItemList();
+            this.DashboardLunaItemListBreaches = new LunaForms.LunaItemList();
             this.label16 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -327,6 +327,9 @@
             this.LoginEditFieldOnlineUsername = new LunaForms.EditField();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
+            this.AddLabelPasswordStrengthHeader = new System.Windows.Forms.Label();
+            this.AddPasswordStrengthIndicator = new LunaForms.PasswordStrengthIndicator();
+            this.AddLabelPasswordStrengthIndicator = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -642,9 +645,9 @@
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
             this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
-            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
-            this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
+            this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
+            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelMain.Location = new System.Drawing.Point(265, 114);
             this.DataPanelMain.Margin = new System.Windows.Forms.Padding(0);
@@ -3504,6 +3507,9 @@
             // AddPanelContent
             // 
             this.AddPanelContent.BackColor = System.Drawing.Color.White;
+            this.AddPanelContent.Controls.Add(this.AddLabelPasswordStrengthIndicator);
+            this.AddPanelContent.Controls.Add(this.AddLabelPasswordStrengthHeader);
+            this.AddPanelContent.Controls.Add(this.AddPasswordStrengthIndicator);
             this.AddPanelContent.Controls.Add(this.AddPanelGeneratePassword);
             this.AddPanelContent.Controls.Add(this.AddEditFieldEmail);
             this.AddPanelContent.Controls.Add(this.AddLabelTitle);
@@ -3514,7 +3520,7 @@
             this.AddPanelContent.Location = new System.Drawing.Point(0, 0);
             this.AddPanelContent.Margin = new System.Windows.Forms.Padding(0);
             this.AddPanelContent.Name = "AddPanelContent";
-            this.AddPanelContent.Size = new System.Drawing.Size(670, 866);
+            this.AddPanelContent.Size = new System.Drawing.Size(670, 918);
             this.AddPanelContent.TabIndex = 10;
             // 
             // AddPanelGeneratePassword
@@ -3526,7 +3532,7 @@
             this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordeAdvancedNumericUpDown);
             this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelLength);
             this.AddPanelGeneratePassword.Controls.Add(this.AddPanelGeneratePasswordLabelDescription);
-            this.AddPanelGeneratePassword.Location = new System.Drawing.Point(6, 436);
+            this.AddPanelGeneratePassword.Location = new System.Drawing.Point(6, 497);
             this.AddPanelGeneratePassword.Margin = new System.Windows.Forms.Padding(0);
             this.AddPanelGeneratePassword.Name = "AddPanelGeneratePassword";
             this.AddPanelGeneratePassword.Size = new System.Drawing.Size(660, 197);
@@ -3635,7 +3641,7 @@
             this.AddEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearHover")));
             this.AddEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearNormal")));
-            this.AddEditFieldEmail.Location = new System.Drawing.Point(6, 652);
+            this.AddEditFieldEmail.Location = new System.Drawing.Point(6, 713);
             this.AddEditFieldEmail.Name = "AddEditFieldEmail";
             this.AddEditFieldEmail.Size = new System.Drawing.Size(660, 84);
             this.AddEditFieldEmail.TabIndex = 6;
@@ -3696,7 +3702,7 @@
             this.AddEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearHover")));
             this.AddEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearNormal")));
-            this.AddEditFieldWebsite.Location = new System.Drawing.Point(6, 755);
+            this.AddEditFieldWebsite.Location = new System.Drawing.Point(6, 816);
             this.AddEditFieldWebsite.Name = "AddEditFieldWebsite";
             this.AddEditFieldWebsite.Size = new System.Drawing.Size(660, 84);
             this.AddEditFieldWebsite.TabIndex = 7;
@@ -3721,7 +3727,7 @@
             this.AddEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearHover")));
             this.AddEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearNormal")));
-            this.AddEditFieldUsername.Location = new System.Drawing.Point(6, 244);
+            this.AddEditFieldUsername.Location = new System.Drawing.Point(6, 243);
             this.AddEditFieldUsername.Name = "AddEditFieldUsername";
             this.AddEditFieldUsername.Size = new System.Drawing.Size(660, 84);
             this.AddEditFieldUsername.TabIndex = 3;
@@ -3739,14 +3745,14 @@
             this.AddEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.AddEditFieldPassword.DefaultValue = "Enter some text...";
+            this.AddEditFieldPassword.DefaultValue = "";
             this.AddEditFieldPassword.FontTextBox = new System.Drawing.Font("Century Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AddEditFieldPassword.FontTitle = new System.Drawing.Font("Century Gothic", 8F);
             this.AddEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
             this.AddEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.AddEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearHover")));
             this.AddEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearNormal")));
-            this.AddEditFieldPassword.Location = new System.Drawing.Point(6, 340);
+            this.AddEditFieldPassword.Location = new System.Drawing.Point(6, 406);
             this.AddEditFieldPassword.Name = "AddEditFieldPassword";
             this.AddEditFieldPassword.Size = new System.Drawing.Size(660, 84);
             this.AddEditFieldPassword.TabIndex = 4;
@@ -3755,12 +3761,13 @@
             this.AddEditFieldPassword.UseColoredCaret = true;
             this.AddEditFieldPassword.UseDefaultValue = false;
             this.AddEditFieldPassword.UseSystemPasswordChar = false;
+            this.AddEditFieldPassword.TextBoxTextChanged += new System.EventHandler(this.AddEditFieldPassword_TextBoxTextChanged);
             // 
             // AddPanelNotes
             // 
             this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
             this.AddPanelNotes.Controls.Add(this.AddPanelNotesLabelTitle);
-            this.AddPanelNotes.Location = new System.Drawing.Point(0, 866);
+            this.AddPanelNotes.Location = new System.Drawing.Point(0, 918);
             this.AddPanelNotes.Margin = new System.Windows.Forms.Padding(0);
             this.AddPanelNotes.Name = "AddPanelNotes";
             this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
@@ -3792,7 +3799,7 @@
             // AddPanelCheckIcon
             // 
             this.AddPanelCheckIcon.Controls.Add(this.AddPanelCheckIconContent);
-            this.AddPanelCheckIcon.Location = new System.Drawing.Point(0, 1047);
+            this.AddPanelCheckIcon.Location = new System.Drawing.Point(0, 1099);
             this.AddPanelCheckIcon.Margin = new System.Windows.Forms.Padding(0);
             this.AddPanelCheckIcon.Name = "AddPanelCheckIcon";
             this.AddPanelCheckIcon.Size = new System.Drawing.Size(670, 300);
@@ -4112,10 +4119,10 @@
             // LoginPictureBoxMain
             // 
             this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
             this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
@@ -4698,6 +4705,50 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
+            // AddLabelPasswordStrengthHeader
+            // 
+            this.AddLabelPasswordStrengthHeader.AutoSize = true;
+            this.AddLabelPasswordStrengthHeader.Font = new System.Drawing.Font("Century Gothic", 10F);
+            this.AddLabelPasswordStrengthHeader.ForeColor = System.Drawing.Color.Black;
+            this.AddLabelPasswordStrengthHeader.Location = new System.Drawing.Point(1, 356);
+            this.AddLabelPasswordStrengthHeader.Name = "AddLabelPasswordStrengthHeader";
+            this.AddLabelPasswordStrengthHeader.Size = new System.Drawing.Size(172, 23);
+            this.AddLabelPasswordStrengthHeader.TabIndex = 10;
+            this.AddLabelPasswordStrengthHeader.Text = "Your password is";
+            // 
+            // AddPasswordStrengthIndicator
+            // 
+            this.AddPasswordStrengthIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AddPasswordStrengthIndicator.Colors = new System.Drawing.Color[] {
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
+            this.AddPasswordStrengthIndicator.CurrentColor = System.Drawing.Color.Red;
+            this.AddPasswordStrengthIndicator.Location = new System.Drawing.Point(6, 389);
+            this.AddPasswordStrengthIndicator.Name = "AddPasswordStrengthIndicator";
+            this.AddPasswordStrengthIndicator.Size = new System.Drawing.Size(660, 10);
+            this.AddPasswordStrengthIndicator.TabIndex = 9;
+            // 
+            // AddLabelPasswordStrengthIndicator
+            // 
+            this.AddLabelPasswordStrengthIndicator.AutoSize = true;
+            this.AddLabelPasswordStrengthIndicator.Font = new System.Drawing.Font("Century Gothic", 10F, System.Drawing.FontStyle.Bold);
+            this.AddLabelPasswordStrengthIndicator.ForeColor = System.Drawing.Color.Black;
+            this.AddLabelPasswordStrengthIndicator.Location = new System.Drawing.Point(172, 356);
+            this.AddLabelPasswordStrengthIndicator.Name = "AddLabelPasswordStrengthIndicator";
+            this.AddLabelPasswordStrengthIndicator.Size = new System.Drawing.Size(132, 23);
+            this.AddLabelPasswordStrengthIndicator.TabIndex = 11;
+            this.AddLabelPasswordStrengthIndicator.Text = "Embarassing";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -5174,8 +5225,11 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
-        private LunaItemList lunaItemList1;
-        private LunaItemList DashboardLunaItemListBreaches;
+        private LunaForms.LunaItemList lunaItemList1;
+        private LunaForms.LunaItemList DashboardLunaItemListBreaches;
+        private System.Windows.Forms.Label AddLabelPasswordStrengthIndicator;
+        private System.Windows.Forms.Label AddLabelPasswordStrengthHeader;
+        private LunaForms.PasswordStrengthIndicator AddPasswordStrengthIndicator;
     }
 }
 

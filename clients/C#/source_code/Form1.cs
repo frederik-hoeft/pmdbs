@@ -1031,6 +1031,21 @@ namespace pmdbs
             }).Start();
         }
 
+        private void AddEditFieldPassword_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            string password = AddEditFieldPassword.TextTextBox;
+            if (string.IsNullOrEmpty(password))
+            {
+                AddLabelPasswordStrengthIndicator.Text = "Too short";
+                AddPasswordStrengthIndicator.SetIndex(0);
+                return;
+            }
+            Password.Result result = Password.Security.SimpleCheck(password);
+            int strength = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
+            AddPasswordStrengthIndicator.SetIndex(strength);
+            AddLabelPasswordStrengthIndicator.Text = result.Complexity;
+        }
+
         #endregion
 
         #region LoginPanel
@@ -1915,5 +1930,7 @@ namespace pmdbs
                 DashboardLunaItemListBreaches.RemoveAt(item.Index2);
             }
         }
+
+        
     }
 }
