@@ -226,13 +226,34 @@ namespace pmdbs
             }
         }
     }
+    /// <summary>
+    /// Provides the amount of columns of database Tables.
+    /// </summary>
     public enum ColumnCount
     {
+        /// <summary>
+        /// Gets the number of columns in Tbl_user.
+        /// </summary>
         Tbl_user = 8,
+        /// <summary>
+        /// Gets the number of columns in Tbl_data.
+        /// </summary>
         Tbl_data = 10,
+        /// <summary>
+        /// Gets the number of columns in Tbl_commonPasswords.
+        /// </summary>
         Tbl_commonPasswords = 2,
+        /// <summary>
+        /// Gets the number of columns in Tbl_settings.
+        /// </summary>
         Tbl_settings = 5,
+        /// <summary>
+        /// Gets the number of columns in Tbl_delete.
+        /// </summary>
         Tbl_delete = 2,
+        /// <summary>
+        /// Returns 1.
+        /// </summary>
         SingleColumn = 1
     }
 }

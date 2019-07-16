@@ -22,8 +22,8 @@ namespace pmdbs
         public static string CONFIG_BUILD = null;
 
         // CLIENT VERSIONING
-        public static readonly string CLIENT_VERSION = "0.6-11b.19";
-        public static readonly string CLIENT_BUILD = "development";
+        public const string CLIENT_VERSION = "0.6-11b.19";
+        public const string CLIENT_BUILD = "development";
 
         // CRYPTO VARIABLES
         public static string XMLKey = string.Empty;
@@ -74,7 +74,7 @@ namespace pmdbs
         /// Columns are D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon.
         /// </summary>
         public static System.Data.DataTable FilteredUserData = new System.Data.DataTable();
-        public static Form1 Form1 = null;
+        public static MainForm Form1 = null;
         public static LoadingHelper.LoadingType loadingType = LoadingHelper.LoadingType.DEFAULT;
 
         public static int countedPackets = 0;
