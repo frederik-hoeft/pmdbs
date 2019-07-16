@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// Provides methods to access the internet using the HTTP protocol.
+    /// </summary>
     public static class HttpHelper
     {
+        /// <summary>
+        /// Uses the HTTP protocol to send a download a website's HTML source code.
+        /// </summary>
+        /// <param name="uri">The url to get the HTML code from.</param>
+        /// <returns>The website as HTML code</returns>
         public static string Get(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
@@ -23,6 +31,11 @@ namespace pmdbs
             }
         }
 
+        /// <summary>
+        /// Gets the domain from a url.
+        /// </summary>
+        /// <param name="url">the url to get the domain from.</param>
+        /// <returns>The domain or null if the url is invalid.</returns>
         public static string GetDomain(string url)
         {
             try

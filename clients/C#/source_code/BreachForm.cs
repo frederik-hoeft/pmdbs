@@ -11,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static pmdbs.Form1;
 
 namespace pmdbs
 {
@@ -48,9 +47,9 @@ namespace pmdbs
             // PREVENT FLICKERING
             foreach (Control c in this.Controls)
             {
-                int style = NativeWinAPI.GetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE);
-                style |= NativeWinAPI.WS_EX_COMPOSITED;
-                NativeWinAPI.SetWindowLong(c.Handle, NativeWinAPI.GWL_EXSTYLE, style);
+                int style = WinAPI.GetWindowLong(c.Handle, WinAPI.GWL_EXSTYLE);
+                style |= WinAPI.WS_EX_COMPOSITED;
+                WinAPI.SetWindowLong(c.Handle, WinAPI.GWL_EXSTYLE, style);
             }
         }
 
