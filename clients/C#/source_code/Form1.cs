@@ -231,7 +231,8 @@ namespace pmdbs
             #endregion
 
             #endregion
-            lunaSmallCardList1.OnClickEvent += card_click;
+            lunaItemList1.LunaItemClicked += card_click;
+            DashboardLunaItemListBreaches.LunaItemClicked += Breach_Clicked;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -292,6 +293,9 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             WindowHeaderLabelTitle.Text = "Dashboard";
+            FilterAdvancedComboBoxSort.Visible = false;
+            FilterEditFieldSearch.Visible = false;
+            DashboardTableLayoutPanel.BringToFront();
         }
 
         private void MenuMenuEntrySettings_Click(object sender, EventArgs e)
@@ -300,6 +304,8 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Colors.Orange;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             SettingsTableLayoutPanelMain.BringToFront();
+            FilterAdvancedComboBoxSort.Visible = false;
+            FilterEditFieldSearch.Visible = false;
             if (GlobalVarPool.wasOnline)
             {
                 SettingsFlowLayoutPanelOnline.BringToFront();
@@ -316,6 +322,8 @@ namespace pmdbs
             MenuPanelHomeIndicator.BackColor = Color.White;
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
+            FilterAdvancedComboBoxSort.Visible = true;
+            FilterEditFieldSearch.Visible = true;
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Passwords";
         }
@@ -612,7 +620,7 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.Get(Website);
+                            favIcon = pmdbs.Icon.Get(Website, true);
                         }
                     }
                     catch (Exception ex)
@@ -894,7 +902,7 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.Get(Website);
+                            favIcon = pmdbs.Icon.Get(Website, true);
                         }
                     }
                     catch (Exception ex)
@@ -1001,7 +1009,8 @@ namespace pmdbs
                 string base64Img;
                 try
                 {
-                    base64Img = pmdbs.Icon.Get(AddEditFieldWebsite.TextTextBox);
+                    base64Img = pmdbs.Icon.Get(AddEditFieldWebsite.TextTextBox, true);
+                    // base64Img = pmdbs.Icon.Temp();
                 }
                 catch
                 {
@@ -1020,6 +1029,21 @@ namespace pmdbs
                     AddPanelAnimatedButtonCheckIcon.Enabled = true;
                 });
             }).Start();
+        }
+
+        private void AddEditFieldPassword_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            string password = AddEditFieldPassword.TextTextBox;
+            if (string.IsNullOrEmpty(password))
+            {
+                AddLabelPasswordStrengthIndicator.Text = "Too short";
+                AddPasswordStrengthIndicator.SetIndex(0);
+                return;
+            }
+            Password.Result result = Password.Security.SimpleCheck(password);
+            int strength = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
+            AddPasswordStrengthIndicator.SetIndex(strength);
+            AddLabelPasswordStrengthIndicator.Text = result.Complexity;
         }
 
         #endregion
@@ -1836,15 +1860,77 @@ namespace pmdbs
         private int t = 0;
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            lunaSmallCardList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t);
+            lunaItemList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
             t++;
         }
 
         private void card_click(object sender, EventArgs e)
         {
-            LunaSmallCardItem item = (LunaSmallCardItem)sender;
-            CustomException.ThrowNew.NotImplementedException(item.Id.ToString());
+            LunaItem item = (LunaItem)sender;
+            CustomException.ThrowNew.NotImplementedException("item[" + item.Id.ToString() + "]");
         }
         #endregion
+        private List<Breaches.Breach> breaches;
+        private void label16_Click(object sender, EventArgs e)
+        {
+            UpdateBreaches();
+        }
+
+        private async void UpdateBreaches()
+        {
+            DashboardLunaItemListBreaches.RemoveAll();
+            List<string> domains = new List<string>();
+            int rowCount = GlobalVarPool.UserData.Rows.Count;
+            for (int i = 0; i < rowCount; i++)
+            {
+                string domain = HttpHelper.GetDomain(GlobalVarPool.UserData.Rows[i]["6"].ToString());
+                if (domain != null)
+                {
+                    domains.Add(domain);
+                }
+            }
+            try
+            {
+                Task<List<Breaches.Breach>> GetBreaches = Breaches.FetchAllAsync();
+                breaches = await GetBreaches;
+            }
+            catch (Exception ex)
+            {
+                CustomException.ThrowNew.NetworkException(ex.ToString());
+                return;
+            }
+            Task<List<string>> GetIgnoredBreaches = DataBaseHelper.GetDataAsList("SELECT B_hash FROM Tbl_breaches;", (int)ColumnCount.SingleColumn);
+            List<string> ignoredBreaches = await GetIgnoredBreaches;
+            int index = 0;
+            for (int i = 0; i < breaches.Count; i++)
+            {
+                Breaches.Breach breach = breaches[i];
+                if (domains.Contains(breach.Domain))
+                {
+                    string hash = CryptoHelper.SHA256HashBase64(breach.Name + breach.BreachDate);
+                    if (!ignoredBreaches.Contains(hash))
+                    {
+                        DashboardLunaItemListBreaches.Add(breach.Title, Resources.exclamation_mark, breach.BreachDate, hash, i, index);
+                        index++;
+                    }
+                }
+            }
+        }
+
+        private async void Breach_Clicked(object sender, EventArgs e)
+        {
+            LunaItem item = (LunaItem)sender;
+            Breaches.Breach breach = breaches[item.Index];
+            Task<Image> GetIcon = pmdbs.Icon.GetFromUrlAsync(breach.LogoPath);
+            Image icon = await GetIcon;
+            DialogResult result = new BreachForm(breach.BreachDate, breach.Title, icon ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain).ShowDialog();
+            if (result == DialogResult.Ignore)
+            {
+                await DataBaseHelper.ModifyData("INSERT INTO Tbl_breaches (B_hash) VALUES (\"" + item.Id + "\");");
+                DashboardLunaItemListBreaches.RemoveAt(item.Index2);
+            }
+        }
+
+        
     }
 }
