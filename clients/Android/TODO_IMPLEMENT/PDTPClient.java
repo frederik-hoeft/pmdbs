@@ -1,14 +1,21 @@
 package pmdbs;
 import java.util.List;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
 public class PDTPClient
@@ -17,7 +24,7 @@ public class PDTPClient
 	private static PDTPClient client = null;
 	
 	private PDTPClient() {
-		this.RemoteAddress = "192.168.178.46";
+		this.RemoteAddress = "th3fr3d.ddns.net";
 		this.RemotePort = 4447;
 	}
 	
@@ -108,7 +115,7 @@ public class PDTPClient
 		return AESKey;
 	}
 
-	public void Connect() throws Exception
+	public void Connect() throws NoSuchAlgorithmException, IOException
 	{
 		this.ErrorCode = -1;
 		String[] keypair = CryptoHelper.GenerateRSAKeys();
@@ -127,28 +134,12 @@ public class PDTPClient
         	// INITIALIZE 32 KB RECEIVE BUFFER FOR INCOMING DATA
             int bufferSize = 32768;
             List<Byte> buffer = new ArrayList<Byte>();
+			this.Socket.setReceiveBufferSize(bufferSize);
         	byte[] data = new byte[bufferSize];
 			while(true)
 			{
 				boolean receiving = true;
 				List<Byte[]> dataPackets = new ArrayList<Byte[]>();
-				this.Socket.setReceiveBufferSize(bufferSize);
-				/*
-				 * THIS MAY BE THE SOLUTION!!!
-				int offset = 0;
-			    int wanted = buffer.length;
-
-			    while( wanted > 0 )
-			    {
-			        final int len = istream.read( buffer, offset, wanted );     
-			        if( len == -1 )
-			        {
-			            throw new java.io.EOFException( "Connection closed gracefully by peer" );
-			        }
-			        wanted -= len;
-			        offset += len;
-			    } 
-				*/
 				while (receiving) 
 				{
 					int connectionDropped = ServerOutput.read( data, 0, data.length );
@@ -330,8 +321,7 @@ public class PDTPClient
 		                    }
 		                    String packetID = decryptedData.substring(0, 3);
 		                    String packetSID = decryptedData.substring(3, 6);
-		                    // TODO: AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
-		                    // AutomatedTaskFramework.DoTasks(decryptedData);
+		                    AutomatedTaskFramework.DoTasks(decryptedData);
 		                    switch (packetID)
 		                    {
 		                        case "KEX":
@@ -344,16 +334,54 @@ public class PDTPClient
 		                            else
 		                            {
 		                                System.out.println("Key Exchange finished.");
-		                                // if (this.Cookie.Equals(String.Empty))
-		                                // {
-		                                    // NetworkAdapter.MethodProvider.GetCookie();
-		                                // }
-		                                // else
-		                                // {
-		                                    // NetworkAdapter.MethodProvider.CheckCookie();
-		                                // }
+		                                if (GlobalVarPool.cookie == null)
+		                                {
+		                                	NetworkAdapter.MethodProvider.GetCookie();
+		                                }
+		                                else
+		                                {
+		                                    NetworkAdapter.MethodProvider.CheckCookie();
+		                                }
 		                                break;
 		                            }
+		                        }
+		                        case "DTA":
+		                        {
+		                        	switch(packetSID)
+		                        	{
+				                        case "CKI":
+		                                {
+		                                    GlobalVarPool.cookie = decryptedData.substring(6).split("!")[1];
+		                                    //TODO: INSERT COOKIE INTO Tbl_user! --> await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_cookie = \"", GlobalVarPool.cookie, "\";" }));
+		                                    NetworkAdapter.MethodProvider.Authorize();
+		                                    break;
+		                                }
+		                        	}
+		                        	break;
+		                        }
+		                        case "INF":
+		                        {
+		                        	switch (packetSID)
+		                        	{
+			                        	case "RET":
+			                        	{
+			                        		switch (decryptedData.split("!")[1])
+			                        		{
+				                        		case "COOKIE_DOES_EXIST":
+	                                            {
+	                                                NetworkAdapter.MethodProvider.Authorize();
+	                                                break;
+	                                            }
+		                                        case "COOKIE_DOES_NOT_EXIST":
+	                                            {
+	                                                NetworkAdapter.MethodProvider.GetCookie();
+	                                                break;
+	                                            }
+			                        		}
+			                        		break;
+			                        	}
+		                        	}
+		                        	break;
 		                        }
 		                    }
 		                    break;
@@ -362,7 +390,34 @@ public class PDTPClient
 				}
 			}
 		} 
-		catch (Exception e) {
+		catch (SocketException e) {
+			if (e.getMessage().equalsIgnoreCase("RST")) {
+				System.out.println("DISCONNECTED");
+			}
+			else {
+				e.printStackTrace();
+			}
+			// TODO Auto-generated catch block
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidAlgorithmParameterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -401,5 +456,9 @@ public class PDTPClient
 
 	public void setThreadKilled(boolean threadKilled) {
 		ThreadKilled = threadKilled;
+	}
+
+	public void setErrorCode(int errorCode) {
+		ErrorCode = errorCode;
 	}
 }

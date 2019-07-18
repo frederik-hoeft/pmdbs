@@ -4,12 +4,15 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 
 import org.spongycastle.jce.provider.BouncyCastleProvider;
 import org.spongycastle.util.io.pem.PemObject;
 import org.spongycastle.util.io.pem.PemReader;
 import org.spongycastle.util.io.pem.PemWriter;
 
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -20,12 +23,16 @@ import java.security.PublicKey;
 import java.security.SecureRandom;
 import java.security.Security;
 import java.security.spec.AlgorithmParameterSpec;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Random;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
@@ -67,6 +74,7 @@ public class CryptoHelper
 		}
 		return result;
 	}
+	
 	public static String[] GenerateRSAKeys() throws NoSuchAlgorithmException, IOException
 	{
 		// Get an instance of the RSA key generator
@@ -97,7 +105,7 @@ public class CryptoHelper
 		return new String[] {privateKeyPEM, publicKeyPEM};
 	} 
 
-    public static String SHA256(String text) throws Exception 
+    public static String SHA256(String text) throws UnsupportedEncodingException, NoSuchAlgorithmException
     {
         byte[] keyBytes;
         keyBytes = text.getBytes("UTF-8");
@@ -116,7 +124,7 @@ public class CryptoHelper
         return new String(hexChars);
     }
     
-    public static String SHA256HashBase64(String text) throws Exception
+    public static String SHA256HashBase64(String text) throws UnsupportedEncodingException, NoSuchAlgorithmException
     {
     	byte[] keyBytes;
         keyBytes = text.getBytes("UTF-8");
@@ -127,7 +135,7 @@ public class CryptoHelper
         return Base64.getEncoder().encodeToString(keyBytes);
     }
     
-    public static String RSAEncrypt(String text) throws Exception
+    public static String RSAEncrypt(String text) throws IOException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
     {
     	PDTPClient client = PDTPClient.GetInstance();
         Reader reader = new StringReader(client.getRemoteRSAKey()); // or from file etc.
@@ -137,7 +145,7 @@ public class CryptoHelper
 
         PublicKey key = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(pemObject.getContent()));
         //Get Cipher Instance RSA With ECB Mode and OAEPWITHSHA-512ANDMGF1PADDING Padding
-        Cipher cipher = Cipher.getInstance("RSA/NONE/OAEPPadding");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
         
         //Initialize Cipher for ENCRYPT_MODE
         cipher.init(Cipher.ENCRYPT_MODE, key);
@@ -148,10 +156,10 @@ public class CryptoHelper
         return Base64.getEncoder().encodeToString(cipherText);
     }
     
-    public static String RSADecrypt(String text) throws Exception
+    public static String RSADecrypt(String text) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
     {
     	//Get Cipher Instance RSA With ECB Mode and OAEPWITHSHA-512ANDMGF1PADDING Padding
-        Cipher cipher = Cipher.getInstance("RSA/NONE/OAEPPadding");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPPadding");
         
         PDTPClient client = PDTPClient.GetInstance();
         PrivateKey privateKey = client.getPrivateKey();
@@ -164,7 +172,7 @@ public class CryptoHelper
         return new String(decryptedTextArray);
     }
     
-    public static String RandomString(int length) throws Exception 
+    public static String RandomString(int length) throws UnsupportedEncodingException, NoSuchAlgorithmException
     {
     	String symbols = "ABCDEFGJKLMNPRSTUVWXYZ0123456789";
     	Random random = new SecureRandom();
@@ -181,7 +189,7 @@ public class CryptoHelper
         return SHA256(new String(buf));
     }
     
-    public static String AESEncrypt(String plainText, String password) throws Exception 
+    public static String AESEncrypt(String plainText, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException 
     {
         byte[] bytes = plainText.getBytes("UTF-8");
         byte[] ivBytes = new byte[16];
@@ -207,7 +215,7 @@ public class CryptoHelper
         return Base64.getEncoder().encodeToString(finalBytes);
     }
 
-    public static String AESDecrypt(String cipherText, String password) throws Exception
+    public static String AESDecrypt(String cipherText, String password) throws UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
     {
         byte[] bytes = Base64.getDecoder().decode(cipherText);
         byte[] keyBytes = password.getBytes("UTF-8");
