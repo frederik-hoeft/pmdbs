@@ -1,7 +1,5 @@
 package pmdbs;
 
-import java.nio.charset.Charset;
-
 public class Network
 {
 	private Network() {}
