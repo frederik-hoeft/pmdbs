@@ -21,17 +21,17 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.6-11b.19"
+VERSION = "0.7-2b.19"
 BUILD = "development"
-DATE = "Jun 27 2019"
-TIME = "22:02"
+DATE = "Jul 20 2019"
+TIME = "14:22"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
 try:
 	# os IS NEEDED TO CLEAR THE CONSOLE. SO IMPORT IT FIRST
 	import os
-	import importlib
+	from importlib import util
 except Exception as e:
 	# IF THE PYTHON INSTALLATION IS MESSED UP EXIT HERE AND PRINT ERROR MESSAGE
 	print(e)
@@ -44,12 +44,12 @@ if os.name == "nt":
 # CLEAR THE CONSOLE
 os.system("clear")
 # REQUIRED PACKAGES
-NATIVE_PACKAGES = ["socket", "threading", "base64", "os", "ast", "sqlite3", "argparse", "secrets", "hashlib", "glob", "datetime", "time", "subprocess", "select", "re", "errno", "smtplib", "sys", "getpass", "inspect", "email", "string", "random"]
+NATIVE_PACKAGES = ["socket", "threading", "base64", "os", "ast", "sqlite3", "argparse", "secrets", "hashlib", "glob", "datetime", "time", "subprocess", "select", "re", "errno", "smtplib", "sys", "getpass", "inspect", "email", "string", "random", "ssl"]
 ADDITIONAL_PACKAGES = ["Crypto", "scrypt", "pygeoip", "defusedxml"]
-CUSTOM_PACKAGES = ["config"]
+CUSTOM_PACKAGES = ["config","mailcontent"]
 print(CWHITE + "         Checking native packages ..." + ENDF)
 for package in NATIVE_PACKAGES:
-	if importlib.util.find_spec(package) is None:
+	if util.find_spec(package) is None:
 		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] " + package + " is not installed.")
 		print(CRED + "Please reinstall Python as these packages should be present in the Python Standard Library." + ENDF)
 		exit()
@@ -59,7 +59,7 @@ print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] All native packages are ins
 import subprocess
 print(CWHITE + "         Checking additional packages ..." + ENDF)
 for package in ADDITIONAL_PACKAGES:
-	if importlib.util.find_spec(package) is None:
+	if util.find_spec(package) is None:
 		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] " + package + " is not installed.")
 		print(CWHITE + "         Trying to install " + package + " ..." + ENDF)
 		status = 1
@@ -79,7 +79,7 @@ for package in ADDITIONAL_PACKAGES:
 print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] All additional packages are installed.")
 print(CWHITE + "         Checking pmdbs packages ..." + ENDF)
 for package in CUSTOM_PACKAGES:
-	if importlib.util.find_spec(package) is None:
+	if util.find_spec(package) is None:
 		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] " + package + " is missing!")
 		print(CRED + "Please reinstall PMDBS." + ENDF)
 		exit()
@@ -91,6 +91,7 @@ try:
 	from Crypto.Cipher import PKCS1_OAEP, AES
 	import hashlib
 	import base64
+	from Crypto import version_info as CryptoVersion
 	from Crypto import Random
 	from Crypto.Util import number
 	from Crypto.PublicKey import RSA
@@ -115,8 +116,10 @@ try:
 	import re
 	import errno
 	import smtplib
+	from subprocess import Popen, PIPE
 	import pygeoip
 	import sys
+	import ssl
 	import getpass
 	import inspect
 	import string
@@ -125,6 +128,7 @@ try:
 	from email.mime.text import MIMEText
 	from email.mime.image import MIMEImage
 	from config import *
+	from mailcontent import *
 except Exception as e:
 	# IF ANYTHING GOES WRONG PRINT ERROR MESSAGE AND EXIT
 	print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Importing required packages: " + str(e) + ENDF)
@@ -1238,7 +1242,10 @@ class Handle():
 			return
 		info = "errno%eq!" + errorNo + "!;code%eq!" + errorID + "!;message%eq!" + str(message) +"!;"
 		Log.ServerEventLog("ERROR", info.replace("\"", "").replace("'",""))
-		PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
+		if (clientAddress == "BOOT_CHECK"):
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] " + errorID + ": " + message + ENDF)
+		else:
+			PrintSendToAdmin("SERVER <-#- [ERRNO " + errorNo + "] " + errorID + "            -#-> " + clientAddress)
 		if clientSocket is None:
 			return
 		if not isEncrypted:
@@ -1257,7 +1264,7 @@ class Management():
 		# cookie%eq!cookie!;device%eq!device_info!;is_mobile%eq!bool!;version%eq!version!;
 		parameters = command.split(";")
 		# CHECK FOR SQL INJECTION
-		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
+		if DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey) is False:
 			return
 		# SECURITY CHECK PASSED
 		cookie = None
@@ -1288,12 +1295,20 @@ class Management():
 		if None in [cookie, device, isMobile, version]:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
+		cookieIsValid = Management._checkCookie(cookie, clientAddess)
+		if cookieIsValid is False:
+			# COOKIE IS INVALID
+			PrintSendToAdmin("SERVER ---> AUTHORIZATION FAILED       ---> " + clientAddress)
+			Network.SendEncrypted("INFRETmsg%eq!COOKIE_DOES_NOT_EXIST!;")
+			return
 		client = GetClient(clientSocket)
 		if client is False:
 			Log.ServerEventLog("SOCKET_ERROR", "client is False")
 			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
 			return
+		UserData.ModifySilent("UPDATE Tbl_cookies SET C_os = \"" + device + "\", C_lastSeen = \"" + Timestamp() + "\" WHERE C_cookie = \"" + cookie + "\";", clientAddress)
 		Log.ServerEventLog("CLIENT AUTHORIZATION", client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version)
+		client.cookie = cookie
 		client.details = client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version
 		loggingThread = Thread(target = Management.BackgroundCheck, args = (clientAddress, clientSocket))
 		loggingThread.start()
@@ -1421,10 +1436,19 @@ class Management():
 		PrintSendToAdmin("SERVER ---> ACCOUNT DATA               ---> " + clientAddress)
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 		
+	def _checkCookie(cookie, clientAddress):
+		cookieExists = 0
+		try:
+			cookieExists = DatabaseHelper.UserData.SelectSilent("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\" LIMIT 1);", clientAddress)[0][0]
+		except IndexError as e:
+			# INDEX ERROR 
+			Handle.Error("NFND", e, clientAddress, None, None, False)
+			return False
+		return cookieExists == 1
 	
 	# CHECK IF COOKIE EXISTS
 	def CheckCookie(command, clientAddress, clientSocket, aesKey):
-		# EXAMPLE command = "username%eq!username!;password%eq!password!;cookie%eq!cookie!;"
+		# EXAMPLE command = "cookie%eq!cookie!;"
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# CHECK FOR SECURITY ISSUES
@@ -1452,15 +1476,9 @@ class Management():
 		if not cookie:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		cookieExists = 0
-		try:
-			cookieExists = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\" LIMIT 1);", clientSocket, aesKey)[0][0]
-		except IndexError as e:
-			# INDEX ERROR 
-			Handle.Error("NFND", e, clientAddress, clientSocket, aesKey, True)
-			return
+		cookieExists = Management._checkCookie(cookie, clientAddress)
 		returnValue = None
-		if cookieExists == 1:
+		if cookieExists is True:
 			returnValue = "INFRETmsg%eq!COOKIE_DOES_EXIST!;"
 			PrintSendToAdmin("SERVER ---> COOKIE CHECK SUCCESSFUL    ---> " + clientAddress)
 		else:
@@ -1797,6 +1815,86 @@ class Management():
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> ACCOUNT ACTIVITY           ---> " + clientAddress)
 	
+	def RemoveDevice(command, clientAddress, clientSocket, aesKey):
+		# EXAMPLE command = "cookie%eq!cookie!;"
+		# GET USER ID
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if userID is False:
+			# USER IS NOT LOGGED IN
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# USER IS LOGGED IN
+		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
+		creds = command.split(";")
+		# CHECK FOR SECURITY ISSUES
+		if not DatabaseManagement.Security.Check(creds, clientAddress, clientSocket, aesKey):
+			return
+		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
+		cookie = None
+		# GET THE COOKIE FROM ARRAY
+		try:
+			for credential in creds:
+				if credential:
+					if "cookie" in credential:
+						cookie = credential.split("!")[1]
+					elif not credential:
+						pass
+					else:
+						# COMMAND CONTAINS MORE DATA THAN REQUESTED --> THROW INVALID COMMAND EXCEPTION
+						Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+						return
+		except Exception as e:
+			# COMMAND CONTAINS UNKNOWN FORMATTING --> THROW INVALID COMMAND EXCEPTION
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
+		if not cookie:
+			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+			return
+		cookieExists = 0
+		try:
+			cookieExists = DatabaseHelper.UserData.SelectSilent("SELECT EXISTS(SELECT 1 FROM Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_cookie = \"" + cookie + "\" AND c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " LIMIT 1);", clientAddress)[0][0]
+		except IndexError as e:
+			# INDEX ERROR 
+			Handle.Error("NFND", e, clientAddress, clientSocket, aesKey, True)
+			return
+		if cookieExists != 1:
+			Handle.Error("NFND", None, clientAddress, clientSocket, aesKey, True)
+			return
+		querySuccessful = DatabasHelper.UserData.Modify("DELETE FROM Tbl_connectUserCookies WHERE C_id IN (SELECT c.C_id from Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " and c.C_cookie = \"" + cookie + "\") AND U_id IN (SELECT u.U_id from Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " and c.C_cookie = \"" + cookie + "\");", clientSocket, aesKey)
+		if querySuccessful is False:
+			return
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, "INFRETmsg%eq!UNLINK_SUCCESSFUL!;")
+		PrintSendToAdmin("SERVER ---> UNLINKING SUCCESSFUL       ---> " + clientAddress)
+	
+	def GetDevices(clientAddress, clientSocket, aesKey):
+		# GET USER ID
+		userID = Management.CheckCredentials(clientAddress, clientSocket, aesKey)
+		if userID is False:
+			# USER IS NOT LOGGED IN
+			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
+			return
+		# USER IS LOGGED IN
+		devices = DatabaseHelper.UserData.Select("SELECT c.C_cookie, c.C_os, c.C_lastSeen FROM Tbl_cookies as c, Tbl_user as u, Tbl_connectUserCookies as cuc WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + ";", clientSocket, aesKey)
+		if devices is False:
+			# SOMETHONG WENT WRONG --> SQL ERROR
+			Handle.Error("SQLE", "devices is False", clientAddress, clientSocket, aesKey, True)
+			return
+		allClientsLocal = Server.allClients.copy()
+		for device in devices:
+			for client in allClientsLocal:
+				try:
+					if client.cookie == device[0]:
+						device[2] = "online"
+						break
+				except IndexError:
+					break
+		# RETURN DATA TO CLIENT
+		returnData = "DTADEVdata%eq!" + str(devices).replace("!",".") + "!;"
+		# SEND DATA ENCRYPTED TO CLIENT
+		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+		PrintSendToAdmin("SERVER ---> LINKED DEVICES             ---> " + clientAddress)
+	
 	# CHANGES THE EMAIL ADDRESS IF THE ACCOUNT HAS NOT BEEN ACTIVATED / VERIFIED YET
 	def ChangeEmailAddress(command, clientAddress, clientSocket, aesKey):
 		# EXAMPLE COMMAND
@@ -2121,9 +2219,60 @@ class Management():
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 	
+	def BanDevice(command, clientAddress, clientSocket, aesKey, isSystem):
+		# EXAMPE COMMAND cookie%eq!!;duration%eq!!;
+		if not isSystem:
+			# CHECK IF REQUEST ORIGINATES FROM ADMIN
+			if not clientSocket == Server.admin:
+				Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+				return
+		parameters = command.split(";")
+		# CHECK FOR SQL INJECTION
+		if not DatabaseManagement.Security.Check(parameters, clientAddress, clientSocket, aesKey):
+			return
+		# INITIALIZE VARIABLES
+		cookie = None
+		duration = None
+		# STORE PROVIDED DATA IN VARIABLES
+		try:
+			for parameter in parameters:
+				if "cookie" in parameter:
+					cookie = parameter.split("!")[1]
+				elif "duration" in parameter:
+					duration = parameter.split("!")[1]
+				elif not parameter:
+					pass
+				else:
+					# MORE DATA PROVIDED THAN NEEDED --> THROW EXCEPTION
+					Handle.Error("ICMD", "TOO_MANY_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
+					return
+		except Exception as e:
+			# INVALID FORMATTING
+			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
+			return
+		# CHECK IF CRUCIAL VARIABLES HAVE BEEN SET
+		if cookie is None or duration is None:
+			Handle.Error("ICMD", "TOO_FEW_PARAMETERS", clientAddress, clientSocket, aesKey, True)
+			return
+		cookieExists = 0
+		try:
+			# QUERY DATABASE FOR USER
+			cookieExists = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookie WHERE C_cookie = \"" + cookie + "\");", clientSocket, aesKey)[0][0]
+		except Exception:
+			return
+		# CHECK IF USER EXISTS
+		if cookieExists == 0:
+			Handle.Error("NFND", "cookie does not exist!", clientAddress, clientSocket, aesKey, True)
+			return
+		if DatabaseHelper.UserData.Modify("INSERT INTO Tbl_blockedCookies SET BC_cookie = \"" + cookie + "\", BC_time = \"" + Timestamp() + "\", BC_duration = \"" + duration + "\";", clientSocket, aesKey) is False:
+			return
+		PrintSendToAdmin("SERVER ---> BANNED DEVICE              ---> " + clientAddress)
+		Log.ServerEventLog("BAN_BY_DEVICE", cookie + " has been banned for " + duration + " seconds!")
+		# KICK USER
+		Management.Kick("mode%eq!cookie!;target%eq!" + cookie + "!;", clientAddress, clientSocket, aesKey)
+	
 	# BAN A USER (ADMIN PRIVILEGES NEEDED)
 	def BanAccount(command, clientAddress, clientSocket, aesKey, isSystem):
-		# EXAMPLE COMMAND
 		if not isSystem:
 			# CHECK IF REQUEST ORIGINATES FROM ADMIN
 			if not clientSocket == Server.admin:
@@ -2222,9 +2371,8 @@ class Management():
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: BANNED  ---> " + clientAddress)
 			Network.Send(clientSocket, "ERRCONNECTION_FAILED_BANNED")
 			return
-		else:
-			# ALL CHECKS PASSED --> ALLOW CONNECTION
-			Management.AllowConnection(clientAddress, clientSocket)
+		# ALL CHECKS PASSED --> ALLOW CONNECTION
+		Management.AllowConnection(clientAddress, clientSocket)
 	
 	# BAN A CLIENT
 	def Ban(command, clientAddress, clientSocket, aesKey, isSystem):
@@ -2833,11 +2981,39 @@ class Management():
 	# SENDS AN EMAIL USING GIVEN PARAMETERS
 	def SendMail(From, To, subject, text, html, clientAddress):
 		# CONNECT TO SMTP SERVER (SSL)
-		server = smtplib.SMTP_SSL(host = SUPPORT_EMAIL_HOST, port = SUPPORT_EMAIL_SSL_PORT)
+		context = None
+		try:
+			context = ssl.SSLContext(SUPPORT_EMAIL_SSL_PROTOCOL_VERSION)
+		except Exception as e:
+			if (clientAddress == "BOOT_CHECK"):
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Could not create SSL context. Unsupported protocol version:" + str(e) + ENDF)
+			else:	
+				Handle.Error("MAIL", e, clientAddress, None, None, False)
+			return
+		server = None
+		try:
+			server = smtplib.SMTP(host = SUPPORT_EMAIL_HOST, port = SUPPORT_EMAIL_SSL_PORT)
+		except Exception as e:
+			if (clientAddress == "BOOT_CHECK"):
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Could not connect to server: " + str(e) + ENDF)
+			else:	
+				Handle.Error("MAIL", e, clientAddress, None, None, False)
+			return
+		server.ehlo()
+		try:
+			server.starttls(context = context)
+		except Exception as e:
+			if (clientAddress == "BOOT_CHECK"):
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Could not initiate TLS session: " + str(e) + ENDF)
+			else:	
+				Handle.Error("MAIL", e, clientAddress, None, None, False)
+			return
+		server.ehlo()
 		# LOGIN
 		try:
 			server.login(SUPPORT_EMAIL_ADDRESS, SUPPORT_EMAIL_PASSWORD)
 		except Exception as e:
+			server.quit()
 			Handle.Error("MAIL", e, clientAddress, None, None, False)
 			return
 		message = MIMEMultipart("alternative")
@@ -2862,11 +3038,13 @@ class Management():
 		try:
 			server.sendmail(From, To, message.as_string()) 
 		except Exception as e:
-			Handle.Error("MAIL", e, clientAddress, None, None, False)
+			Handle.Error("MAIL", str(e), clientAddress, None, None, False)
 			return
 		# DISCONNECT
 		server.quit()
 		PrintSendToAdmin("SERVER ---> VERIFICATION MAIL SENT     ---> " + clientAddress)
+		if (clientAddress == "BOOT_CHECK"):
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] --check-config-mail successfully executed." + ENDF)
 	
 	# KICKS A CLIENT SPECIFIED BY THE COMMAND (CAN BE USERNAME, IP, IP:PORT)
 	def Kick(command, clientAddress, clientSocket, aesKey):
@@ -2903,6 +3081,7 @@ class Management():
 				Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 				return
 			# CHECK FOR SUPPORTED MODES
+			kicked = False
 			if mode == "ip":
 				# TRY REGEX --> EXCEPTION == INVALID COMMAND
 				try:
@@ -2925,22 +3104,6 @@ class Management():
 							Management.Disconnect(client.socket, "KICKED_BY_ADMIN", client.address, False)
 							Log.ServerEventLog("KICKED_USER_BY_IP", "kicked_user: " + target)
 							kicked = True
-					# CHECK IF CLIENT HAS BEEN KICKED
-					if not kicked:
-						# CLIENT NOT FOUND
-						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
-						# SEND DATA ENCRYPTED TO CLIENT
-						Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-					# CLIENT HAS BEEN KICKED
-					else:
-						# CKECK IF CLIENT WAS ADMIN
-						if not Server.admin == target:
-							# SEND CONFIRMATION TO ADMIN
-							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-							returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
-							# SEND DATA ENCRYPTED TO CLIENT
-							Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			elif mode == "ipport":
 				ip = target.split(":")[0]
 				port = target.split(":")[1]
@@ -2965,22 +3128,6 @@ class Management():
 							Management.Disconnect(client.socket, "KICKED_BY_ADMIN", client[1], False)
 							Log.ServerEventLog("KICKED_USER_BY_IP_AND_PORT", "kicked_user: " + target)
 							kicked = True
-					# CHECK IF CLIENT HAS BEEN KICKED
-					if not kicked:
-						# CLIENT NOT FOUND
-						PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-						returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
-						# SEND DATA ENCRYPTED TO CLIENT
-						Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-					# CLIENT HAS BEEN KICKED
-					else:
-						# CKECK IF CLIENT WAS ADMIN
-						if Server.admin == clientSocket:
-							# SEND CONFIRMATION TO ADMIN
-							PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-							returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
-							# SEND DATA ENCRYPTED TO CLIENT
-							Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			elif mode == "username":
 				kicked = False
 				# CREATE LOCAL COPY OF THE SERVER PROPERTY "authorizedClients"
@@ -2998,28 +3145,43 @@ class Management():
 								Management.Logout(client.address, client.socket, None, True)
 								# DISCONNECT CLIENT
 								Management.Disconnect(client.socket, "KICKED_BY_ADMIN", client.address, False)
-								Log.ServerEventLog("KICKED_USER_BY_USERNAME", "kicked_user: " + target)
+								Log.ServerEventLog("KICKED_CLIENT_BY_USERNAME", "kicked_user: " + target)
 								kicked = True
 								break
-				# CHECK IF CLIENT HAS BEEN KICKED
-				if not kicked:
-					# CLIENT NOT FOUND
-					PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
-					returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
+			elif mode == "cookie":
+				kicked = False
+				# CREATE LOCAL COPY OF THE SERVER PROPERTY "allClients"
+				clientsLocal = Server.allClients.copy()
+				# ITERATE OVER LOCAL COPY OF ALL CLIENTS
+				for client in clientsLocal:
+					# CHECK IF PROVIDED USERNAME MATCHES
+					if client.cookie == target:
+						# LOGOUT CLIENT (NOTE "NONE" FOR AESKEY IS ONLY VALID BECAUSE 4TH PARAMETER IS TRUE)
+						Management.Logout(client.address, client.socket, None, True)
+						# DISCONNECT CLIENT
+						Management.Disconnect(client.socket, "KICKED_BY_ADMIN", client.address, False)
+						Log.ServerEventLog("KICKED_CLIENT_BY_COOKIE", "kicked_device: " + target)
+						kicked = True
+						break
+			else:
+				# COMMAND IS INVALID
+				Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
+			# CHECK IF CLIENT HAS BEEN KICKED
+			if kicked is False:
+				# CLIENT NOT FOUND
+				PrintSendToAdmin("SERVER ---> NO CLIENT FOUND            ---> " + clientAddress)
+				returnData = "INFRETmsg%eq!CLIENT_NOT_FOUND!;"
+				# SEND DATA ENCRYPTED TO CLIENT
+				Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+			# CLIENT HAS BEEN KICKED
+			else:
+				# CKECK IF CLIENT WAS ADMIN
+				if Server.admin == clientSocket:
+					# SEND CONFIRMATION TO ADMIN
+					PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
+					returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
 					# SEND DATA ENCRYPTED TO CLIENT
 					Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-				# CLIENT HAS BEEN KICKED
-				else:
-					# CKECK IF CLIENT WAS ADMIN
-					if Server.admin == clientSocket:
-						# SEND CONFIRMATION TO ADMIN
-						PrintSendToAdmin("SERVER ---> CLIENT KICKED SUCCESSFULLY ---> " + clientAddress)
-						returnData = "INFRETmsg%eq!CLIENT_KICKED!;"
-						# SEND DATA ENCRYPTED TO CLIENT
-						Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
-			# COMMAND IS INVALID
-			else:
-				Handle.Error("ICMD", "INVALID_MODE", clientAddress, clientSocket, aesKey, True)
 		# SOMETHING WENT WRONG --> BETTER TELL ADMIN
 		except Exception as e:
 			# PRINT ERROR MESSAGE
@@ -3598,7 +3760,7 @@ class Management():
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server shutdown complete." + ENDF)
 		os.system("sleep " + str(REBOOT_TIME) + " && python3 " + inspect.getfile(inspect.currentframe()))
 	
-	# LOGIN A CLIENT AND ADD HIM TO AUTHORIZED CLIENTS (SAVES EXPENSIVE DATABASE LOOKUPS)
+	# ADD HIM TO AUTHORIZED CLIENTS (SAVES EXPENSIVE DATABASE LOOKUPS)
 	def Login(command, clientAddress, clientSocket, aesKey):
 		client = GetClient(clientSocket)
 		if client is False:
@@ -3890,6 +4052,7 @@ def GetHMACkeys(clientSocket):
 class Client(object):
 	socket = None
 	address = None
+	cookie = None
 	IS_ADMIN = False
 	IS_AUTHORIZED = False
 	details = None
@@ -3921,64 +4084,51 @@ def GetUser(clientSocket):
 		if clientSocket == user.socket:
 			return user
 	return False
-		
-################################################################################
-#-------------------------------SERVER MAIN THREAD-----------------------------#
-################################################################################
-# LISTENS ON PORT 4444 AND STARTS NEW THREAD FOR EACH CLIENT
-class Server(Thread):
-	# INITIALIZE GLOBAL SERVER ATTRIBUTES
-	serverPublicKey = None
-	serverPrivateKey = None
-	publicKeyPem = None
-	publicKeyXml = None
-	geolocatingAvailable = True
-	localAddress = LOCAL_ADDRESS
-	localPort = LOCAL_PORT
-	allClients = [] #[[socket, address, adminFlag, details, HMACkey],[...]]
-	authorizedClients = [] # [[ID, socket, username],[...]]
-	admin = None
-	adminIp = None
-	running = True
-	adminAesKey = None
-	stopped = False
-	TCPsocket = None
-	nmap = False
+
+class Boot():
 	
-	# RUN METHOD
-	def run(self):
-		
-		# RUN CHECKS
+	def CheckCryptoVersion():
+		print(CWHITE + "         Checking Crypto version ..." + ENDF)
+		if CryptoVersion[0] < 3:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Wrong version of Crypto library! Please use \"pip3 install pycryptodome\"" + ENDF)
+			exit()
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Crypto is on version:" + str(CryptoVersion) + "." + ENDF)
+	
+	def Initialize():
 		print(CWHITE + "         Initializing boot sequence ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Boot sequence initialized." + ENDF)
+	
+	def CheckPython():
 		print(CWHITE + "         Checking python version ..." + ENDF)
 		if not sys.version.split(" ")[0] in PYTHON_VERSIONS:
 			print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Not tested on python " + sys.version.split(" ")[0] + ENDF)
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Current python version: " + sys.version.split(" ")[0] + ENDF)
+	
+	def CheckConfig():
 		print(CWHITE + "         Checking config ..." + ENDF)
 		print(CWHITE + "         Checking global variables ..." + ENDF)
 		try:
-			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION is None or WRONG_CODE_AUTOBAN_DURATION_ADMIN is None or RESEND_CODE_MAX_COUNT is None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS is None or not PYTHON_VERSIONS or TABLE_DELETE_LENGTH is None or TABLE_BLACKLIST_LENGTH is None or TABLE_CLIENTLOG_LENGTH is None or TABLE_CONNECTUSERCOOKIES_LENGTH is None or TABLE_COOKIES_LENGTH is None or TABLE_DATA_LENGTH is None or TABLE_SERVERLOG_LENGTH is None or TABLE_USER_LENGTH is None:
+			if not REBOOT_TIME or not LOCAL_ADDRESS or LOCAL_ADDRESS == "" or not LOCAL_PORT or not SUPPORT_EMAIL_HOST or SUPPORT_EMAIL_HOST == "" or not SUPPORT_EMAIL_SSL_PORT or not SUPPORT_EMAIL_ADDRESS or SUPPORT_EMAIL_ADDRESS == "" or not SUPPORT_EMAIL_PASSWORD or SUPPORT_EMAIL_PASSWORD == "" or not ACCOUNT_ACTIVATION_MAX_TIME or not DELETE_ACCOUNT_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_MAX_TIME or not NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_MAX_TIME or not PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME or not CONFIG_VERSION or not CONFIG_BUILD or not MAX_CODE_ATTEMPTS or not MAX_CODE_ATTEMPTS_ADMIN or WRONG_CODE_AUTOBAN_DURATION is None or WRONG_CODE_AUTOBAN_DURATION_ADMIN is None or RESEND_CODE_MAX_COUNT is None or not SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT or not SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT or not SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT or not SUPPORT_EMAIL_REGISTER_SUBJECT or not SUPPORT_EMAIL_REGISTER_PLAIN_TEXT or not SUPPORT_EMAIL_REGISTER_HTML_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT or not SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT or not SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT or USE_PERSISTENT_RSA_KEYS is None or not PYTHON_VERSIONS or TABLE_DELETE_LENGTH is None or TABLE_BLACKLIST_LENGTH is None or TABLE_CLIENTLOG_LENGTH is None or TABLE_CONNECTUSERCOOKIES_LENGTH is None or TABLE_COOKIES_LENGTH is None or TABLE_DATA_LENGTH is None or TABLE_SERVERLOG_LENGTH is None or TABLE_USER_LENGTH is None or SUPPORT_EMAIL_SSL_PROTOCOL_VERSION is None or CERTIFICATES_ENABLED is None:
 				if CONFIG_VERSION and CONFIG_VERSION != VERSION:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 				else:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Undefined variables in config file." + ENDF)
-				return
+				exit()
 			else:
 				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked global variables. " + ENDF)
-		except:
+		except Exception:
 			try:
 				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
 			except NameError:
 				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Invalid config file. Please download the config file for PMDBServer version " + VERSION + " ." + ENDF)
-			return
+			exit()
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Config is valid. " + ENDF)
 		print(CWHITE + "         Checking version info ..." + ENDF)
 		if CONFIG_VERSION != VERSION:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Server is on version " + VERSION + " but config file is for version " + CONFIG_VERSION + "." + ENDF)
-			return
+			exit()
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked version info. Current version: " + VERSION + ". " + ENDF)
 		print(CWHITE + "         Checking build info ..." + ENDF)
@@ -3987,14 +4137,15 @@ class Server(Thread):
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked build info. Current build: " + BUILD + "-build. " + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked config. " + ENDF)
-		PYTHON = "Python " + " / ".join(PYTHON_VERSIONS) + " - LINUX"
+	
+	def CheckDataBase():
 		print(CWHITE + "         Looking for server.db database in " + os.getcwd() + " ..." + ENDF)
 		DatabaseHelper.ServerData.DATABASE = os.getcwd() + "/server.db"
 		if os.path.isfile(DatabaseHelper.ServerData.DATABASE):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found server.db" + ENDF)
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Could not find server.db in " + os.getcwd() + ENDF)
-			return	
+			exit()
 		# CHECK FOR READ / WRITE PERMISSIONS
 		print(CWHITE + "         Checking permissions for server.db ..." + ENDF)
 		print(CWHITE + "         Checking READ permission for server.db ..." + ENDF)
@@ -4003,14 +4154,14 @@ class Server(Thread):
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking READ permission for server.db." + ENDF)
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-			return
+			exit()
 		print(CWHITE + "         Checking WRITE permission for server.db ..." + ENDF)
 		if os.access(DatabaseHelper.ServerData.DATABASE, os.W_OK):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got WRITE permission for server.db." + ENDF)
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking WRITE permission for server.db." + ENDF)
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-			return
+			exit()
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ/WRITE permissions for server.db." + ENDF)
 		# GET ANY DATABASES IN CURRENT WORKING DIRECTORY
 		print(CWHITE + "         Looking for user database in " + os.getcwd() + " ..." + ENDF)
@@ -4019,7 +4170,7 @@ class Server(Thread):
 		# EXIT IF NO DATABASES HAVE BEEN FOUND
 		if not dataBases:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: No database found." + ENDF)
-			return
+			exit()
 		# IF ONLY ONE DATABASE IS AVAILABLE AUTOSELECT IT
 		elif len(dataBases) == 1:
 			# GLOB RETURNS NAME + PATH --> REMOVE PATH
@@ -4027,9 +4178,9 @@ class Server(Thread):
 			db = pathParts[len(pathParts) - 1]
 			# SET DATABASE
 			DatabaseHelper.UserData.DATABASE = db
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found sqlite3 database \"" + self.dataBase + "\" in " + os.getcwd() + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found sqlite3 database \"" + DatabaseHelper.UserData.DATABASE + "\" in " + os.getcwd() + ENDF)
 			print(CWHITE + "         Autoselecting ..." + ENDF)
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + self.dataBase + ENDF)
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected " + DatabaseHelper.UserData.DATABASE + ENDF)
 		# GLOB RETURNED MORE THAN ONE DATABASE --> MANUAL SELECTION NEEDED
 		else:
 			notSelected = True
@@ -4065,14 +4216,14 @@ class Server(Thread):
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking READ permission." + ENDF)
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-			return
+			exit()
 		print(CWHITE + "         Checking for WRITE permission ..." + ENDF)
 		if os.access(DatabaseHelper.UserData.DATABASE, os.W_OK):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got WRITE permission." + ENDF)
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checking WRITE permission." + ENDF)
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-			return
+			exit()
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked READ/WRITE permissions for user database." + ENDF)
 		# CHECK FOR ADMIN ACCOUNT
 		print(CWHITE + "         Verifying database structure of server.db ..." + ENDF)
@@ -4083,10 +4234,10 @@ class Server(Thread):
 			serverLogLen = len(DatabaseHelper.ServerData.Select("PRAGMA table_info(Tbl_serverLog);", "BOOT_CHECK"))
 		except Exception as e:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Server database structure is INVALID: " + str(e) + ENDF)
-			return
+			exit()
 		if not blacklistLen == TABLE_BLACKLIST_LENGTH or not serverLogLen == TABLE_SERVERLOG_LENGTH:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Server database structure is INVALID." + ENDF)
-			return
+			exit()
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Structure of server.db is VALID..." + ENDF)
 		print(CWHITE + "         Verifying database structure of user database ..." + ENDF)
 		userLen = None
@@ -4106,10 +4257,10 @@ class Server(Thread):
 			blockedCookiesLen = len(DatabaseHelper.UserData.SelectSilent("PRAGMA table_info(Tbl_blockedCookies);", "BOOT_CHECK"))
 		except Exception as e:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID: " + str(e) + ENDF)
-			return
+			exit()
 		if userLen != TABLE_USER_LENGTH or blacklistLen != TABLE_BLACKLIST_LENGTH or clientLogLen != TABLE_CLIENTLOG_LENGTH or connectUserCookiesLen != TABLE_CONNECTUSERCOOKIES_LENGTH or cookiesLen != TABLE_COOKIES_LENGTH or dataLen != TABLE_DATA_LENGTH or serverLogLen != TABLE_SERVERLOG_LENGTH or deleteLen != TABLE_DELETE_LENGTH or blockedCookiesLen != TABLE_BLOCKEDCOOKIES_LENGTH:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Database structure is INVALID." + ENDF)
-			return
+			exit()
 		adminSet = 0
 		adminSet = DatabaseHelper.UserData.SelectSilent("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"__ADMIN__\");", "BOOT_CHECK")[0][0]
 		if adminSet == 0:
@@ -4132,7 +4283,7 @@ class Server(Thread):
 						noMatch = False
 					else:
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Setting admin password" + ENDF)
-						return
+						exit()
 				else:
 					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] These passwords don't match! Please try again." + ENDF)
 		else:
@@ -4142,10 +4293,13 @@ class Server(Thread):
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Garbage collection. " + ENDF)
 		else:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Deleted deprecated data." + ENDF)
-		# LOG SERVER START
+	
+	def LogServerStart():
 		print(CWHITE + "         Logging server start ..." + ENDF)
-		Log.ServerEventLog("SERVER_STARTED", "IP: " + self.localAddress + "\nPort: " + str(self.localPort) + "\nBuild: " + NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ") " + PYTHON)
+		Log.ServerEventLog("SERVER_STARTED", "IP: " + Server.localAddress + "\nPort: " + str(Server.localPort) + "\nBuild: " + NAME + " " + VERSION + " (" + BUILD + ", " + DATE + ", " + TIME + ") " + "Python " + " / ".join(PYTHON_VERSIONS) + " - LINUX")
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Logged server start." + ENDF)
+		
+	def CheckAdvancedLogging():
 		# IF NMAP IS INSTALLED AND HAS ROOT ACCESS ADVANCED LOGGING CAN BE USED
 		print(CWHITE + "         Checking for Advanced Logging ..." + ENDF)
 		print(CWHITE + "         Checking for nmap installation ..." + ENDF)
@@ -4164,6 +4318,8 @@ class Server(Thread):
 			Server.nmap = True
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Enabled Advanced Logging." + ENDF)
+			
+	def CheckGeolocating():
 		print(CWHITE + "         Checking for Geolocating ..." + ENDF)
 		print(CWHITE + "         Checking for GeoDataBases in " + os.getcwd() + " ..." + ENDF)
 		if os.path.isdir("GeoDataBases"):
@@ -4188,43 +4344,46 @@ class Server(Thread):
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Enabled Geolocating." + ENDF)
 		else:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Enabled Geolocating." + ENDF)
-		if USE_PERSISTENT_RSA_KEYS:
+			
+	def CheckDirKeys():
+		print(CWHITE + "         Checking for RSA private key file in " + os.getcwd() + "/keys ..." + ENDF)
+		if not os.path.isdir("keys"):
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Directory \"keys\" does not exist in " + os.getcwd() + "." + ENDF)
+			print(CWHITE + "         Creating directory \"keys\" ..." + ENDF)
+			os.mkdir("keys")
+			if os.path.isdir("keys"):
+				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Directory \"keys\" created successfully." + ENDF)
+			else:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Fatal: could not create directory \"keys\" in " + os.getcwd() + "." + ENDF)
+				exit()
+			
+	def CheckRSA():
+		if CERTIFICATES_ENABLED:
 			rsaInitialized = False
 			while not rsaInitialized:
-				print(CWHITE + "         Checking for RSA private key file in " + os.getcwd() + "/keys ..." + ENDF)
-				if not os.path.isdir("keys"):
-					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Directory \"keys\" does not exist in " + os.getcwd() + "." + ENDF)
-					print(CWHITE + "         Creating directory \"keys\" ..." + ENDF)
-					os.mkdir("keys")
-					if os.path.isdir("keys"):
-						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Directory \"keys\" created successfully." + ENDF)
-					else:
-						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Fatal: could not create doirectory \"keys\" in " + os.getcwd() + "." + ENDF)
-						exit()
-				keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
-				if not keyFiles:
+				Boot.CheckDirKeys()
+				privateKeyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
+				certFiles = glob.glob(os.getcwd() + "/keys/*.cert")
+				if not privateKeyFiles or len(privateKeyFiles) > 1 or not certFiles or len(certFiles) > 1:
 					selected = False
 					while not selected:
-						print(CWHITE + "         No key file found!" + ENDF)
+						print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Zero or more than one key file / cert file found!" + ENDF)
 						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
-						print(CWHITE + "         [R] = Retry" + ENDF)
-						print(CWHITE + "         [G] = Generate new RSA Keys" + ENDF)
+						print(CWHITE + "         You can either place your own RSA private key (.privatekey file extension in PEM format) and the corresponding X.509 certificate (.cert file extension in PEM format) in the " + os.getcwd() + "/keys/ directory and [R]escan for them or you can [G]enerate a self-signed certificate. If you choose to generate a self-signed certificate keep in mind that openssl has to be installed." + ENDF)
+						print(CWHITE + "         [R] = Rescan" + ENDF)
+						print(CWHITE + "         [G] = Generate self-signed certificate" + ENDF)
 						selectedOption = input(CWHITE + " > ")
 						if selectedOption.upper() == "G":
-							print(CWHITE + "         Generating RSA keys ..." + ENDF)
-							keyPair = CryptoHelper.RSAKeyPairGenerator()
-							print(CWHITE + "         Exporting private RSA key ..." + ENDF)
-							privateKey = keyPair[1].exportKey(format="PEM").decode("utf-8")
-							with open("keys/server.privatekey", "w") as out:
-								out.write(privateKey)
-								out.close()
-							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Private RSA key exported successfully." + ENDF)
-							print(CWHITE + "         Exporting public RSA key ..." + ENDF)
-							publicKey = keyPair[0].exportKey(format="PEM").decode("utf-8")
-							with open("keys/server.publicKey", "w") as out:
-								out.write(publicKey)
-								out.close()
-							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Public RSA key exported successfully." + ENDF)
+							# TODO: GENERATE RSA PRIVATEKEY AND CERTIFICATE
+							print(CWHITE + "         Starting openssl ..." + ENDF)
+							opensslInstalled = os.system("type nmap >/dev/null 2>&1")
+							if opensslInstalled != 0:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] openssl is not installed / not accessible. Please install it." + ENDF)
+								exit()
+							#openssl req -x509 -newkey rsa:4096 -keyout server.privatekey -out server.cert -days 356
+
+							openssl = Popen(["openssl", "req", "-x509", "-newkey", "rsa:4096", "-keyout", "keys/server.privatekey", "-out", "keys/server.cert", "-days", "365"])
+							openssl.communicate()
 							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA key pair generated successfully." + ENDF)
 							print(CWHITE + "[ " + CCYAN + "INFO" + CWHITE + " ] You can find the new keys in the \"keys\" folder located in " + os.getcwd() + " ..." + ENDF)     
 							selected = True
@@ -4232,95 +4391,229 @@ class Server(Thread):
 							selected = True
 						else:
 							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
-				elif len(keyFiles) == 1:
+				else:
 					# GLOB RETURNS NAME + PATH --> REMOVE PATH
-					pathParts = keyFiles[0].split("/")
-					privateKey = pathParts[len(pathParts) - 1]
+					privateKeyPathParts = privateKeyFiles[0].split("/")
+					privateKey = privateKeyPathParts[-1]
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found RSA private key \"" + privateKey + "\" in " + os.getcwd() + ENDF)
 					print(CWHITE + "         Autoselecting ..." + ENDF)
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
 					print(CWHITE + "         Checking for READ permission ..." + ENDF)
-					if os.access(keyFiles[0], os.R_OK):
+					if os.access(privateKeyFiles[0], os.R_OK):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
 					else:
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-						return
+						exit()
 					print(CWHITE + "         Reading private key ..." + ENDF)
-					with open(keyFiles[0], "rb") as f:
+					with open(privateKeyFiles[0], "r") as f:
 						try:
 							rsaTmp = RSA.importKey(f.read())
 							Server.serverPrivateKey = rsaTmp
-							Server.serverPublicKey = rsaTmp.publickey()
-							Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-							Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
 						except Exception as e:
-							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + str(e) + ENDF)
-							exit()
-						else:
-							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
-						f.close()
-					rsaInitialized = True
-				else:
-					selected = False
-					# LOOP IN CASE USER INPUT IS INVALID
-					while not selected:
-						iterator = 0
-						print(CWHITE + "         Found more than private key in " + os.getcwd() + "/keys" + ENDF)
-						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Which private key do you want to use? (enter index)" + ENDF)
-						cleanedPrivateKeys = []
-						# LIST AVAILABLE DATABASES
-						for keypath in keyFiles:
-							pathParts = keypath.split("/")
-							key = pathParts[len(pathParts) - 1]
-							print(CWHITE + "         [" + str(iterator) + "] " + key + ENDF)
-							cleanedPrivateKeys.append(key)
-							iterator += 1
-						# PROMPT USER INPUT
-						selectedKeyString = input(CWHITE + " > ")
-						# TRY TO SELECT DATABASE AT SELECTED INDEX
-						try:
-							selectedKey = int(selectedKeyString)
-							pathParts = keyFiles[selectedKey].split("/")
-							privateKey = pathParts[len(pathParts) - 1]
-							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
-							print(CWHITE + "         Checking for READ permission ..." + ENDF)
-							if os.access(keyFiles[selectedKey], os.R_OK):
-								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
-							else:
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-								return
-							with open(keyFiles[selectedKey], "rb") as f:
-								try:
-									rsaTmp = RSA.importKey(f.read())
-									Server.serverPrivateKey = rsaTmp
-									Server.serverPublicKey = rsaTmp.publickey()
-									Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-									Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
-								except Exception as e:
-									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + e + ENDF)
+							passphraseIsCorrect = False
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key." + ENDF)
+							while passphraseIsCorrect is False:
+								print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
+								print(CWHITE + "         The private key is either encrypted or has an invalid format. Is it encrypted?" + ENDF)
+								print(CWHITE + "         [Y] = Yes" + ENDF)
+								print(CWHITE + "         [N] = No" + ENDF)
+								selectedOption = input(CWHITE + " > ")
+								if selectedOption.upper() == "Y":
+									password = getpass.getpass("Enter passphrase:")
+									try:
+										rsaTmp = RSA.importKey(f.read(), passphrase=password)
+										Server.serverPrivateKey = rsaTmp
+									except Exception as ex:
+										print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Wrong passphrase?" + ENDF)
+									else:
+										passphraseIsCorrect = True
+								elif selectedOption.upper() == "N":
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL ERROR: " + str(e) + ENDF)
+									exit()
 								else:
-									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
-									selected = True
-									rsaInitialized = True
-								f.close()
-						# INDEX WAS INVALID --> RETRY
-						except:
-							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA private key successfully set up." + ENDF)
+						passphraseIsCorrect = True
+					rsaInitialized = True
+					certPathPerts = certFiles[0].split("/")
+					cert = certPathPerts[-1]
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found certificate \"" + cert + "\" in " + os.getcwd() + ENDF)
+					print(CWHITE + "         Autoselecting ..." + ENDF)
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + cert + "\" ." + ENDF)
+					print(CWHITE + "         Checking for READ permission ..." + ENDF)
+					if os.access(certPathPerts[0], os.R_OK):
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+					else:
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+						exit()
+					print(CWHITE + "         Reading certificate ..." + ENDF)
+					with open(certPathPerts[0], "r") as f:
+						Server.certificate = f.read()
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] certificate successfully set up." + ENDF)
 		else:
-			print(CWHITE + "         Generating RSA keys ..." + ENDF)
-			try:
-				# GENERATE RSA KEY PAIR
-				keyPair = CryptoHelper.RSAKeyPairGenerator()
-				Server.serverPublicKey = keyPair[0]
-				Server.serverPrivateKey = keyPair[1]
-				Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-				Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
-			except:
-				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
-				return
-			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
+			if USE_PERSISTENT_RSA_KEYS:
+				rsaInitialized = False
+				while not rsaInitialized:
+					Boot.CheckDirKeys()
+					keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
+					if not keyFiles:
+						selected = False
+						while not selected:
+							print(CWHITE + "         No key file found!" + ENDF)
+							print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
+							print(CWHITE + "         [R] = Retry" + ENDF)
+							print(CWHITE + "         [G] = Generate new RSA Keys" + ENDF)
+							selectedOption = input(CWHITE + " > ")
+							if selectedOption.upper() == "G":
+								print(CWHITE + "         Generating RSA keys ..." + ENDF)
+								keyPair = CryptoHelper.RSAKeyPairGenerator()
+								print(CWHITE + "         Exporting private RSA key ..." + ENDF)
+								privateKey = keyPair[1].exportKey(format="PEM").decode("utf-8")
+								with open("keys/server.privatekey", "w") as out:
+									out.write(privateKey)
+									out.close()
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Private RSA key exported successfully." + ENDF)
+								print(CWHITE + "         Exporting public RSA key ..." + ENDF)
+								publicKey = keyPair[0].exportKey(format="PEM").decode("utf-8")
+								with open("keys/server.publicKey", "w") as out:
+									out.write(publicKey)
+									out.close()
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Public RSA key exported successfully." + ENDF)
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA key pair generated successfully." + ENDF)
+								print(CWHITE + "[ " + CCYAN + "INFO" + CWHITE + " ] You can find the new keys in the \"keys\" folder located in " + os.getcwd() + " ..." + ENDF)     
+								selected = True
+							elif selectedOption.upper() == "R":
+								selected = True
+							else:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
+					elif len(keyFiles) == 1:
+						# GLOB RETURNS NAME + PATH --> REMOVE PATH
+						pathParts = keyFiles[0].split("/")
+						privateKey = pathParts[-1]
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found RSA private key \"" + privateKey + "\" in " + os.getcwd() + ENDF)
+						print(CWHITE + "         Autoselecting ..." + ENDF)
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
+						print(CWHITE + "         Checking for READ permission ..." + ENDF)
+						if os.access(keyFiles[0], os.R_OK):
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+						else:
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+							exit()
+						print(CWHITE + "         Reading private key ..." + ENDF)
+						with open(keyFiles[0], "rb") as f:
+							try:
+								rsaTmp = RSA.importKey(f.read())
+								Server.serverPrivateKey = rsaTmp
+								Server.serverPublicKey = rsaTmp.publickey()
+								Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+								Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+							except Exception as e:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + str(e) + ENDF)
+								exit()
+							else:
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
+							f.close()
+						rsaInitialized = True
+					else:
+						selected = False
+						# LOOP IN CASE USER INPUT IS INVALID
+						while not selected:
+							iterator = 0
+							print(CWHITE + "         Found more than private key in " + os.getcwd() + "/keys" + ENDF)
+							print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Which private key do you want to use? (enter index)" + ENDF)
+							cleanedPrivateKeys = []
+							# LIST AVAILABLE DATABASES
+							for keypath in keyFiles:
+								pathParts = keypath.split("/")
+								key = pathParts[len(pathParts) - 1]
+								print(CWHITE + "         [" + str(iterator) + "] " + key + ENDF)
+								cleanedPrivateKeys.append(key)
+								iterator += 1
+							# PROMPT USER INPUT
+							selectedKeyString = input(CWHITE + " > ")
+							# TRY TO SELECT DATABASE AT SELECTED INDEX
+							try:
+								selectedKey = int(selectedKeyString)
+								pathParts = keyFiles[selectedKey].split("/")
+								privateKey = pathParts[len(pathParts) - 1]
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
+								print(CWHITE + "         Checking for READ permission ..." + ENDF)
+								if os.access(keyFiles[selectedKey], os.R_OK):
+									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+								else:
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+									return
+								with open(keyFiles[selectedKey], "rb") as f:
+									try:
+										rsaTmp = RSA.importKey(f.read())
+										Server.serverPrivateKey = rsaTmp
+										Server.serverPublicKey = rsaTmp.publickey()
+										Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+										Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+									except Exception as e:
+										print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + e + ENDF)
+									else:
+										print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
+										selected = True
+										rsaInitialized = True
+									f.close()
+							# INDEX WAS INVALID --> RETRY
+							except:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
+			else:
+				print(CWHITE + "         Generating RSA keys ..." + ENDF)
+				try:
+					# GENERATE RSA KEY PAIR
+					keyPair = CryptoHelper.RSAKeyPairGenerator()
+					Server.serverPublicKey = keyPair[0]
+					Server.serverPrivateKey = keyPair[1]
+					Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+					Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+				except:
+					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
+					return
+				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
+	
+################################################################################
+#-------------------------------SERVER MAIN THREAD-----------------------------#
+################################################################################
+# LISTENS ON PORT 4444 AND STARTS NEW THREAD FOR EACH CLIENT
+class Server(Thread):
+	# INITIALIZE GLOBAL SERVER ATTRIBUTES
+	serverPublicKey = None
+	serverPrivateKey = None
+	publicKeyPem = None
+	publicKeyXml = None
+	certificate = None
+	geolocatingAvailable = True
+	localAddress = LOCAL_ADDRESS
+	localPort = LOCAL_PORT
+	allClients = [] #[[socket, address, adminFlag, details, HMACkey],[...]]
+	authorizedClients = [] # [[ID, socket, username],[...]]
+	admin = None
+	adminIp = None
+	running = True
+	adminAesKey = None
+	stopped = False
+	TCPsocket = None
+	nmap = False
+	
+	# RUN METHOD
+	def run(self):
+		
+		# RUN CHECKS
+		Boot.Initialize()
+		Boot.CheckPython()
+		Boot.CheckConfig()
+		Boot.CheckDataBase()
+		Boot.LogServerStart()
+		Boot.CheckAdvancedLogging()
+		Boot.CheckGeolocating()
+		Boot.CheckRSA()
 		
 		# CREATE SOCKET
 		portBlocked = True
@@ -4340,6 +4633,7 @@ class Server(Thread):
 				time.sleep(5)
 				Server.TCPsocket.close()
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Set up TCP listener on " + self.localAddress + ":" + str(self.localPort) + "." + ENDF)
+		PYTHON = "Python " + " / ".join(PYTHON_VERSIONS) + " - LINUX"
 		print("")
 		print("                      _ _                       ")
 		print("                     | | |                      ")
@@ -4503,19 +4797,23 @@ class ClientHandler():
 								PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
 								# GET PACKET ID
 								packetSID = dataString[4:7]
-								# GET FORMAT
-								if packetSID == "XML":
-									isXmlClient = True
-									# SEND PUBLIC KEY
-									Network.SendThreadSafe(clientSocket, "KEYXMLkey%eq!" + Server.publicKeyXml + "!;")
-								elif packetSID == "PEM":
-									isXmlClient = False
-									# SEND PUBLIC KEY
-									Network.SendThreadSafe(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
+								if CERTIFICATES_ENABLED:
+									# SEND CERTIFICATE
+									Network.SendThreadSafe(clientSocket, "KEYCRTkey%eq!" + Server.certificate + "!;")
 								else:
-									PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
-									message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
-									return
+									# GET FORMAT
+									if packetSID == "XML":
+										isXmlClient = True
+										# SEND PUBLIC KEY
+										Network.SendThreadSafe(clientSocket, "KEYXMLkey%eq!" + Server.publicKeyXml + "!;")
+									elif packetSID == "PEM":
+										isXmlClient = False
+										# SEND PUBLIC KEY
+										Network.SendThreadSafe(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
+									else:
+										PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
+										message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
+										return
 								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
 							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
 							elif packetID in ("EXC", "DTA", "INF", "REQ", "MNG", "LOG", "KEX"):
@@ -4803,6 +5101,26 @@ class ClientHandler():
 									PrintSendToAdmin("SERVER <--- CREDENTIAL CHECK REQUEST   <--- " + clientAddress)
 									mgmtThread = Thread(target = Management.CredentialCheckProvider, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
 									mgmtThread.start()
+								# GET ALL DEVICES ASSOCIATED WITH AN ACCOUNT
+								elif packetSID == "DEV":
+									PrintSendToAdmin("SERVER <--- REQUEST DEVICE LIST        <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.GetDevices, args = (clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# GET ACCOUNT DETAILS
+								elif packetSID == "GAD":
+									PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT DATA       <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.GetAccountData, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# UNLINK DEVICE FROM ACCOUNT
+								elif packetSID == "ULK":
+									PrintSendToAdmin("SERVER <--- REQUEST UNLINK DEVICE      <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.RemoveDevice, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
+								# BAN DEVICE
+								elif packetSID == "BND":
+									PrintSendToAdmin("SERVER <--- BAN DEVICE                 <--- " + clientAddress)
+									mgmtThread = Thread(target = Management.BanDevice, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread.start()
 								# GET ACCOUNT DETAILS
 								elif packetSID == "GAD":
 									PrintSendToAdmin("SERVER <--- REQUEST ACCOUNT DATA       <--- " + clientAddress)
@@ -4894,7 +5212,27 @@ class ClientHandler():
 					if GetUser(clientSocket):
 						Management.Logout(clientAddress, clientSocket, aesKey, True)
 					Management.Disconnect(clientSocket, message, clientAddress, False)
-		
-# INITIALIZE THE SERVER
-ServerThread = Server()
-ServerThread.start()
+
+Boot.CheckCryptoVersion()
+arguments = None
+try:
+	argument1 = sys.argv[1]
+except:
+	# INITIALIZE THE SERVER
+	ServerThread = Server()
+	ServerThread.start()
+else:
+	if argument1 == "--help":
+		print("Avalable parameters:\n   --check-config-mail")
+	elif argument1 == "--check-config-mail":
+		try:
+			Boot.CheckConfig()
+			print(CWHITE + "[" + CCYAN + "CHECK " + CWHITE + "] RUNNING: --check-config-mail ..." + ENDF)
+			Management.SendMail(SUPPORT_EMAIL_ADDRESS, SUPPORT_EMAIL_ADDRESS, "mail config check", "If you can read this, your mail settings have been configures successfully.", "If you can read this, your mail settings have been configures successfully.", "BOOT_CHECK")
+		except Exception as e:
+			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] --check-config-mail failed:" + str(e) + ENDF)
+	elif argument1 == "--private-key-passphrase":
+		pass
+	else:
+		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] argument exception:" + argument1 + " is invalid!" + ENDF)
+
