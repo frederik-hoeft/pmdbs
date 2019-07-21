@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.7-2b.19"
+VERSION = "0.7-3b.19"
 BUILD = "development"
-DATE = "Jul 20 2019"
-TIME = "14:22"
+DATE = "Jul 21 2019"
+TIME = "16:11"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -60,6 +60,8 @@ import subprocess
 print(CWHITE + "         Checking additional packages ..." + ENDF)
 for package in ADDITIONAL_PACKAGES:
 	if util.find_spec(package) is None:
+		if package == "Crypto":
+			package = "pycrypto"
 		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] " + package + " is not installed.")
 		print(CWHITE + "         Trying to install " + package + " ..." + ENDF)
 		status = 1
@@ -75,6 +77,8 @@ for package in ADDITIONAL_PACKAGES:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] " + package + " has not been installed.")
 			exit()
 	else:
+		if package == "Crypto":
+			package = "pycrypto"
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] " + package + " is installed.")
 print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] All additional packages are installed.")
 print(CWHITE + "         Checking pmdbs packages ..." + ENDF)
@@ -91,7 +95,6 @@ try:
 	from Crypto.Cipher import PKCS1_OAEP, AES
 	import hashlib
 	import base64
-	from Crypto import version_info as CryptoVersion
 	from Crypto import Random
 	from Crypto.Util import number
 	from Crypto.PublicKey import RSA
@@ -4087,13 +4090,6 @@ def GetUser(clientSocket):
 
 class Boot():
 	
-	def CheckCryptoVersion():
-		print(CWHITE + "         Checking Crypto version ..." + ENDF)
-		if CryptoVersion[0] < 3:
-			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Wrong version of Crypto library! Please use \"pip3 install pycryptodome\"" + ENDF)
-			exit()
-		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Crypto is on version:" + str(CryptoVersion) + "." + ENDF)
-	
 	def Initialize():
 		print(CWHITE + "         Initializing boot sequence ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Boot sequence initialized." + ENDF)
@@ -4369,16 +4365,15 @@ class Boot():
 					while not selected:
 						print(CWHITE + "[" + CYELLOW + "WARNING" + CWHITE + "] Zero or more than one key file / cert file found!" + ENDF)
 						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
-						print(CWHITE + "         You can either place your own RSA private key (.privatekey file extension in PEM format) and the corresponding X.509 certificate (.cert file extension in PEM format) in the " + os.getcwd() + "/keys/ directory and [R]escan for them or you can [G]enerate a self-signed certificate. If you choose to generate a self-signed certificate keep in mind that openssl has to be installed." + ENDF)
+						print(CWHITE + "         You can either place your own RSA private key (.privatekey file extension in PEM format) and the corresponding X.509 certificate (.cert file extension in PEM format) in the " + os.getcwd() + "/keys/ directory and [R]escan for them or you can [G]enerate a self-signed certificate. If you choose to generate a self-signed certificate keep in mind that OpenSSL has to be installed." + ENDF)
 						print(CWHITE + "         [R] = Rescan" + ENDF)
 						print(CWHITE + "         [G] = Generate self-signed certificate" + ENDF)
 						selectedOption = input(CWHITE + " > ")
 						if selectedOption.upper() == "G":
-							# TODO: GENERATE RSA PRIVATEKEY AND CERTIFICATE
-							print(CWHITE + "         Starting openssl ..." + ENDF)
-							opensslInstalled = os.system("type nmap >/dev/null 2>&1")
+							print(CWHITE + "         Starting OpenSSL ...")
+							opensslInstalled = os.system("type openssl >/dev/null 2>&1")
 							if opensslInstalled != 0:
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] openssl is not installed / not accessible. Please install it." + ENDF)
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] OpenSSL is not installed / not accessible. Please install it." + ENDF)
 								exit()
 							#openssl req -x509 -newkey rsa:4096 -keyout server.privatekey -out server.cert -days 356
 
@@ -4406,50 +4401,53 @@ class Boot():
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
 						exit()
 					print(CWHITE + "         Reading private key ..." + ENDF)
-					with open(privateKeyFiles[0], "r") as f:
-						try:
-							rsaTmp = RSA.importKey(f.read())
-							Server.serverPrivateKey = rsaTmp
-						except Exception as e:
-							passphraseIsCorrect = False
-							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key." + ENDF)
-							while passphraseIsCorrect is False:
-								print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
-								print(CWHITE + "         The private key is either encrypted or has an invalid format. Is it encrypted?" + ENDF)
-								print(CWHITE + "         [Y] = Yes" + ENDF)
-								print(CWHITE + "         [N] = No" + ENDF)
-								selectedOption = input(CWHITE + " > ")
-								if selectedOption.upper() == "Y":
-									password = getpass.getpass("Enter passphrase:")
-									try:
-										rsaTmp = RSA.importKey(f.read(), passphrase=password)
-										Server.serverPrivateKey = rsaTmp
-									except Exception as ex:
-										print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Wrong passphrase?" + ENDF)
-									else:
-										passphraseIsCorrect = True
-								elif selectedOption.upper() == "N":
-									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL ERROR: " + str(e) + ENDF)
-									exit()
+					try:
+						rsaTmp = RSA.importKey(f.read())
+						Server.serverPrivateKey = rsaTmp
+					except Exception as e:
+						passphraseIsCorrect = False
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key." + ENDF)
+						while passphraseIsCorrect is False:
+							print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
+							print(CWHITE + "         The private key is either encrypted or has an invalid format. Is it encrypted?" + ENDF)
+							print(CWHITE + "         [Y] = Yes" + ENDF)
+							print(CWHITE + "         [N] = No" + ENDF)
+							selectedOption = input(CWHITE + " > ")
+							sys.stdout.write(CWHITE)
+							if selectedOption.upper() == "Y":
+								try:
+									openssl = subprocess.Popen(["openssl", "rsa", "-in", privateKeyFiles[0]], stdout=subprocess.PIPE)
+									output = openssl.stdout.read()
+									openssl.communicate()
+									rsaTmp = RSA.importKey(output.decode("UTF-8"))
+									Server.serverPrivateKey = rsaTmp
+								except Exception as ex:
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key. OpenSSL returned:" + ENDF)
+									print(ex)
 								else:
-									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
-						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA private key successfully set up." + ENDF)
-						passphraseIsCorrect = True
+									passphraseIsCorrect = True
+							elif selectedOption.upper() == "N":
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL ERROR: " + str(e) + ENDF)
+								exit()
+							else:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA private key successfully set up." + ENDF)
+					passphraseIsCorrect = True
 					rsaInitialized = True
-					certPathPerts = certFiles[0].split("/")
-					cert = certPathPerts[-1]
+					certPathParts = certFiles[0].split("/")
+					cert = certPathParts[-1]
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found certificate \"" + cert + "\" in " + os.getcwd() + ENDF)
 					print(CWHITE + "         Autoselecting ..." + ENDF)
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + cert + "\" ." + ENDF)
 					print(CWHITE + "         Checking for READ permission ..." + ENDF)
-					if os.access(certPathPerts[0], os.R_OK):
+					if os.access(certFiles[0], os.R_OK):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
 					else:
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
 						exit()
 					print(CWHITE + "         Reading certificate ..." + ENDF)
-					with open(certPathPerts[0], "r") as f:
+					with open(certFiles[0], "r") as f:
 						Server.certificate = f.read()
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] certificate successfully set up." + ENDF)
 		else:
@@ -4497,7 +4495,7 @@ class Boot():
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
 						print(CWHITE + "         Checking for READ permission ..." + ENDF)
 						if os.access(keyFiles[0], os.R_OK):
-							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
 						else:
 							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
 							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
@@ -4542,7 +4540,7 @@ class Boot():
 								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
 								print(CWHITE + "         Checking for READ permission ..." + ENDF)
 								if os.access(keyFiles[selectedKey], os.R_OK):
-									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
+									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
 								else:
 									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
 									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
@@ -4614,6 +4612,7 @@ class Server(Thread):
 		Boot.CheckAdvancedLogging()
 		Boot.CheckGeolocating()
 		Boot.CheckRSA()
+		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server boot completed." + ENDF)
 		
 		# CREATE SOCKET
 		portBlocked = True
@@ -5213,7 +5212,6 @@ class ClientHandler():
 						Management.Logout(clientAddress, clientSocket, aesKey, True)
 					Management.Disconnect(clientSocket, message, clientAddress, False)
 
-Boot.CheckCryptoVersion()
 arguments = None
 try:
 	argument1 = sys.argv[1]
