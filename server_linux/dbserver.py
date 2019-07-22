@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.7-3b.19"
+VERSION = "0.7-4b.19"
 BUILD = "development"
-DATE = "Jul 21 2019"
-TIME = "16:11"
+DATE = "Jul 22 2019"
+TIME = "13:13"
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
@@ -1706,15 +1706,14 @@ class Management():
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_delete WHERE DEL_userid = " + userID + ";", clientSocket, aesKey)
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_user WHERE U_id = " + userID + ";", clientSocket, aesKey)
 				return
-			else:
-				# INCREMENT RESEND-CALL-COUNTER BY 1
-				if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_codeResend = " + str(codeResend + 1) + " WHERE U_id = " + userID + ";", clientSocket, aesKey):
-					return
+			# INCREMENT RESEND-CALL-COUNTER BY 1
+			if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_codeResend = " + str(codeResend + 1) + " WHERE U_id = " + userID + ";", clientSocket, aesKey):
+				return
 		# ALL UNSPECIFIC CHECKS PASSED
 		# GENERATE NEW 2FA CODE
 		codeFinal = CodeGenerator()
 		# UPDATE DATABASE AND SET NEW CODE
-		if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey):
+		if DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\" WHERE U_id = " + userID + ";", clientSocket, aesKey) is False:
 			return
 		# INITIALZE VARIABLES FOR SWITCH CASE (MORE LIKE IF ELIF ... BECAUSE PYTHON :P)
 		subject = None
@@ -1730,61 +1729,55 @@ class Management():
 			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# SET CODE EVENT SPECIFIC VALUES
-				subject = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT
-				text = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
-				html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
+			# SET CODE EVENT SPECIFIC VALUES
+			subject = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_SUBJECT
+			text = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
+			html = SUPPORT_EMAIL_PASSWORD_CHANGE_ADMIN_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
 		elif codeType == "PASSWORD_CHANGE":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
 			if int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# SET CODE EVENT SPECIFIC VALUES
-				subject = SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT
-				text = SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) - int(time.time())))
-				html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) - int(time.time())))
+			# SET CODE EVENT SPECIFIC VALUES
+			subject = SUPPORT_EMAIL_PASSWORD_CHANGE_SUBJECT
+			text = SUPPORT_EMAIL_PASSWORD_CHANGE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) - int(time.time())))
+			html = SUPPORT_EMAIL_PASSWORD_CHANGE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + PASSWORD_CHANGE_CONFIRMATION_MAX_TIME) - int(time.time())))
 		elif codeType == "DELETE_ACCOUNT":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
 			if int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# SET CODE EVENT SPECIFIC VALUES
-				subject = SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT
-				text = SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) - int(time.time())))
-				html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) - int(time.time())))
+			# SET CODE EVENT SPECIFIC VALUES
+			subject = SUPPORT_EMAIL_DELETE_ACCOUNT_SUBJECT
+			text = SUPPORT_EMAIL_DELETE_ACCOUNT_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) - int(time.time())))
+			html = SUPPORT_EMAIL_DELETE_ACCOUNT_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + DELETE_ACCOUNT_CONFIRMATION_MAX_TIME) - int(time.time())))
 		elif codeType == "ACTIVATE_ACCOUNT":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
 			if int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# SET CODE EVENT SPECIFIC VALUES
-				subject = SUPPORT_EMAIL_REGISTER_SUBJECT
-				text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds((int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME) - int(time.time())))
-				html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds((int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME) - int(time.time())))
+			# SET CODE EVENT SPECIFIC VALUES
+			subject = SUPPORT_EMAIL_REGISTER_SUBJECT
+			text = SUPPORT_EMAIL_REGISTER_PLAIN_TEXT % (nickname, codeFinal, ConvertFromSeconds((int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME) - int(time.time())))
+			html = SUPPORT_EMAIL_REGISTER_HTML_TEXT % (nickname, codeFinal, ConvertFromSeconds((int(codeTime) + ACCOUNT_ACTIVATION_MAX_TIME) - int(time.time())))
 		elif codeType == "ADMIN_NEW_LOGIN":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
 			if int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS_ADMIN:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# SET CODE EVENT SPECIFIC VALUES
-				subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
-				text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
-				html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
+			# SET CODE EVENT SPECIFIC VALUES
+			subject = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_SUBJECT
+			text = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_PLAIN_TEXT % (details, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
+			html = SUPPORT_EMAIL_NEW_ADMIN_DEVICE_HTML_TEXT % (htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME) - int(time.time())))
 		elif codeType == "NEW_LOGIN":
 			# CHECK IF INITIAL CODE REQUEST HAS ALREADY EXPIRED
 			if int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME < int(time.time()) or codeAttempts >= MAX_CODE_ATTEMPTS:
 				Handle.Error("E2RE", None, clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# SET CODE EVENT SPECIFIC VALUES
-				subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
-				text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME) - int(time.time())))
-				html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME) - int(time.time())))
+			# SET CODE EVENT SPECIFIC VALUES
+			subject = SUPPORT_EMAIL_NEW_DEVICE_SUBJECT
+			text = SUPPORT_EMAIL_NEW_DEVICE_PLAIN_TEXT % (nickname, details, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME) - int(time.time())))
+			html = SUPPORT_EMAIL_NEW_DEVICE_HTML_TEXT % (nickname, htmlDetails, codeFinal, ConvertFromSeconds((int(codeTime) + NEW_DEVICE_CONFIRMATION_MAX_TIME) - int(time.time())))
 		else:
 			# UNKNOWN CODE EVENT --> JUST DO NOTHING AND CREATE LOG ENTRY
 			Handle.Error("NCES", None, clientAddress, clientSocket, aesKey, True)
@@ -2042,13 +2035,12 @@ class Management():
 				# BAN DEVICE
 				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION_ADMIN) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# INCREMENT COUNTER FOR WRONG ATTEMPTS
-				codeAttempts += 1
-				if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey):
-					# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
-					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
-					return
+			# INCREMENT COUNTER FOR WRONG ATTEMPTS
+			codeAttempts += 1
+			if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey):
+				# SUCCESSFULLY UPDATED DATABASE --> COMMIT CHANGES
+				Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
+				return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
 		if int(Timestamp()) - int(codeTime) > NEW_DEVICE_CONFIRMATION_ADMIN_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
@@ -2197,12 +2189,11 @@ class Management():
 				# BAN DEVICE
 				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION_ADMIN) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# INCREMENT COUNTER FOR WRONG ATTEMPTS
-				codeAttempts += 1
-				if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey is not False):
-					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
-				return
+			# INCREMENT COUNTER FOR WRONG ATTEMPTS
+			codeAttempts += 1
+			if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"__ADMIN__\";", clientSocket, aesKey):
+				Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
+			return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
 		if int(Timestamp()) - int(codeTime) > PASSWORD_CHANGE_CONFIRMATION_ADMIN_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
@@ -2507,12 +2498,11 @@ class Management():
 				# BAN DEVICE FOR 1H
 				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# INCREMENT COUNTER FOR WRONG ATTEMPTS
-				codeAttempts += 1
-				if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = " + username + ";", clientSocket, aesKey):
-					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
-				return	
+			# INCREMENT COUNTER FOR WRONG ATTEMPTS
+			codeAttempts += 1
+			if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = " + username + ";", clientSocket, aesKey):
+				Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
+			return	
 		# CHECK IF VALIDATION CODE HAS EXPIRED
 		if int(Timestamp()) - int(codeTime) > DELETE_ACCOUNT_CONFIRMATION_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
@@ -2624,12 +2614,11 @@ class Management():
 				# BAN DEVICE FOR 1H
 				Management.Ban("ip%eq!" + clientAddress.split(":")[0] + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# INCREMENT COUNTER FOR WRONG ATTEMPTS
-				codeAttempts += 1
-				if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"" + username + "\";", clientSocket, aesKey):
-					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
-				return
+			# INCREMENT COUNTER FOR WRONG ATTEMPTS
+			codeAttempts += 1
+			if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_username = \"" + username + "\";", clientSocket, aesKey):
+				Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
+			return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
 		if int(Timestamp()) - int(codeTime) > NEW_DEVICE_CONFIRMATION_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
@@ -2872,12 +2861,11 @@ class Management():
 				# BAN DEVICE FOR 1H
 				Management.BanAccount("username%eq!" + username + "!;duration%eq!" + str(WRONG_CODE_AUTOBAN_DURATION) + "!;", clientAddress, clientSocket, aesKey, True)
 				return
-			else:
-				# INCREMENT COUNTER FOR WRONG ATTEMPTS
-				codeAttempts += 1
-				if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_id = " + userID + ";", clientSocket, aesKey):
-					Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
-				return
+			# INCREMENT COUNTER FOR WRONG ATTEMPTS
+			codeAttempts += 1
+			if DatabaseHelper.UserData.Modify("UPDATE Tbl_user Set U_codeAttempts = " + str(codeAttempts) + " WHERE U_id = " + userID + ";", clientSocket, aesKey):
+				Handle.Error("I2FA", None, clientAddress, clientSocket, aesKey, True)
+			return
 		# CHECK IF VALIDATION CODE HAS EXPIRED
 		if int(Timestamp()) - int(codeTime) > PASSWORD_CHANGE_CONFIRMATION_MAX_TIME:
 			# CODE IS OLDER THAN 30 MINUTES AND THEREFORE INVALID
@@ -4389,12 +4377,13 @@ class Boot():
 				else:
 					# GLOB RETURNS NAME + PATH --> REMOVE PATH
 					privateKeyPathParts = privateKeyFiles[0].split("/")
+					privateKeyFile = privateKeyFiles[0]
 					privateKey = privateKeyPathParts[-1]
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found RSA private key \"" + privateKey + "\" in " + os.getcwd() + ENDF)
 					print(CWHITE + "         Autoselecting ..." + ENDF)
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
 					print(CWHITE + "         Checking for READ permission ..." + ENDF)
-					if os.access(privateKeyFiles[0], os.R_OK):
+					if os.access(privateKeyFile, os.R_OK):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
 					else:
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
@@ -4402,8 +4391,9 @@ class Boot():
 						exit()
 					print(CWHITE + "         Reading private key ..." + ENDF)
 					try:
-						rsaTmp = RSA.importKey(f.read())
-						Server.serverPrivateKey = rsaTmp
+						with open(privateKeyFile, "r") as f:
+							rsaTmp = RSA.importKey(f.read())
+							Server.serverPrivateKey = rsaTmp
 					except Exception as e:
 						passphraseIsCorrect = False
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key." + ENDF)
@@ -4416,7 +4406,7 @@ class Boot():
 							sys.stdout.write(CWHITE)
 							if selectedOption.upper() == "Y":
 								try:
-									openssl = subprocess.Popen(["openssl", "rsa", "-in", privateKeyFiles[0]], stdout=subprocess.PIPE)
+									openssl = subprocess.Popen(["openssl", "rsa", "-in", privateKeyFile], stdout=subprocess.PIPE)
 									output = openssl.stdout.read()
 									openssl.communicate()
 									rsaTmp = RSA.importKey(output.decode("UTF-8"))
@@ -4435,27 +4425,27 @@ class Boot():
 					passphraseIsCorrect = True
 					rsaInitialized = True
 					certPathParts = certFiles[0].split("/")
+					certFile = certFiles[0]
 					cert = certPathParts[-1]
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found certificate \"" + cert + "\" in " + os.getcwd() + ENDF)
 					print(CWHITE + "         Autoselecting ..." + ENDF)
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + cert + "\" ." + ENDF)
 					print(CWHITE + "         Checking for READ permission ..." + ENDF)
-					if os.access(certFiles[0], os.R_OK):
+					if os.access(certFile, os.R_OK):
 						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Checked for READ permission." + ENDF)
 					else:
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
 						exit()
 					print(CWHITE + "         Reading certificate ..." + ENDF)
-					with open(certFiles[0], "r") as f:
+					with open(certFile, "r") as f:
 						Server.certificate = f.read()
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] certificate successfully set up." + ENDF)
-		else:
-			if USE_PERSISTENT_RSA_KEYS:
+		elif USE_PERSISTENT_RSA_KEYS:
 				rsaInitialized = False
 				while not rsaInitialized:
 					Boot.CheckDirKeys()
-					keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
+					keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey.aes")
 					if not keyFiles:
 						selected = False
 						while not selected:
@@ -4532,7 +4522,6 @@ class Boot():
 								iterator += 1
 							# PROMPT USER INPUT
 							selectedKeyString = input(CWHITE + " > ")
-							# TRY TO SELECT DATABASE AT SELECTED INDEX
 							try:
 								selectedKey = int(selectedKeyString)
 								pathParts = keyFiles[selectedKey].split("/")
@@ -4544,7 +4533,7 @@ class Boot():
 								else:
 									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
 									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-									return
+									exit()
 								with open(keyFiles[selectedKey], "rb") as f:
 									try:
 										rsaTmp = RSA.importKey(f.read())
@@ -4558,23 +4547,22 @@ class Boot():
 										print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
 										selected = True
 										rsaInitialized = True
-									f.close()
 							# INDEX WAS INVALID --> RETRY
 							except:
 								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
-			else:
-				print(CWHITE + "         Generating RSA keys ..." + ENDF)
-				try:
-					# GENERATE RSA KEY PAIR
-					keyPair = CryptoHelper.RSAKeyPairGenerator()
-					Server.serverPublicKey = keyPair[0]
-					Server.serverPrivateKey = keyPair[1]
-					Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-					Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
-				except:
-					print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
-					return
-				print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
+		else:
+			print(CWHITE + "         Generating RSA keys ..." + ENDF)
+			try:
+				# GENERATE RSA KEY PAIR
+				keyPair = CryptoHelper.RSAKeyPairGenerator()
+				Server.serverPublicKey = keyPair[0]
+				Server.serverPrivateKey = keyPair[1]
+				Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+				Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+			except:
+				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Generated RSA keys." + ENDF)
+				return
+			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Generated RSA keys." + ENDF)
 	
 ################################################################################
 #-------------------------------SERVER MAIN THREAD-----------------------------#
@@ -4792,7 +4780,7 @@ class ClientHandler():
 								# JUMP TO FINALLY AND FINISH CONNECTION
 								message = "RECEIVED_FIN"
 								return
-							elif packetID == "INI":
+							if packetID == "INI":
 								PrintSendToAdmin("SERVER <--- CLIENT HELLO               <--- " + clientAddress)
 								# GET PACKET ID
 								packetSID = dataString[4:7]
@@ -4859,7 +4847,7 @@ class ClientHandler():
 									message = "GENERIC_EXCEPTION_INVALID_FORMATTING"
 									return
 								# COMMAND DID NOT CONTAIN ALL INFORMATION
-								if not cryptNonce or not key:
+								if cryptNonce is None or key is None:
 									Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
 									message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
 									return
@@ -5233,4 +5221,3 @@ else:
 		pass
 	else:
 		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] argument exception:" + argument1 + " is invalid!" + ENDF)
-
