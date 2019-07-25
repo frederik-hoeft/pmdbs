@@ -21,10 +21,10 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.7-5b.19"
+VERSION = "0.7-6b.19"
 BUILD = "development"
 DATE = "Jul 25 2019"
-TIME = "12:23"
+TIME = "14:03"
 RSA_PRIVATE_ENCRYPTION_KEY = None
 IS_DRY_RUN = False
 IS_DRY_RUN_REBOOT = False
@@ -4441,7 +4441,7 @@ class Boot():
 						else:
 							print(CWHITE + "         Trying provided pass phrase ..." + ENDF)
 							try:
-								openssl = subprocess.Popen(["openssl", "rsa", "-in", privateKeyFile, "-passin","pass:" + RSA_PRIVATE_ENCRYPTION_KEY], stdout=subprocess.PIPE)
+								openssl = subprocess.Popen(["/usr/bin/openssl", "rsa", "-in", privateKeyFile, "-passin","pass:" + RSA_PRIVATE_ENCRYPTION_KEY], stdout=subprocess.PIPE)
 								output = openssl.stdout.read()
 								openssl.communicate()
 								rsaTmp = RSA.importKey(output.decode("UTF-8"))
