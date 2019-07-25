@@ -21,15 +21,19 @@ CWHITE="\033[97m"
 ENDF="\033[0m"
 # VERSION INFO
 NAME = "PMDBS-Server"
-VERSION = "0.7-4b.19"
+VERSION = "0.7-5b.19"
 BUILD = "development"
-DATE = "Jul 22 2019"
-TIME = "13:13"
+DATE = "Jul 25 2019"
+TIME = "12:23"
+RSA_PRIVATE_ENCRYPTION_KEY = None
+IS_DRY_RUN = False
+IS_DRY_RUN_REBOOT = False
 ################################################################################
 #------------------------------------IMPORTS-----------------------------------#
 ################################################################################
 try:
-	# os IS NEEDED TO CLEAR THE CONSOLE. SO IMPORT IT FIRST
+	# subprocess IS NEEDED TO CLEAR THE CONSOLE. SO IMPORT IT FIRST
+	import subprocess
 	import os
 	from importlib import util
 except Exception as e:
@@ -42,7 +46,7 @@ if os.name == "nt":
 	print("FATAL: This program is not designed to be run on windows!")
 	exit()
 # CLEAR THE CONSOLE
-os.system("clear")
+subprocess.call(["/usr/bin/clear"])
 # REQUIRED PACKAGES
 NATIVE_PACKAGES = ["socket", "threading", "base64", "os", "ast", "sqlite3", "argparse", "secrets", "hashlib", "glob", "datetime", "time", "subprocess", "select", "re", "errno", "smtplib", "sys", "getpass", "inspect", "email", "string", "random", "ssl"]
 ADDITIONAL_PACKAGES = ["Crypto", "scrypt", "pygeoip", "defusedxml"]
@@ -56,7 +60,6 @@ for package in NATIVE_PACKAGES:
 	else:
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] " + package + " is installed.")
 print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] All native packages are installed.")
-import subprocess
 print(CWHITE + "         Checking additional packages ..." + ENDF)
 for package in ADDITIONAL_PACKAGES:
 	if util.find_spec(package) is None:
@@ -66,10 +69,10 @@ for package in ADDITIONAL_PACKAGES:
 		print(CWHITE + "         Trying to install " + package + " ..." + ENDF)
 		status = 1
 		try:
-			status = subprocess.call(["pip3", "install", package])
+			status = subprocess.call(["/usr/bin/pip3", "install", package])
 		except:
 			try:
-				status = subprocess.call(["pip", "install", package])
+				status = subprocess.call(["/usr/bin/pip", "install", package])
 			except:
 				print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Please install python3-pip.")
 				exit()
@@ -1298,18 +1301,18 @@ class Management():
 		if None in [cookie, device, isMobile, version]:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
-		cookieIsValid = Management._checkCookie(cookie, clientAddess)
+		cookieIsValid = Management._checkCookie(cookie, clientAddress)
 		if cookieIsValid is False:
 			# COOKIE IS INVALID
 			PrintSendToAdmin("SERVER ---> AUTHORIZATION FAILED       ---> " + clientAddress)
-			Network.SendEncrypted("INFRETmsg%eq!COOKIE_DOES_NOT_EXIST!;")
+			Network.SendEncrypted(clientSocket, aesKey, "INFRETmsg%eq!COOKIE_DOES_NOT_EXIST!;")
 			return
 		client = GetClient(clientSocket)
 		if client is False:
 			Log.ServerEventLog("SOCKET_ERROR", "client is False")
 			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
 			return
-		UserData.ModifySilent("UPDATE Tbl_cookies SET C_os = \"" + device + "\", C_lastSeen = \"" + Timestamp() + "\" WHERE C_cookie = \"" + cookie + "\";", clientAddress)
+		DatabaseHelper.UserData.ModifySilent("UPDATE Tbl_cookies SET C_os = \"" + device + "\", C_lastSeen = \"" + Timestamp() + "\" WHERE C_cookie = \"" + cookie + "\";", clientAddress)
 		Log.ServerEventLog("CLIENT AUTHORIZATION", client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version)
 		client.cookie = cookie
 		client.details = client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version
@@ -1492,7 +1495,7 @@ class Management():
 	
 	# GET USERNAME AND PASSWORD AND CHECK IF CREDENTIALS ARE VALID --> RETURN BOOL TO CLIENT
 	def CredentialCheckProvider(command, clientAddress, clientSocket, aesKey):
-		# EXAMPLE command = "username%eq!username!;password%eq!password!;cookie%eq!cookie!;"
+		# EXAMPLE command = "username%eq!username!;password%eq!password!;"
 		# SPLIT THE RAW COMMAND TO GET THE CREDENTIALS
 		creds = command.split(";")
 		# CHECK FOR SECURITY ISSUES
@@ -1501,7 +1504,6 @@ class Management():
 		# INITIALIZE VARIABLES TO STORE CREDENTIALS IN
 		username = None
 		password = None
-		cookie = None
 		# GET THE CREDENTIALS FROM ARRAY
 		try:
 			for credential in creds:
@@ -1510,8 +1512,6 @@ class Management():
 						username = credential.split("!")[1]
 					elif "password" in credential:
 						password = credential.split("!")[1]
-					elif "cookie" in credential:
-						cookie = credential.split("!")[1]
 					elif not credential:
 						pass
 					else:
@@ -1523,32 +1523,26 @@ class Management():
 			Handle.Error("ICMD", e, clientAddress, clientSocket, aesKey, True)
 			return
 		# VALIDATE THAT ALL VARIABLES HAVE BEEN SET
-		if not username or not password or not cookie:
+		if username is None or password is None:
 			Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, aesKey, True)
 			return
 		userExists = 0
-		cookieExists = 0
-		isNewDevice = 1
-		# CHECK IF COOKIE EXISTS AND CONNECTION BETWEEN ACCOUNT AND COOKIE IS EXISTENT
-		data = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_cookies WHERE C_cookie = \"" + cookie + "\") UNION ALL SELECT NOT EXISTS(SELECT 1 FROM Tbl_user as U, Tbl_cookies as C, Tbl_connectUserCookies as CUC WHERE U.U_id = CUC.U_id and CUC.C_id = C.C_id and C.C_cookie = \"" + cookie + "\" and U.U_username = \"" + username + "\") UNION ALL SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");", clientSocket, aesKey)
+		# CHECK IF USER EXISTS
+		data = DatabaseHelper.UserData.Select("SELECT EXISTS(SELECT 1 FROM Tbl_user WHERE U_username = \"" + username + "\");", clientSocket, aesKey)
 		try:
-			cookieExists = data[0][0]
-			isNewDevice = data[1][0]
-			userExists = data[2][0]
+			userExists = data[0][0]
 		except IndexError as e:
-			# INDEX ERROR 
-			Handle.Error("NFND", e, clientAddress, clientSocket, aesKey, True)
+			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
+			# RETURN ERROR MESSAGE TO CLIENT
+			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
 			return
 		if userExists == 0:
-			Handle.Error("UDNE", None, clientAddress, clientSocket, aesKey, True)
-			return
-		if cookieExists == 0:
-			# HANDLE INVALID COOKIES
-			Handle.Error("CDNE", None, clientAddress, clientSocket, aesKey, True)
-			return
-		if isNewDevice == 1:
-			# ABORT IF DEVICE NOT AFFILIATED TO ACCOUNT --> PREVENT BRUTEFORCE
-			Handle.Error("CRED", "DEVICE_NOT_CONNECTED_TO_ACCOUNT", clientAddress, clientSocket, aesKey, True)
+			# CREDENTIAL CHECK FAILED
+			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
+			returnData = "INFRETmsg%eq!CREDENTIAL_CHECK_FAILED!;"
+			# SEND DATA ENCRYPTED TO CLIENT
+			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
+			PrintSendToAdmin("SERVER ---> CREDENTIAL CHECK FAILED    ---> " + clientAddress)
 			return
 		# CHECK CREDENTIALS
 		# HASH PASSWORD
@@ -1561,7 +1555,7 @@ class Management():
 		credentialsValid = 0
 		try:
 			credentialsValid = data[0][0]
-		except Exception as e:
+		except IndexError as e:
 			Log.ClientEventLog("CREDENTIAL_CHECK_FAILED", clientSocket)
 			# RETURN ERROR MESSAGE TO CLIENT
 			Handle.Error("SQLE", e, clientAddress, clientSocket, aesKey, True)
@@ -2676,7 +2670,7 @@ class Management():
 			# USE BLAKE2 TO CREATE COOKIE
 			cookie = CryptoHelper.BLAKE2(currentTime, salt)
 			repeat = False
-			if not DatabaseHelper.UserData.Modify("INSERT INTO Tbl_cookies (C_cookie) VALUES (\"" + cookie + "\")", clientSocket, aesKey):
+			if not DatabaseHelper.UserData.Modify("INSERT INTO Tbl_cookies (C_cookie, C_lastSeen) VALUES (\"" + cookie + "\", \"" + Timestamp() + "\")", clientSocket, aesKey):
 				if i <= 3:
 					repeat = True
 			# CHECK IF A NEW COOKIE HAS TO BE GENERATED
@@ -3638,11 +3632,12 @@ class Management():
 		PrintSendToAdmin("SERVER **** ADMIN LOGGED IN            **** ADMIN(" + clientAddress + ")")
 			
 	# DISCONNECT ALL CLIENTS AND SHUT DOWN SERVER
-	def Shutdown(command, clientAddress, clientSocket, aesKey):
+	def Shutdown(command, clientAddress, clientSocket, aesKey, isSystem):
 		# CHECK IF REQUEST ORIGINATES FROM ADMIN
-		if not clientSocket == Server.admin:
-			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
-			return
+		if isSystem is False:
+			if not clientSocket == Server.admin:
+				Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+				return
 		PrintSendToAdmin(CWHITE + "         Initializing shutdown ..." + ENDF)
 		# CHECK IF PACKET IS VALID
 		if command != "SHUTDOWN":
@@ -3650,8 +3645,9 @@ class Management():
 			return
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
 		allClients = Server.allClients
-		# CREATE LOG
-		Log.ServerEventLog("SERVER_SHUTDOWN", GetDetails(clientSocket))
+		if isSystem is False:
+			# CREATE LOG
+			Log.ServerEventLog("SERVER_SHUTDOWN", GetDetails(clientSocket))
 		# INITIALIZE SHUTDOWN SEQUENCE
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Shutdown initalized." + ENDF)
 		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
@@ -3681,23 +3677,27 @@ class Management():
 		# WAIT 5 SECONDS IN CASE THREADS ARE STILL RUNNING
 		time.sleep(REBOOT_TIME)
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Stopped threads." + ENDF)
-		PrintSendToAdmin(CWHITE + "         Closing remote admin session ..." + ENDF)
-		Server.stopped = True
-		# CLOSE REMOTE SESSION
-		Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, True)
-		time.sleep(1)
-		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Closed remote admin session." + ENDF)
+		if isSystem is False:
+			PrintSendToAdmin(CWHITE + "         Closing remote admin session ..." + ENDF)
+			Server.stopped = True
+			# CLOSE REMOTE SESSION
+			Management.Disconnect(clientSocket, "SERVER_SHUTDOWN", clientAddress, True)
+			time.sleep(1)
+			PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Closed remote admin session." + ENDF)
 		# CONNECT TO LOCALHOST TO TRIGGER socket.accept() (STUCK IN ENDLESS LOOP)
 		PrintSendToAdmin(CWHITE + "         Triggering full stop ..." + ENDF)
 		socket.create_connection((Server.localAddress, Server.localPort))
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server shutdown complete." + ENDF)
 		
 		# DISCONNECT ALL CLIENTS AND REBOOT SERVER
-	def Reboot(command, clientAddress, clientSocket, aesKey):
+	def Reboot(command, clientAddress, clientSocket, aesKey, isSystem):
+		global RSA_PRIVATE_ENCRYPTION_KEY
+		global IS_DRY_RUN_REBOOT
 		# CHECK IF REQUEST COMES FROM ADMIN
-		if not clientSocket == Server.admin:
-			Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
-			return
+		if isSystem is False:
+			if not clientSocket == Server.admin:
+				Handle.Error("PERM", None, clientAddress, clientSocket, aesKey, True)
+				return
 		# CHECK IF PACKET IS VALID
 		PrintSendToAdmin(CWHITE + "         Initializing reboot ..." + ENDF)
 		if command != "REBOOT":
@@ -3705,8 +3705,9 @@ class Management():
 			return
 		# LOAD SERVER ATTRIBUTES TO LOCAL VARIABLES
 		allClients = Server.allClients
-		# CREATE LOG
-		Log.ServerEventLog("SERVER_REBOOT", GetDetails(clientSocket))
+		if isSystem is False:
+			# CREATE LOG
+			Log.ServerEventLog("SERVER_REBOOT", GetDetails(clientSocket))
 		# INITIALIZE SHUTDOWN SEQUENCE
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Reboot initalized." + ENDF)
 		PrintSendToAdmin(CWHITE + "         Closing sockets ..." + ENDF)
@@ -3736,12 +3737,13 @@ class Management():
 		# WAIT 5 SECONDS IN CASE THREADS ARE STILL RUNNING
 		time.sleep(REBOOT_TIME)
 		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Stopped threads." + ENDF)
-		PrintSendToAdmin(CWHITE + "         Closing remote admin session ..." + ENDF)
-		Server.stopped = True
-		# CLOSE REMOTE SESSION
-		PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Closed remote admin session." + ENDF)
-		time.sleep(1)
-		Management.Disconnect(clientSocket, "SERVER_REBOOT", clientAddress, True)
+		if isSystem is False:
+			PrintSendToAdmin(CWHITE + "         Closing remote admin session ..." + ENDF)
+			Server.stopped = True
+			# CLOSE REMOTE SESSION
+			PrintSendToAdmin(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Closed remote admin session." + ENDF)
+			time.sleep(1)
+			Management.Disconnect(clientSocket, "SERVER_REBOOT", clientAddress, True)
 		# CONNECT TO LOCALHOST TO TRIGGER socket.accept() (STUCK IN ENDLESS LOOP)
 		print(CWHITE + "         Triggering full stop ..." + ENDF)
 		socket.create_connection((Server.localAddress, Server.localPort))
@@ -3749,8 +3751,18 @@ class Management():
 		print(CWHITE + "         Rescheduling process ..." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Rescheduled process." + ENDF)
 		print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Server shutdown complete." + ENDF)
-		os.system("sleep " + str(REBOOT_TIME) + " && python3 " + inspect.getfile(inspect.currentframe()))
-	
+		time.sleep(REBOOT_TIME)
+		if IS_DRY_RUN_REBOOT is True:
+			os.execl(sys.executable, sys.executable, *([os.path.abspath(sys.argv[0])]+["--dry-run"]))
+		else:
+			if CERTIFICATES_ALLOW_PASSPHRASE_ARGUMENT_ON_REBOOT:
+				#os.system("sleep " + str(REBOOT_TIME) + " && python3 " + inspect.getfile(inspect.currentframe()) + "--private-key-passphrase " + RSA_PRIVATE_ENCRYPTION_KEY)
+				os.execl(sys.executable, sys.executable, *([os.path.abspath(sys.argv[0])]+["--private-key-passphrase", RSA_PRIVATE_ENCRYPTION_KEY]))
+			else:
+				os.execl(sys.executable, sys.executable, *([os.path.abspath(sys.argv[0])]))
+		cancel_join_thread()
+		exit()
+		
 	# ADD HIM TO AUTHORIZED CLIENTS (SAVES EXPENSIVE DATABASE LOOKUPS)
 	def Login(command, clientAddress, clientSocket, aesKey):
 		client = GetClient(clientSocket)
@@ -3989,7 +4001,7 @@ class Management():
 		# USER IS NOT LOGGED IN
 		if user is False:
 			# RETURN ERROR MESSAGE TO CLIENT
-			returnData = "INFERRNOT_LOGGED_IN"
+			returnData = "INFERRmsg%eq!NOT_LOGGED_IN!;"
 			# SEND DATA ENCRYPTED TO CLIENT
 			Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 			return False
@@ -4287,7 +4299,7 @@ class Boot():
 		# IF NMAP IS INSTALLED AND HAS ROOT ACCESS ADVANCED LOGGING CAN BE USED
 		print(CWHITE + "         Checking for Advanced Logging ..." + ENDF)
 		print(CWHITE + "         Checking for nmap installation ..." + ENDF)
-		nmapInstalled = os.system("type nmap >/dev/null 2>&1")
+		nmapInstalled = subprocess.call("/usr/bin/nmap -h >/dev/null 2>&1", shell=True, stdout=subprocess.PIPE)
 		if nmapInstalled == 0:
 			print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] nmap is installed." + ENDF)
 		else:
@@ -4342,6 +4354,7 @@ class Boot():
 				exit()
 			
 	def CheckRSA():
+		global RSA_PRIVATE_ENCRYPTION_KEY
 		if CERTIFICATES_ENABLED:
 			rsaInitialized = False
 			while not rsaInitialized:
@@ -4359,13 +4372,13 @@ class Boot():
 						selectedOption = input(CWHITE + " > ")
 						if selectedOption.upper() == "G":
 							print(CWHITE + "         Starting OpenSSL ...")
-							opensslInstalled = os.system("type openssl >/dev/null 2>&1")
+							opensslInstalled = subprocess.call("/usr/bin/openssl -h >/dev/null 2>&1", shell=True, stdout=subprocess.PIPE)
 							if opensslInstalled != 0:
 								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] OpenSSL is not installed / not accessible. Please install it." + ENDF)
 								exit()
 							#openssl req -x509 -newkey rsa:4096 -keyout server.privatekey -out server.cert -days 356
 
-							openssl = Popen(["openssl", "req", "-x509", "-newkey", "rsa:4096", "-keyout", "keys/server.privatekey", "-out", "keys/server.cert", "-days", "365"])
+							openssl = Popen(["/usr/bin/openssl", "req", "-x509", "-newkey", "rsa:4096", "-keyout", "keys/server.privatekey", "-out", "keys/server.cert", "-days", "365"])
 							openssl.communicate()
 							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA key pair generated successfully." + ENDF)
 							print(CWHITE + "[ " + CCYAN + "INFO" + CWHITE + " ] You can find the new keys in the \"keys\" folder located in " + os.getcwd() + " ..." + ENDF)     
@@ -4397,30 +4410,46 @@ class Boot():
 					except Exception as e:
 						passphraseIsCorrect = False
 						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key." + ENDF)
-						while passphraseIsCorrect is False:
-							print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
-							print(CWHITE + "         The private key is either encrypted or has an invalid format. Is it encrypted?" + ENDF)
-							print(CWHITE + "         [Y] = Yes" + ENDF)
-							print(CWHITE + "         [N] = No" + ENDF)
-							selectedOption = input(CWHITE + " > ")
-							sys.stdout.write(CWHITE)
-							if selectedOption.upper() == "Y":
-								try:
-									openssl = subprocess.Popen(["openssl", "rsa", "-in", privateKeyFile], stdout=subprocess.PIPE)
-									output = openssl.stdout.read()
-									openssl.communicate()
-									rsaTmp = RSA.importKey(output.decode("UTF-8"))
-									Server.serverPrivateKey = rsaTmp
-								except Exception as ex:
-									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key. OpenSSL returned:" + ENDF)
-									print(ex)
+						if (RSA_PRIVATE_ENCRYPTION_KEY is None):
+							while passphraseIsCorrect is False:
+								print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
+								print(CWHITE + "         The private key is either encrypted or has an invalid format. Is it encrypted?" + ENDF)
+								print(CWHITE + "         [Y] = Yes" + ENDF)
+								print(CWHITE + "         [N] = No" + ENDF)
+								selectedOption = input(CWHITE + " > ")
+								sys.stdout.write(CWHITE)
+								if selectedOption.upper() == "Y":
+									passphrase = getpass.getpass("Enter decryption key:")
+									try:
+										openssl = subprocess.Popen(["/usr/bin/openssl", "rsa", "-in", privateKeyFile, "-passin", "pass:" + passphrase], stdout=subprocess.PIPE)
+										output = openssl.stdout.read()
+										openssl.communicate()
+										rsaTmp = RSA.importKey(output.decode("UTF-8"))
+										Server.serverPrivateKey = rsaTmp
+									except Exception as ex:
+										print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Reading RSA key. OpenSSL returned:" + ENDF)
+										print(ex)
+									else:
+										if CERTIFICATES_ALLOW_PASSPHRASE_ARGUMENT_ON_REBOOT is True:
+											RSA_PRIVATE_ENCRYPTION_KEY = passphrase
+										passphraseIsCorrect = True
+								elif selectedOption.upper() == "N":
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL ERROR: " + str(e) + ENDF)
+									exit()
 								else:
-									passphraseIsCorrect = True
-							elif selectedOption.upper() == "N":
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL ERROR: " + str(e) + ENDF)
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
+						else:
+							print(CWHITE + "         Trying provided pass phrase ..." + ENDF)
+							try:
+								openssl = subprocess.Popen(["openssl", "rsa", "-in", privateKeyFile, "-passin","pass:" + RSA_PRIVATE_ENCRYPTION_KEY], stdout=subprocess.PIPE)
+								output = openssl.stdout.read()
+								openssl.communicate()
+								rsaTmp = RSA.importKey(output.decode("UTF-8"))
+								Server.serverPrivateKey = rsaTmp
+							except Exception as ex:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL OpenSSL returned:" + ENDF)
+								print(ex)
 								exit()
-							else:
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA private key successfully set up." + ENDF)
 					passphraseIsCorrect = True
 					rsaInitialized = True
@@ -4442,114 +4471,112 @@ class Boot():
 						Server.certificate = f.read()
 					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] certificate successfully set up." + ENDF)
 		elif USE_PERSISTENT_RSA_KEYS:
-				rsaInitialized = False
-				while not rsaInitialized:
-					Boot.CheckDirKeys()
-					keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey.aes")
-					if not keyFiles:
-						selected = False
-						while not selected:
-							print(CWHITE + "         No key file found!" + ENDF)
-							print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
-							print(CWHITE + "         [R] = Retry" + ENDF)
-							print(CWHITE + "         [G] = Generate new RSA Keys" + ENDF)
-							selectedOption = input(CWHITE + " > ")
-							if selectedOption.upper() == "G":
-								print(CWHITE + "         Generating RSA keys ..." + ENDF)
-								keyPair = CryptoHelper.RSAKeyPairGenerator()
-								print(CWHITE + "         Exporting private RSA key ..." + ENDF)
-								privateKey = keyPair[1].exportKey(format="PEM").decode("utf-8")
-								with open("keys/server.privatekey", "w") as out:
-									out.write(privateKey)
-									out.close()
-								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Private RSA key exported successfully." + ENDF)
-								print(CWHITE + "         Exporting public RSA key ..." + ENDF)
-								publicKey = keyPair[0].exportKey(format="PEM").decode("utf-8")
-								with open("keys/server.publicKey", "w") as out:
-									out.write(publicKey)
-									out.close()
-								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Public RSA key exported successfully." + ENDF)
-								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA key pair generated successfully." + ENDF)
-								print(CWHITE + "[ " + CCYAN + "INFO" + CWHITE + " ] You can find the new keys in the \"keys\" folder located in " + os.getcwd() + " ..." + ENDF)     
-								selected = True
-							elif selectedOption.upper() == "R":
-								selected = True
-							else:
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
-					elif len(keyFiles) == 1:
-						# GLOB RETURNS NAME + PATH --> REMOVE PATH
-						pathParts = keyFiles[0].split("/")
-						privateKey = pathParts[-1]
-						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found RSA private key \"" + privateKey + "\" in " + os.getcwd() + ENDF)
-						print(CWHITE + "         Autoselecting ..." + ENDF)
-						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
-						print(CWHITE + "         Checking for READ permission ..." + ENDF)
-						if os.access(keyFiles[0], os.R_OK):
-							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
+			rsaInitialized = False
+			while not rsaInitialized:
+				Boot.CheckDirKeys()
+				keyFiles = glob.glob(os.getcwd() + "/keys/*.privatekey")
+				if not keyFiles:
+					selected = False
+					while not selected:
+						print(CWHITE + "         No key file found!" + ENDF)
+						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] What to do next?" + ENDF)
+						print(CWHITE + "         [R] = Retry" + ENDF)
+						print(CWHITE + "         [G] = Generate new RSA Keys" + ENDF)
+						selectedOption = input(CWHITE + " > ")
+						if selectedOption.upper() == "G":
+							print(CWHITE + "         Generating RSA keys ..." + ENDF)
+							keyPair = CryptoHelper.RSAKeyPairGenerator()
+							print(CWHITE + "         Exporting RSA private key ..." + ENDF)
+							privateKey = keyPair[1].exportKey(format="PEM").decode("utf-8")
+							with open("keys/server.privatekey", "w") as out:
+								out.write(privateKey)
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA private key exported successfully." + ENDF)
+							print(CWHITE + "         Exporting RSA public key ..." + ENDF)
+							publicKey = keyPair[0].exportKey(format="PEM").decode("utf-8")
+							with open("keys/server.publicKey", "w") as out:
+								out.write(publicKey)
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA public key exported successfully." + ENDF)
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA key pair generated successfully." + ENDF)
+							print(CWHITE + "[ " + CCYAN + "INFO" + CWHITE + " ] You can find the new keys in the \"keys\" folder located in " + os.getcwd() + " ..." + ENDF)     
+							selected = True
+						elif selectedOption.upper() == "R":
+							selected = True
 						else:
-							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
-							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-							exit()
-						print(CWHITE + "         Reading private key ..." + ENDF)
-						with open(keyFiles[0], "rb") as f:
-							try:
-								rsaTmp = RSA.importKey(f.read())
-								Server.serverPrivateKey = rsaTmp
-								Server.serverPublicKey = rsaTmp.publickey()
-								Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-								Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
-							except Exception as e:
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + str(e) + ENDF)
-								exit()
-							else:
-								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
-							f.close()
-						rsaInitialized = True
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid option! Please try again. " + ENDF)
+				elif len(keyFiles) == 1:
+					# GLOB RETURNS NAME + PATH --> REMOVE PATH
+					pathParts = keyFiles[0].split("/")
+					privateKey = pathParts[-1]
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Found RSA private key \"" + privateKey + "\" in " + os.getcwd() + ENDF)
+					print(CWHITE + "         Autoselecting ..." + ENDF)
+					print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
+					print(CWHITE + "         Checking for READ permission ..." + ENDF)
+					if os.access(keyFiles[0], os.R_OK):
+						print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
 					else:
-						selected = False
-						# LOOP IN CASE USER INPUT IS INVALID
-						while not selected:
-							iterator = 0
-							print(CWHITE + "         Found more than private key in " + os.getcwd() + "/keys" + ENDF)
-							print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Which private key do you want to use? (enter index)" + ENDF)
-							cleanedPrivateKeys = []
-							# LIST AVAILABLE DATABASES
-							for keypath in keyFiles:
-								pathParts = keypath.split("/")
-								key = pathParts[len(pathParts) - 1]
-								print(CWHITE + "         [" + str(iterator) + "] " + key + ENDF)
-								cleanedPrivateKeys.append(key)
-								iterator += 1
-							# PROMPT USER INPUT
-							selectedKeyString = input(CWHITE + " > ")
-							try:
-								selectedKey = int(selectedKeyString)
-								pathParts = keyFiles[selectedKey].split("/")
-								privateKey = pathParts[len(pathParts) - 1]
-								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
-								print(CWHITE + "         Checking for READ permission ..." + ENDF)
-								if os.access(keyFiles[selectedKey], os.R_OK):
-									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+						print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+						exit()
+					print(CWHITE + "         Reading private key ..." + ENDF)
+					with open(keyFiles[0], "rb") as f:
+						try:
+							rsaTmp = RSA.importKey(f.read())
+							Server.serverPrivateKey = rsaTmp
+							Server.serverPublicKey = rsaTmp.publickey()
+							Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+							Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+						except Exception as e:
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + str(e) + ENDF)
+							exit()
+						else:
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
+						f.close()
+					rsaInitialized = True
+				else:
+					selected = False
+					# LOOP IN CASE USER INPUT IS INVALID
+					while not selected:
+						iterator = 0
+						print(CWHITE + "         Found more than private key in " + os.getcwd() + "/keys" + ENDF)
+						print(CWHITE + "[" + CYELLOW + "MANUAL" + CWHITE + "] Which private key do you want to use? (enter index)" + ENDF)
+						cleanedPrivateKeys = []
+						# LIST AVAILABLE DATABASES
+						for keypath in keyFiles:
+							pathParts = keypath.split("/")
+							key = pathParts[len(pathParts) - 1]
+							print(CWHITE + "         [" + str(iterator) + "] " + key + ENDF)
+							cleanedPrivateKeys.append(key)
+							iterator += 1
+						# PROMPT USER INPUT
+						selectedKeyString = input(CWHITE + " > ")
+						try:
+							selectedKey = int(selectedKeyString)
+							pathParts = keyFiles[selectedKey].split("/")
+							privateKey = pathParts[len(pathParts) - 1]
+							print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Selected \"" + privateKey + "\" ." + ENDF)
+							print(CWHITE + "         Checking for READ permission ..." + ENDF)
+							if os.access(keyFiles[selectedKey], os.R_OK):
+								print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] Got READ permission." + ENDF)
+							else:
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
+								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
+								exit()
+							with open(keyFiles[selectedKey], "rb") as f:
+								try:
+									rsaTmp = RSA.importKey(f.read())
+									Server.serverPrivateKey = rsaTmp
+									Server.serverPublicKey = rsaTmp.publickey()
+									Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
+									Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
+								except Exception as e:
+									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + e + ENDF)
 								else:
-									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Checked for READ permission." + ENDF)
-									print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] FATAL: Insufficient permissions!" + ENDF)
-									exit()
-								with open(keyFiles[selectedKey], "rb") as f:
-									try:
-										rsaTmp = RSA.importKey(f.read())
-										Server.serverPrivateKey = rsaTmp
-										Server.serverPublicKey = rsaTmp.publickey()
-										Server.publicKeyPem = Server.serverPublicKey.exportKey(format="PEM").decode("utf-8")
-										Server.publicKeyXml = CryptoHelper.RSAPublicPemToXml(Server.publicKeyPem)
-									except Exception as e:
-										print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid RSA key. Exception: " + e + ENDF)
-									else:
-										print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
-										selected = True
-										rsaInitialized = True
-							# INDEX WAS INVALID --> RETRY
-							except:
-								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
+									print(CWHITE + "[  " + CGREEN + "OK" + CWHITE + "  ] RSA Keys successfully set up." + ENDF)
+									selected = True
+									rsaInitialized = True
+						# INDEX WAS INVALID --> RETRY
+						except:
+							print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] Invalid selection! Retrying ..." + ENDF)
 		else:
 			print(CWHITE + "         Generating RSA keys ..." + ENDF)
 			try:
@@ -4639,6 +4666,10 @@ class Server(Thread):
 		print("")
 		print("------------- AWAITING CONNECTIONS -------------")
 		# CONTINUALLY ACCEPT INCOMING CONNECTIONS WHILE THE SERVER IS RUNNING
+		if IS_DRY_RUN_REBOOT is True:
+			Management.Reboot("REBOOT", None, None, None, True)
+		if IS_DRY_RUN is True:
+			Management.Shutdown("SHUTDOWN", None, None, None, True)
 		try:
 			while Server.running:
 				clientSocket, address = Server.TCPsocket.accept()
@@ -4797,9 +4828,15 @@ class ClientHandler():
 										isXmlClient = False
 										# SEND PUBLIC KEY
 										Network.SendThreadSafe(clientSocket, "KEYPEMkey%eq!" + Server.publicKeyPem + "!;")
+									elif packetSID == "CRT":
+										if CERTIFICATES_ENABLED is True:
+											isXmlClient = False
+											Network.SendThreadSafe(clientSocket, "KEYCRTkey%eq!" + Server.certificate + "!;")
+										else:
+											Network.SendThreadSafe(clientSocket, "KEYERRmsg%eq!FORMAT_NOT_SUPPORTED!;")
 									else:
 										PrintSendToAdmin("SERVER <-#- [ERRNO 02] IRSA            -#-> " + clientAddress)
-										message = "SECURITY_EXCEPTION_INVALID_RSA_KEY"
+										message = "INVALID_KEY_FORMAT"
 										return
 								PrintSendToAdmin("SERVER ---> SERVER HELLO               ---> " + clientAddress)
 							# CHECK IF PACKET ID IS KNOWN BUT USED IN WRONG CONTEXT
@@ -4971,12 +5008,12 @@ class ClientHandler():
 								# REMOTE SERVER SHUTDOWN
 								elif packetSID == "SHT":
 									PrintSendToAdmin("SERVER <--- SHUTDOWN REQUEST           <--- " + clientAddress)
-									mgmtThread = Thread(target = Management.Shutdown, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread = Thread(target = Management.Shutdown, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
 									mgmtThread.start()
 								# REMOTE SERVER REBOOT
 								elif packetSID == "RBT":
 									PrintSendToAdmin("SERVER <--- REBOOT REQUEST             <--- " + clientAddress)
-									mgmtThread = Thread(target = Management.Reboot, args = (decryptedData[6:], clientAddress, clientSocket, aesKey))
+									mgmtThread = Thread(target = Management.Reboot, args = (decryptedData[6:], clientAddress, clientSocket, aesKey, False))
 									mgmtThread.start()
 								# DUMP LOGS
 								elif packetSID == "LOG":
@@ -5209,7 +5246,7 @@ except:
 	ServerThread.start()
 else:
 	if argument1 == "--help":
-		print("Avalable parameters:\n   --check-config-mail")
+		print("Avalable parameters:\n   --check-config-mail\n   --private-key-passphrase <passphrase>\n   --dry-run\n   --dry-run-check-reboot")
 	elif argument1 == "--check-config-mail":
 		try:
 			Boot.CheckConfig()
@@ -5218,6 +5255,19 @@ else:
 		except Exception as e:
 			print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] --check-config-mail failed:" + str(e) + ENDF)
 	elif argument1 == "--private-key-passphrase":
-		pass
+		RSA_PRIVATE_ENCRYPTION_KEY = sys.argv[2]
+		# INITIALIZE THE SERVER
+		ServerThread = Server()
+		ServerThread.start()
+	elif argument1 == "--dry-run-check-reboot":
+		IS_DRY_RUN_REBOOT = True
+		# INITIALIZE THE SERVER
+		ServerThread = Server()
+		ServerThread.start()
+	elif argument1 == "--dry-run":
+		IS_DRY_RUN = True
+		# INITIALIZE THE SERVER
+		ServerThread = Server()
+		ServerThread.start()
 	else:
 		print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] argument exception:" + argument1 + " is invalid!" + ENDF)
