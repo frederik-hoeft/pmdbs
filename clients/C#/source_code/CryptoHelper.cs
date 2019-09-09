@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using CryptSharp;
@@ -15,6 +16,68 @@ namespace pmdbs
     /// </summary>
     public static class CryptoHelper
     {
+        public sealed class CertificateInformation
+        {
+            public readonly string Issuer = string.Empty;
+            public readonly string Subject = string.Empty;
+            public readonly string FriendlyName = string.Empty;
+            public readonly string PublicKey = string.Empty;
+            public readonly string NotValidBefore = string.Empty;
+            public readonly string NotValidAfter = string.Empty;
+            public readonly string SignatureAlgorithm = string.Empty;
+            public readonly bool IsSelfSigned = false;
+            public readonly bool IsValid = false;
+            public readonly string Checksum = string.Empty;
+            public string Status = string.Empty;
+
+            public CertificateInformation(X509Certificate2 cert)
+            {
+                Issuer = cert.IssuerName.Name;
+                Subject = cert.SubjectName.Name;
+                FriendlyName = cert.FriendlyName;
+                NotValidAfter = cert.NotAfter.ToString();
+                NotValidBefore = cert.NotBefore.ToString();
+                PublicKey = cert.PublicKey.Key.ToXmlString(false).Replace("RSAKeyValue", "RSAParameters");
+                SignatureAlgorithm = cert.SignatureAlgorithm.FriendlyName;
+                IsSelfSigned = cert.Issuer == cert.Subject;
+                Checksum = Convert.ToBase64String(cert.GetCertHash());
+                DateTime currentTime = DateTime.Now;
+                int result = DateTime.Compare(cert.NotBefore, currentTime);
+                if (result > 0)
+                {
+                    Status = "Invalid";
+                    return;
+                }
+                result = DateTime.Compare(currentTime, cert.NotAfter);
+                if (result > 0)
+                {
+                    Status = "Expired";
+                    return;
+                }
+                if (IsSelfSigned)
+                {
+                    Status = "Untrusted";
+                    return;
+                }
+                if (!VerifyCertificate(cert))
+                {
+                    Status = "Invalid";
+                    return;
+                }
+                Status = "Trusted";
+            }
+        }
+        #region X.509
+        public static CertificateInformation CreateCertificateFromString(string pemCertificate)
+        {
+            return new CertificateInformation(new X509Certificate2(Convert.FromBase64String(pemCertificate.Replace("-----BEGIN CERTIFICATE-----", "").Replace("-----END CERTIFICATE-----", "").Replace("\n", ""))));
+        }
+
+        public static bool VerifyCertificate(X509Certificate2 cert)
+        {
+            return cert.Verify();
+        }
+        #endregion
         #region AES
         // using AES with:
         // Key hash algorithm: SHA-256
@@ -64,6 +127,10 @@ namespace pmdbs
         /// <returns>The decrypted text.</returns>
         public static string AESDecrypt(string cipherText, string password)
         {
+            if (string.IsNullOrEmpty(cipherText))
+            {
+                return string.Empty;
+            }
             byte[] iv = new byte[16];
             byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
             byte[] cipherBytes = Convert.FromBase64String(cipherText);

@@ -34,8 +34,8 @@ namespace pmdbs
         private string DataDetailsID;
         private IconData AddIcon = new IconData();
         private int DataPerPage = 25;
-        private int PreviousColorPage = 0;
-        private int PreviousColorContentCount = 0;
+        private int CurrentPage = 0;
+        private int CurrentContentCount = 0;
         int MaxPages = 1;
         public static void InvokeReload()
         {
@@ -322,7 +322,7 @@ namespace pmdbs
         #region DataPanel
         private void AddSingleEntry(DataRow newRow)
         {
-            if (PreviousColorContentCount > 24)
+            if (CurrentContentCount > 24)
             {
                 return;
             }
@@ -363,15 +363,6 @@ namespace pmdbs
             FlowLayoutPanel1_Resize(this, null);
         }
 
-        private void ReloadSingleEntry(DataRow invalidatedRow)
-        {
-            // TODO: IS THIS CORRECT?
-            // invalidatedEntry SEEMS TO BE NEVER USED
-            int ID = Convert.ToInt32(invalidatedRow["0"]);
-            ListEntry invalidatedEntry = entryList.Where(element => element.id == ID).First();
-            ApplyFilter(PreviousColorPage);
-        }
-
         private void RefreshUserData(int page)
         {
             if (page < 0)
@@ -389,27 +380,27 @@ namespace pmdbs
             // CHECK IF PAGE IS WITHIN BOUNDARIES
             if (page < MaxPages)
             {
-                PreviousColorPage = page;
+                CurrentPage = page;
             }
             else
             {
-                if (PreviousColorPage == MaxPages - 1)
+                if (CurrentPage == MaxPages - 1)
                 {
                     return;
                 }
                 else
                 {
-                    PreviousColorPage = MaxPages - 1 < 0 ? 0 : MaxPages - 1;
+                    CurrentPage = MaxPages - 1 < 0 ? 0 : MaxPages - 1;
                 }
             }
-            PreviousColorContentCount = 0;
+            CurrentContentCount = 0;
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
             DataFlowLayoutPanelList.SuspendLayout();
             for (int i = 0; i < entryList.Count; i++)
             {
                 entryList[i].Hide();
             }
-            for (int i = PreviousColorPage * DataPerPage; ((PreviousColorPage * DataPerPage) + DataPerPage >= userData.Rows.Count) ? i < userData.Rows.Count : i < (PreviousColorPage * DataPerPage) + DataPerPage; i++)
+            for (int i = CurrentPage * DataPerPage; ((CurrentPage * DataPerPage) + DataPerPage >= userData.Rows.Count) ? i < userData.Rows.Count : i < (CurrentPage * DataPerPage) + DataPerPage; i++)
             {
                 int ID = Convert.ToInt32(userData.Rows[i]["0"]);
                 string strTimeStamp = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(userData.Rows[i]["2"].ToString())).ToString("u");
@@ -427,7 +418,7 @@ namespace pmdbs
                 entry.UserName = userData.Rows[i]["4"].ToString();
                 entry.id = ID;
                 entry.Show();
-                PreviousColorContentCount++;
+                CurrentContentCount++;
             }
             DataFlowLayoutPanelList.ResumeLayout();
             FlowLayoutPanel1_Resize(this, null);
@@ -438,7 +429,7 @@ namespace pmdbs
             if (EditFieldShown)
             {
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
-                if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
+                if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"] .ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
                     bool actionIsConfirmed = false;
                     using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
@@ -474,6 +465,11 @@ namespace pmdbs
             DataDetailsEntryEmail.Content = LinkedRow["7"].ToString().Equals("\x01") ? "-" : LinkedRow["7"].ToString();
             DataDetailsCustomLabelNotes.Content = LinkedRow["8"].ToString().Equals("\x01") ? "-" : LinkedRow["8"].ToString();
             DataDetailsID = LinkedRow["0"].ToString();
+            string score = LinkedRow["10"].ToString();
+            int scoreValue = Convert.ToInt32(score);
+            Password.Result result = Password.Result.FromScore(scoreValue);
+            DataLunaSmallCardDetailsPasswordStrength.Image = result.Icon;
+            DataLunaSmallCardDetailsPasswordStrength.Info = "Score: " + result.Score.ToString();
         }
 
         private void DataAddAdvancedImageButton_Click(object sender, EventArgs e)
@@ -487,24 +483,49 @@ namespace pmdbs
         {
             DataEditSaveAdvancedImageButton.Enabled = false;
             //D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes
-            string Hostname = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldHostname.TextTextBox);
-            string Username = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldUsername.TextTextBox);
-            string Password = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldPassword.TextTextBox);
-            string Email = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldEmail.TextTextBox);
-            string Website = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldWebsite.TextTextBox);
-            string Notes = DataBaseHelper.Security.SQLInjectionCheck(DataEditAdvancedRichTextBoxNotes.TextValue);
-            string DateTime = TimeConverter.TimeStamp();
-            string[] Values = new string[]
+            string hostname = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldHostname.TextTextBox);
+            string username = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldUsername.TextTextBox);
+            string password = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldPassword.TextTextBox);
+            string email = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldEmail.TextTextBox);
+            string website = DataBaseHelper.Security.SQLInjectionCheck(DataEditEditFieldWebsite.TextTextBox);
+            string notes = DataBaseHelper.Security.SQLInjectionCheck(DataEditAdvancedRichTextBoxNotes.TextValue);
+            string dateTime = TimeConverter.TimeStamp();
+            if (password.Equals("") || hostname.Equals(""))
             {
-                Hostname,
-                Username,
-                Password,
-                Website,
-                Email,
-                Notes
+                CustomException.ThrowNew.GenericException("Please enter at least a hostname and a password to save this account!");
+                DataEditSaveAdvancedImageButton.Enabled = true;
+                return;
+            }
+            Task<Password.Result> GetResult = Password.Security.CheckAsync(password);
+            Password.Result result = await GetResult;
+            switch (result.IsCompromised)
+            {
+                case 1:
+                    {
+                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
+                        {
+                            errorForm.ShowDialog();
+                        }
+                        return;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            string score = result.Score.ToString();
+            string[] values = new string[]
+            {
+                hostname,
+                username,
+                password,
+                website,
+                email,
+                notes,
+                score
             };
-            string[] RawValues = new string[Values.Length];
-            Array.Copy(Values, RawValues, Values.Length);
+            string[] rawValues = new string[values.Length];
+            Array.Copy(values, rawValues, values.Length);
             string[] Columns = new string[]
             {
                 "D_host",
@@ -512,44 +533,42 @@ namespace pmdbs
                 "D_password",
                 "D_url",
                 "D_email",
-                "D_notes"
+                "D_notes",
+                "D_score"
             };
-            if (Password.Equals("") || Hostname.Equals(""))
+            
+            for (int i = 0; i < values.Length; i++)
             {
-                return;
-            }
-            for (int i = 0; i < Values.Length; i++)
-            {
-                if (Values[i].Equals(""))
+                if (values[i].Equals(""))
                 {
-                    Values[i] = "\x01";
+                    values[i] = "\x01";
                 }
                 else
                 {
-                    Values[i] = CryptoHelper.AESEncrypt(Values[i], GlobalVarPool.localAESkey);
+                    values[i] = CryptoHelper.AESEncrypt(values[i], GlobalVarPool.localAESkey);
                 }
             }
-            string Query = "UPDATE Tbl_data SET D_datetime = \"" + DateTime + "\"";
+            string Query = "UPDATE Tbl_data SET D_datetime = \"" + dateTime + "\"";
             for (int i = 0; i < Columns.Length; i++)
             {
-                Query += ", " + Columns[i] + " = \"" + Values[i] + "\"";
+                Query += ", " + Columns[i] + " = \"" + values[i] + "\"";
             }
             Query += " WHERE D_id = " + DataDetailsID + ";";
             await DataBaseHelper.ModifyData(Query);
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string oldUrl = LinkedRow["6"].ToString();
             string oldHostname = LinkedRow["3"].ToString();
-            if (!Website.Equals(oldUrl))
+            if (!website.Equals(oldUrl))
             {
                 new Thread(async delegate () {
                     string favIcon = "";
                     try
                     {
-                        if (string.IsNullOrWhiteSpace(Website))
+                        if (string.IsNullOrWhiteSpace(website))
                         {
-                            if (!Hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
+                            if (!hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
                             {
-                                favIcon = pmdbs.Icon.Generate(Hostname);
+                                favIcon = pmdbs.Icon.Generate(hostname);
                             }
                             else
                             {
@@ -558,13 +577,13 @@ namespace pmdbs
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.Get(Website, true);
+                            favIcon = pmdbs.Icon.Get(website, true);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.Generate(Hostname);
+                        favIcon = pmdbs.Icon.Generate(hostname);
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
@@ -573,17 +592,17 @@ namespace pmdbs
                     Invoke((MethodInvoker)delegate
                     {
                         UpdateDetailsWindow(LinkedRow);
-                        ReloadSingleEntry(LinkedRow);
+                        ApplyFilter(CurrentPage);
                     });
                 }).Start();
             }
-            for (int i = 3; i < (int)ColumnCount.Tbl_data - 1; i++)
+            for (int i = 3; i < (int)ColumnCount.Tbl_data - 2; i++)
             {
-                LinkedRow[i.ToString()] = RawValues[i - 3].Equals("") ? "\x01" : RawValues[i - 3];
+                LinkedRow[i.ToString()] = rawValues[i - 3].Equals("") ? "\x01" : rawValues[i - 3];
             }
+            LinkedRow["10"] = score;
             UpdateDetailsWindow(LinkedRow);
-            LinkedRow["2"] = DateTime;
-            ReloadSingleEntry(LinkedRow);
+            ApplyFilter(CurrentPage);
             DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
             DataPanelDetails.ResumeLayout();
@@ -630,6 +649,12 @@ namespace pmdbs
             DataFlowLayoutPanelEdit.BringToFront();
             DataFlowLayoutPanelEdit.ResumeLayout();
             EditFieldShown = true;
+        }
+
+        private void DataEditEditFieldPassword_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            string password = DataEditEditFieldPassword.TextTextBox;
+            UpdatePasswordStrength(password, DataEditLabelPasswordStrength, DataEditPasswordStrengthIndicator);
         }
 
         private void DataEditAnimatedButtonGeneratePassword_Click(object sender, EventArgs e)
@@ -681,7 +706,7 @@ namespace pmdbs
             }
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "DELETE FROM Tbl_data WHERE D_id = ", DataDetailsID, ";" }));
             GlobalVarPool.UserData.Rows.Remove(LinkedRow);
-            ApplyFilter(PreviousColorPage);
+            ApplyFilter(CurrentPage);
             DataPanelDetails.SuspendLayout();
             DataPanelNoSel.BringToFront();
             DataPanelNoSel.ResumeLayout();
@@ -689,15 +714,15 @@ namespace pmdbs
 
         private void DataLeftAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            if (PreviousColorPage != 0)
+            if (CurrentPage != 0)
             {
-                RefreshUserData(PreviousColorPage - 1);
+                RefreshUserData(CurrentPage - 1);
             }
         }
 
         private void DataRightAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            RefreshUserData(PreviousColorPage + 1);
+            RefreshUserData(CurrentPage + 1);
         }
 
         private void DataSyncAdvancedImageButton_Click(object sender, EventArgs e)
@@ -801,23 +826,41 @@ namespace pmdbs
             IsDefaultIcon = true;
         }
 
-        private void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
+        private async void AddPanelAdvancedImageButtonSave_Click(object sender, EventArgs e)
         {
             AddPanelAdvancedImageButtonSave.Enabled = false;
-            string Hostname = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldHostname.TextTextBox);
-            string Username = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldUsername.TextTextBox);
-            string Password = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldPassword.TextTextBox);
-            string Email = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldEmail.TextTextBox);
-            string Website = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldWebsite.TextTextBox);
-            string Notes = DataBaseHelper.Security.SQLInjectionCheck(AddPanelNotesAdvancedRichTextBox.TextValue);
-            string DateTime = TimeConverter.TimeStamp();
+            string hostname = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldHostname.TextTextBox);
+            string username = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldUsername.TextTextBox);
+            string password = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldPassword.TextTextBox);
+            string email = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldEmail.TextTextBox);
+            string website = DataBaseHelper.Security.SQLInjectionCheck(AddEditFieldWebsite.TextTextBox);
+            string notes = DataBaseHelper.Security.SQLInjectionCheck(AddPanelNotesAdvancedRichTextBox.TextValue);
+            string dateTime = TimeConverter.TimeStamp();
             
-            if (Password.Equals("") || Hostname.Equals(""))
+            if (password.Equals("") || hostname.Equals(""))
             {
                 CustomException.ThrowNew.GenericException("Please enter at least a hostname and a password to save this account!");
                 AddPanelAdvancedImageButtonSave.Enabled = true;
                 return;
             }
+            Task<Password.Result> GetResult = Password.Security.CheckAsync(password);
+            Password.Result result = await GetResult;
+            switch (result.IsCompromised)
+            {
+                case 1:
+                {
+                    using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
+                    {
+                        errorForm.ShowDialog();
+                    }
+                    return;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+            string score = result.Score.ToString();
             new Thread(async delegate() {
                 string favIcon = string.Empty;
                 if (!IsDefaultIcon)
@@ -833,31 +876,32 @@ namespace pmdbs
                 {
                     try
                     {
-                        if (string.IsNullOrWhiteSpace(Website))
+                        if (string.IsNullOrWhiteSpace(website))
                         {
                             // EXECUTE CODE IN CATCH
                             throw new Exception();
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.Get(Website, true);
+                            favIcon = pmdbs.Icon.Get(website, true);
                         }
                     }
                     catch (Exception ex)
                     {
                         Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.Generate(Hostname);
+                        favIcon = pmdbs.Icon.Generate(hostname);
                     }
                 }
                 string[] Values = new string[]
                 {
-                    Hostname,
-                    Username,
-                    Password,
-                    Email,
-                    Website,
-                    Notes,
-                    favIcon
+                    hostname,
+                    username,
+                    password,
+                    email,
+                    website,
+                    notes,
+                    favIcon,
+                    score
                 };
                 string[] Columns = new string[]
                 {
@@ -867,7 +911,8 @@ namespace pmdbs
                     "D_email",
                     "D_url",
                     "D_notes",
-                    "D_icon"
+                    "D_icon",
+                    "D_score"
                 };
                 for (int i = 0; i < Values.Length; i++)
                 {
@@ -885,7 +930,7 @@ namespace pmdbs
                 {
                     Query += ", " + Columns[i];
                 }
-                Query += ") VALUES (\"" + DateTime + "\"";
+                Query += ") VALUES (\"" + dateTime + "\"";
                 for (int i = 0; i < Values.Count(); i++)
                 {
                     Query += ", \"" + Values[i] + "\"";
@@ -908,15 +953,16 @@ namespace pmdbs
                     DataRow NewRow = GlobalVarPool.UserData.Rows.Add();
                     NewRow["0"] = IdList[0];
                     NewRow["1"] = "EMPTY";
-                    NewRow["2"] = DateTime;
-                    NewRow["3"] = Hostname.Equals("") ? "\x01" : Hostname;
-                    NewRow["4"] = Username.Equals("") ? "\x01" : Username;
-                    NewRow["5"] = Password.Equals("") ? "\x01" : Password;
-                    NewRow["6"] = Website.Equals("") ? "\x01" : Website;
-                    NewRow["7"] = Email.Equals("") ? "\x01" : Email;
-                    NewRow["8"] = Notes.Equals("") ? "\x01" : Notes;
+                    NewRow["2"] = dateTime;
+                    NewRow["3"] = hostname.Equals("") ? "\x01" : hostname;
+                    NewRow["4"] = username.Equals("") ? "\x01" : username;
+                    NewRow["5"] = password.Equals("") ? "\x01" : password;
+                    NewRow["6"] = website.Equals("") ? "\x01" : website;
+                    NewRow["7"] = email.Equals("") ? "\x01" : email;
+                    NewRow["8"] = notes.Equals("") ? "\x01" : notes;
                     NewRow["9"] = favIcon;
-                    ApplyFilter(PreviousColorPage);
+                    NewRow["10"] = score;
+                    ApplyFilter(CurrentPage);
                     AddPanelAdvancedImageButtonSave.Enabled = true;
                     AddPanelMain.SuspendLayout();
                     DataTableLayoutPanelMain.BringToFront();
@@ -972,16 +1018,7 @@ namespace pmdbs
         private void AddEditFieldPassword_TextBoxTextChanged(object sender, EventArgs e)
         {
             string password = AddEditFieldPassword.TextTextBox;
-            if (string.IsNullOrEmpty(password))
-            {
-                AddLabelPasswordStrengthIndicator.Text = "Too short";
-                AddPasswordStrengthIndicator.SetIndex(0);
-                return;
-            }
-            Password.Result result = Password.Security.SimpleCheck(password);
-            int strength = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
-            AddPasswordStrengthIndicator.SetIndex(strength);
-            AddLabelPasswordStrengthIndicator.Text = result.Complexity;
+            UpdatePasswordStrength(password, AddLabelPasswordStrengthIndicator, AddPasswordStrengthIndicator);
         }
 
         #endregion
@@ -1068,7 +1105,7 @@ namespace pmdbs
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
@@ -1219,22 +1256,63 @@ namespace pmdbs
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
             string FirstUsage = TimeConverter.TimeStamp();
-            Task<String> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, FirstUsage));
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, FirstUsage));
             string Stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"", Stage2PasswordHash, "\", 0, \"", FirstUsage, "\");" }));
             MasterPassword = Stage1PasswordHash;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
-            LoginLunaProgressSpinnerFading.Stop();
-            LoginPictureBoxOnlineMain.Dispose();
-            LoginPictureBoxOfflineMain.Dispose();
-            LoginPictureBoxRegisterMain.Dispose();
-            PanelMain.BringToFront();
-            PanelLogin.Dispose();
-            InitFilterPanel();
-            this.MinimumSize = MinSize;
-            this.MaximumSize = MaxSize;
+            new Thread(delegate () {
+                for (int i = GlobalVarPool.UserData.Columns.Count; i < 11; i++)
+                {
+                    GlobalVarPool.UserData.Columns.Add(i.ToString(), typeof(string));
+                }
+                for (int i = 0; i < DataPerPage; i++)
+                {
+                    ListEntry listEntry = new ListEntry
+                    {
+                        BackColor = Color.White,
+                        HostNameFont = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
+                        HostNameForeColor = SystemColors.ControlText,
+                        Name = "listEntry",
+                        Size = new Size(1041, 75),
+                        TabIndex = 14,
+                        TimeStampFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        TimeStampForeColor = SystemColors.ControlText,
+                        UserNameFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                        UserNameForeColor = SystemColors.ControlText,
+                        ColorNormal = Color.White,
+                        ColorHover = Colors.LightGray,
+                        BackgroundColor = Color.White
+                    };
+                    listEntry.Hide();
+                    Invoke((MethodInvoker)delegate
+                    {
+                        DataFlowLayoutPanelList.Controls.Add(listEntry);
+                    });
+                    entryList.Add(listEntry);
+                    listEntry.OnClickEvent += ListEntry_Click;
+                    DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
+                }
+                Invoke((MethodInvoker)delegate
+                {
+                    DataFlowLayoutPanelList.ResumeLayout();
+                    FlowLayoutPanel1_Resize(this, null);
+                    LoginLunaProgressSpinnerFading.Stop();
+                    LoginPictureBoxOnlineMain.Dispose();
+                    LoginPictureBoxOfflineMain.Dispose();
+                    LoginPictureBoxRegisterMain.Dispose();
+                    PanelMain.BringToFront();
+                    PanelLogin.Dispose();
+                    this.MinimumSize = MinSize;
+                    this.MaximumSize = MaxSize;
+                    this.MaximizeBox = true;
+                    this.MinimizeBox = true;
+                    InitFilterPanel();
+                    ApplyFilter(0);
+                });
+            }).Start();
         }
         private void LoginEditFieldRegisterPassword2_TextBoxTextChanged(object sender, EventArgs e)
         {
@@ -1458,6 +1536,7 @@ namespace pmdbs
             if (username.Contains("__"))
             {
                 CustomException.ThrowNew.FormatException("The username may not contain double underscores.");
+                return;
             }
             if (string.IsNullOrEmpty(email))
             {
@@ -1479,7 +1558,7 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter a valid port number.");
                 return;
             }
-            // MORE DISGUSTING REGEXES. THIS ONE DOESN'T EVEN WORK PROPERLY AS IT ALLOWS STUFF LIKE 1.1.1 AS IPv4 ADDRESSES --> TODO: LINQ <3
+            // TODO: MORE DISGUSTING REGEXES. THIS ONE DOESN'T EVEN WORK PROPERLY AS IT ALLOWS STUFF LIKE 1.1.1 AS IPv4 ADDRESSES --> TODO: LINQ <3
             if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
             {
                 isIP = true;
@@ -1812,6 +1891,36 @@ namespace pmdbs
         private void label16_Click(object sender, EventArgs e)
         {
             UpdateBreaches();
+            UpdateStats();
+        }
+
+        private async void UpdateStats()
+        {
+            Task<string> GetAccountCount = DataBaseHelper.GetSingleOrDefault("SELECT COUNT(1) FROM Tbl_data;");
+            string accountCount = await GetAccountCount;
+            FileInfo fileInfo = new FileInfo(@"Resources\localdata_windows.db");
+            double fileSize = Convert.ToDouble(fileInfo.Length);
+            string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
+            int i = 0;
+            while (fileSize > 1000)
+            {
+                fileSize /= 1000;
+                fileSize = Math.Round(fileSize, 1, MidpointRounding.AwayFromZero);
+                if (i < units.Length)
+                {
+                    i++;
+                }
+            }
+            DashboardLabelAccountNumber.Text = accountCount;
+            if (accountCount.Equals("1"))
+            {
+                DashboardLabelAccountsTotal.Text = "account total";
+            }
+            else
+            {
+                DashboardLabelAccountsTotal.Text = "accounts total";
+            }
+            DashboardLabelDiskSpaceValue.Text = fileSize.ToString() + units[i];
         }
 
         private async void UpdateBreaches()
@@ -1874,7 +1983,20 @@ namespace pmdbs
                 DashboardLunaItemListBreaches.RemoveAt(item.Index2);
             }
         }
-
-        
+        #region PRIVATE METHODS
+        private void UpdatePasswordStrength(string password, Label passwordStrengthlabel, PasswordStrengthIndicator passwordStrengthIndicator)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                passwordStrengthlabel.Text = "Too short";
+                passwordStrengthIndicator.SetIndex(0);
+                return;
+            }
+            Password.Result result = Password.Security.SimpleCheck(password);
+            int strength = Array.IndexOf(new string[] { "F", "D-", "D", "D+", "C-", "C", "C+", "B-", "B", "B+", "A-", "A" }, result.Grade);
+            passwordStrengthIndicator.SetIndex(strength);
+            passwordStrengthlabel.Text = result.Complexity;
+        }
+        #endregion
     }
 }

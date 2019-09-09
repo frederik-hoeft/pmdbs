@@ -392,9 +392,13 @@ namespace pmdbs
                 HelperMethods.InvokeOutputLabel("Disconnecting ...");
                 Network.Send("FIN");
                 GlobalVarPool.threadKilled = true;
-                GlobalVarPool.clientSocket.Disconnect(true);
-                GlobalVarPool.clientSocket.Close();
-                GlobalVarPool.clientSocket.Dispose();
+                try
+                {
+                    GlobalVarPool.clientSocket.Disconnect(true);
+                    GlobalVarPool.clientSocket.Close();
+                    GlobalVarPool.clientSocket.Dispose();
+                }
+                catch (ObjectDisposedException) { }
                 GlobalVarPool.connected = false;
             }
             /// <summary>

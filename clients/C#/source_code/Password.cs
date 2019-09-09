@@ -18,12 +18,14 @@ namespace pmdbs
             private readonly int _score;
             private readonly int _isCompromised = -1;
             private readonly int _timesSeen = 0;
+            private readonly System.Drawing.Bitmap _icon;
 
             public Result(string complexity, string grade, int score)
             {
                 _complexity = complexity;
                 _grade = grade;
                 _score = score;
+                _icon = GetIcon(_grade);
             }
             public Result(string complexity, string grade, int score, int isCompromised, int timesSeen)
             {
@@ -32,6 +34,7 @@ namespace pmdbs
                 _score = score;
                 _isCompromised = isCompromised;
                 _timesSeen = timesSeen;
+                _icon = GetIcon(_grade);
             }
 
             public Result(Result result, int isCompromised, int timesSeen)
@@ -41,6 +44,12 @@ namespace pmdbs
                 _score = result.Score;
                 _isCompromised = isCompromised;
                 _timesSeen = timesSeen;
+                _icon = result.Icon;
+            }
+
+            public System.Drawing.Bitmap Icon
+            {
+                get { return _icon; }
             }
 
             public string Complexity
@@ -67,6 +76,95 @@ namespace pmdbs
             {
                 get { return _timesSeen; }
             }
+
+            private System.Drawing.Bitmap GetIcon(string grade)
+            {
+                switch (grade)
+                {
+                    case "A": return Properties.Resources.a;
+                    case "A-": return Properties.Resources.am;
+                    case "B+": return Properties.Resources.bp;
+                    case "B": return Properties.Resources.b;
+                    case "B-": return Properties.Resources.bm;
+                    case "C+": return Properties.Resources.cp;
+                    case "C": return Properties.Resources.c;
+                    case "C-": return Properties.Resources.cm;
+                    case "D+": return Properties.Resources.dp;
+                    case "D": return Properties.Resources.d;
+                    case "D-": return Properties.Resources.dm;
+                    case "F": return Properties.Resources.f;
+                    default: return null;
+                }
+            }
+
+            public static Result FromScore(int score)
+            {
+                /* Determine complexity and grade based on overall score */
+                string passwordComplexity = "Too Short";
+                string grade = "F";
+                if (score < 35)
+                {
+                    grade = "F";
+                    passwordComplexity = "Embarrassing";
+                }
+                else if (score >= 35 && score < 55)
+                {
+                    grade = "D-";
+                    passwordComplexity = "Very Weak";
+                }
+                else if (score >= 55 && score < 75)
+                {
+                    grade = "D";
+                    passwordComplexity = "Very Weak";
+                }
+                else if (score >= 75 && score < 95)
+                {
+                    grade = "D+";
+                    passwordComplexity = "Weak";
+                }
+                else if (score >= 95 && score < 110)
+                {
+                    grade = "C-";
+                    passwordComplexity = "Weak";
+                }
+                else if (score >= 110 && score < 125)
+                {
+                    grade = "C";
+                    passwordComplexity = "Okay";
+                }
+                else if (score >= 125 && score < 140)
+                {
+                    grade = "C+";
+                    passwordComplexity = "Okay";
+                }
+                else if (score >= 140 && score < 155)
+                {
+                    grade = "B-";
+                    passwordComplexity = "Good";
+                }
+                else if (score >= 155 && score < 170)
+                {
+                    grade = "B";
+                    passwordComplexity = "Good";
+                }
+                else if (score >= 170 && score < 185)
+                {
+                    grade = "B+";
+                    passwordComplexity = "Strong";
+                }
+                else if (score >= 185 && score < 200)
+                {
+                    grade = "A-";
+                    passwordComplexity = "Strong";
+                }
+                else if (score > 200)
+                {
+                    grade = "A";
+                    passwordComplexity = "Very Strong";
+                }
+
+                return new Result(passwordComplexity, grade, score);
+            }
         }
         public static class Security
         {
@@ -74,6 +172,12 @@ namespace pmdbs
             {
                 return Task.Run(() => OnlineCheck(password));
             }
+
+            public static Task<Result> CheckAsync(string password)
+            {
+                return Task.Run(() => Check(password));
+            }
+
             public static Result OnlineCheck(string password)
             {
                 Result result = new Result(null, null, -1);
@@ -153,7 +257,6 @@ namespace pmdbs
                 string keyboard = "qwertyuiopasdfghjklzxcvbnm";
                 string numbers = "01234567890";
                 string symbols = " !\"#$%&\'()*+,-./:;<=>?@[\\]^_{|}~";
-                string passwordComplexity = "Too Short";
                 int minimumPasswordLength = 12;
                 score = password.Length * lengthMultipier;
                 int passwordLength = password.Length;
@@ -380,70 +483,7 @@ namespace pmdbs
                     score = score + (nRequirements * 2);
                 }
 
-                /* Determine complexity and grade based on overall score */
-                string grade = "F";
-                if (score < 35)
-                {
-                    grade = "F";
-                    passwordComplexity = "Embarrassing";
-                }
-                else if (score >= 35 && score < 55)
-                {
-                    grade = "D-";
-                    passwordComplexity = "Very Weak";
-                }
-                else if (score >= 55 && score < 75)
-                {
-                    grade = "D";
-                    passwordComplexity = "Very Weak";
-                }
-                else if (score >= 75 && score < 95)
-                {
-                    grade = "D+";
-                    passwordComplexity = "Weak";
-                }
-                else if (score >= 95 && score < 110)
-                {
-                    grade = "C-";
-                    passwordComplexity = "Weak";
-                }
-                else if (score >= 110 && score < 125)
-                {
-                    grade = "C";
-                    passwordComplexity = "Okay";
-                }
-                else if (score >= 125 && score < 140)
-                {
-                    grade = "C+";
-                    passwordComplexity = "Okay";
-                }
-                else if (score >= 140 && score < 155)
-                {
-                    grade = "B-";
-                    passwordComplexity = "Good";
-                }
-                else if (score >= 155 && score < 170)
-                {
-                    grade = "B";
-                    passwordComplexity = "Good";
-                }
-                else if (score >= 170 && score < 185)
-                {
-                    grade = "B+";
-                    passwordComplexity = "Strong";
-                }
-                else if (score >= 185 && score < 200)
-                {
-                    grade = "A-";
-                    passwordComplexity = "Strong";
-                }
-                else if (score > 200)
-                {
-                    grade = "A";
-                    passwordComplexity = "Very Strong";
-                }
-
-                return new Result(passwordComplexity, grade, score);
+                return Result.FromScore(score);
             }
         }
     }
