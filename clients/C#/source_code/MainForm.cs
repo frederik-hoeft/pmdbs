@@ -506,6 +506,7 @@ namespace pmdbs
                         {
                             errorForm.ShowDialog();
                         }
+                        DataEditSaveAdvancedImageButton.Enabled = true;
                         return;
                     }
                 default:
@@ -1892,6 +1893,7 @@ namespace pmdbs
         {
             UpdateBreaches();
             UpdateStats();
+            UpdatePasswordScore();
         }
 
         private async void UpdateStats()
@@ -1899,7 +1901,8 @@ namespace pmdbs
             Task<string> GetAccountCount = DataBaseHelper.GetSingleOrDefault("SELECT COUNT(1) FROM Tbl_data;");
             string accountCount = await GetAccountCount;
             FileInfo fileInfo = new FileInfo(@"Resources\localdata_windows.db");
-            double fileSize = Convert.ToDouble(fileInfo.Length);
+            // TODO: FILESIZE DOESN'T SEEM TO CHANGE.
+            double fileSize = Convert.ToDouble(fileInfo.Length - 12062720);
             string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
             int i = 0;
             while (fileSize > 1000)
@@ -1921,6 +1924,36 @@ namespace pmdbs
                 DashboardLabelAccountsTotal.Text = "accounts total";
             }
             DashboardLabelDiskSpaceValue.Text = fileSize.ToString() + units[i];
+        }
+
+        private async void UpdatePasswordScore()
+        {
+            int accountCount = GlobalVarPool.UserData.Rows.Count;
+            int totalScore = 0;
+            for (int i = 0; i < accountCount; i++)
+            {
+                totalScore += Convert.ToInt32(GlobalVarPool.UserData.Rows[i]["10"].ToString());
+            }
+            double avgScore = Math.Round(totalScore / (double)accountCount, 2, MidpointRounding.AwayFromZero);
+            Task<string> GetOldAverageScore = DataBaseHelper.GetSingleOrDefault("SELECT M_avgScoreOld FROM Tbl_meta LIMIT 1;");
+            string avgScoreOldString = await GetOldAverageScore;
+            double avgScoreOld = Convert.ToDouble(avgScoreOldString);
+            double deltaScore = avgScore - avgScoreOld;
+            await DataBaseHelper.ModifyData("UPDATE Tbl_meta SET M_avgScoreOld = \"" + avgScore.ToString() + "\";");
+            DashboardLabelPasswordStrength.Text = avgScore.ToString();
+            DashboardLabelPasswordStrengthChange.Text = Math.Round(deltaScore, 2, MidpointRounding.AwayFromZero).ToString();
+            if (deltaScore < 0)
+            {
+                DashboardLabelPasswordStrengthChange.ForeColor = Colors.Red;
+                DashboardLunaTrianglePasswordStrength.ForeColor = Colors.Red;
+                DashboardLunaTrianglePasswordStrength.TriangleDirection = LunaTriangle.Direction.Down;
+            }
+            else
+            {
+                DashboardLabelPasswordStrengthChange.ForeColor = Colors.Green;
+                DashboardLunaTrianglePasswordStrength.ForeColor = Colors.Green;
+                DashboardLunaTrianglePasswordStrength.TriangleDirection = LunaTriangle.Direction.Top;
+            }
         }
 
         private async void UpdateBreaches()
@@ -1983,6 +2016,7 @@ namespace pmdbs
                 DashboardLunaItemListBreaches.RemoveAt(item.Index2);
             }
         }
+
         #region PRIVATE METHODS
         private void UpdatePasswordStrength(string password, Label passwordStrengthlabel, PasswordStrengthIndicator passwordStrengthIndicator)
         {

@@ -51,12 +51,12 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.lunaItemList1 = new LunaForms.LunaItemList();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.lunaTriangle1 = new LunaForms.LunaTriangle();
-            this.label12 = new System.Windows.Forms.Label();
+            this.DashboardPanelPasswordStrength = new System.Windows.Forms.Panel();
+            this.DashboardLabelPasswordStrengthUnit = new System.Windows.Forms.Label();
+            this.DashboardLabelPasswordStrength = new System.Windows.Forms.Label();
+            this.DashboardLabelPasswordStrengthHeader = new System.Windows.Forms.Label();
+            this.DashboardLunaTrianglePasswordStrength = new LunaForms.LunaTriangle();
+            this.DashboardLabelPasswordStrengthChange = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.label17 = new System.Windows.Forms.Label();
             this.lunaSmallCardList2 = new LunaForms.LunaSmallCardList();
@@ -347,7 +347,7 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.panel4.SuspendLayout();
+            this.DashboardPanelPasswordStrength.SuspendLayout();
             this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.DashboardPanelDatabaseStats.SuspendLayout();
@@ -577,9 +577,9 @@
             // DataPanelMain
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
+            this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
             this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
-            this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
             this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelMain.Location = new System.Drawing.Point(265, 114);
@@ -753,7 +753,7 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel3.Controls.Add(this.panel4, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.DashboardPanelPasswordStrength, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.panel5, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.panel6, 4, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -765,74 +765,74 @@
             this.tableLayoutPanel3.Size = new System.Drawing.Size(802, 350);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
-            // panel4
+            // DashboardPanelPasswordStrength
             // 
-            this.panel4.BackColor = System.Drawing.Color.White;
-            this.panel4.Controls.Add(this.label15);
-            this.panel4.Controls.Add(this.label14);
-            this.panel4.Controls.Add(this.label13);
-            this.panel4.Controls.Add(this.lunaTriangle1);
-            this.panel4.Controls.Add(this.label12);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel4.Location = new System.Drawing.Point(0, 0);
-            this.panel4.Margin = new System.Windows.Forms.Padding(0);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(260, 350);
-            this.panel4.TabIndex = 2;
+            this.DashboardPanelPasswordStrength.BackColor = System.Drawing.Color.White;
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthUnit);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrength);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthHeader);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLunaTrianglePasswordStrength);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthChange);
+            this.DashboardPanelPasswordStrength.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DashboardPanelPasswordStrength.Location = new System.Drawing.Point(0, 0);
+            this.DashboardPanelPasswordStrength.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardPanelPasswordStrength.Name = "DashboardPanelPasswordStrength";
+            this.DashboardPanelPasswordStrength.Size = new System.Drawing.Size(260, 350);
+            this.DashboardPanelPasswordStrength.TabIndex = 2;
             // 
-            // label15
+            // DashboardLabelPasswordStrengthUnit
             // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label15.Location = new System.Drawing.Point(11, 179);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(199, 32);
-            this.label15.TabIndex = 8;
-            this.label15.Text = "points in average";
+            this.DashboardLabelPasswordStrengthUnit.AutoSize = true;
+            this.DashboardLabelPasswordStrengthUnit.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DashboardLabelPasswordStrengthUnit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelPasswordStrengthUnit.Location = new System.Drawing.Point(11, 179);
+            this.DashboardLabelPasswordStrengthUnit.Name = "DashboardLabelPasswordStrengthUnit";
+            this.DashboardLabelPasswordStrengthUnit.Size = new System.Drawing.Size(199, 32);
+            this.DashboardLabelPasswordStrengthUnit.TabIndex = 8;
+            this.DashboardLabelPasswordStrengthUnit.Text = "points in average";
             // 
-            // label14
+            // DashboardLabelPasswordStrength
             // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Segoe UI", 28F);
-            this.label14.ForeColor = System.Drawing.Color.Black;
-            this.label14.Location = new System.Drawing.Point(0, 113);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(194, 74);
-            this.label14.TabIndex = 7;
-            this.label14.Text = "162.38";
+            this.DashboardLabelPasswordStrength.AutoSize = true;
+            this.DashboardLabelPasswordStrength.Font = new System.Drawing.Font("Segoe UI", 28F);
+            this.DashboardLabelPasswordStrength.ForeColor = System.Drawing.Color.Black;
+            this.DashboardLabelPasswordStrength.Location = new System.Drawing.Point(0, 113);
+            this.DashboardLabelPasswordStrength.Name = "DashboardLabelPasswordStrength";
+            this.DashboardLabelPasswordStrength.Size = new System.Drawing.Size(194, 74);
+            this.DashboardLabelPasswordStrength.TabIndex = 7;
+            this.DashboardLabelPasswordStrength.Text = "162.38";
             // 
-            // label13
+            // DashboardLabelPasswordStrengthHeader
             // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label13.Location = new System.Drawing.Point(-2, 17);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(263, 32);
-            this.label13.TabIndex = 6;
-            this.label13.Text = "PASSWORD STRENGTH";
+            this.DashboardLabelPasswordStrengthHeader.AutoSize = true;
+            this.DashboardLabelPasswordStrengthHeader.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DashboardLabelPasswordStrengthHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelPasswordStrengthHeader.Location = new System.Drawing.Point(-2, 17);
+            this.DashboardLabelPasswordStrengthHeader.Name = "DashboardLabelPasswordStrengthHeader";
+            this.DashboardLabelPasswordStrengthHeader.Size = new System.Drawing.Size(263, 32);
+            this.DashboardLabelPasswordStrengthHeader.TabIndex = 6;
+            this.DashboardLabelPasswordStrengthHeader.Text = "PASSWORD STRENGTH";
             // 
-            // lunaTriangle1
+            // DashboardLunaTrianglePasswordStrength
             // 
-            this.lunaTriangle1.IsSolid = true;
-            this.lunaTriangle1.Location = new System.Drawing.Point(17, 275);
-            this.lunaTriangle1.Name = "lunaTriangle1";
-            this.lunaTriangle1.Size = new System.Drawing.Size(60, 53);
-            this.lunaTriangle1.TabIndex = 0;
-            this.lunaTriangle1.TriangleDirection = LunaForms.LunaTriangle.Direction.Top;
+            this.DashboardLunaTrianglePasswordStrength.IsSolid = true;
+            this.DashboardLunaTrianglePasswordStrength.Location = new System.Drawing.Point(17, 275);
+            this.DashboardLunaTrianglePasswordStrength.Name = "DashboardLunaTrianglePasswordStrength";
+            this.DashboardLunaTrianglePasswordStrength.Size = new System.Drawing.Size(60, 53);
+            this.DashboardLunaTrianglePasswordStrength.TabIndex = 0;
+            this.DashboardLunaTrianglePasswordStrength.TriangleDirection = LunaForms.LunaTriangle.Direction.Top;
             // 
-            // label12
+            // DashboardLabelPasswordStrengthChange
             // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
-            this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(197)))), ((int)(((byte)(100)))));
-            this.label12.Location = new System.Drawing.Point(70, 270);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(131, 54);
-            this.label12.TabIndex = 1;
-            this.label12.Text = "+5.67";
-            this.label12.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DashboardLabelPasswordStrengthChange.AutoSize = true;
+            this.DashboardLabelPasswordStrengthChange.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.DashboardLabelPasswordStrengthChange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(197)))), ((int)(((byte)(100)))));
+            this.DashboardLabelPasswordStrengthChange.Location = new System.Drawing.Point(70, 270);
+            this.DashboardLabelPasswordStrengthChange.Name = "DashboardLabelPasswordStrengthChange";
+            this.DashboardLabelPasswordStrengthChange.Size = new System.Drawing.Size(131, 54);
+            this.DashboardLabelPasswordStrengthChange.TabIndex = 1;
+            this.DashboardLabelPasswordStrengthChange.Text = "+5.67";
+            this.DashboardLabelPasswordStrengthChange.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // panel5
             // 
@@ -4861,8 +4861,8 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
+            this.DashboardPanelPasswordStrength.ResumeLayout(false);
+            this.DashboardPanelPasswordStrength.PerformLayout();
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.panel6.ResumeLayout(false);
@@ -5269,7 +5269,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel DashboardPanelPasswordStrength;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.Panel panel6;
         private System.Windows.Forms.Panel DashboardPanelDatabaseStats;
@@ -5289,11 +5289,11 @@
         private System.Windows.Forms.Label label10;
         private LunaForms.AnimatedButton animatedButton1;
         private System.Windows.Forms.Label label11;
-        private LunaForms.LunaTriangle lunaTriangle1;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
+        private LunaForms.LunaTriangle DashboardLunaTrianglePasswordStrength;
+        private System.Windows.Forms.Label DashboardLabelPasswordStrengthChange;
+        private System.Windows.Forms.Label DashboardLabelPasswordStrengthUnit;
+        private System.Windows.Forms.Label DashboardLabelPasswordStrength;
+        private System.Windows.Forms.Label DashboardLabelPasswordStrengthHeader;
         private System.Windows.Forms.Label label16;
         private LunaForms.LunaSmallCardList lunaSmallCardList1;
         private System.Windows.Forms.Label label17;
