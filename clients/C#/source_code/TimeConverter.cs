@@ -4,6 +4,11 @@ namespace pmdbs
 {
     class TimeConverter
     {
+        /// <summary>
+        /// Convert a unix timestamp to a DateTime object.
+        /// </summary>
+        /// <param name="unixTimeStamp">The unix time stamp to convert.</param>
+        /// <returns>The DateTime represented by the timestamp.</returns>
         public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
@@ -12,6 +17,10 @@ namespace pmdbs
             return dtDateTime;
         }
 
+        /// <summary>
+        /// Creates a timestamp representing the unix time.
+        /// </summary>
+        /// <returns>Timestamp representing the unix time</returns>
         public static string TimeStamp()
         {
             return DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString();

@@ -19,6 +19,26 @@ namespace pmdbs
 {
     public struct HelperMethods
     {
+        public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
+        {
+            System.Windows.Forms.DialogResult result = new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert).ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                GlobalVarPool.foreignRsaKey = cert.PublicKey;
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_certificates (C_hash, C_accepted) VALUES (\"", cert.Checksum, "\", \"1\");" }));
+                GlobalVarPool.nonce = CryptoHelper.RandomString();
+                string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
+                string message = "CKEformat%eq!XML!;key%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
+                HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
+                GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
+            }
+            else
+            {
+                NetworkAdapter.MethodProvider.Disconnect();
+                GlobalVarPool.commandErrorCode = -2;
+            }
+        }
+
         public static List<byte[]> Separate(byte[] source, byte[] separator)
         {
             var Parts = new List<byte[]>();

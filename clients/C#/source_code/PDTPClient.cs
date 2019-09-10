@@ -148,7 +148,7 @@ namespace pmdbs
             GlobalVarPool.bootCompleted = true;
             GlobalVarPool.connected = true;
             HelperMethods.InvokeOutputLabel("Sending Client Hello ...");
-            GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINIXML\x04"));
+            GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINICRT\x04"));
             //LINE 1225 IN DEBUGCLIENT.PY BELOW;
             // AWAIT PACKETS FROM SERVER
             try
@@ -299,18 +299,48 @@ namespace pmdbs
                                             {
                                                 HelperMethods.InvokeOutputLabel("Received Server Hello ...");
                                                 string packetSID = dataString.Substring(4, 3);
-                                                if (packetSID.Equals("XML"))
+                                                switch (packetSID)
                                                 {
-                                                    GlobalVarPool.foreignRsaKey = dataString.Substring(7).Split('!')[1];
-                                                    GlobalVarPool.nonce = CryptoHelper.RandomString();
-                                                    string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
-                                                    string message = "CKEkey%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
-                                                    HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
-                                                    GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
-                                                }
-                                                else
-                                                {
-                                                    CustomException.ThrowNew.CryptographicException("RSA Key Format not supported.");
+                                                    case "XML":
+                                                        {
+                                                            GlobalVarPool.foreignRsaKey = dataString.Substring(7).Split('!')[1];
+                                                            GlobalVarPool.nonce = CryptoHelper.RandomString();
+                                                            string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
+                                                            string message = "CKEkey%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
+                                                            HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
+                                                            GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
+                                                            break;
+                                                        }
+                                                    case "CRT":
+                                                        {
+                                                            CryptoHelper.CertificateInformation certificate = CryptoHelper.CreateCertificateFromString(dataString.Substring(7).Split('!')[1]);
+                                                            Task<string> GetTrustedCertificates = DataBaseHelper.GetSingleOrDefault(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "SELECT EXISTS (SELECT 1 FROM Tbl_certificates WHERE C_hash = \"", certificate.Checksum, "\" AND C_accepted = \"1\" LIMIT 1);"}));
+                                                            string isTrustedCertificateString = await GetTrustedCertificates;
+                                                            if (!isTrustedCertificateString.Equals("1"))
+                                                            {
+                                                                HelperMethods.ShowCertificateWarning(certificate);
+                                                            }
+                                                            else
+                                                            {
+                                                                GlobalVarPool.foreignRsaKey = certificate.PublicKey;
+                                                                GlobalVarPool.nonce = CryptoHelper.RandomString();
+                                                                string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
+                                                                string message = "CKEformat%eq!XML!;key%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
+                                                                HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
+                                                                GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
+                                                            }
+                                                            break;
+                                                        }
+                                                    case "ERR":
+                                                        {
+                                                            GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINIXML\x04"));
+                                                            break;
+                                                        }
+                                                    default:
+                                                        {
+                                                            CustomException.ThrowNew.CryptographicException("RSA Key Format not supported.");
+                                                            break;
+                                                        }
                                                 }
                                                 break;
                                             }
@@ -633,7 +663,7 @@ namespace pmdbs
                                                                         {
                                                                             new Thread(async delegate ()
                                                                             {
-                                                                                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_wasOnline = 1, U_username = \"", GlobalVarPool.username, "\";" }));
+                                                                                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_wasOnline = 1, U_username = \"", GlobalVarPool.username, "\", U_email = \"",  GlobalVarPool.email,"\";" }));
                                                                                 await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
                                                                                 GlobalVarPool.wasOnline = true;
                                                                             }).Start();
@@ -645,7 +675,7 @@ namespace pmdbs
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
                                                                         GlobalVarPool.promptCommand = "ACTIVATE_ACCOUNT";
-                                                                        HelperMethods.Prompt("Confirm your account", "Please verify your email address.");
+                                                                        HelperMethods.Prompt("Activate your account", "Please verify your email address.");
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":
