@@ -166,6 +166,7 @@ namespace pmdbs
             LoginEditFieldOfflinePassword.EnterKeyPressed += LoginEditFieldOfflinePassword_EnterKeyPressed;
             SyncAnimationTimer.Tick += SyncAnimationTimer_Tick;
             windowButtonMinimize.OnClickEvent += windowButtonMinimize_Click;
+            DashboardLunaSmallCardListHotspots.OnCardClicked += DashboardLunaSmallCardListHotspots_CardClicked;
             #endregion
 
             #endregion
@@ -173,7 +174,7 @@ namespace pmdbs
             DashboardLunaItemListBreaches.LunaItemClicked += Breach_Clicked;
         }
 
-        private async void Form1_Load(object sender, EventArgs e)
+        private async void MainForm_Load(object sender, EventArgs e)
         {
             if (GuiLoaded)
             {
@@ -1894,6 +1895,7 @@ namespace pmdbs
             UpdateBreaches();
             UpdateStats();
             UpdatePasswordScore();
+            UpdateHotspots();
         }
 
         private async void UpdateStats()
@@ -1926,6 +1928,55 @@ namespace pmdbs
             DashboardLabelDiskSpaceValue.Text = fileSize.ToString() + units[i];
         }
 
+        private void UpdateHotspots()
+        {
+            DashboardLunaSmallCardListHotspots.RemoveAll();
+            List<Password.SimplifiedResult> simplifiedResults = new List<Password.SimplifiedResult>();
+            DataRowCollection rows = GlobalVarPool.UserData.Rows;
+            for (int i = 0; i < rows.Count; i++)
+            {
+                DataRow row = rows[i];
+                simplifiedResults.Add(Password.SimplifiedResult.Create(row["0"].ToString(), Convert.ToInt32(row["10"].ToString()), row["3"].ToString()));
+            }
+            simplifiedResults.Sort((x, y) => x.Score.CompareTo(y.Score));
+            for (int i = 0; i < simplifiedResults.Count; i++)
+            {
+                if (i > 2)
+                {
+                    break;
+                }
+                Password.Result result = simplifiedResults[i].ToResult();
+
+                if (result.Score <= Password.Results.Okay)
+                {
+                    if (i == 0)
+                    {
+                        DashboardPanelHotspotsZero.SendToBack();
+                        DashboardLunaSmallCardListHotspots.BringToFront();
+                    }
+                    DashboardLunaSmallCardListHotspots.Add(simplifiedResults[i].Host, result.Icon, simplifiedResults[i].Id, -1);
+                }
+                else
+                {
+                    if (i == 0)
+                    {
+                        DashboardLunaSmallCardListHotspots.SendToBack();
+                        DashboardPanelHotspotsZero.BringToFront();
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void DashboardLunaSmallCardListHotspots_CardClicked(object sender, EventArgs e)
+        {
+            LunaSmallCardItem hotspot = (LunaSmallCardItem)sender;
+            string id = hotspot.Id;
+            DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(id));
+            UpdateDetailsWindow(LinkedRow);
+            MenuMenuEntryPasswords_Click(null, null);
+        }
+
         private async void UpdatePasswordScore()
         {
             int accountCount = GlobalVarPool.UserData.Rows.Count;
@@ -1942,6 +1993,9 @@ namespace pmdbs
             await DataBaseHelper.ModifyData("UPDATE Tbl_meta SET M_avgScoreOld = \"" + avgScore.ToString() + "\";");
             DashboardLabelPasswordStrength.Text = avgScore.ToString();
             DashboardLabelPasswordStrengthChange.Text = Math.Round(deltaScore, 2, MidpointRounding.AwayFromZero).ToString();
+            Password.Result result = Password.Result.FromScore((int)Math.Round(avgScore, 0, MidpointRounding.AwayFromZero));
+            DashboardPictureBoxPasswordStrength.Image = result.Icon;
+            DashboardLabelPasswordStrengthComplexity.Text = result.Complexity;
             if (deltaScore < 0)
             {
                 DashboardLabelPasswordStrengthChange.ForeColor = Colors.Red;

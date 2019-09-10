@@ -11,6 +11,28 @@ namespace pmdbs
 {
     public static class Password
     {
+        public sealed class SimplifiedResult
+        {
+            public readonly string Id;
+            public readonly int Score;
+            public readonly string Host;
+            private SimplifiedResult(string id, int score, string host)
+            {
+                Id = id;
+                Score = score;
+                Host = host;
+            }
+
+            public static SimplifiedResult Create(string id, int score, string host)
+            {
+                return new SimplifiedResult(id, score, host);
+            }
+
+            public Result ToResult()
+            {
+                return Result.FromScore(Score);
+            }
+        }
         public sealed class Result
         {
             private readonly string _complexity;
@@ -157,7 +179,7 @@ namespace pmdbs
                     grade = "A-";
                     passwordComplexity = "Strong";
                 }
-                else if (score > 200)
+                else if (score >= 200)
                 {
                     grade = "A";
                     passwordComplexity = "Very Strong";
@@ -165,6 +187,17 @@ namespace pmdbs
 
                 return new Result(passwordComplexity, grade, score);
             }
+        }
+        public struct Results
+        {
+            public const int TooShort = -1;
+            public const int Embarrassing = 34;
+            public const int VeryWeak = 74;
+            public const int Weak = 109;
+            public const int Okay = 139;
+            public const int Good = 169;
+            public const int Strong = 199;
+            public const int VeryStrong = 200;
         }
         public static class Security
         {

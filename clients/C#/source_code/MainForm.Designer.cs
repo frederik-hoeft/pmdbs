@@ -56,20 +56,27 @@
             this.lunaItemList1 = new LunaForms.LunaItemList();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.DashboardPanelPasswordStrength = new System.Windows.Forms.Panel();
+            this.DashboardLabelPasswordStrengthUnit2 = new System.Windows.Forms.Label();
+            this.DashboardPictureBoxPasswordStrength = new System.Windows.Forms.PictureBox();
+            this.DashboardLabelPasswordStrengthComplexity = new System.Windows.Forms.Label();
             this.DashboardLabelPasswordStrengthUnit = new System.Windows.Forms.Label();
             this.DashboardLabelPasswordStrength = new System.Windows.Forms.Label();
             this.DashboardLabelPasswordStrengthHeader = new System.Windows.Forms.Label();
             this.DashboardLunaTrianglePasswordStrength = new LunaForms.LunaTriangle();
             this.DashboardLabelPasswordStrengthChange = new System.Windows.Forms.Label();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.label17 = new System.Windows.Forms.Label();
-            this.lunaSmallCardList2 = new LunaForms.LunaSmallCardList();
-            this.panel6 = new System.Windows.Forms.Panel();
+            this.DashboardPanelHotspots = new System.Windows.Forms.Panel();
+            this.DashboardPanelHotspotsZero = new System.Windows.Forms.Panel();
+            this.DashboardLabelHotspotsZeroDescription = new System.Windows.Forms.Label();
+            this.DashboardLabelHotspotsZeroTitle = new System.Windows.Forms.Label();
+            this.DashboardPictureBoxHotspotsZero = new System.Windows.Forms.PictureBox();
+            this.DashboardLabelHotspotsHeader = new System.Windows.Forms.Label();
+            this.DashboardLunaSmallCardListHotspots = new LunaForms.LunaSmallCardList();
+            this.DashboardPanelBreaches = new System.Windows.Forms.Panel();
             this.DashboardLunaItemListBreaches = new LunaForms.LunaItemList();
-            this.label16 = new System.Windows.Forms.Label();
+            this.DashboardLabelBreachesHeader = new System.Windows.Forms.Label();
             this.DashboardPanelDatabaseStats = new System.Windows.Forms.Panel();
-            this.DashboardLabelDiskSpaceValue = new System.Windows.Forms.Label();
             this.DashboardLabelDiskSpace = new System.Windows.Forms.Label();
+            this.DashboardLabelDiskSpaceValue = new System.Windows.Forms.Label();
             this.DashboardLabelAccountsTotal = new System.Windows.Forms.Label();
             this.DashboardLabelAccountNumber = new System.Windows.Forms.Label();
             this.DashboardLabelDatabaseStatsHeader = new System.Windows.Forms.Label();
@@ -349,8 +356,11 @@
             this.panel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.DashboardPanelPasswordStrength.SuspendLayout();
-            this.panel5.SuspendLayout();
-            this.panel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxPasswordStrength)).BeginInit();
+            this.DashboardPanelHotspots.SuspendLayout();
+            this.DashboardPanelHotspotsZero.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxHotspotsZero)).BeginInit();
+            this.DashboardPanelBreaches.SuspendLayout();
             this.DashboardPanelDatabaseStats.SuspendLayout();
             this.panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -825,8 +835,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel3.Controls.Add(this.DashboardPanelPasswordStrength, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.panel5, 2, 0);
-            this.tableLayoutPanel3.Controls.Add(this.panel6, 4, 0);
+            this.tableLayoutPanel3.Controls.Add(this.DashboardPanelHotspots, 2, 0);
+            this.tableLayoutPanel3.Controls.Add(this.DashboardPanelBreaches, 4, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 359);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
@@ -839,6 +849,9 @@
             // DashboardPanelPasswordStrength
             // 
             this.DashboardPanelPasswordStrength.BackColor = System.Drawing.Color.White;
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthUnit2);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardPictureBoxPasswordStrength);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthComplexity);
             this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthUnit);
             this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrength);
             this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthHeader);
@@ -851,23 +864,55 @@
             this.DashboardPanelPasswordStrength.Size = new System.Drawing.Size(260, 350);
             this.DashboardPanelPasswordStrength.TabIndex = 2;
             // 
+            // DashboardLabelPasswordStrengthUnit2
+            // 
+            this.DashboardLabelPasswordStrengthUnit2.AutoSize = true;
+            this.DashboardLabelPasswordStrengthUnit2.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DashboardLabelPasswordStrengthUnit2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelPasswordStrengthUnit2.Location = new System.Drawing.Point(90, 103);
+            this.DashboardLabelPasswordStrengthUnit2.Name = "DashboardLabelPasswordStrengthUnit2";
+            this.DashboardLabelPasswordStrengthUnit2.Size = new System.Drawing.Size(134, 32);
+            this.DashboardLabelPasswordStrengthUnit2.TabIndex = 12;
+            this.DashboardLabelPasswordStrengthUnit2.Text = "on average";
+            // 
+            // DashboardPictureBoxPasswordStrength
+            // 
+            this.DashboardPictureBoxPasswordStrength.Image = global::pmdbs.Properties.Resources.bm;
+            this.DashboardPictureBoxPasswordStrength.Location = new System.Drawing.Point(13, 68);
+            this.DashboardPictureBoxPasswordStrength.Name = "DashboardPictureBoxPasswordStrength";
+            this.DashboardPictureBoxPasswordStrength.Size = new System.Drawing.Size(70, 70);
+            this.DashboardPictureBoxPasswordStrength.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.DashboardPictureBoxPasswordStrength.TabIndex = 11;
+            this.DashboardPictureBoxPasswordStrength.TabStop = false;
+            // 
+            // DashboardLabelPasswordStrengthComplexity
+            // 
+            this.DashboardLabelPasswordStrengthComplexity.AutoSize = true;
+            this.DashboardLabelPasswordStrengthComplexity.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.DashboardLabelPasswordStrengthComplexity.ForeColor = System.Drawing.Color.Black;
+            this.DashboardLabelPasswordStrengthComplexity.Location = new System.Drawing.Point(88, 71);
+            this.DashboardLabelPasswordStrengthComplexity.Name = "DashboardLabelPasswordStrengthComplexity";
+            this.DashboardLabelPasswordStrengthComplexity.Size = new System.Drawing.Size(172, 38);
+            this.DashboardLabelPasswordStrengthComplexity.TabIndex = 10;
+            this.DashboardLabelPasswordStrengthComplexity.Text = "Embarassing";
+            // 
             // DashboardLabelPasswordStrengthUnit
             // 
             this.DashboardLabelPasswordStrengthUnit.AutoSize = true;
             this.DashboardLabelPasswordStrengthUnit.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.DashboardLabelPasswordStrengthUnit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLabelPasswordStrengthUnit.Location = new System.Drawing.Point(11, 179);
+            this.DashboardLabelPasswordStrengthUnit.Location = new System.Drawing.Point(11, 217);
             this.DashboardLabelPasswordStrengthUnit.Name = "DashboardLabelPasswordStrengthUnit";
-            this.DashboardLabelPasswordStrengthUnit.Size = new System.Drawing.Size(199, 32);
+            this.DashboardLabelPasswordStrengthUnit.Size = new System.Drawing.Size(207, 32);
             this.DashboardLabelPasswordStrengthUnit.TabIndex = 8;
-            this.DashboardLabelPasswordStrengthUnit.Text = "points in average";
+            this.DashboardLabelPasswordStrengthUnit.Text = "points on average";
             // 
             // DashboardLabelPasswordStrength
             // 
             this.DashboardLabelPasswordStrength.AutoSize = true;
             this.DashboardLabelPasswordStrength.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.DashboardLabelPasswordStrength.ForeColor = System.Drawing.Color.Black;
-            this.DashboardLabelPasswordStrength.Location = new System.Drawing.Point(0, 113);
+            this.DashboardLabelPasswordStrength.Location = new System.Drawing.Point(0, 151);
             this.DashboardLabelPasswordStrength.Name = "DashboardLabelPasswordStrength";
             this.DashboardLabelPasswordStrength.Size = new System.Drawing.Size(194, 74);
             this.DashboardLabelPasswordStrength.TabIndex = 7;
@@ -905,61 +950,108 @@
             this.DashboardLabelPasswordStrengthChange.Text = "+5.67";
             this.DashboardLabelPasswordStrengthChange.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // panel5
+            // DashboardPanelHotspots
             // 
-            this.panel5.BackColor = System.Drawing.Color.White;
-            this.panel5.Controls.Add(this.label17);
-            this.panel5.Controls.Add(this.lunaSmallCardList2);
-            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel5.Location = new System.Drawing.Point(270, 0);
-            this.panel5.Margin = new System.Windows.Forms.Padding(0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(260, 350);
-            this.panel5.TabIndex = 3;
+            this.DashboardPanelHotspots.BackColor = System.Drawing.Color.White;
+            this.DashboardPanelHotspots.Controls.Add(this.DashboardPanelHotspotsZero);
+            this.DashboardPanelHotspots.Controls.Add(this.DashboardLabelHotspotsHeader);
+            this.DashboardPanelHotspots.Controls.Add(this.DashboardLunaSmallCardListHotspots);
+            this.DashboardPanelHotspots.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DashboardPanelHotspots.Location = new System.Drawing.Point(270, 0);
+            this.DashboardPanelHotspots.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardPanelHotspots.Name = "DashboardPanelHotspots";
+            this.DashboardPanelHotspots.Size = new System.Drawing.Size(260, 350);
+            this.DashboardPanelHotspots.TabIndex = 3;
             // 
-            // label17
+            // DashboardPanelHotspotsZero
             // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label17.Location = new System.Drawing.Point(10, 17);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(133, 32);
-            this.label17.TabIndex = 8;
-            this.label17.Text = "HOTSPOTS";
+            this.DashboardPanelHotspotsZero.Controls.Add(this.DashboardLabelHotspotsZeroDescription);
+            this.DashboardPanelHotspotsZero.Controls.Add(this.DashboardLabelHotspotsZeroTitle);
+            this.DashboardPanelHotspotsZero.Controls.Add(this.DashboardPictureBoxHotspotsZero);
+            this.DashboardPanelHotspotsZero.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.DashboardPanelHotspotsZero.Location = new System.Drawing.Point(0, 67);
+            this.DashboardPanelHotspotsZero.Name = "DashboardPanelHotspotsZero";
+            this.DashboardPanelHotspotsZero.Size = new System.Drawing.Size(260, 283);
+            this.DashboardPanelHotspotsZero.TabIndex = 10;
             // 
-            // lunaSmallCardList2
+            // DashboardLabelHotspotsZeroDescription
             // 
-            this.lunaSmallCardList2.ImageLocation = new System.Drawing.Point(1, 1);
-            this.lunaSmallCardList2.Location = new System.Drawing.Point(0, 67);
-            this.lunaSmallCardList2.LunaSmallCardAnimationSteps = 10;
-            this.lunaSmallCardList2.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaSmallCardList2.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCardList2.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lunaSmallCardList2.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCardList2.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.lunaSmallCardList2.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCardList2.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaSmallCardList2.LunaSmallCardHeader = "LunaSmallCard";
-            this.lunaSmallCardList2.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCardList2.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCardList2.LunaSmallCardShowInfo = false;
-            this.lunaSmallCardList2.Name = "lunaSmallCardList2";
-            this.lunaSmallCardList2.SeperatorVerticalPadding = 6;
-            this.lunaSmallCardList2.Size = new System.Drawing.Size(259, 283);
-            this.lunaSmallCardList2.TabIndex = 7;
+            this.DashboardLabelHotspotsZeroDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DashboardLabelHotspotsZeroDescription.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DashboardLabelHotspotsZeroDescription.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelHotspotsZeroDescription.Location = new System.Drawing.Point(0, 180);
+            this.DashboardLabelHotspotsZeroDescription.Name = "DashboardLabelHotspotsZeroDescription";
+            this.DashboardLabelHotspotsZeroDescription.Size = new System.Drawing.Size(260, 47);
+            this.DashboardLabelHotspotsZeroDescription.TabIndex = 11;
+            this.DashboardLabelHotspotsZeroDescription.Text = "HURRAY!";
+            this.DashboardLabelHotspotsZeroDescription.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             // 
-            // panel6
+            // DashboardLabelHotspotsZeroTitle
             // 
-            this.panel6.BackColor = System.Drawing.Color.White;
-            this.panel6.Controls.Add(this.DashboardLunaItemListBreaches);
-            this.panel6.Controls.Add(this.label16);
-            this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(540, 0);
-            this.panel6.Margin = new System.Windows.Forms.Padding(0);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(262, 350);
-            this.panel6.TabIndex = 3;
+            this.DashboardLabelHotspotsZeroTitle.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.DashboardLabelHotspotsZeroTitle.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.DashboardLabelHotspotsZeroTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelHotspotsZeroTitle.Location = new System.Drawing.Point(0, 227);
+            this.DashboardLabelHotspotsZeroTitle.Name = "DashboardLabelHotspotsZeroTitle";
+            this.DashboardLabelHotspotsZeroTitle.Size = new System.Drawing.Size(260, 56);
+            this.DashboardLabelHotspotsZeroTitle.TabIndex = 10;
+            this.DashboardLabelHotspotsZeroTitle.Text = "YOUR PASSWORDS EXCEED MODERN STANDARDS";
+            this.DashboardLabelHotspotsZeroTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // DashboardPictureBoxHotspotsZero
+            // 
+            this.DashboardPictureBoxHotspotsZero.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DashboardPictureBoxHotspotsZero.Image = global::pmdbs.Properties.Resources.happy_light;
+            this.DashboardPictureBoxHotspotsZero.Location = new System.Drawing.Point(0, 0);
+            this.DashboardPictureBoxHotspotsZero.Name = "DashboardPictureBoxHotspotsZero";
+            this.DashboardPictureBoxHotspotsZero.Size = new System.Drawing.Size(260, 180);
+            this.DashboardPictureBoxHotspotsZero.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.DashboardPictureBoxHotspotsZero.TabIndex = 9;
+            this.DashboardPictureBoxHotspotsZero.TabStop = false;
+            // 
+            // DashboardLabelHotspotsHeader
+            // 
+            this.DashboardLabelHotspotsHeader.AutoSize = true;
+            this.DashboardLabelHotspotsHeader.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DashboardLabelHotspotsHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelHotspotsHeader.Location = new System.Drawing.Point(10, 17);
+            this.DashboardLabelHotspotsHeader.Name = "DashboardLabelHotspotsHeader";
+            this.DashboardLabelHotspotsHeader.Size = new System.Drawing.Size(133, 32);
+            this.DashboardLabelHotspotsHeader.TabIndex = 8;
+            this.DashboardLabelHotspotsHeader.Text = "HOTSPOTS";
+            // 
+            // DashboardLunaSmallCardListHotspots
+            // 
+            this.DashboardLunaSmallCardListHotspots.ImageLocation = new System.Drawing.Point(1, 1);
+            this.DashboardLunaSmallCardListHotspots.Location = new System.Drawing.Point(0, 67);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardAnimationSteps = 10;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Orange;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeader = "LunaSmallCard";
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardShowInfo = false;
+            this.DashboardLunaSmallCardListHotspots.Name = "DashboardLunaSmallCardListHotspots";
+            this.DashboardLunaSmallCardListHotspots.SeperatorVerticalPadding = 6;
+            this.DashboardLunaSmallCardListHotspots.Size = new System.Drawing.Size(260, 283);
+            this.DashboardLunaSmallCardListHotspots.TabIndex = 7;
+            // 
+            // DashboardPanelBreaches
+            // 
+            this.DashboardPanelBreaches.BackColor = System.Drawing.Color.White;
+            this.DashboardPanelBreaches.Controls.Add(this.DashboardLunaItemListBreaches);
+            this.DashboardPanelBreaches.Controls.Add(this.DashboardLabelBreachesHeader);
+            this.DashboardPanelBreaches.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DashboardPanelBreaches.Location = new System.Drawing.Point(540, 0);
+            this.DashboardPanelBreaches.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardPanelBreaches.Name = "DashboardPanelBreaches";
+            this.DashboardPanelBreaches.Size = new System.Drawing.Size(262, 350);
+            this.DashboardPanelBreaches.TabIndex = 3;
             // 
             // DashboardLunaItemListBreaches
             // 
@@ -986,23 +1078,23 @@
             this.DashboardLunaItemListBreaches.Size = new System.Drawing.Size(262, 283);
             this.DashboardLunaItemListBreaches.TabIndex = 7;
             // 
-            // label16
+            // DashboardLabelBreachesHeader
             // 
-            this.label16.AutoSize = true;
-            this.label16.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label16.Location = new System.Drawing.Point(10, 17);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(236, 32);
-            this.label16.TabIndex = 6;
-            this.label16.Text = "SECURITY BREACHES";
-            this.label16.Click += new System.EventHandler(this.label16_Click);
+            this.DashboardLabelBreachesHeader.AutoSize = true;
+            this.DashboardLabelBreachesHeader.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DashboardLabelBreachesHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLabelBreachesHeader.Location = new System.Drawing.Point(10, 17);
+            this.DashboardLabelBreachesHeader.Name = "DashboardLabelBreachesHeader";
+            this.DashboardLabelBreachesHeader.Size = new System.Drawing.Size(236, 32);
+            this.DashboardLabelBreachesHeader.TabIndex = 6;
+            this.DashboardLabelBreachesHeader.Text = "SECURITY BREACHES";
+            this.DashboardLabelBreachesHeader.Click += new System.EventHandler(this.label16_Click);
             // 
             // DashboardPanelDatabaseStats
             // 
             this.DashboardPanelDatabaseStats.BackColor = System.Drawing.Color.White;
-            this.DashboardPanelDatabaseStats.Controls.Add(this.DashboardLabelDiskSpaceValue);
             this.DashboardPanelDatabaseStats.Controls.Add(this.DashboardLabelDiskSpace);
+            this.DashboardPanelDatabaseStats.Controls.Add(this.DashboardLabelDiskSpaceValue);
             this.DashboardPanelDatabaseStats.Controls.Add(this.DashboardLabelAccountsTotal);
             this.DashboardPanelDatabaseStats.Controls.Add(this.DashboardLabelAccountNumber);
             this.DashboardPanelDatabaseStats.Controls.Add(this.DashboardLabelDatabaseStatsHeader);
@@ -1013,27 +1105,27 @@
             this.DashboardPanelDatabaseStats.Size = new System.Drawing.Size(518, 709);
             this.DashboardPanelDatabaseStats.TabIndex = 1;
             // 
-            // DashboardLabelDiskSpaceValue
-            // 
-            this.DashboardLabelDiskSpaceValue.AutoSize = true;
-            this.DashboardLabelDiskSpaceValue.Font = new System.Drawing.Font("Segoe UI", 38F);
-            this.DashboardLabelDiskSpaceValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
-            this.DashboardLabelDiskSpaceValue.Location = new System.Drawing.Point(12, 600);
-            this.DashboardLabelDiskSpaceValue.Name = "DashboardLabelDiskSpaceValue";
-            this.DashboardLabelDiskSpaceValue.Size = new System.Drawing.Size(237, 101);
-            this.DashboardLabelDiskSpaceValue.TabIndex = 3;
-            this.DashboardLabelDiskSpaceValue.Text = "76MB";
-            // 
             // DashboardLabelDiskSpace
             // 
             this.DashboardLabelDiskSpace.AutoSize = true;
             this.DashboardLabelDiskSpace.Font = new System.Drawing.Font("Segoe UI", 20F);
             this.DashboardLabelDiskSpace.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLabelDiskSpace.Location = new System.Drawing.Point(295, 636);
+            this.DashboardLabelDiskSpace.Location = new System.Drawing.Point(297, 636);
             this.DashboardLabelDiskSpace.Name = "DashboardLabelDiskSpace";
             this.DashboardLabelDiskSpace.Size = new System.Drawing.Size(205, 54);
             this.DashboardLabelDiskSpace.TabIndex = 4;
             this.DashboardLabelDiskSpace.Text = "disk space";
+            // 
+            // DashboardLabelDiskSpaceValue
+            // 
+            this.DashboardLabelDiskSpaceValue.AutoSize = true;
+            this.DashboardLabelDiskSpaceValue.Font = new System.Drawing.Font("Segoe UI", 38F);
+            this.DashboardLabelDiskSpaceValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
+            this.DashboardLabelDiskSpaceValue.Location = new System.Drawing.Point(6, 601);
+            this.DashboardLabelDiskSpaceValue.Name = "DashboardLabelDiskSpaceValue";
+            this.DashboardLabelDiskSpaceValue.Size = new System.Drawing.Size(311, 101);
+            this.DashboardLabelDiskSpaceValue.TabIndex = 3;
+            this.DashboardLabelDiskSpaceValue.Text = "888.8KB";
             // 
             // DashboardLabelAccountsTotal
             // 
@@ -4831,8 +4923,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
@@ -4846,7 +4938,7 @@
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Text = "1920";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.MenuPanel.ResumeLayout(false);
             this.MenuPanelSync.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).EndInit();
@@ -4864,10 +4956,13 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.DashboardPanelPasswordStrength.ResumeLayout(false);
             this.DashboardPanelPasswordStrength.PerformLayout();
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
-            this.panel6.ResumeLayout(false);
-            this.panel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxPasswordStrength)).EndInit();
+            this.DashboardPanelHotspots.ResumeLayout(false);
+            this.DashboardPanelHotspots.PerformLayout();
+            this.DashboardPanelHotspotsZero.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxHotspotsZero)).EndInit();
+            this.DashboardPanelBreaches.ResumeLayout(false);
+            this.DashboardPanelBreaches.PerformLayout();
             this.DashboardPanelDatabaseStats.ResumeLayout(false);
             this.DashboardPanelDatabaseStats.PerformLayout();
             this.panel7.ResumeLayout(false);
@@ -5270,8 +5365,8 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.Panel DashboardPanelPasswordStrength;
-        private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel DashboardPanelHotspots;
+        private System.Windows.Forms.Panel DashboardPanelBreaches;
         private System.Windows.Forms.Panel DashboardPanelDatabaseStats;
         private System.Windows.Forms.Label DashboardLabelDiskSpace;
         private System.Windows.Forms.Label DashboardLabelDiskSpaceValue;
@@ -5294,10 +5389,10 @@
         private System.Windows.Forms.Label DashboardLabelPasswordStrengthUnit;
         private System.Windows.Forms.Label DashboardLabelPasswordStrength;
         private System.Windows.Forms.Label DashboardLabelPasswordStrengthHeader;
-        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label DashboardLabelBreachesHeader;
         private LunaForms.LunaSmallCardList lunaSmallCardList1;
-        private System.Windows.Forms.Label label17;
-        private LunaForms.LunaSmallCardList lunaSmallCardList2;
+        private System.Windows.Forms.Label DashboardLabelHotspotsHeader;
+        private LunaForms.LunaSmallCardList DashboardLunaSmallCardListHotspots;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
@@ -5310,6 +5405,13 @@
         private System.Windows.Forms.Label DataEditLabelPasswordStrength;
         private System.Windows.Forms.Label DataEditLabelPasswordStrengthHeader;
         private LunaForms.PasswordStrengthIndicator DataEditPasswordStrengthIndicator;
+        private System.Windows.Forms.Label DashboardLabelPasswordStrengthUnit2;
+        private System.Windows.Forms.PictureBox DashboardPictureBoxPasswordStrength;
+        private System.Windows.Forms.Label DashboardLabelPasswordStrengthComplexity;
+        private System.Windows.Forms.PictureBox DashboardPictureBoxHotspotsZero;
+        private System.Windows.Forms.Panel DashboardPanelHotspotsZero;
+        private System.Windows.Forms.Label DashboardLabelHotspotsZeroDescription;
+        private System.Windows.Forms.Label DashboardLabelHotspotsZeroTitle;
     }
 }
 
