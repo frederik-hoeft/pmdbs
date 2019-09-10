@@ -4894,7 +4894,7 @@
             this.DashboardLunaSmallCardPasswordStrength.ImageLocation = new System.Drawing.Point(1, 1);
             this.DashboardLunaSmallCardPasswordStrength.Info = "on average";
             this.DashboardLunaSmallCardPasswordStrength.InfoLocation = new System.Drawing.Point(72, 35);
-            this.DashboardLunaSmallCardPasswordStrength.Location = new System.Drawing.Point(12, 67);
+            this.DashboardLunaSmallCardPasswordStrength.Location = new System.Drawing.Point(12, 72);
             this.DashboardLunaSmallCardPasswordStrength.Margin = new System.Windows.Forms.Padding(0);
             this.DashboardLunaSmallCardPasswordStrength.Name = "DashboardLunaSmallCardPasswordStrength";
             this.DashboardLunaSmallCardPasswordStrength.ShowBorder = false;
