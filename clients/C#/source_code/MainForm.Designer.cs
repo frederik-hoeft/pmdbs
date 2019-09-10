@@ -36,33 +36,23 @@
             this.MenuSyncLabelStatus = new System.Windows.Forms.Label();
             this.MenuFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.MenuPanelHome = new System.Windows.Forms.Panel();
-            this.MenuMenuEntryHome = new LunaForms.MenuEntry();
             this.MenuPanelHomeIndicator = new System.Windows.Forms.Panel();
             this.MenuPanelPasswords = new System.Windows.Forms.Panel();
-            this.MenuMenuEntryPasswords = new LunaForms.MenuEntry();
             this.MenuPanelPasswordsIndicator = new System.Windows.Forms.Panel();
             this.MenuPanelSettings = new System.Windows.Forms.Panel();
-            this.MenuMenuEntrySettings = new LunaForms.MenuEntry();
             this.MenuPanelSettingsIndicator = new System.Windows.Forms.Panel();
             this.DataPanelMain = new System.Windows.Forms.Panel();
             this.DashboardTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lunaSmallCardList1 = new LunaForms.LunaSmallCardList();
             this.label11 = new System.Windows.Forms.Label();
-            this.animatedButton1 = new LunaForms.AnimatedButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.lunaItemList1 = new LunaForms.LunaItemList();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.DashboardPanelPasswordStrength = new System.Windows.Forms.Panel();
-            this.DashboardLabelPasswordStrengthUnit2 = new System.Windows.Forms.Label();
-            this.DashboardPictureBoxPasswordStrength = new System.Windows.Forms.PictureBox();
-            this.DashboardLabelPasswordStrengthComplexity = new System.Windows.Forms.Label();
             this.DashboardLabelPasswordStrengthUnit = new System.Windows.Forms.Label();
             this.DashboardLabelPasswordStrength = new System.Windows.Forms.Label();
             this.DashboardLabelPasswordStrengthHeader = new System.Windows.Forms.Label();
-            this.DashboardLunaTrianglePasswordStrength = new LunaForms.LunaTriangle();
             this.DashboardLabelPasswordStrengthChange = new System.Windows.Forms.Label();
             this.DashboardPanelHotspots = new System.Windows.Forms.Panel();
             this.DashboardPanelHotspotsZero = new System.Windows.Forms.Panel();
@@ -70,9 +60,7 @@
             this.DashboardLabelHotspotsZeroTitle = new System.Windows.Forms.Label();
             this.DashboardPictureBoxHotspotsZero = new System.Windows.Forms.PictureBox();
             this.DashboardLabelHotspotsHeader = new System.Windows.Forms.Label();
-            this.DashboardLunaSmallCardListHotspots = new LunaForms.LunaSmallCardList();
             this.DashboardPanelBreaches = new System.Windows.Forms.Panel();
-            this.DashboardLunaItemListBreaches = new LunaForms.LunaItemList();
             this.DashboardLabelBreachesHeader = new System.Windows.Forms.Label();
             this.DashboardPanelDatabaseStats = new System.Windows.Forms.Panel();
             this.DashboardLabelDiskSpace = new System.Windows.Forms.Label();
@@ -97,11 +85,7 @@
             this.DataFlowLayoutPanelList = new System.Windows.Forms.FlowLayoutPanel();
             this.DataTableLayoutPanelFooter = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelFooterRight = new System.Windows.Forms.Panel();
-            this.DataSyncAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataRightAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataPanelFooterLeft = new System.Windows.Forms.Panel();
-            this.DataAddAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataLeftAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataTableLayoutPanelSubRight = new System.Windows.Forms.TableLayoutPanel();
             this.DataPanelSubRightMain = new System.Windows.Forms.Panel();
             this.DataPanelNoSel = new System.Windows.Forms.Panel();
@@ -111,55 +95,28 @@
             this.DataNoSelLabel3 = new System.Windows.Forms.Label();
             this.DataNoSelLabel2 = new System.Windows.Forms.Label();
             this.DataNoSelLabel1 = new System.Windows.Forms.Label();
-            this.DataNoSelBulletPointLabel3 = new LunaForms.BulletPointLabel();
-            this.DataNoSelBulletPointLabel2 = new LunaForms.BulletPointLabel();
-            this.DataNoSelBulletPointLabel1 = new LunaForms.BulletPointLabel();
             this.DataNoSelPictureBox = new System.Windows.Forms.PictureBox();
             this.DataFlowLayoutPanelEdit = new System.Windows.Forms.FlowLayoutPanel();
             this.DataEditPanelTop = new System.Windows.Forms.Panel();
             this.DataEditLabelPasswordStrength = new System.Windows.Forms.Label();
             this.DataEditLabelPasswordStrengthHeader = new System.Windows.Forms.Label();
-            this.DataEditPasswordStrengthIndicator = new LunaForms.PasswordStrengthIndicator();
-            this.DataEditSaveAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataEditCancelAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataEditPanelPasswordGenerator = new System.Windows.Forms.Panel();
-            this.DataEditAnimatedButtonGeneratePassword = new LunaForms.AnimatedButton();
             this.DataEditLabelPasswordGeneratorTitle = new System.Windows.Forms.Label();
-            this.DataEditAdvancedCheckBox = new LunaForms.AdvancedCheckBox();
-            this.DataEditAdvancedNumericUpDown = new LunaForms.AdvancedNumericUpDown();
             this.DataEditLabelPasswordGeneratorLengthTitle = new System.Windows.Forms.Label();
             this.DataEditLabelPasswordGeneratorDescription = new System.Windows.Forms.Label();
-            this.DataEditEditFieldHostname = new LunaForms.EditField();
             this.DataEditPictureBoxLogo = new System.Windows.Forms.PictureBox();
-            this.DataEditEditFieldEmail = new LunaForms.EditField();
-            this.DataEditEditFieldWebsite = new LunaForms.EditField();
-            this.DataEditEditFieldUsername = new LunaForms.EditField();
-            this.DataEditEditFieldPassword = new LunaForms.EditField();
             this.DataEditPanelBottom = new System.Windows.Forms.Panel();
             this.DataEditLabelNotes = new System.Windows.Forms.Label();
-            this.DataEditAdvancedRichTextBoxNotes = new LunaForms.AdvancedRichTextBox();
             this.DataPanelDetails = new System.Windows.Forms.Panel();
-            this.DataLunaSmallCardDetailsPasswordStrength = new LunaForms.LunaSmallCard();
-            this.DataDetailsCustomLabelNotes = new LunaForms.CustomLabel();
-            this.DataDetailsEntryUsername = new LunaForms.DetailsEntry();
-            this.DataDetailsEntryPassword = new LunaForms.DetailsEntry();
-            this.DataDetailsEditAdvancedImageButton = new LunaForms.AdvancedImageButton();
-            this.DataDetailsRemoveAdvancedImageButton = new LunaForms.AdvancedImageButton();
             this.DataLabelDetailsHostname = new System.Windows.Forms.Label();
             this.DataPictureBoxDetailsLogo = new System.Windows.Forms.PictureBox();
-            this.DataDetailsEntryEmail = new LunaForms.DetailsEntry();
-            this.DataDetailsEntryWebsite = new LunaForms.DetailsEntry();
             this.DataFilterResultsPanel = new System.Windows.Forms.Panel();
             this.DataFilterResultsLabelSortTerm = new System.Windows.Forms.Label();
             this.DataFilterResultsLabelSortHeader = new System.Windows.Forms.Label();
-            this.DataFilterResultsAnimatedButtonReset = new LunaForms.AnimatedButton();
             this.DataFilterResultsPictureBox = new System.Windows.Forms.PictureBox();
             this.DataFilterResultsLabelSearchTerm = new System.Windows.Forms.Label();
             this.DataFilterResultsHeader = new System.Windows.Forms.Label();
             this.DataFilterPanelNotFound = new System.Windows.Forms.Panel();
-            this.DataFilterAnimatedButtonReset = new LunaForms.AnimatedButton();
-            this.DataFilterBulletPointLabel2 = new LunaForms.BulletPointLabel();
-            this.DataFilterBulletPointLabel1 = new LunaForms.BulletPointLabel();
             this.DataFilterLabelSuggestions = new System.Windows.Forms.Label();
             this.DataFilterPictureBox = new System.Windows.Forms.PictureBox();
             this.DataFilterLabelSearchTerm = new System.Windows.Forms.Label();
@@ -174,32 +131,19 @@
             this.AddPanelContent = new System.Windows.Forms.Panel();
             this.AddLabelPasswordStrengthIndicator = new System.Windows.Forms.Label();
             this.AddLabelPasswordStrengthHeader = new System.Windows.Forms.Label();
-            this.AddPasswordStrengthIndicator = new LunaForms.PasswordStrengthIndicator();
             this.AddPanelGeneratePassword = new System.Windows.Forms.Panel();
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate = new LunaForms.AnimatedButton();
             this.AddPanelGeneratePasswordLabelTitle = new System.Windows.Forms.Label();
-            this.AddPanelGeneratePasswordAdvancedCheckBox = new LunaForms.AdvancedCheckBox();
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new LunaForms.AdvancedNumericUpDown();
             this.AddPanelGeneratePasswordLabelLength = new System.Windows.Forms.Label();
             this.AddPanelGeneratePasswordLabelDescription = new System.Windows.Forms.Label();
-            this.AddEditFieldEmail = new LunaForms.EditField();
             this.AddLabelTitle = new System.Windows.Forms.Label();
-            this.AddEditFieldHostname = new LunaForms.EditField();
-            this.AddEditFieldWebsite = new LunaForms.EditField();
-            this.AddEditFieldUsername = new LunaForms.EditField();
-            this.AddEditFieldPassword = new LunaForms.EditField();
             this.AddPanelNotes = new System.Windows.Forms.Panel();
-            this.AddPanelNotesAdvancedRichTextBox = new LunaForms.AdvancedRichTextBox();
             this.AddPanelNotesLabelTitle = new System.Windows.Forms.Label();
             this.AddPanelCheckIcon = new System.Windows.Forms.Panel();
             this.AddPanelCheckIconContent = new System.Windows.Forms.Panel();
             this.AddLabelCheckIconAvailableIcon = new System.Windows.Forms.Label();
             this.AddPictureBoxCheckIconIcon = new System.Windows.Forms.PictureBox();
-            this.AddPanelAnimatedButtonCheckIcon = new LunaForms.AnimatedButton();
             this.AddLabelCheckIconHeader = new System.Windows.Forms.Label();
             this.AddPanelBottomMenu = new System.Windows.Forms.Panel();
-            this.AddPanelAdvancedImageButtonAbort = new LunaForms.AdvancedImageButton();
-            this.AddPanelAdvancedImageButtonSave = new LunaForms.AdvancedImageButton();
             this.AddPanelSeperator = new System.Windows.Forms.Panel();
             this.SettingsTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.SettingsPictureBoxLeft = new System.Windows.Forms.PictureBox();
@@ -213,22 +157,14 @@
             this.SettingsPanelOnlineContent1 = new System.Windows.Forms.Panel();
             this.SettingsLabelOnlinePasswordChangeDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOnlinePasswordChangeHeader = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit = new LunaForms.AnimatedButton();
-            this.SettingsEditFieldOnlinePasswordChangeNew = new LunaForms.EditField();
-            this.SettingsEditFieldOnlinePasswordChangeConfirm = new LunaForms.EditField();
             this.SettingsPanelOnlineContent2 = new System.Windows.Forms.Panel();
-            this.SettingsAnimatedButtonOnlineChangeName = new LunaForms.AnimatedButton();
-            this.SettingsEditFieldOnlineChangeName = new LunaForms.EditField();
             this.SettingsLabelOnlineNameDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOnlineNameHeader = new System.Windows.Forms.Label();
             this.SettingsPanelOnlineContent3 = new System.Windows.Forms.Panel();
-            this.SettingsAnimatedButtonOnlineChangeServerRegister = new LunaForms.AnimatedButton();
-            this.SettingsAnimatedButtonOnlineChangeServerLogin = new LunaForms.AnimatedButton();
             this.SettingsLabelOnlineChangeServerDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOnlineChangeServer = new System.Windows.Forms.Label();
             this.SettingsPanelLoadingMain = new System.Windows.Forms.Panel();
             this.SettingsPanelLoadingCenter = new System.Windows.Forms.Panel();
-            this.SettingsLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
             this.SettingsLabelLoadingStatus = new System.Windows.Forms.Label();
             this.SettingsPictureBoxLoadingLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelOffline = new System.Windows.Forms.FlowLayoutPanel();
@@ -237,17 +173,10 @@
             this.SettingsPanelOfflineContent3 = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflinePasswordDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangePassword = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonChangePasswordSubmit = new LunaForms.AnimatedButton();
-            this.SettingsEditFieldOfflineNewPassword = new LunaForms.EditField();
-            this.SettingsEditFieldOfflineNewPasswordConfirm = new LunaForms.EditField();
             this.SettingsPanelOfflineContent1 = new System.Windows.Forms.Panel();
-            this.SettingsAnimatedButtonOfflineRegister = new LunaForms.AnimatedButton();
-            this.SettingsAnimatedButtonOfflineLogin = new LunaForms.AnimatedButton();
             this.SettingsLabelOfflineGoOnlineDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineGoOnline = new System.Windows.Forms.Label();
             this.SettingsPanelOfflineContent2 = new System.Windows.Forms.Panel();
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new LunaForms.AnimatedButton();
-            this.SettingsEditFieldOfflineName = new LunaForms.EditField();
             this.SettingsLabelOfflineChangeNameDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangeName = new System.Windows.Forms.Label();
             this.SettingsPanelPromptMain = new System.Windows.Forms.Panel();
@@ -255,48 +184,30 @@
             this.SettingsLabelPromptAction = new System.Windows.Forms.Label();
             this.SettingsLabelPromptMain = new System.Windows.Forms.Label();
             this.SettingsLabelPromptMailInfo = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonPromptSubmit = new LunaForms.AnimatedButton();
             this.SettingsPanelPromptCenter = new System.Windows.Forms.Panel();
             this.SettingsLabelPromptCode = new System.Windows.Forms.Label();
-            this.SettingsEditFieldPromptCode = new LunaForms.EditField();
             this.SettingsLabelPromptPrefix = new System.Windows.Forms.Label();
             this.SettingsPictureBoxPromptLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelRegister = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelRegisterContent = new System.Windows.Forms.Panel();
             this.SettingsLabelRegisterAccountDesc = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonSubmit = new LunaForms.AnimatedButton();
             this.SettingsLabelRegisterAccount = new System.Windows.Forms.Label();
             this.SettingsLabelRegisterServerSpec = new System.Windows.Forms.Label();
             this.SettingsLabelRegisterServerDesc = new System.Windows.Forms.Label();
-            this.SettingsEditFieldRegisterEmail = new LunaForms.EditField();
             this.SettingsLabelRegisterMain = new System.Windows.Forms.Label();
-            this.SettingsEditFieldRegisterIP = new LunaForms.EditField();
-            this.SettingsEditFieldRegisterName = new LunaForms.EditField();
-            this.SettingsEditFieldRegisterPort = new LunaForms.EditField();
-            this.SettingsEditFieldRegisterUsername = new LunaForms.EditField();
             this.SettingsFlowLayoutPanelLogin = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelLoginContent = new System.Windows.Forms.Panel();
-            this.SettingsEditFieldLoginPassword = new LunaForms.EditField();
             this.SettingsLabelLoginAccountDesc = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonLoginSubmit = new LunaForms.AnimatedButton();
             this.SettingsLabelLoginAccount = new System.Windows.Forms.Label();
             this.SettingsLabelLoginServer = new System.Windows.Forms.Label();
             this.SettingsLabelLoginServerDesc = new System.Windows.Forms.Label();
             this.SettingsLabelLoginMain = new System.Windows.Forms.Label();
-            this.SettingsEditFieldLoginIP = new LunaForms.EditField();
-            this.SettingsEditFieldLoginPort = new LunaForms.EditField();
-            this.SettingsEditFieldLoginUsername = new LunaForms.EditField();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.WindowHeaderPanel = new System.Windows.Forms.Panel();
             this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
             this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
             this.FilterLabelSort = new System.Windows.Forms.Label();
-            this.FilterAdvancedComboBoxSort = new LunaForms.AdvancedComboBox();
-            this.FilterEditFieldSearch = new LunaForms.EditField();
-            this.WindowsHeaderOvalPanelTitle = new LunaForms.OvalPanel();
-            this.WindowHeaderPictureBoxIcon = new System.Windows.Forms.PictureBox();
-            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -306,41 +217,128 @@
             this.LoginPanelRegisterCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelRegisterPasswordStrengthIndicator = new System.Windows.Forms.Label();
             this.LoginLabelRegisterPasswordStrengthHeader = new System.Windows.Forms.Label();
-            this.LoginPasswordStrengthIndicatorRegister = new LunaForms.PasswordStrengthIndicator();
             this.LoginLabelRegisterDescription = new System.Windows.Forms.Label();
             this.LoginLabelRegisterError = new System.Windows.Forms.Label();
             this.LoginLabelRegisterTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldRegisterPassword2 = new LunaForms.EditField();
-            this.LoginEditFieldRegisterPassword = new LunaForms.EditField();
             this.LoginLabelRegisterMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonRegister = new LunaForms.AnimatedButton();
             this.LoginPictureBoxRegisterLogo = new System.Windows.Forms.PictureBox();
             this.LoginPictureBoxOnlineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOnlineRegister = new System.Windows.Forms.Label();
             this.LoginPictureBoxOnlineLogo = new System.Windows.Forms.PictureBox();
-            this.LoginAnimatedButtonOnlineLogin = new LunaForms.AnimatedButton();
             this.LoginLabelOnlineMain = new System.Windows.Forms.Label();
             this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOnlineError = new System.Windows.Forms.Label();
             this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldOnlinePassword = new LunaForms.EditField();
-            this.LoginEditFieldOnlineUsername = new LunaForms.EditField();
             this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
             this.LoginLoadingPictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.LoginLoadingLabelMain = new System.Windows.Forms.Label();
             this.LoginLoadingPanelMain = new System.Windows.Forms.Panel();
-            this.LoginLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
             this.LoginLoadingLabelDetails = new System.Windows.Forms.Label();
             this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
             this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
             this.LoginLabelOfflineError = new System.Windows.Forms.Label();
-            this.LoginEditFieldOfflinePassword = new LunaForms.EditField();
             this.LoginLabelOfflineMain = new System.Windows.Forms.Label();
-            this.LoginAnimatedButtonOfflineLogin = new LunaForms.AnimatedButton();
             this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
+            this.LoginPasswordStrengthIndicatorRegister = new LunaForms.PasswordStrengthIndicator();
+            this.LoginEditFieldRegisterPassword2 = new LunaForms.EditField();
+            this.LoginEditFieldRegisterPassword = new LunaForms.EditField();
+            this.LoginAnimatedButtonRegister = new LunaForms.AnimatedButton();
+            this.LoginAnimatedButtonOnlineLogin = new LunaForms.AnimatedButton();
+            this.LoginEditFieldOnlinePassword = new LunaForms.EditField();
+            this.LoginEditFieldOnlineUsername = new LunaForms.EditField();
+            this.LoginLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
+            this.LoginEditFieldOfflinePassword = new LunaForms.EditField();
+            this.LoginAnimatedButtonOfflineLogin = new LunaForms.AnimatedButton();
+            this.lunaSmallCardList1 = new LunaForms.LunaSmallCardList();
+            this.animatedButton1 = new LunaForms.AnimatedButton();
+            this.lunaItemList1 = new LunaForms.LunaItemList();
+            this.DashboardLunaTrianglePasswordStrength = new LunaForms.LunaTriangle();
+            this.DashboardLunaSmallCardListHotspots = new LunaForms.LunaSmallCardList();
+            this.DashboardLunaItemListBreaches = new LunaForms.LunaItemList();
+            this.DataSyncAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataRightAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataAddAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataLeftAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataNoSelBulletPointLabel3 = new LunaForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel2 = new LunaForms.BulletPointLabel();
+            this.DataNoSelBulletPointLabel1 = new LunaForms.BulletPointLabel();
+            this.DataEditPasswordStrengthIndicator = new LunaForms.PasswordStrengthIndicator();
+            this.DataEditSaveAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataEditCancelAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataEditAnimatedButtonGeneratePassword = new LunaForms.AnimatedButton();
+            this.DataEditAdvancedCheckBox = new LunaForms.AdvancedCheckBox();
+            this.DataEditAdvancedNumericUpDown = new LunaForms.AdvancedNumericUpDown();
+            this.DataEditEditFieldHostname = new LunaForms.EditField();
+            this.DataEditEditFieldEmail = new LunaForms.EditField();
+            this.DataEditEditFieldWebsite = new LunaForms.EditField();
+            this.DataEditEditFieldUsername = new LunaForms.EditField();
+            this.DataEditEditFieldPassword = new LunaForms.EditField();
+            this.DataEditAdvancedRichTextBoxNotes = new LunaForms.AdvancedRichTextBox();
+            this.DataLunaSmallCardDetailsPasswordStrength = new LunaForms.LunaSmallCard();
+            this.DataDetailsCustomLabelNotes = new LunaForms.CustomLabel();
+            this.DataDetailsEntryUsername = new LunaForms.DetailsEntry();
+            this.DataDetailsEntryPassword = new LunaForms.DetailsEntry();
+            this.DataDetailsEditAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataDetailsRemoveAdvancedImageButton = new LunaForms.AdvancedImageButton();
+            this.DataDetailsEntryEmail = new LunaForms.DetailsEntry();
+            this.DataDetailsEntryWebsite = new LunaForms.DetailsEntry();
+            this.DataFilterResultsAnimatedButtonReset = new LunaForms.AnimatedButton();
+            this.DataFilterAnimatedButtonReset = new LunaForms.AnimatedButton();
+            this.DataFilterBulletPointLabel2 = new LunaForms.BulletPointLabel();
+            this.DataFilterBulletPointLabel1 = new LunaForms.BulletPointLabel();
+            this.AddPasswordStrengthIndicator = new LunaForms.PasswordStrengthIndicator();
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate = new LunaForms.AnimatedButton();
+            this.AddPanelGeneratePasswordAdvancedCheckBox = new LunaForms.AdvancedCheckBox();
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown = new LunaForms.AdvancedNumericUpDown();
+            this.AddEditFieldEmail = new LunaForms.EditField();
+            this.AddEditFieldHostname = new LunaForms.EditField();
+            this.AddEditFieldWebsite = new LunaForms.EditField();
+            this.AddEditFieldUsername = new LunaForms.EditField();
+            this.AddEditFieldPassword = new LunaForms.EditField();
+            this.AddPanelNotesAdvancedRichTextBox = new LunaForms.AdvancedRichTextBox();
+            this.AddPanelAnimatedButtonCheckIcon = new LunaForms.AnimatedButton();
+            this.AddPanelAdvancedImageButtonAbort = new LunaForms.AdvancedImageButton();
+            this.AddPanelAdvancedImageButtonSave = new LunaForms.AdvancedImageButton();
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldOnlinePasswordChangeNew = new LunaForms.EditField();
+            this.SettingsEditFieldOnlinePasswordChangeConfirm = new LunaForms.EditField();
+            this.SettingsAnimatedButtonOnlineChangeName = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldOnlineChangeName = new LunaForms.EditField();
+            this.SettingsAnimatedButtonOnlineChangeServerRegister = new LunaForms.AnimatedButton();
+            this.SettingsAnimatedButtonOnlineChangeServerLogin = new LunaForms.AnimatedButton();
+            this.SettingsLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
+            this.SettingsAnimatedButtonChangePasswordSubmit = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldOfflineNewPassword = new LunaForms.EditField();
+            this.SettingsEditFieldOfflineNewPasswordConfirm = new LunaForms.EditField();
+            this.SettingsAnimatedButtonOfflineRegister = new LunaForms.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineLogin = new LunaForms.AnimatedButton();
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldOfflineName = new LunaForms.EditField();
+            this.SettingsAnimatedButtonPromptSubmit = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldPromptCode = new LunaForms.EditField();
+            this.SettingsAnimatedButtonSubmit = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldRegisterEmail = new LunaForms.EditField();
+            this.SettingsEditFieldRegisterIP = new LunaForms.EditField();
+            this.SettingsEditFieldRegisterName = new LunaForms.EditField();
+            this.SettingsEditFieldRegisterPort = new LunaForms.EditField();
+            this.SettingsEditFieldRegisterUsername = new LunaForms.EditField();
+            this.SettingsEditFieldLoginPassword = new LunaForms.EditField();
+            this.SettingsAnimatedButtonLoginSubmit = new LunaForms.AnimatedButton();
+            this.SettingsEditFieldLoginIP = new LunaForms.EditField();
+            this.SettingsEditFieldLoginPort = new LunaForms.EditField();
+            this.SettingsEditFieldLoginUsername = new LunaForms.EditField();
+            this.MenuMenuEntryHome = new LunaForms.MenuEntry();
+            this.MenuMenuEntryPasswords = new LunaForms.MenuEntry();
+            this.MenuMenuEntrySettings = new LunaForms.MenuEntry();
+            this.FilterAdvancedComboBoxSort = new LunaForms.AdvancedComboBox();
+            this.FilterEditFieldSearch = new LunaForms.EditField();
+            this.WindowsHeaderOvalPanelTitle = new LunaForms.OvalPanel();
+            this.WindowHeaderPictureBoxIcon = new System.Windows.Forms.PictureBox();
+            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
+            this.DashboardLunaSmallCardPasswordStrength = new LunaForms.LunaSmallCard();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -356,7 +354,6 @@
             this.panel3.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.DashboardPanelPasswordStrength.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxPasswordStrength)).BeginInit();
             this.DashboardPanelHotspots.SuspendLayout();
             this.DashboardPanelHotspotsZero.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxHotspotsZero)).BeginInit();
@@ -433,8 +430,6 @@
             this.WindowHeaderTableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).BeginInit();
             this.WindowsHeaderPanelSubRight.SuspendLayout();
-            this.WindowsHeaderOvalPanelTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).BeginInit();
             this.PanelMain.SuspendLayout();
             this.PanelLogin.SuspendLayout();
             this.LoginTableLayoutPanelMain.SuspendLayout();
@@ -456,6 +451,8 @@
             this.LoginPictureBoxOfflineMain.SuspendLayout();
             this.LoginPanelOfflineCredentials.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).BeginInit();
+            this.WindowsHeaderOvalPanelTitle.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -541,26 +538,6 @@
             this.MenuPanelHome.Size = new System.Drawing.Size(269, 75);
             this.MenuPanelHome.TabIndex = 7;
             // 
-            // MenuMenuEntryHome
-            // 
-            this.MenuMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
-            this.MenuMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryHome.ColorHover = System.Drawing.Color.White;
-            this.MenuMenuEntryHome.ColorNormal = System.Drawing.Color.White;
-            this.MenuMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MenuMenuEntryHome.FontTitle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntryHome.ImageHover = global::pmdbs.Properties.Resources.home_normal_v2;
-            this.MenuMenuEntryHome.ImageNormal = global::pmdbs.Properties.Resources.home_normal_v2;
-            this.MenuMenuEntryHome.Location = new System.Drawing.Point(13, 0);
-            this.MenuMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryHome.Name = "MenuMenuEntryHome";
-            this.MenuMenuEntryHome.Size = new System.Drawing.Size(255, 74);
-            this.MenuMenuEntryHome.TabIndex = 5;
-            this.MenuMenuEntryHome.TextTitle = "Home";
-            // 
             // MenuPanelHomeIndicator
             // 
             this.MenuPanelHomeIndicator.BackColor = System.Drawing.Color.White;
@@ -583,26 +560,6 @@
             this.MenuPanelPasswords.Size = new System.Drawing.Size(269, 75);
             this.MenuPanelPasswords.TabIndex = 8;
             // 
-            // MenuMenuEntryPasswords
-            // 
-            this.MenuMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
-            this.MenuMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
-            this.MenuMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
-            this.MenuMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MenuMenuEntryPasswords.FontTitle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntryPasswords.ImageHover = global::pmdbs.Properties.Resources.database;
-            this.MenuMenuEntryPasswords.ImageNormal = global::pmdbs.Properties.Resources.database;
-            this.MenuMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
-            this.MenuMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntryPasswords.Name = "MenuMenuEntryPasswords";
-            this.MenuMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
-            this.MenuMenuEntryPasswords.TabIndex = 5;
-            this.MenuMenuEntryPasswords.TextTitle = "Passwords";
-            // 
             // MenuPanelPasswordsIndicator
             // 
             this.MenuPanelPasswordsIndicator.BackColor = System.Drawing.Color.White;
@@ -624,26 +581,6 @@
             this.MenuPanelSettings.Padding = new System.Windows.Forms.Padding(0, 0, 1, 1);
             this.MenuPanelSettings.Size = new System.Drawing.Size(269, 75);
             this.MenuPanelSettings.TabIndex = 8;
-            // 
-            // MenuMenuEntrySettings
-            // 
-            this.MenuMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
-            this.MenuMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.MenuMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntrySettings.ColorHover = System.Drawing.Color.White;
-            this.MenuMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
-            this.MenuMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
-            this.MenuMenuEntrySettings.FontTitle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MenuMenuEntrySettings.ImageHover = global::pmdbs.Properties.Resources.settings_normal_v2;
-            this.MenuMenuEntrySettings.ImageNormal = global::pmdbs.Properties.Resources.settings_normal_v2;
-            this.MenuMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
-            this.MenuMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
-            this.MenuMenuEntrySettings.Name = "MenuMenuEntrySettings";
-            this.MenuMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
-            this.MenuMenuEntrySettings.TabIndex = 5;
-            this.MenuMenuEntrySettings.TextTitle = "Settings";
             // 
             // MenuPanelSettingsIndicator
             // 
@@ -724,27 +661,6 @@
             this.panel2.Size = new System.Drawing.Size(264, 709);
             this.panel2.TabIndex = 2;
             // 
-            // lunaSmallCardList1
-            // 
-            this.lunaSmallCardList1.ImageLocation = new System.Drawing.Point(1, 1);
-            this.lunaSmallCardList1.Location = new System.Drawing.Point(0, 67);
-            this.lunaSmallCardList1.LunaSmallCardAnimationSteps = 10;
-            this.lunaSmallCardList1.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
-            this.lunaSmallCardList1.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
-            this.lunaSmallCardList1.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lunaSmallCardList1.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
-            this.lunaSmallCardList1.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Black;
-            this.lunaSmallCardList1.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCardList1.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCardList1.LunaSmallCardHeader = "LunaSmallCard";
-            this.lunaSmallCardList1.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCardList1.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCardList1.LunaSmallCardShowInfo = false;
-            this.lunaSmallCardList1.Name = "lunaSmallCardList1";
-            this.lunaSmallCardList1.SeperatorVerticalPadding = 6;
-            this.lunaSmallCardList1.Size = new System.Drawing.Size(264, 540);
-            this.lunaSmallCardList1.TabIndex = 6;
-            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -755,23 +671,6 @@
             this.label11.Size = new System.Drawing.Size(173, 32);
             this.label11.TabIndex = 5;
             this.label11.Text = "YOUR DEVICES";
-            // 
-            // animatedButton1
-            // 
-            this.animatedButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
-            this.animatedButton1.Depth = 0;
-            this.animatedButton1.Icon = null;
-            this.animatedButton1.Location = new System.Drawing.Point(15, 616);
-            this.animatedButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton1.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton1.Name = "animatedButton1";
-            this.animatedButton1.Primary = false;
-            this.animatedButton1.Size = new System.Drawing.Size(234, 83);
-            this.animatedButton1.TabIndex = 3;
-            this.animatedButton1.Text = "Devices and activity";
-            this.animatedButton1.UseVisualStyleBackColor = true;
-            this.animatedButton1.Click += new System.EventHandler(this.animatedButton1_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -801,31 +700,6 @@
             this.panel3.Size = new System.Drawing.Size(802, 349);
             this.panel3.TabIndex = 2;
             // 
-            // lunaItemList1
-            // 
-            this.lunaItemList1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lunaItemList1.ImageLocation = new System.Drawing.Point(1, 1);
-            this.lunaItemList1.IsScrollable = true;
-            this.lunaItemList1.Location = new System.Drawing.Point(260, 2);
-            this.lunaItemList1.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaItemList1.LunaItemBackColorNormal = System.Drawing.Color.White;
-            this.lunaItemList1.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.lunaItemList1.LunaItemForeColorHeader = System.Drawing.Color.Black;
-            this.lunaItemList1.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
-            this.lunaItemList1.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaItemList1.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lunaItemList1.LunaItemHeader = "Item";
-            this.lunaItemList1.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaItemList1.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaItemList1.LunaItemShowInfo = false;
-            this.lunaItemList1.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
-            this.lunaItemList1.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.lunaItemList1.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.lunaItemList1.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaItemList1.Name = "lunaItemList1";
-            this.lunaItemList1.Size = new System.Drawing.Size(239, 339);
-            this.lunaItemList1.TabIndex = 0;
-            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 5;
@@ -849,9 +723,7 @@
             // DashboardPanelPasswordStrength
             // 
             this.DashboardPanelPasswordStrength.BackColor = System.Drawing.Color.White;
-            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthUnit2);
-            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardPictureBoxPasswordStrength);
-            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthComplexity);
+            this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLunaSmallCardPasswordStrength);
             this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthUnit);
             this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrength);
             this.DashboardPanelPasswordStrength.Controls.Add(this.DashboardLabelPasswordStrengthHeader);
@@ -864,44 +736,12 @@
             this.DashboardPanelPasswordStrength.Size = new System.Drawing.Size(260, 350);
             this.DashboardPanelPasswordStrength.TabIndex = 2;
             // 
-            // DashboardLabelPasswordStrengthUnit2
-            // 
-            this.DashboardLabelPasswordStrengthUnit2.AutoSize = true;
-            this.DashboardLabelPasswordStrengthUnit2.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.DashboardLabelPasswordStrengthUnit2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLabelPasswordStrengthUnit2.Location = new System.Drawing.Point(90, 103);
-            this.DashboardLabelPasswordStrengthUnit2.Name = "DashboardLabelPasswordStrengthUnit2";
-            this.DashboardLabelPasswordStrengthUnit2.Size = new System.Drawing.Size(134, 32);
-            this.DashboardLabelPasswordStrengthUnit2.TabIndex = 12;
-            this.DashboardLabelPasswordStrengthUnit2.Text = "on average";
-            // 
-            // DashboardPictureBoxPasswordStrength
-            // 
-            this.DashboardPictureBoxPasswordStrength.Image = global::pmdbs.Properties.Resources.bm;
-            this.DashboardPictureBoxPasswordStrength.Location = new System.Drawing.Point(13, 68);
-            this.DashboardPictureBoxPasswordStrength.Name = "DashboardPictureBoxPasswordStrength";
-            this.DashboardPictureBoxPasswordStrength.Size = new System.Drawing.Size(70, 70);
-            this.DashboardPictureBoxPasswordStrength.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.DashboardPictureBoxPasswordStrength.TabIndex = 11;
-            this.DashboardPictureBoxPasswordStrength.TabStop = false;
-            // 
-            // DashboardLabelPasswordStrengthComplexity
-            // 
-            this.DashboardLabelPasswordStrengthComplexity.AutoSize = true;
-            this.DashboardLabelPasswordStrengthComplexity.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.DashboardLabelPasswordStrengthComplexity.ForeColor = System.Drawing.Color.Black;
-            this.DashboardLabelPasswordStrengthComplexity.Location = new System.Drawing.Point(88, 71);
-            this.DashboardLabelPasswordStrengthComplexity.Name = "DashboardLabelPasswordStrengthComplexity";
-            this.DashboardLabelPasswordStrengthComplexity.Size = new System.Drawing.Size(172, 38);
-            this.DashboardLabelPasswordStrengthComplexity.TabIndex = 10;
-            this.DashboardLabelPasswordStrengthComplexity.Text = "Embarassing";
-            // 
             // DashboardLabelPasswordStrengthUnit
             // 
             this.DashboardLabelPasswordStrengthUnit.AutoSize = true;
             this.DashboardLabelPasswordStrengthUnit.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.DashboardLabelPasswordStrengthUnit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLabelPasswordStrengthUnit.Location = new System.Drawing.Point(11, 217);
+            this.DashboardLabelPasswordStrengthUnit.Location = new System.Drawing.Point(11, 207);
             this.DashboardLabelPasswordStrengthUnit.Name = "DashboardLabelPasswordStrengthUnit";
             this.DashboardLabelPasswordStrengthUnit.Size = new System.Drawing.Size(207, 32);
             this.DashboardLabelPasswordStrengthUnit.TabIndex = 8;
@@ -912,7 +752,7 @@
             this.DashboardLabelPasswordStrength.AutoSize = true;
             this.DashboardLabelPasswordStrength.Font = new System.Drawing.Font("Segoe UI", 28F);
             this.DashboardLabelPasswordStrength.ForeColor = System.Drawing.Color.Black;
-            this.DashboardLabelPasswordStrength.Location = new System.Drawing.Point(0, 151);
+            this.DashboardLabelPasswordStrength.Location = new System.Drawing.Point(0, 141);
             this.DashboardLabelPasswordStrength.Name = "DashboardLabelPasswordStrength";
             this.DashboardLabelPasswordStrength.Size = new System.Drawing.Size(194, 74);
             this.DashboardLabelPasswordStrength.TabIndex = 7;
@@ -928,15 +768,6 @@
             this.DashboardLabelPasswordStrengthHeader.Size = new System.Drawing.Size(263, 32);
             this.DashboardLabelPasswordStrengthHeader.TabIndex = 6;
             this.DashboardLabelPasswordStrengthHeader.Text = "PASSWORD STRENGTH";
-            // 
-            // DashboardLunaTrianglePasswordStrength
-            // 
-            this.DashboardLunaTrianglePasswordStrength.IsSolid = true;
-            this.DashboardLunaTrianglePasswordStrength.Location = new System.Drawing.Point(17, 275);
-            this.DashboardLunaTrianglePasswordStrength.Name = "DashboardLunaTrianglePasswordStrength";
-            this.DashboardLunaTrianglePasswordStrength.Size = new System.Drawing.Size(60, 53);
-            this.DashboardLunaTrianglePasswordStrength.TabIndex = 0;
-            this.DashboardLunaTrianglePasswordStrength.TriangleDirection = LunaForms.LunaTriangle.Direction.Top;
             // 
             // DashboardLabelPasswordStrengthChange
             // 
@@ -1020,27 +851,6 @@
             this.DashboardLabelHotspotsHeader.TabIndex = 8;
             this.DashboardLabelHotspotsHeader.Text = "HOTSPOTS";
             // 
-            // DashboardLunaSmallCardListHotspots
-            // 
-            this.DashboardLunaSmallCardListHotspots.ImageLocation = new System.Drawing.Point(1, 1);
-            this.DashboardLunaSmallCardListHotspots.Location = new System.Drawing.Point(0, 67);
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardAnimationSteps = 10;
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Orange;
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeader = "LunaSmallCard";
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardShowInfo = false;
-            this.DashboardLunaSmallCardListHotspots.Name = "DashboardLunaSmallCardListHotspots";
-            this.DashboardLunaSmallCardListHotspots.SeperatorVerticalPadding = 6;
-            this.DashboardLunaSmallCardListHotspots.Size = new System.Drawing.Size(260, 283);
-            this.DashboardLunaSmallCardListHotspots.TabIndex = 7;
-            // 
             // DashboardPanelBreaches
             // 
             this.DashboardPanelBreaches.BackColor = System.Drawing.Color.White;
@@ -1052,31 +862,6 @@
             this.DashboardPanelBreaches.Name = "DashboardPanelBreaches";
             this.DashboardPanelBreaches.Size = new System.Drawing.Size(262, 350);
             this.DashboardPanelBreaches.TabIndex = 3;
-            // 
-            // DashboardLunaItemListBreaches
-            // 
-            this.DashboardLunaItemListBreaches.ImageLocation = new System.Drawing.Point(1, 1);
-            this.DashboardLunaItemListBreaches.IsScrollable = true;
-            this.DashboardLunaItemListBreaches.Location = new System.Drawing.Point(0, 67);
-            this.DashboardLunaItemListBreaches.LunaItemAnimationSteps = 10;
-            this.DashboardLunaItemListBreaches.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.DashboardLunaItemListBreaches.LunaItemBackColorNormal = System.Drawing.Color.White;
-            this.DashboardLunaItemListBreaches.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DashboardLunaItemListBreaches.LunaItemForeColorHeader = System.Drawing.Color.Black;
-            this.DashboardLunaItemListBreaches.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
-            this.DashboardLunaItemListBreaches.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLunaItemListBreaches.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLunaItemListBreaches.LunaItemHeader = "Item";
-            this.DashboardLunaItemListBreaches.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
-            this.DashboardLunaItemListBreaches.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
-            this.DashboardLunaItemListBreaches.LunaItemShowInfo = false;
-            this.DashboardLunaItemListBreaches.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
-            this.DashboardLunaItemListBreaches.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.DashboardLunaItemListBreaches.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.DashboardLunaItemListBreaches.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardLunaItemListBreaches.Name = "DashboardLunaItemListBreaches";
-            this.DashboardLunaItemListBreaches.Size = new System.Drawing.Size(262, 283);
-            this.DashboardLunaItemListBreaches.TabIndex = 7;
             // 
             // DashboardLabelBreachesHeader
             // 
@@ -1378,26 +1163,6 @@
             this.DataPanelFooterRight.Size = new System.Drawing.Size(447, 82);
             this.DataPanelFooterRight.TabIndex = 1;
             // 
-            // DataSyncAdvancedImageButton
-            // 
-            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataSyncAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.sync_hover_v5;
-            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
-            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
-            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
-            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataSyncAdvancedImageButton.TabIndex = 17;
-            // 
-            // DataRightAdvancedImageButton
-            // 
-            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataRightAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.right_hover_v2;
-            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
-            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
-            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataRightAdvancedImageButton.TabIndex = 17;
-            // 
             // DataPanelFooterLeft
             // 
             this.DataPanelFooterLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
@@ -1410,26 +1175,6 @@
             this.DataPanelFooterLeft.Name = "DataPanelFooterLeft";
             this.DataPanelFooterLeft.Size = new System.Drawing.Size(446, 82);
             this.DataPanelFooterLeft.TabIndex = 0;
-            // 
-            // DataAddAdvancedImageButton
-            // 
-            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DataAddAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.add_hover_v5;
-            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
-            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
-            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
-            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataAddAdvancedImageButton.TabIndex = 15;
-            // 
-            // DataLeftAdvancedImageButton
-            // 
-            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DataLeftAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.left_hover_v2;
-            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
-            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
-            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
-            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataLeftAdvancedImageButton.TabIndex = 16;
             // 
             // DataTableLayoutPanelSubRight
             // 
@@ -1540,36 +1285,6 @@
             this.DataNoSelLabel1.TabIndex = 15;
             this.DataNoSelLabel1.Text = "accounts by clicking the + icon";
             // 
-            // DataNoSelBulletPointLabel3
-            // 
-            this.DataNoSelBulletPointLabel3.AutoSize = true;
-            this.DataNoSelBulletPointLabel3.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.DataNoSelBulletPointLabel3.Location = new System.Drawing.Point(62, 579);
-            this.DataNoSelBulletPointLabel3.Name = "DataNoSelBulletPointLabel3";
-            this.DataNoSelBulletPointLabel3.Size = new System.Drawing.Size(150, 38);
-            this.DataNoSelBulletPointLabel3.TabIndex = 14;
-            this.DataNoSelBulletPointLabel3.Text = "  Organize";
-            // 
-            // DataNoSelBulletPointLabel2
-            // 
-            this.DataNoSelBulletPointLabel2.AutoSize = true;
-            this.DataNoSelBulletPointLabel2.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.DataNoSelBulletPointLabel2.Location = new System.Drawing.Point(60, 509);
-            this.DataNoSelBulletPointLabel2.Name = "DataNoSelBulletPointLabel2";
-            this.DataNoSelBulletPointLabel2.Size = new System.Drawing.Size(95, 38);
-            this.DataNoSelBulletPointLabel2.TabIndex = 13;
-            this.DataNoSelBulletPointLabel2.Text = "  Click";
-            // 
-            // DataNoSelBulletPointLabel1
-            // 
-            this.DataNoSelBulletPointLabel1.AutoSize = true;
-            this.DataNoSelBulletPointLabel1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
-            this.DataNoSelBulletPointLabel1.Location = new System.Drawing.Point(60, 419);
-            this.DataNoSelBulletPointLabel1.Name = "DataNoSelBulletPointLabel1";
-            this.DataNoSelBulletPointLabel1.Size = new System.Drawing.Size(87, 38);
-            this.DataNoSelBulletPointLabel1.TabIndex = 12;
-            this.DataNoSelBulletPointLabel1.Text = "  Add";
-            // 
             // DataNoSelPictureBox
             // 
             this.DataNoSelPictureBox.BackColor = System.Drawing.Color.White;
@@ -1637,46 +1352,6 @@
             this.DataEditLabelPasswordStrengthHeader.TabIndex = 34;
             this.DataEditLabelPasswordStrengthHeader.Text = "Your password is";
             // 
-            // DataEditPasswordStrengthIndicator
-            // 
-            this.DataEditPasswordStrengthIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DataEditPasswordStrengthIndicator.Colors = new System.Drawing.Color[] {
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
-            this.DataEditPasswordStrengthIndicator.CurrentColor = System.Drawing.Color.Red;
-            this.DataEditPasswordStrengthIndicator.Location = new System.Drawing.Point(10, 372);
-            this.DataEditPasswordStrengthIndicator.Name = "DataEditPasswordStrengthIndicator";
-            this.DataEditPasswordStrengthIndicator.Size = new System.Drawing.Size(660, 10);
-            this.DataEditPasswordStrengthIndicator.TabIndex = 33;
-            // 
-            // DataEditSaveAdvancedImageButton
-            // 
-            this.DataEditSaveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.save_hover;
-            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
-            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
-            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
-            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
-            // 
-            // DataEditCancelAdvancedImageButton
-            // 
-            this.DataEditCancelAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.remove_hover_v4;
-            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
-            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
-            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
-            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
-            // 
             // DataEditPanelPasswordGenerator
             // 
             this.DataEditPanelPasswordGenerator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -1692,23 +1367,6 @@
             this.DataEditPanelPasswordGenerator.Size = new System.Drawing.Size(653, 197);
             this.DataEditPanelPasswordGenerator.TabIndex = 32;
             // 
-            // DataEditAnimatedButtonGeneratePassword
-            // 
-            this.DataEditAnimatedButtonGeneratePassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataEditAnimatedButtonGeneratePassword.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAnimatedButtonGeneratePassword.Depth = 0;
-            this.DataEditAnimatedButtonGeneratePassword.Icon = null;
-            this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
-            this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataEditAnimatedButtonGeneratePassword.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
-            this.DataEditAnimatedButtonGeneratePassword.Primary = false;
-            this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
-            this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
-            this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
-            this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
-            this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
-            // 
             // DataEditLabelPasswordGeneratorTitle
             // 
             this.DataEditLabelPasswordGeneratorTitle.AutoSize = true;
@@ -1718,46 +1376,6 @@
             this.DataEditLabelPasswordGeneratorTitle.Size = new System.Drawing.Size(378, 38);
             this.DataEditLabelPasswordGeneratorTitle.TabIndex = 15;
             this.DataEditLabelPasswordGeneratorTitle.Text = "Generate random password";
-            // 
-            // DataEditAdvancedCheckBox
-            // 
-            this.DataEditAdvancedCheckBox.AutoSize = true;
-            this.DataEditAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAdvancedCheckBox.Depth = 0;
-            this.DataEditAdvancedCheckBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.DataEditAdvancedCheckBox.FontText = new System.Drawing.Font("Segoe UI", 12F);
-            this.DataEditAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
-            this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
-            this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
-            this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.DataEditAdvancedCheckBox.MouseState = LunaForms.AdvancedCheckBox.MouseStateBase.HOVER;
-            this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
-            this.DataEditAdvancedCheckBox.Ripple = true;
-            this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(272, 30);
-            this.DataEditAdvancedCheckBox.TabIndex = 13;
-            this.DataEditAdvancedCheckBox.Text = "Use special characters";
-            this.DataEditAdvancedCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // DataEditAdvancedNumericUpDown
-            // 
-            this.DataEditAdvancedNumericUpDown.BackColor = System.Drawing.Color.Gainsboro;
-            this.DataEditAdvancedNumericUpDown.BorderColor = System.Drawing.Color.Gainsboro;
-            this.DataEditAdvancedNumericUpDown.ColorNormal = System.Drawing.Color.Gainsboro;
-            this.DataEditAdvancedNumericUpDown.FontStyle = new System.Drawing.Font("Segoe UI", 12F);
-            this.DataEditAdvancedNumericUpDown.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedNumericUpDown.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseHover")));
-            this.DataEditAdvancedNumericUpDown.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseNormal")));
-            this.DataEditAdvancedNumericUpDown.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseHover")));
-            this.DataEditAdvancedNumericUpDown.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseNormal")));
-            this.DataEditAdvancedNumericUpDown.Location = new System.Drawing.Point(328, 156);
-            this.DataEditAdvancedNumericUpDown.Maximum = "128";
-            this.DataEditAdvancedNumericUpDown.Minimum = "8";
-            this.DataEditAdvancedNumericUpDown.Name = "DataEditAdvancedNumericUpDown";
-            this.DataEditAdvancedNumericUpDown.Padding = new System.Windows.Forms.Padding(1);
-            this.DataEditAdvancedNumericUpDown.Size = new System.Drawing.Size(154, 30);
-            this.DataEditAdvancedNumericUpDown.TabIndex = 12;
-            this.DataEditAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.DataEditAdvancedNumericUpDown.TextValue = "20";
             // 
             // DataEditLabelPasswordGeneratorLengthTitle
             // 
@@ -1780,31 +1398,6 @@
             this.DataEditLabelPasswordGeneratorDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
     "s as well as special characters and are at least 16\r\ncharacters long.";
             // 
-            // DataEditEditFieldHostname
-            // 
-            this.DataEditEditFieldHostname.AutoSize = true;
-            this.DataEditEditFieldHostname.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldHostname.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldHostname.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldHostname.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearHover")));
-            this.DataEditEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearNormal")));
-            this.DataEditEditFieldHostname.Location = new System.Drawing.Point(10, 116);
-            this.DataEditEditFieldHostname.Name = "DataEditEditFieldHostname";
-            this.DataEditEditFieldHostname.Size = new System.Drawing.Size(656, 102);
-            this.DataEditEditFieldHostname.TabIndex = 25;
-            this.DataEditEditFieldHostname.TextTextBox = "Gmail";
-            this.DataEditEditFieldHostname.TextTitle = "Hostname:";
-            this.DataEditEditFieldHostname.UseColoredCaret = true;
-            this.DataEditEditFieldHostname.UseDefaultValue = false;
-            this.DataEditEditFieldHostname.UseSystemPasswordChar = false;
-            // 
             // DataEditPictureBoxLogo
             // 
             this.DataEditPictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("DataEditPictureBoxLogo.Image")));
@@ -1814,107 +1407,6 @@
             this.DataEditPictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.DataEditPictureBoxLogo.TabIndex = 24;
             this.DataEditPictureBoxLogo.TabStop = false;
-            // 
-            // DataEditEditFieldEmail
-            // 
-            this.DataEditEditFieldEmail.AutoSize = true;
-            this.DataEditEditFieldEmail.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldEmail.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldEmail.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldEmail.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearHover")));
-            this.DataEditEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearNormal")));
-            this.DataEditEditFieldEmail.Location = new System.Drawing.Point(10, 711);
-            this.DataEditEditFieldEmail.Name = "DataEditEditFieldEmail";
-            this.DataEditEditFieldEmail.Size = new System.Drawing.Size(656, 102);
-            this.DataEditEditFieldEmail.TabIndex = 28;
-            this.DataEditEditFieldEmail.TextTextBox = "example@gmail.com";
-            this.DataEditEditFieldEmail.TextTitle = "Email:";
-            this.DataEditEditFieldEmail.UseColoredCaret = true;
-            this.DataEditEditFieldEmail.UseDefaultValue = false;
-            this.DataEditEditFieldEmail.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldWebsite
-            // 
-            this.DataEditEditFieldWebsite.AutoSize = true;
-            this.DataEditEditFieldWebsite.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldWebsite.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldWebsite.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldWebsite.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearHover")));
-            this.DataEditEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearNormal")));
-            this.DataEditEditFieldWebsite.Location = new System.Drawing.Point(10, 824);
-            this.DataEditEditFieldWebsite.Name = "DataEditEditFieldWebsite";
-            this.DataEditEditFieldWebsite.Size = new System.Drawing.Size(656, 102);
-            this.DataEditEditFieldWebsite.TabIndex = 29;
-            this.DataEditEditFieldWebsite.TextTextBox = "https://mail.google.com";
-            this.DataEditEditFieldWebsite.TextTitle = "Website:";
-            this.DataEditEditFieldWebsite.UseColoredCaret = true;
-            this.DataEditEditFieldWebsite.UseDefaultValue = false;
-            this.DataEditEditFieldWebsite.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldUsername
-            // 
-            this.DataEditEditFieldUsername.AutoSize = true;
-            this.DataEditEditFieldUsername.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldUsername.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldUsername.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearHover")));
-            this.DataEditEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearNormal")));
-            this.DataEditEditFieldUsername.Location = new System.Drawing.Point(10, 229);
-            this.DataEditEditFieldUsername.Name = "DataEditEditFieldUsername";
-            this.DataEditEditFieldUsername.Size = new System.Drawing.Size(656, 102);
-            this.DataEditEditFieldUsername.TabIndex = 26;
-            this.DataEditEditFieldUsername.TextTextBox = "Us3r123";
-            this.DataEditEditFieldUsername.TextTitle = "Username:";
-            this.DataEditEditFieldUsername.UseColoredCaret = true;
-            this.DataEditEditFieldUsername.UseDefaultValue = false;
-            this.DataEditEditFieldUsername.UseSystemPasswordChar = false;
-            // 
-            // DataEditEditFieldPassword
-            // 
-            this.DataEditEditFieldPassword.AutoSize = true;
-            this.DataEditEditFieldPassword.BackColor = System.Drawing.Color.White;
-            this.DataEditEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
-            this.DataEditEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.DataEditEditFieldPassword.DefaultValue = "Enter some text...";
-            this.DataEditEditFieldPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldPassword.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DataEditEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DataEditEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearHover")));
-            this.DataEditEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearNormal")));
-            this.DataEditEditFieldPassword.Location = new System.Drawing.Point(10, 384);
-            this.DataEditEditFieldPassword.Name = "DataEditEditFieldPassword";
-            this.DataEditEditFieldPassword.Size = new System.Drawing.Size(656, 102);
-            this.DataEditEditFieldPassword.TabIndex = 27;
-            this.DataEditEditFieldPassword.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.DataEditEditFieldPassword.TextTitle = "Password:";
-            this.DataEditEditFieldPassword.UseColoredCaret = true;
-            this.DataEditEditFieldPassword.UseDefaultValue = false;
-            this.DataEditEditFieldPassword.UseSystemPasswordChar = false;
-            this.DataEditEditFieldPassword.TextBoxTextChanged += new System.EventHandler(this.DataEditEditFieldPassword_TextBoxTextChanged);
             // 
             // DataEditPanelBottom
             // 
@@ -1937,18 +1429,6 @@
             this.DataEditLabelNotes.TabIndex = 30;
             this.DataEditLabelNotes.Text = "Notes:";
             // 
-            // DataEditAdvancedRichTextBoxNotes
-            // 
-            this.DataEditAdvancedRichTextBoxNotes.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataEditAdvancedRichTextBoxNotes.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedRichTextBoxNotes.ForeColorFocus = System.Drawing.Color.Black;
-            this.DataEditAdvancedRichTextBoxNotes.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.DataEditAdvancedRichTextBoxNotes.Location = new System.Drawing.Point(10, 34);
-            this.DataEditAdvancedRichTextBoxNotes.Name = "DataEditAdvancedRichTextBoxNotes";
-            this.DataEditAdvancedRichTextBoxNotes.Size = new System.Drawing.Size(656, 266);
-            this.DataEditAdvancedRichTextBoxNotes.TabIndex = 31;
-            this.DataEditAdvancedRichTextBoxNotes.TextValue = "";
-            // 
             // DataPanelDetails
             // 
             this.DataPanelDetails.BackColor = System.Drawing.Color.White;
@@ -1968,83 +1448,6 @@
             this.DataPanelDetails.Size = new System.Drawing.Size(700, 1000);
             this.DataPanelDetails.TabIndex = 3;
             // 
-            // DataLunaSmallCardDetailsPasswordStrength
-            // 
-            this.DataLunaSmallCardDetailsPasswordStrength.BackColorHover = System.Drawing.Color.White;
-            this.DataLunaSmallCardDetailsPasswordStrength.BackColorImage = System.Drawing.Color.White;
-            this.DataLunaSmallCardDetailsPasswordStrength.BackColorNormal = System.Drawing.Color.White;
-            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorHeader = System.Drawing.Color.Black;
-            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorHeaderHover = System.Drawing.Color.Black;
-            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DataLunaSmallCardDetailsPasswordStrength.Header = "Password Strength";
-            this.DataLunaSmallCardDetailsPasswordStrength.HeaderLocation = new System.Drawing.Point(70, 0);
-            this.DataLunaSmallCardDetailsPasswordStrength.Image = global::pmdbs.Properties.Resources.f;
-            this.DataLunaSmallCardDetailsPasswordStrength.ImageLocation = new System.Drawing.Point(1, 1);
-            this.DataLunaSmallCardDetailsPasswordStrength.Info = "Score: -164";
-            this.DataLunaSmallCardDetailsPasswordStrength.InfoLocation = new System.Drawing.Point(72, 35);
-            this.DataLunaSmallCardDetailsPasswordStrength.Location = new System.Drawing.Point(153, 98);
-            this.DataLunaSmallCardDetailsPasswordStrength.Margin = new System.Windows.Forms.Padding(0);
-            this.DataLunaSmallCardDetailsPasswordStrength.Name = "DataLunaSmallCardDetailsPasswordStrength";
-            this.DataLunaSmallCardDetailsPasswordStrength.ShowBorder = false;
-            this.DataLunaSmallCardDetailsPasswordStrength.ShowInfo = true;
-            this.DataLunaSmallCardDetailsPasswordStrength.Size = new System.Drawing.Size(298, 60);
-            this.DataLunaSmallCardDetailsPasswordStrength.TabIndex = 24;
-            // 
-            // DataDetailsCustomLabelNotes
-            // 
-            this.DataDetailsCustomLabelNotes.Content = "Some  generic notes";
-            this.DataDetailsCustomLabelNotes.Header = "Notes:";
-            this.DataDetailsCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
-            this.DataDetailsCustomLabelNotes.Name = "DataDetailsCustomLabelNotes";
-            this.DataDetailsCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
-            this.DataDetailsCustomLabelNotes.TabIndex = 23;
-            // 
-            // DataDetailsEntryUsername
-            // 
-            this.DataDetailsEntryUsername.Content = "-";
-            this.DataDetailsEntryUsername.Header = "Your Username:";
-            this.DataDetailsEntryUsername.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
-            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
-            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
-            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
-            this.DataDetailsEntryUsername.RawText = null;
-            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryUsername.TabIndex = 22;
-            // 
-            // DataDetailsEntryPassword
-            // 
-            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
-            this.DataDetailsEntryPassword.Header = "Your Password:";
-            this.DataDetailsEntryPassword.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
-            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
-            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
-            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
-            this.DataDetailsEntryPassword.RawText = null;
-            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryPassword.TabIndex = 21;
-            // 
-            // DataDetailsEditAdvancedImageButton
-            // 
-            this.DataDetailsEditAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.edit_hover_v5;
-            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
-            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
-            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
-            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
-            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
-            // 
-            // DataDetailsRemoveAdvancedImageButton
-            // 
-            this.DataDetailsRemoveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.delete_hover_v2;
-            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = global::pmdbs.Properties.Resources.delete_normal;
-            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
-            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
-            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
-            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
-            // 
             // DataLabelDetailsHostname
             // 
             this.DataLabelDetailsHostname.AutoSize = true;
@@ -2063,34 +1466,6 @@
             this.DataPictureBoxDetailsLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.DataPictureBoxDetailsLogo.TabIndex = 0;
             this.DataPictureBoxDetailsLogo.TabStop = false;
-            // 
-            // DataDetailsEntryEmail
-            // 
-            this.DataDetailsEntryEmail.Content = "example@gmail.com";
-            this.DataDetailsEntryEmail.Header = "Your Email:";
-            this.DataDetailsEntryEmail.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
-            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
-            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
-            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
-            this.DataDetailsEntryEmail.RawText = null;
-            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryEmail.TabIndex = 20;
-            // 
-            // DataDetailsEntryWebsite
-            // 
-            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
-            this.DataDetailsEntryWebsite.Header = "Website:";
-            this.DataDetailsEntryWebsite.ImageHover = global::pmdbs.Properties.Resources.link_hover;
-            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
-            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
-            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
-            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
-            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
-    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
-    "iceLogin";
-            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
-            this.DataDetailsEntryWebsite.TabIndex = 19;
             // 
             // DataFilterResultsPanel
             // 
@@ -2129,23 +1504,6 @@
             this.DataFilterResultsLabelSortHeader.Size = new System.Drawing.Size(268, 45);
             this.DataFilterResultsLabelSortHeader.TabIndex = 4;
             this.DataFilterResultsLabelSortHeader.Text = "Sorting results by";
-            // 
-            // DataFilterResultsAnimatedButtonReset
-            // 
-            this.DataFilterResultsAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataFilterResultsAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataFilterResultsAnimatedButtonReset.Depth = 0;
-            this.DataFilterResultsAnimatedButtonReset.Icon = null;
-            this.DataFilterResultsAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
-            this.DataFilterResultsAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataFilterResultsAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.DataFilterResultsAnimatedButtonReset.Name = "DataFilterResultsAnimatedButtonReset";
-            this.DataFilterResultsAnimatedButtonReset.Primary = false;
-            this.DataFilterResultsAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
-            this.DataFilterResultsAnimatedButtonReset.TabIndex = 3;
-            this.DataFilterResultsAnimatedButtonReset.Text = "reset filter";
-            this.DataFilterResultsAnimatedButtonReset.UseVisualStyleBackColor = true;
-            this.DataFilterResultsAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
             // 
             // DataFilterResultsPictureBox
             // 
@@ -2195,43 +1553,6 @@
             this.DataFilterPanelNotFound.Name = "DataFilterPanelNotFound";
             this.DataFilterPanelNotFound.Size = new System.Drawing.Size(700, 1000);
             this.DataFilterPanelNotFound.TabIndex = 33;
-            // 
-            // DataFilterAnimatedButtonReset
-            // 
-            this.DataFilterAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.DataFilterAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.DataFilterAnimatedButtonReset.Depth = 0;
-            this.DataFilterAnimatedButtonReset.Icon = null;
-            this.DataFilterAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
-            this.DataFilterAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.DataFilterAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.DataFilterAnimatedButtonReset.Name = "DataFilterAnimatedButtonReset";
-            this.DataFilterAnimatedButtonReset.Primary = false;
-            this.DataFilterAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
-            this.DataFilterAnimatedButtonReset.TabIndex = 17;
-            this.DataFilterAnimatedButtonReset.Text = "reset filter";
-            this.DataFilterAnimatedButtonReset.UseVisualStyleBackColor = true;
-            this.DataFilterAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
-            // 
-            // DataFilterBulletPointLabel2
-            // 
-            this.DataFilterBulletPointLabel2.AutoSize = true;
-            this.DataFilterBulletPointLabel2.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.DataFilterBulletPointLabel2.Location = new System.Drawing.Point(178, 673);
-            this.DataFilterBulletPointLabel2.Name = "DataFilterBulletPointLabel2";
-            this.DataFilterBulletPointLabel2.Size = new System.Drawing.Size(301, 45);
-            this.DataFilterBulletPointLabel2.TabIndex = 16;
-            this.DataFilterBulletPointLabel2.Text = " Add a new account";
-            // 
-            // DataFilterBulletPointLabel1
-            // 
-            this.DataFilterBulletPointLabel1.AutoSize = true;
-            this.DataFilterBulletPointLabel1.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.DataFilterBulletPointLabel1.Location = new System.Drawing.Point(178, 628);
-            this.DataFilterBulletPointLabel1.Name = "DataFilterBulletPointLabel1";
-            this.DataFilterBulletPointLabel1.Size = new System.Drawing.Size(307, 45);
-            this.DataFilterBulletPointLabel1.TabIndex = 15;
-            this.DataFilterBulletPointLabel1.Text = " Check your spelling";
             // 
             // DataFilterLabelSuggestions
             // 
@@ -2424,28 +1745,6 @@
             this.AddLabelPasswordStrengthHeader.TabIndex = 10;
             this.AddLabelPasswordStrengthHeader.Text = "Your password is";
             // 
-            // AddPasswordStrengthIndicator
-            // 
-            this.AddPasswordStrengthIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.AddPasswordStrengthIndicator.Colors = new System.Drawing.Color[] {
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
-            this.AddPasswordStrengthIndicator.CurrentColor = System.Drawing.Color.Red;
-            this.AddPasswordStrengthIndicator.Location = new System.Drawing.Point(6, 389);
-            this.AddPasswordStrengthIndicator.Name = "AddPasswordStrengthIndicator";
-            this.AddPasswordStrengthIndicator.Size = new System.Drawing.Size(660, 10);
-            this.AddPasswordStrengthIndicator.TabIndex = 9;
-            // 
             // AddPanelGeneratePassword
             // 
             this.AddPanelGeneratePassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -2461,23 +1760,6 @@
             this.AddPanelGeneratePassword.Size = new System.Drawing.Size(660, 197);
             this.AddPanelGeneratePassword.TabIndex = 8;
             // 
-            // AddPanelGeneratePasswordAnimatedButtonGenerate
-            // 
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Depth = 0;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Icon = null;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Location = new System.Drawing.Point(489, 134);
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Name = "AddPanelGeneratePasswordAnimatedButtonGenerate";
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Primary = false;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Size = new System.Drawing.Size(165, 55);
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.TabIndex = 2;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Text = "GENERATE";
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.UseVisualStyleBackColor = true;
-            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Click += new System.EventHandler(this.AddPanelGeneratePasswordAnimatedButtonGenerate_Click);
-            // 
             // AddPanelGeneratePasswordLabelTitle
             // 
             this.AddPanelGeneratePasswordLabelTitle.AutoSize = true;
@@ -2487,46 +1769,6 @@
             this.AddPanelGeneratePasswordLabelTitle.Size = new System.Drawing.Size(378, 38);
             this.AddPanelGeneratePasswordLabelTitle.TabIndex = 15;
             this.AddPanelGeneratePasswordLabelTitle.Text = "Generate random password";
-            // 
-            // AddPanelGeneratePasswordAdvancedCheckBox
-            // 
-            this.AddPanelGeneratePasswordAdvancedCheckBox.AutoSize = true;
-            this.AddPanelGeneratePasswordAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Depth = 0;
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.FontText = new System.Drawing.Font("Segoe UI", 12F);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.MouseState = LunaForms.AdvancedCheckBox.MouseStateBase.HOVER;
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Name = "AddPanelGeneratePasswordAdvancedCheckBox";
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Ripple = true;
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Size = new System.Drawing.Size(272, 30);
-            this.AddPanelGeneratePasswordAdvancedCheckBox.TabIndex = 13;
-            this.AddPanelGeneratePasswordAdvancedCheckBox.Text = "Use special characters";
-            this.AddPanelGeneratePasswordAdvancedCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // AddPanelGeneratePasswordeAdvancedNumericUpDown
-            // 
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.BackColor = System.Drawing.Color.Gainsboro;
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.BorderColor = System.Drawing.Color.Gainsboro;
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ColorNormal = System.Drawing.Color.Gainsboro;
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.FontStyle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseHover")));
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseNormal")));
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseHover")));
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseNormal")));
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Location = new System.Drawing.Point(328, 156);
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Maximum = "128";
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Minimum = "8";
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Name = "AddPanelGeneratePasswordeAdvancedNumericUpDown";
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Padding = new System.Windows.Forms.Padding(1);
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Size = new System.Drawing.Size(154, 30);
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TabIndex = 12;
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextValue = "15";
             // 
             // AddPanelGeneratePasswordLabelLength
             // 
@@ -2549,31 +1791,6 @@
             this.AddPanelGeneratePasswordLabelDescription.Text = "Secure passwords are random and contain numbers, uppercase and \r\nlowercase letter" +
     "s as well as special characters and are at least 16\r\ncharacters long.";
             // 
-            // AddEditFieldEmail
-            // 
-            this.AddEditFieldEmail.AutoSize = true;
-            this.AddEditFieldEmail.BackColor = System.Drawing.Color.White;
-            this.AddEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
-            this.AddEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.AddEditFieldEmail.DefaultValue = "Enter some text...";
-            this.AddEditFieldEmail.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddEditFieldEmail.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.AddEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearHover")));
-            this.AddEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearNormal")));
-            this.AddEditFieldEmail.Location = new System.Drawing.Point(6, 713);
-            this.AddEditFieldEmail.Name = "AddEditFieldEmail";
-            this.AddEditFieldEmail.Size = new System.Drawing.Size(660, 88);
-            this.AddEditFieldEmail.TabIndex = 6;
-            this.AddEditFieldEmail.TextTextBox = "";
-            this.AddEditFieldEmail.TextTitle = "Email";
-            this.AddEditFieldEmail.UseColoredCaret = true;
-            this.AddEditFieldEmail.UseDefaultValue = false;
-            this.AddEditFieldEmail.UseSystemPasswordChar = false;
-            // 
             // AddLabelTitle
             // 
             this.AddLabelTitle.AutoSize = true;
@@ -2585,107 +1802,6 @@
             this.AddLabelTitle.TabIndex = 0;
             this.AddLabelTitle.Text = "Add Account";
             // 
-            // AddEditFieldHostname
-            // 
-            this.AddEditFieldHostname.AutoSize = true;
-            this.AddEditFieldHostname.BackColor = System.Drawing.Color.White;
-            this.AddEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
-            this.AddEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.AddEditFieldHostname.DefaultValue = "Enter some text...";
-            this.AddEditFieldHostname.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddEditFieldHostname.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.AddEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldHostname.ImageClearHover")));
-            this.AddEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldHostname.ImageClearNormal")));
-            this.AddEditFieldHostname.Location = new System.Drawing.Point(6, 148);
-            this.AddEditFieldHostname.Name = "AddEditFieldHostname";
-            this.AddEditFieldHostname.Size = new System.Drawing.Size(660, 88);
-            this.AddEditFieldHostname.TabIndex = 2;
-            this.AddEditFieldHostname.TextTextBox = "";
-            this.AddEditFieldHostname.TextTitle = "Hostname*";
-            this.AddEditFieldHostname.UseColoredCaret = true;
-            this.AddEditFieldHostname.UseDefaultValue = false;
-            this.AddEditFieldHostname.UseSystemPasswordChar = false;
-            // 
-            // AddEditFieldWebsite
-            // 
-            this.AddEditFieldWebsite.AutoSize = true;
-            this.AddEditFieldWebsite.BackColor = System.Drawing.Color.White;
-            this.AddEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
-            this.AddEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.AddEditFieldWebsite.DefaultValue = "Enter some text...";
-            this.AddEditFieldWebsite.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddEditFieldWebsite.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.AddEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearHover")));
-            this.AddEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearNormal")));
-            this.AddEditFieldWebsite.Location = new System.Drawing.Point(6, 816);
-            this.AddEditFieldWebsite.Name = "AddEditFieldWebsite";
-            this.AddEditFieldWebsite.Size = new System.Drawing.Size(660, 88);
-            this.AddEditFieldWebsite.TabIndex = 7;
-            this.AddEditFieldWebsite.TextTextBox = "";
-            this.AddEditFieldWebsite.TextTitle = "Url";
-            this.AddEditFieldWebsite.UseColoredCaret = true;
-            this.AddEditFieldWebsite.UseDefaultValue = false;
-            this.AddEditFieldWebsite.UseSystemPasswordChar = false;
-            // 
-            // AddEditFieldUsername
-            // 
-            this.AddEditFieldUsername.AutoSize = true;
-            this.AddEditFieldUsername.BackColor = System.Drawing.Color.White;
-            this.AddEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
-            this.AddEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.AddEditFieldUsername.DefaultValue = "Enter some text...";
-            this.AddEditFieldUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddEditFieldUsername.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.AddEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearHover")));
-            this.AddEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearNormal")));
-            this.AddEditFieldUsername.Location = new System.Drawing.Point(6, 243);
-            this.AddEditFieldUsername.Name = "AddEditFieldUsername";
-            this.AddEditFieldUsername.Size = new System.Drawing.Size(660, 88);
-            this.AddEditFieldUsername.TabIndex = 3;
-            this.AddEditFieldUsername.TextTextBox = "";
-            this.AddEditFieldUsername.TextTitle = "Username";
-            this.AddEditFieldUsername.UseColoredCaret = true;
-            this.AddEditFieldUsername.UseDefaultValue = false;
-            this.AddEditFieldUsername.UseSystemPasswordChar = false;
-            // 
-            // AddEditFieldPassword
-            // 
-            this.AddEditFieldPassword.AutoSize = true;
-            this.AddEditFieldPassword.BackColor = System.Drawing.Color.White;
-            this.AddEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
-            this.AddEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.AddEditFieldPassword.DefaultValue = "";
-            this.AddEditFieldPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.AddEditFieldPassword.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.AddEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearHover")));
-            this.AddEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearNormal")));
-            this.AddEditFieldPassword.Location = new System.Drawing.Point(6, 406);
-            this.AddEditFieldPassword.Name = "AddEditFieldPassword";
-            this.AddEditFieldPassword.Size = new System.Drawing.Size(660, 88);
-            this.AddEditFieldPassword.TabIndex = 4;
-            this.AddEditFieldPassword.TextTextBox = "";
-            this.AddEditFieldPassword.TextTitle = "Password*";
-            this.AddEditFieldPassword.UseColoredCaret = true;
-            this.AddEditFieldPassword.UseDefaultValue = false;
-            this.AddEditFieldPassword.UseSystemPasswordChar = false;
-            this.AddEditFieldPassword.TextBoxTextChanged += new System.EventHandler(this.AddEditFieldPassword_TextBoxTextChanged);
-            // 
             // AddPanelNotes
             // 
             this.AddPanelNotes.Controls.Add(this.AddPanelNotesAdvancedRichTextBox);
@@ -2695,18 +1811,6 @@
             this.AddPanelNotes.Name = "AddPanelNotes";
             this.AddPanelNotes.Size = new System.Drawing.Size(670, 181);
             this.AddPanelNotes.TabIndex = 11;
-            // 
-            // AddPanelNotesAdvancedRichTextBox
-            // 
-            this.AddPanelNotesAdvancedRichTextBox.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddPanelNotesAdvancedRichTextBox.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddPanelNotesAdvancedRichTextBox.ForeColorFocus = System.Drawing.Color.Black;
-            this.AddPanelNotesAdvancedRichTextBox.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.AddPanelNotesAdvancedRichTextBox.Location = new System.Drawing.Point(4, 34);
-            this.AddPanelNotesAdvancedRichTextBox.Name = "AddPanelNotesAdvancedRichTextBox";
-            this.AddPanelNotesAdvancedRichTextBox.Size = new System.Drawing.Size(660, 143);
-            this.AddPanelNotesAdvancedRichTextBox.TabIndex = 1;
-            this.AddPanelNotesAdvancedRichTextBox.TextValue = "";
             // 
             // AddPanelNotesLabelTitle
             // 
@@ -2760,23 +1864,6 @@
             this.AddPictureBoxCheckIconIcon.TabIndex = 19;
             this.AddPictureBoxCheckIconIcon.TabStop = false;
             // 
-            // AddPanelAnimatedButtonCheckIcon
-            // 
-            this.AddPanelAnimatedButtonCheckIcon.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AddPanelAnimatedButtonCheckIcon.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.AddPanelAnimatedButtonCheckIcon.Depth = 0;
-            this.AddPanelAnimatedButtonCheckIcon.Icon = null;
-            this.AddPanelAnimatedButtonCheckIcon.Location = new System.Drawing.Point(216, 124);
-            this.AddPanelAnimatedButtonCheckIcon.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AddPanelAnimatedButtonCheckIcon.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.AddPanelAnimatedButtonCheckIcon.Name = "AddPanelAnimatedButtonCheckIcon";
-            this.AddPanelAnimatedButtonCheckIcon.Primary = false;
-            this.AddPanelAnimatedButtonCheckIcon.Size = new System.Drawing.Size(236, 97);
-            this.AddPanelAnimatedButtonCheckIcon.TabIndex = 18;
-            this.AddPanelAnimatedButtonCheckIcon.Text = "CHECK FOR ICON";
-            this.AddPanelAnimatedButtonCheckIcon.UseVisualStyleBackColor = true;
-            this.AddPanelAnimatedButtonCheckIcon.Click += new System.EventHandler(this.AddPanelAnimatedButtonCheckIcon_Click);
-            // 
             // AddLabelCheckIconHeader
             // 
             this.AddLabelCheckIconHeader.AutoSize = true;
@@ -2797,24 +1884,6 @@
             this.AddPanelBottomMenu.Name = "AddPanelBottomMenu";
             this.AddPanelBottomMenu.Size = new System.Drawing.Size(700, 100);
             this.AddPanelBottomMenu.TabIndex = 12;
-            // 
-            // AddPanelAdvancedImageButtonAbort
-            // 
-            this.AddPanelAdvancedImageButtonAbort.ImageHover = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonAbort.ImageHover")));
-            this.AddPanelAdvancedImageButtonAbort.ImageNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonAbort.ImageNormal")));
-            this.AddPanelAdvancedImageButtonAbort.Location = new System.Drawing.Point(625, 13);
-            this.AddPanelAdvancedImageButtonAbort.Name = "AddPanelAdvancedImageButtonAbort";
-            this.AddPanelAdvancedImageButtonAbort.Size = new System.Drawing.Size(72, 72);
-            this.AddPanelAdvancedImageButtonAbort.TabIndex = 1;
-            // 
-            // AddPanelAdvancedImageButtonSave
-            // 
-            this.AddPanelAdvancedImageButtonSave.ImageHover = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonSave.ImageHover")));
-            this.AddPanelAdvancedImageButtonSave.ImageNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonSave.ImageNormal")));
-            this.AddPanelAdvancedImageButtonSave.Location = new System.Drawing.Point(3, 13);
-            this.AddPanelAdvancedImageButtonSave.Name = "AddPanelAdvancedImageButtonSave";
-            this.AddPanelAdvancedImageButtonSave.Size = new System.Drawing.Size(72, 72);
-            this.AddPanelAdvancedImageButtonSave.TabIndex = 0;
             // 
             // AddPanelSeperator
             // 
@@ -2986,73 +2055,6 @@
             this.SettingsLabelOnlinePasswordChangeHeader.TabIndex = 10;
             this.SettingsLabelOnlinePasswordChangeHeader.Text = "Change Your Password";
             // 
-            // SettingsAnimatedButtonOnlinePasswordChangeSubmit
-            // 
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Depth = 0;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Icon = null;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Location = new System.Drawing.Point(207, 312);
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Name = "SettingsAnimatedButtonOnlinePasswordChangeSubmit";
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Primary = false;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Size = new System.Drawing.Size(255, 87);
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.TabIndex = 10;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Text = "Change Master Password";
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click);
-            // 
-            // SettingsEditFieldOnlinePasswordChangeNew
-            // 
-            this.SettingsEditFieldOnlinePasswordChangeNew.AutoSize = true;
-            this.SettingsEditFieldOnlinePasswordChangeNew.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOnlinePasswordChangeNew.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOnlinePasswordChangeNew.DefaultValue = "";
-            this.SettingsEditFieldOnlinePasswordChangeNew.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOnlinePasswordChangeNew.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOnlinePasswordChangeNew.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeNew.ImageClearHover")));
-            this.SettingsEditFieldOnlinePasswordChangeNew.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeNew.ImageClearNormal")));
-            this.SettingsEditFieldOnlinePasswordChangeNew.Location = new System.Drawing.Point(4, 132);
-            this.SettingsEditFieldOnlinePasswordChangeNew.Name = "SettingsEditFieldOnlinePasswordChangeNew";
-            this.SettingsEditFieldOnlinePasswordChangeNew.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldOnlinePasswordChangeNew.TabIndex = 4;
-            this.SettingsEditFieldOnlinePasswordChangeNew.TextTextBox = "";
-            this.SettingsEditFieldOnlinePasswordChangeNew.TextTitle = "New Password*";
-            this.SettingsEditFieldOnlinePasswordChangeNew.UseColoredCaret = true;
-            this.SettingsEditFieldOnlinePasswordChangeNew.UseDefaultValue = false;
-            this.SettingsEditFieldOnlinePasswordChangeNew.UseSystemPasswordChar = true;
-            // 
-            // SettingsEditFieldOnlinePasswordChangeConfirm
-            // 
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.AutoSize = true;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.DefaultValue = "";
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearHover")));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearNormal")));
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.Location = new System.Drawing.Point(4, 218);
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.Name = "SettingsEditFieldOnlinePasswordChangeConfirm";
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.TabIndex = 8;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox = "";
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTitle = "Confirm New Password*";
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseColoredCaret = true;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseDefaultValue = false;
-            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseSystemPasswordChar = true;
-            // 
             // SettingsPanelOnlineContent2
             // 
             this.SettingsPanelOnlineContent2.Controls.Add(this.SettingsAnimatedButtonOnlineChangeName);
@@ -3064,48 +2066,6 @@
             this.SettingsPanelOnlineContent2.Name = "SettingsPanelOnlineContent2";
             this.SettingsPanelOnlineContent2.Size = new System.Drawing.Size(670, 313);
             this.SettingsPanelOnlineContent2.TabIndex = 16;
-            // 
-            // SettingsAnimatedButtonOnlineChangeName
-            // 
-            this.SettingsAnimatedButtonOnlineChangeName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOnlineChangeName.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOnlineChangeName.Depth = 0;
-            this.SettingsAnimatedButtonOnlineChangeName.Icon = null;
-            this.SettingsAnimatedButtonOnlineChangeName.Location = new System.Drawing.Point(218, 239);
-            this.SettingsAnimatedButtonOnlineChangeName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOnlineChangeName.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOnlineChangeName.Name = "SettingsAnimatedButtonOnlineChangeName";
-            this.SettingsAnimatedButtonOnlineChangeName.Primary = false;
-            this.SettingsAnimatedButtonOnlineChangeName.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOnlineChangeName.TabIndex = 13;
-            this.SettingsAnimatedButtonOnlineChangeName.Text = "Change Name";
-            this.SettingsAnimatedButtonOnlineChangeName.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOnlineChangeName.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlineChangeName_Click);
-            // 
-            // SettingsEditFieldOnlineChangeName
-            // 
-            this.SettingsEditFieldOnlineChangeName.AutoSize = true;
-            this.SettingsEditFieldOnlineChangeName.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOnlineChangeName.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOnlineChangeName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOnlineChangeName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOnlineChangeName.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOnlineChangeName.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOnlineChangeName.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOnlineChangeName.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldOnlineChangeName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOnlineChangeName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOnlineChangeName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlineChangeName.ImageClearHover")));
-            this.SettingsEditFieldOnlineChangeName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlineChangeName.ImageClearNormal")));
-            this.SettingsEditFieldOnlineChangeName.Location = new System.Drawing.Point(5, 143);
-            this.SettingsEditFieldOnlineChangeName.Name = "SettingsEditFieldOnlineChangeName";
-            this.SettingsEditFieldOnlineChangeName.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldOnlineChangeName.TabIndex = 12;
-            this.SettingsEditFieldOnlineChangeName.TextTextBox = "User";
-            this.SettingsEditFieldOnlineChangeName.TextTitle = "Your Display Name";
-            this.SettingsEditFieldOnlineChangeName.UseColoredCaret = true;
-            this.SettingsEditFieldOnlineChangeName.UseDefaultValue = false;
-            this.SettingsEditFieldOnlineChangeName.UseSystemPasswordChar = false;
             // 
             // SettingsLabelOnlineNameDescription
             // 
@@ -3140,40 +2100,6 @@
             this.SettingsPanelOnlineContent3.Name = "SettingsPanelOnlineContent3";
             this.SettingsPanelOnlineContent3.Size = new System.Drawing.Size(670, 217);
             this.SettingsPanelOnlineContent3.TabIndex = 17;
-            // 
-            // SettingsAnimatedButtonOnlineChangeServerRegister
-            // 
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Depth = 0;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Icon = null;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Location = new System.Drawing.Point(337, 140);
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Name = "SettingsAnimatedButtonOnlineChangeServerRegister";
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Primary = false;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "REgister";
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
-            // 
-            // SettingsAnimatedButtonOnlineChangeServerLogin
-            // 
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Depth = 0;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Icon = null;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Location = new System.Drawing.Point(99, 140);
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Name = "SettingsAnimatedButtonOnlineChangeServerLogin";
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Primary = false;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.TabIndex = 13;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Text = "Login";
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOnlineChangeServerLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonLogin_Click);
             // 
             // SettingsLabelOnlineChangeServerDescription
             // 
@@ -3221,19 +2147,6 @@
             this.SettingsPanelLoadingCenter.Name = "SettingsPanelLoadingCenter";
             this.SettingsPanelLoadingCenter.Size = new System.Drawing.Size(601, 215);
             this.SettingsPanelLoadingCenter.TabIndex = 6;
-            // 
-            // SettingsLunaProgressSpinnerFading
-            // 
-            this.SettingsLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 1;
-            this.SettingsLunaProgressSpinnerFading.BackColor = System.Drawing.Color.Gainsboro;
-            this.SettingsLunaProgressSpinnerFading.DotSizeMultiplier = 1.5F;
-            this.SettingsLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsLunaProgressSpinnerFading.Location = new System.Drawing.Point(228, 3);
-            this.SettingsLunaProgressSpinnerFading.Name = "SettingsLunaProgressSpinnerFading";
-            this.SettingsLunaProgressSpinnerFading.NumberOfDots = 100;
-            this.SettingsLunaProgressSpinnerFading.Size = new System.Drawing.Size(140, 140);
-            this.SettingsLunaProgressSpinnerFading.TabIndex = 13;
-            this.SettingsLunaProgressSpinnerFading.UseForeColor = true;
             // 
             // SettingsLabelLoadingStatus
             // 
@@ -3327,73 +2240,6 @@
             this.SettingsLabelOfflineChangePassword.TabIndex = 10;
             this.SettingsLabelOfflineChangePassword.Text = "Change Your Password";
             // 
-            // SettingsAnimatedButtonChangePasswordSubmit
-            // 
-            this.SettingsAnimatedButtonChangePasswordSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonChangePasswordSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonChangePasswordSubmit.Depth = 0;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Icon = null;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Location = new System.Drawing.Point(207, 312);
-            this.SettingsAnimatedButtonChangePasswordSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Name = "SettingsAnimatedButtonChangePasswordSubmit";
-            this.SettingsAnimatedButtonChangePasswordSubmit.Primary = false;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
-            this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
-            this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonChangePasswordSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonChangePasswordSubmit_Click);
-            // 
-            // SettingsEditFieldOfflineNewPassword
-            // 
-            this.SettingsEditFieldOfflineNewPassword.AutoSize = true;
-            this.SettingsEditFieldOfflineNewPassword.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPassword.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOfflineNewPassword.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOfflineNewPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOfflineNewPassword.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearHover")));
-            this.SettingsEditFieldOfflineNewPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearNormal")));
-            this.SettingsEditFieldOfflineNewPassword.Location = new System.Drawing.Point(4, 132);
-            this.SettingsEditFieldOfflineNewPassword.Name = "SettingsEditFieldOfflineNewPassword";
-            this.SettingsEditFieldOfflineNewPassword.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldOfflineNewPassword.TabIndex = 4;
-            this.SettingsEditFieldOfflineNewPassword.TextTextBox = "";
-            this.SettingsEditFieldOfflineNewPassword.TextTitle = "New Password*";
-            this.SettingsEditFieldOfflineNewPassword.UseColoredCaret = true;
-            this.SettingsEditFieldOfflineNewPassword.UseDefaultValue = false;
-            this.SettingsEditFieldOfflineNewPassword.UseSystemPasswordChar = true;
-            // 
-            // SettingsEditFieldOfflineNewPasswordConfirm
-            // 
-            this.SettingsEditFieldOfflineNewPasswordConfirm.AutoSize = true;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover")));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal")));
-            this.SettingsEditFieldOfflineNewPasswordConfirm.Location = new System.Drawing.Point(4, 218);
-            this.SettingsEditFieldOfflineNewPasswordConfirm.Name = "SettingsEditFieldOfflineNewPasswordConfirm";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldOfflineNewPasswordConfirm.TabIndex = 8;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox = "";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTitle = "Confirm New Password*";
-            this.SettingsEditFieldOfflineNewPasswordConfirm.UseColoredCaret = true;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.UseDefaultValue = false;
-            this.SettingsEditFieldOfflineNewPasswordConfirm.UseSystemPasswordChar = false;
-            // 
             // SettingsPanelOfflineContent1
             // 
             this.SettingsPanelOfflineContent1.Controls.Add(this.SettingsAnimatedButtonOfflineRegister);
@@ -3405,40 +2251,6 @@
             this.SettingsPanelOfflineContent1.Name = "SettingsPanelOfflineContent1";
             this.SettingsPanelOfflineContent1.Size = new System.Drawing.Size(670, 335);
             this.SettingsPanelOfflineContent1.TabIndex = 16;
-            // 
-            // SettingsAnimatedButtonOfflineRegister
-            // 
-            this.SettingsAnimatedButtonOfflineRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOfflineRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOfflineRegister.Depth = 0;
-            this.SettingsAnimatedButtonOfflineRegister.Icon = null;
-            this.SettingsAnimatedButtonOfflineRegister.Location = new System.Drawing.Point(337, 262);
-            this.SettingsAnimatedButtonOfflineRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineRegister.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOfflineRegister.Name = "SettingsAnimatedButtonOfflineRegister";
-            this.SettingsAnimatedButtonOfflineRegister.Primary = false;
-            this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
-            this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
-            // 
-            // SettingsAnimatedButtonOfflineLogin
-            // 
-            this.SettingsAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOfflineLogin.Depth = 0;
-            this.SettingsAnimatedButtonOfflineLogin.Icon = null;
-            this.SettingsAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(99, 262);
-            this.SettingsAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineLogin.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOfflineLogin.Name = "SettingsAnimatedButtonOfflineLogin";
-            this.SettingsAnimatedButtonOfflineLogin.Primary = false;
-            this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOfflineLogin.TabIndex = 13;
-            this.SettingsAnimatedButtonOfflineLogin.Text = "Login";
-            this.SettingsAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonLogin_Click);
             // 
             // SettingsLabelOfflineGoOnlineDescription
             // 
@@ -3472,48 +2284,6 @@
             this.SettingsPanelOfflineContent2.Name = "SettingsPanelOfflineContent2";
             this.SettingsPanelOfflineContent2.Size = new System.Drawing.Size(670, 313);
             this.SettingsPanelOfflineContent2.TabIndex = 15;
-            // 
-            // SettingsAnimatedButtonOfflineChangeNameSubmit
-            // 
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Depth = 0;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Icon = null;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Location = new System.Drawing.Point(218, 239);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Name = "SettingsAnimatedButtonOfflineChangeNameSubmit";
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Primary = false;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.TabIndex = 13;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Text = "Change Name";
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineChangeNameSubmit_Click);
-            // 
-            // SettingsEditFieldOfflineName
-            // 
-            this.SettingsEditFieldOfflineName.AutoSize = true;
-            this.SettingsEditFieldOfflineName.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineName.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldOfflineName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineName.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldOfflineName.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldOfflineName.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldOfflineName.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldOfflineName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldOfflineName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldOfflineName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearHover")));
-            this.SettingsEditFieldOfflineName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearNormal")));
-            this.SettingsEditFieldOfflineName.Location = new System.Drawing.Point(5, 143);
-            this.SettingsEditFieldOfflineName.Name = "SettingsEditFieldOfflineName";
-            this.SettingsEditFieldOfflineName.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldOfflineName.TabIndex = 12;
-            this.SettingsEditFieldOfflineName.TextTextBox = "User";
-            this.SettingsEditFieldOfflineName.TextTitle = "Your Display Name";
-            this.SettingsEditFieldOfflineName.UseColoredCaret = true;
-            this.SettingsEditFieldOfflineName.UseDefaultValue = false;
-            this.SettingsEditFieldOfflineName.UseSystemPasswordChar = false;
             // 
             // SettingsLabelOfflineChangeNameDescription
             // 
@@ -3602,23 +2372,6 @@
             this.SettingsLabelPromptMailInfo.TabIndex = 19;
             this.SettingsLabelPromptMailInfo.Text = "An email containing a verification code has been sent to example@gmail.com.";
             // 
-            // SettingsAnimatedButtonPromptSubmit
-            // 
-            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
-            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
-            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 763);
-            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonPromptSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
-            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
-            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
-            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
-            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
-            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
-            // 
             // SettingsPanelPromptCenter
             // 
             this.SettingsPanelPromptCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -3640,31 +2393,6 @@
             this.SettingsLabelPromptCode.Size = new System.Drawing.Size(105, 28);
             this.SettingsLabelPromptCode.TabIndex = 17;
             this.SettingsLabelPromptCode.Text = "Enter code";
-            // 
-            // SettingsEditFieldPromptCode
-            // 
-            this.SettingsEditFieldPromptCode.AutoSize = true;
-            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
-            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Segoe UI", 20F);
-            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
-            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
-            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
-            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
-            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 110);
-            this.SettingsEditFieldPromptCode.TabIndex = 15;
-            this.SettingsEditFieldPromptCode.TextTextBox = "";
-            this.SettingsEditFieldPromptCode.TextTitle = "";
-            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
-            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
-            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
             // 
             // SettingsLabelPromptPrefix
             // 
@@ -3728,23 +2456,6 @@
             this.SettingsLabelRegisterAccountDesc.TabIndex = 22;
             this.SettingsLabelRegisterAccountDesc.Text = resources.GetString("SettingsLabelRegisterAccountDesc.Text");
             // 
-            // SettingsAnimatedButtonSubmit
-            // 
-            this.SettingsAnimatedButtonSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonSubmit.Depth = 0;
-            this.SettingsAnimatedButtonSubmit.Icon = null;
-            this.SettingsAnimatedButtonSubmit.Location = new System.Drawing.Point(178, 829);
-            this.SettingsAnimatedButtonSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonSubmit.Name = "SettingsAnimatedButtonSubmit";
-            this.SettingsAnimatedButtonSubmit.Primary = false;
-            this.SettingsAnimatedButtonSubmit.Size = new System.Drawing.Size(317, 56);
-            this.SettingsAnimatedButtonSubmit.TabIndex = 21;
-            this.SettingsAnimatedButtonSubmit.Text = "Connect & Register";
-            this.SettingsAnimatedButtonSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonSubmit_Click);
-            // 
             // SettingsLabelRegisterAccount
             // 
             this.SettingsLabelRegisterAccount.AutoSize = true;
@@ -3778,31 +2489,6 @@
             this.SettingsLabelRegisterServerDesc.Text = "Please enter the IP or DNS of the server you\'d like to connect to \r\nbelow and spe" +
     "cify the port.";
             // 
-            // SettingsEditFieldRegisterEmail
-            // 
-            this.SettingsEditFieldRegisterEmail.AutoSize = true;
-            this.SettingsEditFieldRegisterEmail.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterEmail.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterEmail.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterEmail.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterEmail.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearHover")));
-            this.SettingsEditFieldRegisterEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearNormal")));
-            this.SettingsEditFieldRegisterEmail.Location = new System.Drawing.Point(6, 637);
-            this.SettingsEditFieldRegisterEmail.Name = "SettingsEditFieldRegisterEmail";
-            this.SettingsEditFieldRegisterEmail.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldRegisterEmail.TabIndex = 6;
-            this.SettingsEditFieldRegisterEmail.TextTextBox = "";
-            this.SettingsEditFieldRegisterEmail.TextTitle = "Email*";
-            this.SettingsEditFieldRegisterEmail.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterEmail.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterEmail.UseSystemPasswordChar = false;
-            // 
             // SettingsLabelRegisterMain
             // 
             this.SettingsLabelRegisterMain.AutoSize = true;
@@ -3813,106 +2499,6 @@
             this.SettingsLabelRegisterMain.Size = new System.Drawing.Size(143, 45);
             this.SettingsLabelRegisterMain.TabIndex = 0;
             this.SettingsLabelRegisterMain.Text = "Register";
-            // 
-            // SettingsEditFieldRegisterIP
-            // 
-            this.SettingsEditFieldRegisterIP.AutoSize = true;
-            this.SettingsEditFieldRegisterIP.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterIP.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterIP.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterIP.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterIP.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterIP.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldRegisterIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearHover")));
-            this.SettingsEditFieldRegisterIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearNormal")));
-            this.SettingsEditFieldRegisterIP.Location = new System.Drawing.Point(6, 202);
-            this.SettingsEditFieldRegisterIP.Name = "SettingsEditFieldRegisterIP";
-            this.SettingsEditFieldRegisterIP.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldRegisterIP.TabIndex = 2;
-            this.SettingsEditFieldRegisterIP.TextTextBox = "192.168.178.46";
-            this.SettingsEditFieldRegisterIP.TextTitle = "IP / DNS*";
-            this.SettingsEditFieldRegisterIP.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterIP.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterIP.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterName
-            // 
-            this.SettingsEditFieldRegisterName.AutoSize = true;
-            this.SettingsEditFieldRegisterName.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterName.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterName.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterName.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterName.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterName.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldRegisterName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearHover")));
-            this.SettingsEditFieldRegisterName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearNormal")));
-            this.SettingsEditFieldRegisterName.Location = new System.Drawing.Point(6, 740);
-            this.SettingsEditFieldRegisterName.Name = "SettingsEditFieldRegisterName";
-            this.SettingsEditFieldRegisterName.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldRegisterName.TabIndex = 7;
-            this.SettingsEditFieldRegisterName.TextTextBox = "freddy";
-            this.SettingsEditFieldRegisterName.TextTitle = "Display Name";
-            this.SettingsEditFieldRegisterName.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterName.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterName.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterPort
-            // 
-            this.SettingsEditFieldRegisterPort.AutoSize = true;
-            this.SettingsEditFieldRegisterPort.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterPort.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterPort.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterPort.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterPort.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterPort.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldRegisterPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearHover")));
-            this.SettingsEditFieldRegisterPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearNormal")));
-            this.SettingsEditFieldRegisterPort.Location = new System.Drawing.Point(6, 298);
-            this.SettingsEditFieldRegisterPort.Name = "SettingsEditFieldRegisterPort";
-            this.SettingsEditFieldRegisterPort.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldRegisterPort.TabIndex = 3;
-            this.SettingsEditFieldRegisterPort.TextTextBox = "4447";
-            this.SettingsEditFieldRegisterPort.TextTitle = "Port*";
-            this.SettingsEditFieldRegisterPort.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterPort.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterPort.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldRegisterUsername
-            // 
-            this.SettingsEditFieldRegisterUsername.AutoSize = true;
-            this.SettingsEditFieldRegisterUsername.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterUsername.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldRegisterUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldRegisterUsername.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldRegisterUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldRegisterUsername.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldRegisterUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearHover")));
-            this.SettingsEditFieldRegisterUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearNormal")));
-            this.SettingsEditFieldRegisterUsername.Location = new System.Drawing.Point(6, 538);
-            this.SettingsEditFieldRegisterUsername.Name = "SettingsEditFieldRegisterUsername";
-            this.SettingsEditFieldRegisterUsername.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldRegisterUsername.TabIndex = 4;
-            this.SettingsEditFieldRegisterUsername.TextTextBox = "";
-            this.SettingsEditFieldRegisterUsername.TextTitle = "Username*";
-            this.SettingsEditFieldRegisterUsername.UseColoredCaret = true;
-            this.SettingsEditFieldRegisterUsername.UseDefaultValue = false;
-            this.SettingsEditFieldRegisterUsername.UseSystemPasswordChar = false;
             // 
             // SettingsFlowLayoutPanelLogin
             // 
@@ -3944,31 +2530,6 @@
             this.SettingsPanelLoginContent.Size = new System.Drawing.Size(670, 896);
             this.SettingsPanelLoginContent.TabIndex = 10;
             // 
-            // SettingsEditFieldLoginPassword
-            // 
-            this.SettingsEditFieldLoginPassword.AutoSize = true;
-            this.SettingsEditFieldLoginPassword.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPassword.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginPassword.DefaultValue = "";
-            this.SettingsEditFieldLoginPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginPassword.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldLoginPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPassword.ImageClearHover")));
-            this.SettingsEditFieldLoginPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPassword.ImageClearNormal")));
-            this.SettingsEditFieldLoginPassword.Location = new System.Drawing.Point(6, 640);
-            this.SettingsEditFieldLoginPassword.Name = "SettingsEditFieldLoginPassword";
-            this.SettingsEditFieldLoginPassword.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldLoginPassword.TabIndex = 23;
-            this.SettingsEditFieldLoginPassword.TextTextBox = "";
-            this.SettingsEditFieldLoginPassword.TextTitle = "Password*";
-            this.SettingsEditFieldLoginPassword.UseColoredCaret = true;
-            this.SettingsEditFieldLoginPassword.UseDefaultValue = false;
-            this.SettingsEditFieldLoginPassword.UseSystemPasswordChar = true;
-            // 
             // SettingsLabelLoginAccountDesc
             // 
             this.SettingsLabelLoginAccountDesc.AutoSize = true;
@@ -3978,23 +2539,6 @@
             this.SettingsLabelLoginAccountDesc.Size = new System.Drawing.Size(489, 50);
             this.SettingsLabelLoginAccountDesc.TabIndex = 22;
             this.SettingsLabelLoginAccountDesc.Text = "Please enter your credentials below to log into your existing \r\naccount.";
-            // 
-            // SettingsAnimatedButtonLoginSubmit
-            // 
-            this.SettingsAnimatedButtonLoginSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonLoginSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonLoginSubmit.Depth = 0;
-            this.SettingsAnimatedButtonLoginSubmit.Icon = null;
-            this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
-            this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonLoginSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
-            this.SettingsAnimatedButtonLoginSubmit.Primary = false;
-            this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
-            this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
-            this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
-            this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
             // 
             // SettingsLabelLoginAccount
             // 
@@ -4039,81 +2583,6 @@
             this.SettingsLabelLoginMain.Size = new System.Drawing.Size(104, 45);
             this.SettingsLabelLoginMain.TabIndex = 0;
             this.SettingsLabelLoginMain.Text = "Login";
-            // 
-            // SettingsEditFieldLoginIP
-            // 
-            this.SettingsEditFieldLoginIP.AutoSize = true;
-            this.SettingsEditFieldLoginIP.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginIP.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginIP.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginIP.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginIP.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginIP.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldLoginIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearHover")));
-            this.SettingsEditFieldLoginIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearNormal")));
-            this.SettingsEditFieldLoginIP.Location = new System.Drawing.Point(6, 202);
-            this.SettingsEditFieldLoginIP.Name = "SettingsEditFieldLoginIP";
-            this.SettingsEditFieldLoginIP.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldLoginIP.TabIndex = 2;
-            this.SettingsEditFieldLoginIP.TextTextBox = "192.168.178.46";
-            this.SettingsEditFieldLoginIP.TextTitle = "IP / DNS*";
-            this.SettingsEditFieldLoginIP.UseColoredCaret = true;
-            this.SettingsEditFieldLoginIP.UseDefaultValue = false;
-            this.SettingsEditFieldLoginIP.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldLoginPort
-            // 
-            this.SettingsEditFieldLoginPort.AutoSize = true;
-            this.SettingsEditFieldLoginPort.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPort.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPort.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginPort.DefaultValue = "Enter some text...";
-            this.SettingsEditFieldLoginPort.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginPort.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldLoginPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearHover")));
-            this.SettingsEditFieldLoginPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearNormal")));
-            this.SettingsEditFieldLoginPort.Location = new System.Drawing.Point(6, 298);
-            this.SettingsEditFieldLoginPort.Name = "SettingsEditFieldLoginPort";
-            this.SettingsEditFieldLoginPort.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldLoginPort.TabIndex = 3;
-            this.SettingsEditFieldLoginPort.TextTextBox = "4447";
-            this.SettingsEditFieldLoginPort.TextTitle = "Port*";
-            this.SettingsEditFieldLoginPort.UseColoredCaret = true;
-            this.SettingsEditFieldLoginPort.UseDefaultValue = false;
-            this.SettingsEditFieldLoginPort.UseSystemPasswordChar = false;
-            // 
-            // SettingsEditFieldLoginUsername
-            // 
-            this.SettingsEditFieldLoginUsername.AutoSize = true;
-            this.SettingsEditFieldLoginUsername.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginUsername.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter your username...";
-            this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldLoginUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldLoginUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearHover")));
-            this.SettingsEditFieldLoginUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearNormal")));
-            this.SettingsEditFieldLoginUsername.Location = new System.Drawing.Point(6, 546);
-            this.SettingsEditFieldLoginUsername.Name = "SettingsEditFieldLoginUsername";
-            this.SettingsEditFieldLoginUsername.Size = new System.Drawing.Size(660, 88);
-            this.SettingsEditFieldLoginUsername.TabIndex = 4;
-            this.SettingsEditFieldLoginUsername.TextTextBox = "testuser";
-            this.SettingsEditFieldLoginUsername.TextTitle = "Username*";
-            this.SettingsEditFieldLoginUsername.UseColoredCaret = true;
-            this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
-            this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
             // 
             // WindowHeaderLabelLogo
             // 
@@ -4193,97 +2662,6 @@
             this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
             this.FilterLabelSort.TabIndex = 3;
             this.FilterLabelSort.Text = "Sort by";
-            // 
-            // FilterAdvancedComboBoxSort
-            // 
-            this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.White;
-            this.FilterAdvancedComboBoxSort.BackgroundColor = System.Drawing.Color.White;
-            this.FilterAdvancedComboBoxSort.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.FilterAdvancedComboBoxSort.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.FilterAdvancedComboBoxSort.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.FilterAdvancedComboBoxSort.FormattingEnabled = true;
-            this.FilterAdvancedComboBoxSort.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.FilterAdvancedComboBoxSort.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.FilterAdvancedComboBoxSort.HoverItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(119)))), ((int)(((byte)(53)))));
-            this.FilterAdvancedComboBoxSort.HoverItemForeColor = System.Drawing.Color.White;
-            this.FilterAdvancedComboBoxSort.ItemFont = new System.Drawing.Font("Segoe UI", 8F);
-            this.FilterAdvancedComboBoxSort.ItemHeight = 25;
-            this.FilterAdvancedComboBoxSort.Items.AddRange(new object[] {
-            "Hostname... (A-Z)",
-            "Hostname... (Z-A)",
-            "Date... (oldest first)",
-            "Date... (newest first)"});
-            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(903, 60);
-            this.FilterAdvancedComboBoxSort.Name = "FilterAdvancedComboBoxSort";
-            this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.NormalItemForeColor = System.Drawing.Color.Black;
-            this.FilterAdvancedComboBoxSort.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.Size = new System.Drawing.Size(212, 31);
-            this.FilterAdvancedComboBoxSort.TabIndex = 4;
-            this.FilterAdvancedComboBoxSort.UseSelectable = true;
-            this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
-            // 
-            // FilterEditFieldSearch
-            // 
-            this.FilterEditFieldSearch.AutoSize = true;
-            this.FilterEditFieldSearch.BackColor = System.Drawing.Color.White;
-            this.FilterEditFieldSearch.BackGroundColor = System.Drawing.Color.White;
-            this.FilterEditFieldSearch.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.FilterEditFieldSearch.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.FilterEditFieldSearch.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.FilterEditFieldSearch.DefaultValue = "Enter Search Term";
-            this.FilterEditFieldSearch.FontTextBox = new System.Drawing.Font("Segoe UI", 12F);
-            this.FilterEditFieldSearch.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FilterEditFieldSearch.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.FilterEditFieldSearch.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.FilterEditFieldSearch.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.FilterEditFieldSearch.Location = new System.Drawing.Point(351, 12);
-            this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
-            this.FilterEditFieldSearch.Size = new System.Drawing.Size(542, 85);
-            this.FilterEditFieldSearch.TabIndex = 0;
-            this.FilterEditFieldSearch.TextTextBox = "";
-            this.FilterEditFieldSearch.TextTitle = "Search";
-            this.FilterEditFieldSearch.UseColoredCaret = true;
-            this.FilterEditFieldSearch.UseDefaultValue = true;
-            this.FilterEditFieldSearch.UseSystemPasswordChar = false;
-            // 
-            // WindowsHeaderOvalPanelTitle
-            // 
-            this.WindowsHeaderOvalPanelTitle.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderOvalPanelTitle.BackgroundColor = System.Drawing.Color.White;
-            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderPictureBoxIcon);
-            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderLabelTitle);
-            this.WindowsHeaderOvalPanelTitle.EllipseColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowsHeaderOvalPanelTitle.Location = new System.Drawing.Point(14, 16);
-            this.WindowsHeaderOvalPanelTitle.Name = "WindowsHeaderOvalPanelTitle";
-            this.WindowsHeaderOvalPanelTitle.Size = new System.Drawing.Size(290, 72);
-            this.WindowsHeaderOvalPanelTitle.TabIndex = 2;
-            // 
-            // WindowHeaderPictureBoxIcon
-            // 
-            this.WindowHeaderPictureBoxIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderPictureBoxIcon.Image = ((System.Drawing.Image)(resources.GetObject("WindowHeaderPictureBoxIcon.Image")));
-            this.WindowHeaderPictureBoxIcon.Location = new System.Drawing.Point(33, 12);
-            this.WindowHeaderPictureBoxIcon.Name = "WindowHeaderPictureBoxIcon";
-            this.WindowHeaderPictureBoxIcon.Size = new System.Drawing.Size(48, 48);
-            this.WindowHeaderPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.WindowHeaderPictureBoxIcon.TabIndex = 23;
-            this.WindowHeaderPictureBoxIcon.TabStop = false;
-            // 
-            // WindowHeaderLabelTitle
-            // 
-            this.WindowHeaderLabelTitle.AutoSize = true;
-            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
-            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(87, 19);
-            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
-            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(145, 38);
-            this.WindowHeaderLabelTitle.TabIndex = 22;
-            this.WindowHeaderLabelTitle.Text = "Passwords";
             // 
             // PanelMain
             // 
@@ -4409,27 +2787,6 @@
             this.LoginLabelRegisterPasswordStrengthHeader.TabIndex = 6;
             this.LoginLabelRegisterPasswordStrengthHeader.Text = "Your password is";
             // 
-            // LoginPasswordStrengthIndicatorRegister
-            // 
-            this.LoginPasswordStrengthIndicatorRegister.Colors = new System.Drawing.Color[] {
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
-        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
-            this.LoginPasswordStrengthIndicatorRegister.CurrentColor = System.Drawing.Color.Red;
-            this.LoginPasswordStrengthIndicatorRegister.Location = new System.Drawing.Point(33, 203);
-            this.LoginPasswordStrengthIndicatorRegister.Name = "LoginPasswordStrengthIndicatorRegister";
-            this.LoginPasswordStrengthIndicatorRegister.Size = new System.Drawing.Size(457, 10);
-            this.LoginPasswordStrengthIndicatorRegister.TabIndex = 5;
-            // 
             // LoginLabelRegisterDescription
             // 
             this.LoginLabelRegisterDescription.AutoSize = true;
@@ -4467,58 +2824,6 @@
             this.LoginLabelRegisterTitle.TabIndex = 2;
             this.LoginLabelRegisterTitle.Text = "Set your Master Password";
             // 
-            // LoginEditFieldRegisterPassword2
-            // 
-            this.LoginEditFieldRegisterPassword2.AutoSize = true;
-            this.LoginEditFieldRegisterPassword2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword2.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldRegisterPassword2.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword2.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldRegisterPassword2.DefaultValue = "Enter some text...";
-            this.LoginEditFieldRegisterPassword2.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword2.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
-            this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 320);
-            this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
-            this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldRegisterPassword2.TabIndex = 1;
-            this.LoginEditFieldRegisterPassword2.TextTextBox = "";
-            this.LoginEditFieldRegisterPassword2.TextTitle = "Re-enter Master Password";
-            this.LoginEditFieldRegisterPassword2.UseColoredCaret = false;
-            this.LoginEditFieldRegisterPassword2.UseDefaultValue = false;
-            this.LoginEditFieldRegisterPassword2.UseSystemPasswordChar = true;
-            this.LoginEditFieldRegisterPassword2.TextBoxTextChanged += new System.EventHandler(this.LoginEditFieldRegisterPassword2_TextBoxTextChanged);
-            // 
-            // LoginEditFieldRegisterPassword
-            // 
-            this.LoginEditFieldRegisterPassword.AutoSize = true;
-            this.LoginEditFieldRegisterPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldRegisterPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldRegisterPassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldRegisterPassword.DefaultValue = "Enter some text...";
-            this.LoginEditFieldRegisterPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldRegisterPassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
-            this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
-            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 223);
-            this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
-            this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldRegisterPassword.TabIndex = 0;
-            this.LoginEditFieldRegisterPassword.TextTextBox = "";
-            this.LoginEditFieldRegisterPassword.TextTitle = "Master Password";
-            this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
-            this.LoginEditFieldRegisterPassword.UseDefaultValue = false;
-            this.LoginEditFieldRegisterPassword.UseSystemPasswordChar = true;
-            this.LoginEditFieldRegisterPassword.TextBoxTextChanged += new System.EventHandler(this.LoginEditFieldRegisterPassword_TextBoxTextChanged);
-            // 
             // LoginLabelRegisterMain
             // 
             this.LoginLabelRegisterMain.AutoSize = true;
@@ -4530,23 +2835,6 @@
             this.LoginLabelRegisterMain.Size = new System.Drawing.Size(163, 45);
             this.LoginLabelRegisterMain.TabIndex = 8;
             this.LoginLabelRegisterMain.Text = "Welcome!";
-            // 
-            // LoginAnimatedButtonRegister
-            // 
-            this.LoginAnimatedButtonRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginAnimatedButtonRegister.Depth = 0;
-            this.LoginAnimatedButtonRegister.Icon = null;
-            this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(220, 728);
-            this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonRegister.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
-            this.LoginAnimatedButtonRegister.Primary = false;
-            this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonRegister.TabIndex = 8;
-            this.LoginAnimatedButtonRegister.Text = "Register";
-            this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
             // 
             // LoginPictureBoxRegisterLogo
             // 
@@ -4598,23 +2886,6 @@
             this.LoginPictureBoxOnlineLogo.TabIndex = 5;
             this.LoginPictureBoxOnlineLogo.TabStop = false;
             // 
-            // LoginAnimatedButtonOnlineLogin
-            // 
-            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOnlineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
-            this.LoginAnimatedButtonOnlineLogin.Icon = null;
-            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
-            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOnlineLogin.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
-            this.LoginAnimatedButtonOnlineLogin.Primary = false;
-            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
-            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
-            // 
             // LoginLabelOnlineMain
             // 
             this.LoginLabelOnlineMain.AutoSize = true;
@@ -4661,56 +2932,6 @@
             this.LoginLabelOnlineTitle.TabIndex = 2;
             this.LoginLabelOnlineTitle.Text = "Online Login";
             // 
-            // LoginEditFieldOnlinePassword
-            // 
-            this.LoginEditFieldOnlinePassword.AutoSize = true;
-            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlinePassword.DefaultValue = "Enter some text...";
-            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOnlinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearHover")));
-            this.LoginEditFieldOnlinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearNormal")));
-            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 179);
-            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
-            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlinePassword.TabIndex = 1;
-            this.LoginEditFieldOnlinePassword.TextTextBox = "";
-            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
-            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
-            this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
-            this.LoginEditFieldOnlinePassword.UseSystemPasswordChar = true;
-            // 
-            // LoginEditFieldOnlineUsername
-            // 
-            this.LoginEditFieldOnlineUsername.AutoSize = true;
-            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlineUsername.DefaultValue = "Enter your Username...";
-            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
-            this.LoginEditFieldOnlineUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearHover")));
-            this.LoginEditFieldOnlineUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearNormal")));
-            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 72);
-            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
-            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlineUsername.TabIndex = 0;
-            this.LoginEditFieldOnlineUsername.TextTextBox = "";
-            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
-            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
-            this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
-            this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
-            // 
             // LoginPictureBoxLoadingMain
             // 
             this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPictureBoxLogo);
@@ -4755,19 +2976,6 @@
             this.LoginLoadingPanelMain.Name = "LoginLoadingPanelMain";
             this.LoginLoadingPanelMain.Size = new System.Drawing.Size(523, 230);
             this.LoginLoadingPanelMain.TabIndex = 5;
-            // 
-            // LoginLunaProgressSpinnerFading
-            // 
-            this.LoginLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 1;
-            this.LoginLunaProgressSpinnerFading.DotSizeMultiplier = 1.5F;
-            this.LoginLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginLunaProgressSpinnerFading.Location = new System.Drawing.Point(189, 9);
-            this.LoginLunaProgressSpinnerFading.MinimumDotAlpha = 1D;
-            this.LoginLunaProgressSpinnerFading.Name = "LoginLunaProgressSpinnerFading";
-            this.LoginLunaProgressSpinnerFading.NumberOfDots = 100;
-            this.LoginLunaProgressSpinnerFading.Size = new System.Drawing.Size(150, 150);
-            this.LoginLunaProgressSpinnerFading.TabIndex = 25;
-            this.LoginLunaProgressSpinnerFading.UseForeColor = true;
             // 
             // LoginLoadingLabelDetails
             // 
@@ -4827,6 +3035,198 @@
             this.LoginLabelOfflineError.TabIndex = 4;
             this.LoginLabelOfflineError.Text = "Invalid password";
             // 
+            // LoginLabelOfflineMain
+            // 
+            this.LoginLabelOfflineMain.AutoSize = true;
+            this.LoginLabelOfflineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelOfflineMain.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOfflineMain.ForeColor = System.Drawing.Color.White;
+            this.LoginLabelOfflineMain.Location = new System.Drawing.Point(199, 275);
+            this.LoginLabelOfflineMain.Name = "LoginLabelOfflineMain";
+            this.LoginLabelOfflineMain.Size = new System.Drawing.Size(228, 45);
+            this.LoginLabelOfflineMain.TabIndex = 8;
+            this.LoginLabelOfflineMain.Text = "Welcome Back";
+            // 
+            // LoginPictureBoxOfflineLogo
+            // 
+            this.LoginPictureBoxOfflineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOfflineLogo.Image")));
+            this.LoginPictureBoxOfflineLogo.Location = new System.Drawing.Point(238, 77);
+            this.LoginPictureBoxOfflineLogo.Name = "LoginPictureBoxOfflineLogo";
+            this.LoginPictureBoxOfflineLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxOfflineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxOfflineLogo.TabIndex = 6;
+            this.LoginPictureBoxOfflineLogo.TabStop = false;
+            // 
+            // LoginPasswordStrengthIndicatorRegister
+            // 
+            this.LoginPasswordStrengthIndicatorRegister.Colors = new System.Drawing.Color[] {
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
+            this.LoginPasswordStrengthIndicatorRegister.CurrentColor = System.Drawing.Color.Red;
+            this.LoginPasswordStrengthIndicatorRegister.Location = new System.Drawing.Point(33, 203);
+            this.LoginPasswordStrengthIndicatorRegister.Name = "LoginPasswordStrengthIndicatorRegister";
+            this.LoginPasswordStrengthIndicatorRegister.Size = new System.Drawing.Size(457, 10);
+            this.LoginPasswordStrengthIndicatorRegister.TabIndex = 5;
+            // 
+            // LoginEditFieldRegisterPassword2
+            // 
+            this.LoginEditFieldRegisterPassword2.AutoSize = true;
+            this.LoginEditFieldRegisterPassword2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword2.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword2.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldRegisterPassword2.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword2.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldRegisterPassword2.DefaultValue = "Enter some text...";
+            this.LoginEditFieldRegisterPassword2.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword2.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword2.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldRegisterPassword2.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearHover")));
+            this.LoginEditFieldRegisterPassword2.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword2.ImageClearNormal")));
+            this.LoginEditFieldRegisterPassword2.Location = new System.Drawing.Point(34, 320);
+            this.LoginEditFieldRegisterPassword2.Name = "LoginEditFieldRegisterPassword2";
+            this.LoginEditFieldRegisterPassword2.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldRegisterPassword2.TabIndex = 1;
+            this.LoginEditFieldRegisterPassword2.TextTextBox = "";
+            this.LoginEditFieldRegisterPassword2.TextTitle = "Re-enter Master Password";
+            this.LoginEditFieldRegisterPassword2.UseColoredCaret = false;
+            this.LoginEditFieldRegisterPassword2.UseDefaultValue = false;
+            this.LoginEditFieldRegisterPassword2.UseSystemPasswordChar = true;
+            this.LoginEditFieldRegisterPassword2.TextBoxTextChanged += new System.EventHandler(this.LoginEditFieldRegisterPassword2_TextBoxTextChanged);
+            // 
+            // LoginEditFieldRegisterPassword
+            // 
+            this.LoginEditFieldRegisterPassword.AutoSize = true;
+            this.LoginEditFieldRegisterPassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldRegisterPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldRegisterPassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldRegisterPassword.DefaultValue = "Enter some text...";
+            this.LoginEditFieldRegisterPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldRegisterPassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldRegisterPassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldRegisterPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearHover")));
+            this.LoginEditFieldRegisterPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldRegisterPassword.ImageClearNormal")));
+            this.LoginEditFieldRegisterPassword.Location = new System.Drawing.Point(33, 223);
+            this.LoginEditFieldRegisterPassword.Name = "LoginEditFieldRegisterPassword";
+            this.LoginEditFieldRegisterPassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldRegisterPassword.TabIndex = 0;
+            this.LoginEditFieldRegisterPassword.TextTextBox = "";
+            this.LoginEditFieldRegisterPassword.TextTitle = "Master Password";
+            this.LoginEditFieldRegisterPassword.UseColoredCaret = false;
+            this.LoginEditFieldRegisterPassword.UseDefaultValue = false;
+            this.LoginEditFieldRegisterPassword.UseSystemPasswordChar = true;
+            this.LoginEditFieldRegisterPassword.TextBoxTextChanged += new System.EventHandler(this.LoginEditFieldRegisterPassword_TextBoxTextChanged);
+            // 
+            // LoginAnimatedButtonRegister
+            // 
+            this.LoginAnimatedButtonRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginAnimatedButtonRegister.Depth = 0;
+            this.LoginAnimatedButtonRegister.Icon = null;
+            this.LoginAnimatedButtonRegister.Location = new System.Drawing.Point(220, 728);
+            this.LoginAnimatedButtonRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonRegister.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonRegister.Name = "LoginAnimatedButtonRegister";
+            this.LoginAnimatedButtonRegister.Primary = false;
+            this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonRegister.TabIndex = 8;
+            this.LoginAnimatedButtonRegister.Text = "Register";
+            this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
+            // 
+            // LoginAnimatedButtonOnlineLogin
+            // 
+            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOnlineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
+            this.LoginAnimatedButtonOnlineLogin.Icon = null;
+            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
+            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOnlineLogin.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
+            this.LoginAnimatedButtonOnlineLogin.Primary = false;
+            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
+            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
+            // 
+            // LoginEditFieldOnlinePassword
+            // 
+            this.LoginEditFieldOnlinePassword.AutoSize = true;
+            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlinePassword.DefaultValue = "Enter some text...";
+            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOnlinePassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearHover")));
+            this.LoginEditFieldOnlinePassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlinePassword.ImageClearNormal")));
+            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 179);
+            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
+            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlinePassword.TabIndex = 1;
+            this.LoginEditFieldOnlinePassword.TextTextBox = "";
+            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
+            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
+            this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
+            this.LoginEditFieldOnlinePassword.UseSystemPasswordChar = true;
+            // 
+            // LoginEditFieldOnlineUsername
+            // 
+            this.LoginEditFieldOnlineUsername.AutoSize = true;
+            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlineUsername.DefaultValue = "Enter your Username...";
+            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.LoginEditFieldOnlineUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearHover")));
+            this.LoginEditFieldOnlineUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("LoginEditFieldOnlineUsername.ImageClearNormal")));
+            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 72);
+            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
+            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlineUsername.TabIndex = 0;
+            this.LoginEditFieldOnlineUsername.TextTextBox = "";
+            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
+            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
+            this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
+            this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
+            // 
+            // LoginLunaProgressSpinnerFading
+            // 
+            this.LoginLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 1;
+            this.LoginLunaProgressSpinnerFading.DotSizeMultiplier = 1.5F;
+            this.LoginLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginLunaProgressSpinnerFading.Location = new System.Drawing.Point(189, 9);
+            this.LoginLunaProgressSpinnerFading.MinimumDotAlpha = 1D;
+            this.LoginLunaProgressSpinnerFading.Name = "LoginLunaProgressSpinnerFading";
+            this.LoginLunaProgressSpinnerFading.NumberOfDots = 100;
+            this.LoginLunaProgressSpinnerFading.Size = new System.Drawing.Size(150, 150);
+            this.LoginLunaProgressSpinnerFading.TabIndex = 25;
+            this.LoginLunaProgressSpinnerFading.UseForeColor = true;
+            // 
             // LoginEditFieldOfflinePassword
             // 
             this.LoginEditFieldOfflinePassword.AutoSize = true;
@@ -4852,18 +3252,6 @@
             this.LoginEditFieldOfflinePassword.UseDefaultValue = false;
             this.LoginEditFieldOfflinePassword.UseSystemPasswordChar = true;
             // 
-            // LoginLabelOfflineMain
-            // 
-            this.LoginLabelOfflineMain.AutoSize = true;
-            this.LoginLabelOfflineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelOfflineMain.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOfflineMain.ForeColor = System.Drawing.Color.White;
-            this.LoginLabelOfflineMain.Location = new System.Drawing.Point(199, 275);
-            this.LoginLabelOfflineMain.Name = "LoginLabelOfflineMain";
-            this.LoginLabelOfflineMain.Size = new System.Drawing.Size(228, 45);
-            this.LoginLabelOfflineMain.TabIndex = 8;
-            this.LoginLabelOfflineMain.Text = "Welcome Back";
-            // 
             // LoginAnimatedButtonOfflineLogin
             // 
             this.LoginAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -4881,15 +3269,1589 @@
             this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
             this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
             // 
-            // LoginPictureBoxOfflineLogo
+            // lunaSmallCardList1
             // 
-            this.LoginPictureBoxOfflineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOfflineLogo.Image")));
-            this.LoginPictureBoxOfflineLogo.Location = new System.Drawing.Point(238, 77);
-            this.LoginPictureBoxOfflineLogo.Name = "LoginPictureBoxOfflineLogo";
-            this.LoginPictureBoxOfflineLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxOfflineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxOfflineLogo.TabIndex = 6;
-            this.LoginPictureBoxOfflineLogo.TabStop = false;
+            this.lunaSmallCardList1.ImageLocation = new System.Drawing.Point(1, 1);
+            this.lunaSmallCardList1.Location = new System.Drawing.Point(0, 67);
+            this.lunaSmallCardList1.LunaSmallCardAnimationSteps = 10;
+            this.lunaSmallCardList1.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(230)))), ((int)(((byte)(230)))));
+            this.lunaSmallCardList1.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
+            this.lunaSmallCardList1.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lunaSmallCardList1.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
+            this.lunaSmallCardList1.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Black;
+            this.lunaSmallCardList1.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardList1.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardList1.LunaSmallCardHeader = "LunaSmallCard";
+            this.lunaSmallCardList1.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
+            this.lunaSmallCardList1.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
+            this.lunaSmallCardList1.LunaSmallCardShowInfo = false;
+            this.lunaSmallCardList1.Name = "lunaSmallCardList1";
+            this.lunaSmallCardList1.SeperatorVerticalPadding = 6;
+            this.lunaSmallCardList1.Size = new System.Drawing.Size(264, 540);
+            this.lunaSmallCardList1.TabIndex = 6;
+            // 
+            // animatedButton1
+            // 
+            this.animatedButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.animatedButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
+            this.animatedButton1.Depth = 0;
+            this.animatedButton1.Icon = null;
+            this.animatedButton1.Location = new System.Drawing.Point(15, 616);
+            this.animatedButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.animatedButton1.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButton1.Name = "animatedButton1";
+            this.animatedButton1.Primary = false;
+            this.animatedButton1.Size = new System.Drawing.Size(234, 83);
+            this.animatedButton1.TabIndex = 3;
+            this.animatedButton1.Text = "Devices and activity";
+            this.animatedButton1.UseVisualStyleBackColor = true;
+            this.animatedButton1.Click += new System.EventHandler(this.animatedButton1_Click);
+            // 
+            // lunaItemList1
+            // 
+            this.lunaItemList1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lunaItemList1.ImageLocation = new System.Drawing.Point(1, 1);
+            this.lunaItemList1.IsScrollable = true;
+            this.lunaItemList1.Location = new System.Drawing.Point(260, 2);
+            this.lunaItemList1.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lunaItemList1.LunaItemBackColorNormal = System.Drawing.Color.White;
+            this.lunaItemList1.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.lunaItemList1.LunaItemForeColorHeader = System.Drawing.Color.Black;
+            this.lunaItemList1.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
+            this.lunaItemList1.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaItemList1.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lunaItemList1.LunaItemHeader = "Item";
+            this.lunaItemList1.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
+            this.lunaItemList1.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
+            this.lunaItemList1.LunaItemShowInfo = false;
+            this.lunaItemList1.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
+            this.lunaItemList1.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.lunaItemList1.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.lunaItemList1.Margin = new System.Windows.Forms.Padding(0);
+            this.lunaItemList1.Name = "lunaItemList1";
+            this.lunaItemList1.Size = new System.Drawing.Size(239, 339);
+            this.lunaItemList1.TabIndex = 0;
+            // 
+            // DashboardLunaTrianglePasswordStrength
+            // 
+            this.DashboardLunaTrianglePasswordStrength.IsSolid = true;
+            this.DashboardLunaTrianglePasswordStrength.Location = new System.Drawing.Point(17, 275);
+            this.DashboardLunaTrianglePasswordStrength.Name = "DashboardLunaTrianglePasswordStrength";
+            this.DashboardLunaTrianglePasswordStrength.Size = new System.Drawing.Size(60, 53);
+            this.DashboardLunaTrianglePasswordStrength.TabIndex = 0;
+            this.DashboardLunaTrianglePasswordStrength.TriangleDirection = LunaForms.LunaTriangle.Direction.Top;
+            // 
+            // DashboardLunaSmallCardListHotspots
+            // 
+            this.DashboardLunaSmallCardListHotspots.ImageLocation = new System.Drawing.Point(1, 1);
+            this.DashboardLunaSmallCardListHotspots.Location = new System.Drawing.Point(0, 67);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardAnimationSteps = 10;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardBackColorNormal = System.Drawing.Color.White;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorHeader = System.Drawing.Color.Black;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorHeaderHover = System.Drawing.Color.Black;
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeader = "LunaSmallCard";
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 0);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
+            this.DashboardLunaSmallCardListHotspots.Name = "DashboardLunaSmallCardListHotspots";
+            this.DashboardLunaSmallCardListHotspots.SeperatorVerticalPadding = 6;
+            this.DashboardLunaSmallCardListHotspots.Size = new System.Drawing.Size(260, 283);
+            this.DashboardLunaSmallCardListHotspots.TabIndex = 7;
+            // 
+            // DashboardLunaItemListBreaches
+            // 
+            this.DashboardLunaItemListBreaches.ImageLocation = new System.Drawing.Point(1, 1);
+            this.DashboardLunaItemListBreaches.IsScrollable = true;
+            this.DashboardLunaItemListBreaches.Location = new System.Drawing.Point(0, 67);
+            this.DashboardLunaItemListBreaches.LunaItemAnimationSteps = 10;
+            this.DashboardLunaItemListBreaches.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.DashboardLunaItemListBreaches.LunaItemBackColorNormal = System.Drawing.Color.White;
+            this.DashboardLunaItemListBreaches.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DashboardLunaItemListBreaches.LunaItemForeColorHeader = System.Drawing.Color.Black;
+            this.DashboardLunaItemListBreaches.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
+            this.DashboardLunaItemListBreaches.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaItemListBreaches.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaItemListBreaches.LunaItemHeader = "Item";
+            this.DashboardLunaItemListBreaches.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
+            this.DashboardLunaItemListBreaches.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
+            this.DashboardLunaItemListBreaches.LunaItemShowInfo = false;
+            this.DashboardLunaItemListBreaches.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
+            this.DashboardLunaItemListBreaches.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.DashboardLunaItemListBreaches.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.DashboardLunaItemListBreaches.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardLunaItemListBreaches.Name = "DashboardLunaItemListBreaches";
+            this.DashboardLunaItemListBreaches.Size = new System.Drawing.Size(262, 283);
+            this.DashboardLunaItemListBreaches.TabIndex = 7;
+            // 
+            // DataSyncAdvancedImageButton
+            // 
+            this.DataSyncAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DataSyncAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.sync_hover_v5;
+            this.DataSyncAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataSyncAdvancedImageButton.ImageNormal")));
+            this.DataSyncAdvancedImageButton.Location = new System.Drawing.Point(372, 5);
+            this.DataSyncAdvancedImageButton.Name = "DataSyncAdvancedImageButton";
+            this.DataSyncAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataSyncAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataRightAdvancedImageButton
+            // 
+            this.DataRightAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataRightAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.right_hover_v2;
+            this.DataRightAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataRightAdvancedImageButton.ImageNormal")));
+            this.DataRightAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataRightAdvancedImageButton.Name = "DataRightAdvancedImageButton";
+            this.DataRightAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataRightAdvancedImageButton.TabIndex = 17;
+            // 
+            // DataAddAdvancedImageButton
+            // 
+            this.DataAddAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.DataAddAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.add_hover_v5;
+            this.DataAddAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataAddAdvancedImageButton.ImageNormal")));
+            this.DataAddAdvancedImageButton.Location = new System.Drawing.Point(3, 5);
+            this.DataAddAdvancedImageButton.Name = "DataAddAdvancedImageButton";
+            this.DataAddAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataAddAdvancedImageButton.TabIndex = 15;
+            // 
+            // DataLeftAdvancedImageButton
+            // 
+            this.DataLeftAdvancedImageButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DataLeftAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.left_hover_v2;
+            this.DataLeftAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataLeftAdvancedImageButton.ImageNormal")));
+            this.DataLeftAdvancedImageButton.Location = new System.Drawing.Point(371, 5);
+            this.DataLeftAdvancedImageButton.Name = "DataLeftAdvancedImageButton";
+            this.DataLeftAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataLeftAdvancedImageButton.TabIndex = 16;
+            // 
+            // DataNoSelBulletPointLabel3
+            // 
+            this.DataNoSelBulletPointLabel3.AutoSize = true;
+            this.DataNoSelBulletPointLabel3.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel3.Location = new System.Drawing.Point(62, 579);
+            this.DataNoSelBulletPointLabel3.Name = "DataNoSelBulletPointLabel3";
+            this.DataNoSelBulletPointLabel3.Size = new System.Drawing.Size(150, 38);
+            this.DataNoSelBulletPointLabel3.TabIndex = 14;
+            this.DataNoSelBulletPointLabel3.Text = "  Organize";
+            // 
+            // DataNoSelBulletPointLabel2
+            // 
+            this.DataNoSelBulletPointLabel2.AutoSize = true;
+            this.DataNoSelBulletPointLabel2.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel2.Location = new System.Drawing.Point(60, 509);
+            this.DataNoSelBulletPointLabel2.Name = "DataNoSelBulletPointLabel2";
+            this.DataNoSelBulletPointLabel2.Size = new System.Drawing.Size(95, 38);
+            this.DataNoSelBulletPointLabel2.TabIndex = 13;
+            this.DataNoSelBulletPointLabel2.Text = "  Click";
+            // 
+            // DataNoSelBulletPointLabel1
+            // 
+            this.DataNoSelBulletPointLabel1.AutoSize = true;
+            this.DataNoSelBulletPointLabel1.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.DataNoSelBulletPointLabel1.Location = new System.Drawing.Point(60, 419);
+            this.DataNoSelBulletPointLabel1.Name = "DataNoSelBulletPointLabel1";
+            this.DataNoSelBulletPointLabel1.Size = new System.Drawing.Size(87, 38);
+            this.DataNoSelBulletPointLabel1.TabIndex = 12;
+            this.DataNoSelBulletPointLabel1.Text = "  Add";
+            // 
+            // DataEditPasswordStrengthIndicator
+            // 
+            this.DataEditPasswordStrengthIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DataEditPasswordStrengthIndicator.Colors = new System.Drawing.Color[] {
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
+            this.DataEditPasswordStrengthIndicator.CurrentColor = System.Drawing.Color.Red;
+            this.DataEditPasswordStrengthIndicator.Location = new System.Drawing.Point(10, 372);
+            this.DataEditPasswordStrengthIndicator.Name = "DataEditPasswordStrengthIndicator";
+            this.DataEditPasswordStrengthIndicator.Size = new System.Drawing.Size(660, 10);
+            this.DataEditPasswordStrengthIndicator.TabIndex = 33;
+            // 
+            // DataEditSaveAdvancedImageButton
+            // 
+            this.DataEditSaveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.save_hover;
+            this.DataEditSaveAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditSaveAdvancedImageButton.ImageNormal")));
+            this.DataEditSaveAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
+            this.DataEditSaveAdvancedImageButton.Name = "DataEditSaveAdvancedImageButton";
+            this.DataEditSaveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditSaveAdvancedImageButton.TabIndex = 25;
+            // 
+            // DataEditCancelAdvancedImageButton
+            // 
+            this.DataEditCancelAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.remove_hover_v4;
+            this.DataEditCancelAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataEditCancelAdvancedImageButton.ImageNormal")));
+            this.DataEditCancelAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
+            this.DataEditCancelAdvancedImageButton.Name = "DataEditCancelAdvancedImageButton";
+            this.DataEditCancelAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataEditCancelAdvancedImageButton.TabIndex = 24;
+            // 
+            // DataEditAnimatedButtonGeneratePassword
+            // 
+            this.DataEditAnimatedButtonGeneratePassword.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataEditAnimatedButtonGeneratePassword.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAnimatedButtonGeneratePassword.Depth = 0;
+            this.DataEditAnimatedButtonGeneratePassword.Icon = null;
+            this.DataEditAnimatedButtonGeneratePassword.Location = new System.Drawing.Point(489, 133);
+            this.DataEditAnimatedButtonGeneratePassword.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataEditAnimatedButtonGeneratePassword.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataEditAnimatedButtonGeneratePassword.Name = "DataEditAnimatedButtonGeneratePassword";
+            this.DataEditAnimatedButtonGeneratePassword.Primary = false;
+            this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
+            this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
+            this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
+            this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
+            this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
+            // 
+            // DataEditAdvancedCheckBox
+            // 
+            this.DataEditAdvancedCheckBox.AutoSize = true;
+            this.DataEditAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAdvancedCheckBox.Depth = 0;
+            this.DataEditAdvancedCheckBox.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.DataEditAdvancedCheckBox.FontText = new System.Drawing.Font("Segoe UI", 12F);
+            this.DataEditAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
+            this.DataEditAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
+            this.DataEditAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.DataEditAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.DataEditAdvancedCheckBox.MouseState = LunaForms.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.DataEditAdvancedCheckBox.Name = "DataEditAdvancedCheckBox";
+            this.DataEditAdvancedCheckBox.Ripple = true;
+            this.DataEditAdvancedCheckBox.Size = new System.Drawing.Size(272, 30);
+            this.DataEditAdvancedCheckBox.TabIndex = 13;
+            this.DataEditAdvancedCheckBox.Text = "Use special characters";
+            this.DataEditAdvancedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // DataEditAdvancedNumericUpDown
+            // 
+            this.DataEditAdvancedNumericUpDown.BackColor = System.Drawing.Color.Gainsboro;
+            this.DataEditAdvancedNumericUpDown.BorderColor = System.Drawing.Color.Gainsboro;
+            this.DataEditAdvancedNumericUpDown.ColorNormal = System.Drawing.Color.Gainsboro;
+            this.DataEditAdvancedNumericUpDown.FontStyle = new System.Drawing.Font("Segoe UI", 12F);
+            this.DataEditAdvancedNumericUpDown.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedNumericUpDown.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseHover")));
+            this.DataEditAdvancedNumericUpDown.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageDecreaseNormal")));
+            this.DataEditAdvancedNumericUpDown.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseHover")));
+            this.DataEditAdvancedNumericUpDown.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("DataEditAdvancedNumericUpDown.ImageIncreaseNormal")));
+            this.DataEditAdvancedNumericUpDown.Location = new System.Drawing.Point(328, 156);
+            this.DataEditAdvancedNumericUpDown.Maximum = "128";
+            this.DataEditAdvancedNumericUpDown.Minimum = "8";
+            this.DataEditAdvancedNumericUpDown.Name = "DataEditAdvancedNumericUpDown";
+            this.DataEditAdvancedNumericUpDown.Padding = new System.Windows.Forms.Padding(1);
+            this.DataEditAdvancedNumericUpDown.Size = new System.Drawing.Size(154, 30);
+            this.DataEditAdvancedNumericUpDown.TabIndex = 12;
+            this.DataEditAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.DataEditAdvancedNumericUpDown.TextValue = "20";
+            // 
+            // DataEditEditFieldHostname
+            // 
+            this.DataEditEditFieldHostname.AutoSize = true;
+            this.DataEditEditFieldHostname.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldHostname.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldHostname.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldHostname.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearHover")));
+            this.DataEditEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldHostname.ImageClearNormal")));
+            this.DataEditEditFieldHostname.Location = new System.Drawing.Point(10, 116);
+            this.DataEditEditFieldHostname.Name = "DataEditEditFieldHostname";
+            this.DataEditEditFieldHostname.Size = new System.Drawing.Size(656, 102);
+            this.DataEditEditFieldHostname.TabIndex = 25;
+            this.DataEditEditFieldHostname.TextTextBox = "Gmail";
+            this.DataEditEditFieldHostname.TextTitle = "Hostname:";
+            this.DataEditEditFieldHostname.UseColoredCaret = true;
+            this.DataEditEditFieldHostname.UseDefaultValue = false;
+            this.DataEditEditFieldHostname.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldEmail
+            // 
+            this.DataEditEditFieldEmail.AutoSize = true;
+            this.DataEditEditFieldEmail.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldEmail.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldEmail.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldEmail.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearHover")));
+            this.DataEditEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldEmail.ImageClearNormal")));
+            this.DataEditEditFieldEmail.Location = new System.Drawing.Point(10, 711);
+            this.DataEditEditFieldEmail.Name = "DataEditEditFieldEmail";
+            this.DataEditEditFieldEmail.Size = new System.Drawing.Size(656, 102);
+            this.DataEditEditFieldEmail.TabIndex = 28;
+            this.DataEditEditFieldEmail.TextTextBox = "example@gmail.com";
+            this.DataEditEditFieldEmail.TextTitle = "Email:";
+            this.DataEditEditFieldEmail.UseColoredCaret = true;
+            this.DataEditEditFieldEmail.UseDefaultValue = false;
+            this.DataEditEditFieldEmail.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldWebsite
+            // 
+            this.DataEditEditFieldWebsite.AutoSize = true;
+            this.DataEditEditFieldWebsite.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldWebsite.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldWebsite.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldWebsite.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearHover")));
+            this.DataEditEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldWebsite.ImageClearNormal")));
+            this.DataEditEditFieldWebsite.Location = new System.Drawing.Point(10, 824);
+            this.DataEditEditFieldWebsite.Name = "DataEditEditFieldWebsite";
+            this.DataEditEditFieldWebsite.Size = new System.Drawing.Size(656, 102);
+            this.DataEditEditFieldWebsite.TabIndex = 29;
+            this.DataEditEditFieldWebsite.TextTextBox = "https://mail.google.com";
+            this.DataEditEditFieldWebsite.TextTitle = "Website:";
+            this.DataEditEditFieldWebsite.UseColoredCaret = true;
+            this.DataEditEditFieldWebsite.UseDefaultValue = false;
+            this.DataEditEditFieldWebsite.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldUsername
+            // 
+            this.DataEditEditFieldUsername.AutoSize = true;
+            this.DataEditEditFieldUsername.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldUsername.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldUsername.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearHover")));
+            this.DataEditEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldUsername.ImageClearNormal")));
+            this.DataEditEditFieldUsername.Location = new System.Drawing.Point(10, 229);
+            this.DataEditEditFieldUsername.Name = "DataEditEditFieldUsername";
+            this.DataEditEditFieldUsername.Size = new System.Drawing.Size(656, 102);
+            this.DataEditEditFieldUsername.TabIndex = 26;
+            this.DataEditEditFieldUsername.TextTextBox = "Us3r123";
+            this.DataEditEditFieldUsername.TextTitle = "Username:";
+            this.DataEditEditFieldUsername.UseColoredCaret = true;
+            this.DataEditEditFieldUsername.UseDefaultValue = false;
+            this.DataEditEditFieldUsername.UseSystemPasswordChar = false;
+            // 
+            // DataEditEditFieldPassword
+            // 
+            this.DataEditEditFieldPassword.AutoSize = true;
+            this.DataEditEditFieldPassword.BackColor = System.Drawing.Color.White;
+            this.DataEditEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
+            this.DataEditEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.DataEditEditFieldPassword.DefaultValue = "Enter some text...";
+            this.DataEditEditFieldPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldPassword.FontTitle = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DataEditEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DataEditEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearHover")));
+            this.DataEditEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("DataEditEditFieldPassword.ImageClearNormal")));
+            this.DataEditEditFieldPassword.Location = new System.Drawing.Point(10, 384);
+            this.DataEditEditFieldPassword.Name = "DataEditEditFieldPassword";
+            this.DataEditEditFieldPassword.Size = new System.Drawing.Size(656, 102);
+            this.DataEditEditFieldPassword.TabIndex = 27;
+            this.DataEditEditFieldPassword.TextTextBox = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.DataEditEditFieldPassword.TextTitle = "Password:";
+            this.DataEditEditFieldPassword.UseColoredCaret = true;
+            this.DataEditEditFieldPassword.UseDefaultValue = false;
+            this.DataEditEditFieldPassword.UseSystemPasswordChar = false;
+            this.DataEditEditFieldPassword.TextBoxTextChanged += new System.EventHandler(this.DataEditEditFieldPassword_TextBoxTextChanged);
+            // 
+            // DataEditAdvancedRichTextBoxNotes
+            // 
+            this.DataEditAdvancedRichTextBoxNotes.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataEditAdvancedRichTextBoxNotes.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedRichTextBoxNotes.ForeColorFocus = System.Drawing.Color.Black;
+            this.DataEditAdvancedRichTextBoxNotes.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.DataEditAdvancedRichTextBoxNotes.Location = new System.Drawing.Point(10, 34);
+            this.DataEditAdvancedRichTextBoxNotes.Name = "DataEditAdvancedRichTextBoxNotes";
+            this.DataEditAdvancedRichTextBoxNotes.Size = new System.Drawing.Size(656, 266);
+            this.DataEditAdvancedRichTextBoxNotes.TabIndex = 31;
+            this.DataEditAdvancedRichTextBoxNotes.TextValue = "";
+            // 
+            // DataLunaSmallCardDetailsPasswordStrength
+            // 
+            this.DataLunaSmallCardDetailsPasswordStrength.BackColorHover = System.Drawing.Color.White;
+            this.DataLunaSmallCardDetailsPasswordStrength.BackColorImage = System.Drawing.Color.White;
+            this.DataLunaSmallCardDetailsPasswordStrength.BackColorNormal = System.Drawing.Color.White;
+            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorHeader = System.Drawing.Color.Black;
+            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorHeaderHover = System.Drawing.Color.Black;
+            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DataLunaSmallCardDetailsPasswordStrength.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DataLunaSmallCardDetailsPasswordStrength.Header = "Password Strength";
+            this.DataLunaSmallCardDetailsPasswordStrength.HeaderLocation = new System.Drawing.Point(70, 0);
+            this.DataLunaSmallCardDetailsPasswordStrength.Image = global::pmdbs.Properties.Resources.f;
+            this.DataLunaSmallCardDetailsPasswordStrength.ImageLocation = new System.Drawing.Point(1, 1);
+            this.DataLunaSmallCardDetailsPasswordStrength.Info = "Score: -164";
+            this.DataLunaSmallCardDetailsPasswordStrength.InfoLocation = new System.Drawing.Point(72, 35);
+            this.DataLunaSmallCardDetailsPasswordStrength.Location = new System.Drawing.Point(153, 98);
+            this.DataLunaSmallCardDetailsPasswordStrength.Margin = new System.Windows.Forms.Padding(0);
+            this.DataLunaSmallCardDetailsPasswordStrength.Name = "DataLunaSmallCardDetailsPasswordStrength";
+            this.DataLunaSmallCardDetailsPasswordStrength.ShowBorder = false;
+            this.DataLunaSmallCardDetailsPasswordStrength.ShowInfo = true;
+            this.DataLunaSmallCardDetailsPasswordStrength.Size = new System.Drawing.Size(298, 60);
+            this.DataLunaSmallCardDetailsPasswordStrength.TabIndex = 24;
+            // 
+            // DataDetailsCustomLabelNotes
+            // 
+            this.DataDetailsCustomLabelNotes.Content = "Some  generic notes";
+            this.DataDetailsCustomLabelNotes.Header = "Notes:";
+            this.DataDetailsCustomLabelNotes.Location = new System.Drawing.Point(4, 663);
+            this.DataDetailsCustomLabelNotes.Name = "DataDetailsCustomLabelNotes";
+            this.DataDetailsCustomLabelNotes.Size = new System.Drawing.Size(680, 327);
+            this.DataDetailsCustomLabelNotes.TabIndex = 23;
+            // 
+            // DataDetailsEntryUsername
+            // 
+            this.DataDetailsEntryUsername.Content = "-";
+            this.DataDetailsEntryUsername.Header = "Your Username:";
+            this.DataDetailsEntryUsername.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
+            this.DataDetailsEntryUsername.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryUsername.ImageNormal")));
+            this.DataDetailsEntryUsername.Location = new System.Drawing.Point(4, 159);
+            this.DataDetailsEntryUsername.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryUsername.Name = "DataDetailsEntryUsername";
+            this.DataDetailsEntryUsername.RawText = null;
+            this.DataDetailsEntryUsername.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryUsername.TabIndex = 22;
+            // 
+            // DataDetailsEntryPassword
+            // 
+            this.DataDetailsEntryPassword.Content = "cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!cgRr4$).k7tx6qvOs,+6HFz/!";
+            this.DataDetailsEntryPassword.Header = "Your Password:";
+            this.DataDetailsEntryPassword.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
+            this.DataDetailsEntryPassword.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryPassword.ImageNormal")));
+            this.DataDetailsEntryPassword.Location = new System.Drawing.Point(4, 285);
+            this.DataDetailsEntryPassword.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryPassword.Name = "DataDetailsEntryPassword";
+            this.DataDetailsEntryPassword.RawText = null;
+            this.DataDetailsEntryPassword.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryPassword.TabIndex = 21;
+            // 
+            // DataDetailsEditAdvancedImageButton
+            // 
+            this.DataDetailsEditAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.edit_hover_v5;
+            this.DataDetailsEditAdvancedImageButton.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEditAdvancedImageButton.ImageNormal")));
+            this.DataDetailsEditAdvancedImageButton.Location = new System.Drawing.Point(505, 30);
+            this.DataDetailsEditAdvancedImageButton.Name = "DataDetailsEditAdvancedImageButton";
+            this.DataDetailsEditAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsEditAdvancedImageButton.TabIndex = 14;
+            this.DataDetailsEditAdvancedImageButton.Click += new System.EventHandler(this.DataEditAdvancedImageButton_Click);
+            // 
+            // DataDetailsRemoveAdvancedImageButton
+            // 
+            this.DataDetailsRemoveAdvancedImageButton.ImageHover = global::pmdbs.Properties.Resources.delete_hover_v2;
+            this.DataDetailsRemoveAdvancedImageButton.ImageNormal = global::pmdbs.Properties.Resources.delete_normal;
+            this.DataDetailsRemoveAdvancedImageButton.Location = new System.Drawing.Point(583, 30);
+            this.DataDetailsRemoveAdvancedImageButton.Name = "DataDetailsRemoveAdvancedImageButton";
+            this.DataDetailsRemoveAdvancedImageButton.Size = new System.Drawing.Size(72, 72);
+            this.DataDetailsRemoveAdvancedImageButton.TabIndex = 13;
+            // 
+            // DataDetailsEntryEmail
+            // 
+            this.DataDetailsEntryEmail.Content = "example@gmail.com";
+            this.DataDetailsEntryEmail.Header = "Your Email:";
+            this.DataDetailsEntryEmail.ImageHover = global::pmdbs.Properties.Resources.copy_hover;
+            this.DataDetailsEntryEmail.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryEmail.ImageNormal")));
+            this.DataDetailsEntryEmail.Location = new System.Drawing.Point(4, 411);
+            this.DataDetailsEntryEmail.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryEmail.Name = "DataDetailsEntryEmail";
+            this.DataDetailsEntryEmail.RawText = null;
+            this.DataDetailsEntryEmail.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryEmail.TabIndex = 20;
+            // 
+            // DataDetailsEntryWebsite
+            // 
+            this.DataDetailsEntryWebsite.Content = "https://mail.google.com";
+            this.DataDetailsEntryWebsite.Header = "Website:";
+            this.DataDetailsEntryWebsite.ImageHover = global::pmdbs.Properties.Resources.link_hover;
+            this.DataDetailsEntryWebsite.ImageNormal = ((System.Drawing.Image)(resources.GetObject("DataDetailsEntryWebsite.ImageNormal")));
+            this.DataDetailsEntryWebsite.Location = new System.Drawing.Point(4, 537);
+            this.DataDetailsEntryWebsite.Margin = new System.Windows.Forms.Padding(0);
+            this.DataDetailsEntryWebsite.Name = "DataDetailsEntryWebsite";
+            this.DataDetailsEntryWebsite.RawText = "https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.goog" +
+    "le.com%2Fmail%2F&service=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=Serv" +
+    "iceLogin";
+            this.DataDetailsEntryWebsite.Size = new System.Drawing.Size(680, 120);
+            this.DataDetailsEntryWebsite.TabIndex = 19;
+            // 
+            // DataFilterResultsAnimatedButtonReset
+            // 
+            this.DataFilterResultsAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataFilterResultsAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataFilterResultsAnimatedButtonReset.Depth = 0;
+            this.DataFilterResultsAnimatedButtonReset.Icon = null;
+            this.DataFilterResultsAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
+            this.DataFilterResultsAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataFilterResultsAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataFilterResultsAnimatedButtonReset.Name = "DataFilterResultsAnimatedButtonReset";
+            this.DataFilterResultsAnimatedButtonReset.Primary = false;
+            this.DataFilterResultsAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
+            this.DataFilterResultsAnimatedButtonReset.TabIndex = 3;
+            this.DataFilterResultsAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterResultsAnimatedButtonReset.UseVisualStyleBackColor = true;
+            this.DataFilterResultsAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
+            // 
+            // DataFilterAnimatedButtonReset
+            // 
+            this.DataFilterAnimatedButtonReset.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DataFilterAnimatedButtonReset.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.DataFilterAnimatedButtonReset.Depth = 0;
+            this.DataFilterAnimatedButtonReset.Icon = null;
+            this.DataFilterAnimatedButtonReset.Location = new System.Drawing.Point(249, 777);
+            this.DataFilterAnimatedButtonReset.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DataFilterAnimatedButtonReset.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.DataFilterAnimatedButtonReset.Name = "DataFilterAnimatedButtonReset";
+            this.DataFilterAnimatedButtonReset.Primary = false;
+            this.DataFilterAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
+            this.DataFilterAnimatedButtonReset.TabIndex = 17;
+            this.DataFilterAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterAnimatedButtonReset.UseVisualStyleBackColor = true;
+            this.DataFilterAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
+            // 
+            // DataFilterBulletPointLabel2
+            // 
+            this.DataFilterBulletPointLabel2.AutoSize = true;
+            this.DataFilterBulletPointLabel2.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.DataFilterBulletPointLabel2.Location = new System.Drawing.Point(178, 673);
+            this.DataFilterBulletPointLabel2.Name = "DataFilterBulletPointLabel2";
+            this.DataFilterBulletPointLabel2.Size = new System.Drawing.Size(301, 45);
+            this.DataFilterBulletPointLabel2.TabIndex = 16;
+            this.DataFilterBulletPointLabel2.Text = " Add a new account";
+            // 
+            // DataFilterBulletPointLabel1
+            // 
+            this.DataFilterBulletPointLabel1.AutoSize = true;
+            this.DataFilterBulletPointLabel1.Font = new System.Drawing.Font("Segoe UI", 16F);
+            this.DataFilterBulletPointLabel1.Location = new System.Drawing.Point(178, 628);
+            this.DataFilterBulletPointLabel1.Name = "DataFilterBulletPointLabel1";
+            this.DataFilterBulletPointLabel1.Size = new System.Drawing.Size(307, 45);
+            this.DataFilterBulletPointLabel1.TabIndex = 15;
+            this.DataFilterBulletPointLabel1.Text = " Check your spelling";
+            // 
+            // AddPasswordStrengthIndicator
+            // 
+            this.AddPasswordStrengthIndicator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.AddPasswordStrengthIndicator.Colors = new System.Drawing.Color[] {
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(0)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(42)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(84)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(126)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(168)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(210)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(153)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(255)))), ((int)(((byte)(0))))),
+        System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(255)))), ((int)(((byte)(0)))))};
+            this.AddPasswordStrengthIndicator.CurrentColor = System.Drawing.Color.Red;
+            this.AddPasswordStrengthIndicator.Location = new System.Drawing.Point(6, 389);
+            this.AddPasswordStrengthIndicator.Name = "AddPasswordStrengthIndicator";
+            this.AddPasswordStrengthIndicator.Size = new System.Drawing.Size(660, 10);
+            this.AddPasswordStrengthIndicator.TabIndex = 9;
+            // 
+            // AddPanelGeneratePasswordAnimatedButtonGenerate
+            // 
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Depth = 0;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Icon = null;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Location = new System.Drawing.Point(489, 134);
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Name = "AddPanelGeneratePasswordAnimatedButtonGenerate";
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Primary = false;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Size = new System.Drawing.Size(165, 55);
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.TabIndex = 2;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Text = "GENERATE";
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.UseVisualStyleBackColor = true;
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Click += new System.EventHandler(this.AddPanelGeneratePasswordAnimatedButtonGenerate_Click);
+            // 
+            // AddPanelGeneratePasswordAdvancedCheckBox
+            // 
+            this.AddPanelGeneratePasswordAdvancedCheckBox.AutoSize = true;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.ColorCheckBoxChecked = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Depth = 0;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.AddPanelGeneratePasswordAdvancedCheckBox.FontText = new System.Drawing.Font("Segoe UI", 12F);
+            this.AddPanelGeneratePasswordAdvancedCheckBox.ForegroundColor = System.Drawing.Color.Black;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Location = new System.Drawing.Point(5, 146);
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Margin = new System.Windows.Forms.Padding(0);
+            this.AddPanelGeneratePasswordAdvancedCheckBox.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.AddPanelGeneratePasswordAdvancedCheckBox.MouseState = LunaForms.AdvancedCheckBox.MouseStateBase.HOVER;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Name = "AddPanelGeneratePasswordAdvancedCheckBox";
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Ripple = true;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Size = new System.Drawing.Size(272, 30);
+            this.AddPanelGeneratePasswordAdvancedCheckBox.TabIndex = 13;
+            this.AddPanelGeneratePasswordAdvancedCheckBox.Text = "Use special characters";
+            this.AddPanelGeneratePasswordAdvancedCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // AddPanelGeneratePasswordeAdvancedNumericUpDown
+            // 
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.BackColor = System.Drawing.Color.Gainsboro;
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.BorderColor = System.Drawing.Color.Gainsboro;
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ColorNormal = System.Drawing.Color.Gainsboro;
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.FontStyle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseHover = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseHover")));
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageDecreaseNormal")));
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseHover = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseHover")));
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelGeneratePasswordeAdvancedNumericUpDown.ImageIncreaseNormal")));
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Location = new System.Drawing.Point(328, 156);
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Maximum = "128";
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Minimum = "8";
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Name = "AddPanelGeneratePasswordeAdvancedNumericUpDown";
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Padding = new System.Windows.Forms.Padding(1);
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.Size = new System.Drawing.Size(154, 30);
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TabIndex = 12;
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.AddPanelGeneratePasswordeAdvancedNumericUpDown.TextValue = "15";
+            // 
+            // AddEditFieldEmail
+            // 
+            this.AddEditFieldEmail.AutoSize = true;
+            this.AddEditFieldEmail.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldEmail.BackGroundColor = System.Drawing.Color.White;
+            this.AddEditFieldEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.AddEditFieldEmail.DefaultValue = "Enter some text...";
+            this.AddEditFieldEmail.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddEditFieldEmail.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.AddEditFieldEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearHover")));
+            this.AddEditFieldEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldEmail.ImageClearNormal")));
+            this.AddEditFieldEmail.Location = new System.Drawing.Point(6, 713);
+            this.AddEditFieldEmail.Name = "AddEditFieldEmail";
+            this.AddEditFieldEmail.Size = new System.Drawing.Size(660, 88);
+            this.AddEditFieldEmail.TabIndex = 6;
+            this.AddEditFieldEmail.TextTextBox = "";
+            this.AddEditFieldEmail.TextTitle = "Email";
+            this.AddEditFieldEmail.UseColoredCaret = true;
+            this.AddEditFieldEmail.UseDefaultValue = false;
+            this.AddEditFieldEmail.UseSystemPasswordChar = false;
+            // 
+            // AddEditFieldHostname
+            // 
+            this.AddEditFieldHostname.AutoSize = true;
+            this.AddEditFieldHostname.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldHostname.BackGroundColor = System.Drawing.Color.White;
+            this.AddEditFieldHostname.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldHostname.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldHostname.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.AddEditFieldHostname.DefaultValue = "Enter some text...";
+            this.AddEditFieldHostname.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddEditFieldHostname.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.AddEditFieldHostname.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldHostname.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldHostname.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldHostname.ImageClearHover")));
+            this.AddEditFieldHostname.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldHostname.ImageClearNormal")));
+            this.AddEditFieldHostname.Location = new System.Drawing.Point(6, 148);
+            this.AddEditFieldHostname.Name = "AddEditFieldHostname";
+            this.AddEditFieldHostname.Size = new System.Drawing.Size(660, 88);
+            this.AddEditFieldHostname.TabIndex = 2;
+            this.AddEditFieldHostname.TextTextBox = "";
+            this.AddEditFieldHostname.TextTitle = "Hostname*";
+            this.AddEditFieldHostname.UseColoredCaret = true;
+            this.AddEditFieldHostname.UseDefaultValue = false;
+            this.AddEditFieldHostname.UseSystemPasswordChar = false;
+            // 
+            // AddEditFieldWebsite
+            // 
+            this.AddEditFieldWebsite.AutoSize = true;
+            this.AddEditFieldWebsite.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldWebsite.BackGroundColor = System.Drawing.Color.White;
+            this.AddEditFieldWebsite.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldWebsite.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldWebsite.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.AddEditFieldWebsite.DefaultValue = "Enter some text...";
+            this.AddEditFieldWebsite.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddEditFieldWebsite.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.AddEditFieldWebsite.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldWebsite.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldWebsite.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearHover")));
+            this.AddEditFieldWebsite.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldWebsite.ImageClearNormal")));
+            this.AddEditFieldWebsite.Location = new System.Drawing.Point(6, 816);
+            this.AddEditFieldWebsite.Name = "AddEditFieldWebsite";
+            this.AddEditFieldWebsite.Size = new System.Drawing.Size(660, 88);
+            this.AddEditFieldWebsite.TabIndex = 7;
+            this.AddEditFieldWebsite.TextTextBox = "";
+            this.AddEditFieldWebsite.TextTitle = "Url";
+            this.AddEditFieldWebsite.UseColoredCaret = true;
+            this.AddEditFieldWebsite.UseDefaultValue = false;
+            this.AddEditFieldWebsite.UseSystemPasswordChar = false;
+            // 
+            // AddEditFieldUsername
+            // 
+            this.AddEditFieldUsername.AutoSize = true;
+            this.AddEditFieldUsername.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldUsername.BackGroundColor = System.Drawing.Color.White;
+            this.AddEditFieldUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.AddEditFieldUsername.DefaultValue = "Enter some text...";
+            this.AddEditFieldUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddEditFieldUsername.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.AddEditFieldUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearHover")));
+            this.AddEditFieldUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldUsername.ImageClearNormal")));
+            this.AddEditFieldUsername.Location = new System.Drawing.Point(6, 243);
+            this.AddEditFieldUsername.Name = "AddEditFieldUsername";
+            this.AddEditFieldUsername.Size = new System.Drawing.Size(660, 88);
+            this.AddEditFieldUsername.TabIndex = 3;
+            this.AddEditFieldUsername.TextTextBox = "";
+            this.AddEditFieldUsername.TextTitle = "Username";
+            this.AddEditFieldUsername.UseColoredCaret = true;
+            this.AddEditFieldUsername.UseDefaultValue = false;
+            this.AddEditFieldUsername.UseSystemPasswordChar = false;
+            // 
+            // AddEditFieldPassword
+            // 
+            this.AddEditFieldPassword.AutoSize = true;
+            this.AddEditFieldPassword.BackColor = System.Drawing.Color.White;
+            this.AddEditFieldPassword.BackGroundColor = System.Drawing.Color.White;
+            this.AddEditFieldPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.AddEditFieldPassword.DefaultValue = "";
+            this.AddEditFieldPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AddEditFieldPassword.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.AddEditFieldPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddEditFieldPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddEditFieldPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearHover")));
+            this.AddEditFieldPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("AddEditFieldPassword.ImageClearNormal")));
+            this.AddEditFieldPassword.Location = new System.Drawing.Point(6, 406);
+            this.AddEditFieldPassword.Name = "AddEditFieldPassword";
+            this.AddEditFieldPassword.Size = new System.Drawing.Size(660, 88);
+            this.AddEditFieldPassword.TabIndex = 4;
+            this.AddEditFieldPassword.TextTextBox = "";
+            this.AddEditFieldPassword.TextTitle = "Password*";
+            this.AddEditFieldPassword.UseColoredCaret = true;
+            this.AddEditFieldPassword.UseDefaultValue = false;
+            this.AddEditFieldPassword.UseSystemPasswordChar = false;
+            this.AddEditFieldPassword.TextBoxTextChanged += new System.EventHandler(this.AddEditFieldPassword_TextBoxTextChanged);
+            // 
+            // AddPanelNotesAdvancedRichTextBox
+            // 
+            this.AddPanelNotesAdvancedRichTextBox.ColorFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddPanelNotesAdvancedRichTextBox.ColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddPanelNotesAdvancedRichTextBox.ForeColorFocus = System.Drawing.Color.Black;
+            this.AddPanelNotesAdvancedRichTextBox.ForeColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.AddPanelNotesAdvancedRichTextBox.Location = new System.Drawing.Point(4, 34);
+            this.AddPanelNotesAdvancedRichTextBox.Name = "AddPanelNotesAdvancedRichTextBox";
+            this.AddPanelNotesAdvancedRichTextBox.Size = new System.Drawing.Size(660, 143);
+            this.AddPanelNotesAdvancedRichTextBox.TabIndex = 1;
+            this.AddPanelNotesAdvancedRichTextBox.TextValue = "";
+            // 
+            // AddPanelAnimatedButtonCheckIcon
+            // 
+            this.AddPanelAnimatedButtonCheckIcon.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AddPanelAnimatedButtonCheckIcon.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.AddPanelAnimatedButtonCheckIcon.Depth = 0;
+            this.AddPanelAnimatedButtonCheckIcon.Icon = null;
+            this.AddPanelAnimatedButtonCheckIcon.Location = new System.Drawing.Point(216, 124);
+            this.AddPanelAnimatedButtonCheckIcon.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.AddPanelAnimatedButtonCheckIcon.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.AddPanelAnimatedButtonCheckIcon.Name = "AddPanelAnimatedButtonCheckIcon";
+            this.AddPanelAnimatedButtonCheckIcon.Primary = false;
+            this.AddPanelAnimatedButtonCheckIcon.Size = new System.Drawing.Size(236, 97);
+            this.AddPanelAnimatedButtonCheckIcon.TabIndex = 18;
+            this.AddPanelAnimatedButtonCheckIcon.Text = "CHECK FOR ICON";
+            this.AddPanelAnimatedButtonCheckIcon.UseVisualStyleBackColor = true;
+            this.AddPanelAnimatedButtonCheckIcon.Click += new System.EventHandler(this.AddPanelAnimatedButtonCheckIcon_Click);
+            // 
+            // AddPanelAdvancedImageButtonAbort
+            // 
+            this.AddPanelAdvancedImageButtonAbort.ImageHover = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonAbort.ImageHover")));
+            this.AddPanelAdvancedImageButtonAbort.ImageNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonAbort.ImageNormal")));
+            this.AddPanelAdvancedImageButtonAbort.Location = new System.Drawing.Point(625, 13);
+            this.AddPanelAdvancedImageButtonAbort.Name = "AddPanelAdvancedImageButtonAbort";
+            this.AddPanelAdvancedImageButtonAbort.Size = new System.Drawing.Size(72, 72);
+            this.AddPanelAdvancedImageButtonAbort.TabIndex = 1;
+            // 
+            // AddPanelAdvancedImageButtonSave
+            // 
+            this.AddPanelAdvancedImageButtonSave.ImageHover = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonSave.ImageHover")));
+            this.AddPanelAdvancedImageButtonSave.ImageNormal = ((System.Drawing.Image)(resources.GetObject("AddPanelAdvancedImageButtonSave.ImageNormal")));
+            this.AddPanelAdvancedImageButtonSave.Location = new System.Drawing.Point(3, 13);
+            this.AddPanelAdvancedImageButtonSave.Name = "AddPanelAdvancedImageButtonSave";
+            this.AddPanelAdvancedImageButtonSave.Size = new System.Drawing.Size(72, 72);
+            this.AddPanelAdvancedImageButtonSave.TabIndex = 0;
+            // 
+            // SettingsAnimatedButtonOnlinePasswordChangeSubmit
+            // 
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Depth = 0;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Icon = null;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Location = new System.Drawing.Point(207, 312);
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Name = "SettingsAnimatedButtonOnlinePasswordChangeSubmit";
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Primary = false;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Size = new System.Drawing.Size(255, 87);
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.TabIndex = 10;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click);
+            // 
+            // SettingsEditFieldOnlinePasswordChangeNew
+            // 
+            this.SettingsEditFieldOnlinePasswordChangeNew.AutoSize = true;
+            this.SettingsEditFieldOnlinePasswordChangeNew.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeNew.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOnlinePasswordChangeNew.DefaultValue = "";
+            this.SettingsEditFieldOnlinePasswordChangeNew.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOnlinePasswordChangeNew.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeNew.ImageClearHover")));
+            this.SettingsEditFieldOnlinePasswordChangeNew.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeNew.ImageClearNormal")));
+            this.SettingsEditFieldOnlinePasswordChangeNew.Location = new System.Drawing.Point(4, 132);
+            this.SettingsEditFieldOnlinePasswordChangeNew.Name = "SettingsEditFieldOnlinePasswordChangeNew";
+            this.SettingsEditFieldOnlinePasswordChangeNew.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldOnlinePasswordChangeNew.TabIndex = 4;
+            this.SettingsEditFieldOnlinePasswordChangeNew.TextTextBox = "";
+            this.SettingsEditFieldOnlinePasswordChangeNew.TextTitle = "New Password*";
+            this.SettingsEditFieldOnlinePasswordChangeNew.UseColoredCaret = true;
+            this.SettingsEditFieldOnlinePasswordChangeNew.UseDefaultValue = false;
+            this.SettingsEditFieldOnlinePasswordChangeNew.UseSystemPasswordChar = true;
+            // 
+            // SettingsEditFieldOnlinePasswordChangeConfirm
+            // 
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.AutoSize = true;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.DefaultValue = "";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearHover")));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlinePasswordChangeConfirm.ImageClearNormal")));
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.Location = new System.Drawing.Point(4, 218);
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.Name = "SettingsEditFieldOnlinePasswordChangeConfirm";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.TabIndex = 8;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox = "";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.TextTitle = "Confirm New Password*";
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseColoredCaret = true;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseDefaultValue = false;
+            this.SettingsEditFieldOnlinePasswordChangeConfirm.UseSystemPasswordChar = true;
+            // 
+            // SettingsAnimatedButtonOnlineChangeName
+            // 
+            this.SettingsAnimatedButtonOnlineChangeName.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOnlineChangeName.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOnlineChangeName.Depth = 0;
+            this.SettingsAnimatedButtonOnlineChangeName.Icon = null;
+            this.SettingsAnimatedButtonOnlineChangeName.Location = new System.Drawing.Point(218, 239);
+            this.SettingsAnimatedButtonOnlineChangeName.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOnlineChangeName.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOnlineChangeName.Name = "SettingsAnimatedButtonOnlineChangeName";
+            this.SettingsAnimatedButtonOnlineChangeName.Primary = false;
+            this.SettingsAnimatedButtonOnlineChangeName.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOnlineChangeName.TabIndex = 13;
+            this.SettingsAnimatedButtonOnlineChangeName.Text = "Change Name";
+            this.SettingsAnimatedButtonOnlineChangeName.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOnlineChangeName.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlineChangeName_Click);
+            // 
+            // SettingsEditFieldOnlineChangeName
+            // 
+            this.SettingsEditFieldOnlineChangeName.AutoSize = true;
+            this.SettingsEditFieldOnlineChangeName.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlineChangeName.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOnlineChangeName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlineChangeName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlineChangeName.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOnlineChangeName.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOnlineChangeName.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOnlineChangeName.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldOnlineChangeName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOnlineChangeName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOnlineChangeName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlineChangeName.ImageClearHover")));
+            this.SettingsEditFieldOnlineChangeName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOnlineChangeName.ImageClearNormal")));
+            this.SettingsEditFieldOnlineChangeName.Location = new System.Drawing.Point(5, 143);
+            this.SettingsEditFieldOnlineChangeName.Name = "SettingsEditFieldOnlineChangeName";
+            this.SettingsEditFieldOnlineChangeName.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldOnlineChangeName.TabIndex = 12;
+            this.SettingsEditFieldOnlineChangeName.TextTextBox = "User";
+            this.SettingsEditFieldOnlineChangeName.TextTitle = "Your Display Name";
+            this.SettingsEditFieldOnlineChangeName.UseColoredCaret = true;
+            this.SettingsEditFieldOnlineChangeName.UseDefaultValue = false;
+            this.SettingsEditFieldOnlineChangeName.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonOnlineChangeServerRegister
+            // 
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Depth = 0;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Icon = null;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Location = new System.Drawing.Point(337, 140);
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Name = "SettingsAnimatedButtonOnlineChangeServerRegister";
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Primary = false;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.TabIndex = 14;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
+            // 
+            // SettingsAnimatedButtonOnlineChangeServerLogin
+            // 
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Depth = 0;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Icon = null;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Location = new System.Drawing.Point(99, 140);
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Name = "SettingsAnimatedButtonOnlineChangeServerLogin";
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Primary = false;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.TabIndex = 13;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Text = "Login";
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonLogin_Click);
+            // 
+            // SettingsLunaProgressSpinnerFading
+            // 
+            this.SettingsLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 1;
+            this.SettingsLunaProgressSpinnerFading.BackColor = System.Drawing.Color.Gainsboro;
+            this.SettingsLunaProgressSpinnerFading.DotSizeMultiplier = 1.5F;
+            this.SettingsLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsLunaProgressSpinnerFading.Location = new System.Drawing.Point(228, 3);
+            this.SettingsLunaProgressSpinnerFading.Name = "SettingsLunaProgressSpinnerFading";
+            this.SettingsLunaProgressSpinnerFading.NumberOfDots = 100;
+            this.SettingsLunaProgressSpinnerFading.Size = new System.Drawing.Size(140, 140);
+            this.SettingsLunaProgressSpinnerFading.TabIndex = 13;
+            this.SettingsLunaProgressSpinnerFading.UseForeColor = true;
+            // 
+            // SettingsAnimatedButtonChangePasswordSubmit
+            // 
+            this.SettingsAnimatedButtonChangePasswordSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonChangePasswordSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonChangePasswordSubmit.Depth = 0;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Icon = null;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Location = new System.Drawing.Point(207, 312);
+            this.SettingsAnimatedButtonChangePasswordSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonChangePasswordSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Name = "SettingsAnimatedButtonChangePasswordSubmit";
+            this.SettingsAnimatedButtonChangePasswordSubmit.Primary = false;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
+            this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonChangePasswordSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonChangePasswordSubmit_Click);
+            // 
+            // SettingsEditFieldOfflineNewPassword
+            // 
+            this.SettingsEditFieldOfflineNewPassword.AutoSize = true;
+            this.SettingsEditFieldOfflineNewPassword.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPassword.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineNewPassword.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineNewPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineNewPassword.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearHover")));
+            this.SettingsEditFieldOfflineNewPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPassword.ImageClearNormal")));
+            this.SettingsEditFieldOfflineNewPassword.Location = new System.Drawing.Point(4, 132);
+            this.SettingsEditFieldOfflineNewPassword.Name = "SettingsEditFieldOfflineNewPassword";
+            this.SettingsEditFieldOfflineNewPassword.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldOfflineNewPassword.TabIndex = 4;
+            this.SettingsEditFieldOfflineNewPassword.TextTextBox = "";
+            this.SettingsEditFieldOfflineNewPassword.TextTitle = "New Password*";
+            this.SettingsEditFieldOfflineNewPassword.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineNewPassword.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineNewPassword.UseSystemPasswordChar = true;
+            // 
+            // SettingsEditFieldOfflineNewPasswordConfirm
+            // 
+            this.SettingsEditFieldOfflineNewPasswordConfirm.AutoSize = true;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearHover")));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineNewPasswordConfirm.ImageClearNormal")));
+            this.SettingsEditFieldOfflineNewPasswordConfirm.Location = new System.Drawing.Point(4, 218);
+            this.SettingsEditFieldOfflineNewPasswordConfirm.Name = "SettingsEditFieldOfflineNewPasswordConfirm";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldOfflineNewPasswordConfirm.TabIndex = 8;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTextBox = "";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.TextTitle = "Confirm New Password*";
+            this.SettingsEditFieldOfflineNewPasswordConfirm.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineNewPasswordConfirm.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonOfflineRegister
+            // 
+            this.SettingsAnimatedButtonOfflineRegister.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineRegister.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineRegister.Depth = 0;
+            this.SettingsAnimatedButtonOfflineRegister.Icon = null;
+            this.SettingsAnimatedButtonOfflineRegister.Location = new System.Drawing.Point(337, 262);
+            this.SettingsAnimatedButtonOfflineRegister.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineRegister.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineRegister.Name = "SettingsAnimatedButtonOfflineRegister";
+            this.SettingsAnimatedButtonOfflineRegister.Primary = false;
+            this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
+            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
+            // 
+            // SettingsAnimatedButtonOfflineLogin
+            // 
+            this.SettingsAnimatedButtonOfflineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineLogin.Depth = 0;
+            this.SettingsAnimatedButtonOfflineLogin.Icon = null;
+            this.SettingsAnimatedButtonOfflineLogin.Location = new System.Drawing.Point(99, 262);
+            this.SettingsAnimatedButtonOfflineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineLogin.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineLogin.Name = "SettingsAnimatedButtonOfflineLogin";
+            this.SettingsAnimatedButtonOfflineLogin.Primary = false;
+            this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineLogin.TabIndex = 13;
+            this.SettingsAnimatedButtonOfflineLogin.Text = "Login";
+            this.SettingsAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonLogin_Click);
+            // 
+            // SettingsAnimatedButtonOfflineChangeNameSubmit
+            // 
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Depth = 0;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Icon = null;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Location = new System.Drawing.Point(218, 239);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Name = "SettingsAnimatedButtonOfflineChangeNameSubmit";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Primary = false;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.TabIndex = 13;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Text = "Change Name";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineChangeNameSubmit_Click);
+            // 
+            // SettingsEditFieldOfflineName
+            // 
+            this.SettingsEditFieldOfflineName.AutoSize = true;
+            this.SettingsEditFieldOfflineName.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineName.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldOfflineName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineName.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldOfflineName.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldOfflineName.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldOfflineName.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldOfflineName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldOfflineName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldOfflineName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearHover")));
+            this.SettingsEditFieldOfflineName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldOfflineName.ImageClearNormal")));
+            this.SettingsEditFieldOfflineName.Location = new System.Drawing.Point(5, 143);
+            this.SettingsEditFieldOfflineName.Name = "SettingsEditFieldOfflineName";
+            this.SettingsEditFieldOfflineName.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldOfflineName.TabIndex = 12;
+            this.SettingsEditFieldOfflineName.TextTextBox = "User";
+            this.SettingsEditFieldOfflineName.TextTitle = "Your Display Name";
+            this.SettingsEditFieldOfflineName.UseColoredCaret = true;
+            this.SettingsEditFieldOfflineName.UseDefaultValue = false;
+            this.SettingsEditFieldOfflineName.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonPromptSubmit
+            // 
+            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
+            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
+            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 763);
+            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonPromptSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
+            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
+            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
+            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
+            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
+            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
+            // 
+            // SettingsEditFieldPromptCode
+            // 
+            this.SettingsEditFieldPromptCode.AutoSize = true;
+            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
+            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Segoe UI", 20F);
+            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
+            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
+            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
+            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
+            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 110);
+            this.SettingsEditFieldPromptCode.TabIndex = 15;
+            this.SettingsEditFieldPromptCode.TextTextBox = "";
+            this.SettingsEditFieldPromptCode.TextTitle = "";
+            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
+            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
+            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
+            // 
+            // SettingsAnimatedButtonSubmit
+            // 
+            this.SettingsAnimatedButtonSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonSubmit.Depth = 0;
+            this.SettingsAnimatedButtonSubmit.Icon = null;
+            this.SettingsAnimatedButtonSubmit.Location = new System.Drawing.Point(178, 829);
+            this.SettingsAnimatedButtonSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonSubmit.Name = "SettingsAnimatedButtonSubmit";
+            this.SettingsAnimatedButtonSubmit.Primary = false;
+            this.SettingsAnimatedButtonSubmit.Size = new System.Drawing.Size(317, 56);
+            this.SettingsAnimatedButtonSubmit.TabIndex = 21;
+            this.SettingsAnimatedButtonSubmit.Text = "Connect & Register";
+            this.SettingsAnimatedButtonSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonSubmit_Click);
+            // 
+            // SettingsEditFieldRegisterEmail
+            // 
+            this.SettingsEditFieldRegisterEmail.AutoSize = true;
+            this.SettingsEditFieldRegisterEmail.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterEmail.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterEmail.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterEmail.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterEmail.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterEmail.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterEmail.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterEmail.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterEmail.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterEmail.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearHover")));
+            this.SettingsEditFieldRegisterEmail.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterEmail.ImageClearNormal")));
+            this.SettingsEditFieldRegisterEmail.Location = new System.Drawing.Point(6, 637);
+            this.SettingsEditFieldRegisterEmail.Name = "SettingsEditFieldRegisterEmail";
+            this.SettingsEditFieldRegisterEmail.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldRegisterEmail.TabIndex = 6;
+            this.SettingsEditFieldRegisterEmail.TextTextBox = "";
+            this.SettingsEditFieldRegisterEmail.TextTitle = "Email*";
+            this.SettingsEditFieldRegisterEmail.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterEmail.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterEmail.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterIP
+            // 
+            this.SettingsEditFieldRegisterIP.AutoSize = true;
+            this.SettingsEditFieldRegisterIP.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterIP.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterIP.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterIP.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterIP.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterIP.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldRegisterIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearHover")));
+            this.SettingsEditFieldRegisterIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterIP.ImageClearNormal")));
+            this.SettingsEditFieldRegisterIP.Location = new System.Drawing.Point(6, 202);
+            this.SettingsEditFieldRegisterIP.Name = "SettingsEditFieldRegisterIP";
+            this.SettingsEditFieldRegisterIP.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldRegisterIP.TabIndex = 2;
+            this.SettingsEditFieldRegisterIP.TextTextBox = "192.168.178.46";
+            this.SettingsEditFieldRegisterIP.TextTitle = "IP / DNS*";
+            this.SettingsEditFieldRegisterIP.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterIP.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterIP.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterName
+            // 
+            this.SettingsEditFieldRegisterName.AutoSize = true;
+            this.SettingsEditFieldRegisterName.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterName.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterName.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterName.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterName.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterName.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterName.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterName.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldRegisterName.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterName.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterName.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearHover")));
+            this.SettingsEditFieldRegisterName.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterName.ImageClearNormal")));
+            this.SettingsEditFieldRegisterName.Location = new System.Drawing.Point(6, 740);
+            this.SettingsEditFieldRegisterName.Name = "SettingsEditFieldRegisterName";
+            this.SettingsEditFieldRegisterName.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldRegisterName.TabIndex = 7;
+            this.SettingsEditFieldRegisterName.TextTextBox = "freddy";
+            this.SettingsEditFieldRegisterName.TextTitle = "Display Name";
+            this.SettingsEditFieldRegisterName.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterName.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterName.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterPort
+            // 
+            this.SettingsEditFieldRegisterPort.AutoSize = true;
+            this.SettingsEditFieldRegisterPort.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterPort.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterPort.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterPort.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterPort.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterPort.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldRegisterPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearHover")));
+            this.SettingsEditFieldRegisterPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterPort.ImageClearNormal")));
+            this.SettingsEditFieldRegisterPort.Location = new System.Drawing.Point(6, 298);
+            this.SettingsEditFieldRegisterPort.Name = "SettingsEditFieldRegisterPort";
+            this.SettingsEditFieldRegisterPort.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldRegisterPort.TabIndex = 3;
+            this.SettingsEditFieldRegisterPort.TextTextBox = "4447";
+            this.SettingsEditFieldRegisterPort.TextTitle = "Port*";
+            this.SettingsEditFieldRegisterPort.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterPort.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterPort.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldRegisterUsername
+            // 
+            this.SettingsEditFieldRegisterUsername.AutoSize = true;
+            this.SettingsEditFieldRegisterUsername.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterUsername.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldRegisterUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldRegisterUsername.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldRegisterUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldRegisterUsername.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldRegisterUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldRegisterUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearHover")));
+            this.SettingsEditFieldRegisterUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldRegisterUsername.ImageClearNormal")));
+            this.SettingsEditFieldRegisterUsername.Location = new System.Drawing.Point(6, 538);
+            this.SettingsEditFieldRegisterUsername.Name = "SettingsEditFieldRegisterUsername";
+            this.SettingsEditFieldRegisterUsername.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldRegisterUsername.TabIndex = 4;
+            this.SettingsEditFieldRegisterUsername.TextTextBox = "";
+            this.SettingsEditFieldRegisterUsername.TextTitle = "Username*";
+            this.SettingsEditFieldRegisterUsername.UseColoredCaret = true;
+            this.SettingsEditFieldRegisterUsername.UseDefaultValue = false;
+            this.SettingsEditFieldRegisterUsername.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginPassword
+            // 
+            this.SettingsEditFieldLoginPassword.AutoSize = true;
+            this.SettingsEditFieldLoginPassword.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPassword.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPassword.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginPassword.DefaultValue = "";
+            this.SettingsEditFieldLoginPassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginPassword.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldLoginPassword.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPassword.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPassword.ImageClearHover")));
+            this.SettingsEditFieldLoginPassword.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPassword.ImageClearNormal")));
+            this.SettingsEditFieldLoginPassword.Location = new System.Drawing.Point(6, 640);
+            this.SettingsEditFieldLoginPassword.Name = "SettingsEditFieldLoginPassword";
+            this.SettingsEditFieldLoginPassword.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldLoginPassword.TabIndex = 23;
+            this.SettingsEditFieldLoginPassword.TextTextBox = "";
+            this.SettingsEditFieldLoginPassword.TextTitle = "Password*";
+            this.SettingsEditFieldLoginPassword.UseColoredCaret = true;
+            this.SettingsEditFieldLoginPassword.UseDefaultValue = false;
+            this.SettingsEditFieldLoginPassword.UseSystemPasswordChar = true;
+            // 
+            // SettingsAnimatedButtonLoginSubmit
+            // 
+            this.SettingsAnimatedButtonLoginSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.SettingsAnimatedButtonLoginSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsAnimatedButtonLoginSubmit.Depth = 0;
+            this.SettingsAnimatedButtonLoginSubmit.Icon = null;
+            this.SettingsAnimatedButtonLoginSubmit.Location = new System.Drawing.Point(178, 734);
+            this.SettingsAnimatedButtonLoginSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.SettingsAnimatedButtonLoginSubmit.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.SettingsAnimatedButtonLoginSubmit.Name = "SettingsAnimatedButtonLoginSubmit";
+            this.SettingsAnimatedButtonLoginSubmit.Primary = false;
+            this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
+            this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
+            this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
+            this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
+            this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
+            // 
+            // SettingsEditFieldLoginIP
+            // 
+            this.SettingsEditFieldLoginIP.AutoSize = true;
+            this.SettingsEditFieldLoginIP.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginIP.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginIP.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginIP.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginIP.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginIP.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginIP.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginIP.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldLoginIP.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginIP.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginIP.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearHover")));
+            this.SettingsEditFieldLoginIP.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginIP.ImageClearNormal")));
+            this.SettingsEditFieldLoginIP.Location = new System.Drawing.Point(6, 202);
+            this.SettingsEditFieldLoginIP.Name = "SettingsEditFieldLoginIP";
+            this.SettingsEditFieldLoginIP.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldLoginIP.TabIndex = 2;
+            this.SettingsEditFieldLoginIP.TextTextBox = "192.168.178.46";
+            this.SettingsEditFieldLoginIP.TextTitle = "IP / DNS*";
+            this.SettingsEditFieldLoginIP.UseColoredCaret = true;
+            this.SettingsEditFieldLoginIP.UseDefaultValue = false;
+            this.SettingsEditFieldLoginIP.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginPort
+            // 
+            this.SettingsEditFieldLoginPort.AutoSize = true;
+            this.SettingsEditFieldLoginPort.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPort.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPort.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPort.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginPort.DefaultValue = "Enter some text...";
+            this.SettingsEditFieldLoginPort.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginPort.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldLoginPort.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginPort.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearHover")));
+            this.SettingsEditFieldLoginPort.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginPort.ImageClearNormal")));
+            this.SettingsEditFieldLoginPort.Location = new System.Drawing.Point(6, 298);
+            this.SettingsEditFieldLoginPort.Name = "SettingsEditFieldLoginPort";
+            this.SettingsEditFieldLoginPort.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldLoginPort.TabIndex = 3;
+            this.SettingsEditFieldLoginPort.TextTextBox = "4447";
+            this.SettingsEditFieldLoginPort.TextTitle = "Port*";
+            this.SettingsEditFieldLoginPort.UseColoredCaret = true;
+            this.SettingsEditFieldLoginPort.UseDefaultValue = false;
+            this.SettingsEditFieldLoginPort.UseSystemPasswordChar = false;
+            // 
+            // SettingsEditFieldLoginUsername
+            // 
+            this.SettingsEditFieldLoginUsername.AutoSize = true;
+            this.SettingsEditFieldLoginUsername.BackColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginUsername.BackGroundColor = System.Drawing.Color.White;
+            this.SettingsEditFieldLoginUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginUsername.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.SettingsEditFieldLoginUsername.DefaultValue = "Enter your username...";
+            this.SettingsEditFieldLoginUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SettingsEditFieldLoginUsername.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
+            this.SettingsEditFieldLoginUsername.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.SettingsEditFieldLoginUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.SettingsEditFieldLoginUsername.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearHover")));
+            this.SettingsEditFieldLoginUsername.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldLoginUsername.ImageClearNormal")));
+            this.SettingsEditFieldLoginUsername.Location = new System.Drawing.Point(6, 546);
+            this.SettingsEditFieldLoginUsername.Name = "SettingsEditFieldLoginUsername";
+            this.SettingsEditFieldLoginUsername.Size = new System.Drawing.Size(660, 88);
+            this.SettingsEditFieldLoginUsername.TabIndex = 4;
+            this.SettingsEditFieldLoginUsername.TextTextBox = "testuser";
+            this.SettingsEditFieldLoginUsername.TextTitle = "Username*";
+            this.SettingsEditFieldLoginUsername.UseColoredCaret = true;
+            this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
+            this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
+            // 
+            // MenuMenuEntryHome
+            // 
+            this.MenuMenuEntryHome.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryHome.BorderColorHover = System.Drawing.Color.Black;
+            this.MenuMenuEntryHome.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryHome.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryHome.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryHome.ColorHover = System.Drawing.Color.White;
+            this.MenuMenuEntryHome.ColorNormal = System.Drawing.Color.White;
+            this.MenuMenuEntryHome.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MenuMenuEntryHome.FontTitle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuMenuEntryHome.ImageHover = global::pmdbs.Properties.Resources.home_normal_v2;
+            this.MenuMenuEntryHome.ImageNormal = global::pmdbs.Properties.Resources.home_normal_v2;
+            this.MenuMenuEntryHome.Location = new System.Drawing.Point(13, 0);
+            this.MenuMenuEntryHome.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryHome.Name = "MenuMenuEntryHome";
+            this.MenuMenuEntryHome.Size = new System.Drawing.Size(255, 74);
+            this.MenuMenuEntryHome.TabIndex = 5;
+            this.MenuMenuEntryHome.TextTitle = "Home";
+            // 
+            // MenuMenuEntryPasswords
+            // 
+            this.MenuMenuEntryPasswords.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryPasswords.BorderColorHover = System.Drawing.Color.Black;
+            this.MenuMenuEntryPasswords.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntryPasswords.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryPasswords.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryPasswords.ColorHover = System.Drawing.Color.White;
+            this.MenuMenuEntryPasswords.ColorNormal = System.Drawing.Color.White;
+            this.MenuMenuEntryPasswords.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MenuMenuEntryPasswords.FontTitle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuMenuEntryPasswords.ImageHover = global::pmdbs.Properties.Resources.database;
+            this.MenuMenuEntryPasswords.ImageNormal = global::pmdbs.Properties.Resources.database;
+            this.MenuMenuEntryPasswords.Location = new System.Drawing.Point(13, 0);
+            this.MenuMenuEntryPasswords.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntryPasswords.Name = "MenuMenuEntryPasswords";
+            this.MenuMenuEntryPasswords.Size = new System.Drawing.Size(255, 74);
+            this.MenuMenuEntryPasswords.TabIndex = 5;
+            this.MenuMenuEntryPasswords.TextTitle = "Passwords";
+            // 
+            // MenuMenuEntrySettings
+            // 
+            this.MenuMenuEntrySettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntrySettings.BorderColorHover = System.Drawing.Color.Black;
+            this.MenuMenuEntrySettings.BorderColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.MenuMenuEntrySettings.BorderSizeHover = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntrySettings.BorderSizeNormal = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntrySettings.ColorHover = System.Drawing.Color.White;
+            this.MenuMenuEntrySettings.ColorNormal = System.Drawing.Color.White;
+            this.MenuMenuEntrySettings.Dock = System.Windows.Forms.DockStyle.Right;
+            this.MenuMenuEntrySettings.FontTitle = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MenuMenuEntrySettings.ImageHover = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.MenuMenuEntrySettings.ImageNormal = global::pmdbs.Properties.Resources.settings_normal_v2;
+            this.MenuMenuEntrySettings.Location = new System.Drawing.Point(13, 0);
+            this.MenuMenuEntrySettings.Margin = new System.Windows.Forms.Padding(0);
+            this.MenuMenuEntrySettings.Name = "MenuMenuEntrySettings";
+            this.MenuMenuEntrySettings.Size = new System.Drawing.Size(255, 74);
+            this.MenuMenuEntrySettings.TabIndex = 5;
+            this.MenuMenuEntrySettings.TextTitle = "Settings";
+            // 
+            // FilterAdvancedComboBoxSort
+            // 
+            this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.BackgroundColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.FilterAdvancedComboBoxSort.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.FilterAdvancedComboBoxSort.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.FilterAdvancedComboBoxSort.FormattingEnabled = true;
+            this.FilterAdvancedComboBoxSort.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.FilterAdvancedComboBoxSort.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.FilterAdvancedComboBoxSort.HoverItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(119)))), ((int)(((byte)(53)))));
+            this.FilterAdvancedComboBoxSort.HoverItemForeColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.ItemFont = new System.Drawing.Font("Segoe UI", 8F);
+            this.FilterAdvancedComboBoxSort.ItemHeight = 25;
+            this.FilterAdvancedComboBoxSort.Items.AddRange(new object[] {
+            "Hostname... (A-Z)",
+            "Hostname... (Z-A)",
+            "Date... (oldest first)",
+            "Date... (newest first)"});
+            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(903, 60);
+            this.FilterAdvancedComboBoxSort.Name = "FilterAdvancedComboBoxSort";
+            this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.NormalItemForeColor = System.Drawing.Color.Black;
+            this.FilterAdvancedComboBoxSort.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.FilterAdvancedComboBoxSort.Size = new System.Drawing.Size(212, 31);
+            this.FilterAdvancedComboBoxSort.TabIndex = 4;
+            this.FilterAdvancedComboBoxSort.UseSelectable = true;
+            this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
+            // 
+            // FilterEditFieldSearch
+            // 
+            this.FilterEditFieldSearch.AutoSize = true;
+            this.FilterEditFieldSearch.BackColor = System.Drawing.Color.White;
+            this.FilterEditFieldSearch.BackGroundColor = System.Drawing.Color.White;
+            this.FilterEditFieldSearch.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.FilterEditFieldSearch.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.FilterEditFieldSearch.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.FilterEditFieldSearch.DefaultValue = "Enter Search Term";
+            this.FilterEditFieldSearch.FontTextBox = new System.Drawing.Font("Segoe UI", 12F);
+            this.FilterEditFieldSearch.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FilterEditFieldSearch.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.FilterEditFieldSearch.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.FilterEditFieldSearch.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.FilterEditFieldSearch.Location = new System.Drawing.Point(351, 12);
+            this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
+            this.FilterEditFieldSearch.Size = new System.Drawing.Size(542, 85);
+            this.FilterEditFieldSearch.TabIndex = 0;
+            this.FilterEditFieldSearch.TextTextBox = "";
+            this.FilterEditFieldSearch.TextTitle = "Search";
+            this.FilterEditFieldSearch.UseColoredCaret = true;
+            this.FilterEditFieldSearch.UseDefaultValue = true;
+            this.FilterEditFieldSearch.UseSystemPasswordChar = false;
+            // 
+            // WindowsHeaderOvalPanelTitle
+            // 
+            this.WindowsHeaderOvalPanelTitle.BackColor = System.Drawing.Color.White;
+            this.WindowsHeaderOvalPanelTitle.BackgroundColor = System.Drawing.Color.White;
+            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderPictureBoxIcon);
+            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderLabelTitle);
+            this.WindowsHeaderOvalPanelTitle.EllipseColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowsHeaderOvalPanelTitle.Location = new System.Drawing.Point(14, 16);
+            this.WindowsHeaderOvalPanelTitle.Name = "WindowsHeaderOvalPanelTitle";
+            this.WindowsHeaderOvalPanelTitle.Size = new System.Drawing.Size(290, 72);
+            this.WindowsHeaderOvalPanelTitle.TabIndex = 2;
+            // 
+            // WindowHeaderPictureBoxIcon
+            // 
+            this.WindowHeaderPictureBoxIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderPictureBoxIcon.Image = ((System.Drawing.Image)(resources.GetObject("WindowHeaderPictureBoxIcon.Image")));
+            this.WindowHeaderPictureBoxIcon.Location = new System.Drawing.Point(33, 12);
+            this.WindowHeaderPictureBoxIcon.Name = "WindowHeaderPictureBoxIcon";
+            this.WindowHeaderPictureBoxIcon.Size = new System.Drawing.Size(48, 48);
+            this.WindowHeaderPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.WindowHeaderPictureBoxIcon.TabIndex = 23;
+            this.WindowHeaderPictureBoxIcon.TabStop = false;
+            // 
+            // WindowHeaderLabelTitle
+            // 
+            this.WindowHeaderLabelTitle.AutoSize = true;
+            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Segoe UI", 14F);
+            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(87, 19);
+            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
+            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(145, 38);
+            this.WindowHeaderLabelTitle.TabIndex = 22;
+            this.WindowHeaderLabelTitle.Text = "Passwords";
             // 
             // windowButtonMinimize
             // 
@@ -4916,6 +4878,29 @@
             this.windowButtonClose.Name = "windowButtonClose";
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
+            // 
+            // DashboardLunaSmallCardPasswordStrength
+            // 
+            this.DashboardLunaSmallCardPasswordStrength.BackColorHover = System.Drawing.Color.White;
+            this.DashboardLunaSmallCardPasswordStrength.BackColorImage = System.Drawing.Color.White;
+            this.DashboardLunaSmallCardPasswordStrength.BackColorNormal = System.Drawing.Color.White;
+            this.DashboardLunaSmallCardPasswordStrength.ForeColorHeader = System.Drawing.Color.Black;
+            this.DashboardLunaSmallCardPasswordStrength.ForeColorHeaderHover = System.Drawing.Color.Black;
+            this.DashboardLunaSmallCardPasswordStrength.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaSmallCardPasswordStrength.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaSmallCardPasswordStrength.Header = "Embarrassing";
+            this.DashboardLunaSmallCardPasswordStrength.HeaderLocation = new System.Drawing.Point(70, 0);
+            this.DashboardLunaSmallCardPasswordStrength.Image = global::pmdbs.Properties.Resources.bm;
+            this.DashboardLunaSmallCardPasswordStrength.ImageLocation = new System.Drawing.Point(1, 1);
+            this.DashboardLunaSmallCardPasswordStrength.Info = "on average";
+            this.DashboardLunaSmallCardPasswordStrength.InfoLocation = new System.Drawing.Point(72, 35);
+            this.DashboardLunaSmallCardPasswordStrength.Location = new System.Drawing.Point(12, 67);
+            this.DashboardLunaSmallCardPasswordStrength.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardLunaSmallCardPasswordStrength.Name = "DashboardLunaSmallCardPasswordStrength";
+            this.DashboardLunaSmallCardPasswordStrength.ShowBorder = false;
+            this.DashboardLunaSmallCardPasswordStrength.ShowInfo = true;
+            this.DashboardLunaSmallCardPasswordStrength.Size = new System.Drawing.Size(249, 60);
+            this.DashboardLunaSmallCardPasswordStrength.TabIndex = 13;
             // 
             // MainForm
             // 
@@ -4956,7 +4941,6 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.DashboardPanelPasswordStrength.ResumeLayout(false);
             this.DashboardPanelPasswordStrength.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DashboardPictureBoxPasswordStrength)).EndInit();
             this.DashboardPanelHotspots.ResumeLayout(false);
             this.DashboardPanelHotspots.PerformLayout();
             this.DashboardPanelHotspotsZero.ResumeLayout(false);
@@ -5063,9 +5047,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).EndInit();
             this.WindowsHeaderPanelSubRight.ResumeLayout(false);
             this.WindowsHeaderPanelSubRight.PerformLayout();
-            this.WindowsHeaderOvalPanelTitle.ResumeLayout(false);
-            this.WindowsHeaderOvalPanelTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).EndInit();
             this.PanelMain.ResumeLayout(false);
             this.PanelLogin.ResumeLayout(false);
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
@@ -5094,6 +5075,9 @@
             this.LoginPanelOfflineCredentials.ResumeLayout(false);
             this.LoginPanelOfflineCredentials.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).EndInit();
+            this.WindowsHeaderOvalPanelTitle.ResumeLayout(false);
+            this.WindowsHeaderOvalPanelTitle.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -5405,13 +5389,11 @@
         private System.Windows.Forms.Label DataEditLabelPasswordStrength;
         private System.Windows.Forms.Label DataEditLabelPasswordStrengthHeader;
         private LunaForms.PasswordStrengthIndicator DataEditPasswordStrengthIndicator;
-        private System.Windows.Forms.Label DashboardLabelPasswordStrengthUnit2;
-        private System.Windows.Forms.PictureBox DashboardPictureBoxPasswordStrength;
-        private System.Windows.Forms.Label DashboardLabelPasswordStrengthComplexity;
         private System.Windows.Forms.PictureBox DashboardPictureBoxHotspotsZero;
         private System.Windows.Forms.Panel DashboardPanelHotspotsZero;
         private System.Windows.Forms.Label DashboardLabelHotspotsZeroDescription;
         private System.Windows.Forms.Label DashboardLabelHotspotsZeroTitle;
+        private LunaForms.LunaSmallCard DashboardLunaSmallCardPasswordStrength;
     }
 }
 

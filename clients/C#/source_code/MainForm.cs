@@ -503,7 +503,7 @@ namespace pmdbs
             {
                 case 1:
                     {
-                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
+                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false))
                         {
                             errorForm.ShowDialog();
                         }
@@ -851,10 +851,11 @@ namespace pmdbs
             {
                 case 1:
                 {
-                    using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
+                    using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false))
                     {
                         errorForm.ShowDialog();
                     }
+                    AddPanelAdvancedImageButtonSave.Enabled = true;
                     return;
                 }
                 default:
@@ -1954,7 +1955,7 @@ namespace pmdbs
                         DashboardPanelHotspotsZero.SendToBack();
                         DashboardLunaSmallCardListHotspots.BringToFront();
                     }
-                    DashboardLunaSmallCardListHotspots.Add(simplifiedResults[i].Host, result.Icon, simplifiedResults[i].Id, -1);
+                    DashboardLunaSmallCardListHotspots.Add(simplifiedResults[i].Host, result.Icon, "Score: " + result.Score, simplifiedResults[i].Id, -1);
                 }
                 else
                 {
@@ -1974,6 +1975,7 @@ namespace pmdbs
             string id = hotspot.Id;
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(id));
             UpdateDetailsWindow(LinkedRow);
+            DataPanelDetails.BringToFront();
             MenuMenuEntryPasswords_Click(null, null);
         }
 
@@ -1994,8 +1996,8 @@ namespace pmdbs
             DashboardLabelPasswordStrength.Text = avgScore.ToString();
             DashboardLabelPasswordStrengthChange.Text = Math.Round(deltaScore, 2, MidpointRounding.AwayFromZero).ToString();
             Password.Result result = Password.Result.FromScore((int)Math.Round(avgScore, 0, MidpointRounding.AwayFromZero));
-            DashboardPictureBoxPasswordStrength.Image = result.Icon;
-            DashboardLabelPasswordStrengthComplexity.Text = result.Complexity;
+            DashboardLunaSmallCardPasswordStrength.Image = result.Icon;
+            DashboardLunaSmallCardPasswordStrength.Header = result.Complexity;
             if (deltaScore < 0)
             {
                 DashboardLabelPasswordStrengthChange.ForeColor = Colors.Red;
