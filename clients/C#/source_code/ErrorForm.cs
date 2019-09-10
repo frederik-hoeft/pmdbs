@@ -68,7 +68,8 @@ namespace pmdbs
             this.Theme = useDarkTheme ? MetroFramework.MetroThemeStyle.Dark : MetroFramework.MetroThemeStyle.Light;
             ErrorFormLabelContent.ForeColor = useDarkTheme ? Color.White : Color.Black;
             ErrorFormLabelHeader.ForeColor = useDarkTheme ? Color.White : Color.Black;
-            pictureBox1.BackColor = useDarkTheme ? Color.FromArgb(17, 17, 17) : Color.White;
+            // pictureBox1.BackColor = useDarkTheme ? Color.FromArgb(17, 17, 17) : Color.White;
+            pictureBox1.BackColor = Color.FromArgb(17, 17, 17);
         }
 
         private void ErrorFormAnimatedButtonOK_Click(object sender, EventArgs e)

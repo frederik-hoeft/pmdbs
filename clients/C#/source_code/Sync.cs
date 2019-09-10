@@ -226,6 +226,7 @@ namespace pmdbs
                                 query += ", D_" + account[j] + " = \"" + values[j] + "\"";
                             }
                         }
+                        query += ", D_score = \"\x01\"";
                     }
                     catch (IndexOutOfRangeException e)
                     {
@@ -252,6 +253,7 @@ namespace pmdbs
                                 query += ", D_" + account[j];
                             }
                         }
+                        query += ", D_score";
                     }
                     catch (IndexOutOfRangeException e)
                     {
@@ -273,6 +275,7 @@ namespace pmdbs
                                 query += ", \"" + values[j] + "\"";
                             }
                         }
+                        query += "\"\x01\"";
                     }
                     catch (IndexOutOfRangeException e)
                     {
@@ -332,6 +335,13 @@ namespace pmdbs
                     // TODO: DISPLAY PROGRESS
                     double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
                     double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
+                }
+                if (Row["10"].ToString().Equals("\x01"))
+                {
+                    Password.Result result = Password.Security.SimpleCheck(Row["5"].ToString());
+                    Row.BeginEdit();
+                    Row.SetField(5, result.Score);
+                    Row.EndEdit();
                 }
                 RowCounter++;
             }

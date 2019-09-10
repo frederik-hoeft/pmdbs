@@ -30,7 +30,7 @@ namespace pmdbs
             /// </summary>
             REGISTER = 2,
             /// <summary>
-            /// Presset for PasswordChange from settings.
+            /// Preset for PasswordChange from settings.
             /// </summary>
             PASSWORD_CHANGE = 3
         }
@@ -128,7 +128,6 @@ namespace pmdbs
                         }
                     case LoadingType.REGISTER:
                         {
-                            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_email = \"", GlobalVarPool.email, "\"" }));
                             GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             AutomatedTaskFramework.Tasks.Clear();
                             AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);

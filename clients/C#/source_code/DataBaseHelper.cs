@@ -215,7 +215,7 @@ namespace pmdbs
                 }
                 for (int i = 1; i < queryLength; i += 2)
                 {
-                    unsafeQuery[i] = unsafeQuery[i].Replace("\'", "\'\'").Replace("\"", "\"\"");
+                    unsafeQuery[i] = SQLInjectionCheck(unsafeQuery[i]);
                 }
                 string query = string.Empty;
                 for (int i = 0; i < queryLength; i++)
@@ -238,7 +238,7 @@ namespace pmdbs
         /// <summary>
         /// Gets the number of columns in Tbl_data.
         /// </summary>
-        Tbl_data = 10,
+        Tbl_data = 11,
         /// <summary>
         /// Gets the number of columns in Tbl_commonPasswords.
         /// </summary>
