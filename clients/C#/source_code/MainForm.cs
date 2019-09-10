@@ -1898,11 +1898,11 @@ namespace pmdbs
 
         private async void UpdateStats()
         {
+            await DataBaseHelper.ModifyData("VACUUM");
             Task<string> GetAccountCount = DataBaseHelper.GetSingleOrDefault("SELECT COUNT(1) FROM Tbl_data;");
             string accountCount = await GetAccountCount;
             FileInfo fileInfo = new FileInfo(@"Resources\localdata_windows.db");
-            // TODO: FILESIZE DOESN'T SEEM TO CHANGE.
-            double fileSize = Convert.ToDouble(fileInfo.Length - 12062720);
+            double fileSize = Convert.ToDouble(fileInfo.Length - 36864);
             string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
             int i = 0;
             while (fileSize > 1000)
