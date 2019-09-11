@@ -419,6 +419,14 @@ namespace pmdbs
                 HelperMethods.InvokeOutputLabel("Requested cookie.");
                 Network.SendEncrypted("MNGCKI");
             }
+            /// <summary>
+            /// Retrieves a list of all devices associated to the account.
+            /// </summary>
+            public static void GetDevices()
+            {
+                HelperMethods.InvokeOutputLabel("Retrieving device list ...");
+                Network.SendEncrypted("MNGDEV");
+            }
 
             /// <summary>
             /// Requests a password change.

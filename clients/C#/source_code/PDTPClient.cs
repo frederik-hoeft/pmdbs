@@ -136,7 +136,7 @@ namespace pmdbs
                 CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
-                    GlobalVarPool.SyncButton.Enabled = true;
+                    GlobalVarPool.syncButton.Enabled = true;
                     MainForm.InvokeSyncAnimationStop();
                 });
                 GlobalVarPool.connectionLost = true;
@@ -579,6 +579,11 @@ namespace pmdbs
                                                             NetworkAdapter.MethodProvider.Authorize();
                                                             break;
                                                         }
+                                                    case "DEV":
+                                                        {
+                                                            HelperMethods.LoadDevices(decryptedData.Substring(6).Split('!')[1]);
+                                                            break;
+                                                        }
                                                 }
                                                 break;
                                             }
@@ -730,7 +735,7 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
-                                                                        if (!GlobalVarPool.SyncButton.Enabled)
+                                                                        if (!GlobalVarPool.syncButton.Enabled)
                                                                         {
                                                                             GlobalVarPool.promptFromBackgroundThread = true;
                                                                         }

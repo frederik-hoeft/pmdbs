@@ -49,7 +49,8 @@ namespace pmdbs
         public static System.Windows.Forms.Label promptEMail = null;
         public static System.Windows.Forms.Label promptAction = null;
         public static System.Windows.Forms.Panel promptPanel = null;
-        public static LunaForms.AdvancedImageButton SyncButton = null;
+        public static LunaForms.AdvancedImageButton syncButton = null;
+        public static LunaForms.LunaItemList deviceList = null;
 
         // SETTINGS
         public static bool wasOnline = false;
