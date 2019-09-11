@@ -162,7 +162,7 @@ namespace pmdbs
                     {
                         MainForm.InvokeSyncAnimationStop();
                         // CustomException.ThrowNew.GenericException("Done. Nothing to do.");
-                        GlobalVarPool.SyncButton.Enabled = true;
+                        GlobalVarPool.syncButton.Enabled = true;
                     });
                 }
             }
@@ -340,8 +340,10 @@ namespace pmdbs
                 {
                     Password.Result result = Password.Security.SimpleCheck(Row["5"].ToString());
                     Row.BeginEdit();
-                    Row.SetField(5, result.Score);
+                    Row.SetField(10, result.Score);
                     Row.EndEdit();
+                    string encryptedScore = CryptoHelper.AESEncrypt(result.Score.ToString(), GlobalVarPool.localAESkey);
+                    await DataBaseHelper.ModifyData("UPDATE Tbl_data SET D_score = \"" + encryptedScore + "\" WHERE D_id = " + Row["0"].ToString() + ";");
                 }
                 RowCounter++;
             }
@@ -349,7 +351,7 @@ namespace pmdbs
             {
                 MainForm.InvokeSyncAnimationStop();
                 MainForm.InvokeReload();
-                GlobalVarPool.SyncButton.Enabled = true;
+                GlobalVarPool.syncButton.Enabled = true;
             });
         }
     }
