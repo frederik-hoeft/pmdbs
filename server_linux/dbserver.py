@@ -1312,7 +1312,7 @@ class Management():
 			Log.ServerEventLog("SOCKET_ERROR", "client is False")
 			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
 			return
-		DatabaseHelper.UserData.ModifySilent("UPDATE Tbl_cookies SET C_os = \"" + device + "\", C_lastSeen = \"" + Timestamp() + "\" WHERE C_cookie = \"" + cookie + "\";", clientAddress)
+		DatabaseHelper.UserData.ModifySilent("UPDATE Tbl_cookies SET C_os = \"" + device + "\", C_lastSeen = \"" + Timestamp() + "\", C_ip = \"" + clientAddress + "\" WHERE C_cookie = \"" + cookie + "\";", clientAddress)
 		Log.ServerEventLog("CLIENT AUTHORIZATION", client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version)
 		client.cookie = cookie
 		client.details = client.details + "\nCookie: " + cookie + "\nDevice: " + device + "\nIS_MOBILE: " + str(isMobile) + "\nPMDBS Version: " + version
@@ -1865,12 +1865,17 @@ class Management():
 			Handle.Error("NLGI", None, clientAddress, clientSocket, aesKey, True)
 			return
 		# USER IS LOGGED IN
-		devices = DatabaseHelper.UserData.Select("SELECT c.C_cookie, c.C_os, c.C_lastSeen FROM Tbl_cookies as c, Tbl_user as u, Tbl_connectUserCookies as cuc WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + ";", clientSocket, aesKey)
+		devices = DatabaseHelper.UserData.Select("SELECT c.C_cookie, c.C_os, c.C_lastSeen, c.C_ip FROM Tbl_cookies as c, Tbl_user as u, Tbl_connectUserCookies as cuc WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + ";", clientSocket, aesKey)
 		if devices is False:
 			# SOMETHONG WENT WRONG --> SQL ERROR
 			Handle.Error("SQLE", "devices is False", clientAddress, clientSocket, aesKey, True)
 			return
 		allClientsLocal = Server.allClients.copy()
+		# FOR SOME REASON DEVICES IS A TUPLE --> CONVERT IT TO LIST
+		currentDevices = []
+		for device in devices:
+			currentDevices.append([device[0], device[1], device[2], device[3]])
+		devices = currentDevices
 		for device in devices:
 			for client in allClientsLocal:
 				try:
@@ -1879,6 +1884,8 @@ class Management():
 						break
 				except IndexError:
 					break
+				else:
+					current
 		# RETURN DATA TO CLIENT
 		returnData = "DTADEVdata%eq!" + str(devices).replace("!",".") + "!;"
 		# SEND DATA ENCRYPTED TO CLIENT
@@ -2670,7 +2677,7 @@ class Management():
 			# USE BLAKE2 TO CREATE COOKIE
 			cookie = CryptoHelper.BLAKE2(currentTime, salt)
 			repeat = False
-			if not DatabaseHelper.UserData.Modify("INSERT INTO Tbl_cookies (C_cookie, C_lastSeen) VALUES (\"" + cookie + "\", \"" + Timestamp() + "\")", clientSocket, aesKey):
+			if not DatabaseHelper.UserData.Modify("INSERT INTO Tbl_cookies (C_cookie, C_lastSeen, C_ip) VALUES (\"" + cookie + "\", \"" + Timestamp() + "\", \"" + clientAddress + "\")", clientSocket, aesKey):
 				if i <= 3:
 					repeat = True
 			# CHECK IF A NEW COOKIE HAS TO BE GENERATED
@@ -2751,6 +2758,7 @@ class Management():
 			if codeAttempts + 1 >= 3:
 				Handle.Error("F2FA", None, clientAddress, clientSocket, aesKey, True)
 				# 2FA FAILED --> DELETE ACCOUNT
+				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_connectUserCookies AS cuc, Tbl_user as u, Tbl_cookies as c WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_username = \"" + username + "\";",  clientSicket, aesKey)
 				DatabaseHelper.UserData.Modify("DELETE FROM Tbl_user WHERE U_username = " + username + ";", clientSocket, aesKey)
 			# PROVIDED CODE WAS WRONG --> INCREMENT COUNTER
 			else:
@@ -4372,7 +4380,7 @@ class Boot():
 						selectedOption = input(CWHITE + " > ")
 						if selectedOption.upper() == "G":
 							print(CWHITE + "         Starting OpenSSL ...")
-							opensslInstalled = subprocess.call("/usr/bin/openssl -h >/dev/null 2>&1", shell=True, stdout=subprocess.PIPE)
+							opensslInstalled = subprocess.call("/usr/bin/openssl help >/dev/null 2>&1", shell=True, stdout=subprocess.PIPE)
 							if opensslInstalled != 0:
 								print(CWHITE + "[" + CRED + "FAILED" + CWHITE + "] OpenSSL is not installed / not accessible. Please install it." + ENDF)
 								exit()
@@ -4864,6 +4872,7 @@ class ClientHandler():
 								cryptoInformation = command.split(";")
 								key = None
 								cryptNonce = None
+								keyFormat = None
 								# EXTRACT KEY AND NONCE FROM PACKET
 								try:
 									for info in cryptoInformation:
@@ -4871,6 +4880,8 @@ class ClientHandler():
 											key = info.split("!")[1]
 										elif "nonce" in info:
 											cryptNonce = info.split("!")[1]
+										elif "format" in info:
+											keyFormat = info.split("!")[1]
 										elif not info:
 											pass
 										else:
@@ -4884,12 +4895,12 @@ class ClientHandler():
 									message = "GENERIC_EXCEPTION_INVALID_FORMATTING"
 									return
 								# COMMAND DID NOT CONTAIN ALL INFORMATION
-								if cryptNonce is None or key is None:
+								if cryptNonce is None or key is None or keyFormat is None:
 									Handle.Error("ICMD", "TOO_FEW_ARGUMENTS", clientAddress, clientSocket, None, False)
 									message = "GENERIC_EXCEPTION_TOO_FEW_ARGUMENTS"
 									return
 								try:
-									if isXmlClient:
+									if isXmlClient or keyFormat == "XML":
 										clientPublicKey = CryptoHelper.RSAPublicXmlToPem(key)
 									else:
 										clientPublicKey = key
