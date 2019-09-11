@@ -114,7 +114,89 @@ namespace pmdbs
             }
         }
 
-        
+        /// <summary>
+        /// Loads the devices list retrieved from the server to the UI.
+        /// </summary>
+        /// <param name="data"></param>
+        public static void LoadDevices(string data)
+        {
+            string deviceData = data.Replace("', '", "','").Replace("'], ['", "'],['").Replace("[['", "").Replace("']]", "");
+            string[] devices = deviceData.Split(new string[] { "'],['" }, StringSplitOptions.RemoveEmptyEntries);
+            GlobalVarPool.deviceList.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.deviceList.RemoveAll();
+            });
+            for (int i = 0; i < devices.Length; i++)
+            {
+                string[] device = devices[i].Split(new string[] { "','" }, StringSplitOptions.RemoveEmptyEntries);
+                string os = device[1];
+                Image icon;
+                if (os.ToLower().Contains("windows"))
+                {
+                    if (os.Contains("NT 10."))
+                    {
+                        os = "Windows 10";
+                    }
+                    else if (os.Contains("NT 6.3"))
+                    {
+                        os = "Windows 8.1";
+                    }
+                    else if (os.Contains("NT 6.2"))
+                    {
+                        os = "Windows 8";
+                    }
+                    else if (os.Contains("NT 6.1"))
+                    {
+                        os = "Windows 7 SP1";
+                    }
+                    else if (os.Contains("NT 6.0"))
+                    {
+                        os = "Windows Vista";
+                    }
+                    else if (os.Contains("NT 5.1") || os.Contains("NT 5.2"))
+                    {
+                        os = "Windows XP";
+                    }
+                    else if (os.Contains("NT 5.0"))
+                    {
+                        os = "Windows 2000";
+                    }
+                    else if (os.Contains("NT 4.9"))
+                    {
+                        os = "Windows Me";
+                    }
+                    else if (os.Contains("NT 4.1"))
+                    {
+                        os = "Windows 98";
+                    }
+                    else if (os.Contains("NT 4.0"))
+                    {
+                        os = "Windows NT 4.0";
+                    }
+                    else if (os.Contains("NT 4.00"))
+                    {
+                        os = "Windows 95";
+                    }
+                    else
+                    {
+                        os = "Windows ?";
+                    }
+                    icon = Properties.Resources.devices_colored_windows;
+                }
+                else if (os.ToLower().Contains("android"))
+                {
+                    icon = Properties.Resources.devices_colored_android;
+                }
+                else
+                {
+                    icon = Properties.Resources.devices_colored_linux;
+                }
+                GlobalVarPool.deviceList.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                {
+                    GlobalVarPool.deviceList.Add(os, icon, device.ToString(), i);
+                });
+            }
+        }
 
         /// <summary>
         /// Loads all Settings from the database into GlobalVarPool

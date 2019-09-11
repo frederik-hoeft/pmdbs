@@ -141,7 +141,8 @@ namespace pmdbs
             GlobalVarPool.promptEMail = SettingsLabelPromptMailInfo;
             GlobalVarPool.promptMain = SettingsLabelPromptMain;
             GlobalVarPool.promptPanel = SettingsPanelPromptMain;
-            GlobalVarPool.SyncButton = DataSyncAdvancedImageButton;
+            GlobalVarPool.syncButton = DataSyncAdvancedImageButton;
+            GlobalVarPool.deviceList = DashboardLunaItemListDevices;
             #endregion
             #region ADD_EVENTHANDLERS
             DataAddAdvancedImageButton.OnClickEvent += DataAddAdvancedImageButton_Click;
@@ -170,7 +171,7 @@ namespace pmdbs
             #endregion
 
             #endregion
-            lunaItemList1.LunaItemClicked += card_click;
+            DashboardLunaItemListDevices.LunaItemClicked += card_click;
             DashboardLunaItemListBreaches.LunaItemClicked += Breach_Clicked;
         }
 
@@ -1880,7 +1881,7 @@ namespace pmdbs
         private int t = 0;
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            lunaItemList1.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
+            DashboardLunaItemListDevices.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
             t++;
         }
 
@@ -1897,6 +1898,7 @@ namespace pmdbs
             UpdateStats();
             UpdatePasswordScore();
             UpdateHotspots();
+            UpdateDevices();
         }
 
         private async void UpdateStats()
@@ -1927,6 +1929,29 @@ namespace pmdbs
                 DashboardLabelAccountsTotal.Text = "accounts total";
             }
             DashboardLabelDiskSpaceValue.Text = fileSize.ToString() + units[i];
+        }
+
+        private void UpdateDevices()
+        {
+            if (!GlobalVarPool.wasOnline)
+            {
+                SettingsTableLayoutPanelMain.BringToFront();
+                SettingsFlowLayoutPanelRegister.BringToFront();
+                return;
+            }
+            AutomatedTaskFramework.Tasks.Clear();
+            if (!GlobalVarPool.connected)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+            }
+            if (!GlobalVarPool.isUser)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+            }
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DTADEVdata", NetworkAdapter.MethodProvider.GetDevices);
+            AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+            AutomatedTaskFramework.Tasks.Execute();
         }
 
         private void UpdateHotspots()
