@@ -171,7 +171,7 @@ namespace pmdbs
             #endregion
 
             #endregion
-            DashboardLunaItemListDevices.LunaItemClicked += card_click;
+            DashboardLunaItemListDevices.LunaItemClicked += DashboardLunaItemDevice_Click;
             DashboardLunaItemListBreaches.LunaItemClicked += Breach_Clicked;
         }
 
@@ -1885,10 +1885,10 @@ namespace pmdbs
             t++;
         }
 
-        private void card_click(object sender, EventArgs e)
+        private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
         {
             LunaItem item = (LunaItem)sender;
-            CustomException.ThrowNew.NotImplementedException("item[" + item.Id.ToString() + "]");
+            CustomException.ThrowNew.NotImplementedException(item.Id);
         }
         #endregion
         private List<Breaches.Breach> breaches;
