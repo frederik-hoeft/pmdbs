@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,17 +16,25 @@ namespace pmdbs
         public sealed class OS
         {
             public readonly string Name;
-            public readonly string Bits;
+            public readonly string Architecture;
             public readonly string Edition;
             public readonly string ServicePack;
             public readonly string Version;
-            public OS(string name, string bits, string edition, string servicePack, string version)
+            public readonly string UserName;
+            public readonly string DeviceName;
+            public readonly string Processor;
+            public readonly string PhysicalMemory;
+            public OS(string name, string bits, string edition, string servicePack, string version, string deviceName, string processor, string physicalMemory, string username)
             {
                 Name = name;
-                Bits = bits;
+                Architecture = bits;
                 Edition = edition;
                 ServicePack = servicePack;
                 Version = version;
+                UserName = username;
+                DeviceName = deviceName;
+                Processor = processor;
+                PhysicalMemory = physicalMemory;
             }
         }
 
@@ -35,6 +44,7 @@ namespace pmdbs
             public readonly string DeviceId;
             public readonly string LastSeen;
             public readonly string IP;
+
             public Device(OS os, string deviceId, string lastSeen, string ip)
             {
                 OS = os;
@@ -46,18 +56,59 @@ namespace pmdbs
 
         public static OS GetOS()
         {
-            return new OS(Name, Bits.ToString(), Edition, ServicePack, VersionString);
+            return new OS(Name, Bits, Edition, ServicePack, VersionString, CSName, Processor, PhysicalMemory, UserName);
+        }
+
+        private static string CSName
+        {
+            get { return WMIQuery("CSName", "Win32_OperatingSystem"); }
+        }
+
+        private static string OSArchitecture
+        {
+            get { return WMIQuery("OSArchitecture", "Win32_OperatingSystem"); }
+        }
+
+        private static string Processor
+        {
+            get { return WMIQuery("Name", "Win32_Processor"); }
+        }
+
+        private static string PhysicalMemory
+        {
+            get { return WMIQuery("TotalPhysicalMemory", "Win32_ComputerSystem"); }
+        }
+
+        private static string UserName
+        {
+            get { return WMIQuery("UserName", "Win32_ComputerSystem"); }
+        }
+
+        private static string WMIQuery(string field, string win32_Object)
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                    "select " + field + " from " + win32_Object);
+            ManagementObjectCollection managementObjects = searcher.Get();
+            string wmiValue = managementObjects.OfType<ManagementObject>().FirstOrDefault().Properties.OfType<PropertyData>().FirstOrDefault().Value?.ToString();
+            return wmiValue;
         }
 
         #region BITS
         /// <summary>
         /// Determines if the current application is 32 or 64-bit.
         /// </summary>
-        static public int Bits
+        static public string Bits
         {
             get
             {
-                return IntPtr.Size * 8;
+                try
+                {
+                    return OSArchitecture;
+                }
+                catch
+                {
+                    return (IntPtr.Size * 8).ToString() + "-Bit";
+                }
             }
         }
         #endregion BITS
@@ -74,13 +125,15 @@ namespace pmdbs
                 if (s_Edition != null)
                     return s_Edition;  //***** RETURN *****//
 
-                string edition = String.Empty;
+                string edition = string.Empty;
 
                 OperatingSystem osVersion = Environment.OSVersion;
                 OSVERSIONINFOEX osVersionInfo = new OSVERSIONINFOEX
                 {
                     dwOSVersionInfoSize = Marshal.SizeOf(typeof(OSVERSIONINFOEX))
                 };
+
+
 
                 if (GetVersionEx(ref osVersionInfo))
                 {
@@ -295,6 +348,9 @@ namespace pmdbs
                                     break;
                                 case PRODUCT_WEB_SERVER_CORE:
                                     edition = "Web Server (core installation)";
+                                    break;
+                                case PRODUCT_PROFESSIONAL:
+                                    edition = "Professional";
                                     break;
                             }
                         }
@@ -513,6 +569,7 @@ namespace pmdbs
         private const int PRODUCT_STANDARD_SERVER_CORE_V = 0x00000028;
         private const int PRODUCT_ENTERPRISE_SERVER_CORE_V = 0x00000029;
         private const int PRODUCT_HYPERV = 0x0000002A;
+        private const int PRODUCT_PROFESSIONAL = 0x00000030;
         #endregion PRODUCT
 
         #region VERSIONS
