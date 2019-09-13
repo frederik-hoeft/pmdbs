@@ -29,72 +29,390 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DeviceForm));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.lunaAnimatedButtonLogout = new LunaForms.LunaAnimatedButton();
+            this.panelNetworkInformation = new System.Windows.Forms.Panel();
+            this.labelNetworkInformationHeader = new System.Windows.Forms.Label();
+            this.labelIp = new System.Windows.Forms.Label();
+            this.labelLastSeenHeader = new System.Windows.Forms.Label();
+            this.labelLastSeen = new System.Windows.Forms.Label();
+            this.labelIpHeader = new System.Windows.Forms.Label();
+            this.panelHardwareInformation = new System.Windows.Forms.Panel();
+            this.labelMemory = new System.Windows.Forms.Label();
+            this.labelMemoryHeader = new System.Windows.Forms.Label();
+            this.labelProcessor = new System.Windows.Forms.Label();
+            this.labelProcessorHeader = new System.Windows.Forms.Label();
+            this.labelHardwareInformationHeader = new System.Windows.Forms.Label();
+            this.panelOsInformation = new System.Windows.Forms.Panel();
+            this.labelOsInformationHeader = new System.Windows.Forms.Label();
+            this.labelArchitecture = new System.Windows.Forms.Label();
+            this.labelArchitectureHeader = new System.Windows.Forms.Label();
+            this.labelUsername = new System.Windows.Forms.Label();
+            this.labelUsernameHeader = new System.Windows.Forms.Label();
+            this.labelServicePack = new System.Windows.Forms.Label();
+            this.labelServicePackHeader = new System.Windows.Forms.Label();
+            this.labelVersion = new System.Windows.Forms.Label();
+            this.labelVersionHeader = new System.Windows.Forms.Label();
+            this.labelDeviceName = new System.Windows.Forms.Label();
+            this.labelDeviceNameHeader = new System.Windows.Forms.Label();
+            this.labelEdition = new System.Windows.Forms.Label();
+            this.labelEditionHeader = new System.Windows.Forms.Label();
             this.labelDeviceId = new System.Windows.Forms.Label();
             this.labelTitle = new System.Windows.Forms.Label();
             this.panelHeader = new System.Windows.Forms.Panel();
-            this.lunaSmallCardIsVerified = new LunaForms.LunaSmallCard();
+            this.lunaSmallCardIsOnline = new LunaForms.LunaSmallCard();
             this.pictureBoxLogo = new System.Windows.Forms.PictureBox();
             this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label24 = new System.Windows.Forms.Label();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label30 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.animatedButtonIgnore = new LunaForms.AnimatedButton();
-            this.panel1.SuspendLayout();
+            this.panelMain.SuspendLayout();
+            this.panelNetworkInformation.SuspendLayout();
+            this.panelHardwareInformation.SuspendLayout();
+            this.panelOsInformation.SuspendLayout();
             this.panelHeader.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).BeginInit();
-            this.panel2.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // panelMain
             // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.animatedButtonIgnore);
-            this.panel1.Controls.Add(this.panel4);
-            this.panel1.Controls.Add(this.panel3);
-            this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.labelDeviceId);
-            this.panel1.Controls.Add(this.labelTitle);
-            this.panel1.Controls.Add(this.panelHeader);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.panel1.Location = new System.Drawing.Point(20, 60);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1160, 944);
-            this.panel1.TabIndex = 0;
+            this.panelMain.BackColor = System.Drawing.Color.White;
+            this.panelMain.Controls.Add(this.lunaAnimatedButtonLogout);
+            this.panelMain.Controls.Add(this.panelNetworkInformation);
+            this.panelMain.Controls.Add(this.panelHardwareInformation);
+            this.panelMain.Controls.Add(this.panelOsInformation);
+            this.panelMain.Controls.Add(this.labelDeviceId);
+            this.panelMain.Controls.Add(this.labelTitle);
+            this.panelMain.Controls.Add(this.panelHeader);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.panelMain.Location = new System.Drawing.Point(20, 60);
+            this.panelMain.Margin = new System.Windows.Forms.Padding(0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(1160, 944);
+            this.panelMain.TabIndex = 0;
+            // 
+            // lunaAnimatedButtonLogout
+            // 
+            this.lunaAnimatedButtonLogout.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.lunaAnimatedButtonLogout.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.lunaAnimatedButtonLogout.Depth = 0;
+            this.lunaAnimatedButtonLogout.Icon = null;
+            this.lunaAnimatedButtonLogout.Location = new System.Drawing.Point(427, 863);
+            this.lunaAnimatedButtonLogout.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.lunaAnimatedButtonLogout.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
+            this.lunaAnimatedButtonLogout.Name = "lunaAnimatedButtonLogout";
+            this.lunaAnimatedButtonLogout.Primary = false;
+            this.lunaAnimatedButtonLogout.Size = new System.Drawing.Size(307, 66);
+            this.lunaAnimatedButtonLogout.TabIndex = 31;
+            this.lunaAnimatedButtonLogout.Text = "Logout from this device";
+            this.lunaAnimatedButtonLogout.Uppercase = false;
+            this.lunaAnimatedButtonLogout.UseVisualStyleBackColor = true;
+            this.lunaAnimatedButtonLogout.Click += new System.EventHandler(this.lunaAnimatedButtonLogout_Click);
+            // 
+            // panelNetworkInformation
+            // 
+            this.panelNetworkInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelNetworkInformation.Controls.Add(this.labelNetworkInformationHeader);
+            this.panelNetworkInformation.Controls.Add(this.labelIp);
+            this.panelNetworkInformation.Controls.Add(this.labelLastSeenHeader);
+            this.panelNetworkInformation.Controls.Add(this.labelLastSeen);
+            this.panelNetworkInformation.Controls.Add(this.labelIpHeader);
+            this.panelNetworkInformation.Location = new System.Drawing.Point(80, 714);
+            this.panelNetworkInformation.Name = "panelNetworkInformation";
+            this.panelNetworkInformation.Size = new System.Drawing.Size(1000, 140);
+            this.panelNetworkInformation.TabIndex = 30;
+            // 
+            // labelNetworkInformationHeader
+            // 
+            this.labelNetworkInformationHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelNetworkInformationHeader.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.labelNetworkInformationHeader.Location = new System.Drawing.Point(0, 0);
+            this.labelNetworkInformationHeader.Name = "labelNetworkInformationHeader";
+            this.labelNetworkInformationHeader.Size = new System.Drawing.Size(998, 60);
+            this.labelNetworkInformationHeader.TabIndex = 32;
+            this.labelNetworkInformationHeader.Text = "Network Information";
+            this.labelNetworkInformationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelIp
+            // 
+            this.labelIp.AutoSize = true;
+            this.labelIp.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelIp.Location = new System.Drawing.Point(651, 92);
+            this.labelIp.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelIp.Name = "labelIp";
+            this.labelIp.Size = new System.Drawing.Size(173, 32);
+            this.labelIp.TabIndex = 25;
+            this.labelIp.Text = "192.168.178.21";
+            // 
+            // labelLastSeenHeader
+            // 
+            this.labelLastSeenHeader.AutoSize = true;
+            this.labelLastSeenHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelLastSeenHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelLastSeenHeader.Location = new System.Drawing.Point(35, 60);
+            this.labelLastSeenHeader.Name = "labelLastSeenHeader";
+            this.labelLastSeenHeader.Size = new System.Drawing.Size(97, 28);
+            this.labelLastSeenHeader.TabIndex = 20;
+            this.labelLastSeenHeader.Text = "Last Seen:";
+            // 
+            // labelLastSeen
+            // 
+            this.labelLastSeen.AutoSize = true;
+            this.labelLastSeen.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelLastSeen.Location = new System.Drawing.Point(34, 92);
+            this.labelLastSeen.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelLastSeen.Name = "labelLastSeen";
+            this.labelLastSeen.Size = new System.Drawing.Size(234, 32);
+            this.labelLastSeen.TabIndex = 21;
+            this.labelLastSeen.Text = "2019-09-13 11:01:35";
+            // 
+            // labelIpHeader
+            // 
+            this.labelIpHeader.AutoSize = true;
+            this.labelIpHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelIpHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelIpHeader.Location = new System.Drawing.Point(652, 60);
+            this.labelIpHeader.Name = "labelIpHeader";
+            this.labelIpHeader.Size = new System.Drawing.Size(200, 28);
+            this.labelIpHeader.TabIndex = 24;
+            this.labelIpHeader.Text = "Last Connected From:";
+            // 
+            // panelHardwareInformation
+            // 
+            this.panelHardwareInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelHardwareInformation.Controls.Add(this.labelMemory);
+            this.panelHardwareInformation.Controls.Add(this.labelMemoryHeader);
+            this.panelHardwareInformation.Controls.Add(this.labelProcessor);
+            this.panelHardwareInformation.Controls.Add(this.labelProcessorHeader);
+            this.panelHardwareInformation.Controls.Add(this.labelHardwareInformationHeader);
+            this.panelHardwareInformation.Location = new System.Drawing.Point(80, 568);
+            this.panelHardwareInformation.Name = "panelHardwareInformation";
+            this.panelHardwareInformation.Size = new System.Drawing.Size(1000, 140);
+            this.panelHardwareInformation.TabIndex = 29;
+            // 
+            // labelMemory
+            // 
+            this.labelMemory.AutoSize = true;
+            this.labelMemory.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelMemory.Location = new System.Drawing.Point(651, 90);
+            this.labelMemory.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelMemory.Name = "labelMemory";
+            this.labelMemory.Size = new System.Drawing.Size(179, 32);
+            this.labelMemory.TabIndex = 36;
+            this.labelMemory.Text = "34308390912 B";
+            // 
+            // labelMemoryHeader
+            // 
+            this.labelMemoryHeader.AutoSize = true;
+            this.labelMemoryHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelMemoryHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelMemoryHeader.Location = new System.Drawing.Point(652, 58);
+            this.labelMemoryHeader.Name = "labelMemoryHeader";
+            this.labelMemoryHeader.Size = new System.Drawing.Size(202, 28);
+            this.labelMemoryHeader.TabIndex = 35;
+            this.labelMemoryHeader.Text = "Total Pysical Memory:";
+            // 
+            // labelProcessor
+            // 
+            this.labelProcessor.AutoSize = true;
+            this.labelProcessor.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelProcessor.Location = new System.Drawing.Point(34, 90);
+            this.labelProcessor.MaximumSize = new System.Drawing.Size(750, 0);
+            this.labelProcessor.Name = "labelProcessor";
+            this.labelProcessor.Size = new System.Drawing.Size(482, 32);
+            this.labelProcessor.TabIndex = 34;
+            this.labelProcessor.Text = "Intel(R) Xeon(R) CPU E3-1230 v3 @ 3.30GHz";
+            // 
+            // labelProcessorHeader
+            // 
+            this.labelProcessorHeader.AutoSize = true;
+            this.labelProcessorHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelProcessorHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelProcessorHeader.Location = new System.Drawing.Point(35, 58);
+            this.labelProcessorHeader.Name = "labelProcessorHeader";
+            this.labelProcessorHeader.Size = new System.Drawing.Size(100, 28);
+            this.labelProcessorHeader.TabIndex = 33;
+            this.labelProcessorHeader.Text = "Processor:";
+            // 
+            // labelHardwareInformationHeader
+            // 
+            this.labelHardwareInformationHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelHardwareInformationHeader.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.labelHardwareInformationHeader.Location = new System.Drawing.Point(0, 0);
+            this.labelHardwareInformationHeader.Name = "labelHardwareInformationHeader";
+            this.labelHardwareInformationHeader.Size = new System.Drawing.Size(998, 60);
+            this.labelHardwareInformationHeader.TabIndex = 32;
+            this.labelHardwareInformationHeader.Text = "Hardware Information";
+            this.labelHardwareInformationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelOsInformation
+            // 
+            this.panelOsInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelOsInformation.Controls.Add(this.labelOsInformationHeader);
+            this.panelOsInformation.Controls.Add(this.labelArchitecture);
+            this.panelOsInformation.Controls.Add(this.labelArchitectureHeader);
+            this.panelOsInformation.Controls.Add(this.labelUsername);
+            this.panelOsInformation.Controls.Add(this.labelUsernameHeader);
+            this.panelOsInformation.Controls.Add(this.labelServicePack);
+            this.panelOsInformation.Controls.Add(this.labelServicePackHeader);
+            this.panelOsInformation.Controls.Add(this.labelVersion);
+            this.panelOsInformation.Controls.Add(this.labelVersionHeader);
+            this.panelOsInformation.Controls.Add(this.labelDeviceName);
+            this.panelOsInformation.Controls.Add(this.labelDeviceNameHeader);
+            this.panelOsInformation.Controls.Add(this.labelEdition);
+            this.panelOsInformation.Controls.Add(this.labelEditionHeader);
+            this.panelOsInformation.Location = new System.Drawing.Point(80, 260);
+            this.panelOsInformation.Name = "panelOsInformation";
+            this.panelOsInformation.Size = new System.Drawing.Size(1000, 302);
+            this.panelOsInformation.TabIndex = 28;
+            // 
+            // labelOsInformationHeader
+            // 
+            this.labelOsInformationHeader.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelOsInformationHeader.Font = new System.Drawing.Font("Segoe UI", 18F);
+            this.labelOsInformationHeader.Location = new System.Drawing.Point(0, 0);
+            this.labelOsInformationHeader.Name = "labelOsInformationHeader";
+            this.labelOsInformationHeader.Size = new System.Drawing.Size(998, 61);
+            this.labelOsInformationHeader.TabIndex = 32;
+            this.labelOsInformationHeader.Text = "OS Information";
+            this.labelOsInformationHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelArchitecture
+            // 
+            this.labelArchitecture.AutoSize = true;
+            this.labelArchitecture.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelArchitecture.Location = new System.Drawing.Point(651, 168);
+            this.labelArchitecture.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelArchitecture.Name = "labelArchitecture";
+            this.labelArchitecture.Size = new System.Drawing.Size(79, 32);
+            this.labelArchitecture.TabIndex = 31;
+            this.labelArchitecture.Text = "64-Bit";
+            // 
+            // labelArchitectureHeader
+            // 
+            this.labelArchitectureHeader.AutoSize = true;
+            this.labelArchitectureHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelArchitectureHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelArchitectureHeader.Location = new System.Drawing.Point(652, 136);
+            this.labelArchitectureHeader.Name = "labelArchitectureHeader";
+            this.labelArchitectureHeader.Size = new System.Drawing.Size(153, 28);
+            this.labelArchitectureHeader.TabIndex = 30;
+            this.labelArchitectureHeader.Text = "OS Architecture:";
+            // 
+            // labelUsername
+            // 
+            this.labelUsername.AutoSize = true;
+            this.labelUsername.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelUsername.Location = new System.Drawing.Point(651, 244);
+            this.labelUsername.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelUsername.Name = "labelUsername";
+            this.labelUsername.Size = new System.Drawing.Size(230, 32);
+            this.labelUsername.TabIndex = 29;
+            this.labelUsername.Text = "XEON\\Administrator";
+            // 
+            // labelUsernameHeader
+            // 
+            this.labelUsernameHeader.AutoSize = true;
+            this.labelUsernameHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelUsernameHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelUsernameHeader.Location = new System.Drawing.Point(652, 212);
+            this.labelUsernameHeader.Name = "labelUsernameHeader";
+            this.labelUsernameHeader.Size = new System.Drawing.Size(103, 28);
+            this.labelUsernameHeader.TabIndex = 28;
+            this.labelUsernameHeader.Text = "Username:";
+            // 
+            // labelServicePack
+            // 
+            this.labelServicePack.AutoSize = true;
+            this.labelServicePack.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelServicePack.Location = new System.Drawing.Point(651, 93);
+            this.labelServicePack.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelServicePack.Name = "labelServicePack";
+            this.labelServicePack.Size = new System.Drawing.Size(166, 32);
+            this.labelServicePack.TabIndex = 27;
+            this.labelServicePack.Text = "Service Pack 1";
+            // 
+            // labelServicePackHeader
+            // 
+            this.labelServicePackHeader.AutoSize = true;
+            this.labelServicePackHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelServicePackHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelServicePackHeader.Location = new System.Drawing.Point(652, 61);
+            this.labelServicePackHeader.Name = "labelServicePackHeader";
+            this.labelServicePackHeader.Size = new System.Drawing.Size(123, 28);
+            this.labelServicePackHeader.TabIndex = 26;
+            this.labelServicePackHeader.Text = "Service Pack:";
+            // 
+            // labelVersion
+            // 
+            this.labelVersion.AutoSize = true;
+            this.labelVersion.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelVersion.Location = new System.Drawing.Point(34, 168);
+            this.labelVersion.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelVersion.Name = "labelVersion";
+            this.labelVersion.Size = new System.Drawing.Size(103, 32);
+            this.labelVersion.TabIndex = 25;
+            this.labelVersion.Text = "6.1.7601";
+            // 
+            // labelVersionHeader
+            // 
+            this.labelVersionHeader.AutoSize = true;
+            this.labelVersionHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelVersionHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelVersionHeader.Location = new System.Drawing.Point(35, 136);
+            this.labelVersionHeader.Name = "labelVersionHeader";
+            this.labelVersionHeader.Size = new System.Drawing.Size(81, 28);
+            this.labelVersionHeader.TabIndex = 24;
+            this.labelVersionHeader.Text = "Version:";
+            // 
+            // labelDeviceName
+            // 
+            this.labelDeviceName.AutoSize = true;
+            this.labelDeviceName.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelDeviceName.Location = new System.Drawing.Point(34, 244);
+            this.labelDeviceName.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelDeviceName.Name = "labelDeviceName";
+            this.labelDeviceName.Size = new System.Drawing.Size(77, 32);
+            this.labelDeviceName.TabIndex = 23;
+            this.labelDeviceName.Text = "XEON";
+            // 
+            // labelDeviceNameHeader
+            // 
+            this.labelDeviceNameHeader.AutoSize = true;
+            this.labelDeviceNameHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelDeviceNameHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelDeviceNameHeader.Location = new System.Drawing.Point(35, 212);
+            this.labelDeviceNameHeader.Name = "labelDeviceNameHeader";
+            this.labelDeviceNameHeader.Size = new System.Drawing.Size(131, 28);
+            this.labelDeviceNameHeader.TabIndex = 22;
+            this.labelDeviceNameHeader.Text = "Device Name:";
+            // 
+            // labelEdition
+            // 
+            this.labelEdition.AutoSize = true;
+            this.labelEdition.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.labelEdition.Location = new System.Drawing.Point(34, 93);
+            this.labelEdition.MaximumSize = new System.Drawing.Size(500, 0);
+            this.labelEdition.Name = "labelEdition";
+            this.labelEdition.Size = new System.Drawing.Size(143, 32);
+            this.labelEdition.TabIndex = 21;
+            this.labelEdition.Text = "Professional";
+            // 
+            // labelEditionHeader
+            // 
+            this.labelEditionHeader.AutoSize = true;
+            this.labelEditionHeader.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.labelEditionHeader.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.labelEditionHeader.Location = new System.Drawing.Point(35, 61);
+            this.labelEditionHeader.Name = "labelEditionHeader";
+            this.labelEditionHeader.Size = new System.Drawing.Size(78, 28);
+            this.labelEditionHeader.TabIndex = 20;
+            this.labelEditionHeader.Text = "Edition:";
             // 
             // labelDeviceId
             // 
             this.labelDeviceId.Dock = System.Windows.Forms.DockStyle.Top;
-            this.labelDeviceId.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.labelDeviceId.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.labelDeviceId.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.labelDeviceId.Location = new System.Drawing.Point(0, 215);
             this.labelDeviceId.Name = "labelDeviceId";
@@ -119,7 +437,7 @@
             // panelHeader
             // 
             this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.panelHeader.Controls.Add(this.lunaSmallCardIsVerified);
+            this.panelHeader.Controls.Add(this.lunaSmallCardIsOnline);
             this.panelHeader.Controls.Add(this.pictureBoxLogo);
             this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
@@ -127,26 +445,26 @@
             this.panelHeader.Size = new System.Drawing.Size(1160, 150);
             this.panelHeader.TabIndex = 1;
             // 
-            // lunaSmallCardIsVerified
+            // lunaSmallCardIsOnline
             // 
-            this.lunaSmallCardIsVerified.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.lunaSmallCardIsVerified.BackColorImage = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.lunaSmallCardIsVerified.BackColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.lunaSmallCardIsVerified.ForeColorHeader = System.Drawing.Color.White;
-            this.lunaSmallCardIsVerified.ForeColorHeaderHover = System.Drawing.Color.White;
-            this.lunaSmallCardIsVerified.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCardIsVerified.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaSmallCardIsVerified.Header = "Online";
-            this.lunaSmallCardIsVerified.HeaderLocation = new System.Drawing.Point(70, 10);
-            this.lunaSmallCardIsVerified.Image = global::pmdbs.Properties.Resources.confirmed2;
-            this.lunaSmallCardIsVerified.ImageLocation = new System.Drawing.Point(1, 1);
-            this.lunaSmallCardIsVerified.InfoLocation = new System.Drawing.Point(72, 35);
-            this.lunaSmallCardIsVerified.Location = new System.Drawing.Point(954, 90);
-            this.lunaSmallCardIsVerified.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSmallCardIsVerified.Name = "lunaSmallCardIsVerified";
-            this.lunaSmallCardIsVerified.ShowBorder = false;
-            this.lunaSmallCardIsVerified.Size = new System.Drawing.Size(206, 60);
-            this.lunaSmallCardIsVerified.TabIndex = 14;
+            this.lunaSmallCardIsOnline.BackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.lunaSmallCardIsOnline.BackColorImage = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.lunaSmallCardIsOnline.BackColorNormal = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.lunaSmallCardIsOnline.ForeColorHeader = System.Drawing.Color.White;
+            this.lunaSmallCardIsOnline.ForeColorHeaderHover = System.Drawing.Color.White;
+            this.lunaSmallCardIsOnline.ForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardIsOnline.ForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaSmallCardIsOnline.Header = "Online";
+            this.lunaSmallCardIsOnline.HeaderLocation = new System.Drawing.Point(70, 10);
+            this.lunaSmallCardIsOnline.Image = global::pmdbs.Properties.Resources.confirmed2;
+            this.lunaSmallCardIsOnline.ImageLocation = new System.Drawing.Point(1, 1);
+            this.lunaSmallCardIsOnline.InfoLocation = new System.Drawing.Point(72, 35);
+            this.lunaSmallCardIsOnline.Location = new System.Drawing.Point(954, 87);
+            this.lunaSmallCardIsOnline.Margin = new System.Windows.Forms.Padding(0);
+            this.lunaSmallCardIsOnline.Name = "lunaSmallCardIsOnline";
+            this.lunaSmallCardIsOnline.ShowBorder = false;
+            this.lunaSmallCardIsOnline.Size = new System.Drawing.Size(206, 60);
+            this.lunaSmallCardIsOnline.TabIndex = 14;
             // 
             // pictureBoxLogo
             // 
@@ -181,6 +499,7 @@
             this.windowButtonMinimize.Name = "windowButtonMinimize";
             this.windowButtonMinimize.Size = new System.Drawing.Size(60, 50);
             this.windowButtonMinimize.TabIndex = 17;
+            this.windowButtonMinimize.OnClickEvent += new System.EventHandler(this.windowButtonMinimize_OnClickEvent);
             // 
             // windowButtonClose
             // 
@@ -194,322 +513,7 @@
             this.windowButtonClose.Name = "windowButtonClose";
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 16;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label13.Location = new System.Drawing.Point(651, 92);
-            this.label13.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(173, 32);
-            this.label13.TabIndex = 25;
-            this.label13.Text = "192.168.178.21";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label14.Location = new System.Drawing.Point(652, 60);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(200, 28);
-            this.label14.TabIndex = 24;
-            this.label14.Text = "Last Connected From:";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label17.Location = new System.Drawing.Point(34, 92);
-            this.label17.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(234, 32);
-            this.label17.TabIndex = 21;
-            this.label17.Text = "2019-09-13 11:01:35";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label18.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label18.Location = new System.Drawing.Point(35, 60);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(97, 28);
-            this.label18.TabIndex = 20;
-            this.label18.Text = "Last Seen:";
-            // 
-            // panel2
-            // 
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel2.Controls.Add(this.label31);
-            this.panel2.Controls.Add(this.label19);
-            this.panel2.Controls.Add(this.label20);
-            this.panel2.Controls.Add(this.label21);
-            this.panel2.Controls.Add(this.label22);
-            this.panel2.Controls.Add(this.label23);
-            this.panel2.Controls.Add(this.label24);
-            this.panel2.Controls.Add(this.label25);
-            this.panel2.Controls.Add(this.label26);
-            this.panel2.Controls.Add(this.label27);
-            this.panel2.Controls.Add(this.label28);
-            this.panel2.Controls.Add(this.label29);
-            this.panel2.Controls.Add(this.label30);
-            this.panel2.Location = new System.Drawing.Point(80, 260);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1000, 302);
-            this.panel2.TabIndex = 28;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label19.Location = new System.Drawing.Point(651, 168);
-            this.label19.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(79, 32);
-            this.label19.TabIndex = 31;
-            this.label19.Text = "64-Bit";
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label20.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label20.Location = new System.Drawing.Point(652, 136);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(153, 28);
-            this.label20.TabIndex = 30;
-            this.label20.Text = "OS Architecture:";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label21.Location = new System.Drawing.Point(651, 244);
-            this.label21.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(230, 32);
-            this.label21.TabIndex = 29;
-            this.label21.Text = "XEON\\Administrator";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label22.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label22.Location = new System.Drawing.Point(652, 212);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(189, 28);
-            this.label22.TabIndex = 28;
-            this.label22.Text = "Windows Username:";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label23.Location = new System.Drawing.Point(651, 93);
-            this.label23.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(166, 32);
-            this.label23.TabIndex = 27;
-            this.label23.Text = "Service Pack 1";
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label24.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label24.Location = new System.Drawing.Point(652, 61);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(123, 28);
-            this.label24.TabIndex = 26;
-            this.label24.Text = "Service Pack:";
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label25.Location = new System.Drawing.Point(34, 168);
-            this.label25.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(103, 32);
-            this.label25.TabIndex = 25;
-            this.label25.Text = "6.1.7601";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label26.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label26.Location = new System.Drawing.Point(35, 136);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(81, 28);
-            this.label26.TabIndex = 24;
-            this.label26.Text = "Version:";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label27.Location = new System.Drawing.Point(34, 244);
-            this.label27.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(77, 32);
-            this.label27.TabIndex = 23;
-            this.label27.Text = "XEON";
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label28.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label28.Location = new System.Drawing.Point(35, 212);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(217, 28);
-            this.label28.TabIndex = 22;
-            this.label28.Text = "Windows Device Name:";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label29.Location = new System.Drawing.Point(34, 93);
-            this.label29.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(143, 32);
-            this.label29.TabIndex = 21;
-            this.label29.Text = "Professional";
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label30.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label30.Location = new System.Drawing.Point(35, 61);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(78, 28);
-            this.label30.TabIndex = 20;
-            this.label30.Text = "Edition:";
-            // 
-            // label31
-            // 
-            this.label31.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label31.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label31.Location = new System.Drawing.Point(0, 0);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(998, 61);
-            this.label31.TabIndex = 32;
-            this.label31.Text = "OS Information";
-            this.label31.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // panel3
-            // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel3.Controls.Add(this.label2);
-            this.panel3.Controls.Add(this.label3);
-            this.panel3.Controls.Add(this.label4);
-            this.panel3.Controls.Add(this.label5);
-            this.panel3.Controls.Add(this.label1);
-            this.panel3.Location = new System.Drawing.Point(80, 568);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1000, 140);
-            this.panel3.TabIndex = 29;
-            // 
-            // label1
-            // 
-            this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label1.Location = new System.Drawing.Point(0, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(998, 60);
-            this.label1.TabIndex = 32;
-            this.label1.Text = "Hardware Information";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label2.Location = new System.Drawing.Point(651, 90);
-            this.label2.MaximumSize = new System.Drawing.Size(500, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(172, 32);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "34308390912B";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label3.Location = new System.Drawing.Point(652, 58);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(202, 28);
-            this.label3.TabIndex = 35;
-            this.label3.Text = "Total Pysical Memory:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label4.Location = new System.Drawing.Point(34, 90);
-            this.label4.MaximumSize = new System.Drawing.Size(750, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(482, 32);
-            this.label4.TabIndex = 34;
-            this.label4.Text = "Intel(R) Xeon(R) CPU E3-1230 v3 @ 3.30GHz";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label5.Location = new System.Drawing.Point(35, 58);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(100, 28);
-            this.label5.TabIndex = 33;
-            this.label5.Text = "Processor:";
-            // 
-            // panel4
-            // 
-            this.panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel4.Controls.Add(this.label10);
-            this.panel4.Controls.Add(this.label13);
-            this.panel4.Controls.Add(this.label18);
-            this.panel4.Controls.Add(this.label17);
-            this.panel4.Controls.Add(this.label14);
-            this.panel4.Location = new System.Drawing.Point(80, 714);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1000, 140);
-            this.panel4.TabIndex = 30;
-            // 
-            // label10
-            // 
-            this.label10.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label10.Font = new System.Drawing.Font("Segoe UI", 18F);
-            this.label10.Location = new System.Drawing.Point(0, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(998, 60);
-            this.label10.TabIndex = 32;
-            this.label10.Text = "Network Information";
-            this.label10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // animatedButtonIgnore
-            // 
-            this.animatedButtonIgnore.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButtonIgnore.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
-            this.animatedButtonIgnore.Depth = 0;
-            this.animatedButtonIgnore.Icon = null;
-            this.animatedButtonIgnore.Location = new System.Drawing.Point(391, 863);
-            this.animatedButtonIgnore.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButtonIgnore.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
-            this.animatedButtonIgnore.Name = "animatedButtonIgnore";
-            this.animatedButtonIgnore.Primary = false;
-            this.animatedButtonIgnore.Size = new System.Drawing.Size(347, 63);
-            this.animatedButtonIgnore.TabIndex = 31;
-            this.animatedButtonIgnore.Text = "Logout from this device";
-            this.animatedButtonIgnore.UseVisualStyleBackColor = true;
+            this.windowButtonClose.OnClickEvent += new System.EventHandler(this.windowButtonClose_OnClickEvent);
             // 
             // DeviceForm
             // 
@@ -519,22 +523,22 @@
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
             this.Controls.Add(this.WindowHeaderLabelLogo);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "DeviceForm";
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
-            this.panel1.ResumeLayout(false);
+            this.panelMain.ResumeLayout(false);
+            this.panelNetworkInformation.ResumeLayout(false);
+            this.panelNetworkInformation.PerformLayout();
+            this.panelHardwareInformation.ResumeLayout(false);
+            this.panelHardwareInformation.PerformLayout();
+            this.panelOsInformation.ResumeLayout(false);
+            this.panelOsInformation.PerformLayout();
             this.panelHeader.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxLogo)).EndInit();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -542,41 +546,41 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelMain;
         private System.Windows.Forms.Label WindowHeaderLabelLogo;
         private LunaForms.WindowButton windowButtonMinimize;
         private LunaForms.WindowButton windowButtonClose;
         private System.Windows.Forms.Panel panelHeader;
-        private LunaForms.LunaSmallCard lunaSmallCardIsVerified;
+        private LunaForms.LunaSmallCard lunaSmallCardIsOnline;
         private System.Windows.Forms.PictureBox pictureBoxLogo;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.Label labelDeviceId;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label31;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.Label label30;
-        private LunaForms.AnimatedButton animatedButtonIgnore;
+        private System.Windows.Forms.Label labelIp;
+        private System.Windows.Forms.Label labelIpHeader;
+        private System.Windows.Forms.Label labelLastSeen;
+        private System.Windows.Forms.Label labelLastSeenHeader;
+        private System.Windows.Forms.Panel panelNetworkInformation;
+        private System.Windows.Forms.Label labelNetworkInformationHeader;
+        private System.Windows.Forms.Panel panelHardwareInformation;
+        private System.Windows.Forms.Label labelMemory;
+        private System.Windows.Forms.Label labelMemoryHeader;
+        private System.Windows.Forms.Label labelProcessor;
+        private System.Windows.Forms.Label labelProcessorHeader;
+        private System.Windows.Forms.Label labelHardwareInformationHeader;
+        private System.Windows.Forms.Panel panelOsInformation;
+        private System.Windows.Forms.Label labelOsInformationHeader;
+        private System.Windows.Forms.Label labelArchitecture;
+        private System.Windows.Forms.Label labelArchitectureHeader;
+        private System.Windows.Forms.Label labelUsername;
+        private System.Windows.Forms.Label labelUsernameHeader;
+        private System.Windows.Forms.Label labelServicePack;
+        private System.Windows.Forms.Label labelServicePackHeader;
+        private System.Windows.Forms.Label labelVersion;
+        private System.Windows.Forms.Label labelVersionHeader;
+        private System.Windows.Forms.Label labelDeviceName;
+        private System.Windows.Forms.Label labelDeviceNameHeader;
+        private System.Windows.Forms.Label labelEdition;
+        private System.Windows.Forms.Label labelEditionHeader;
+        private LunaForms.LunaAnimatedButton lunaAnimatedButtonLogout;
     }
 }

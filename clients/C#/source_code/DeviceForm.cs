@@ -9,50 +9,68 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace pmdbs
 {
     public partial class DeviceForm : MetroFramework.Forms.MetroForm
     {
-        public DeviceForm()
+        public DeviceForm(string jsonData)
         {
             InitializeComponent();
-            labelDeviceId.Text = "Device ID: " + CryptoHelper.SHA256HashBase64("O32TCYHJ6asG9uFQ1EqbEQz5Ikg2Fwf0/BqWQWnnhBM35eKHU2SJSVaoOzfsk7o9Iuuzhq0LvgX0jwfTXEeiOw==");
-            GetDeviceInfoTemp();
+            LoadData(jsonData);
         }
 
-        private void GetDeviceInfoTemp()
+        private void LoadData(string jsonData)
         {
-            
+            OSInfo.Device device = JsonConvert.DeserializeObject<OSInfo.Device>(jsonData);
+            labelDeviceId.Text = "Device ID: " + CryptoHelper.SHA256HashBase64(device.DeviceId);
+            OSInfo.OS os = device.OS;
+            if (os.Name.ToLower().Contains("windows"))
+            {
+
+                pictureBoxLogo.Image = Properties.Resources.devices_colored_windows;
+            }
+            else if (os.Name.ToLower().Contains("android"))
+            {
+                pictureBoxLogo.Image = Properties.Resources.devices_colored_android;
+            }
+            else
+            {
+                pictureBoxLogo.Image = Properties.Resources.devices_colored_linux;
+            }
+            labelArchitecture.Text = os.Architecture;
+            labelDeviceName.Text = os.DeviceName;
+            labelEdition.Text = os.Edition;
+            labelIp.Text = device.IP;
+            labelLastSeen.Text = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(device.LastSeen)).ToLocalTime().ToString();
+            labelProcessor.Text = os.Processor;
+            labelServicePack.Text = os.ServicePack;
+            labelUsername.Text = os.UserName;
+            labelVersion.Text = os.Version;
+            labelMemory.Text = os.PhysicalMemory;
         }
 
         private void labelTitle_Click(object sender, EventArgs e)
         {
-            GetDeviceInfoTemp();
+
         }
 
-        private void panel2_Paint(object sender, PaintEventArgs e)
+        private void lunaAnimatedButtonLogout_Click(object sender, EventArgs e)
         {
-            Panel panel = (Panel)sender;
-            Color[] shadow = new Color[3];
-            shadow[0] = Color.FromArgb(181, 181, 181);
-            shadow[1] = Color.FromArgb(195, 195, 195);
-            shadow[2] = Color.FromArgb(211, 211, 211);
-            Pen pen = new Pen(shadow[0]);
-            using (pen)
-            {
-                foreach (Panel p in panel.Controls.OfType<Panel>())
-                {
-                    Point pt = p.Location;
-                    pt.Y += p.Height;
-                    for (var sp = 0; sp < 3; sp++)
-                    {
-                        pen.Color = shadow[sp];
-                        e.Graphics.DrawLine(pen, pt.X, pt.Y, pt.X + p.Width - 1, pt.Y);
-                        pt.Y++;
-                    }
-                }
-            }
+
+        }
+
+        private void windowButtonClose_OnClickEvent(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+            this.Dispose();
+        }
+
+        private void windowButtonMinimize_OnClickEvent(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }
