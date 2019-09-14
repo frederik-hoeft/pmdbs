@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace pmdbs
 {
-    public struct HelperMethods
+    public static class HelperMethods
     {
         public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
         {
@@ -103,6 +103,22 @@ namespace pmdbs
                     GlobalVarPool.settingsPanel.BringToFront();
                 });
             }
+        }
+
+        public static string ToHumanReadableFileSize(this double fileSize, int decimals)
+        {
+            string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
+            int i = 0;
+            while (fileSize > 1000)
+            {
+                fileSize /= 1000;
+                fileSize = Math.Round(fileSize, decimals, MidpointRounding.AwayFromZero);
+                if (i < units.Length)
+                {
+                    i++;
+                }
+            }
+            return fileSize.ToString() + units[i];
         }
 
         public static void InvokeOutputLabel(string text)

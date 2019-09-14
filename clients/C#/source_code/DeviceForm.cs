@@ -43,12 +43,24 @@ namespace pmdbs
             labelDeviceName.Text = os.DeviceName;
             labelEdition.Text = os.Edition;
             labelIp.Text = device.IP;
-            labelLastSeen.Text = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(device.LastSeen)).ToLocalTime().ToString();
+            if (device.LastSeen.Equals("online"))
+            {
+                lunaSmallCardIsOnline.Header = "Online";
+                lunaSmallCardIsOnline.Image = Properties.Resources.confirmed2;
+                labelLastSeen.Text = "Just now";
+            }
+            else
+            {
+                lunaSmallCardIsOnline.Header = "Offline";
+                lunaSmallCardIsOnline.Image = Properties.Resources.breach;
+                labelLastSeen.Text = TimeConverter.UnixTimeStampToDateTime(Convert.ToDouble(device.LastSeen)).ToString();
+            }
+            
             labelProcessor.Text = os.Processor;
-            labelServicePack.Text = os.ServicePack;
+            labelServicePack.Text = string.IsNullOrEmpty(os.ServicePack) ? "-" : os.ServicePack;
             labelUsername.Text = os.UserName;
             labelVersion.Text = os.Version;
-            labelMemory.Text = os.PhysicalMemory;
+            labelMemory.Text = Convert.ToDouble(os.PhysicalMemory).ToHumanReadableFileSize(1);
         }
 
         private void labelTitle_Click(object sender, EventArgs e)

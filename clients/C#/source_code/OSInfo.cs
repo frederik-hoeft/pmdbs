@@ -24,10 +24,10 @@ namespace pmdbs
             public readonly string DeviceName;
             public readonly string Processor;
             public readonly string PhysicalMemory;
-            public OS(string name, string bits, string edition, string servicePack, string version, string deviceName, string processor, string physicalMemory, string username)
+            public OS(string name, string architecture, string edition, string servicePack, string version, string deviceName, string processor, string physicalMemory, string username)
             {
                 Name = name;
-                Architecture = bits;
+                Architecture = architecture;
                 Edition = edition;
                 ServicePack = servicePack;
                 Version = version;
@@ -56,7 +56,7 @@ namespace pmdbs
 
         public static OS GetOS()
         {
-            return new OS(Name, Bits, Edition, ServicePack, VersionString, CSName, Processor, PhysicalMemory, UserName);
+            return new OS(Name, Architecture, Edition, ServicePack, VersionString, CSName, Processor, PhysicalMemory, UserName);
         }
 
         private static string CSName
@@ -81,7 +81,18 @@ namespace pmdbs
 
         private static string UserName
         {
-            get { return WMIQuery("UserName", "Win32_ComputerSystem"); }
+            get
+            {
+                string fullUsername = WMIQuery("UserName", "Win32_ComputerSystem");
+                try
+                {
+                    return fullUsername.Split('\\')[1];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    return fullUsername;
+                }
+            }
         }
 
         private static string WMIQuery(string field, string win32_Object)
@@ -97,7 +108,7 @@ namespace pmdbs
         /// <summary>
         /// Determines if the current application is 32 or 64-bit.
         /// </summary>
-        static public string Bits
+        static public string Architecture
         {
             get
             {
