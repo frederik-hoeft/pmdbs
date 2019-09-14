@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ErrorForm));
             this.ErrorFormLabelHeader = new System.Windows.Forms.Label();
-            this.ErrorFormAnimatedButtonOK = new LunaForms.AnimatedButton();
+            this.ErrorFormAnimatedButtonOK = new LunaForms.LunaAnimatedButton();
             this.ErrorFormLabelContent = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ErrorFormWindowButtonClose = new LunaForms.WindowButton();
@@ -61,7 +61,7 @@
             this.ErrorFormAnimatedButtonOK.Icon = null;
             this.ErrorFormAnimatedButtonOK.Location = new System.Drawing.Point(222, 278);
             this.ErrorFormAnimatedButtonOK.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.ErrorFormAnimatedButtonOK.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.ErrorFormAnimatedButtonOK.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
             this.ErrorFormAnimatedButtonOK.Name = "ErrorFormAnimatedButtonOK";
             this.ErrorFormAnimatedButtonOK.Primary = false;
             this.ErrorFormAnimatedButtonOK.Size = new System.Drawing.Size(197, 68);
@@ -166,7 +166,7 @@
         #endregion
 
         private LunaForms.WindowButton ErrorFormWindowButtonClose;
-        private LunaForms.AnimatedButton ErrorFormAnimatedButtonOK;
+        private LunaForms.LunaAnimatedButton ErrorFormAnimatedButtonOK;
         private System.Windows.Forms.Label ErrorFormLabelContent;
         private System.Windows.Forms.Label ErrorFormLabelHeader;
         private System.Windows.Forms.PictureBox pictureBox1;

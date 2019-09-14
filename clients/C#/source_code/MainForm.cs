@@ -171,7 +171,7 @@ namespace pmdbs
             #endregion
 
             #endregion
-            DashboardLunaItemListDevices.LunaItemClicked += card_click;
+            DashboardLunaItemListDevices.LunaItemClicked += DashboardLunaItemDevice_Click;
             DashboardLunaItemListBreaches.LunaItemClicked += Breach_Clicked;
         }
 
@@ -1885,12 +1885,11 @@ namespace pmdbs
             t++;
         }
 
-        private void card_click(object sender, EventArgs e)
+        private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
         {
             LunaItem item = (LunaItem)sender;
-            CustomException.ThrowNew.NotImplementedException("item[" + item.Id.ToString() + "]");
+            new DeviceForm(item.Id).ShowDialog();
         }
-        #endregion
         private List<Breaches.Breach> breaches;
         private void label16_Click(object sender, EventArgs e)
         {
@@ -1907,18 +1906,7 @@ namespace pmdbs
             Task<string> GetAccountCount = DataBaseHelper.GetSingleOrDefault("SELECT COUNT(1) FROM Tbl_data;");
             string accountCount = await GetAccountCount;
             FileInfo fileInfo = new FileInfo(@"Resources\localdata_windows.db");
-            double fileSize = Convert.ToDouble(fileInfo.Length - 36864);
-            string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
-            int i = 0;
-            while (fileSize > 1000)
-            {
-                fileSize /= 1000;
-                fileSize = Math.Round(fileSize, 1, MidpointRounding.AwayFromZero);
-                if (i < units.Length)
-                {
-                    i++;
-                }
-            }
+            string fileSize = Convert.ToDouble(fileInfo.Length - 36864).ToHumanReadableFileSize(1);
             DashboardLabelAccountNumber.Text = accountCount;
             if (accountCount.Equals("1"))
             {
@@ -1928,7 +1916,7 @@ namespace pmdbs
             {
                 DashboardLabelAccountsTotal.Text = "accounts total";
             }
-            DashboardLabelDiskSpaceValue.Text = fileSize.ToString() + units[i];
+            DashboardLabelDiskSpaceValue.Text = fileSize;
         }
 
         private void UpdateDevices()
@@ -2097,7 +2085,7 @@ namespace pmdbs
                 DashboardLunaItemListBreaches.RemoveAt(item.Index2);
             }
         }
-
+        #endregion
         #region PRIVATE METHODS
         private void UpdatePasswordStrength(string password, Label passwordStrengthlabel, PasswordStrengthIndicator passwordStrengthIndicator)
         {

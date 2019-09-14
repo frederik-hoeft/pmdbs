@@ -34,8 +34,8 @@
             this.lunaTextPanelIssuedFor = new LunaForms.LunaTextPanel();
             this.lunaTextPanelIssuedBy = new LunaForms.LunaTextPanel();
             this.lunaTextPanelInfo = new LunaForms.LunaTextPanel();
-            this.animatedButtonAccept = new LunaForms.AnimatedButton();
-            this.animatedButtonReject = new LunaForms.AnimatedButton();
+            this.animatedButtonAccept = new LunaForms.LunaAnimatedButton();
+            this.animatedButtonReject = new LunaForms.LunaAnimatedButton();
             this.labelInfoHeader = new System.Windows.Forms.Label();
             this.labelAlgorithm = new System.Windows.Forms.Label();
             this.labelAlgorithmHeader = new System.Windows.Forms.Label();
@@ -155,7 +155,7 @@
             this.animatedButtonAccept.Icon = null;
             this.animatedButtonAccept.Location = new System.Drawing.Point(240, 888);
             this.animatedButtonAccept.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButtonAccept.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButtonAccept.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
             this.animatedButtonAccept.Name = "animatedButtonAccept";
             this.animatedButtonAccept.Primary = false;
             this.animatedButtonAccept.Size = new System.Drawing.Size(293, 42);
@@ -172,7 +172,7 @@
             this.animatedButtonReject.Icon = null;
             this.animatedButtonReject.Location = new System.Drawing.Point(635, 888);
             this.animatedButtonReject.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButtonReject.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButtonReject.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
             this.animatedButtonReject.Name = "animatedButtonReject";
             this.animatedButtonReject.Primary = false;
             this.animatedButtonReject.Size = new System.Drawing.Size(293, 42);
@@ -457,8 +457,8 @@
         private System.Windows.Forms.Label labelAlgorithm;
         private System.Windows.Forms.Label labelAlgorithmHeader;
         private System.Windows.Forms.Label labelInfoHeader;
-        private LunaForms.AnimatedButton animatedButtonAccept;
-        private LunaForms.AnimatedButton animatedButtonReject;
+        private LunaForms.LunaAnimatedButton animatedButtonAccept;
+        private LunaForms.LunaAnimatedButton animatedButtonReject;
         private LunaForms.LunaTextPanel lunaTextPanelInfo;
         private LunaForms.LunaTextPanel lunaTextPanelIssuedFor;
         private LunaForms.LunaTextPanel lunaTextPanelIssuedBy;
