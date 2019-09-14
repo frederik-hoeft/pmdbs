@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfirmationForm));
-            this.animatedButtonCancel = new LunaForms.AnimatedButton();
-            this.AnimatedButtonOk = new LunaForms.AnimatedButton();
+            this.animatedButtonCancel = new LunaForms.LunaAnimatedButton();
+            this.AnimatedButtonOk = new LunaForms.LunaAnimatedButton();
             this.LabelContent = new System.Windows.Forms.Label();
             this.WindowButtonClose = new LunaForms.WindowButton();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -49,7 +49,7 @@
             this.animatedButtonCancel.Icon = null;
             this.animatedButtonCancel.Location = new System.Drawing.Point(419, 266);
             this.animatedButtonCancel.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButtonCancel.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.animatedButtonCancel.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
             this.animatedButtonCancel.Name = "animatedButtonCancel";
             this.animatedButtonCancel.Primary = false;
             this.animatedButtonCancel.Size = new System.Drawing.Size(197, 68);
@@ -68,7 +68,7 @@
             this.AnimatedButtonOk.Icon = null;
             this.AnimatedButtonOk.Location = new System.Drawing.Point(24, 266);
             this.AnimatedButtonOk.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.AnimatedButtonOk.MouseState = LunaForms.AnimatedButton.MouseStateBase.HOVER;
+            this.AnimatedButtonOk.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
             this.AnimatedButtonOk.Name = "AnimatedButtonOk";
             this.AnimatedButtonOk.Primary = false;
             this.AnimatedButtonOk.Size = new System.Drawing.Size(197, 68);
@@ -161,9 +161,9 @@
         }
 
         #endregion
-        private LunaForms.AnimatedButton AnimatedButtonOk;
+        private LunaForms.LunaAnimatedButton AnimatedButtonOk;
         private LunaForms.WindowButton WindowButtonClose;
-        private LunaForms.AnimatedButton animatedButtonCancel;
+        private LunaForms.LunaAnimatedButton animatedButtonCancel;
         private System.Windows.Forms.Label LabelContent;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
