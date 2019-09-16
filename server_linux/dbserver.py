@@ -579,18 +579,12 @@ class Network():
 			client.SOCKET_IN_USE = False
 	
 	# SEND DATA WITHOUT ENCRYPTION
-	def Send(clientSocket, data):
-		client = GetClient(clientSocket)
-		if client is False:
-			Log.ServerEventLog("SOCKET_ERROR", "client is False")
-			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", None, True)
-			return
-		address = client.address
+	def Send(clientSocket, data, clientAddress):
 		try:
 			clientSocket.send(b'\x01' + bytes("U" + data, "utf-8") + b'\x04')
 		except Exception as e:
 			Log.ServerEventLog("SOCKET_ERROR", e)
-			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", address, True)
+			Management.Disconnect(clientSocket, "SERVER_SIDE_SOCKET_ERROR", clientAddress, True)
 
 # PROVIDES DATABASE RELATED METHODS
 class DatabaseManagement():
@@ -1377,6 +1371,8 @@ class Management():
 		detailArray = details.split("\n")
 		detailCount = len(detailArray)
 		for index, detail in enumerate(detailArray):
+			if "Device" in detail:
+				detail = detail.replace("§","\"")
 			if not index == (detailCount - 1):
 				PrintSendToAdmin(CWHITE + "├─╼ " + detail + ENDF)
 			else:
@@ -1851,7 +1847,7 @@ class Management():
 		if cookieExists != 1:
 			Handle.Error("NFND", None, clientAddress, clientSocket, aesKey, True)
 			return
-		querySuccessful = DatabasHelper.UserData.Modify("DELETE FROM Tbl_connectUserCookies WHERE C_id IN (SELECT c.C_id from Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " and c.C_cookie = \"" + cookie + "\") AND U_id IN (SELECT u.U_id from Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " and c.C_cookie = \"" + cookie + "\");", clientSocket, aesKey)
+		querySuccessful = DatabaseHelper.UserData.Modify("DELETE FROM Tbl_connectUserCookies WHERE C_id IN (SELECT c.C_id from Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " and c.C_cookie = \"" + cookie + "\") AND U_id IN (SELECT u.U_id from Tbl_cookies as c, Tbl_connectUserCookies as cuc, Tbl_user as u WHERE c.C_id = cuc.C_id AND cuc.U_id = u.U_id AND u.U_id = " + userID + " and c.C_cookie = \"" + cookie + "\");", clientSocket, aesKey)
 		if querySuccessful is False:
 			return
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, "INFRETmsg%eq!UNLINK_SUCCESSFUL!;")
@@ -1876,6 +1872,7 @@ class Management():
 		for device in devices:
 			currentDevices.append([device[0], device[1], device[2], device[3]])
 		devices = currentDevices
+		jsonDevices = []
 		for device in devices:
 			for client in allClientsLocal:
 				try:
@@ -1884,10 +1881,11 @@ class Management():
 						break
 				except IndexError:
 					break
-				else:
-					current
+			jsonDevice = "{\"OS\":" + device[1].replace("§","\"") + ",\"DeviceId\":\"" + device[0] + "\",\"LastSeen\":\"" + device[2] + "\",\"IP\":\"" + device[3] + "\"}"
+			jsonDevices.append(jsonDevice)
+			
 		# RETURN DATA TO CLIENT
-		returnData = "DTADEVdata%eq!" + str(devices).replace("!",".") + "!;"
+		returnData = "DTADEVdata%eq!" + str(jsonDevices).replace("!",".") + "!;"
 		# SEND DATA ENCRYPTED TO CLIENT
 		Network.SendEncryptedThreadSafe(clientSocket, aesKey, returnData)
 		PrintSendToAdmin("SERVER ---> LINKED DEVICES             ---> " + clientAddress)
@@ -2346,7 +2344,7 @@ class Management():
 			# SQL ERROR --> DISALLOW CONNECTION AND SEND STATUS TO ADMIN
 			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR", "data is False")
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: SQLE    ---> " + clientAddress)
-			Network.Send(clientSocket, "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR")
+			Network.Send(clientSocket, "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR", clientAddress)
 			return
 		try:
 			time = data[0][0]
@@ -2359,12 +2357,12 @@ class Management():
 		if time is None or duration is None:
 			Log.ServerEventLog("CONNECTION_FAILED_INTERNAL_SERVER_ERROR","N/A")
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: SQLE    ---> " + clientAddress)
-			Network.Send(clientSocket, "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR")
+			Network.Send(clientSocket, "ERRCONNECTION_FAILED_INTERNAL_SERVER_ERROR", clientAddress)
 			return
 		# CHECK IF CLIENT IS ALLOWED TO CONNECT AGAIN
 		if int(time) + int(duration) > int(Timestamp()):
 			PrintSendToAdmin("SERVER ---> CONNECTION DENIED: BANNED  ---> " + clientAddress)
-			Network.Send(clientSocket, "ERRCONNECTION_FAILED_BANNED")
+			Network.Send(clientSocket, "ERRCONNECTION_FAILED_BANNED", clientAddress)
 			return
 		# ALL CHECKS PASSED --> ALLOW CONNECTION
 		Management.AllowConnection(clientAddress, clientSocket)
@@ -3210,7 +3208,7 @@ class Management():
 		Management.Unlist(clientSocket)
 		if not ignoreErrors:
 			# SEND CUSTOM FIN
-			Network.Send(clientSocket, "FINmessage%eq!" + message + "!;")
+			Network.Send(clientSocket, "FINmessage%eq!" + message + "!;", address)
 		# SEND TCP FIN
 		try:
 			clientSocket.shutdown(socket.SHUT_RDWR)
@@ -3899,8 +3897,8 @@ class Management():
 			if not DatabaseHelper.UserData.Modify("UPDATE Tbl_user SET U_code = \"" + codeFinal + "\", U_codeTime = \"" + timestamp + "\", U_codeType = \"NEW_LOGIN\", U_codeAttempts = 0 WHERE U_username = \"" + username + "\";", clientSocket, aesKey):
 				return
 			# GET DEVICE DETAILS
-			details = GetDetails(clientSocket)
-			Handle.Error("DVFY", None, clientAddress, clientSocket, aesKey, True)
+			details = GetDetails(clientSocket).replace("§","\"")
+			Handle.Error("DVFY", None, clientAddress, None, None, False)
 			Log.ClientEventLog("LOGIN_FROM_NEW_DEVICE", clientSocket)
 			# ADAPT FORMATTING TO WORK IN HTML
 			htmlDetails = details.replace("\n","<br>")
@@ -3982,7 +3980,7 @@ class Management():
 				Log.ClientEventLog("LOGOUT", clientSocket)
 				try:
 					Server.authorizedClients.remove(user)
-				except:
+				except Exception as e:
 					isLoggedout = False
 				else:
 					isLoggedout = True
