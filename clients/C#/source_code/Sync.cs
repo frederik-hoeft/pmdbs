@@ -158,10 +158,9 @@ namespace pmdbs
                 }
                 else
                 {
+                    MainForm.InvokeSyncAnimationStop();
                     GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
                     {
-                        MainForm.InvokeSyncAnimationStop();
-                        // CustomException.ThrowNew.GenericException("Done. Nothing to do.");
                         GlobalVarPool.syncButton.Enabled = true;
                     });
                 }
@@ -347,10 +346,10 @@ namespace pmdbs
                 }
                 RowCounter++;
             }
+            MainForm.InvokeSyncAnimationStop();
+            MainForm.InvokeReload();
             GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
-                MainForm.InvokeSyncAnimationStop();
-                MainForm.InvokeReload();
                 GlobalVarPool.syncButton.Enabled = true;
             });
         }

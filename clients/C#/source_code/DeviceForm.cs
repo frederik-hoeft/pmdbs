@@ -15,15 +15,17 @@ namespace pmdbs
 {
     public partial class DeviceForm : MetroFramework.Forms.MetroForm
     {
+        private readonly string cookie = string.Empty;
         public DeviceForm(string jsonData)
         {
             InitializeComponent();
-            LoadData(jsonData);
+            OSInfo.Device device = JsonConvert.DeserializeObject<OSInfo.Device>(jsonData);
+            cookie = device.DeviceId;
+            LoadData(device);
         }
 
-        private void LoadData(string jsonData)
+        private void LoadData(OSInfo.Device device)
         {
-            OSInfo.Device device = JsonConvert.DeserializeObject<OSInfo.Device>(jsonData);
             labelDeviceId.Text = "Device ID: " + CryptoHelper.SHA256HashBase64(device.DeviceId);
             OSInfo.OS os = device.OS;
             if (os.Name.ToLower().Contains("windows"))
@@ -63,14 +65,23 @@ namespace pmdbs
             labelMemory.Text = Convert.ToDouble(os.PhysicalMemory).ToHumanReadableFileSize(1);
         }
 
-        private void labelTitle_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void lunaAnimatedButtonLogout_Click(object sender, EventArgs e)
         {
-
+            AutomatedTaskFramework.Tasks.Clear();
+            if (!GlobalVarPool.connected)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+            }
+            if (!GlobalVarPool.isUser)
+            {
+                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+            }
+            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "UNLINK_SUCCESSFUL", () => NetworkAdapter.MethodProvider.RemoveDevice(cookie));
+            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, MainForm.InvokeDashboardUpdate);
+            AutomatedTaskFramework.Tasks.Execute();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+            this.Dispose();
         }
 
         private void windowButtonClose_OnClickEvent(object sender, EventArgs e)

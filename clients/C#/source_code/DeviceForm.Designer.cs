@@ -432,7 +432,6 @@
             this.labelTitle.TabIndex = 2;
             this.labelTitle.Text = "Windows 7";
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.labelTitle.Click += new System.EventHandler(this.labelTitle_Click);
             // 
             // panelHeader
             // 

@@ -39,17 +39,34 @@ namespace pmdbs
         int MaxPages = 1;
         public static void InvokeReload()
         {
-            GlobalVarPool.Form1.ApplyFilter(0);
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.ApplyFilter(0);
+            });
         }
 
         public static void InvokeSyncAnimationStop()
         {
-            GlobalVarPool.Form1.SyncAnimationStop();
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.SyncAnimationStop();
+            });
         }
 
         public static void InvokeRefreshSettings()
         {
-            GlobalVarPool.Form1.RefreshSettings();
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.RefreshSettings();
+            });
+        }
+
+        public static void InvokeDashboardUpdate()
+        {
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.UpdateDashboard();
+            });
         }
         #endregion
 
@@ -1892,6 +1909,11 @@ namespace pmdbs
         }
         private List<Breaches.Breach> breaches;
         private void label16_Click(object sender, EventArgs e)
+        {
+            UpdateDashboard();
+        }
+
+        private void UpdateDashboard()
         {
             UpdateBreaches();
             UpdateStats();

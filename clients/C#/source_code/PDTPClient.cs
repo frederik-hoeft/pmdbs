@@ -134,10 +134,10 @@ namespace pmdbs
             catch
             {
                 CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
+                MainForm.InvokeSyncAnimationStop();
                 GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.syncButton.Enabled = true;
-                    MainForm.InvokeSyncAnimationStop();
                 });
                 GlobalVarPool.connectionLost = true;
                 return;
@@ -818,10 +818,7 @@ namespace pmdbs
                                                                             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_name = \"", name, "\", U_email = \"", email, "\", U_datetime = \"", datetime, "\";" }));
                                                                             GlobalVarPool.email = email;
                                                                             GlobalVarPool.name = name;
-                                                                            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                                                                            {
-                                                                                MainForm.InvokeRefreshSettings();
-                                                                            });
+                                                                            MainForm.InvokeRefreshSettings();
                                                                         }).Start();
                                                                         break;
                                                                     }
