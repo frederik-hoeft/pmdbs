@@ -414,7 +414,7 @@ namespace pmdbs
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
                                     // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)
-                                    AutomatedTaskFramework.DoTasks(decryptedData);
+                                    AutomatedTaskFramework.DoNetworkTasks(decryptedData);
                                     switch (packetID)
                                     {
                                         case "KEX":
@@ -557,8 +557,8 @@ namespace pmdbs
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
                                                                     AutomatedTaskFramework.Tasks.Clear();
-                                                                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                                                                    AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                                                                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                                                    AutomatedTaskFramework.Task.Create(TaskType.FireAndForget,  NetworkAdapter.MethodProvider.Disconnect);
                                                                     AutomatedTaskFramework.Tasks.Execute();
                                                                     new Thread(new ThreadStart(Sync.Finish))
                                                                     {
@@ -735,12 +735,9 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
-                                                                        if (!GlobalVarPool.syncButton.Enabled)
-                                                                        {
-                                                                            GlobalVarPool.promptFromBackgroundThread = true;
-                                                                        }
+                                                                        GlobalVarPool.promptFromBackgroundThread = true;
                                                                         GlobalVarPool.promptCommand = "CONFIRM_NEW_DEVICE";
-                                                                        HelperMethods.Prompt("Confirm new device", "Looks like your trying to login from a new device.");
+                                                                        HelperMethods.Prompt("Confirm new device", "Looks like you're trying to login from a new device.");
                                                                         break;
                                                                     }
                                                                 case "NOT_LOGGED_IN":

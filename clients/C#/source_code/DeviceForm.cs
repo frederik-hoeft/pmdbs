@@ -41,6 +41,7 @@ namespace pmdbs
             {
                 pictureBoxLogo.Image = Properties.Resources.devices_colored_linux;
             }
+            labelTitle.Text = GlobalVarPool.cookie.Equals(device.DeviceId) ? os.Name + " (this device)" : os.Name;
             labelArchitecture.Text = os.Architecture;
             labelDeviceName.Text = os.DeviceName;
             labelEdition.Text = os.Edition;
@@ -67,17 +68,20 @@ namespace pmdbs
 
         private void lunaAnimatedButtonLogout_Click(object sender, EventArgs e)
         {
+            lunaAnimatedButtonLogout.Enabled = false;
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "UNLINK_SUCCESSFUL", () => NetworkAdapter.MethodProvider.RemoveDevice(cookie));
-            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, MainForm.InvokeDashboardUpdate);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "UNLINK_SUCCESSFUL", () => NetworkAdapter.MethodProvider.RemoveDevice(cookie));
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, MainForm.InvokeDashboardUpdate);
             AutomatedTaskFramework.Tasks.Execute();
             this.DialogResult = DialogResult.Cancel;
             this.Close();
