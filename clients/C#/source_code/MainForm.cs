@@ -236,6 +236,7 @@ namespace pmdbs
                 }
             }
             Thread.Sleep(1500); // SHOW SPLASHSCREEN
+            HideFilterPanel();
             GuiLoaded = true;
         }
 
@@ -250,8 +251,7 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             WindowHeaderLabelTitle.Text = "Dashboard";
-            FilterAdvancedComboBoxSort.Visible = false;
-            FilterEditFieldSearch.Visible = false;
+            HideFilterPanel();
             DashboardTableLayoutPanel.BringToFront();
         }
 
@@ -261,8 +261,7 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Colors.Orange;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             SettingsTableLayoutPanelMain.BringToFront();
-            FilterAdvancedComboBoxSort.Visible = false;
-            FilterEditFieldSearch.Visible = false;
+            HideFilterPanel();
             if (GlobalVarPool.wasOnline)
             {
                 SettingsFlowLayoutPanelOnline.BringToFront();
@@ -279,10 +278,25 @@ namespace pmdbs
             MenuPanelHomeIndicator.BackColor = Color.White;
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
-            FilterAdvancedComboBoxSort.Visible = true;
-            FilterEditFieldSearch.Visible = true;
+            ShowFilterPanel();
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Passwords";
+        }
+
+        private void HideFilterPanel()
+        {
+            FilterLabelSort.Visible = false;
+            FilterAdvancedComboBoxSort.Visible = false;
+            FilterEditFieldSearch.Visible = false;
+            FilterPanel.Visible = false;
+        }
+
+        private void ShowFilterPanel()
+        {
+            FilterLabelSort.Visible = true;
+            FilterAdvancedComboBoxSort.Visible = true;
+            FilterEditFieldSearch.Visible = true;
+            FilterPanel.Visible = true;
         }
 
         private void SyncAnimationStart()

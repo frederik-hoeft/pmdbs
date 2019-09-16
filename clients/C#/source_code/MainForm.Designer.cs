@@ -48,11 +48,11 @@
             this.DashboardTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.DashboardLunaItemListDevices = new LunaForms.LunaItemList();
             this.label11 = new System.Windows.Forms.Label();
             this.animatedButton1 = new LunaForms.LunaAnimatedButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.DashboardLunaItemListDevices = new LunaForms.LunaItemList();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.DashboardPanelPasswordStrength = new System.Windows.Forms.Panel();
             this.DashboardLunaSmallCardPasswordStrength = new LunaForms.LunaSmallCard();
@@ -283,17 +283,9 @@
             this.SettingsEditFieldLoginIP = new LunaForms.EditField();
             this.SettingsEditFieldLoginPort = new LunaForms.EditField();
             this.SettingsEditFieldLoginUsername = new LunaForms.EditField();
-            this.WindowHeaderLabelLogo = new System.Windows.Forms.Label();
             this.WindowHeaderPanel = new System.Windows.Forms.Panel();
-            this.WindowHeaderTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.WindowPictureBoxIcon = new System.Windows.Forms.PictureBox();
-            this.WindowsHeaderPanelSubRight = new System.Windows.Forms.Panel();
             this.FilterLabelSort = new System.Windows.Forms.Label();
             this.FilterAdvancedComboBoxSort = new LunaForms.AdvancedComboBox();
-            this.FilterEditFieldSearch = new LunaForms.EditField();
-            this.WindowsHeaderOvalPanelTitle = new LunaForms.OvalPanel();
-            this.WindowHeaderPictureBoxIcon = new System.Windows.Forms.PictureBox();
-            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
             this.PanelMain = new System.Windows.Forms.Panel();
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
@@ -338,6 +330,9 @@
             this.LoginPictureBoxOfflineLogo = new System.Windows.Forms.PictureBox();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
+            this.WindowHeaderLabelTitle = new System.Windows.Forms.Label();
+            this.FilterEditFieldSearch = new LunaForms.EditField();
+            this.FilterPanel = new System.Windows.Forms.Panel();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -425,11 +420,6 @@
             this.SettingsFlowLayoutPanelLogin.SuspendLayout();
             this.SettingsPanelLoginContent.SuspendLayout();
             this.WindowHeaderPanel.SuspendLayout();
-            this.WindowHeaderTableLayoutPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).BeginInit();
-            this.WindowsHeaderPanelSubRight.SuspendLayout();
-            this.WindowsHeaderOvalPanelTitle.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).BeginInit();
             this.PanelMain.SuspendLayout();
             this.PanelLogin.SuspendLayout();
             this.LoginTableLayoutPanelMain.SuspendLayout();
@@ -451,6 +441,7 @@
             this.LoginPictureBoxOfflineMain.SuspendLayout();
             this.LoginPanelOfflineCredentials.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).BeginInit();
+            this.FilterPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -719,6 +710,31 @@
             this.panel2.Size = new System.Drawing.Size(264, 709);
             this.panel2.TabIndex = 2;
             // 
+            // DashboardLunaItemListDevices
+            // 
+            this.DashboardLunaItemListDevices.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.DashboardLunaItemListDevices.ImageLocation = new System.Drawing.Point(1, 1);
+            this.DashboardLunaItemListDevices.IsScrollable = true;
+            this.DashboardLunaItemListDevices.Location = new System.Drawing.Point(0, 67);
+            this.DashboardLunaItemListDevices.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.DashboardLunaItemListDevices.LunaItemBackColorNormal = System.Drawing.Color.White;
+            this.DashboardLunaItemListDevices.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
+            this.DashboardLunaItemListDevices.LunaItemForeColorHeader = System.Drawing.Color.Black;
+            this.DashboardLunaItemListDevices.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
+            this.DashboardLunaItemListDevices.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.DashboardLunaItemListDevices.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.DashboardLunaItemListDevices.LunaItemHeader = "Item";
+            this.DashboardLunaItemListDevices.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
+            this.DashboardLunaItemListDevices.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
+            this.DashboardLunaItemListDevices.LunaItemShowInfo = false;
+            this.DashboardLunaItemListDevices.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
+            this.DashboardLunaItemListDevices.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.DashboardLunaItemListDevices.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
+            this.DashboardLunaItemListDevices.Margin = new System.Windows.Forms.Padding(0);
+            this.DashboardLunaItemListDevices.Name = "DashboardLunaItemListDevices";
+            this.DashboardLunaItemListDevices.Size = new System.Drawing.Size(264, 535);
+            this.DashboardLunaItemListDevices.TabIndex = 0;
+            // 
             // label11
             // 
             this.label11.AutoSize = true;
@@ -744,6 +760,7 @@
             this.animatedButton1.Size = new System.Drawing.Size(234, 83);
             this.animatedButton1.TabIndex = 3;
             this.animatedButton1.Text = "account activity";
+            this.animatedButton1.Uppercase = false;
             this.animatedButton1.UseVisualStyleBackColor = true;
             this.animatedButton1.Click += new System.EventHandler(this.animatedButton1_Click);
             // 
@@ -773,31 +790,6 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(802, 349);
             this.panel3.TabIndex = 2;
-            // 
-            // DashboardLunaItemListDevices
-            // 
-            this.DashboardLunaItemListDevices.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.DashboardLunaItemListDevices.ImageLocation = new System.Drawing.Point(1, 1);
-            this.DashboardLunaItemListDevices.IsScrollable = true;
-            this.DashboardLunaItemListDevices.Location = new System.Drawing.Point(0, 67);
-            this.DashboardLunaItemListDevices.LunaItemBackColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.DashboardLunaItemListDevices.LunaItemBackColorNormal = System.Drawing.Color.White;
-            this.DashboardLunaItemListDevices.LunaItemFont = new System.Drawing.Font("Segoe UI", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel);
-            this.DashboardLunaItemListDevices.LunaItemForeColorHeader = System.Drawing.Color.Black;
-            this.DashboardLunaItemListDevices.LunaItemForeColorHeaderHover = System.Drawing.Color.Black;
-            this.DashboardLunaItemListDevices.LunaItemForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.DashboardLunaItemListDevices.LunaItemForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.DashboardLunaItemListDevices.LunaItemHeader = "Item";
-            this.DashboardLunaItemListDevices.LunaItemHeaderLocation = new System.Drawing.Point(70, 10);
-            this.DashboardLunaItemListDevices.LunaItemInfoLocation = new System.Drawing.Point(72, 35);
-            this.DashboardLunaItemListDevices.LunaItemShowInfo = false;
-            this.DashboardLunaItemListDevices.LunaScrollBarBackColorScrollBar = System.Drawing.Color.FromArgb(((int)(((byte)(234)))), ((int)(((byte)(234)))), ((int)(((byte)(234)))));
-            this.DashboardLunaItemListDevices.LunaScrollBarForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.DashboardLunaItemListDevices.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.DashboardLunaItemListDevices.Margin = new System.Windows.Forms.Padding(0);
-            this.DashboardLunaItemListDevices.Name = "DashboardLunaItemListDevices";
-            this.DashboardLunaItemListDevices.Size = new System.Drawing.Size(264, 535);
-            this.DashboardLunaItemListDevices.TabIndex = 0;
             // 
             // tableLayoutPanel3
             // 
@@ -995,7 +987,7 @@
             this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfo = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DashboardLunaSmallCardListHotspots.LunaSmallCardForeColorInfoHover = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeader = "LunaSmallCard";
-            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 0);
+            this.DashboardLunaSmallCardListHotspots.LunaSmallCardHeaderLocation = new System.Drawing.Point(70, 10);
             this.DashboardLunaSmallCardListHotspots.LunaSmallCardInfoLocation = new System.Drawing.Point(72, 35);
             this.DashboardLunaSmallCardListHotspots.LunaSmallCardShowInfo = false;
             this.DashboardLunaSmallCardListHotspots.Name = "DashboardLunaSmallCardListHotspots";
@@ -1668,6 +1660,7 @@
             this.DataEditAnimatedButtonGeneratePassword.Size = new System.Drawing.Size(155, 53);
             this.DataEditAnimatedButtonGeneratePassword.TabIndex = 2;
             this.DataEditAnimatedButtonGeneratePassword.Text = "GENERATE";
+            this.DataEditAnimatedButtonGeneratePassword.Uppercase = false;
             this.DataEditAnimatedButtonGeneratePassword.UseVisualStyleBackColor = true;
             this.DataEditAnimatedButtonGeneratePassword.Click += new System.EventHandler(this.DataEditAnimatedButtonGeneratePassword_Click);
             // 
@@ -2106,6 +2099,7 @@
             this.DataFilterResultsAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
             this.DataFilterResultsAnimatedButtonReset.TabIndex = 3;
             this.DataFilterResultsAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterResultsAnimatedButtonReset.Uppercase = false;
             this.DataFilterResultsAnimatedButtonReset.UseVisualStyleBackColor = true;
             this.DataFilterResultsAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
             // 
@@ -2172,6 +2166,7 @@
             this.DataFilterAnimatedButtonReset.Size = new System.Drawing.Size(202, 101);
             this.DataFilterAnimatedButtonReset.TabIndex = 17;
             this.DataFilterAnimatedButtonReset.Text = "reset filter";
+            this.DataFilterAnimatedButtonReset.Uppercase = false;
             this.DataFilterAnimatedButtonReset.UseVisualStyleBackColor = true;
             this.DataFilterAnimatedButtonReset.Click += new System.EventHandler(this.DataFilterResultsAnimatedButtonReset_Click);
             // 
@@ -2437,6 +2432,7 @@
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Size = new System.Drawing.Size(165, 55);
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.TabIndex = 2;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Text = "GENERATE";
+            this.AddPanelGeneratePasswordAnimatedButtonGenerate.Uppercase = false;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.UseVisualStyleBackColor = true;
             this.AddPanelGeneratePasswordAnimatedButtonGenerate.Click += new System.EventHandler(this.AddPanelGeneratePasswordAnimatedButtonGenerate_Click);
             // 
@@ -2736,6 +2732,7 @@
             this.AddPanelAnimatedButtonCheckIcon.Size = new System.Drawing.Size(236, 97);
             this.AddPanelAnimatedButtonCheckIcon.TabIndex = 18;
             this.AddPanelAnimatedButtonCheckIcon.Text = "CHECK FOR ICON";
+            this.AddPanelAnimatedButtonCheckIcon.Uppercase = false;
             this.AddPanelAnimatedButtonCheckIcon.UseVisualStyleBackColor = true;
             this.AddPanelAnimatedButtonCheckIcon.Click += new System.EventHandler(this.AddPanelAnimatedButtonCheckIcon_Click);
             // 
@@ -2962,6 +2959,7 @@
             this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Size = new System.Drawing.Size(255, 87);
             this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.TabIndex = 10;
             this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Uppercase = false;
             this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOnlinePasswordChangeSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlinePasswordChangeSubmit_Click);
             // 
@@ -3041,6 +3039,7 @@
             this.SettingsAnimatedButtonOnlineChangeName.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOnlineChangeName.TabIndex = 13;
             this.SettingsAnimatedButtonOnlineChangeName.Text = "Change Name";
+            this.SettingsAnimatedButtonOnlineChangeName.Uppercase = false;
             this.SettingsAnimatedButtonOnlineChangeName.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOnlineChangeName.Click += new System.EventHandler(this.SettingsAnimatedButtonOnlineChangeName_Click);
             // 
@@ -3117,6 +3116,7 @@
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOnlineChangeServerRegister.TabIndex = 14;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Uppercase = false;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
             // 
@@ -3134,6 +3134,7 @@
             this.SettingsAnimatedButtonOnlineChangeServerLogin.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOnlineChangeServerLogin.TabIndex = 13;
             this.SettingsAnimatedButtonOnlineChangeServerLogin.Text = "Login";
+            this.SettingsAnimatedButtonOnlineChangeServerLogin.Uppercase = false;
             this.SettingsAnimatedButtonOnlineChangeServerLogin.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOnlineChangeServerLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonLogin_Click);
             // 
@@ -3303,6 +3304,7 @@
             this.SettingsAnimatedButtonChangePasswordSubmit.Size = new System.Drawing.Size(255, 87);
             this.SettingsAnimatedButtonChangePasswordSubmit.TabIndex = 10;
             this.SettingsAnimatedButtonChangePasswordSubmit.Text = "Change Master Password";
+            this.SettingsAnimatedButtonChangePasswordSubmit.Uppercase = false;
             this.SettingsAnimatedButtonChangePasswordSubmit.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonChangePasswordSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonChangePasswordSubmit_Click);
             // 
@@ -3382,6 +3384,7 @@
             this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
             this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOfflineRegister.Uppercase = false;
             this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
             // 
@@ -3399,6 +3402,7 @@
             this.SettingsAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOfflineLogin.TabIndex = 13;
             this.SettingsAnimatedButtonOfflineLogin.Text = "Login";
+            this.SettingsAnimatedButtonOfflineLogin.Uppercase = false;
             this.SettingsAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.SettingsAnimatedButtonLogin_Click);
             // 
@@ -3449,6 +3453,7 @@
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.TabIndex = 13;
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Text = "Change Name";
+            this.SettingsAnimatedButtonOfflineChangeNameSubmit.Uppercase = false;
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOfflineChangeNameSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonOfflineChangeNameSubmit_Click);
             // 
@@ -3578,6 +3583,7 @@
             this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
             this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
             this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
+            this.SettingsAnimatedButtonPromptSubmit.Uppercase = false;
             this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
             // 
@@ -3704,6 +3710,7 @@
             this.SettingsAnimatedButtonSubmit.Size = new System.Drawing.Size(317, 56);
             this.SettingsAnimatedButtonSubmit.TabIndex = 21;
             this.SettingsAnimatedButtonSubmit.Text = "Connect & Register";
+            this.SettingsAnimatedButtonSubmit.Uppercase = false;
             this.SettingsAnimatedButtonSubmit.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonSubmit_Click);
             // 
@@ -3955,6 +3962,7 @@
             this.SettingsAnimatedButtonLoginSubmit.Size = new System.Drawing.Size(317, 56);
             this.SettingsAnimatedButtonLoginSubmit.TabIndex = 21;
             this.SettingsAnimatedButtonLoginSubmit.Text = "Connect & Login";
+            this.SettingsAnimatedButtonLoginSubmit.Uppercase = false;
             this.SettingsAnimatedButtonLoginSubmit.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonLoginSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonLoginSubmit_Click);
             // 
@@ -4077,23 +4085,12 @@
             this.SettingsEditFieldLoginUsername.UseDefaultValue = false;
             this.SettingsEditFieldLoginUsername.UseSystemPasswordChar = false;
             // 
-            // WindowHeaderLabelLogo
-            // 
-            this.WindowHeaderLabelLogo.AutoSize = true;
-            this.WindowHeaderLabelLogo.Font = new System.Drawing.Font("Segoe UI", 16F);
-            this.WindowHeaderLabelLogo.ForeColor = System.Drawing.Color.White;
-            this.WindowHeaderLabelLogo.Location = new System.Drawing.Point(13, 14);
-            this.WindowHeaderLabelLogo.Name = "WindowHeaderLabelLogo";
-            this.WindowHeaderLabelLogo.Size = new System.Drawing.Size(119, 45);
-            this.WindowHeaderLabelLogo.TabIndex = 9;
-            this.WindowHeaderLabelLogo.Text = "pmdbs";
-            this.WindowHeaderLabelLogo.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WindowHeaderLabelLogo_MouseDown);
-            // 
             // WindowHeaderPanel
             // 
             this.WindowHeaderPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.WindowHeaderPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.WindowHeaderPanel.Controls.Add(this.WindowHeaderTableLayoutPanel);
+            this.WindowHeaderPanel.Controls.Add(this.FilterPanel);
+            this.WindowHeaderPanel.Controls.Add(this.WindowHeaderLabelTitle);
             this.WindowHeaderPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.WindowHeaderPanel.Location = new System.Drawing.Point(0, 0);
             this.WindowHeaderPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -4101,56 +4098,11 @@
             this.WindowHeaderPanel.Size = new System.Drawing.Size(1880, 114);
             this.WindowHeaderPanel.TabIndex = 0;
             // 
-            // WindowHeaderTableLayoutPanel
-            // 
-            this.WindowHeaderTableLayoutPanel.ColumnCount = 3;
-            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 267F));
-            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.WindowHeaderTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 1765F));
-            this.WindowHeaderTableLayoutPanel.Controls.Add(this.WindowPictureBoxIcon, 0, 0);
-            this.WindowHeaderTableLayoutPanel.Controls.Add(this.WindowsHeaderPanelSubRight, 2, 0);
-            this.WindowHeaderTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WindowHeaderTableLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.WindowHeaderTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.WindowHeaderTableLayoutPanel.Name = "WindowHeaderTableLayoutPanel";
-            this.WindowHeaderTableLayoutPanel.RowCount = 2;
-            this.WindowHeaderTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
-            this.WindowHeaderTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.WindowHeaderTableLayoutPanel.Size = new System.Drawing.Size(1880, 114);
-            this.WindowHeaderTableLayoutPanel.TabIndex = 0;
-            // 
-            // WindowPictureBoxIcon
-            // 
-            this.WindowPictureBoxIcon.BackColor = System.Drawing.Color.White;
-            this.WindowPictureBoxIcon.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WindowPictureBoxIcon.Image = ((System.Drawing.Image)(resources.GetObject("WindowPictureBoxIcon.Image")));
-            this.WindowPictureBoxIcon.Location = new System.Drawing.Point(0, 1);
-            this.WindowPictureBoxIcon.Margin = new System.Windows.Forms.Padding(0, 1, 1, 1);
-            this.WindowPictureBoxIcon.Name = "WindowPictureBoxIcon";
-            this.WindowPictureBoxIcon.Size = new System.Drawing.Size(266, 102);
-            this.WindowPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.WindowPictureBoxIcon.TabIndex = 10;
-            this.WindowPictureBoxIcon.TabStop = false;
-            // 
-            // WindowsHeaderPanelSubRight
-            // 
-            this.WindowsHeaderPanelSubRight.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterLabelSort);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterAdvancedComboBoxSort);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.FilterEditFieldSearch);
-            this.WindowsHeaderPanelSubRight.Controls.Add(this.WindowsHeaderOvalPanelTitle);
-            this.WindowsHeaderPanelSubRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.WindowsHeaderPanelSubRight.Location = new System.Drawing.Point(277, 1);
-            this.WindowsHeaderPanelSubRight.Margin = new System.Windows.Forms.Padding(0, 1, 0, 1);
-            this.WindowsHeaderPanelSubRight.Name = "WindowsHeaderPanelSubRight";
-            this.WindowsHeaderPanelSubRight.Size = new System.Drawing.Size(1765, 102);
-            this.WindowsHeaderPanelSubRight.TabIndex = 11;
-            // 
             // FilterLabelSort
             // 
             this.FilterLabelSort.AutoSize = true;
             this.FilterLabelSort.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterLabelSort.Location = new System.Drawing.Point(899, 12);
+            this.FilterLabelSort.Location = new System.Drawing.Point(500, 15);
             this.FilterLabelSort.Name = "FilterLabelSort";
             this.FilterLabelSort.Size = new System.Drawing.Size(59, 20);
             this.FilterLabelSort.TabIndex = 3;
@@ -4158,14 +4110,14 @@
             // 
             // FilterAdvancedComboBoxSort
             // 
-            this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
             this.FilterAdvancedComboBoxSort.BackgroundColor = System.Drawing.Color.White;
             this.FilterAdvancedComboBoxSort.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.FilterAdvancedComboBoxSort.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.FilterAdvancedComboBoxSort.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.FilterAdvancedComboBoxSort.FormattingEnabled = true;
-            this.FilterAdvancedComboBoxSort.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.FilterAdvancedComboBoxSort.HoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.FilterAdvancedComboBoxSort.HoverBorderColor = System.Drawing.Color.White;
+            this.FilterAdvancedComboBoxSort.HoverForeColor = System.Drawing.Color.White;
             this.FilterAdvancedComboBoxSort.HoverItemColor = System.Drawing.Color.FromArgb(((int)(((byte)(249)))), ((int)(((byte)(119)))), ((int)(((byte)(53)))));
             this.FilterAdvancedComboBoxSort.HoverItemForeColor = System.Drawing.Color.White;
             this.FilterAdvancedComboBoxSort.ItemFont = new System.Drawing.Font("Segoe UI", 8F);
@@ -4175,77 +4127,17 @@
             "Hostname... (Z-A)",
             "Date... (oldest first)",
             "Date... (newest first)"});
-            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(903, 60);
+            this.FilterAdvancedComboBoxSort.Location = new System.Drawing.Point(503, 60);
             this.FilterAdvancedComboBoxSort.Name = "FilterAdvancedComboBoxSort";
-            this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.NormalItemForeColor = System.Drawing.Color.Black;
-            this.FilterAdvancedComboBoxSort.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.PressForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.FilterAdvancedComboBoxSort.Size = new System.Drawing.Size(212, 31);
+            this.FilterAdvancedComboBoxSort.NormalBorderColor = System.Drawing.Color.Gainsboro;
+            this.FilterAdvancedComboBoxSort.NormalForeColor = System.Drawing.Color.Gainsboro;
+            this.FilterAdvancedComboBoxSort.NormalItemForeColor = System.Drawing.Color.Gainsboro;
+            this.FilterAdvancedComboBoxSort.PressBorderColor = System.Drawing.Color.Gainsboro;
+            this.FilterAdvancedComboBoxSort.PressForeColor = System.Drawing.Color.Gainsboro;
+            this.FilterAdvancedComboBoxSort.Size = new System.Drawing.Size(206, 31);
             this.FilterAdvancedComboBoxSort.TabIndex = 4;
             this.FilterAdvancedComboBoxSort.UseSelectable = true;
             this.FilterAdvancedComboBoxSort.SelectedIndexChanged += new System.EventHandler(this.FilterAdvancedComboBoxSort_SelectedIndexChanged);
-            // 
-            // FilterEditFieldSearch
-            // 
-            this.FilterEditFieldSearch.AutoSize = true;
-            this.FilterEditFieldSearch.BackColor = System.Drawing.Color.White;
-            this.FilterEditFieldSearch.BackGroundColor = System.Drawing.Color.White;
-            this.FilterEditFieldSearch.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.FilterEditFieldSearch.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.FilterEditFieldSearch.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.FilterEditFieldSearch.DefaultValue = "Enter Search Term";
-            this.FilterEditFieldSearch.FontTextBox = new System.Drawing.Font("Segoe UI", 12F);
-            this.FilterEditFieldSearch.FontTitle = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FilterEditFieldSearch.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.FilterEditFieldSearch.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.FilterEditFieldSearch.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.FilterEditFieldSearch.Location = new System.Drawing.Point(351, 12);
-            this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
-            this.FilterEditFieldSearch.Size = new System.Drawing.Size(542, 85);
-            this.FilterEditFieldSearch.TabIndex = 0;
-            this.FilterEditFieldSearch.TextTextBox = "";
-            this.FilterEditFieldSearch.TextTitle = "Search";
-            this.FilterEditFieldSearch.UseColoredCaret = true;
-            this.FilterEditFieldSearch.UseDefaultValue = true;
-            this.FilterEditFieldSearch.UseSystemPasswordChar = false;
-            // 
-            // WindowsHeaderOvalPanelTitle
-            // 
-            this.WindowsHeaderOvalPanelTitle.BackColor = System.Drawing.Color.White;
-            this.WindowsHeaderOvalPanelTitle.BackgroundColor = System.Drawing.Color.White;
-            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderPictureBoxIcon);
-            this.WindowsHeaderOvalPanelTitle.Controls.Add(this.WindowHeaderLabelTitle);
-            this.WindowsHeaderOvalPanelTitle.EllipseColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowsHeaderOvalPanelTitle.Location = new System.Drawing.Point(14, 16);
-            this.WindowsHeaderOvalPanelTitle.Name = "WindowsHeaderOvalPanelTitle";
-            this.WindowsHeaderOvalPanelTitle.Size = new System.Drawing.Size(290, 72);
-            this.WindowsHeaderOvalPanelTitle.TabIndex = 2;
-            // 
-            // WindowHeaderPictureBoxIcon
-            // 
-            this.WindowHeaderPictureBoxIcon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderPictureBoxIcon.Image = ((System.Drawing.Image)(resources.GetObject("WindowHeaderPictureBoxIcon.Image")));
-            this.WindowHeaderPictureBoxIcon.Location = new System.Drawing.Point(33, 12);
-            this.WindowHeaderPictureBoxIcon.Name = "WindowHeaderPictureBoxIcon";
-            this.WindowHeaderPictureBoxIcon.Size = new System.Drawing.Size(48, 48);
-            this.WindowHeaderPictureBoxIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.WindowHeaderPictureBoxIcon.TabIndex = 23;
-            this.WindowHeaderPictureBoxIcon.TabStop = false;
-            // 
-            // WindowHeaderLabelTitle
-            // 
-            this.WindowHeaderLabelTitle.AutoSize = true;
-            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
-            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Segoe UI", 14F);
-            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
-            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(87, 19);
-            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
-            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(145, 38);
-            this.WindowHeaderLabelTitle.TabIndex = 22;
-            this.WindowHeaderLabelTitle.Text = "Passwords";
             // 
             // PanelMain
             // 
@@ -4507,6 +4399,7 @@
             this.LoginAnimatedButtonRegister.Size = new System.Drawing.Size(211, 71);
             this.LoginAnimatedButtonRegister.TabIndex = 8;
             this.LoginAnimatedButtonRegister.Text = "Register";
+            this.LoginAnimatedButtonRegister.Uppercase = false;
             this.LoginAnimatedButtonRegister.UseVisualStyleBackColor = true;
             this.LoginAnimatedButtonRegister.Click += new System.EventHandler(this.LoginAnimatedButtonRegister_Click);
             // 
@@ -4574,6 +4467,7 @@
             this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
             this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
             this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOnlineLogin.Uppercase = false;
             this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
             this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
             // 
@@ -4840,6 +4734,7 @@
             this.LoginAnimatedButtonOfflineLogin.Size = new System.Drawing.Size(211, 71);
             this.LoginAnimatedButtonOfflineLogin.TabIndex = 8;
             this.LoginAnimatedButtonOfflineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOfflineLogin.Uppercase = false;
             this.LoginAnimatedButtonOfflineLogin.UseVisualStyleBackColor = true;
             this.LoginAnimatedButtonOfflineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOfflineLogin_Click);
             // 
@@ -4879,6 +4774,54 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
+            // WindowHeaderLabelTitle
+            // 
+            this.WindowHeaderLabelTitle.AutoSize = true;
+            this.WindowHeaderLabelTitle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.WindowHeaderLabelTitle.Font = new System.Drawing.Font("Segoe UI", 32F);
+            this.WindowHeaderLabelTitle.ForeColor = System.Drawing.Color.White;
+            this.WindowHeaderLabelTitle.Location = new System.Drawing.Point(3, 4);
+            this.WindowHeaderLabelTitle.Name = "WindowHeaderLabelTitle";
+            this.WindowHeaderLabelTitle.Size = new System.Drawing.Size(347, 86);
+            this.WindowHeaderLabelTitle.TabIndex = 23;
+            this.WindowHeaderLabelTitle.Text = "Dashboard";
+            // 
+            // FilterEditFieldSearch
+            // 
+            this.FilterEditFieldSearch.AutoSize = true;
+            this.FilterEditFieldSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.FilterEditFieldSearch.BackGroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(17)))), ((int)(((byte)(17)))), ((int)(((byte)(17)))));
+            this.FilterEditFieldSearch.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.FilterEditFieldSearch.ColorTextBoxNormal = System.Drawing.Color.White;
+            this.FilterEditFieldSearch.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.FilterEditFieldSearch.DefaultValue = "Enter Search Term";
+            this.FilterEditFieldSearch.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FilterEditFieldSearch.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FilterEditFieldSearch.ForeColorTextBoxFocus = System.Drawing.Color.White;
+            this.FilterEditFieldSearch.ForeColorTextBoxNormal = System.Drawing.Color.Gainsboro;
+            this.FilterEditFieldSearch.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("FilterEditFieldSearch.ImageClearHover")));
+            this.FilterEditFieldSearch.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("FilterEditFieldSearch.ImageClearNormal")));
+            this.FilterEditFieldSearch.Location = new System.Drawing.Point(7, 4);
+            this.FilterEditFieldSearch.Name = "FilterEditFieldSearch";
+            this.FilterEditFieldSearch.Size = new System.Drawing.Size(476, 89);
+            this.FilterEditFieldSearch.TabIndex = 24;
+            this.FilterEditFieldSearch.TextTextBox = "";
+            this.FilterEditFieldSearch.TextTitle = "Search";
+            this.FilterEditFieldSearch.UseColoredCaret = false;
+            this.FilterEditFieldSearch.UseDefaultValue = true;
+            this.FilterEditFieldSearch.UseSystemPasswordChar = false;
+            // 
+            // FilterPanel
+            // 
+            this.FilterPanel.Controls.Add(this.FilterLabelSort);
+            this.FilterPanel.Controls.Add(this.FilterAdvancedComboBoxSort);
+            this.FilterPanel.Controls.Add(this.FilterEditFieldSearch);
+            this.FilterPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.FilterPanel.Location = new System.Drawing.Point(679, 0);
+            this.FilterPanel.Name = "FilterPanel";
+            this.FilterPanel.Size = new System.Drawing.Size(1201, 114);
+            this.FilterPanel.TabIndex = 25;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -4889,7 +4832,6 @@
             this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
-            this.Controls.Add(this.WindowHeaderLabelLogo);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1920, 1192);
@@ -4898,7 +4840,6 @@
             this.Name = "MainForm";
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
-            this.Text = "1920";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.MenuPanel.ResumeLayout(false);
@@ -5019,13 +4960,7 @@
             this.SettingsPanelLoginContent.ResumeLayout(false);
             this.SettingsPanelLoginContent.PerformLayout();
             this.WindowHeaderPanel.ResumeLayout(false);
-            this.WindowHeaderTableLayoutPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.WindowPictureBoxIcon)).EndInit();
-            this.WindowsHeaderPanelSubRight.ResumeLayout(false);
-            this.WindowsHeaderPanelSubRight.PerformLayout();
-            this.WindowsHeaderOvalPanelTitle.ResumeLayout(false);
-            this.WindowsHeaderOvalPanelTitle.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.WindowHeaderPictureBoxIcon)).EndInit();
+            this.WindowHeaderPanel.PerformLayout();
             this.PanelMain.ResumeLayout(false);
             this.PanelLogin.ResumeLayout(false);
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
@@ -5054,8 +4989,9 @@
             this.LoginPanelOfflineCredentials.ResumeLayout(false);
             this.LoginPanelOfflineCredentials.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineLogo)).EndInit();
+            this.FilterPanel.ResumeLayout(false);
+            this.FilterPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -5095,11 +5031,7 @@
         private LunaForms.AdvancedImageButton DataEditSaveAdvancedImageButton;
         private LunaForms.AdvancedImageButton DataEditCancelAdvancedImageButton;
         private System.Windows.Forms.Panel DataPanelNoSel;
-        private System.Windows.Forms.Label WindowHeaderLabelLogo;
         private System.Windows.Forms.Panel WindowHeaderPanel;
-        private System.Windows.Forms.PictureBox WindowPictureBoxIcon;
-        private System.Windows.Forms.TableLayoutPanel WindowHeaderTableLayoutPanel;
-        private System.Windows.Forms.Panel WindowsHeaderPanelSubRight;
         private System.Windows.Forms.FlowLayoutPanel MenuFlowLayoutPanel;
         private System.Windows.Forms.Panel MenuPanelHome;
         private LunaForms.MenuEntry MenuMenuEntryHome;
@@ -5260,12 +5192,8 @@
         private System.Windows.Forms.Label MenuSyncLabelHeader;
         private System.Windows.Forms.Label MenuSyncLabelStatus;
         private System.Windows.Forms.PictureBox MenuSyncPictureBox;
-        private LunaForms.EditField FilterEditFieldSearch;
         private System.Windows.Forms.Label FilterLabelSort;
         private LunaForms.AdvancedComboBox FilterAdvancedComboBoxSort;
-        private LunaForms.OvalPanel WindowsHeaderOvalPanelTitle;
-        private System.Windows.Forms.PictureBox WindowHeaderPictureBoxIcon;
-        private System.Windows.Forms.Label WindowHeaderLabelTitle;
         private System.Windows.Forms.Panel DataFilterPanelNotFound;
         private System.Windows.Forms.Label DataFilterLabelSearchTerm;
         private System.Windows.Forms.Label DataFilterLabelHeader;
@@ -5369,6 +5297,9 @@
         private System.Windows.Forms.Label DashboardLabelHotspotsZeroDescription;
         private System.Windows.Forms.Label DashboardLabelHotspotsZeroTitle;
         private LunaForms.LunaSmallCard DashboardLunaSmallCardPasswordStrength;
+        private System.Windows.Forms.Label WindowHeaderLabelTitle;
+        private System.Windows.Forms.Panel FilterPanel;
+        private LunaForms.EditField FilterEditFieldSearch;
     }
 }
 
