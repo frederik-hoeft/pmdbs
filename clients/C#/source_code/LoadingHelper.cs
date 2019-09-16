@@ -97,7 +97,7 @@ namespace pmdbs
             if (GlobalVarPool.commandErrorCode == -2)
             {
                 AutomatedTaskFramework.Tasks.Clear();
-                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
                 AutomatedTaskFramework.Tasks.Execute();
                 while (GlobalVarPool.connected)
                 {
@@ -117,8 +117,8 @@ namespace pmdbs
                             GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             await HelperMethods.ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
-                            AutomatedTaskFramework.Task.Create(SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails);
-                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails);
+                            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
                             while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                             {
@@ -130,7 +130,7 @@ namespace pmdbs
                         {
                             GlobalVarPool.loadingType = LoadingType.DEFAULT;
                             AutomatedTaskFramework.Tasks.Clear();
-                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
                             while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                             {
@@ -151,7 +151,7 @@ namespace pmdbs
                             }
                             await HelperMethods.ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
                             AutomatedTaskFramework.Tasks.Clear();
-                            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+                            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
                             AutomatedTaskFramework.Tasks.Execute();
                             while (GlobalVarPool.connected && new int[] { -1, 0 }.Contains(GlobalVarPool.commandErrorCode))
                             {
@@ -164,8 +164,8 @@ namespace pmdbs
                             if (!GlobalVarPool.connectionLost)
                             {
                                 AutomatedTaskFramework.Tasks.Clear();
-                                AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-                                AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+                                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+                                AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
                                 AutomatedTaskFramework.Tasks.Execute();
                                 while (GlobalVarPool.connected && GlobalVarPool.commandErrorCode == -1)
                                 {

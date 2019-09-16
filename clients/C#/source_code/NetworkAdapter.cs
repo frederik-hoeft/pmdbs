@@ -481,6 +481,17 @@ namespace pmdbs
                 HelperMethods.InvokeOutputLabel("Registering new user ...");
                 Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
+
+            /// <summary>
+            /// Unlinks the specified device from tha account.
+            /// </summary>
+            /// <param name="cookie">The device to unlink.</param>
+            public static void RemoveDevice(string cookie)
+            {
+                HelperMethods.InvokeOutputLabel("Unlinking device ...");
+                Network.SendEncrypted("MNGULKcookie%eq!" + cookie + "!;");
+            }
+
             /// <summary>
             /// Requests the remote server to resend the last 2FA email.
             /// </summary>
