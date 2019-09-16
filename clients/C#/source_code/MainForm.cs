@@ -39,17 +39,34 @@ namespace pmdbs
         int MaxPages = 1;
         public static void InvokeReload()
         {
-            GlobalVarPool.Form1.ApplyFilter(0);
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.ApplyFilter(0);
+            });
         }
 
         public static void InvokeSyncAnimationStop()
         {
-            GlobalVarPool.Form1.SyncAnimationStop();
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.SyncAnimationStop();
+            });
         }
 
         public static void InvokeRefreshSettings()
         {
-            GlobalVarPool.Form1.RefreshSettings();
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.RefreshSettings();
+            });
+        }
+
+        public static void InvokeDashboardUpdate()
+        {
+            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            {
+                GlobalVarPool.Form1.UpdateDashboard();
+            });
         }
         #endregion
 
@@ -219,6 +236,7 @@ namespace pmdbs
                 }
             }
             Thread.Sleep(1500); // SHOW SPLASHSCREEN
+            HideFilterPanel();
             GuiLoaded = true;
         }
 
@@ -233,8 +251,7 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             WindowHeaderLabelTitle.Text = "Dashboard";
-            FilterAdvancedComboBoxSort.Visible = false;
-            FilterEditFieldSearch.Visible = false;
+            HideFilterPanel();
             DashboardTableLayoutPanel.BringToFront();
         }
 
@@ -244,8 +261,7 @@ namespace pmdbs
             MenuPanelSettingsIndicator.BackColor = Colors.Orange;
             MenuPanelPasswordsIndicator.BackColor = Color.White;
             SettingsTableLayoutPanelMain.BringToFront();
-            FilterAdvancedComboBoxSort.Visible = false;
-            FilterEditFieldSearch.Visible = false;
+            HideFilterPanel();
             if (GlobalVarPool.wasOnline)
             {
                 SettingsFlowLayoutPanelOnline.BringToFront();
@@ -262,10 +278,25 @@ namespace pmdbs
             MenuPanelHomeIndicator.BackColor = Color.White;
             MenuPanelSettingsIndicator.BackColor = Color.White;
             MenuPanelPasswordsIndicator.BackColor = Colors.Orange;
-            FilterAdvancedComboBoxSort.Visible = true;
-            FilterEditFieldSearch.Visible = true;
+            ShowFilterPanel();
             DataTableLayoutPanelMain.BringToFront();
             WindowHeaderLabelTitle.Text = "Passwords";
+        }
+
+        private void HideFilterPanel()
+        {
+            FilterLabelSort.Visible = false;
+            FilterAdvancedComboBoxSort.Visible = false;
+            FilterEditFieldSearch.Visible = false;
+            FilterPanel.Visible = false;
+        }
+
+        private void ShowFilterPanel()
+        {
+            FilterLabelSort.Visible = true;
+            FilterAdvancedComboBoxSort.Visible = true;
+            FilterEditFieldSearch.Visible = true;
+            FilterPanel.Visible = true;
         }
 
         private void SyncAnimationStart()
@@ -741,13 +772,13 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "FETCH_SYNC", NetworkAdapter.MethodProvider.Sync);
             AutomatedTaskFramework.Tasks.Execute();
             DataSyncAdvancedImageButton.Enabled = false;
         }
@@ -1376,19 +1407,19 @@ namespace pmdbs
                 return;
             }
             // DEEP COPY SCHEDULED TASKS
-            List<AutomatedTaskFramework.Task> scheduledTasks = scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => new AutomatedTaskFramework.Task(task.SearchCondition, task.FinishedCondition, task.TaskAction));
+            List<AutomatedTaskFramework.Task> scheduledTasks  = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => new AutomatedTaskFramework.Task(task.TaskType, task.SearchCondition, task.FinishedCondition, task.TaskAction));
             AutomatedTaskFramework.Tasks.Clear();
             switch (GlobalVarPool.promptCommand)
             {
                 case "ACTIVATE_ACCOUNT":
                     {
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
-                        AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
+                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                         break;
                     }
                 case "CONFIRM_NEW_DEVICE":
                     {
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
+                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
                         for (int i = 1; i < scheduledTasks.Count; i++)
                         {
                             AutomatedTaskFramework.Tasks.Add(scheduledTasks[i]);
@@ -1397,7 +1428,7 @@ namespace pmdbs
                     }
                 case "VERIFY_PASSWORD_CHANGE":
                     {
-                        AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
+                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
                         break;
                     }
             }
@@ -1487,12 +1518,12 @@ namespace pmdbs
                 AutomatedTaskFramework.Tasks.Clear();
                 if (GlobalVarPool.connected)
                 {
-                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 else
                 {
-                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
-                    AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
                 await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
@@ -1589,12 +1620,12 @@ namespace pmdbs
                 AutomatedTaskFramework.Tasks.Clear();
                 if (GlobalVarPool.connected)
                 {
-                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 else
                 {
-                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
-                    AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
                 }
                 AutomatedTaskFramework.Tasks.Execute();
                 await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
@@ -1677,13 +1708,13 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
             AutomatedTaskFramework.Tasks.Execute();
         }
         private void SettingsAnimatedButtonOnlineChangeName_Click(object sender, EventArgs e)
@@ -1700,13 +1731,13 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "NAME_CHANGED", () => NetworkAdapter.MethodProvider.ChangeName(name));
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "NAME_CHANGED", () => NetworkAdapter.MethodProvider.ChangeName(name));
             AutomatedTaskFramework.Tasks.Execute();
         }
         #endregion
@@ -1893,6 +1924,11 @@ namespace pmdbs
         private List<Breaches.Breach> breaches;
         private void label16_Click(object sender, EventArgs e)
         {
+            UpdateDashboard();
+        }
+
+        private void UpdateDashboard()
+        {
             UpdateBreaches();
             UpdateStats();
             UpdatePasswordScore();
@@ -1930,15 +1966,15 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
-            AutomatedTaskFramework.Task.Create(SearchCondition.Contains, "DTADEVdata", NetworkAdapter.MethodProvider.GetDevices);
-            AutomatedTaskFramework.Task.Create(SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-            AutomatedTaskFramework.Task.Create(SearchCondition.Match, null, NetworkAdapter.MethodProvider.Disconnect);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DTADEVdata", NetworkAdapter.MethodProvider.GetDevices);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
             AutomatedTaskFramework.Tasks.Execute();
         }
 
