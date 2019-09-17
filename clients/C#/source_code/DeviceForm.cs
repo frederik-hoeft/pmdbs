@@ -19,6 +19,7 @@ namespace pmdbs
         public DeviceForm(string jsonData)
         {
             InitializeComponent();
+            WinAPI.PreventFlickering(this);
             OSInfo.Device device = JsonConvert.DeserializeObject<OSInfo.Device>(jsonData);
             cookie = device.DeviceId;
             LoadData(device);
