@@ -17,6 +17,7 @@ namespace pmdbs
         public ConfirmationForm(string text)
         {
             InitializeComponent();
+            WinAPI.PreventFlickering(this);
             LabelContent.Text = text;
             WindowButtonClose.OnClickEvent += WindowButtonClose_Click;
             SetDarkTheme(false);

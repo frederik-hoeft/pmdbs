@@ -77,5 +77,15 @@ namespace pmdbs
             public int nPos;
             public int nTrackPos;
         }
+
+        public static void PreventFlickering(System.Windows.Forms.Form form)
+        {
+            foreach (System.Windows.Forms.Control c in form.Controls)
+            {
+                int style = WinAPI.GetWindowLong(c.Handle, WinAPI.GWL_EXSTYLE);
+                style |= WinAPI.WS_EX_COMPOSITED;
+                WinAPI.SetWindowLong(c.Handle, WinAPI.GWL_EXSTYLE, style);
+            }
+        }
     }
 }
