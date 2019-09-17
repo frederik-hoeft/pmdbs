@@ -134,12 +134,7 @@ namespace pmdbs
             InitializeComponent();
             #region LOAD
             // PREVENT FLICKERING
-            foreach (Control c in this.Controls)
-            {
-                int style = WinAPI.GetWindowLong(c.Handle, WinAPI.GWL_EXSTYLE);
-                style |= WinAPI.WS_EX_COMPOSITED;
-                WinAPI.SetWindowLong(c.Handle, WinAPI.GWL_EXSTYLE, style);
-            }
+            WinAPI.PreventFlickering(this);
             GlobalVarPool.Form1 = this;
             InitializeTransparency();
             #region INIT
@@ -1068,12 +1063,13 @@ namespace pmdbs
             using (Graphics graph = Graphics.FromImage(bmp))
             {
                 Rectangle ImageSize = new Rectangle(0, 0, LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
-                graph.FillRectangle(new SolidBrush(Color.FromArgb(220, 17, 17, 17)), ImageSize);
+                graph.FillRectangle(new SolidBrush(Color.FromArgb(200, 240, 240, 240)), ImageSize);
             }
             this.LoginPictureBoxOnlineMain.Image = bmp;
             this.LoginPictureBoxRegisterMain.Image = bmp;
             this.LoginPictureBoxOfflineMain.Image = bmp;
             this.LoginPictureBoxLoadingMain.Image = bmp;
+            this.LoginPictureBoxOnlineSettings.Image = bmp;
         }
 
         private void LoginLabelOnlineRegister_Click(object sender, EventArgs e)
@@ -1100,6 +1096,11 @@ namespace pmdbs
             LoginAnimatedButtonOfflineLogin_Click(sender, e);
         }
 
+        private void LoginEditFieldOfflinePassword_TextBoxTextChanged(object sender, EventArgs e)
+        {
+            LoginLabelOfflineError.Visible = false;
+        }
+
         private async void LoginAnimatedButtonOfflineLogin_Click(object sender, EventArgs e)
         {
             if (LoginButtonDisabled)
@@ -1107,12 +1108,11 @@ namespace pmdbs
                 return;
             }
             LoginButtonDisabled = true;
-            LoginLabelOfflineError.ForeColor = Color.FromArgb(17, 17, 17);
             string Password = LoginEditFieldOfflinePassword.TextTextBox;
             if (Password.Equals(""))
             {
-                LoginLabelOfflineError.ForeColor = Color.Firebrick;
                 LoginLabelOfflineError.Text = "Please enter a password!";
+                LoginLabelOfflineError.Visible = true;
                 LoginButtonDisabled = false;
                 return;
             }
@@ -1128,8 +1128,8 @@ namespace pmdbs
             LoginLoadingLabelDetails.Text = "Checking Password...";
             if (!Stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
             {
-                LoginLabelOfflineError.ForeColor = Color.Firebrick;
                 LoginLabelOfflineError.Text = "Wrong Password!";
+                LoginLabelOfflineError.Visible = true;
                 LoginButtonDisabled = false;
                 LoginPictureBoxOfflineMain.ResumeLayout();
                 LoginPictureBoxOfflineMain.BringToFront();
@@ -1212,6 +1212,8 @@ namespace pmdbs
                 });
             }).Start();
         }
+
+        
 
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
@@ -2137,5 +2139,7 @@ namespace pmdbs
             passwordStrengthlabel.Text = result.Complexity;
         }
         #endregion
+
+        
     }
 }

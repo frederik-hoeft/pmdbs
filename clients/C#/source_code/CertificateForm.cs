@@ -16,6 +16,7 @@ namespace pmdbs
         public CertificateForm(string domain, CryptoHelper.CertificateInformation cert)
         {
             InitializeComponent();
+            WinAPI.PreventFlickering(this);
             labelDomain.Text = domain;
             Initialize(cert);
         }

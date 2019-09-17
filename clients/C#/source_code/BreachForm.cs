@@ -19,6 +19,7 @@ namespace pmdbs
         public BreachForm()
         {
             InitializeComponent();
+            WinAPI.PreventFlickering(this);
         }
 
         public BreachForm(string date, string title, Image image, string[] data, string description, int pwnedAccounts, bool isVerified, string domain)
