@@ -13,9 +13,13 @@ namespace pmdbs
 {
     public partial class PromptForm : MetroFramework.Forms.MetroForm
     {
-        public PromptForm()
+        public PromptForm(string promptMain, string promptAction)
         {
             InitializeComponent();
+            HelperMethods.InvokeOutputLabel("Waiting for user confirmation ...");
+            LabelTitle.Text = promptMain;
+            LabelMailInfo.Text = "An email containing a verification code has been sent to " + GlobalVarPool.email + ".";
+            LabelAction.Text = promptAction;
         }
 
         private void WindowButtonMinimize_OnClickEvent(object sender, EventArgs e)

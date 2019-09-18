@@ -29,6 +29,14 @@ namespace pmdbs
         /// </summary>
         public const int HT_CAPTION = 0x2;
 
+        /// <summary>
+        /// Control Desktop Window Manager transitions.
+        /// </summary>
+        public const int DWMWA_TRANSITIONS_FORCEDISABLED = 3;
+
+        [DllImport("dwmapi.dll")]
+        public static extern int DwmSetWindowAttribute(IntPtr hWnd, int attr, ref int value, int attrLen);
+
         [DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
 

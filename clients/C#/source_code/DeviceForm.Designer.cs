@@ -107,7 +107,7 @@
             this.lunaAnimatedButtonLogout.Text = "Logout from this device";
             this.lunaAnimatedButtonLogout.Uppercase = false;
             this.lunaAnimatedButtonLogout.UseVisualStyleBackColor = true;
-            this.lunaAnimatedButtonLogout.Click += new System.EventHandler(this.lunaAnimatedButtonLogout_Click);
+            this.lunaAnimatedButtonLogout.Click += new System.EventHandler(this.LunaAnimatedButtonLogout_Click);
             // 
             // panelNetworkInformation
             // 
@@ -498,7 +498,7 @@
             this.windowButtonMinimize.Name = "windowButtonMinimize";
             this.windowButtonMinimize.Size = new System.Drawing.Size(60, 50);
             this.windowButtonMinimize.TabIndex = 17;
-            this.windowButtonMinimize.OnClickEvent += new System.EventHandler(this.windowButtonMinimize_OnClickEvent);
+            this.windowButtonMinimize.OnClickEvent += new System.EventHandler(this.WindowButtonMinimize_OnClickEvent);
             // 
             // windowButtonClose
             // 
@@ -512,7 +512,7 @@
             this.windowButtonClose.Name = "windowButtonClose";
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 16;
-            this.windowButtonClose.OnClickEvent += new System.EventHandler(this.windowButtonClose_OnClickEvent);
+            this.windowButtonClose.OnClickEvent += new System.EventHandler(this.WindowButtonClose_OnClickEvent);
             // 
             // DeviceForm
             // 
@@ -525,10 +525,12 @@
             this.Controls.Add(this.panelMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.Movable = false;
             this.Name = "DeviceForm";
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Shown += new System.EventHandler(this.DeviceForm_Shown);
             this.panelMain.ResumeLayout(false);
             this.panelNetworkInformation.ResumeLayout(false);
             this.panelNetworkInformation.PerformLayout();
