@@ -36,7 +36,8 @@ namespace pmdbs
         private int DataPerPage = 25;
         private int CurrentPage = 0;
         private int CurrentContentCount = 0;
-        int MaxPages = 1;
+        private Overlay overlay;
+        private int MaxPages = 1;
         public static void InvokeReload()
         {
             GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
@@ -149,10 +150,6 @@ namespace pmdbs
             GlobalVarPool.loadingLogo = SettingsPictureBoxLoadingLogo;
             GlobalVarPool.loadingPanel = SettingsPanelLoadingMain;
             GlobalVarPool.settingsPanel = SettingsTableLayoutPanelMain;
-            GlobalVarPool.promptAction = SettingsLabelPromptAction;
-            GlobalVarPool.promptEMail = SettingsLabelPromptMailInfo;
-            GlobalVarPool.promptMain = SettingsLabelPromptMain;
-            GlobalVarPool.promptPanel = SettingsPanelPromptMain;
             GlobalVarPool.syncButton = DataSyncAdvancedImageButton;
             GlobalVarPool.deviceList = DashboardLunaItemListDevices;
             #endregion
@@ -1065,11 +1062,18 @@ namespace pmdbs
                 Rectangle ImageSize = new Rectangle(0, 0, LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
                 graph.FillRectangle(new SolidBrush(Color.FromArgb(200, 240, 240, 240)), ImageSize);
             }
-            this.LoginPictureBoxOnlineMain.Image = bmp;
-            this.LoginPictureBoxRegisterMain.Image = bmp;
-            this.LoginPictureBoxOfflineMain.Image = bmp;
-            this.LoginPictureBoxLoadingMain.Image = bmp;
-            this.LoginPictureBoxOnlineSettings.Image = bmp;
+            LoginPictureBoxOnlineMain.Image = bmp;
+            LoginPictureBoxRegisterMain.Image = bmp;
+            LoginPictureBoxOfflineMain.Image = bmp;
+            LoginPictureBoxLoadingMain.Image = bmp;
+            LoginPictureBoxOnlineSettings.Image = bmp;
+            bmp = new Bitmap(PictureBoxOverlay.Width, PictureBoxOverlay.Height);
+            using (Graphics graph = Graphics.FromImage(bmp))
+            {
+                Rectangle ImageSize = new Rectangle(0, 0, LoginPictureBoxOnlineMain.Width, LoginPictureBoxOnlineMain.Height);
+                graph.FillRectangle(new SolidBrush(Color.FromArgb(100, 17, 17, 17)), ImageSize);
+            }
+            PictureBoxOverlay.Image = bmp;
         }
 
         private void LoginLabelOnlineRegister_Click(object sender, EventArgs e)
@@ -1209,11 +1213,10 @@ namespace pmdbs
                     this.MinimizeBox = true;
                     InitFilterPanel();
                     ApplyFilter(0);
+                    HelperMethods.CollectGarbage();
                 });
             }).Start();
         }
-
-        
 
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
         {
@@ -1382,78 +1385,6 @@ namespace pmdbs
         #endregion
 
         #region SettingsPanel
-        #region SettingsPrompt
-        private void SettingsAnimatedButtonPromptSubmit_Click(object sender, EventArgs e)
-        {
-            string code = SettingsEditFieldPromptCode.TextTextBox;
-            if (code.Equals(string.Empty))
-            {
-                SettingsLabelPromptCode.ForeColor = Color.Firebrick;
-                SettingsLabelPromptCode.Text = "*Enter code (this field is required)";
-                return;
-            }
-            if (!Regex.IsMatch(code, "^[0-9]{6}$"))
-            {
-                SettingsLabelPromptCode.ForeColor = Color.Firebrick;
-                SettingsLabelPromptCode.Text = "*Enter code (6 digits)";
-                return;
-            }
-            if (!GlobalVarPool.connected)
-            {
-                CustomException.ThrowNew.NetworkException("Not connected!");
-                return;
-            }
-            if (string.IsNullOrEmpty(GlobalVarPool.promptCommand))
-            {
-                CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
-                return;
-            }
-            // DEEP COPY SCHEDULED TASKS
-            List<AutomatedTaskFramework.Task> scheduledTasks  = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => new AutomatedTaskFramework.Task(task.TaskType, task.SearchCondition, task.FinishedCondition, task.TaskAction));
-            AutomatedTaskFramework.Tasks.Clear();
-            switch (GlobalVarPool.promptCommand)
-            {
-                case "ACTIVATE_ACCOUNT":
-                    {
-                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
-                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
-                        break;
-                    }
-                case "CONFIRM_NEW_DEVICE":
-                    {
-                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
-                        for (int i = 1; i < scheduledTasks.Count; i++)
-                        {
-                            AutomatedTaskFramework.Tasks.Add(scheduledTasks[i]);
-                        }
-                        break;
-                    }
-                case "VERIFY_PASSWORD_CHANGE":
-                    {
-                        AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
-                        break;
-                    }
-            }
-            AutomatedTaskFramework.Tasks.Execute();
-            SettingsPanelPromptMain.SendToBack();
-            SettingsEditFieldPromptCode.TextTextBox = string.Empty;
-            if (GlobalVarPool.promptFromBackgroundThread)
-            {
-                SettingsTableLayoutPanelMain.SendToBack();
-                GlobalVarPool.promptFromBackgroundThread = false;
-            }
-        }
-
-        private void SettingsLinkLabelPromptResendCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            if (!GlobalVarPool.connected)
-            {
-                CustomException.ThrowNew.NetworkException("Not connected.");
-                return;
-            }
-            NetworkAdapter.MethodProvider.ResendCode();
-        }
-        #endregion
         #region SettingsLogin
         private async void SettingsAnimatedButtonLoginSubmit_Click(object sender, EventArgs e)
         {
@@ -1753,7 +1684,6 @@ namespace pmdbs
         {
             return string.IsNullOrWhiteSpace(name)? "User" : name;
         }
-
         private void RefreshSettings()
         {
             if (GlobalVarPool.wasOnline)
@@ -1921,7 +1851,7 @@ namespace pmdbs
         private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
         {
             LunaItem item = (LunaItem)sender;
-            new DeviceForm(item.Id).ShowDialog();
+            HelperMethods.ShowAsOverlay(this, new DeviceForm(item.Id));
         }
         private List<Breaches.Breach> breaches;
         private void label16_Click(object sender, EventArgs e)
@@ -2139,7 +2069,5 @@ namespace pmdbs
             passwordStrengthlabel.Text = result.Complexity;
         }
         #endregion
-
-        
     }
 }

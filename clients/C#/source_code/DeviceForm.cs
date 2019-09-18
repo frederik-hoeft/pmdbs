@@ -67,7 +67,7 @@ namespace pmdbs
             labelMemory.Text = Convert.ToDouble(os.PhysicalMemory).ToHumanReadableFileSize(1);
         }
 
-        private void lunaAnimatedButtonLogout_Click(object sender, EventArgs e)
+        private void LunaAnimatedButtonLogout_Click(object sender, EventArgs e)
         {
             lunaAnimatedButtonLogout.Enabled = false;
             AutomatedTaskFramework.Tasks.Clear();
@@ -85,20 +85,21 @@ namespace pmdbs
             AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, MainForm.InvokeDashboardUpdate);
             AutomatedTaskFramework.Tasks.Execute();
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
 
-        private void windowButtonClose_OnClickEvent(object sender, EventArgs e)
+        private void WindowButtonClose_OnClickEvent(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
 
-        private void windowButtonMinimize_OnClickEvent(object sender, EventArgs e)
+        private void WindowButtonMinimize_OnClickEvent(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void DeviceForm_Shown(object sender, EventArgs e)
+        {
+            this.Focus();
         }
     }
 }

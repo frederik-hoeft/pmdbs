@@ -20,6 +20,24 @@ namespace pmdbs
 {
     public static class HelperMethods
     {
+        public static void CollectGarbage()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+
+        public static void ShowAsOverlay(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
+        {
+            Overlay overlay = new Overlay(parent);
+            child.Owner = parent;
+            child.ShowDialog(null);
+            parent.RemoveOwnedForm(child);
+            overlay.Close();
+            overlay.Dispose();
+            child.Dispose();
+        }
+
         public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
         {
             System.Windows.Forms.DialogResult result = new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert).ShowDialog();
@@ -80,29 +98,7 @@ namespace pmdbs
 
         public static void Prompt(string promptMain, string promptAction)
         {
-            GlobalVarPool.promptAction.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.promptAction.Text = promptAction;
-            });
-            GlobalVarPool.promptEMail.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.promptEMail.Text = "An email containing a verification code has been sent to " + GlobalVarPool.email + ".";
-            });
-            GlobalVarPool.promptMain.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.promptMain.Text = promptMain;
-            });
-            GlobalVarPool.promptPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
-            {
-                GlobalVarPool.promptPanel.BringToFront();
-            });
-            if (GlobalVarPool.promptFromBackgroundThread)
-            {
-                GlobalVarPool.settingsPanel.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                {
-                    GlobalVarPool.settingsPanel.BringToFront();
-                });
-            }
+            new PromptForm(promptMain, promptAction).ShowDialog();
         }
 
         public static string ToHumanReadableFileSize(this double fileSize, int decimals)
