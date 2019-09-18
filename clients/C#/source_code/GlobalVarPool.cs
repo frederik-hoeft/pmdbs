@@ -45,10 +45,6 @@ namespace pmdbs
         public static System.Windows.Forms.PictureBox loadingLogo = null;
         public static System.Windows.Forms.TableLayoutPanel settingsPanel = null;
         public static System.Windows.Forms.Panel previousPanel = null;
-        public static System.Windows.Forms.Label promptMain = null;
-        public static System.Windows.Forms.Label promptEMail = null;
-        public static System.Windows.Forms.Label promptAction = null;
-        public static System.Windows.Forms.Panel promptPanel = null;
         public static LunaForms.AdvancedImageButton syncButton = null;
         public static LunaForms.LunaItemList deviceList = null;
 
@@ -92,7 +88,6 @@ namespace pmdbs
         public static bool threadKilled = false;
         public static bool search = false;
         public static bool databaseIsInUse = false;
-        public static bool promptFromBackgroundThread = false;
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
 

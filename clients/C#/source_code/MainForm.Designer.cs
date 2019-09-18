@@ -247,17 +247,6 @@
             this.SettingsEditFieldOfflineName = new LunaForms.EditField();
             this.SettingsLabelOfflineChangeNameDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOfflineChangeName = new System.Windows.Forms.Label();
-            this.SettingsPanelPromptMain = new System.Windows.Forms.Panel();
-            this.SettingsLinkLabelPromptResendCode = new System.Windows.Forms.LinkLabel();
-            this.SettingsLabelPromptAction = new System.Windows.Forms.Label();
-            this.SettingsLabelPromptMain = new System.Windows.Forms.Label();
-            this.SettingsLabelPromptMailInfo = new System.Windows.Forms.Label();
-            this.SettingsAnimatedButtonPromptSubmit = new LunaForms.LunaAnimatedButton();
-            this.SettingsPanelPromptCenter = new System.Windows.Forms.Panel();
-            this.SettingsLabelPromptCode = new System.Windows.Forms.Label();
-            this.SettingsEditFieldPromptCode = new LunaForms.EditField();
-            this.SettingsLabelPromptPrefix = new System.Windows.Forms.Label();
-            this.SettingsPictureBoxPromptLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelRegister = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelRegisterContent = new System.Windows.Forms.Panel();
             this.SettingsLabelRegisterAccountDesc = new System.Windows.Forms.Label();
@@ -345,6 +334,7 @@
             this.LoginLoadingLabelDetails = new System.Windows.Forms.Label();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
+            this.PictureBoxOverlay = new System.Windows.Forms.PictureBox();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -424,9 +414,6 @@
             this.SettingsPanelOfflineContent3.SuspendLayout();
             this.SettingsPanelOfflineContent1.SuspendLayout();
             this.SettingsPanelOfflineContent2.SuspendLayout();
-            this.SettingsPanelPromptMain.SuspendLayout();
-            this.SettingsPanelPromptCenter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).BeginInit();
             this.SettingsFlowLayoutPanelRegister.SuspendLayout();
             this.SettingsPanelRegisterContent.SuspendLayout();
             this.SettingsFlowLayoutPanelLogin.SuspendLayout();
@@ -458,6 +445,7 @@
             this.LoginPictureBoxLoadingMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginLoadingPictureBoxLogo)).BeginInit();
             this.LoginLoadingPanelMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOverlay)).BeginInit();
             this.SuspendLayout();
             // 
             // MenuPanel
@@ -661,9 +649,9 @@
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
             this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
+            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
-            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelMain.Location = new System.Drawing.Point(265, 114);
             this.DataPanelMain.Margin = new System.Windows.Forms.Padding(0);
@@ -2881,7 +2869,6 @@
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOnline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
             this.SettingsPanelContentMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -3519,157 +3506,6 @@
             this.SettingsLabelOfflineChangeName.Size = new System.Drawing.Size(327, 32);
             this.SettingsLabelOfflineChangeName.TabIndex = 10;
             this.SettingsLabelOfflineChangeName.Text = "Change Your Display Name";
-            // 
-            // SettingsPanelPromptMain
-            // 
-            this.SettingsPanelPromptMain.BackColor = System.Drawing.Color.White;
-            this.SettingsPanelPromptMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SettingsPanelPromptMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLinkLabelPromptResendCode);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptAction);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMain);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsLabelPromptMailInfo);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsAnimatedButtonPromptSubmit);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsPanelPromptCenter);
-            this.SettingsPanelPromptMain.Controls.Add(this.SettingsPictureBoxPromptLogo);
-            this.SettingsPanelPromptMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsPanelPromptMain.Location = new System.Drawing.Point(0, 0);
-            this.SettingsPanelPromptMain.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelPromptMain.Name = "SettingsPanelPromptMain";
-            this.SettingsPanelPromptMain.Size = new System.Drawing.Size(700, 898);
-            this.SettingsPanelPromptMain.TabIndex = 17;
-            // 
-            // SettingsLinkLabelPromptResendCode
-            // 
-            this.SettingsLinkLabelPromptResendCode.ActiveLinkColor = System.Drawing.Color.Blue;
-            this.SettingsLinkLabelPromptResendCode.AutoSize = true;
-            this.SettingsLinkLabelPromptResendCode.DisabledLinkColor = System.Drawing.Color.Blue;
-            this.SettingsLinkLabelPromptResendCode.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.SettingsLinkLabelPromptResendCode.Location = new System.Drawing.Point(260, 723);
-            this.SettingsLinkLabelPromptResendCode.Name = "SettingsLinkLabelPromptResendCode";
-            this.SettingsLinkLabelPromptResendCode.Size = new System.Drawing.Size(152, 32);
-            this.SettingsLinkLabelPromptResendCode.TabIndex = 22;
-            this.SettingsLinkLabelPromptResendCode.TabStop = true;
-            this.SettingsLinkLabelPromptResendCode.Text = "Resend code";
-            this.SettingsLinkLabelPromptResendCode.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.SettingsLinkLabelPromptResendCode.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SettingsLinkLabelPromptResendCode_LinkClicked);
-            // 
-            // SettingsLabelPromptAction
-            // 
-            this.SettingsLabelPromptAction.AutoSize = true;
-            this.SettingsLabelPromptAction.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.SettingsLabelPromptAction.Location = new System.Drawing.Point(44, 464);
-            this.SettingsLabelPromptAction.Name = "SettingsLabelPromptAction";
-            this.SettingsLabelPromptAction.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.SettingsLabelPromptAction.Size = new System.Drawing.Size(562, 32);
-            this.SettingsLabelPromptAction.TabIndex = 21;
-            this.SettingsLabelPromptAction.Text = "Looks like you\'re trying to login from a new device.";
-            // 
-            // SettingsLabelPromptMain
-            // 
-            this.SettingsLabelPromptMain.AutoSize = true;
-            this.SettingsLabelPromptMain.BackColor = System.Drawing.Color.White;
-            this.SettingsLabelPromptMain.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelPromptMain.Location = new System.Drawing.Point(42, 417);
-            this.SettingsLabelPromptMain.Name = "SettingsLabelPromptMain";
-            this.SettingsLabelPromptMain.Size = new System.Drawing.Size(317, 45);
-            this.SettingsLabelPromptMain.TabIndex = 20;
-            this.SettingsLabelPromptMain.Text = "Confirm new device";
-            // 
-            // SettingsLabelPromptMailInfo
-            // 
-            this.SettingsLabelPromptMailInfo.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.SettingsLabelPromptMailInfo.Location = new System.Drawing.Point(44, 499);
-            this.SettingsLabelPromptMailInfo.Name = "SettingsLabelPromptMailInfo";
-            this.SettingsLabelPromptMailInfo.Size = new System.Drawing.Size(651, 72);
-            this.SettingsLabelPromptMailInfo.TabIndex = 19;
-            this.SettingsLabelPromptMailInfo.Text = "An email containing a verification code has been sent to example@gmail.com.";
-            // 
-            // SettingsAnimatedButtonPromptSubmit
-            // 
-            this.SettingsAnimatedButtonPromptSubmit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.SettingsAnimatedButtonPromptSubmit.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsAnimatedButtonPromptSubmit.Depth = 0;
-            this.SettingsAnimatedButtonPromptSubmit.Icon = null;
-            this.SettingsAnimatedButtonPromptSubmit.Location = new System.Drawing.Point(158, 763);
-            this.SettingsAnimatedButtonPromptSubmit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.SettingsAnimatedButtonPromptSubmit.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
-            this.SettingsAnimatedButtonPromptSubmit.Name = "SettingsAnimatedButtonPromptSubmit";
-            this.SettingsAnimatedButtonPromptSubmit.Primary = false;
-            this.SettingsAnimatedButtonPromptSubmit.Size = new System.Drawing.Size(376, 80);
-            this.SettingsAnimatedButtonPromptSubmit.TabIndex = 18;
-            this.SettingsAnimatedButtonPromptSubmit.Text = "Confirm";
-            this.SettingsAnimatedButtonPromptSubmit.Uppercase = false;
-            this.SettingsAnimatedButtonPromptSubmit.UseVisualStyleBackColor = true;
-            this.SettingsAnimatedButtonPromptSubmit.Click += new System.EventHandler(this.SettingsAnimatedButtonPromptSubmit_Click);
-            // 
-            // SettingsPanelPromptCenter
-            // 
-            this.SettingsPanelPromptCenter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsLabelPromptCode);
-            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsEditFieldPromptCode);
-            this.SettingsPanelPromptCenter.Controls.Add(this.SettingsLabelPromptPrefix);
-            this.SettingsPanelPromptCenter.Location = new System.Drawing.Point(132, 584);
-            this.SettingsPanelPromptCenter.Name = "SettingsPanelPromptCenter";
-            this.SettingsPanelPromptCenter.Size = new System.Drawing.Size(429, 130);
-            this.SettingsPanelPromptCenter.TabIndex = 17;
-            // 
-            // SettingsLabelPromptCode
-            // 
-            this.SettingsLabelPromptCode.AutoSize = true;
-            this.SettingsLabelPromptCode.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.SettingsLabelPromptCode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.SettingsLabelPromptCode.Location = new System.Drawing.Point(12, 16);
-            this.SettingsLabelPromptCode.Name = "SettingsLabelPromptCode";
-            this.SettingsLabelPromptCode.Size = new System.Drawing.Size(105, 28);
-            this.SettingsLabelPromptCode.TabIndex = 17;
-            this.SettingsLabelPromptCode.Text = "Enter code";
-            // 
-            // SettingsEditFieldPromptCode
-            // 
-            this.SettingsEditFieldPromptCode.AutoSize = true;
-            this.SettingsEditFieldPromptCode.BackColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.BackGroundColor = System.Drawing.Color.White;
-            this.SettingsEditFieldPromptCode.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.SettingsEditFieldPromptCode.DefaultValue = "Enter code...";
-            this.SettingsEditFieldPromptCode.FontTextBox = new System.Drawing.Font("Segoe UI", 20F);
-            this.SettingsEditFieldPromptCode.FontTitle = new System.Drawing.Font("Segoe UI", 8F);
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsEditFieldPromptCode.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.SettingsEditFieldPromptCode.ImageClearHover = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearHover")));
-            this.SettingsEditFieldPromptCode.ImageClearNormal = ((System.Drawing.Image)(resources.GetObject("SettingsEditFieldPromptCode.ImageClearNormal")));
-            this.SettingsEditFieldPromptCode.Location = new System.Drawing.Point(97, 8);
-            this.SettingsEditFieldPromptCode.Name = "SettingsEditFieldPromptCode";
-            this.SettingsEditFieldPromptCode.Size = new System.Drawing.Size(323, 110);
-            this.SettingsEditFieldPromptCode.TabIndex = 15;
-            this.SettingsEditFieldPromptCode.TextTextBox = "";
-            this.SettingsEditFieldPromptCode.TextTitle = "";
-            this.SettingsEditFieldPromptCode.UseColoredCaret = true;
-            this.SettingsEditFieldPromptCode.UseDefaultValue = false;
-            this.SettingsEditFieldPromptCode.UseSystemPasswordChar = false;
-            // 
-            // SettingsLabelPromptPrefix
-            // 
-            this.SettingsLabelPromptPrefix.AutoSize = true;
-            this.SettingsLabelPromptPrefix.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SettingsLabelPromptPrefix.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsLabelPromptPrefix.Location = new System.Drawing.Point(7, 58);
-            this.SettingsLabelPromptPrefix.Name = "SettingsLabelPromptPrefix";
-            this.SettingsLabelPromptPrefix.Size = new System.Drawing.Size(97, 54);
-            this.SettingsLabelPromptPrefix.TabIndex = 16;
-            this.SettingsLabelPromptPrefix.Text = "PM-";
-            // 
-            // SettingsPictureBoxPromptLogo
-            // 
-            this.SettingsPictureBoxPromptLogo.Image = ((System.Drawing.Image)(resources.GetObject("SettingsPictureBoxPromptLogo.Image")));
-            this.SettingsPictureBoxPromptLogo.Location = new System.Drawing.Point(204, 93);
-            this.SettingsPictureBoxPromptLogo.Name = "SettingsPictureBoxPromptLogo";
-            this.SettingsPictureBoxPromptLogo.Size = new System.Drawing.Size(284, 272);
-            this.SettingsPictureBoxPromptLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.SettingsPictureBoxPromptLogo.TabIndex = 14;
-            this.SettingsPictureBoxPromptLogo.TabStop = false;
             // 
             // SettingsFlowLayoutPanelRegister
             // 
@@ -5018,6 +4854,15 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
+            // PictureBoxOverlay
+            // 
+            this.PictureBoxOverlay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PictureBoxOverlay.Location = new System.Drawing.Point(20, 60);
+            this.PictureBoxOverlay.Name = "PictureBoxOverlay";
+            this.PictureBoxOverlay.Size = new System.Drawing.Size(1880, 1112);
+            this.PictureBoxOverlay.TabIndex = 3;
+            this.PictureBoxOverlay.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -5025,6 +4870,7 @@
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PictureBoxOverlay);
             this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
@@ -5144,11 +4990,6 @@
             this.SettingsPanelOfflineContent1.PerformLayout();
             this.SettingsPanelOfflineContent2.ResumeLayout(false);
             this.SettingsPanelOfflineContent2.PerformLayout();
-            this.SettingsPanelPromptMain.ResumeLayout(false);
-            this.SettingsPanelPromptMain.PerformLayout();
-            this.SettingsPanelPromptCenter.ResumeLayout(false);
-            this.SettingsPanelPromptCenter.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxPromptLogo)).EndInit();
             this.SettingsFlowLayoutPanelRegister.ResumeLayout(false);
             this.SettingsPanelRegisterContent.ResumeLayout(false);
             this.SettingsPanelRegisterContent.PerformLayout();
@@ -5190,6 +5031,7 @@
             this.LoginPictureBoxLoadingMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginLoadingPictureBoxLogo)).EndInit();
             this.LoginLoadingPanelMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOverlay)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -5363,16 +5205,6 @@
         private System.Windows.Forms.Panel SettingsPanelLoadingCenter;
         private System.Windows.Forms.Label SettingsLabelLoadingStatus;
         private System.Windows.Forms.PictureBox SettingsPictureBoxLoadingLogo;
-        private System.Windows.Forms.Panel SettingsPanelPromptMain;
-        private System.Windows.Forms.PictureBox SettingsPictureBoxPromptLogo;
-        private LunaForms.EditField SettingsEditFieldPromptCode;
-        private System.Windows.Forms.Label SettingsLabelPromptPrefix;
-        private System.Windows.Forms.Panel SettingsPanelPromptCenter;
-        private System.Windows.Forms.Label SettingsLabelPromptCode;
-        private System.Windows.Forms.Label SettingsLabelPromptAction;
-        private System.Windows.Forms.Label SettingsLabelPromptMain;
-        private System.Windows.Forms.Label SettingsLabelPromptMailInfo;
-        private LunaForms.LunaAnimatedButton SettingsAnimatedButtonPromptSubmit;
         private LunaForms.EditField SettingsEditFieldOfflineNewPasswordConfirm;
         private System.Windows.Forms.Label SettingsLabelOfflineChangePassword;
         private LunaForms.LunaAnimatedButton SettingsAnimatedButtonChangePasswordSubmit;
@@ -5429,7 +5261,6 @@
         private LunaForms.EditField SettingsEditFieldOnlinePasswordChangeNew;
         private LunaForms.EditField SettingsEditFieldOnlinePasswordChangeConfirm;
         private LunaForms.WindowButton windowButtonMinimize;
-        private System.Windows.Forms.LinkLabel SettingsLinkLabelPromptResendCode;
         private System.Windows.Forms.Panel SettingsPanelOnlineContent2;
         private LunaForms.LunaAnimatedButton SettingsAnimatedButtonOnlineChangeName;
         private LunaForms.EditField SettingsEditFieldOnlineChangeName;
@@ -5511,6 +5342,7 @@
         private LunaForms.EditField editField2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.PictureBox PictureBoxOverlay;
     }
 }
 
