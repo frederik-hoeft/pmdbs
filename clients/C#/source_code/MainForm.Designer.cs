@@ -660,10 +660,10 @@
             // DataPanelMain
             // 
             this.DataPanelMain.BackColor = System.Drawing.Color.DarkGray;
+            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.DashboardTableLayoutPanel);
             this.DataPanelMain.Controls.Add(this.DataTableLayoutPanelMain);
             this.DataPanelMain.Controls.Add(this.AddPanelMain);
-            this.DataPanelMain.Controls.Add(this.SettingsTableLayoutPanelMain);
             this.DataPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataPanelMain.Location = new System.Drawing.Point(265, 114);
             this.DataPanelMain.Margin = new System.Windows.Forms.Padding(0);
@@ -2878,10 +2878,10 @@
             // 
             // SettingsPanelContentMain
             // 
+            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOnline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelPromptMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
             this.SettingsPanelContentMain.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -5024,8 +5024,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.PanelMain);
+            this.Controls.Add(this.PanelLogin);
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -1753,7 +1753,6 @@ namespace pmdbs
         {
             return string.IsNullOrWhiteSpace(name)? "User" : name;
         }
-
         private void RefreshSettings()
         {
             if (GlobalVarPool.wasOnline)
