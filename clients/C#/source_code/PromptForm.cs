@@ -30,8 +30,6 @@ namespace pmdbs
         private void WindowButtonClose_OnClickEvent(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
 
         private void AnimatedButtonSubmit_Click(object sender, EventArgs e)
@@ -110,6 +108,11 @@ namespace pmdbs
             }
             NetworkAdapter.MethodProvider.ResendCode();
             // TODO: DISPLAY "THE EMAIL HAS BEEN RESEND" NOTIFICATION
+        }
+
+        private void PromptForm_Shown(object sender, EventArgs e)
+        {
+            this.Focus();
         }
     }
 }

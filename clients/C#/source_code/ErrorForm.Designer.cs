@@ -47,7 +47,7 @@
             this.ErrorFormLabelHeader.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.ErrorFormLabelHeader.Location = new System.Drawing.Point(23, 60);
             this.ErrorFormLabelHeader.Name = "ErrorFormLabelHeader";
-            this.ErrorFormLabelHeader.Size = new System.Drawing.Size(99, 34);
+            this.ErrorFormLabelHeader.Size = new System.Drawing.Size(91, 38);
             this.ErrorFormLabelHeader.TabIndex = 15;
             this.ErrorFormLabelHeader.Text = "label1";
             // 
@@ -67,6 +67,7 @@
             this.ErrorFormAnimatedButtonOK.Size = new System.Drawing.Size(197, 68);
             this.ErrorFormAnimatedButtonOK.TabIndex = 2;
             this.ErrorFormAnimatedButtonOK.Text = "OK";
+            this.ErrorFormAnimatedButtonOK.Uppercase = false;
             this.ErrorFormAnimatedButtonOK.UseVisualStyleBackColor = true;
             this.ErrorFormAnimatedButtonOK.Click += new System.EventHandler(this.ErrorFormAnimatedButtonOK_Click);
             // 
@@ -157,6 +158,7 @@
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Red;
             this.Text = "ERROR_TYPE";
+            this.Shown += new System.EventHandler(this.ErrorForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

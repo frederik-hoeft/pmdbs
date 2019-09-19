@@ -57,8 +57,6 @@ namespace pmdbs
         private void windowButtonClose_OnClickEvent(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
 
         private void windowButtonMinimize_OnClickEvent(object sender, EventArgs e)
@@ -68,6 +66,7 @@ namespace pmdbs
 
         private void BreachForm_Shown(object sender, EventArgs e)
         {
+            this.Focus();
             lunaItemListData.Refresh();
             lunaTextPanelDescription.Refresh();
         }
@@ -75,15 +74,11 @@ namespace pmdbs
         private void animatedButtonIgnore_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Ignore;
-            this.Close();
-            this.Dispose();
         }
 
         private void animatedButtonClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
     }
 }

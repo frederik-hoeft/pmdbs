@@ -71,7 +71,7 @@ namespace pmdbs
         /// Columns are D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score.
         /// </summary>
         public static System.Data.DataTable FilteredUserData = new System.Data.DataTable();
-        public static MainForm Form1 = null;
+        public static MainForm MainForm = null;
         public static LoadingHelper.LoadingType loadingType = LoadingHelper.LoadingType.DEFAULT;
 
         public static int countedPackets = 0;

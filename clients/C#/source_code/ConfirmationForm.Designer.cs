@@ -55,6 +55,7 @@
             this.animatedButtonCancel.Size = new System.Drawing.Size(197, 68);
             this.animatedButtonCancel.TabIndex = 4;
             this.animatedButtonCancel.Text = "Cancel";
+            this.animatedButtonCancel.Uppercase = false;
             this.animatedButtonCancel.UseVisualStyleBackColor = true;
             this.animatedButtonCancel.Click += new System.EventHandler(this.animatedButtonCancel_Click);
             // 
@@ -74,6 +75,7 @@
             this.AnimatedButtonOk.Size = new System.Drawing.Size(197, 68);
             this.AnimatedButtonOk.TabIndex = 2;
             this.AnimatedButtonOk.Text = "OK";
+            this.AnimatedButtonOk.Uppercase = false;
             this.AnimatedButtonOk.UseVisualStyleBackColor = true;
             this.AnimatedButtonOk.Click += new System.EventHandler(this.AnimatedButtonOk_Click);
             // 
@@ -156,6 +158,7 @@
             this.Style = MetroFramework.MetroColorStyle.Orange;
             this.Text = "Please Confirm";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Shown += new System.EventHandler(this.ConfirmationForm_Shown);
             this.ResumeLayout(false);
 
         }

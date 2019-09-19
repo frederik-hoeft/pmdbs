@@ -1,4 +1,6 @@
-﻿namespace pmdbs
+﻿using System;
+
+namespace pmdbs
 {
     /// <summary>
     /// Provides a set of custom error messages.
@@ -15,7 +17,7 @@
             /// </summary>
             public static void NetworkException()
             {
-                new ErrorForm("An unknown network error has occurred.", "Network Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, new ErrorForm("An unknown network error has occurred.", "Network Exception"));
             }
             /// <summary>
             /// Creates a custom error message box for network exceptions.
@@ -23,7 +25,7 @@
             /// <param name="message">The error message that explains the reason for the exception.</param>
             public static void NetworkException(string message)
             {
-                new ErrorForm(message, "Network Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Network Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for network exceptions.
@@ -32,14 +34,14 @@
             /// <param name="code">The unique error code for this exception type.</param>
             public static void NetworkException(string message, string code)
             {
-                new ErrorForm(message, "Network Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Network Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box that can be used for any type of exception.
             /// </summary>
             public static void GenericException()
             {
-                new ErrorForm("An unknown error has occurred.", "Generic Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm("An unknown error has occurred.", "Generic Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box that can be used for any type of exception.
@@ -47,14 +49,14 @@
             /// <param name="message">The error message that explains the reason for the exception.</param>
             public static void GenericException(string message)
             {
-                new ErrorForm(message, "Generic Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Generic Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for cryptographic exceptions.
             /// </summary>
             public static void CryptographicException()
             {
-                new ErrorForm("An unknown cryptographic error has occurred.", "Cryptographic Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm("An unknown cryptographic error has occurred.", "Cryptographic Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for cryptographic exceptions.
@@ -62,14 +64,14 @@
             /// <param name="message">The error message that explains the reason for the exception.</param>
             public static void CryptographicException(string message)
             {
-                new ErrorForm(message, "Cryptographic Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Cryptographic Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for exceptions related to invalid formatting.
             /// </summary>
             public static void FormatException()
             {
-                new ErrorForm("An unknown format error has occured.", "Format Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm("An unknown format error has occured.", "Format Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for exceptions related to invalid formatting.
@@ -77,14 +79,14 @@
             /// <param name="message">The error message that explains the reason for the exception.</param>
             public static void FormatException(string message)
             {
-                new ErrorForm(message, "Format Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Format Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box indicating that a requested feature is not yet available.
             /// </summary>
             public static void NotImplementedException()
             {
-                new ErrorForm("This feature is not available yet.", "Not Implemented Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm("This feature is not available yet.", "Not Implemented Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box indicating that a requested feature is not yet available.
@@ -92,14 +94,14 @@
             /// <param name="message">The error message that explains the reason for the exception.</param>
             public static void NotImplementedException(string message)
             {
-                new ErrorForm(message, "Not Implemented Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Not Implemented Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for IndexOutOfRangeExceptions.
             /// </summary>
             public static void IndexOutOfRangeException()
             {
-                new ErrorForm("An IndexOutOfRange Exception has occured.", "Index Out Of Range Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm("An IndexOutOfRange Exception has occured.", "Index Out Of Range Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for IndexOutOfRangeExceptions.
@@ -107,7 +109,7 @@
             /// <param name="message">The error message that explains the reason for the exception.</param>
             public static void IndexOutOfRangeException(string message)
             {
-                new ErrorForm(message, "Index Out Of Range Exception").ShowDialog();
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm(message, "Index Out Of Range Exception"))));
             }
         }
     }

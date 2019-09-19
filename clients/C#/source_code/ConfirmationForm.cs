@@ -129,22 +129,21 @@ namespace pmdbs
         private void animatedButtonCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
 
         private void AnimatedButtonOk_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
         }
 
         private void WindowButtonClose_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
+        }
+
+        private void ConfirmationForm_Shown(object sender, EventArgs e)
+        {
+            this.Focus();
         }
     }
 }

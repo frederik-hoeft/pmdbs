@@ -135,7 +135,7 @@ namespace pmdbs
             {
                 CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 MainForm.InvokeSyncAnimationStop();
-                GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate 
+                GlobalVarPool.MainForm.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.syncButton.Enabled = true;
                 });
