@@ -263,6 +263,7 @@
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
+            this.Shown += new System.EventHandler(this.PromptForm_Shown);
             this.PanelMain.ResumeLayout(false);
             this.PanelMain.PerformLayout();
             this.PanelCenter.ResumeLayout(false);

@@ -74,14 +74,17 @@ namespace pmdbs
 
         private void ErrorFormAnimatedButtonOK_Click(object sender, EventArgs e)
         {
-            this.Close();
-            this.Dispose();
+            this.DialogResult = DialogResult.OK;
         }
 
         private void ErrorFormWindowButtonClose_Click(object sender, EventArgs e)
         {
-            this.Close();
-            this.Dispose();
+            this.DialogResult = DialogResult.Cancel;
+        }
+
+        private void ErrorForm_Shown(object sender, EventArgs e)
+        {
+            this.Focus();
         }
     }
 }

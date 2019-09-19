@@ -525,7 +525,6 @@
             this.Controls.Add(this.panelMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Movable = false;
             this.Name = "DeviceForm";
             this.Resizable = false;
             this.Style = MetroFramework.MetroColorStyle.Black;

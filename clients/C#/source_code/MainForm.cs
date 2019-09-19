@@ -40,33 +40,33 @@ namespace pmdbs
         private int MaxPages = 1;
         public static void InvokeReload()
         {
-            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
             {
-                GlobalVarPool.Form1.ApplyFilter(0);
+                GlobalVarPool.MainForm.ApplyFilter(0);
             });
         }
 
         public static void InvokeSyncAnimationStop()
         {
-            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
             {
-                GlobalVarPool.Form1.SyncAnimationStop();
+                GlobalVarPool.MainForm.SyncAnimationStop();
             });
         }
 
         public static void InvokeRefreshSettings()
         {
-            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
             {
-                GlobalVarPool.Form1.RefreshSettings();
+                GlobalVarPool.MainForm.RefreshSettings();
             });
         }
 
         public static void InvokeDashboardUpdate()
         {
-            GlobalVarPool.Form1.Invoke((MethodInvoker)delegate
+            GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
             {
-                GlobalVarPool.Form1.UpdateDashboard();
+                GlobalVarPool.MainForm.UpdateDashboard();
             });
         }
         #endregion
@@ -136,7 +136,7 @@ namespace pmdbs
             #region LOAD
             // PREVENT FLICKERING
             WinAPI.PreventFlickering(this);
-            GlobalVarPool.Form1 = this;
+            GlobalVarPool.MainForm = this;
             InitializeTransparency();
             #region INIT
             this.MaximizeBox = false;
@@ -449,19 +449,19 @@ namespace pmdbs
             FlowLayoutPanel1_Resize(this, null);
         }
 
-        private void ListEntry_Click(object sender, EventArgs e)
+        private async void ListEntry_Click(object sender, EventArgs e)
         {
             if (EditFieldShown)
             {
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
                 if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"] .ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
-                    bool actionIsConfirmed = false;
-                    using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
+                    Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                    DialogResult result = await ShowDialog;
+                    if (!result.Equals(DialogResult.OK))
                     {
-                        actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                        return;
                     }
-                    if (!actionIsConfirmed) { return; }
                 }
                 EditFieldShown = false;
             }
@@ -527,10 +527,7 @@ namespace pmdbs
             {
                 case 1:
                     {
-                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false))
-                        {
-                            errorForm.ShowDialog();
-                        }
+                        _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
                         DataEditSaveAdvancedImageButton.Enabled = true;
                         return;
                     }
@@ -636,17 +633,17 @@ namespace pmdbs
             EditFieldShown = false;
         }
 
-        private void DataEditCancel_Click(object sender, EventArgs e)
+        private async void DataEditCancel_Click(object sender, EventArgs e)
         {
             // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
             if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
             {
-                bool actionIsConfirmed = false;
-                using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
+                Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                DialogResult result = await ShowDialog;
+                if (!result.Equals(DialogResult.OK))
                 {
-                    actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                    return;
                 }
-                if (!actionIsConfirmed) { return; }
             }
             DataFlowLayoutPanelEdit.SuspendLayout();
             DataPanelDetails.BringToFront();
@@ -718,12 +715,12 @@ namespace pmdbs
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            bool actionIsConfirmed = false;
-            using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("Do you really want to delete the selected account?",MessageBoxButtons.YesNo))
+            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("Do you really want to delete the selected account?", MessageBoxButtons.YesNo));
+            DialogResult result = await ShowDialog;
+            if (!result.Equals(DialogResult.OK))
             {
-                actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
+                return;
             }
-            if (!actionIsConfirmed) { return; }
             DataRow LinkedRow = GlobalVarPool.UserData.AsEnumerable().SingleOrDefault(r => r.Field<string>("0").Equals(DataDetailsID));
             string hid = LinkedRow["1"].ToString();
             if (!hid.Equals("EMPTY"))
@@ -875,10 +872,7 @@ namespace pmdbs
             {
                 case 1:
                 {
-                    using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false))
-                    {
-                        errorForm.ShowDialog();
-                    }
+                        _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
                     AddPanelAdvancedImageButtonSave.Enabled = true;
                     return;
                 }
@@ -1236,11 +1230,8 @@ namespace pmdbs
             }
             Password.Result offlineResult = Password.Security.SimpleCheck(Password1);
             if (offlineResult.Score < 110)
-                {
-                using (ErrorForm errorForm = new ErrorForm("It should be at least \"Okay\".\n\nTry adding more numbers, special characters or even unicode characters to increase the password strength.", "Security Exception", "Your password is too weak!", true))
-                {
-                    errorForm.ShowDialog();
-                }
+            {
+                _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("It should be at least \"Okay\".\n\nTry adding more numbers, special characters or even unicode characters to increase the password strength.", "Security Exception", "Your password is too weak!", false));
                 LoginLabelRegisterError.Visible = true;
                 LoginLabelRegisterError.Text = "Password too weak.";
                 LoginButtonDisabled = false;
@@ -1262,10 +1253,7 @@ namespace pmdbs
                     }
                 case 1:
                     {
-                        using (ErrorForm errorForm = new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", true, Resources.facepalm))
-                        {
-                            errorForm.ShowDialog();
-                        }
+                        _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
                         LoginLunaProgressSpinnerFading.Stop();
                         LoginPictureBoxLoadingMain.SuspendLayout();
                         LoginPictureBoxRegisterMain.ResumeLayout();
@@ -1276,11 +1264,7 @@ namespace pmdbs
                 default:
                     {
                         // CONNECTION ERROR
-                        bool actionIsConfirmed = true;
-                        using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?","Security Warning", MessageBoxButtons.YesNo, true))
-                        {
-                            actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
-                        }
+                        bool actionIsConfirmed = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?", "Security Warning", MessageBoxButtons.YesNo, false)).Equals(DialogResult.OK);
                         if (!actionIsConfirmed)
                         {
                             LoginLunaProgressSpinnerFading.Stop();
@@ -1711,7 +1695,7 @@ namespace pmdbs
         {
             FilterAdvancedComboBoxSort.SelectedIndex = 2;
         }
-        private void FilterEditFieldSearch_TextChanged(object sender, EventArgs e)
+        private async void FilterEditFieldSearch_TextChanged(object sender, EventArgs e)
         {
             if (textForceChange)
             {
@@ -1723,12 +1707,9 @@ namespace pmdbs
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
                 if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
-                    bool actionIsConfirmed = false;
-                    using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
-                    {
-                        actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
-                    }
-                    if (!actionIsConfirmed)
+                    Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                    DialogResult result = await ShowDialog;
+                    if (!result.Equals(DialogResult.OK))
                     {
                         textForceChange = true;
                         FilterEditFieldSearch.TextTextBox = previousTextBoxContent;
@@ -1745,7 +1726,7 @@ namespace pmdbs
                 ApplyFilter(0);
             }
         }
-        private void FilterAdvancedComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
+        private async void FilterAdvancedComboBoxSort_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (indexForceChange)
             {
@@ -1757,12 +1738,9 @@ namespace pmdbs
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
                 if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
-                    bool actionIsConfirmed = false;
-                    using (MetroFramework.Forms.MetroForm prompt = new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo))
-                    {
-                        actionIsConfirmed = prompt.ShowDialog().Equals(DialogResult.OK);
-                    }
-                    if (!actionIsConfirmed)
+                    Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                    DialogResult result = await ShowDialog;
+                    if (!result.Equals(DialogResult.OK))
                     {
                         indexForceChange = true;
                         FilterAdvancedComboBoxSort.SelectedIndex = previousIndex;
@@ -1851,7 +1829,7 @@ namespace pmdbs
         private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
         {
             LunaItem item = (LunaItem)sender;
-            HelperMethods.ShowAsOverlay(this, new DeviceForm(item.Id));
+            _ = HelperMethods.ShowAsOverlay(this, new DeviceForm(item.Id));
         }
         private List<Breaches.Breach> breaches;
         private void label16_Click(object sender, EventArgs e)
@@ -2046,8 +2024,9 @@ namespace pmdbs
             Breaches.Breach breach = breaches[item.Index];
             Task<Image> GetIcon = pmdbs.Icon.GetFromUrlAsync(breach.LogoPath);
             Image icon = await GetIcon;
-            DialogResult result = new BreachForm(breach.BreachDate, breach.Title, icon ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain).ShowDialog();
-            if (result == DialogResult.Ignore)
+            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new BreachForm(breach.BreachDate, breach.Title, icon ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain));
+            DialogResult result = await ShowDialog;
+            if (result.Equals(DialogResult.Ignore))
             {
                 await DataBaseHelper.ModifyData("INSERT INTO Tbl_breaches (B_hash) VALUES (\"" + item.Id + "\");");
                 DashboardLunaItemListBreaches.RemoveAt(item.Index2);

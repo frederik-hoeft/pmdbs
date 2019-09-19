@@ -160,7 +160,8 @@
             this.animatedButtonAccept.Primary = false;
             this.animatedButtonAccept.Size = new System.Drawing.Size(293, 42);
             this.animatedButtonAccept.TabIndex = 26;
-            this.animatedButtonAccept.Text = "accept";
+            this.animatedButtonAccept.Text = "Accept";
+            this.animatedButtonAccept.Uppercase = false;
             this.animatedButtonAccept.UseVisualStyleBackColor = true;
             this.animatedButtonAccept.Click += new System.EventHandler(this.animatedButtonAccept_Click);
             // 
@@ -177,7 +178,8 @@
             this.animatedButtonReject.Primary = false;
             this.animatedButtonReject.Size = new System.Drawing.Size(293, 42);
             this.animatedButtonReject.TabIndex = 25;
-            this.animatedButtonReject.Text = "reject";
+            this.animatedButtonReject.Text = "Reject";
+            this.animatedButtonReject.Uppercase = false;
             this.animatedButtonReject.UseVisualStyleBackColor = true;
             this.animatedButtonReject.Click += new System.EventHandler(this.animatedButtonReject_Click);
             // 
