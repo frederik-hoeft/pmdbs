@@ -27,20 +27,47 @@ namespace pmdbs
             GC.Collect();
         }
 
-        public static void ShowAsOverlay(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
+        private static bool overlayIsShown = false;
+
+        public static async Task<System.Windows.Forms.DialogResult> ShowAsOverlay(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
         {
+            System.Windows.Forms.DialogResult result = System.Windows.Forms.DialogResult.None;
+            if (parent.InvokeRequired)
+            {
+                parent.Invoke((System.Windows.Forms.MethodInvoker)async delegate
+                {
+                    result = await ShowAsOverlayHelper(parent, child);
+                });
+            }
+            else
+            {
+                result = await ShowAsOverlayHelper(parent, child);
+            }
+            return result;
+        }
+
+        private static async Task<System.Windows.Forms.DialogResult> ShowAsOverlayHelper(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
+        {
+            while (overlayIsShown)
+            {
+                await Task.Delay(100);
+            }
+            overlayIsShown = true;
             Overlay overlay = new Overlay(parent);
             child.Owner = parent;
-            child.ShowDialog(null);
+            System.Windows.Forms.DialogResult result = child.ShowDialog(null);
             parent.RemoveOwnedForm(child);
+            child.Dispose();
             overlay.Close();
             overlay.Dispose();
-            child.Dispose();
+            overlayIsShown = false;
+            return result;
         }
 
         public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
         {
-            System.Windows.Forms.DialogResult result = new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert).ShowDialog();
+            Task<System.Windows.Forms.DialogResult> ShowDialog = ShowAsOverlay(GlobalVarPool.MainForm, (CertificateForm)GlobalVarPool.MainForm.Invoke(new Func<CertificateForm>(() => new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert))));
+            System.Windows.Forms.DialogResult result = await ShowDialog;
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 GlobalVarPool.foreignRsaKey = cert.PublicKey;
@@ -98,7 +125,7 @@ namespace pmdbs
 
         public static void Prompt(string promptMain, string promptAction)
         {
-            new PromptForm(promptMain, promptAction).ShowDialog();
+            _ = ShowAsOverlay(GlobalVarPool.MainForm, (PromptForm)GlobalVarPool.MainForm.Invoke(new Func<PromptForm>(() => new PromptForm(promptMain, promptAction))));
         }
 
         public static string ToHumanReadableFileSize(this double fileSize, int decimals)

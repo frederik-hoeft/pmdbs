@@ -159,7 +159,7 @@ namespace pmdbs
                 else
                 {
                     MainForm.InvokeSyncAnimationStop();
-                    GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+                    GlobalVarPool.MainForm.Invoke((System.Windows.Forms.MethodInvoker)delegate
                     {
                         GlobalVarPool.syncButton.Enabled = true;
                     });
@@ -348,7 +348,7 @@ namespace pmdbs
             }
             MainForm.InvokeSyncAnimationStop();
             MainForm.InvokeReload();
-            GlobalVarPool.Form1.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            GlobalVarPool.MainForm.Invoke((System.Windows.Forms.MethodInvoker)delegate
             {
                 GlobalVarPool.syncButton.Enabled = true;
             });

@@ -82,8 +82,6 @@ namespace pmdbs
         private void windowButtonMinimize_OnClickEvent(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
-            this.Close();
-            this.Dispose();
         }
 
         private void windowButtonClose_OnClickEvent(object sender, EventArgs e)
@@ -93,6 +91,7 @@ namespace pmdbs
 
         private void CertificateForm_Shown(object sender, EventArgs e)
         {
+            this.Focus();
             lunaTextPanelInfo.Refresh();
             lunaTextPanelIssuedBy.Refresh();
             lunaTextPanelIssuedFor.Refresh();
@@ -101,15 +100,11 @@ namespace pmdbs
         private void animatedButtonAccept_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
         }
 
         private void animatedButtonReject_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            this.Close();
-            this.Dispose();
         }
     }
 }
