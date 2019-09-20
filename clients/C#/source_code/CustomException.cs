@@ -17,7 +17,7 @@ namespace pmdbs
             /// </summary>
             public static void NetworkException()
             {
-                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, new ErrorForm("An unknown network error has occurred.", "Network Exception"));
+                _ = HelperMethods.ShowAsOverlay(GlobalVarPool.MainForm, (ErrorForm)GlobalVarPool.MainForm.Invoke(new Func<ErrorForm>(() => new ErrorForm("An unknown network error has occurred.", "Network Exception"))));
             }
             /// <summary>
             /// Creates a custom error message box for network exceptions.
