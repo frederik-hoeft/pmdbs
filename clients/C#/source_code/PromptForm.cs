@@ -95,8 +95,6 @@ namespace pmdbs
             }
             AutomatedTaskFramework.Tasks.Execute();
             this.DialogResult = DialogResult.OK;
-            this.Close();
-            this.Dispose();
         }
 
         private void LinkLabelResendCode_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -503,7 +503,6 @@ namespace pmdbs
                                                                         {
                                                                             Thread t = new Thread(new ParameterizedThreadStart(Sync.SetHid));
                                                                             t.Start((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
-                                                                            // HelperMethods.SetHid((object)content.Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries));
                                                                             if (GlobalVarPool.countSyncPackets)
                                                                             {
                                                                                 GlobalVarPool.countedPackets++;
