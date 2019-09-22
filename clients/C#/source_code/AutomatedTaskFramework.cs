@@ -18,7 +18,7 @@ namespace pmdbs
             if (Tasks.Available())
             {
                 Task currentTask = Tasks.GetCurrent();
-                if (currentTask.FailedCondition.Split('|').Where(failedCondition => data.Contains(failedCondition)).Count() == 0 || currentTask.IsFailed())
+                if (currentTask.FailedCondition.Split('|').Where(failedCondition => data.Contains(failedCondition)).Count() == 0 && !currentTask.IsFailed() && !currentTask.IsTerminated)
                 {
                     if (currentTask.SearchCondition == SearchCondition.Match)
                     {
@@ -57,6 +57,23 @@ namespace pmdbs
                         }
                     }
                 }
+                else
+                {
+                    if (currentTask.BlockingState == FailedTaskBlocking.Block)
+                    {
+                        currentTask.TaskFailedAction?.Invoke();
+                        Tasks.BlockingTaskFailedAction();
+                    }
+                    else
+                    {
+                        currentTask.Delete();
+
+                        if (Tasks.Available())
+                        {
+                            Tasks.GetCurrent().Run();
+                        }
+                    }
+                }
             }
         }
         /// <summary>
@@ -64,6 +81,7 @@ namespace pmdbs
         /// </summary>
         public sealed class Tasks
         {
+            private static Action _blockingTaskFailedAction = new Action(delegate () { });
             private static readonly List<Task> taskList = new List<Task>();
             /// <summary>
             /// Gets the next scheduled task
@@ -72,6 +90,15 @@ namespace pmdbs
             public static Task GetCurrent()
             {
                 return taskList[0];
+            }
+
+            /// <summary>
+            /// The code to be executed when a failed task blocks the queue.
+            /// </summary>
+            public static Action BlockingTaskFailedAction
+            {
+                get { return _blockingTaskFailedAction; }
+                set { _blockingTaskFailedAction = value; }
             }
             /// <summary>
             /// Gets the next scheduled task or NULL if no task is scheduled
@@ -156,13 +183,17 @@ namespace pmdbs
         /// </summary>
         public partial class Task
         {
-            private readonly Action _automatedAction = new Action(delegate { });
+            private bool _isTerminated = false;
+            private readonly Action _taskFailedAction = null;
+            private readonly Action _automatedAction = new Action(delegate () { });
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
             private readonly SearchCondition _searchCondition = SearchCondition.Match;
+            private readonly FailedTaskBlocking _failedTaskBlocking = FailedTaskBlocking.Block;
             private readonly TaskType _taskType = TaskType.NetworkTask;
             private readonly Func<bool> _funcFinishedCondition = () => { return true; };
             private readonly Func<bool> _funcFailedCondition = () => { return false; };
+
             /// <summary>
             /// Task constructor
             /// </summary>
@@ -177,6 +208,24 @@ namespace pmdbs
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
             }
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+            }
+
             /// <summary>
             /// Task constructor
             /// </summary>
@@ -192,6 +241,24 @@ namespace pmdbs
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
                 _failedCondition = FailedCondition;
+            }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FailedCondition"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
             }
 
             /// <summary>
@@ -209,6 +276,24 @@ namespace pmdbs
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
                 _funcFailedCondition = FuncFailedCondition;
+            }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFailedCondition"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _funcFailedCondition = FuncFailedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
             }
 
             /// <summary>
@@ -238,6 +323,20 @@ namespace pmdbs
                 _automatedAction = TaskAction;
                 _funcFinishedCondition = FuncFinishedCondition;
             }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFinishedCondition"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _funcFinishedCondition = FuncFinishedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+            }
 
             /// <summary>
             /// Task constructor
@@ -253,6 +352,228 @@ namespace pmdbs
                 _funcFinishedCondition = FuncFinishedCondition;
                 _funcFailedCondition = FuncFailedCondition;
             }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFinishedCondition"></param>
+            /// <param name="FuncFailedCondition"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _funcFinishedCondition = FuncFinishedCondition;
+                _funcFailedCondition = FuncFailedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+            }
+
+
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="TaskType"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _taskFailedAction = TaskFailedAction;
+            }
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+                _taskFailedAction = TaskFailedAction;
+            }
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FailedCondition"></param>
+            /// <param name="TaskType"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
+                _taskFailedAction = TaskFailedAction;
+            }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FailedCondition"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _failedCondition = FailedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+                _taskFailedAction = TaskFailedAction;
+            }
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFailedCondition"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _funcFailedCondition = FuncFailedCondition;
+                _taskFailedAction = TaskFailedAction;
+            }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="SearchCondition"></param>
+            /// <param name="FinishedCondition"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFailedCondition"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _automatedTaskCondition = FinishedCondition;
+                _searchCondition = SearchCondition;
+                _funcFailedCondition = FuncFailedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+                _taskFailedAction = TaskFailedAction;
+            }
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFinishedCondition"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _funcFinishedCondition = FuncFinishedCondition;
+                _taskFailedAction = TaskFailedAction;
+            }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFinishedCondition"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _funcFinishedCondition = FuncFinishedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+                _taskFailedAction = TaskFailedAction;
+            }
+
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFinishedCondition"></param>
+            /// <param name="FuncFailedCondition"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _funcFinishedCondition = FuncFinishedCondition;
+                _funcFailedCondition = FuncFailedCondition;
+                _taskFailedAction = TaskFailedAction;
+            }
+            /// <summary>
+            /// Task constructor
+            /// </summary>
+            /// <param name="TaskType"></param>
+            /// <param name="TaskAction"></param>
+            /// <param name="FuncFinishedCondition"></param>
+            /// <param name="FuncFailedCondition"></param>
+            /// <param name="FailedTaskBlocking"></param>
+            /// <param name="TaskFailedAction"></param>
+            public Task(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                _taskType = TaskType;
+                _automatedAction = TaskAction;
+                _funcFinishedCondition = FuncFinishedCondition;
+                _funcFailedCondition = FuncFailedCondition;
+                _failedTaskBlocking = FailedTaskBlocking;
+                _taskFailedAction = TaskFailedAction;
+            }
+
+            /// <summary>
+            /// Defines what to do upon task failure.
+            /// </summary>
+            public FailedTaskBlocking BlockingState
+            {
+                get { return _failedTaskBlocking; }
+            }
+
+            /// <summary>
+            /// Terminates the current task by triggering it's failed condition.
+            /// </summary>
+            public void Terminate()
+            {
+                _isTerminated = true;
+            }
+
+            /// <summary>
+            /// Checks wether the task has been terminated.
+            /// </summary>
+            public bool IsTerminated
+            {
+                get { return _isTerminated; }
+            }
 
             /// <summary>
             /// The function or method that is linked to the task.
@@ -260,6 +581,13 @@ namespace pmdbs
             public Action TaskAction
             {
                 get { return _automatedAction; }
+            }
+            /// <summary>
+            /// The action to be executed when the task is terminated or fails.
+            /// </summary>
+            public Action TaskFailedAction
+            {
+                get { return _taskFailedAction; }
             }
             /// <summary>
             /// The SearchCondition that is used to check for the FinishedCondition in the provided data set.
@@ -326,6 +654,21 @@ namespace pmdbs
             /// <summary>
             /// Creates a new Task object.
             /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction);
+                Tasks.Add(task);
+                return task;
+            }
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
             /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
             /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
             /// <param name="TaskAction">The function or method that is linked to the task.</param>
@@ -335,6 +678,22 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FailedCondition);
+                Tasks.Add(task);
+                return task;
+            }
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FailedCondition">The condition that has to be met to consider the task failed.</param>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FailedCondition);
                 Tasks.Add(task);
                 return task;
             }
@@ -372,11 +731,42 @@ namespace pmdbs
             /// <param name="TaskType">The TaskType of the task.</param>
             /// <param name="TaskAction">The function or method that is linked to the task.</param>
             /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
             /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
             /// <returns>Returns the created Task object.</returns>
             public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition)
             {
                 Task task = new Task(TaskType, TaskAction, FuncFinishedCondition, FuncFailedCondition);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition, FuncFailedCondition);
                 Tasks.Add(task);
                 return task;
             }
@@ -393,6 +783,191 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition);
+                Tasks.Add(task);
+                return task;
+            }
+
+
+
+
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FailedCondition">The condition that has to be met to consider the task failed.</param>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FailedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FailedCondition">The condition that has to be met to consider the task failed.</param>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FailedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, TaskAction, FuncFinishedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, TaskAction, FuncFinishedCondition, FuncFailedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition, FuncFailedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition, TaskFailedAction);
+                Tasks.Add(task);
+                return task;
+            }
+
+            /// <summary>
+            /// Creates a new Task object.
+            /// </summary>
+            /// <param name="TaskType">The TaskType of the task.</param>
+            /// <param name="SearchCondition">The SearchCondition that is used to check for the FinishedCondition in the provided data set.</param>
+            /// <param name="FinishedCondition">The condition that has to be met to consider the task completed.</param>
+            /// <param name="TaskAction">The function or method that is linked to the task.</param>
+            /// <param name="FuncFailedCondition">The expression to be checked to consider the task failed.</param>
+            /// <param name="FailedTaskBlocking">The blocking state of the task.</param>
+            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <returns>Returns the created Task object.</returns>
+            public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition, Action TaskFailedAction)
+            {
+                Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition, TaskFailedAction);
                 Tasks.Add(task);
                 return task;
             }
@@ -423,13 +998,18 @@ namespace pmdbs
                     case TaskType.Interactive:
                         new System.Threading.Thread(delegate ()
                         {
-                            while (!IsFinished() && !IsFailed())
+                            while (!IsFinished() && !IsFailed() && !IsTerminated)
                             {
                                 System.Threading.Thread.Sleep(50);
                             }
-                            if (IsFailed())
+                            if (IsFailed() || IsTerminated)
                             {
-                                return;
+                                if (BlockingState == FailedTaskBlocking.Block)
+                                {
+                                    TaskFailedAction?.Invoke();
+                                    Tasks.BlockingTaskFailedAction();
+                                    return;
+                                }
                             }
                             Delete();
                             if (Tasks.Available())
@@ -487,5 +1067,19 @@ namespace pmdbs
         /// Ceck success of task by checking a custom condition.
         /// </summary>
         Interactive = 4
+    }
+    /// <summary>
+    /// Defines how the system should act when a task fails.
+    /// </summary>
+    public enum FailedTaskBlocking
+    {
+        /// <summary>
+        /// Task will block the task queue upon failing.
+        /// </summary>
+        Block = 1,
+        /// <summary>
+        /// The task failed state will be ignored and the next task will be executed.
+        /// </summary>
+        Ignore = 2
     }
 }
