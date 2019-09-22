@@ -200,6 +200,23 @@ namespace pmdbs
         {
             Task<List<string>> getUserSettings = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_user LIMIT 1;", (int)ColumnCount.Tbl_user);
             List<string> userSettings = await getUserSettings;
+            AutomatedTaskFramework.Tasks.BlockingTaskFailedAction = new Action(delegate () 
+            {
+                AutomatedTaskFramework.Tasks.Clear();
+                if (GlobalVarPool.isUser)
+                {
+                    AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Logout);
+                }
+                if (GlobalVarPool.connected)
+                {
+                    AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
+                }
+                AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, new Action(delegate () 
+                {
+                    CustomException.ThrowNew.NetworkException("Automated task threw failed condition.");
+                }));
+                AutomatedTaskFramework.Tasks.Execute();
+            });
             if (userSettings.Count == 0)
             {
                 return;
