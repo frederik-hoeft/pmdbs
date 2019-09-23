@@ -32,7 +32,6 @@ namespace pmdbs
         private Size MaxSize;
         private Size MinSize;
         private string DataDetailsID;
-        private IconData AddIcon = new IconData();
         private int DataPerPage = 25;
         private int CurrentPage = 0;
         private int CurrentContentCount = 0;
@@ -589,28 +588,40 @@ namespace pmdbs
                     {
                         if (string.IsNullOrWhiteSpace(website))
                         {
-                            if (!hostname[0].Equals(oldHostname[0]) || !oldUrl.Equals("\x01"))
-                            {
-                                favIcon = pmdbs.Icon.Generate(hostname);
-                            }
-                            else
+                            if (hostname[0].Equals(oldHostname[0]) || oldUrl.Equals("\x01"))
                             {
                                 return;
                             }
+                            favIcon = IconExtractor.Generate(hostname);
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.Get(website, true);
+                            IconExtractor extractor = IconExtractor.Load(website);
+                            await extractor.Extract();
+                            extractor.ApplyFilter(48);
+                            if (extractor.IconsAvailable)
+                            {
+                                IconExtractor.Icon icon = extractor.GetBestIcon();
+                                favIcon = icon.ToBase64String();
+                            }
+                            else
+                            {
+                                favIcon = IconExtractor.Generate(hostname);
+                            }
                         }
+                    }
+                    catch (UriFormatException)
+                    {
+                        favIcon = IconExtractor.Generate(hostname);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.Generate(hostname);
+                        CustomException.ThrowNew.NetworkException(ex.ToString());
+                        return;
                     }
                     LinkedRow["9"] = favIcon;
                     string encryptedFavIcon = CryptoHelper.AESEncrypt(favIcon, GlobalVarPool.localAESkey);
-                    Query = DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_icon = \"", encryptedFavIcon, "\" WHERE D_id = ", DataDetailsID + ";" });
+                    Query = DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_icon = \"", encryptedFavIcon, "\" WHERE D_id = ", DataDetailsID, ";" });
                     await DataBaseHelper.ModifyData(Query);
                     Invoke((MethodInvoker)delegate
                     {
@@ -899,18 +910,32 @@ namespace pmdbs
                     {
                         if (string.IsNullOrWhiteSpace(website))
                         {
-                            // EXECUTE CODE IN CATCH
-                            throw new Exception();
+                            favIcon = IconExtractor.Generate(hostname);
                         }
                         else
                         {
-                            favIcon = pmdbs.Icon.Get(website, true);
+                            IconExtractor extractor = IconExtractor.Load(website);
+                            await extractor.Extract();
+                            extractor.ApplyFilter(48);
+                            if (extractor.IconsAvailable)
+                            {
+                                IconExtractor.Icon icon = extractor.GetBestIcon();
+                                favIcon = icon.ToBase64String();
+                            }
+                            else
+                            {
+                                favIcon = IconExtractor.Generate(hostname);
+                            }
                         }
                     }
-                    catch (Exception ex)
+                    catch (UriFormatException)
                     {
-                        Console.WriteLine(ex.Message.ToUpper() + "\n" + ex.ToString());
-                        favIcon = pmdbs.Icon.Generate(hostname);
+                        favIcon = IconExtractor.Generate(hostname);
+                    }
+                    catch(Exception ex)
+                    {
+                        CustomException.ThrowNew.NetworkException(ex.ToString());
+                        return;
                     }
                 }
                 string[] Values = new string[]
@@ -1009,19 +1034,36 @@ namespace pmdbs
                 return;
             }
             AddPanelAnimatedButtonCheckIcon.Enabled = false;
-            new Thread(delegate ()
+            new Thread(async delegate ()
             {
-                string base64Img;
+                string favIcon = string.Empty;
+                string url = AddEditFieldWebsite.TextTextBox;
+                string hostname = AddEditFieldHostname.TextTextBox;
                 try
                 {
-                    base64Img = pmdbs.Icon.Get(AddEditFieldWebsite.TextTextBox, true);
-                    // base64Img = pmdbs.Icon.Temp();
+                    IconExtractor extractor = IconExtractor.Load(url);
+                    await extractor.Extract();
+                    extractor.ApplyFilter(48);
+                    if (extractor.IconsAvailable)
+                    {
+                        IconExtractor.Icon icon = extractor.GetBestIcon();
+                        favIcon = icon.ToBase64String();
+                    }
+                    else
+                    {
+                        favIcon = IconExtractor.Generate(hostname);
+                    }
                 }
-                catch
+                catch (UriFormatException)
                 {
-                    base64Img = pmdbs.Icon.Generate(AddEditFieldHostname.TextTextBox);
+                    favIcon = IconExtractor.Generate(hostname);
                 }
-                byte[] iconBytes = Convert.FromBase64String(base64Img);
+                catch (Exception ex)
+                {
+                    CustomException.ThrowNew.NetworkException(ex.ToString());
+                    return;
+                }
+                byte[] iconBytes = Convert.FromBase64String(favIcon);
                 Invoke((MethodInvoker)delegate
                 {
                     using (MemoryStream ms = new MemoryStream(iconBytes, 0, iconBytes.Length))
@@ -2022,9 +2064,9 @@ namespace pmdbs
         {
             LunaItem item = (LunaItem)sender;
             Breaches.Breach breach = breaches[item.Index];
-            Task<Image> GetIcon = pmdbs.Icon.GetFromUrlAsync(breach.LogoPath);
-            Image icon = await GetIcon;
-            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new BreachForm(breach.BreachDate, breach.Title, icon ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain));
+            Task<IconExtractor.Icon> GetIcon = IconExtractor.DownloadImage(breach.LogoPath);
+            IconExtractor.Icon icon = await GetIcon;
+            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new BreachForm(breach.BreachDate, breach.Title, icon.Image ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain));
             DialogResult result = await ShowDialog;
             if (result.Equals(DialogResult.Ignore))
             {
