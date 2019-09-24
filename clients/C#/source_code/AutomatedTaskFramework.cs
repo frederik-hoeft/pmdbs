@@ -179,19 +179,23 @@ namespace pmdbs
             }
         }
         /// <summary>
-        /// The task object allows scheduling a specific action/function/method to be executed.
+        /// The task object allows scheduling actions/functions/methods to be executed.
         /// </summary>
         public partial class Task
         {
             private bool _isTerminated = false;
-            private readonly Action _taskFailedAction = null;
+            // TODO: THIS IS NOT SET FOR SOME REASON (WHEN INITILIZED USING TaskType.Interactive)
+            private readonly Action _taskFailedAction = new Action(delegate () { });
+            // THIS IS SET THOUGH
             private readonly Action _automatedAction = new Action(delegate () { });
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
             private readonly SearchCondition _searchCondition = SearchCondition.Match;
             private readonly FailedTaskBlocking _failedTaskBlocking = FailedTaskBlocking.Block;
             private readonly TaskType _taskType = TaskType.NetworkTask;
+            // TODO: THIS IS NOT SET FOR SOME REASON (WHEN INITILIZED USING TaskType.Interactive)
             private readonly Func<bool> _funcFinishedCondition = () => { return true; };
+            // TODO: THIS IS NOT SET FOR SOME REASON (WHEN INITILIZED USING TaskType.Interactive)
             private readonly Func<bool> _funcFailedCondition = () => { return false; };
 
             /// <summary>
@@ -560,11 +564,28 @@ namespace pmdbs
             }
 
             /// <summary>
-            /// Terminates the current task by triggering it's failed condition.
+            /// Terminates the current task by invoking it's failed condition.
             /// </summary>
             public void Terminate()
             {
                 _isTerminated = true;
+                if (_taskType == TaskType.NetworkTask)
+                {
+                    if (_failedTaskBlocking == FailedTaskBlocking.Block)
+                    {
+                        _taskFailedAction?.Invoke();
+                        Tasks.BlockingTaskFailedAction();
+                    }
+                    else
+                    {
+                        Delete();
+
+                        if (Tasks.Available())
+                        {
+                            Tasks.GetCurrent().Run();
+                        }
+                    }
+                }
             }
 
             /// <summary>
@@ -1017,11 +1038,25 @@ namespace pmdbs
                                 Tasks.GetCurrent().Run();
                             }
                         }).Start();
-                        _automatedAction();
+                        try
+                        {
+                            _automatedAction();
+                        }
+                        catch
+                        {
+                            Terminate();
+                        }
                         break;
 
                     default:
-                        _automatedAction();
+                        try
+                        {
+                            _automatedAction();
+                        }
+                        catch
+                        {
+                            Terminate();
+                        }
                         break;
                 }
             }
@@ -1060,13 +1095,9 @@ namespace pmdbs
         /// </summary>
         NetworkTask = 2,
         /// <summary>
-        /// Check success of task by going through the network output. Check failure of task by checking the provided expression.
-        /// </summary>
-        NetworkTaskWithFailExpression = 3,
-        /// <summary>
         /// Ceck success of task by checking a custom condition.
         /// </summary>
-        Interactive = 4
+        Interactive = 3
     }
     /// <summary>
     /// Defines how the system should act when a task fails.

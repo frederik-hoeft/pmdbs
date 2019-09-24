@@ -38,6 +38,7 @@ namespace pmdbs
                         }
                         catch (Exception e)
                         {
+                            AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                             CustomException.ThrowNew.GenericException("Could not create directory: " + e.ToString());
                             return;
                         }
@@ -123,6 +124,7 @@ namespace pmdbs
             {
                 CustomException.ThrowNew.NetworkException("Unable to resolve + " + ip + " Error message: " + e.ToString());
                 GlobalVarPool.connectionLost = true;
+                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                 return;
             }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
@@ -133,12 +135,14 @@ namespace pmdbs
             }
             catch
             {
+                //TODO: MOVE THIS CODE TO FAILED ACTION
                 CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 MainForm.InvokeSyncAnimationStop();
                 GlobalVarPool.MainForm.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.syncButton.Enabled = true;
                 });
+                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                 GlobalVarPool.connectionLost = true;
                 return;
             }
@@ -421,6 +425,7 @@ namespace pmdbs
                                             {
                                                 if (!packetSID.Equals("ACK") || !decryptedData.Substring(6).Split('!')[1].Equals(GlobalVarPool.nonce))
                                                 {
+                                                    AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                     return;
                                                 }
                                                 else
@@ -650,13 +655,14 @@ namespace pmdbs
                                                                     }
                                                                 default:
                                                                     {
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
                                                                         break;
                                                                     }
                                                             }
                                                             break;
                                                         }
-                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
+                                                    //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
                                                     case "RET":
                                                         {
                                                             switch (decryptedData.Split('!')[1])
@@ -781,6 +787,7 @@ namespace pmdbs
                                                                 case "DEVICE_BANNED":
                                                                 case "BANNED":
                                                                     {
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         CustomException.ThrowNew.NetworkException("YOU HAVE BEEN BANNED.");
                                                                         break;
                                                                     }
@@ -807,6 +814,7 @@ namespace pmdbs
                                                                             }
                                                                             if (new string[] { datetime, email, name }.Contains(null))
                                                                             {
+                                                                                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                                 CustomException.ThrowNew.FormatException("Missing parameters for AD_OUTDATED");
                                                                                 return;
                                                                             }
@@ -847,6 +855,7 @@ namespace pmdbs
                                 }
                             default:
                                 {
+                                    AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                     CustomException.ThrowNew.NetworkException("Received invalid Packet Specifier.", "[ERRNO 05] IPS");
                                     break;
                                 }

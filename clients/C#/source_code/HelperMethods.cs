@@ -221,6 +221,7 @@ namespace pmdbs
             {
                 return;
             }
+            GlobalVarPool.isLocalDatabaseInitialized = true;
             GlobalVarPool.username = userSettings[1];
             GlobalVarPool.name = userSettings[2];
             GlobalVarPool.scryptHash = userSettings[3];

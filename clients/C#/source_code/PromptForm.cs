@@ -18,7 +18,7 @@ namespace pmdbs
             InitializeComponent();
             HelperMethods.InvokeOutputLabel("Waiting for user confirmation ...");
             LabelTitle.Text = promptMain;
-            LabelMailInfo.Text = "An email containing a verification code has been sent to " + GlobalVarPool.email + ".";
+            LabelMailInfo.Text = "An email containing a verification code has been sent to " + (string.IsNullOrEmpty(GlobalVarPool.email) ? "your email address" : GlobalVarPool.email) + ".";
             LabelAction.Text = promptAction;
         }
 

@@ -14,7 +14,7 @@ namespace pmdbs
     public static class HttpHelper
     {
         /// <summary>
-        /// Uses the HTTP protocol to send a download a website's HTML source code.
+        /// Uses the HTTP protocol to download a website's HTML source code.
         /// </summary>
         /// <param name="uri">The url to get the HTML code from.</param>
         /// <returns>The website as HTML code</returns>

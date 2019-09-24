@@ -116,13 +116,12 @@ namespace pmdbs
             await sql_cmd.ExecuteNonQueryAsync();
             SQLiteDataReader reader = sql_cmd.ExecuteReader();
             string returnData = string.Empty;
-            int i = 0;
             while (reader.Read())
             {
                 try
                 {
                     returnData = reader[0].ToString();
-                    i++;
+                    break;
                 }
                 catch (IndexOutOfRangeException outOfRange)
                 {
@@ -132,7 +131,7 @@ namespace pmdbs
             sql_con.Close();
             sql_con.Dispose();
             GlobalVarPool.databaseIsInUse = false;
-            return i != 1 ? string.Empty : returnData; 
+            return returnData;
         }
         /// <summary>
         /// Returns result of SQLite database query as DataTable Object.

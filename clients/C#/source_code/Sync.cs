@@ -274,7 +274,7 @@ namespace pmdbs
                                 query += ", \"" + values[j] + "\"";
                             }
                         }
-                        query += "\"\x01\"";
+                        query += ", \"\x01\"";
                     }
                     catch (IndexOutOfRangeException e)
                     {
@@ -314,7 +314,7 @@ namespace pmdbs
 
         private static async void ReloadData()
         {
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
