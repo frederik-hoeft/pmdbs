@@ -128,13 +128,13 @@ namespace pmdbs
             /// </summary>
             public static void Execute()
             {
-                GetCurrent().Run();
+                new System.Threading.Thread(delegate () { GetCurrent().Run(); }).Start();
             }
             /// <summary>
             /// Schedules a new task to be executed by the ATS
             /// </summary>
             /// <param name="task"></param>
-            public static void Add(Task task)
+            public static void Schedule(Task task)
             {
                 taskList.Add(task);
             }
@@ -177,14 +177,32 @@ namespace pmdbs
                     return false;
                 }
             }
+
+            /// <summary>
+            /// Creates a deep copy of all scheduled tasks.
+            /// </summary>
+            /// <returns>Returns a deep copy of all scheduled tasks.</returns>
+            public static List<Task> DeepCopy()
+            {
+                return taskList.ConvertAll(task => task.Copy());
+            }
+
+            /// <summary>
+            /// Schedules multiple tasks at once.
+            /// </summary>
+            /// <param name="tasks">The list of tasks to be appended to the queue.</param>
+            public static void ScheduleRange(List<Task> tasks)
+            {
+                taskList.AddRange(tasks);
+            }
         }
         /// <summary>
-        /// The task object allows scheduling a specific action/function/method to be executed.
+        /// The task object allows scheduling actions/functions/methods to be executed.
         /// </summary>
         public partial class Task
         {
             private bool _isTerminated = false;
-            private readonly Action _taskFailedAction = null;
+            private readonly Action _taskFailedAction = new Action(delegate () { });
             private readonly Action _automatedAction = new Action(delegate () { });
             private readonly string _automatedTaskCondition = string.Empty;
             private readonly string _failedCondition = "SIG_TASK_FAILED";
@@ -207,6 +225,19 @@ namespace pmdbs
                 _automatedAction = TaskAction;
                 _automatedTaskCondition = FinishedCondition;
                 _searchCondition = SearchCondition;
+            }
+
+            private Task(Task task)
+            {
+                _taskFailedAction = task._taskFailedAction;
+                _automatedAction = task._automatedAction;
+                _automatedTaskCondition = task._automatedTaskCondition;
+                _failedCondition = task._failedCondition;
+                _searchCondition = task._searchCondition;
+                _failedTaskBlocking = task._failedTaskBlocking;
+                _taskType = task._taskType;
+                _funcFinishedCondition = task._funcFinishedCondition;
+                _funcFailedCondition = task._funcFailedCondition;
             }
 
             /// <summary>
@@ -560,11 +591,28 @@ namespace pmdbs
             }
 
             /// <summary>
-            /// Terminates the current task by triggering it's failed condition.
+            /// Terminates the current task by invoking it's failed condition.
             /// </summary>
             public void Terminate()
             {
                 _isTerminated = true;
+                if (_taskType == TaskType.NetworkTask)
+                {
+                    if (_failedTaskBlocking == FailedTaskBlocking.Block)
+                    {
+                        _taskFailedAction?.Invoke();
+                        Tasks.BlockingTaskFailedAction();
+                    }
+                    else
+                    {
+                        Delete();
+
+                        if (Tasks.Available())
+                        {
+                            Tasks.GetCurrent().Run();
+                        }
+                    }
+                }
             }
 
             /// <summary>
@@ -648,7 +696,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
             /// <summary>
@@ -663,7 +711,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
             /// <summary>
@@ -678,7 +726,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FailedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
             /// <summary>
@@ -694,7 +742,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FailedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -707,7 +755,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, Action TaskAction)
             {
                 Task task = new Task(TaskType, TaskAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -721,7 +769,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition)
             {
                 Task task = new Task(TaskType, TaskAction, FuncFinishedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -736,7 +784,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -751,7 +799,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition)
             {
                 Task task = new Task(TaskType, TaskAction, FuncFinishedCondition, FuncFailedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -767,7 +815,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition, FuncFailedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -783,7 +831,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -800,7 +848,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -820,7 +868,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
             /// <summary>
@@ -836,7 +884,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
             /// <summary>
@@ -852,7 +900,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FailedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
             /// <summary>
@@ -869,22 +917,22 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, string FailedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FailedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
             /// <summary>
             /// Creates a new Task object.
             /// </summary>
-            /// <param name="TaskType">The TaskType of the task.</param>
-            /// <param name="TaskAction">The function or method that is linked to the task.</param>
-            /// <param name="FuncFinishedCondition">The expression to be checked to consider the task finished.</param>
-            /// <param name="TaskFailedAction">The action to be executed when the task is terminated or fails.</param>
+            /// <param name="taskType">The TaskType of the task.</param>
+            /// <param name="taskAction">The function or method that is linked to the task.</param>
+            /// <param name="funcFinishedCondition">The expression to be checked to consider the task finished.</param>
+            /// <param name="taskFailedAction">The action to be executed when the task is terminated or fails.</param>
             /// <returns>Returns the created Task object.</returns>
-            public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Action TaskFailedAction)
+            public static Task Create(TaskType taskType, Action taskAction, Func<bool> funcFinishedCondition, Action taskFailedAction)
             {
-                Task task = new Task(TaskType, TaskAction, FuncFinishedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Task task = new Task(taskType, taskAction, funcFinishedCondition, taskFailedAction);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -900,7 +948,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -916,7 +964,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, TaskAction, FuncFinishedCondition, FuncFailedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -933,7 +981,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, Action TaskAction, Func<bool> FuncFinishedCondition, Func<bool> FuncFailedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, TaskAction, FuncFinishedCondition, FuncFailedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -950,7 +998,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -968,7 +1016,7 @@ namespace pmdbs
             public static Task Create(TaskType TaskType, FailedTaskBlocking FailedTaskBlocking, SearchCondition SearchCondition, string FinishedCondition, Action TaskAction, Func<bool> FuncFailedCondition, Action TaskFailedAction)
             {
                 Task task = new Task(TaskType, FailedTaskBlocking, SearchCondition, FinishedCondition, TaskAction, FuncFailedCondition, TaskFailedAction);
-                Tasks.Add(task);
+                Tasks.Schedule(task);
                 return task;
             }
 
@@ -979,6 +1027,16 @@ namespace pmdbs
             {
                 Tasks.Remove(this);
             }
+
+            /// <summary>
+            /// Creates a deep copy of the task.
+            /// </summary>
+            /// <returns>Returns the deep copy.</returns>
+            public Task Copy()
+            {
+                return new Task(this);
+            }
+
             /// <summary>
             /// Executes the method or function that is linked to the task.
             /// </summary>
@@ -1000,7 +1058,7 @@ namespace pmdbs
                         {
                             while (!IsFinished() && !IsFailed() && !IsTerminated)
                             {
-                                System.Threading.Thread.Sleep(50);
+                                System.Threading.Thread.Sleep(100);
                             }
                             if (IsFailed() || IsTerminated)
                             {
@@ -1017,11 +1075,25 @@ namespace pmdbs
                                 Tasks.GetCurrent().Run();
                             }
                         }).Start();
-                        _automatedAction();
+                        try
+                        {
+                            _automatedAction();
+                        }
+                        catch
+                        {
+                            Terminate();
+                        }
                         break;
 
                     default:
-                        _automatedAction();
+                        try
+                        {
+                            _automatedAction();
+                        }
+                        catch
+                        {
+                            Terminate();
+                        }
                         break;
                 }
             }
@@ -1060,13 +1132,9 @@ namespace pmdbs
         /// </summary>
         NetworkTask = 2,
         /// <summary>
-        /// Check success of task by going through the network output. Check failure of task by checking the provided expression.
-        /// </summary>
-        NetworkTaskWithFailExpression = 3,
-        /// <summary>
         /// Ceck success of task by checking a custom condition.
         /// </summary>
-        Interactive = 4
+        Interactive = 3
     }
     /// <summary>
     /// Defines how the system should act when a task fails.

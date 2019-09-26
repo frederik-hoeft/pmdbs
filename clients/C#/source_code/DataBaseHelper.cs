@@ -13,27 +13,7 @@ namespace pmdbs
     /// </summary>
     class DataBaseHelper
     {
-        private static SQLiteConnection sql_con;
-        private static SQLiteCommand sql_cmd;
-        /// <summary>
-        /// Opens the connection to the database
-        /// </summary>
-        /// <returns></returns>
-        private static async Task SetConnection()
-        {
-            while (GlobalVarPool.databaseIsInUse)
-            {
-                await Task.Delay(100);
-            }
-            GlobalVarPool.databaseIsInUse = true;
-            string dataSource = @"Resources\localdata_windows.db";
-
-            sql_con = new SQLiteConnection
-            {
-                ConnectionString = "Data Source=" + dataSource
-            };
-            sql_con.Open();
-        }
+        private const string connectionString = "Data Source=" + @"Resources\localdata_windows.db";
 
         /// <summary>
         /// Returns result of SQLite database query as a list.
@@ -43,30 +23,38 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<List<string>> GetDataAsList(string query, int columns)
         {
-            await SetConnection();
-            sql_cmd = sql_con.CreateCommand();
-            sql_cmd.CommandText = query;
-            await sql_cmd.ExecuteNonQueryAsync();
-            SQLiteDataReader reader = sql_cmd.ExecuteReader();
-            List<string> DataList = new List<string>();
-            while (reader.Read())
+            List<string> dataList = new List<string>();
+            using (DataBaseThreadWatcher watcher = new DataBaseThreadWatcher())
             {
-                try
+                await watcher.Wait();
+                using (SQLiteConnection sqlConnection = new SQLiteConnection(connectionString))
                 {
-                    for (int i = 0; i < columns; i++)
+                    sqlConnection.Open();
+                    using (SQLiteCommand sqlCommand = sqlConnection.CreateCommand())
                     {
-                        DataList.Add(reader[i].ToString());
+                        sqlCommand.CommandText = query;
+                        await sqlCommand.ExecuteNonQueryAsync();
+                        using (SQLiteDataReader reader = (SQLiteDataReader)await sqlCommand.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                try
+                                {
+                                    for (int i = 0; i < columns; i++)
+                                    {
+                                        dataList.Add(reader[i].ToString());
+                                    }
+                                }
+                                catch (IndexOutOfRangeException outOfRange)
+                                {
+                                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                                }
+                            }
+                        }
                     }
                 }
-                catch (IndexOutOfRangeException outOfRange)
-                {
-                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
-                }
             }
-            sql_con.Close();
-            sql_con.Dispose();
-            GlobalVarPool.databaseIsInUse = false;
-            return DataList;
+            return dataList;
         }
         /// <summary>
         /// Returns result of SQLite database query as 2d string list.
@@ -76,32 +64,40 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<List<List<string>>> GetDataAs2DList(string query, int columns)
         {
-            await SetConnection();
-            sql_cmd = sql_con.CreateCommand();
-            sql_cmd.CommandText = query;
-            await sql_cmd.ExecuteNonQueryAsync();
-            SQLiteDataReader reader = sql_cmd.ExecuteReader();
-            List<List<string>> OuterList = new List<List<string>>();
-            while (reader.Read())
+            List<List<string>> outerList = new List<List<string>>();
+            using (DataBaseThreadWatcher watcher = new DataBaseThreadWatcher())
             {
-                try
+                await watcher.Wait();
+                using (SQLiteConnection sqlConnection = new SQLiteConnection(connectionString))
                 {
-                    List<string> InnerList = new List<string>();
-                    for (int i = 0; i < columns; i++)
+                    sqlConnection.Open();
+                    using (SQLiteCommand sqlCommand = sqlConnection.CreateCommand())
                     {
-                        InnerList.Add(reader[i].ToString());
+                        sqlCommand.CommandText = query;
+                        await sqlCommand.ExecuteNonQueryAsync();
+                        using (SQLiteDataReader reader = (SQLiteDataReader)await sqlCommand.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                try
+                                {
+                                    List<string> innerList = new List<string>();
+                                    for (int i = 0; i < columns; i++)
+                                    {
+                                        innerList.Add(reader[i].ToString());
+                                    }
+                                    outerList.Add(innerList);
+                                }
+                                catch (IndexOutOfRangeException outOfRange)
+                                {
+                                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                                }
+                            }
+                        }
                     }
-                    OuterList.Add(InnerList);
-                }
-                catch (IndexOutOfRangeException outOfRange)
-                {
-                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
                 }
             }
-            sql_con.Close();
-            sql_con.Dispose();
-            GlobalVarPool.databaseIsInUse = false;
-            return OuterList;
+            return outerList;
         }
         /// <summary>
         /// Returns result of SQLite database query as string or Empty string if 0 or more than one field is returned.
@@ -110,29 +106,36 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<string> GetSingleOrDefault(string query)
         {
-            await SetConnection();
-            sql_cmd = sql_con.CreateCommand();
-            sql_cmd.CommandText = query;
-            await sql_cmd.ExecuteNonQueryAsync();
-            SQLiteDataReader reader = sql_cmd.ExecuteReader();
             string returnData = string.Empty;
-            int i = 0;
-            while (reader.Read())
+            using (DataBaseThreadWatcher watcher = new DataBaseThreadWatcher())
             {
-                try
+                await watcher.Wait();
+                using (SQLiteConnection sqlConnection = new SQLiteConnection(connectionString))
                 {
-                    returnData = reader[0].ToString();
-                    i++;
-                }
-                catch (IndexOutOfRangeException outOfRange)
-                {
-                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                    sqlConnection.Open();
+                    using (SQLiteCommand sqlCommand = sqlConnection.CreateCommand())
+                    {
+                        sqlCommand.CommandText = query;
+                        await sqlCommand.ExecuteNonQueryAsync();
+                        using (SQLiteDataReader reader = (SQLiteDataReader)await sqlCommand.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                try
+                                {
+                                    returnData = reader[0].ToString();
+                                    break;
+                                }
+                                catch (IndexOutOfRangeException outOfRange)
+                                {
+                                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                                }
+                            }
+                        }
+                    }
                 }
             }
-            sql_con.Close();
-            sql_con.Dispose();
-            GlobalVarPool.databaseIsInUse = false;
-            return i != 1 ? string.Empty : returnData; 
+            return returnData;
         }
         /// <summary>
         /// Returns result of SQLite database query as DataTable Object.
@@ -142,35 +145,43 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task<DataTable> GetDataAsDataTable(string query, int columns)
         {
-            await SetConnection();
-            sql_cmd = sql_con.CreateCommand();
-            sql_cmd.CommandText = query;
-            await sql_cmd.ExecuteNonQueryAsync();
-            SQLiteDataReader reader = sql_cmd.ExecuteReader();
-            DataTable ReturnData = new DataTable();
+            DataTable returnData = new DataTable();
             for (int i = 0; i < columns; i++)
             {
-                ReturnData.Columns.Add(i.ToString(), typeof(string));
+                returnData.Columns.Add(i.ToString(), typeof(string));
             }
-            while (reader.Read())
+            using (DataBaseThreadWatcher watcher = new DataBaseThreadWatcher())
             {
-                try
+                await watcher.Wait();
+                using (SQLiteConnection sqlConnection = new SQLiteConnection(connectionString))
                 {
-                    DataRow NewRow = ReturnData.Rows.Add();
-                    for (int i = 0; i < columns; i++)
+                    sqlConnection.Open();
+                    using (SQLiteCommand sqlCommand = sqlConnection.CreateCommand())
                     {
-                        NewRow[i.ToString()] = reader[i].ToString();
+                        sqlCommand.CommandText = query;
+                        await sqlCommand.ExecuteNonQueryAsync();
+                        using (SQLiteDataReader reader = (SQLiteDataReader)await sqlCommand.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                try
+                                {
+                                    DataRow NewRow = returnData.Rows.Add();
+                                    for (int i = 0; i < columns; i++)
+                                    {
+                                        NewRow[i.ToString()] = reader[i].ToString();
+                                    }
+                                }
+                                catch (IndexOutOfRangeException outOfRange)
+                                {
+                                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
+                                }
+                            }
+                        }
                     }
                 }
-                catch (IndexOutOfRangeException outOfRange)
-                {
-                    Console.WriteLine("Error 'Reader out of range' occured: '{0}'", outOfRange);
-                }
             }
-            sql_con.Close();
-            sql_con.Dispose();
-            GlobalVarPool.databaseIsInUse = false;
-            return ReturnData;
+            return returnData;
         }
         /// <summary>
         /// Executes a SQLite query to manipulate data.
@@ -179,13 +190,19 @@ namespace pmdbs
         /// <returns></returns>
         public static async Task ModifyData(string query)
         {
-            await SetConnection();
-            sql_cmd = sql_con.CreateCommand();
-            sql_cmd.CommandText = query;
-            await sql_cmd.ExecuteNonQueryAsync();
-            sql_con.Close();
-            sql_con.Dispose();
-            GlobalVarPool.databaseIsInUse = false;
+            using (DataBaseThreadWatcher watcher = new DataBaseThreadWatcher())
+            {
+                await watcher.Wait();
+                using (SQLiteConnection sqlConnection = new SQLiteConnection(connectionString))
+                {
+                    sqlConnection.Open();
+                    using (SQLiteCommand sqlCommand = sqlConnection.CreateCommand())
+                    {
+                        sqlCommand.CommandText = query;
+                        await sqlCommand.ExecuteNonQueryAsync();
+                    }
+                }
+            }
         }
         /// <summary>
         /// Provides database security related methods.

@@ -77,6 +77,8 @@ namespace pmdbs
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
 
+        public static bool uiInitialized = false;
+        public static bool isLocalDatabaseInitialized = false;
         public static bool connectionLost = false;
         public static int commandErrorCode = -1;
         public static bool countSyncPackets = false;

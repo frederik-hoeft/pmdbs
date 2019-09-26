@@ -38,6 +38,7 @@ namespace pmdbs
                         }
                         catch (Exception e)
                         {
+                            AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                             CustomException.ThrowNew.GenericException("Could not create directory: " + e.ToString());
                             return;
                         }
@@ -71,7 +72,6 @@ namespace pmdbs
                         }
                         else
                         {
-                            HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
                             HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
                             // KINDA LAZY BUT IT WORKS
                             GlobalVarPool.PrivateKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.privatekey")).ToArray()[0].FullName);
@@ -123,6 +123,7 @@ namespace pmdbs
             {
                 CustomException.ThrowNew.NetworkException("Unable to resolve + " + ip + " Error message: " + e.ToString());
                 GlobalVarPool.connectionLost = true;
+                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                 return;
             }
             IPEndPoint server = new IPEndPoint(ipAddress, port);
@@ -133,12 +134,14 @@ namespace pmdbs
             }
             catch
             {
+                //TODO: MOVE THIS CODE TO FAILED ACTION
                 CustomException.ThrowNew.NetworkException("Could not connect to server:\n\nTimed out or connection refused.");
                 MainForm.InvokeSyncAnimationStop();
                 GlobalVarPool.MainForm.Invoke((System.Windows.Forms.MethodInvoker)delegate 
                 {
                     GlobalVarPool.syncButton.Enabled = true;
                 });
+                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                 GlobalVarPool.connectionLost = true;
                 return;
             }
@@ -421,6 +424,7 @@ namespace pmdbs
                                             {
                                                 if (!packetSID.Equals("ACK") || !decryptedData.Substring(6).Split('!')[1].Equals(GlobalVarPool.nonce))
                                                 {
+                                                    AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                     return;
                                                 }
                                                 else
@@ -555,9 +559,14 @@ namespace pmdbs
                                                                 if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
+                                                                    List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
                                                                     AutomatedTaskFramework.Tasks.Clear();
                                                                     AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                                                                     AutomatedTaskFramework.Task.Create(TaskType.FireAndForget,  NetworkAdapter.MethodProvider.Disconnect);
+                                                                    for (int j = 1; j < scheduledTasks.Count; j++)
+                                                                    {
+                                                                        AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[j]);
+                                                                    }
                                                                     AutomatedTaskFramework.Tasks.Execute();
                                                                     new Thread(new ThreadStart(Sync.Finish))
                                                                     {
@@ -634,6 +643,7 @@ namespace pmdbs
                                                                     {
                                                                         GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("Invalid credentials." + Environment.NewLine + message);
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         break;
                                                                     }
                                                                 case "I2FA":
@@ -650,13 +660,14 @@ namespace pmdbs
                                                                     }
                                                                 default:
                                                                     {
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         CustomException.ThrowNew.NetworkException(message, "[ERRNO " + errno + "] " + errID);
                                                                         break;
                                                                     }
                                                             }
                                                             break;
                                                         }
-                                                        //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
+                                                    //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
                                                     case "RET":
                                                         {
                                                             switch (decryptedData.Split('!')[1])
@@ -781,6 +792,7 @@ namespace pmdbs
                                                                 case "DEVICE_BANNED":
                                                                 case "BANNED":
                                                                     {
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         CustomException.ThrowNew.NetworkException("YOU HAVE BEEN BANNED.");
                                                                         break;
                                                                     }
@@ -807,6 +819,7 @@ namespace pmdbs
                                                                             }
                                                                             if (new string[] { datetime, email, name }.Contains(null))
                                                                             {
+                                                                                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                                 CustomException.ThrowNew.FormatException("Missing parameters for AD_OUTDATED");
                                                                                 return;
                                                                             }
@@ -847,6 +860,7 @@ namespace pmdbs
                                 }
                             default:
                                 {
+                                    AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                     CustomException.ThrowNew.NetworkException("Received invalid Packet Specifier.", "[ERRNO 05] IPS");
                                     break;
                                 }
