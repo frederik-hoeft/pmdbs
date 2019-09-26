@@ -25,7 +25,6 @@ namespace pmdbs
         
         private readonly char[] passwordSpecialCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '_', '-', '$', '%', '&', '/', '(', ')', '=', '?', '{', '[', ']', '}', '\\', '+', '*', '#', ',', '.', '<', '>', '|', '@', '!', '~', ';', ':', '"' };
         private readonly char[] passwordCharacters = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
-        private string MasterPassword;
         private bool GuiLoaded = false;
         private bool IsDefaultIcon = true;
         private bool EditFieldShown = false;
@@ -1112,23 +1111,107 @@ namespace pmdbs
             PictureBoxOverlay.Image = bmp;
         }
 
-        private void LoginLabelOnlineRegister_Click(object sender, EventArgs e)
+        private void LoginLabelOnlineBack_Click(object sender, EventArgs e)
         {
             LoginPictureBoxOnlineMain.SuspendLayout();
-            LoginPictureBoxRegisterMain.BringToFront();
-            LoginPictureBoxRegisterMain.ResumeLayout();
+            LoginPictureBoxOnlineSettings.BringToFront();
+            LoginPictureBoxOnlineSettings.ResumeLayout();
         }
 
         private void LoginLabelRegisterSignIn_Click(object sender, EventArgs e)
         {
             LoginPictureBoxRegisterMain.SuspendLayout();
-            LoginPictureBoxOnlineMain.BringToFront();
-            LoginPictureBoxOnlineMain.ResumeLayout();
+            LoginPictureBoxOnlineSettings.BringToFront();
+            LoginPictureBoxOnlineSettings.ResumeLayout();
         }
 
         private void LoginAnimatedButtonOnlineLogin_Click(object sender, EventArgs e)
         {
-            CustomException.ThrowNew.GenericException();
+            string username = LoginEditFieldOnlineUsername.TextTextBox;
+            string password = LoginEditFieldOnlinePassword.TextTextBox;
+            if (!username.IsValidUsername())
+            {
+                return;
+            }
+            if (string.IsNullOrEmpty(password))
+            {
+                LoginLabelOfflineError.Text = "Please enter a password!";
+                LoginLabelOfflineError.Visible = true;
+                LoginButtonDisabled = false;
+                return;
+            }
+            GlobalVarPool.outputLabel = LoginLoadingLabelDetails;
+            GlobalVarPool.outputLabelIsValid = true;
+            LoginLunaProgressSpinnerFading.Start();
+            LoginPictureBoxLoadingMain.ResumeLayout();
+            LoginPictureBoxLoadingMain.BringToFront();
+            LoginPictureBoxOnlineMain.SuspendLayout();
+            LoginLoadingLabelDetails.Text = "Hashing Password...";
+            
+            GlobalVarPool.plainMasterPassword = password;
+            string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
+            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
+            Action OnTaskFailed = new Action(delegate 
+            {
+                GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate 
+                {
+                    LoginLunaProgressSpinnerFading.Stop();
+                    LoginPictureBoxLoadingMain.SuspendLayout();
+                    LoginPictureBoxOnlineSettings.ResumeLayout();
+                    LoginPictureBoxOnlineSettings.BringToFront();
+                });
+            });
+            Action OnLoginFailed = new Action(delegate
+            {
+                GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
+                {
+                    LoginLunaProgressSpinnerFading.Stop();
+                    LoginPictureBoxLoadingMain.SuspendLayout();
+                    LoginPictureBoxOnlineMain.ResumeLayout();
+                    LoginPictureBoxOnlineMain.BringToFront();
+                });
+            });
+            Action InitializeDatabase = new Action(async delegate
+            {
+                GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate 
+                {
+                    LoginLoadingLabelDetails.Text = "Hashing Password...";
+                });
+                string firstUsage = TimeConverter.TimeStamp();
+                Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(stage1PasswordHash, firstUsage));
+                string stage2PasswordHash = await ScryptTask;
+                GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
+                {
+                    LoginLoadingLabelDetails.Text = "Initializing Database...";
+                });
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\", U_username = \"", GlobalVarPool.username, "\", U_cookie = \"", GlobalVarPool.cookie, "\", U_datetime = 0;" }));
+                for (int i = GlobalVarPool.UserData.Columns.Count; i < 11; i++)
+                {
+                    GlobalVarPool.UserData.Columns.Add(i.ToString(), typeof(string));
+                }
+                GlobalVarPool.isLocalDatabaseInitialized = true;
+            });
+            Func<bool> databaseInitializedWhen = new Func<bool>(delegate 
+            {
+                return GlobalVarPool.isLocalDatabaseInitialized;
+            });
+            Func<bool> dataListInitializedWhen = new Func<bool>(delegate
+            {
+                return GlobalVarPool.uiInitialized;
+            });
+            Func<bool> syncFinishedWhen = new Func<bool>(delegate
+            {
+                return !GlobalVarPool.connected;
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, OnTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login, OnLoginFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, InitializeDatabase, databaseInitializedWhen, OnTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, InitializeDataList, dataListInitializedWhen, OnTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails, OnTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Sync, syncFinishedWhen, OnTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, FinalizeLogin);
+            AutomatedTaskFramework.Tasks.Execute();
         }
 
         private void LoginEditFieldOfflinePassword_EnterKeyPressed(object sender, EventArgs e)
@@ -1148,8 +1231,8 @@ namespace pmdbs
                 return;
             }
             LoginButtonDisabled = true;
-            string Password = LoginEditFieldOfflinePassword.TextTextBox;
-            if (Password.Equals(""))
+            string password = LoginEditFieldOfflinePassword.TextTextBox;
+            if (string.IsNullOrEmpty(password))
             {
                 LoginLabelOfflineError.Text = "Please enter a password!";
                 LoginLabelOfflineError.Visible = true;
@@ -1162,11 +1245,11 @@ namespace pmdbs
             LoginPictureBoxOfflineMain.SuspendLayout();
             LoginLoadingLabelDetails.Text = "Loading Saved Hash...";
             LoginLoadingLabelDetails.Text = "Hashing Password...";
-            string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password);
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, GlobalVarPool.firstUsage));
-            string Stage2PasswordHash = await ScryptTask;
+            string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
+            string stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Checking Password...";
-            if (!Stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
+            if (!stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
             {
                 LoginLabelOfflineError.Text = "Wrong Password!";
                 LoginLabelOfflineError.Visible = true;
@@ -1177,8 +1260,8 @@ namespace pmdbs
                 LoginLunaProgressSpinnerFading.Stop();
                 return;
             }
-            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
-            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
+            GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
+            GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
             LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
@@ -1205,53 +1288,7 @@ namespace pmdbs
             }
             LoginLoadingLabelDetails.Text = "Loading User Interface...";
             DataFlowLayoutPanelList.SuspendLayout();
-            new Thread(delegate () {
-                for (int i = 0; i < DataPerPage; i++)
-                {
-                    ListEntry listEntry = new ListEntry
-                    {
-                        BackColor = Color.White,
-                        HostNameFont = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
-                        HostNameForeColor = SystemColors.ControlText,
-                        Name = "listEntry",
-                        Size = new Size(1041, 75),
-                        TabIndex = 14,
-                        TimeStampFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                        TimeStampForeColor = SystemColors.ControlText,
-                        UserNameFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                        UserNameForeColor = SystemColors.ControlText,
-                        ColorNormal = Color.White,
-                        ColorHover = Colors.LightGray,
-                        BackgroundColor = Color.White
-                    };
-                    listEntry.Hide();
-                    Invoke((MethodInvoker)delegate
-                    {
-                        DataFlowLayoutPanelList.Controls.Add(listEntry);
-                    });
-                    entryList.Add(listEntry);
-                    listEntry.OnClickEvent += ListEntry_Click;
-                    DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
-                }
-                Invoke((MethodInvoker)delegate
-                {
-                    DataFlowLayoutPanelList.ResumeLayout();
-                    FlowLayoutPanel1_Resize(this, null);
-                    LoginLunaProgressSpinnerFading.Stop();
-                    LoginPictureBoxOnlineMain.Dispose();
-                    LoginPictureBoxOfflineMain.Dispose();
-                    LoginPictureBoxRegisterMain.Dispose();
-                    PanelMain.BringToFront();
-                    PanelLogin.Dispose();
-                    this.MinimumSize = MinSize;
-                    this.MaximumSize = MaxSize;
-                    this.MaximizeBox = true;
-                    this.MinimizeBox = true;
-                    InitFilterPanel();
-                    ApplyFilter(0);
-                    HelperMethods.CollectGarbage();
-                });
-            }).Start();
+            new Thread(InitializeUI).Start();
         }
 
         private async void LoginAnimatedButtonRegister_Click(object sender, EventArgs e)
@@ -1321,64 +1358,19 @@ namespace pmdbs
             }
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
-            string FirstUsage = TimeConverter.TimeStamp();
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, FirstUsage));
-            string Stage2PasswordHash = await ScryptTask;
+            string firstUsage = TimeConverter.TimeStamp();
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, firstUsage));
+            string stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
-            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"", Stage2PasswordHash, "\", 0, \"", FirstUsage, "\");" }));
-            MasterPassword = Stage1PasswordHash;
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\";" }));
+            GlobalVarPool.isLocalDatabaseInitialized = true;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
-            new Thread(delegate () {
-                for (int i = GlobalVarPool.UserData.Columns.Count; i < 11; i++)
-                {
-                    GlobalVarPool.UserData.Columns.Add(i.ToString(), typeof(string));
-                }
-                for (int i = 0; i < DataPerPage; i++)
-                {
-                    ListEntry listEntry = new ListEntry
-                    {
-                        BackColor = Color.White,
-                        HostNameFont = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
-                        HostNameForeColor = SystemColors.ControlText,
-                        Name = "listEntry",
-                        Size = new Size(1041, 75),
-                        TabIndex = 14,
-                        TimeStampFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                        TimeStampForeColor = SystemColors.ControlText,
-                        UserNameFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
-                        UserNameForeColor = SystemColors.ControlText,
-                        ColorNormal = Color.White,
-                        ColorHover = Colors.LightGray,
-                        BackgroundColor = Color.White
-                    };
-                    listEntry.Hide();
-                    Invoke((MethodInvoker)delegate
-                    {
-                        DataFlowLayoutPanelList.Controls.Add(listEntry);
-                    });
-                    entryList.Add(listEntry);
-                    listEntry.OnClickEvent += ListEntry_Click;
-                    DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
-                }
-                Invoke((MethodInvoker)delegate
-                {
-                    DataFlowLayoutPanelList.ResumeLayout();
-                    FlowLayoutPanel1_Resize(this, null);
-                    LoginLunaProgressSpinnerFading.Stop();
-                    LoginPictureBoxOnlineMain.Dispose();
-                    LoginPictureBoxOfflineMain.Dispose();
-                    LoginPictureBoxRegisterMain.Dispose();
-                    PanelMain.BringToFront();
-                    PanelLogin.Dispose();
-                    this.MinimumSize = MinSize;
-                    this.MaximumSize = MaxSize;
-                    this.MaximizeBox = true;
-                    this.MinimizeBox = true;
-                    InitFilterPanel();
-                    ApplyFilter(0);
-                });
-            }).Start();
+            for (int i = GlobalVarPool.UserData.Columns.Count; i < 11; i++)
+            {
+                GlobalVarPool.UserData.Columns.Add(i.ToString(), typeof(string));
+            }
+            new Thread(InitializeUI).Start();
         }
         private void LoginEditFieldRegisterPassword2_TextBoxTextChanged(object sender, EventArgs e)
         {
@@ -1418,21 +1410,9 @@ namespace pmdbs
             string strPort = SettingsEditFieldLoginPort.TextTextBox;
             string username = SettingsEditFieldLoginUsername.TextTextBox;
             string password = SettingsEditFieldLoginPassword.TextTextBox;
-            bool isIP = false;
 
-            if (string.IsNullOrEmpty(ip))
+            if (new bool[] { await ip.IsValidIp(), strPort.IsValidPort(), username.IsValidUsername() }.Contains(false))
             {
-                CustomException.ThrowNew.FormatException("Please enter the IPv4 address or DNS of the server you'd like to connect to.");
-                return;
-            }
-            if (string.IsNullOrEmpty(strPort))
-            {
-                CustomException.ThrowNew.FormatException("Please enter the port of the server you'd like to connect to.");
-                return;
-            }
-            if (string.IsNullOrEmpty(username))
-            {
-                CustomException.ThrowNew.FormatException("Please enter your username.");
                 return;
             }
             if (string.IsNullOrEmpty(password))
@@ -1440,31 +1420,11 @@ namespace pmdbs
                 CustomException.ThrowNew.FormatException("Please enter your password.");
                 return;
             }
-            int port = Convert.ToInt32(strPort);
-            if (port < 1 || port > 65536)
-            {
-                CustomException.ThrowNew.FormatException("Please enter a valid port number.");
-                return;
-            }
-            if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
-            {
-                isIP = true;
-                GlobalVarPool.REMOTE_ADDRESS = ip;
-            }
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
             GlobalVarPool.plainMasterPassword = password;
-            GlobalVarPool.username = username;
             try
             {
-                if (!isIP)
-                {
-                    Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
-                    IPHostEntry ipAddress = await ipTask;
-                    string ipv4String = ipAddress.AddressList.First().MapToIPv4().ToString();
-                    GlobalVarPool.REMOTE_ADDRESS = ipv4String;
-                }
-                GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelLogin;
                 GlobalVarPool.loadingType = LoadingHelper.LoadingType.LOGIN;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
@@ -1472,8 +1432,7 @@ namespace pmdbs
                 {
                     IsBackground = true
                 };
-                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition
-            });
+                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
                 AutomatedTaskFramework.Tasks.Clear();
                 if (GlobalVarPool.connected)
                 {
@@ -1502,72 +1461,22 @@ namespace pmdbs
             string username = SettingsEditFieldRegisterUsername.TextTextBox;
             string email = SettingsEditFieldRegisterEmail.TextTextBox; 
             string nickname = SettingsEditFieldRegisterName.TextTextBox;
-            bool isIP = false;
             if (string.IsNullOrEmpty(nickname))
             {
                 nickname = "User";
             }
-            if (string.IsNullOrEmpty(ip))
+            if (new string[] { " ", "\"", "'" }.Any(nickname.Contains))
             {
-                CustomException.ThrowNew.FormatException("Please enter the IPv4 address or DNS of the server you'd like to connect to.");
+                CustomException.ThrowNew.FormatException("The nickname may not contain spaces, single or double quotes.");
                 return;
             }
-            if (string.IsNullOrEmpty(strPort))
+            if (new bool[] { await ip.IsValidIp(), strPort.IsValidPort(), username.IsValidUsername(), email.IsValidEmail() }.Contains(false))
             {
-                CustomException.ThrowNew.FormatException("Please enter the port of the server you'd like to connect to.");
-                return;
-            }
-            if (string.IsNullOrEmpty(username))
-            {
-                CustomException.ThrowNew.FormatException("Please enter your username.");
-                return;
-            }
-            if (new string[] { username, email, nickname}.Where(element => new string[] { " ", "\"", "'" }.Any(element.Contains)).Any())
-            {
-                CustomException.ThrowNew.FormatException("The username, nickname and email address may not contain spaces, single or double quotes.");
-                return;
-            }
-            if (username.Contains("__"))
-            {
-                CustomException.ThrowNew.FormatException("The username may not contain double underscores.");
-                return;
-            }
-            if (string.IsNullOrEmpty(email))
-            {
-                CustomException.ThrowNew.FormatException("Please enter your email address.");
-                return;
-            }
-            // DAMN REGEX SYNTAX SUCKS ... TODO: REPLACE THIS WITH SOME ACTUALLY READABLE LINQ QUERY
-            if (!Regex.IsMatch(email, @"^[^.][0-9a-zA-z\.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9-\.]+\.[a-z]+$"))
-            {
-                CustomException.ThrowNew.FormatException("Please enter a valid email address.");
                 return;
             }
             GlobalVarPool.name = nickname;
-            GlobalVarPool.email = email;
-            GlobalVarPool.username = username;
-            int port = Convert.ToInt32(strPort);
-            if (port < 1 || port > 65536)
-            {
-                CustomException.ThrowNew.FormatException("Please enter a valid port number.");
-                return;
-            }
-            // TODO: MORE DISGUSTING REGEXES. THIS ONE DOESN'T EVEN WORK PROPERLY AS IT ALLOWS STUFF LIKE 1.1.1 AS IPv4 ADDRESSES --> TODO: LINQ <3
-            if (Regex.IsMatch(ip, @"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]).){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$"))
-            {
-                isIP = true;
-                GlobalVarPool.REMOTE_ADDRESS = ip;
-            }
             try
             {
-                if (!isIP)
-                {
-                    Task<IPHostEntry> ipTask = Dns.GetHostEntryAsync(ip);
-                    IPHostEntry ipAddress = await ipTask;
-                    string ipv4String = ipAddress.AddressList.First().ToString();
-                    GlobalVarPool.REMOTE_ADDRESS = ipv4String;
-                }
-                GlobalVarPool.REMOTE_PORT = port;
                 GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
                 GlobalVarPool.loadingType = LoadingHelper.LoadingType.REGISTER;
                 Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
@@ -2089,6 +1998,96 @@ namespace pmdbs
             passwordStrengthIndicator.SetIndex(strength);
             passwordStrengthlabel.Text = result.Complexity;
         }
+
+        private void InitializeDataList()
+        {
+            for (int i = 0; i < DataPerPage; i++)
+            {
+                ListEntry listEntry = new ListEntry
+                {
+                    BackColor = Color.White,
+                    HostNameFont = new Font("Segoe UI", 14F, FontStyle.Bold, GraphicsUnit.Point, 0),
+                    HostNameForeColor = SystemColors.ControlText,
+                    Name = "listEntry",
+                    Size = new Size(1041, 75),
+                    TabIndex = 14,
+                    TimeStampFont = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                    TimeStampForeColor = SystemColors.ControlText,
+                    UserNameFont = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0),
+                    UserNameForeColor = SystemColors.ControlText,
+                    ColorNormal = Color.White,
+                    ColorHover = Colors.LightGray,
+                    BackgroundColor = Color.White
+                };
+                listEntry.Hide();
+                Invoke((MethodInvoker)delegate
+                {
+                    DataFlowLayoutPanelList.Controls.Add(listEntry);
+                });
+                entryList.Add(listEntry);
+                listEntry.OnClickEvent += ListEntry_Click;
+                DataFlowLayoutPanelList.SetFlowBreak(listEntry, true);
+            }
+            Invoke((MethodInvoker)delegate
+            {
+                InitFilterPanel();
+            });
+            GlobalVarPool.uiInitialized = true;
+        }
+
+        private void FinalizeLogin()
+        {
+            GlobalVarPool.outputLabel = null;
+            GlobalVarPool.outputLabelIsValid = false;
+            Invoke((MethodInvoker)delegate
+            {
+                DataFlowLayoutPanelList.ResumeLayout();
+                FlowLayoutPanel1_Resize(this, null);
+                LoginLunaProgressSpinnerFading.Stop();
+                LoginPictureBoxOnlineMain.Dispose();
+                LoginPictureBoxOfflineMain.Dispose();
+                LoginPictureBoxRegisterMain.Dispose();
+                LoginPictureBoxOnlineSettings.Dispose();
+                PanelMain.BringToFront();
+                PanelLogin.Dispose();
+                this.MinimumSize = MinSize;
+                this.MaximumSize = MaxSize;
+                this.MaximizeBox = true;
+                this.MinimizeBox = true;
+                HelperMethods.CollectGarbage();
+            });
+        }
+
+        private void InitializeUI()
+        {
+            InitializeDataList();
+            FinalizeLogin();
+            Invoke((MethodInvoker)delegate
+            {
+                ApplyFilter(0);
+            });
+        }
         #endregion
+
+        private void LoginLabelOnlineSettingsRegister_Click(object sender, EventArgs e)
+        {
+            LoginPictureBoxOnlineSettings.SuspendLayout();
+            LoginPictureBoxRegisterMain.BringToFront();
+            LoginPictureBoxRegisterMain.ResumeLayout();
+        }
+
+        private async void LoginLunaAnimatedButtonNext_Click(object sender, EventArgs e)
+        {
+            LoginLunaAnimatedButtonNext.Enabled = false;
+            string ip = LoginEditFieldOnlineSettingsIp.TextTextBox;
+            string strPort = LoginEditFieldOnlineSettingsPort.TextTextBox;
+            if (new bool[] { await ip.IsValidIp(), strPort.IsValidPort() }.Contains(false))
+            {
+                LoginLunaAnimatedButtonNext.Enabled = true;
+                return;
+            }
+            LoginLunaAnimatedButtonNext.Enabled = true;
+            LoginPictureBoxOnlineMain.BringToFront();
+        }
     }
 }

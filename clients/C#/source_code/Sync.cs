@@ -148,9 +148,14 @@ namespace pmdbs
             if (GlobalVarPool.expectedPacketCount == 0)
             {
                 GlobalVarPool.countSyncPackets = false;
+                List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
                 AutomatedTaskFramework.Tasks.Clear();
                 AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                 AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
+                for (int i = 1; i < scheduledTasks.Count; i++)
+                {
+                    AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
+                }
                 AutomatedTaskFramework.Tasks.Execute();
                 if (refresh)
                 {
@@ -274,7 +279,7 @@ namespace pmdbs
                                 query += ", \"" + values[j] + "\"";
                             }
                         }
-                        query += "\"\x01\"";
+                        query += ", \"\x01\"";
                     }
                     catch (IndexOutOfRangeException e)
                     {
@@ -314,7 +319,7 @@ namespace pmdbs
 
         private static async void ReloadData()
         {
-            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon FROM Tbl_data;", (int)ColumnCount.Tbl_data);
+            Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
             int RowCounter = 0;
