@@ -219,6 +219,7 @@ namespace pmdbs
             });
             if (userSettings.Count == 0)
             {
+                await DataBaseHelper.ModifyData("INSERT INTO Tbl_user(U_wasOnline,U_firstUsage)VALUES(0,\"0\");");
                 return;
             }
             GlobalVarPool.isLocalDatabaseInitialized = true;

@@ -4082,11 +4082,11 @@
             // LoginPictureBoxMain
             // 
             this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineSettings);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineSettings);
             this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
             this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
@@ -4218,7 +4218,7 @@
             this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
             this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
             this.LoginEditFieldOnlinePassword.TabIndex = 1;
-            this.LoginEditFieldOnlinePassword.TextTextBox = "";
+            this.LoginEditFieldOnlinePassword.TextTextBox = "öüä";
             this.LoginEditFieldOnlinePassword.TextTitle = "Password";
             this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
             this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
@@ -4243,7 +4243,7 @@
             this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
             this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
             this.LoginEditFieldOnlineUsername.TabIndex = 0;
-            this.LoginEditFieldOnlineUsername.TextTextBox = "";
+            this.LoginEditFieldOnlineUsername.TextTextBox = "testuser2";
             this.LoginEditFieldOnlineUsername.TextTitle = "Username";
             this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
             this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
@@ -4774,7 +4774,7 @@
             this.LoginEditFieldOnlineSettingsPort.Name = "LoginEditFieldOnlineSettingsPort";
             this.LoginEditFieldOnlineSettingsPort.Size = new System.Drawing.Size(476, 89);
             this.LoginEditFieldOnlineSettingsPort.TabIndex = 1;
-            this.LoginEditFieldOnlineSettingsPort.TextTextBox = "";
+            this.LoginEditFieldOnlineSettingsPort.TextTextBox = "4447";
             this.LoginEditFieldOnlineSettingsPort.TextTitle = "Port";
             this.LoginEditFieldOnlineSettingsPort.UseColoredCaret = false;
             this.LoginEditFieldOnlineSettingsPort.UseDefaultValue = false;
@@ -4799,7 +4799,7 @@
             this.LoginEditFieldOnlineSettingsIp.Name = "LoginEditFieldOnlineSettingsIp";
             this.LoginEditFieldOnlineSettingsIp.Size = new System.Drawing.Size(476, 89);
             this.LoginEditFieldOnlineSettingsIp.TabIndex = 0;
-            this.LoginEditFieldOnlineSettingsIp.TextTextBox = "";
+            this.LoginEditFieldOnlineSettingsIp.TextTextBox = "192.168.178.46";
             this.LoginEditFieldOnlineSettingsIp.TextTitle = "IP";
             this.LoginEditFieldOnlineSettingsIp.UseColoredCaret = false;
             this.LoginEditFieldOnlineSettingsIp.UseDefaultValue = false;

@@ -148,9 +148,14 @@ namespace pmdbs
             if (GlobalVarPool.expectedPacketCount == 0)
             {
                 GlobalVarPool.countSyncPackets = false;
+                List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
                 AutomatedTaskFramework.Tasks.Clear();
                 AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                 AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
+                for (int i = 1; i < scheduledTasks.Count; i++)
+                {
+                    AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
+                }
                 AutomatedTaskFramework.Tasks.Execute();
                 if (refresh)
                 {

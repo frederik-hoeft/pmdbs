@@ -1185,7 +1185,7 @@ namespace pmdbs
                 {
                     LoginLoadingLabelDetails.Text = "Initializing Database...";
                 });
-                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage, U_username, U_cookie, U_datetime) VALUES (\"", stage2PasswordHash, "\", 1, \"", firstUsage, "\",\"", GlobalVarPool.username, "\",\"" , GlobalVarPool.cookie,"\", 0);" }));
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\", U_username = \"", GlobalVarPool.username, "\", U_cookie = \"", GlobalVarPool.cookie, "\", U_datetime = 0;" }));
                 for (int i = GlobalVarPool.UserData.Columns.Count; i < 11; i++)
                 {
                     GlobalVarPool.UserData.Columns.Add(i.ToString(), typeof(string));
@@ -1358,11 +1358,11 @@ namespace pmdbs
             }
             LoginLoadingLabelDetails.Text = "Hashing Password...";
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
-            string FirstUsage = TimeConverter.TimeStamp();
-            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, FirstUsage));
-            string Stage2PasswordHash = await ScryptTask;
+            string firstUsage = TimeConverter.TimeStamp();
+            Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, firstUsage));
+            string stage2PasswordHash = await ScryptTask;
             LoginLoadingLabelDetails.Text = "Initializing Database...";
-            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_user (U_password, U_wasOnline, U_firstUsage) VALUES (\"", Stage2PasswordHash, "\", 0, \"", FirstUsage, "\");" }));
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\";" }));
             GlobalVarPool.isLocalDatabaseInitialized = true;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));

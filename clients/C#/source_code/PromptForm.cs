@@ -68,7 +68,7 @@ namespace pmdbs
                 return;
             }
             // DEEP COPY SCHEDULED TASKS
-            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.GetAll().ConvertAll(task => new AutomatedTaskFramework.Task(task.TaskType, task.SearchCondition, task.FinishedCondition, task.TaskAction));
+            List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
             AutomatedTaskFramework.Tasks.Clear();
             switch (GlobalVarPool.promptCommand)
             {
@@ -83,7 +83,7 @@ namespace pmdbs
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
                         for (int i = 1; i < scheduledTasks.Count; i++)
                         {
-                            AutomatedTaskFramework.Tasks.Add(scheduledTasks[i]);
+                            AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
                         }
                         break;
                     }

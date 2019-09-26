@@ -73,7 +73,6 @@ namespace pmdbs
                         else
                         {
                             HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
-                            HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
                             // KINDA LAZY BUT IT WORKS
                             GlobalVarPool.PrivateKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.privatekey")).ToArray()[0].FullName);
                             GlobalVarPool.PublicKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.publickey")).ToArray()[0].FullName);
@@ -560,9 +559,14 @@ namespace pmdbs
                                                                 if (GlobalVarPool.expectedPacketCount == GlobalVarPool.countedPackets && GlobalVarPool.countSyncPackets)
                                                                 {
                                                                     GlobalVarPool.countSyncPackets = false;
+                                                                    List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
                                                                     AutomatedTaskFramework.Tasks.Clear();
                                                                     AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
                                                                     AutomatedTaskFramework.Task.Create(TaskType.FireAndForget,  NetworkAdapter.MethodProvider.Disconnect);
+                                                                    for (int j = 1; j < scheduledTasks.Count; j++)
+                                                                    {
+                                                                        AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[j]);
+                                                                    }
                                                                     AutomatedTaskFramework.Tasks.Execute();
                                                                     new Thread(new ThreadStart(Sync.Finish))
                                                                     {
@@ -639,6 +643,7 @@ namespace pmdbs
                                                                     {
                                                                         GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("Invalid credentials." + Environment.NewLine + message);
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         break;
                                                                     }
                                                                 case "I2FA":
