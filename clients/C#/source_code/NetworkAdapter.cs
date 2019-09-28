@@ -354,12 +354,15 @@ namespace pmdbs
             /// </summary>
             public static void Connect()
             {
-                HelperMethods.InvokeOutputLabel("Connecting ...");
-                Thread connectionThread = new Thread(new ThreadStart(PDTPClient.Connect))
+                if (!GlobalVarPool.connected)
                 {
-                    IsBackground = true
-                };
-                connectionThread.Start();
+                    HelperMethods.InvokeOutputLabel("Connecting ...");
+                    Thread connectionThread = new Thread(new ThreadStart(PDTPClient.Connect))
+                    {
+                        IsBackground = true
+                    };
+                    connectionThread.Start();
+                }
             }
             /// <summary>
             /// Links a new device to the current user by providing a 2FA code.

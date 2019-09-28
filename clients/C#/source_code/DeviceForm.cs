@@ -80,10 +80,17 @@ namespace pmdbs
                 AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
             }
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "UNLINK_SUCCESSFUL", () => NetworkAdapter.MethodProvider.RemoveDevice(cookie));
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DTADEVdata%eq", NetworkAdapter.MethodProvider.GetDevices);
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
-            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
-            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, MainForm.InvokeDashboardUpdate);
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive,NetworkAdapter.MethodProvider.Disconnect,new Func<bool>(delegate 
+            {
+                return !PDTPClient.ThreadRunning;
+            }));
             AutomatedTaskFramework.Tasks.Execute();
+            GlobalVarPool.deviceList.Invoke((System.Windows.Forms.MethodInvoker)delegate
+            {
+                GlobalVarPool.deviceList.RemoveAll();
+            });
             this.DialogResult = DialogResult.Cancel;
         }
 
