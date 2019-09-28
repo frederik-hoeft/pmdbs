@@ -15,11 +15,36 @@ namespace pmdbs
     /// </summary>
     public struct PDTPClient
     {
+        private static bool threadRunning = false;
+        private static bool threadAbort = false;
+
+        /// <summary>
+        /// Checks whether a PDTPClient thread is currently running.
+        /// </summary>
+        public static bool ThreadRunning
+        {
+            get { return threadRunning; }
+        }
+
+        private static Mutex connectionMutex = new Mutex();
         /// <summary>
         /// Initializes the connection to a remote server using the PDTPS protocol
         /// </summary>
         public static async void Connect()
         {
+            GlobalVarPool.ThreadIDs.Add(Thread.CurrentThread.ManagedThreadId);
+            connectionMutex.WaitOne();
+            if (threadAbort)
+            {
+                GlobalVarPool.ThreadIDs.Remove(Thread.CurrentThread.ManagedThreadId);
+                if (GlobalVarPool.ThreadIDs.Count == 0)
+                {
+                    threadAbort = false;
+                }
+                connectionMutex.ReleaseMutex();
+                return;
+            }
+            threadRunning = true;
             GlobalVarPool.connectionLost = false;
             if (string.IsNullOrEmpty(GlobalVarPool.PrivateKey) || string.IsNullOrEmpty(GlobalVarPool.PublicKey))
             {
@@ -152,11 +177,10 @@ namespace pmdbs
             GlobalVarPool.connected = true;
             HelperMethods.InvokeOutputLabel("Sending Client Hello ...");
             GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINICRT\x04"));
-            //LINE 1225 IN DEBUGCLIENT.PY BELOW;
             // AWAIT PACKETS FROM SERVER
             try
             {
-                GlobalVarPool.ThreadIDs.Add(Thread.CurrentThread.ManagedThreadId);
+                
                 // INITIALIZE BUFFER FOR HUGE PACKETS (>32 KB)
                 List<byte> buffer = new List<byte>();
                 // INITIALIZE 32 KB RECEIVE BUFFER FOR INCOMING DATA
@@ -937,6 +961,12 @@ namespace pmdbs
                 }
                 GlobalVarPool.connected = false;
                 GlobalVarPool.ThreadIDs.Remove(Thread.CurrentThread.ManagedThreadId);
+                if (GlobalVarPool.ThreadIDs.Count > 0)
+                {
+                    threadAbort = true;
+                }
+                threadRunning = false;
+                connectionMutex.ReleaseMutex();
             }
         }
     }
