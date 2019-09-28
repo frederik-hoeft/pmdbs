@@ -128,7 +128,10 @@ namespace pmdbs
             /// </summary>
             public static void Execute()
             {
-                new System.Threading.Thread(delegate () { GetCurrent().Run(); }).Start();
+                new System.Threading.Thread(delegate () 
+                {
+                    GetCurrent().Run();
+                }).Start();
             }
             /// <summary>
             /// Schedules a new task to be executed by the ATS
@@ -1105,7 +1108,7 @@ namespace pmdbs
     public enum SearchCondition
     {
         /// <summary>
-        /// Tha data set has to match the provided string exactly.
+        /// The data set has to match the provided string exactly.
         /// </summary>
         Match = 1,
         /// <summary>
