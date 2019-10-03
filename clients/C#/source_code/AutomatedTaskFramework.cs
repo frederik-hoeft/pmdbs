@@ -82,6 +82,7 @@ namespace pmdbs
         public sealed class Tasks
         {
             private static Action _blockingTaskFailedAction = new Action(delegate () { });
+            private static bool executing = false;
             private static readonly List<Task> taskList = new List<Task>();
             /// <summary>
             /// Gets the next scheduled task
@@ -90,6 +91,11 @@ namespace pmdbs
             public static Task GetCurrent()
             {
                 return taskList[0];
+            }
+
+            public static void Finalize()
+            {
+                executing = false;
             }
 
             /// <summary>
@@ -121,17 +127,30 @@ namespace pmdbs
             /// <returns></returns>
             public static bool Available()
             {
-                return taskList.Count > 0 ? true : false;
+                bool available = taskList.Count > 0;
+                if (!available)
+                {
+                    executing = false;
+                }
+                return available;
             }
             /// <summary>
             /// Executes the next scheduled task
             /// </summary>
             public static void Execute()
             {
-                new System.Threading.Thread(delegate () 
+                if (!executing)
                 {
-                    GetCurrent().Run();
-                }).Start();
+                    new System.Threading.Thread(delegate ()
+                    {
+                        GetCurrent().Run();
+                    }).Start();
+                }
+                else
+                {
+                    System.Threading.Thread currentThread = System.Threading.Thread.CurrentThread;
+                    Console.WriteLine(currentThread.Name);
+                }
             }
             /// <summary>
             /// Schedules a new task to be executed by the ATS
