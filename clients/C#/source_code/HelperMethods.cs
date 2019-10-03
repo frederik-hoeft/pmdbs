@@ -202,6 +202,7 @@ namespace pmdbs
             List<string> userSettings = await getUserSettings;
             AutomatedTaskFramework.Tasks.BlockingTaskFailedAction = new Action(delegate () 
             {
+                AutomatedTaskFramework.Tasks.Finalize();
                 AutomatedTaskFramework.Tasks.Clear();
                 if (GlobalVarPool.isUser)
                 {
