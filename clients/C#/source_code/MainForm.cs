@@ -1773,8 +1773,7 @@ namespace pmdbs
         private int t = 0;
         private void animatedButton1_Click(object sender, EventArgs e)
         {
-            DashboardLunaItemListDevices.Add("Windows 7 SP1", Resources.devices_colored_windows, t.ToString(), t);
-            t++;
+            
         }
 
         private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
