@@ -17,6 +17,15 @@ namespace pmdbs
         {
 
         }
+
+        private GraphData(GraphData GraphData)
+        {
+            _x = GraphData._x;
+            _y = GraphData._y;
+            _name = GraphData._name;
+            _color = GraphData._color;
+        }
+
         public GraphData(int X, string Name)
         {
             _x = X;
@@ -28,6 +37,21 @@ namespace pmdbs
             _x = X;
             _y = Y;
             _name = Name;
+        }
+
+        public GraphData(int X, int Y, string Name, Color Color)
+        {
+            _x = X;
+            _y = Y;
+            _name = Name;
+            _color = Color;
+        }
+
+        public GraphData(int X, string Name, Color Color)
+        {
+            _x = X;
+            _name = Name;
+            _color = Color;
         }
 
         public virtual int X
@@ -57,6 +81,11 @@ namespace pmdbs
         public virtual Point ToPoint()
         {
             return new Point(_x, _y);
+        }
+
+        public virtual GraphData Copy()
+        {
+            return new GraphData(this);
         }
     }
 }
