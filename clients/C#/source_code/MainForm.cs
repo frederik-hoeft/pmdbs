@@ -1770,11 +1770,6 @@ namespace pmdbs
         #endregion
 
         #region Dashboard
-        private int t = 0;
-        private void animatedButton1_Click(object sender, EventArgs e)
-        {
-            
-        }
 
         private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
         {

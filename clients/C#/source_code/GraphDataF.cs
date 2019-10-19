@@ -17,6 +17,14 @@ namespace pmdbs
             _name = Name;
         }
 
+        private GraphDataF(GraphDataF GraphDataF)
+        {
+            _x = GraphDataF._x;
+            _y = GraphDataF._y;
+            base._name = GraphDataF._name;
+            base._color = GraphDataF._color;
+        }
+
         public GraphDataF(float X, float Y, string Name)
         {
             _x = X;
@@ -39,6 +47,11 @@ namespace pmdbs
         public new virtual PointF ToPoint()
         {
             return new PointF(_x, _y);
+        }
+
+        public new virtual GraphDataF Copy()
+        {
+            return new GraphDataF(this);
         }
     }
 }
