@@ -38,6 +38,7 @@
             this.Name = "LunaGraph";
             this.Size = new System.Drawing.Size(472, 274);
             this.SizeChanged += new System.EventHandler(this.LunaGraph_SizeChanged);
+            this.Click += new System.EventHandler(this.LunaGraph_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.LunaGraph_Paint);
             this.ResumeLayout(false);
 

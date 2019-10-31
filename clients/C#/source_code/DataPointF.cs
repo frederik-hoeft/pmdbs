@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
-    public class GraphDataF : GraphData
+    public class DataPointF : DataPoint
     {
         private new float _x = 0f;
         private new float _y = 1f;
-        public GraphDataF(float X, string Name)
+        public DataPointF(float X, string Name)
         {
             _x = X;
             _name = Name;
         }
 
-        private GraphDataF(GraphDataF GraphDataF)
+        private DataPointF(DataPointF GraphDataF)
         {
             _x = GraphDataF._x;
             _y = GraphDataF._y;
@@ -25,7 +25,7 @@ namespace pmdbs
             base._color = GraphDataF._color;
         }
 
-        public GraphDataF(float X, float Y, string Name)
+        public DataPointF(float X, float Y, string Name)
         {
             _x = X;
             _y = Y;
@@ -49,9 +49,9 @@ namespace pmdbs
             return new PointF(_x, _y);
         }
 
-        public new virtual GraphDataF Copy()
+        public new virtual DataPointF Copy()
         {
-            return new GraphDataF(this);
+            return new DataPointF(this);
         }
     }
 }
