@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
-    public class GraphData
+    public class DataPoint
     {
         private protected int _x = 0;
         private protected int _y = 1;
         private protected string _name = "GraphData";
         private protected Color _color = Color.Navy;
-        public GraphData()
+        public DataPoint()
         {
 
         }
 
-        private GraphData(GraphData GraphData)
+        private DataPoint(DataPoint GraphData)
         {
             _x = GraphData._x;
             _y = GraphData._y;
@@ -26,20 +26,20 @@ namespace pmdbs
             _color = GraphData._color;
         }
 
-        public GraphData(int X, string Name)
+        public DataPoint(int X, string Name)
         {
             _x = X;
             _name = Name;
         }
 
-        public GraphData(int X, int Y, string Name)
+        public DataPoint(int X, int Y, string Name)
         {
             _x = X;
             _y = Y;
             _name = Name;
         }
 
-        public GraphData(int X, int Y, string Name, Color Color)
+        public DataPoint(int X, int Y, string Name, Color Color)
         {
             _x = X;
             _y = Y;
@@ -47,7 +47,7 @@ namespace pmdbs
             _color = Color;
         }
 
-        public GraphData(int X, string Name, Color Color)
+        public DataPoint(int X, string Name, Color Color)
         {
             _x = X;
             _name = Name;
@@ -83,9 +83,9 @@ namespace pmdbs
             return new Point(_x, _y);
         }
 
-        public virtual GraphData Copy()
+        public virtual DataPoint Copy()
         {
-            return new GraphData(this);
+            return new DataPoint(this);
         }
     }
 }
