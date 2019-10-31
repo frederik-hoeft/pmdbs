@@ -55,6 +55,7 @@
             this.animatedButton1 = new LunaForms.LunaAnimatedButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.DashboardPanelPasswordStrength = new System.Windows.Forms.Panel();
             this.DashboardLunaSmallCardPasswordStrength = new LunaForms.LunaSmallCard();
@@ -336,7 +337,6 @@
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
             this.lunaGraph1 = new pmdbs.LunaGraph();
-            this.label1 = new System.Windows.Forms.Label();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -827,6 +827,17 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(802, 349);
             this.panel3.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.label1.Location = new System.Drawing.Point(17, 17);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(199, 32);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "ACCOUNT STATS";
             // 
             // tableLayoutPanel3
             // 
@@ -4877,22 +4888,15 @@
             // 
             // lunaGraph1
             // 
+            this.lunaGraph1.BackColorBars = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lunaGraph1.DataPoints = null;
             this.lunaGraph1.Location = new System.Drawing.Point(4, 67);
             this.lunaGraph1.MinimumSize = new System.Drawing.Size(300, 150);
             this.lunaGraph1.Name = "lunaGraph1";
-            this.lunaGraph1.Size = new System.Drawing.Size(747, 252);
+            this.lunaGraph1.OverfullColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaGraph1.OverfullFont = new System.Drawing.Font("Segoe UI", 8F);
+            this.lunaGraph1.Size = new System.Drawing.Size(719, 266);
             this.lunaGraph1.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.label1.Location = new System.Drawing.Point(17, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(199, 32);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "ACCOUNT STATS";
             // 
             // MainForm
             // 
