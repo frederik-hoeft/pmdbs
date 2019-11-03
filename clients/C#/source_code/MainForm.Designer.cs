@@ -48,11 +48,9 @@
             this.DashboardTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lunaSeperator1 = new LunaForms.LunaSeperator();
             this.lunaAnimatedButton1 = new LunaForms.LunaAnimatedButton();
             this.DashboardLunaItemListDevices = new LunaForms.LunaItemList();
             this.label11 = new System.Windows.Forms.Label();
-            this.animatedButton1 = new LunaForms.LunaAnimatedButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
@@ -336,7 +334,7 @@
             this.PictureBoxOverlay = new System.Windows.Forms.PictureBox();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
-            this.lunaGraph1 = new pmdbs.LunaGraph();
+            this.lunaBarDiagram1 = new LunaForms.LunaBarDiagram();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -707,11 +705,9 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.lunaSeperator1);
             this.panel2.Controls.Add(this.lunaAnimatedButton1);
             this.panel2.Controls.Add(this.DashboardLunaItemListDevices);
             this.panel2.Controls.Add(this.label11);
-            this.panel2.Controls.Add(this.animatedButton1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(0);
@@ -719,23 +715,13 @@
             this.panel2.Size = new System.Drawing.Size(264, 709);
             this.panel2.TabIndex = 2;
             // 
-            // lunaSeperator1
-            // 
-            this.lunaSeperator1.ForeColor = System.Drawing.Color.Black;
-            this.lunaSeperator1.Location = new System.Drawing.Point(0, 604);
-            this.lunaSeperator1.Margin = new System.Windows.Forms.Padding(0);
-            this.lunaSeperator1.Name = "lunaSeperator1";
-            this.lunaSeperator1.Padding = new System.Windows.Forms.Padding(5, 3, 5, 3);
-            this.lunaSeperator1.Size = new System.Drawing.Size(264, 7);
-            this.lunaSeperator1.TabIndex = 7;
-            // 
             // lunaAnimatedButton1
             // 
             this.lunaAnimatedButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.lunaAnimatedButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
             this.lunaAnimatedButton1.Depth = 0;
             this.lunaAnimatedButton1.Icon = null;
-            this.lunaAnimatedButton1.Location = new System.Drawing.Point(15, 515);
+            this.lunaAnimatedButton1.Location = new System.Drawing.Point(12, 612);
             this.lunaAnimatedButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.lunaAnimatedButton1.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
             this.lunaAnimatedButton1.Name = "lunaAnimatedButton1";
@@ -768,7 +754,7 @@
             this.DashboardLunaItemListDevices.LunaScrollBarForeColorHover = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
             this.DashboardLunaItemListDevices.Margin = new System.Windows.Forms.Padding(0);
             this.DashboardLunaItemListDevices.Name = "DashboardLunaItemListDevices";
-            this.DashboardLunaItemListDevices.Size = new System.Drawing.Size(264, 434);
+            this.DashboardLunaItemListDevices.Size = new System.Drawing.Size(264, 531);
             this.DashboardLunaItemListDevices.TabIndex = 0;
             // 
             // label11
@@ -781,23 +767,6 @@
             this.label11.Size = new System.Drawing.Size(173, 32);
             this.label11.TabIndex = 5;
             this.label11.Text = "YOUR DEVICES";
-            // 
-            // animatedButton1
-            // 
-            this.animatedButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.animatedButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
-            this.animatedButton1.Depth = 0;
-            this.animatedButton1.Icon = null;
-            this.animatedButton1.Location = new System.Drawing.Point(15, 616);
-            this.animatedButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.animatedButton1.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
-            this.animatedButton1.Name = "animatedButton1";
-            this.animatedButton1.Primary = false;
-            this.animatedButton1.Size = new System.Drawing.Size(234, 83);
-            this.animatedButton1.TabIndex = 3;
-            this.animatedButton1.Text = "Account activity";
-            this.animatedButton1.Uppercase = false;
-            this.animatedButton1.UseVisualStyleBackColor = true;
             // 
             // tableLayoutPanel2
             // 
@@ -819,8 +788,8 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.White;
+            this.panel3.Controls.Add(this.lunaBarDiagram1);
             this.panel3.Controls.Add(this.label1);
-            this.panel3.Controls.Add(this.lunaGraph1);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(0, 0);
             this.panel3.Margin = new System.Windows.Forms.Padding(0);
@@ -4886,17 +4855,17 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
-            // lunaGraph1
+            // lunaBarDiagram1
             // 
-            this.lunaGraph1.BackColorBars = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaGraph1.DataPoints = null;
-            this.lunaGraph1.Location = new System.Drawing.Point(4, 67);
-            this.lunaGraph1.MinimumSize = new System.Drawing.Size(300, 150);
-            this.lunaGraph1.Name = "lunaGraph1";
-            this.lunaGraph1.OverfullColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaGraph1.OverfullFont = new System.Drawing.Font("Segoe UI", 8F);
-            this.lunaGraph1.Size = new System.Drawing.Size(719, 266);
-            this.lunaGraph1.TabIndex = 0;
+            this.lunaBarDiagram1.BackColorBars = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lunaBarDiagram1.DataPoints = ((System.Collections.Generic.List<LunaForms.DataPoint>)(resources.GetObject("lunaBarDiagram1.DataPoints")));
+            this.lunaBarDiagram1.Location = new System.Drawing.Point(4, 59);
+            this.lunaBarDiagram1.MinimumSize = new System.Drawing.Size(300, 150);
+            this.lunaBarDiagram1.Name = "lunaBarDiagram1";
+            this.lunaBarDiagram1.OverfullColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaBarDiagram1.OverfullFont = new System.Drawing.Font("Segoe UI", 8F);
+            this.lunaBarDiagram1.Size = new System.Drawing.Size(753, 274);
+            this.lunaBarDiagram1.TabIndex = 7;
             // 
             // MainForm
             // 
@@ -5336,7 +5305,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private LunaForms.LunaAnimatedButton animatedButton1;
         private System.Windows.Forms.Label label11;
         private LunaForms.LunaTriangle DashboardLunaTrianglePasswordStrength;
         private System.Windows.Forms.Label DashboardLabelPasswordStrengthChange;
@@ -5378,10 +5346,9 @@
         private System.Windows.Forms.Label LoginLabelOnlineSettingsSubHeader;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox PictureBoxOverlay;
-        private LunaForms.LunaSeperator lunaSeperator1;
         private LunaForms.LunaAnimatedButton lunaAnimatedButton1;
-        private LunaGraph lunaGraph1;
         private System.Windows.Forms.Label label1;
+        private LunaForms.LunaBarDiagram lunaBarDiagram1;
     }
 }
 
