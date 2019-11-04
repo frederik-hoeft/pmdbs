@@ -12,6 +12,7 @@ using System.IO;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using LunaForms;
+using Newtonsoft.Json;
 
 namespace pmdbs
 {
@@ -1833,6 +1834,60 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Execute();
         }
 
+        private async void DashboardLunaAnimatedButtonLogoutAll_Click(object sender, EventArgs e)
+        {
+            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("This will log you out from all devices. You'll have to confirm each new device with an email again.", MessageBoxButtons.OKCancel));
+            DialogResult result = await ShowDialog;
+            if (result != DialogResult.OK)
+            {
+                return;
+            }
+            DashboardLunaAnimatedButtonLogoutAll.Enabled = false;
+            AutomatedTaskFramework.Tasks.Clear();
+            if (!GlobalVarPool.connected)
+            {
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+            }
+            if (!GlobalVarPool.isUser)
+            {
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+            }
+            List<OSInfo.Device> devices = new List<OSInfo.Device>();
+            for (int i = 0; i < DashboardLunaItemListDevices.Items.Count; i++)
+            {
+                devices.Add(JsonConvert.DeserializeObject<OSInfo.Device>(DashboardLunaItemListDevices.Items[i].Id));
+            }
+            if (devices.Count == 0)
+            {
+                AutomatedTaskFramework.Tasks.Clear();
+                DashboardLunaAnimatedButtonLogoutAll.Enabled = true;
+                return;
+            }
+            for (int i = 0; i < devices.Count; i++)
+            {
+                string cookie = devices[i].DeviceId;
+                if (!cookie.Equals(GlobalVarPool.cookie))
+                {
+                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "UNLINK_SUCCESSFUL", () => NetworkAdapter.MethodProvider.RemoveDevice(cookie));
+                }
+            }
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DTADEVdata%eq", NetworkAdapter.MethodProvider.GetDevices);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout);
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Disconnect, new Func<bool>(delegate
+            {
+                return !PDTPClient.ThreadRunning;
+            }));
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, new Action(delegate ()
+            {
+                DashboardLunaAnimatedButtonLogoutAll.Invoke((MethodInvoker)delegate
+                {
+                    DashboardLunaAnimatedButtonLogoutAll.Enabled = true;
+                });
+            }));
+            DashboardLunaItemListDevices.RemoveAll();
+            AutomatedTaskFramework.Tasks.Execute();
+        }
+
         private void UpdateHotspots()
         {
             DashboardLunaSmallCardListHotspots.RemoveAll();
@@ -2083,5 +2138,7 @@ namespace pmdbs
             LoginLunaAnimatedButtonNext.Enabled = true;
             LoginPictureBoxOnlineMain.BringToFront();
         }
+
+        
     }
 }
