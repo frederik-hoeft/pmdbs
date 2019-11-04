@@ -48,11 +48,12 @@
             this.DashboardTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lunaAnimatedButton1 = new LunaForms.LunaAnimatedButton();
+            this.DashboardLunaAnimatedButtonLogoutAll = new LunaForms.LunaAnimatedButton();
             this.DashboardLunaItemListDevices = new LunaForms.LunaItemList();
             this.label11 = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.lunaBarDiagram1 = new LunaForms.LunaBarDiagram();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.DashboardPanelPasswordStrength = new System.Windows.Forms.Panel();
@@ -334,7 +335,6 @@
             this.PictureBoxOverlay = new System.Windows.Forms.PictureBox();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
-            this.lunaBarDiagram1 = new LunaForms.LunaBarDiagram();
             this.MenuPanel.SuspendLayout();
             this.MenuPanelSync.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MenuSyncPictureBox)).BeginInit();
@@ -705,7 +705,7 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.White;
-            this.panel2.Controls.Add(this.lunaAnimatedButton1);
+            this.panel2.Controls.Add(this.DashboardLunaAnimatedButtonLogoutAll);
             this.panel2.Controls.Add(this.DashboardLunaItemListDevices);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -715,22 +715,23 @@
             this.panel2.Size = new System.Drawing.Size(264, 709);
             this.panel2.TabIndex = 2;
             // 
-            // lunaAnimatedButton1
+            // DashboardLunaAnimatedButtonLogoutAll
             // 
-            this.lunaAnimatedButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.lunaAnimatedButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
-            this.lunaAnimatedButton1.Depth = 0;
-            this.lunaAnimatedButton1.Icon = null;
-            this.lunaAnimatedButton1.Location = new System.Drawing.Point(12, 612);
-            this.lunaAnimatedButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.lunaAnimatedButton1.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
-            this.lunaAnimatedButton1.Name = "lunaAnimatedButton1";
-            this.lunaAnimatedButton1.Primary = false;
-            this.lunaAnimatedButton1.Size = new System.Drawing.Size(234, 83);
-            this.lunaAnimatedButton1.TabIndex = 6;
-            this.lunaAnimatedButton1.Text = "Log out from all devices";
-            this.lunaAnimatedButton1.Uppercase = false;
-            this.lunaAnimatedButton1.UseVisualStyleBackColor = true;
+            this.DashboardLunaAnimatedButtonLogoutAll.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DashboardLunaAnimatedButtonLogoutAll.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(38)))), ((int)(((byte)(128)))), ((int)(((byte)(235)))));
+            this.DashboardLunaAnimatedButtonLogoutAll.Depth = 0;
+            this.DashboardLunaAnimatedButtonLogoutAll.Icon = null;
+            this.DashboardLunaAnimatedButtonLogoutAll.Location = new System.Drawing.Point(12, 612);
+            this.DashboardLunaAnimatedButtonLogoutAll.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.DashboardLunaAnimatedButtonLogoutAll.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
+            this.DashboardLunaAnimatedButtonLogoutAll.Name = "DashboardLunaAnimatedButtonLogoutAll";
+            this.DashboardLunaAnimatedButtonLogoutAll.Primary = false;
+            this.DashboardLunaAnimatedButtonLogoutAll.Size = new System.Drawing.Size(234, 83);
+            this.DashboardLunaAnimatedButtonLogoutAll.TabIndex = 6;
+            this.DashboardLunaAnimatedButtonLogoutAll.Text = "Log out from all devices";
+            this.DashboardLunaAnimatedButtonLogoutAll.Uppercase = false;
+            this.DashboardLunaAnimatedButtonLogoutAll.UseVisualStyleBackColor = true;
+            this.DashboardLunaAnimatedButtonLogoutAll.Click += new System.EventHandler(this.DashboardLunaAnimatedButtonLogoutAll_Click);
             // 
             // DashboardLunaItemListDevices
             // 
@@ -796,6 +797,18 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(802, 349);
             this.panel3.TabIndex = 2;
+            // 
+            // lunaBarDiagram1
+            // 
+            this.lunaBarDiagram1.BackColorBars = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
+            this.lunaBarDiagram1.DataPoints = ((System.Collections.Generic.List<LunaForms.DataPoint>)(resources.GetObject("lunaBarDiagram1.DataPoints")));
+            this.lunaBarDiagram1.Location = new System.Drawing.Point(4, 59);
+            this.lunaBarDiagram1.MinimumSize = new System.Drawing.Size(300, 150);
+            this.lunaBarDiagram1.Name = "lunaBarDiagram1";
+            this.lunaBarDiagram1.OverfullColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lunaBarDiagram1.OverfullFont = new System.Drawing.Font("Segoe UI", 8F);
+            this.lunaBarDiagram1.Size = new System.Drawing.Size(753, 274);
+            this.lunaBarDiagram1.TabIndex = 7;
             // 
             // label1
             // 
@@ -4855,18 +4868,6 @@
             this.windowButtonClose.Size = new System.Drawing.Size(60, 50);
             this.windowButtonClose.TabIndex = 12;
             // 
-            // lunaBarDiagram1
-            // 
-            this.lunaBarDiagram1.BackColorBars = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(220)))), ((int)(((byte)(220)))));
-            this.lunaBarDiagram1.DataPoints = ((System.Collections.Generic.List<LunaForms.DataPoint>)(resources.GetObject("lunaBarDiagram1.DataPoints")));
-            this.lunaBarDiagram1.Location = new System.Drawing.Point(4, 59);
-            this.lunaBarDiagram1.MinimumSize = new System.Drawing.Size(300, 150);
-            this.lunaBarDiagram1.Name = "lunaBarDiagram1";
-            this.lunaBarDiagram1.OverfullColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lunaBarDiagram1.OverfullFont = new System.Drawing.Font("Segoe UI", 8F);
-            this.lunaBarDiagram1.Size = new System.Drawing.Size(753, 274);
-            this.lunaBarDiagram1.TabIndex = 7;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(144F, 144F);
@@ -5346,7 +5347,7 @@
         private System.Windows.Forms.Label LoginLabelOnlineSettingsSubHeader;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.PictureBox PictureBoxOverlay;
-        private LunaForms.LunaAnimatedButton lunaAnimatedButton1;
+        private LunaForms.LunaAnimatedButton DashboardLunaAnimatedButtonLogoutAll;
         private System.Windows.Forms.Label label1;
         private LunaForms.LunaBarDiagram lunaBarDiagram1;
     }
