@@ -11,12 +11,16 @@ using System.Windows.Forms;
 
 namespace pmdbs
 {
+    public static class Prompt
+    {
+        public static PromptCommand Command = PromptCommand.NONE;
+    }
     public partial class PromptForm : MetroFramework.Forms.MetroForm
     {
         public PromptForm(string promptMain, string promptAction)
         {
             InitializeComponent();
-            HelperMethods.InvokeOutputLabel("Waiting for user confirmation ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Waiting for user confirmation ...");
             LabelTitle.Text = promptMain;
             LabelMailInfo.Text = "An email containing a verification code has been sent to " + (string.IsNullOrEmpty(GlobalVarPool.email) ? "your email address" : GlobalVarPool.email) + ".";
             LabelAction.Text = promptAction;
@@ -62,7 +66,7 @@ namespace pmdbs
                 CustomException.ThrowNew.NetworkException("Not connected!");
                 return;
             }
-            if (string.IsNullOrEmpty(GlobalVarPool.promptCommand))
+            if (Prompt.Command == PromptCommand.NONE)
             {
                 CustomException.ThrowNew.GenericException("User entered code but command has not been set!");
                 return;
@@ -70,15 +74,15 @@ namespace pmdbs
             // DEEP COPY SCHEDULED TASKS
             List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
             AutomatedTaskFramework.Tasks.Clear();
-            switch (GlobalVarPool.promptCommand)
+            switch (Prompt.Command)
             {
-                case "ACTIVATE_ACCOUNT":
+                case PromptCommand.ACTIVATE_ACCOUNT:
                     {
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
                         break;
                     }
-                case "CONFIRM_NEW_DEVICE":
+                case PromptCommand.CONFIRM_NEW_DEVICE:
                     {
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
                         for (int i = 1; i < scheduledTasks.Count; i++)
@@ -87,9 +91,13 @@ namespace pmdbs
                         }
                         break;
                     }
-                case "VERIFY_PASSWORD_CHANGE":
+                case PromptCommand.VERIFY_PASSWORD_CHANGE:
                     {
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
+                        for (int i = 1; i < scheduledTasks.Count; i++)
+                        {
+                            AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
+                        }
                         break;
                     }
             }
@@ -112,5 +120,12 @@ namespace pmdbs
         {
             this.Focus();
         }
+    }
+    public enum PromptCommand
+    {
+        NONE,
+        ACTIVATE_ACCOUNT,
+        CONFIRM_NEW_DEVICE,
+        VERIFY_PASSWORD_CHANGE
     }
 }

@@ -169,6 +169,10 @@ namespace pmdbs
                         GlobalVarPool.syncButton.Enabled = true;
                     });
                 }
+                if (AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.TaskType == TaskType.Interactive)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = true;
+                }
             }
         }
 
@@ -357,6 +361,10 @@ namespace pmdbs
             {
                 GlobalVarPool.syncButton.Enabled = true;
             });
+            if (AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.TaskType == TaskType.Interactive)
+            {
+                AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = true;
+            }
         }
     }
 }

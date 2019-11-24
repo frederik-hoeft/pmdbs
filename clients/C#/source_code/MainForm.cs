@@ -144,10 +144,6 @@ namespace pmdbs
             MinSize = this.MinimumSize;
             this.MinimumSize = this.Size;
             this.MaximumSize = this.Size;
-            GlobalVarPool.loadingSpinner = SettingsLunaProgressSpinnerFading;
-            GlobalVarPool.loadingLabel = SettingsLabelLoadingStatus;
-            GlobalVarPool.loadingLogo = SettingsPictureBoxLoadingLogo;
-            GlobalVarPool.loadingPanel = SettingsPanelLoadingMain;
             GlobalVarPool.settingsPanel = SettingsTableLayoutPanelMain;
             GlobalVarPool.syncButton = DataSyncAdvancedImageButton;
             GlobalVarPool.deviceList = DashboardLunaItemListDevices;
@@ -206,6 +202,7 @@ namespace pmdbs
                     });
                 }
             });
+            InitializeLoadingScreen();
             await HelperMethods.LoadSettings();
             //TODO: Check for Password Changes
             if (GlobalVarPool.scryptHash.Equals(string.Empty))
@@ -213,14 +210,12 @@ namespace pmdbs
                 LoginPictureBoxOnlineMain.SuspendLayout();
                 LoginPictureBoxOfflineMain.SuspendLayout();
                 LoginPictureBoxRegisterMain.BringToFront();
-                LoginPictureBoxLoadingMain.SuspendLayout();
             }
             else
             {
                 LoginPictureBoxOnlineMain.SuspendLayout();
                 LoginPictureBoxOfflineMain.BringToFront();
                 LoginPictureBoxRegisterMain.SuspendLayout();
-                LoginPictureBoxLoadingMain.SuspendLayout();
                 if (!GlobalVarPool.name.Equals("User"))
                 {
                     LoginLabelOfflineUsername.Text = GlobalVarPool.name;
@@ -293,8 +288,8 @@ namespace pmdbs
         private void SyncAnimationStart()
         {
             showSyncAnimation = true;
-            GlobalVarPool.outputLabel = MenuSyncLabelStatus;
-            GlobalVarPool.outputLabelIsValid = true;
+            WindowManager.LoadingScreen.OutputLabel = MenuSyncLabelStatus;
+            WindowManager.LoadingScreen.OutputAvailable = true;
             bmp = new Bitmap(Resources.icon_syncing);
             MenuSyncLabelHeader.Text = "Syncing ...";
             MenuSyncLabelHeader.ForeColor = Colors.Orange;
@@ -307,6 +302,7 @@ namespace pmdbs
         private void SyncAnimationStop()
         {
             showSyncAnimation = false;
+            WindowManager.LoadingScreen.OutputAvailable = false;
         }
 
         private void SyncAnimationTimer_Tick(object sender, EventArgs e)
@@ -320,7 +316,7 @@ namespace pmdbs
                 bmp = null;
                 MenuSyncPictureBox.Invalidate();
                 MenuSyncPictureBox.Image = Resources.Icon_sync;
-                GlobalVarPool.outputLabelIsValid = false;
+                WindowManager.LoadingScreen.OutputAvailable = false;
                 MenuSyncLabelHeader.ForeColor = Color.FromArgb(100, 100, 100);
                 MenuSyncLabelStatus.ForeColor = Color.FromArgb(100, 100, 100);
                 MenuSyncLabelHeader.Text = "Sync";
@@ -1101,7 +1097,7 @@ namespace pmdbs
             LoginPictureBoxOnlineMain.Image = bmp;
             LoginPictureBoxRegisterMain.Image = bmp;
             LoginPictureBoxOfflineMain.Image = bmp;
-            LoginPictureBoxLoadingMain.Image = bmp;
+            LoadingPictureBoxOverlay.Image = bmp;
             LoginPictureBoxOnlineSettings.Image = bmp;
             bmp = new Bitmap(PictureBoxOverlay.Width, PictureBoxOverlay.Height);
             using (Graphics graph = Graphics.FromImage(bmp))
@@ -1141,13 +1137,10 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
-            GlobalVarPool.outputLabel = LoginLoadingLabelDetails;
-            GlobalVarPool.outputLabelIsValid = true;
-            LoginLunaProgressSpinnerFading.Start();
-            LoginPictureBoxLoadingMain.ResumeLayout();
-            LoginPictureBoxLoadingMain.BringToFront();
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
+            WindowManager.LoadingScreen.SetStatus("Hashing Password...");
             LoginPictureBoxOnlineMain.SuspendLayout();
-            LoginLoadingLabelDetails.Text = "Hashing Password...";
+            
             
             GlobalVarPool.plainMasterPassword = password;
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
@@ -1157,35 +1150,25 @@ namespace pmdbs
             {
                 GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate 
                 {
-                    LoginLunaProgressSpinnerFading.Stop();
-                    LoginPictureBoxLoadingMain.SuspendLayout();
                     LoginPictureBoxOnlineSettings.ResumeLayout();
-                    LoginPictureBoxOnlineSettings.BringToFront();
+                    WindowManager.LoadingScreen.Hide();
                 });
             });
             Action OnLoginFailed = new Action(delegate
             {
                 GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
                 {
-                    LoginLunaProgressSpinnerFading.Stop();
-                    LoginPictureBoxLoadingMain.SuspendLayout();
                     LoginPictureBoxOnlineMain.ResumeLayout();
-                    LoginPictureBoxOnlineMain.BringToFront();
+                    WindowManager.LoadingScreen.Hide();
                 });
             });
             Action InitializeDatabase = new Action(async delegate
             {
-                GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate 
-                {
-                    LoginLoadingLabelDetails.Text = "Hashing Password...";
-                });
+                WindowManager.LoadingScreen.InvokeSetStatus("Hashing Password...");
                 string firstUsage = TimeConverter.TimeStamp();
                 Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(stage1PasswordHash, firstUsage));
                 string stage2PasswordHash = await ScryptTask;
-                GlobalVarPool.MainForm.Invoke((MethodInvoker)delegate
-                {
-                    LoginLoadingLabelDetails.Text = "Initializing Database...";
-                });
+                WindowManager.LoadingScreen.InvokeSetStatus("Initializing Database...");
                 await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\", U_username = \"", GlobalVarPool.username, "\", U_cookie = \"", GlobalVarPool.cookie, "\", U_datetime = 0;" }));
                 for (int i = GlobalVarPool.UserData.Columns.Count; i < 11; i++)
                 {
@@ -1203,7 +1186,12 @@ namespace pmdbs
             });
             Func<bool> syncFinishedWhen = new Func<bool>(delegate
             {
-                return !GlobalVarPool.connected;
+                if (AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = false;
+                    return true;
+                }
+                return false;
             });
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, OnTaskFailed);
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login, OnLoginFailed);
@@ -1240,30 +1228,25 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLunaProgressSpinnerFading.Start();
-            LoginPictureBoxLoadingMain.ResumeLayout();
-            LoginPictureBoxLoadingMain.BringToFront();
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
             LoginPictureBoxOfflineMain.SuspendLayout();
-            LoginLoadingLabelDetails.Text = "Loading Saved Hash...";
-            LoginLoadingLabelDetails.Text = "Hashing Password...";
+            WindowManager.LoadingScreen.SetStatus("Hashing Password...");
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
             string stage2PasswordHash = await ScryptTask;
-            LoginLoadingLabelDetails.Text = "Checking Password...";
+            WindowManager.LoadingScreen.SetStatus("Checking Password...");
             if (!stage2PasswordHash.Equals(GlobalVarPool.scryptHash))
             {
                 LoginLabelOfflineError.Text = "Wrong Password!";
                 LoginLabelOfflineError.Visible = true;
                 LoginButtonDisabled = false;
                 LoginPictureBoxOfflineMain.ResumeLayout();
-                LoginPictureBoxOfflineMain.BringToFront();
-                LoginPictureBoxLoadingMain.SuspendLayout();
-                LoginLunaProgressSpinnerFading.Stop();
+                WindowManager.LoadingScreen.Hide();
                 return;
             }
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
-            LoginLoadingLabelDetails.Text = "Decrypting Your Data... 0%";
+            WindowManager.LoadingScreen.SetStatus("Decrypting Your Data... 0%");
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score FROM Tbl_data;", (int)ColumnCount.Tbl_data);
             GlobalVarPool.UserData = await GetData;
             int Columns = GlobalVarPool.UserData.Columns.Count;
@@ -1283,11 +1266,11 @@ namespace pmdbs
                     }
                     double Percentage = ((((double)RowCounter * ((double)Columns - (double)3)) + (double)i - 3) / (double)Fields) * (double)100;
                     double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
-                    LoginLoadingLabelDetails.Text = "Decrypting Your Data... " + FinalPercentage.ToString() + "%";
+                    WindowManager.LoadingScreen.SetStatus("Decrypting Your Data... " + FinalPercentage.ToString() + "%");
                 }
                 RowCounter++;
             }
-            LoginLoadingLabelDetails.Text = "Loading User Interface...";
+            WindowManager.LoadingScreen.SetStatus("Loading User Interface...");
             DataFlowLayoutPanelList.SuspendLayout();
             new Thread(InitializeUI).Start();
         }
@@ -1317,11 +1300,9 @@ namespace pmdbs
                 LoginButtonDisabled = false;
                 return;
             }
-            LoginLunaProgressSpinnerFading.Start();
-            LoginPictureBoxLoadingMain.ResumeLayout();
-            LoginPictureBoxLoadingMain.BringToFront();
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
             LoginPictureBoxRegisterMain.SuspendLayout();
-            LoginLoadingLabelDetails.Text = "Checking Password Strength ...";
+            WindowManager.LoadingScreen.SetStatus("Checking Password Strength...");
             Task<Password.Result> GetResult = Password.Security.OnlineCheckAsync(Password1);
             Password.Result result = await GetResult;
             LoginLabelRegisterError.ForeColor = Color.Firebrick;
@@ -1334,11 +1315,9 @@ namespace pmdbs
                 case 1:
                     {
                         _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
-                        LoginLunaProgressSpinnerFading.Stop();
-                        LoginPictureBoxLoadingMain.SuspendLayout();
                         LoginPictureBoxRegisterMain.ResumeLayout();
-                        LoginPictureBoxRegisterMain.BringToFront();
                         LoginButtonDisabled = false;
+                        WindowManager.LoadingScreen.Hide();
                         return;
                     }
                 default:
@@ -1347,22 +1326,20 @@ namespace pmdbs
                         bool actionIsConfirmed = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?", "Security Warning", MessageBoxButtons.YesNo, false)).Equals(DialogResult.OK);
                         if (!actionIsConfirmed)
                         {
-                            LoginLunaProgressSpinnerFading.Stop();
-                            LoginPictureBoxLoadingMain.SuspendLayout();
                             LoginPictureBoxRegisterMain.ResumeLayout();
-                            LoginPictureBoxRegisterMain.BringToFront();
                             LoginButtonDisabled = false;
+                            WindowManager.LoadingScreen.Hide();
                             return;
                         }
                         break;
                     }
             }
-            LoginLoadingLabelDetails.Text = "Hashing Password...";
+            WindowManager.LoadingScreen.SetStatus("Hashing Password...");
             string Stage1PasswordHash = CryptoHelper.SHA256Hash(Password1);
             string firstUsage = TimeConverter.TimeStamp();
             Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, firstUsage));
             string stage2PasswordHash = await ScryptTask;
-            LoginLoadingLabelDetails.Text = "Initializing Database...";
+            WindowManager.LoadingScreen.SetStatus("Initializing Database...");
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\";" }));
             GlobalVarPool.isLocalDatabaseInitialized = true;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
@@ -1424,33 +1401,43 @@ namespace pmdbs
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
             GlobalVarPool.plainMasterPassword = password;
-            try
+
+
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
+            WindowManager.LoadingScreen.LoadingType = LoadingType.LOGIN;
+
+            AutomatedTaskFramework.Tasks.Clear();
+            Action onTaskFailed = new Action(delegate
             {
-                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelLogin;
-                GlobalVarPool.loadingType = LoadingHelper.LoadingType.LOGIN;
-                Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
-                Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
-                {
-                    IsBackground = true
-                };
-                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
-                AutomatedTaskFramework.Tasks.Clear();
-                if (GlobalVarPool.connected)
-                {
-                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
-                }
-                else
-                {
-                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
-                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
-                }
-                AutomatedTaskFramework.Tasks.Execute();
-                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
-            }
-            catch (Exception ex)
+                WindowManager.LoadingScreen.Hide();
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login, onTaskFailed);
+
+            Action onAuthenticationFailed = new Action(delegate
             {
-                CustomException.ThrowNew.GenericException(ex.ToString());
-            }
+                WindowManager.LoadingScreen.InvokeHide();
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails, onAuthenticationFailed);
+
+            Func<bool> syncFinishedWhen = new Func<bool>(delegate
+            {
+                if (AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = false;
+                    return true;
+                }
+                return false;
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Sync, syncFinishedWhen, onAuthenticationFailed);
+
+            Action finalizeLogin = new Action(delegate
+            {
+                SettingsFlowLayoutPanelOnline.BringToFront();
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, finalizeLogin);
+            AutomatedTaskFramework.Tasks.Execute();
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
         }
 
         #endregion
@@ -1476,33 +1463,19 @@ namespace pmdbs
                 return;
             }
             GlobalVarPool.name = nickname;
-            try
+
+            WindowManager.LoadingScreen.LoadingType = LoadingType.REGISTER;
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
+
+            AutomatedTaskFramework.Tasks.Clear();
+            Action onTaskFailed = new Action(delegate
             {
-                GlobalVarPool.previousPanel = SettingsFlowLayoutPanelRegister;
-                GlobalVarPool.loadingType = LoadingHelper.LoadingType.REGISTER;
-                Func<bool> finishCondition = () => { return GlobalVarPool.isUser; };
-                Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
-                {
-                    IsBackground = true
-                };
-                t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
-                AutomatedTaskFramework.Tasks.Clear();
-                if (GlobalVarPool.connected)
-                {
-                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
-                }
-                else
-                {
-                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
-                    AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register);
-                }
-                AutomatedTaskFramework.Tasks.Execute();
-                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
-            }
-            catch
-            {
-                CustomException.ThrowNew.GenericException("Something went wrong.");
-            }
+                WindowManager.LoadingScreen.InvokeHide();
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register, onTaskFailed);
+            AutomatedTaskFramework.Tasks.Execute();
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
         }
         #endregion
         #region SettingsOffline
@@ -1529,15 +1502,11 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Please enter a new master password.");
                 return;
             }
-            GlobalVarPool.loadingType = LoadingHelper.LoadingType.DEFAULT;
-            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
-            Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
-            {
-                IsBackground = true
-            };
-            t.Start(new List<object> { SettingsFlowLayoutPanelOffline, SettingsLabelLoadingStatus, true, finishCondition });
+            WindowManager.LoadingScreen.LoadingType = LoadingType.DEFAULT;
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
             await HelperMethods.ChangeMasterPassword(password, true);
-            GlobalVarPool.commandErrorCode = 0;
+            SettingsFlowLayoutPanelOffline.BringToFront();
+            WindowManager.LoadingScreen.Hide();
         }
 
         private void SettingsAnimatedButtonOfflineChangeNameSubmit_Click(object sender, EventArgs e)
@@ -1563,50 +1532,89 @@ namespace pmdbs
                 CustomException.ThrowNew.GenericException("Please enter a new master password.");
                 return;
             }
-            GlobalVarPool.loadingType = LoadingHelper.LoadingType.PASSWORD_CHANGE;
+            WindowManager.LoadingScreen.LoadingType = LoadingType.PASSWORD_CHANGE;
             GlobalVarPool.plainMasterPassword = password;
             SettingsEditFieldOnlinePasswordChangeNew.TextTextBox = string.Empty;
             SettingsEditFieldOnlinePasswordChangeConfirm.TextTextBox = string.Empty;
-            GlobalVarPool.previousPanel = SettingsFlowLayoutPanelOnline;
-            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
-            Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
-            {
-                IsBackground = true
-            };
-            t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
+            // TODO: Server fallback on failure --> change to old password
             AutomatedTaskFramework.Tasks.Clear();
+            Action onTaskFailed = new Action(delegate
+            {
+                WindowManager.LoadingScreen.InvokeHide();
+            });
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, onTaskFailed);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login, onTaskFailed);
             }
-            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_CHANGE_PASSWORD", NetworkAdapter.MethodProvider.InitPasswordChange);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "!TASK_TERMINATED_BY_PROMPT!", NetworkAdapter.MethodProvider.InitPasswordChange, onTaskFailed);
+            Action changeLocalPassword = new Action(async delegate
+            {
+                using (Task<List<string>> GetHids = DataBaseHelper.GetDataAsList("SELECT D_hid FROM Tbl_data;", 1))
+                {
+                    List<string> hids = await GetHids;
+                    for (int i = 0; i < hids.Count; i++)
+                    {
+                        await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_delete (DEL_hid) VALUES (\"", hids[i], "\");" }));
+                    }
+                }
+                await HelperMethods.ChangeMasterPassword(GlobalVarPool.plainMasterPassword, false);
+                AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = true;
+            });
+            Func<bool> localPasswordChangedWhen = new Func<bool>(delegate 
+            {
+                if (AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = false;
+                    return true;
+                }
+                return false;
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, changeLocalPassword, localPasswordChangedWhen, onTaskFailed);
+            Func<bool> syncFinishedWhen = new Func<bool>(delegate
+            {
+                if (AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = false;
+                    return true;
+                }
+                return false;
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Sync, syncFinishedWhen, onTaskFailed);
+            Action finalizePasswordChange = new Action(delegate
+            {
+                WindowManager.LoadingScreen.InvokeHide();
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, finalizePasswordChange);
             AutomatedTaskFramework.Tasks.Execute();
         }
         private void SettingsAnimatedButtonOnlineChangeName_Click(object sender, EventArgs e)
         {
             string name = GetNameOrDefault(SettingsEditFieldOnlineChangeName.TextTextBox);
             ChangeLocalName(name);
-            GlobalVarPool.loadingType = LoadingHelper.LoadingType.DEFAULT;
-            Func<bool> finishCondition = () => { return GlobalVarPool.commandErrorCode == 0; };
-            Thread t = new Thread(new ParameterizedThreadStart(LoadingHelper.Load))
+            WindowManager.LoadingScreen.LoadingType = LoadingType.DEFAULT;
+            WindowManager.LoadingScreen.Show(LoadingLabelStatus);
+            Action onTaskFailed = new Action(delegate
             {
-                IsBackground = true
-            };
-            t.Start(new List<object> { SettingsFlowLayoutPanelOnline, SettingsLabelLoadingStatus, true, finishCondition });
+                WindowManager.LoadingScreen.InvokeHide();
+            });
             AutomatedTaskFramework.Tasks.Clear();
             if (!GlobalVarPool.connected)
             {
-                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, onTaskFailed);
             }
             if (!GlobalVarPool.isUser)
             {
-                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login, onTaskFailed);
             }
-            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "NAME_CHANGED", () => NetworkAdapter.MethodProvider.ChangeName(name));
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "NAME_CHANGED", () => NetworkAdapter.MethodProvider.ChangeName(name), onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout, onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
+            // TODO: Create notification "name successfully changed"
             AutomatedTaskFramework.Tasks.Execute();
         }
         #endregion
@@ -2086,23 +2094,17 @@ namespace pmdbs
 
         private void FinalizeLogin()
         {
-            GlobalVarPool.outputLabel = null;
-            GlobalVarPool.outputLabelIsValid = false;
             Invoke((MethodInvoker)delegate
             {
                 DataFlowLayoutPanelList.ResumeLayout();
                 FlowLayoutPanel1_Resize(this, null);
-                LoginLunaProgressSpinnerFading.Stop();
                 LoginPictureBoxOnlineMain.Dispose();
                 LoginPictureBoxOfflineMain.Dispose();
                 LoginPictureBoxRegisterMain.Dispose();
                 LoginPictureBoxOnlineSettings.Dispose();
                 PanelMain.BringToFront();
+                WindowManager.LoadingScreen.Hide();
                 PanelLogin.Dispose();
-                this.MinimumSize = MinSize;
-                this.MaximumSize = MaxSize;
-                this.MaximizeBox = true;
-                this.MinimizeBox = true;
                 HelperMethods.CollectGarbage();
             });
         }
@@ -2115,6 +2117,13 @@ namespace pmdbs
             {
                 ApplyFilter(0);
             });
+        }
+
+        private void InitializeLoadingScreen()
+        {
+            // TODO: Add AbortButton (currently null)
+            WindowManager.LoadingScreen.ControlCollection loadingScreenControls = new WindowManager.LoadingScreen.ControlCollection(PanelLoading, LoadingLunaProgressSpinnerFading, null, this);
+            WindowManager.LoadingScreen.Initialize(loadingScreenControls);
         }
         #endregion
 
