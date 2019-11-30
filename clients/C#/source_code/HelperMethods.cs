@@ -30,64 +30,6 @@ namespace pmdbs
             GC.Collect();
         }
 
-        private static bool overlayIsShown = false;
-
-
-        public static async Task<System.Windows.Forms.DialogResult> ShowAsOverlay(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
-        {
-            System.Windows.Forms.DialogResult result = System.Windows.Forms.DialogResult.None;
-            if (parent.InvokeRequired)
-            {
-                parent.Invoke((System.Windows.Forms.MethodInvoker)async delegate
-                {
-                    result = await ShowAsOverlayHelper(parent, child);
-                });
-            }
-            else
-            {
-                result = await ShowAsOverlayHelper(parent, child);
-            }
-            return result;
-        }
-
-        private static async Task<System.Windows.Forms.DialogResult> ShowAsOverlayHelper(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
-        {
-            while (overlayIsShown)
-            {
-                await Task.Delay(100);
-            }
-            overlayIsShown = true;
-            Overlay overlay = new Overlay(parent);
-            child.Owner = parent;
-            System.Windows.Forms.DialogResult result = child.ShowDialog(null);
-            parent.RemoveOwnedForm(child);
-            child.Dispose();
-            overlay.Close();
-            overlay.Dispose();
-            overlayIsShown = false;
-            return result;
-        }
-
-        public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
-        {
-            Task<System.Windows.Forms.DialogResult> ShowDialog = ShowAsOverlay(GlobalVarPool.MainForm, (CertificateForm)GlobalVarPool.MainForm.Invoke(new Func<CertificateForm>(() => new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert))));
-            System.Windows.Forms.DialogResult result = await ShowDialog;
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                GlobalVarPool.foreignRsaKey = cert.PublicKey;
-                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_certificates (C_hash, C_accepted) VALUES (\"", cert.Checksum, "\", \"1\");" }));
-                GlobalVarPool.nonce = CryptoHelper.RandomString();
-                string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
-                string message = "CKEformat%eq!XML!;key%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
-                WindowManager.LoadingScreen.InvokeSetStatus("Client Key Exchange ...");
-                GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
-            }
-            else
-            {
-                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
-            }
-        }
-
         public static List<byte[]> Separate(byte[] source, byte[] separator)
         {
             var Parts = new List<byte[]>();
@@ -124,21 +66,6 @@ namespace pmdbs
         {
             string json = JsonConvert.SerializeObject(OSInfo.GetOS());
             return json.Replace('\"', '§').Replace('\'', '§');
-        }
-
-
-        private static string previousPromptMain = string.Empty;
-        private static string previousPromptAction = string.Empty;
-        public static void Prompt(string promptMain, string promptAction)
-        {
-            previousPromptAction = promptAction;
-            previousPromptMain = promptMain;
-            _ = ShowAsOverlay(GlobalVarPool.MainForm, (PromptForm)GlobalVarPool.MainForm.Invoke(new Func<PromptForm>(() => new PromptForm(promptMain, promptAction))));
-        }
-
-        public static void Reprompt()
-        {
-            _ = ShowAsOverlay(GlobalVarPool.MainForm, (PromptForm)GlobalVarPool.MainForm.Invoke(new Func<PromptForm>(() => new PromptForm(previousPromptMain, previousPromptAction))));
         }
 
         public static string ToHumanReadableFileSize(this double fileSize, int decimals)

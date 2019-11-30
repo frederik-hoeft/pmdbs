@@ -161,7 +161,7 @@ namespace pmdbs
                 public readonly MetroFramework.Forms.MetroForm ParentForm = null;
                 /// <summary>
                 /// Gets the abort button of the loading screen
-                /// </summary
+                /// </summary>
                 public readonly LunaForms.LunaAnimatedButton AbortButton = null;
                 /// <summary>
                 /// Represents the collection of controls that have to be present on a loading screen.
@@ -177,6 +177,107 @@ namespace pmdbs
                     LoadingSpinner = loadingSpinner;
                     ParentForm = parentForm;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Provides functionality to display any Form as a pop-up like Overlay.
+        /// </summary>
+        public static class Overlay
+        {
+            private static bool overlayIsShown = false;
+            /// <summary>
+            /// Spawns a new child window as an overlay on top of a parent window.
+            /// </summary>
+            /// <param name="parent">The parent form to draw the overlay on top of.</param>
+            /// <param name="child">The child form to spawn as an overlay.</param>
+            /// <returns>DialogResult of the child form.</returns>
+            public static async Task<System.Windows.Forms.DialogResult> Spawn
+                (System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
+            {
+                System.Windows.Forms.DialogResult result = System.Windows.Forms.DialogResult.None;
+                if (parent.InvokeRequired)
+                {
+                    parent.Invoke((System.Windows.Forms.MethodInvoker)async delegate
+                    {
+                        result = await OverlayHelper(parent, child);
+                    });
+                }
+                else
+                {
+                    result = await OverlayHelper(parent, child);
+                }
+                return result;
+            }
+
+            private static async Task<System.Windows.Forms.DialogResult> OverlayHelper(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
+            {
+                while (overlayIsShown)
+                {
+                    await Task.Delay(100);
+                }
+                overlayIsShown = true;
+                OverlayForm overlay = new OverlayForm(parent);
+                child.Owner = parent;
+                System.Windows.Forms.DialogResult result = child.ShowDialog(null);
+                parent.RemoveOwnedForm(child);
+                child.Dispose();
+                overlay.Close();
+                overlay.Dispose();
+                overlayIsShown = false;
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Provides application-wide access to the two factor authentication prompt.
+        /// </summary>
+        public static class TwoFactorAuthentication
+        {
+            private static string previousPromptMain = string.Empty;
+            private static string previousPromptAction = string.Empty;
+            /// <summary>
+            /// Prompt the user to enter a two factor authentication code needed for priviledged actions.
+            /// </summary>
+            /// <param name="promptHeader">The action to authenticate.</param>
+            /// <param name="promptDescription">Describes what the code is used for.</param>
+            public static void Prompt(string promptHeader, string promptDescription)
+            {
+                previousPromptAction = promptDescription;
+                previousPromptMain = promptHeader;
+                _ = Overlay.Spawn(GlobalVarPool.MainForm, (PromptForm)GlobalVarPool.MainForm.Invoke(new Func<PromptForm>(() => new PromptForm(promptHeader, promptDescription))));
+            }
+
+            /// <summary>
+            /// Spawns the last-shown prompt window again. Is used in case the previously entered code was incorrect.
+            /// </summary>
+            public static void PromptAgain()
+            {
+                _ = Overlay.Spawn(GlobalVarPool.MainForm, (PromptForm)GlobalVarPool.MainForm.Invoke(new Func<PromptForm>(() => new PromptForm(previousPromptMain, previousPromptAction))));
+            }
+        }
+
+        /// <summary>
+        /// Spawns a Certificate Warning overlay providing more information for an untrusted or invalid certificate.
+        /// </summary>
+        /// <param name="cert">Information about the certificate in question.</param>
+        public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
+        {
+            Task<System.Windows.Forms.DialogResult> ShowDialog = Overlay.Spawn(GlobalVarPool.MainForm, (CertificateForm)GlobalVarPool.MainForm.Invoke(new Func<CertificateForm>(() => new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert))));
+            System.Windows.Forms.DialogResult result = await ShowDialog;
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                GlobalVarPool.foreignRsaKey = cert.PublicKey;
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_certificates (C_hash, C_accepted) VALUES (\"", cert.Checksum, "\", \"1\");" }));
+                GlobalVarPool.nonce = CryptoHelper.RandomString();
+                string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
+                string message = "CKEformat%eq!XML!;key%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
+                WindowManager.LoadingScreen.InvokeSetStatus("Client Key Exchange ...");
+                GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
+            }
+            else
+            {
+                AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
             }
         }
     }

@@ -35,7 +35,6 @@ namespace pmdbs
         private int DataPerPage = 25;
         private int CurrentPage = 0;
         private int CurrentContentCount = 0;
-        private Overlay overlay;
         private int MaxPages = 1;
         public static void InvokeReload()
         {
@@ -451,7 +450,7 @@ namespace pmdbs
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
                 if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"] .ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
-                    Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                    Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
                     DialogResult result = await ShowDialog;
                     if (!result.Equals(DialogResult.OK))
                     {
@@ -522,7 +521,7 @@ namespace pmdbs
             {
                 case 1:
                     {
-                        _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
+                        _ = WindowManager.Overlay.Spawn(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
                         DataEditSaveAdvancedImageButton.Enabled = true;
                         return;
                     }
@@ -645,7 +644,7 @@ namespace pmdbs
             // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
             if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
             {
-                Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
                 DialogResult result = await ShowDialog;
                 if (!result.Equals(DialogResult.OK))
                 {
@@ -722,7 +721,7 @@ namespace pmdbs
 
         private async void DataRemoveAdvancedImageButton_Click(object sender, EventArgs e)
         {
-            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("Do you really want to delete the selected account?", MessageBoxButtons.YesNo));
+            Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new ConfirmationForm("Do you really want to delete the selected account?", MessageBoxButtons.YesNo));
             DialogResult result = await ShowDialog;
             if (!result.Equals(DialogResult.OK))
             {
@@ -879,7 +878,7 @@ namespace pmdbs
             {
                 case 1:
                 {
-                        _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
+                        _ = WindowManager.Overlay.Spawn(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
                     AddPanelAdvancedImageButtonSave.Enabled = true;
                     return;
                 }
@@ -1294,7 +1293,7 @@ namespace pmdbs
             Password.Result offlineResult = Password.Security.SimpleCheck(Password1);
             if (offlineResult.Score < 110)
             {
-                _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("It should be at least \"Okay\".\n\nTry adding more numbers, special characters or even unicode characters to increase the password strength.", "Security Exception", "Your password is too weak!", false));
+                _ = WindowManager.Overlay.Spawn(this, new ErrorForm("It should be at least \"Okay\".\n\nTry adding more numbers, special characters or even unicode characters to increase the password strength.", "Security Exception", "Your password is too weak!", false));
                 LoginLabelRegisterError.Visible = true;
                 LoginLabelRegisterError.Text = "Password too weak.";
                 LoginButtonDisabled = false;
@@ -1314,7 +1313,7 @@ namespace pmdbs
                     }
                 case 1:
                     {
-                        _ = HelperMethods.ShowAsOverlay(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
+                        _ = WindowManager.Overlay.Spawn(this, new ErrorForm("This password is COMMONLY USED and has been leaked " + result.TimesSeen.ToString() + " times previously. ", "Security Warning", "Common password detected!", false));
                         LoginPictureBoxRegisterMain.ResumeLayout();
                         LoginButtonDisabled = false;
                         WindowManager.LoadingScreen.Hide();
@@ -1323,7 +1322,7 @@ namespace pmdbs
                 default:
                     {
                         // CONNECTION ERROR
-                        bool actionIsConfirmed = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?", "Security Warning", MessageBoxButtons.YesNo, false)).Equals(DialogResult.OK);
+                        bool actionIsConfirmed = WindowManager.Overlay.Spawn(this, new ConfirmationForm("Failed to establish a connection to the following online service:\nPassword Leak Checker.\nIt could not be validated that your password is strong and has not been leaked previously.\n\nDo you want to continue anyway?", "Security Warning", MessageBoxButtons.YesNo, false)).Equals(DialogResult.OK);
                         if (!actionIsConfirmed)
                         {
                             LoginPictureBoxRegisterMain.ResumeLayout();
@@ -1409,16 +1408,12 @@ namespace pmdbs
             AutomatedTaskFramework.Tasks.Clear();
             Action onTaskFailed = new Action(delegate
             {
-                WindowManager.LoadingScreen.Hide();
+                WindowManager.LoadingScreen.InvokeHide();
             });
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, onTaskFailed);
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login, onTaskFailed);
 
-            Action onAuthenticationFailed = new Action(delegate
-            {
-                WindowManager.LoadingScreen.InvokeHide();
-            });
-            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails, onAuthenticationFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "AD_OUTDATED|AD_UPTODATE", NetworkAdapter.MethodProvider.GetAccountDetails, onTaskFailed);
 
             Func<bool> syncFinishedWhen = new Func<bool>(delegate
             {
@@ -1429,7 +1424,7 @@ namespace pmdbs
                 }
                 return false;
             });
-            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Sync, syncFinishedWhen, onAuthenticationFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Sync, syncFinishedWhen, onTaskFailed);
 
             Action finalizeLogin = new Action(delegate
             {
@@ -1665,9 +1660,10 @@ namespace pmdbs
             if (EditFieldShown)
             {
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
+                // TODO: REFACTOR...
                 if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
-                    Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                    Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
                     DialogResult result = await ShowDialog;
                     if (!result.Equals(DialogResult.OK))
                     {
@@ -1698,7 +1694,7 @@ namespace pmdbs
                 // USE LINQ TO CHECK IF THERE ARE UNSAVED CHANGES
                 if (!GlobalVarPool.UserData.AsEnumerable().Where(row => row["0"].ToString().Equals(DataDetailsID)).Where(row => (row["3"].ToString().Equals(DataEditEditFieldHostname.TextTextBox) || (row["3"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldHostname.TextTextBox))) && (row["4"].ToString().Equals(DataEditEditFieldUsername.TextTextBox) || (row["4"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldUsername.TextTextBox))) && (row["5"].ToString().Equals(DataEditEditFieldPassword.TextTextBox) || (row["5"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldPassword.TextTextBox))) && (row["6"].ToString().Equals(DataEditEditFieldWebsite.TextTextBox) || (row["6"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditEditFieldWebsite.TextTextBox))) && (row["7"].ToString().Equals(DataEditEditFieldEmail.TextTextBox) || row["7"].ToString().Equals("\x01") && (string.IsNullOrEmpty(DataEditEditFieldEmail.TextTextBox))) && (row["8"].ToString().Equals(DataEditAdvancedRichTextBoxNotes.TextValue) || (row["8"].ToString().Equals("\x01") && string.IsNullOrEmpty(DataEditAdvancedRichTextBoxNotes.TextValue)))).Any())
                 {
-                    Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
+                    Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new ConfirmationForm("There are unsaved changes. Do you really want to discard them?", MessageBoxButtons.YesNo));
                     DialogResult result = await ShowDialog;
                     if (!result.Equals(DialogResult.OK))
                     {
@@ -1783,7 +1779,7 @@ namespace pmdbs
         private void DashboardLunaItemDevice_Click(object sender, EventArgs e)
         {
             LunaItem item = (LunaItem)sender;
-            _ = HelperMethods.ShowAsOverlay(this, new DeviceForm(item.Id));
+            _ = WindowManager.Overlay.Spawn(this, new DeviceForm(item.Id));
         }
         private List<Breaches.Breach> breaches;
         private void label16_Click(object sender, EventArgs e)
@@ -1844,7 +1840,7 @@ namespace pmdbs
 
         private async void DashboardLunaAnimatedButtonLogoutAll_Click(object sender, EventArgs e)
         {
-            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new ConfirmationForm("This will log you out from all devices. You'll have to confirm each new device with an email again.", MessageBoxButtons.OKCancel));
+            Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new ConfirmationForm("This will log you out from all devices. You'll have to confirm each new device with an email again.", MessageBoxButtons.OKCancel));
             DialogResult result = await ShowDialog;
             if (result != DialogResult.OK)
             {
@@ -2032,7 +2028,7 @@ namespace pmdbs
             Breaches.Breach breach = breaches[item.Index];
             Task<IconExtractor.Icon> GetIcon = IconExtractor.DownloadImage(breach.LogoPath);
             IconExtractor.Icon icon = await GetIcon;
-            Task<DialogResult> ShowDialog = HelperMethods.ShowAsOverlay(this, new BreachForm(breach.BreachDate, breach.Title, icon.Image ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain));
+            Task<DialogResult> ShowDialog = WindowManager.Overlay.Spawn(this, new BreachForm(breach.BreachDate, breach.Title, icon.Image ?? Resources.breach, breach.DataClasses, breach.Description, breach.PwnCount, breach.IsVerified, breach.Domain));
             DialogResult result = await ShowDialog;
             if (result.Equals(DialogResult.Ignore))
             {
@@ -2147,7 +2143,5 @@ namespace pmdbs
             LoginLunaAnimatedButtonNext.Enabled = true;
             LoginPictureBoxOnlineMain.BringToFront();
         }
-
-        
     }
 }

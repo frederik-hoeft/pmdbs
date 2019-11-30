@@ -345,7 +345,7 @@ namespace pmdbs
                                                             string isTrustedCertificateString = await GetTrustedCertificates;
                                                             if (!isTrustedCertificateString.Equals("1"))
                                                             {
-                                                                HelperMethods.ShowCertificateWarning(certificate);
+                                                                WindowManager.ShowCertificateWarning(certificate);
                                                             }
                                                             else
                                                             {
@@ -670,7 +670,7 @@ namespace pmdbs
                                                                 case "I2FA":
                                                                     {
                                                                         CustomException.ThrowNew.GenericException("Invalid 2FA code." + Environment.NewLine + message);
-                                                                        HelperMethods.Reprompt();
+                                                                        WindowManager.TwoFactorAuthentication.PromptAgain();
                                                                         break;
                                                                     }
                                                                 case "E2FA":
@@ -710,7 +710,7 @@ namespace pmdbs
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
                                                                         Prompt.Command = PromptCommand.ACTIVATE_ACCOUNT;
-                                                                        HelperMethods.Prompt("Activate your account", "Please verify your email address.");
+                                                                        WindowManager.TwoFactorAuthentication.Prompt("Activate your account", "Please verify your email address.");
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":
@@ -766,7 +766,7 @@ namespace pmdbs
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
                                                                         Prompt.Command = PromptCommand.CONFIRM_NEW_DEVICE;
-                                                                        HelperMethods.Prompt("Confirm new device", "Looks like you're trying to login from a new device.");
+                                                                        WindowManager.TwoFactorAuthentication.Prompt("Confirm new device", "Looks like you're trying to login from a new device.");
                                                                         break;
                                                                     }
                                                                 case "NOT_LOGGED_IN":
@@ -789,7 +789,7 @@ namespace pmdbs
                                                                 case "SEND_VERIFICATION_CHANGE_PASSWORD":
                                                                     {
                                                                         Prompt.Command = PromptCommand.VERIFY_PASSWORD_CHANGE;
-                                                                        HelperMethods.Prompt("Verify password change", "Looks like your trying to change your password.");
+                                                                        WindowManager.TwoFactorAuthentication.Prompt("Verify password change", "Looks like your trying to change your password.");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_DELETE_ACCOUNT":
