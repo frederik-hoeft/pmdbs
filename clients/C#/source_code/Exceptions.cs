@@ -6,5 +6,6 @@ using System.Threading.Tasks;
 
 namespace pmdbs
 {
+    [Serializable]
     class InvalidDomainException : Exception { }
 }

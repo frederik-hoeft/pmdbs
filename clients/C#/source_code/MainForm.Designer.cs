@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                this.bmp.Dispose();
             }
             base.Dispose(disposing);
         }

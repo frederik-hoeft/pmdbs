@@ -71,6 +71,7 @@ namespace pmdbs
 
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
+        public static int hidThreadCounter = 0;
 
         public static bool uiInitialized = false;
         public static bool isLocalDatabaseInitialized = false;

@@ -548,8 +548,10 @@ namespace pmdbs
                                                                             object parameters = new string[] { remoteHeaderString, deletedItemString };
                                                                             Thread t = new Thread(new ParameterizedThreadStart(Sync.Initialize));
                                                                             t.Start(parameters);
+                                                                            GlobalVarPool.hidThreadCounter++;
                                                                             break;
                                                                         }
+                                                                    case "DELETING_COMPLETED":
                                                                     case "UPDATE":
                                                                         {
                                                                             if (GlobalVarPool.countSyncPackets)
@@ -561,14 +563,6 @@ namespace pmdbs
                                                                     case "SELECT":
                                                                         {
                                                                             GlobalVarPool.selectedAccounts.Add(content);
-                                                                            if (GlobalVarPool.countSyncPackets)
-                                                                            {
-                                                                                GlobalVarPool.countedPackets++;
-                                                                            }
-                                                                            break;
-                                                                        }
-                                                                    case "DELETING_COMPLETED":
-                                                                        {
                                                                             if (GlobalVarPool.countSyncPackets)
                                                                             {
                                                                                 GlobalVarPool.countedPackets++;

@@ -107,7 +107,7 @@ namespace pmdbs
                     AES.IV = GetRandomBytes(AES.BlockSize / 8);
                     AES.Mode = CipherMode.CBC;
 
-                    using (var cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
+                    using (CryptoStream cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
                     {
                         cs.Write(plainTextBytes, 0, plainTextBytes.Length);
                         cs.Close();
