@@ -1612,7 +1612,7 @@
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Primary = false;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOnlineChangeServerRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "Register";
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Uppercase = false;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
@@ -1819,7 +1819,7 @@
             this.SettingsAnimatedButtonOfflineRegister.Primary = false;
             this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOfflineRegister.Text = "Register";
             this.SettingsAnimatedButtonOfflineRegister.Uppercase = false;
             this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);

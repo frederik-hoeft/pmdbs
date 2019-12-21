@@ -21,6 +21,7 @@ namespace pmdbs
     {
         private readonly string _url = string.Empty;
         private List<Icon> allIcons = new List<Icon>();
+
         private IconExtractor(string url)
         {
             this._url = url;
@@ -33,6 +34,11 @@ namespace pmdbs
         /// <returns>The IconExtractor object.</returns>
         public static IconExtractor Load(string url)
         {
+            url = url.Trim();
+            if (!url.StartsWith("http:") && !url.StartsWith("https:"))
+            {
+                url = "http://" + url;
+            }
             bool isValid = Uri.TryCreate(url, UriKind.Absolute, out Uri request);
             if (!isValid)
             {
@@ -40,6 +46,36 @@ namespace pmdbs
             }
             url = request.GetLeftPart(UriPartial.Authority);
             return new IconExtractor(url);
+        }
+
+        public static async Task<string> IconFromUrl(string url, string hostname)
+        {
+            string favIcon = string.Empty;
+            try
+            {
+                IconExtractor extractor = IconExtractor.Load(url);
+                await extractor.Extract();
+                extractor.ApplyFilter(48);
+                if (extractor.IconsAvailable)
+                {
+                    IconExtractor.Icon icon = extractor.GetBestIcon();
+                    favIcon = icon.ToBase64String();
+                }
+                else
+                {
+                    favIcon = IconExtractor.Generate(hostname);
+                }
+            }
+            catch (UriFormatException)
+            {
+                favIcon = IconExtractor.Generate(hostname);
+            }
+            catch (Exception ex)
+            {
+                CustomException.ThrowNew.NetworkException(ex.ToString());
+                favIcon = null;
+            }
+            return favIcon;
         }
 
         /// <summary>
@@ -53,7 +89,7 @@ namespace pmdbs
             List<string> possibleIcons = new List<string> { "/favicon.ico", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png" };
             HtmlWeb web = new HtmlWeb();
             ServicePointManager.ServerCertificateValidationCallback += ValidateRemoteCertificate;
-            SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Ssl3, SecurityProtocolType.Tls, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
+            SecurityProtocolType[] protocolTypes = new SecurityProtocolType[] { SecurityProtocolType.Tls, SecurityProtocolType.Ssl3, SecurityProtocolType.Tls11, SecurityProtocolType.Tls12 };
 
             for (int i = 0; i < protocolTypes.Length; i++)
             {
@@ -61,22 +97,41 @@ namespace pmdbs
                 try
                 {
                     HtmlDocument doc = web.Load(_url);
-                    HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//link");
-
-                    for (int j = 0; j < nodes.Count; j++)
+                    HtmlNodeCollection linkNodes = doc.DocumentNode.SelectNodes("//link");
+                    if (linkNodes != null)
                     {
-                        HtmlNode node = nodes[j];
-                        HtmlAttributeCollection attributes = node.Attributes;
-                        HtmlAttribute rel = attributes["rel"];
-                        if (rel.Value.ToLower().Contains("icon"))
+                        foreach (HtmlNode node in linkNodes)
                         {
-                            possibleIcons.Add(attributes["href"].Value);
+                            HtmlAttributeCollection attributes = node.Attributes;
+                            HtmlAttribute rel = attributes["rel"];
+                            if (rel.Value.ToLower().Contains("icon"))
+                            {
+                                possibleIcons.Add(attributes["href"].Value);
+                            }
                         }
                     }
+                    HtmlNodeCollection metaNodes = doc.DocumentNode.SelectNodes("//meta");
+                    if (metaNodes != null)
+                    {
+                        foreach (HtmlNode node in metaNodes)
+                        {
+                            HtmlAttributeCollection attributes = node.Attributes;
+                            HtmlAttribute itemprop = attributes["itemprop"];
+                            if (itemprop == null)
+                            {
+                                continue;
+                            }
+                            if (itemprop.Value.ToLower().Equals("image"))
+                            {
+                                possibleIcons.Add(attributes["content"].Value);
+                            }
+                        }
+                    }
+                    break;
                 }
                 catch (WebException e)
                 {
-                    if (e.Status != WebExceptionStatus.SecureChannelFailure)
+                    if (e.Status != WebExceptionStatus.SecureChannelFailure && e.Status != WebExceptionStatus.SendFailure)
                     {
                         return;
                     }
@@ -89,18 +144,38 @@ namespace pmdbs
                 if (!Uri.TryCreate(iconLink, UriKind.Absolute, out Uri result))
                 {
                     possibleIcons[i] = _url + iconLink;
+                    if (_url.Contains("www."))
+                    {
+                        possibleIcons.Add(_url.Replace("www.", "") + iconLink);
+                    }
+                    else
+                    {
+                        string[] urlPieces = _url.Split(new string[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
+                        if (urlPieces.Length != 2)
+                        {
+                            continue;
+                        }
+                        possibleIcons.Add(urlPieces[0] + "://www." + urlPieces[1] + iconLink);
+                    }
                 }
             }
             List<string> downloadedIcons = new List<string>();
             for (int i = 0; i < possibleIcons.Count; i++)
             {
                 string iconLink = possibleIcons[i];
-                if (downloadedIcons.Contains(iconLink))
+                string[] splittedLink = iconLink.Split(new string[] { "://" }, StringSplitOptions.RemoveEmptyEntries);
+                if (splittedLink.Length != 2)
+                {
+                    // LINK IS INVALID.
+                    continue;
+                }
+                string uniqueLink = splittedLink[1].Replace("www.", "");
+                if (downloadedIcons.Contains(uniqueLink))
                 {
                     // DON'T WANT TO DOWNLOAD THE SAME ICON TWICE
                     continue;
                 }
-                downloadedIcons.Add(iconLink);
+                downloadedIcons.Add(uniqueLink);
                 Icon icon = DownloadImageSynchronous(iconLink);
                 if (icon != null)
                 {
@@ -116,14 +191,23 @@ namespace pmdbs
         public void ApplyFilter(int minimumWidth)
         {
             List<Icon> iconsTemp = new List<Icon>();
+            List<Icon> svgIcons = new List<Icon>();
             foreach (Icon icon in allIcons)
             {
                 if (icon.Width >= minimumWidth)
                 {
-                    iconsTemp.Add(icon);
+                    if (icon.Extension.ToLower() == "svg")
+                    {
+                        svgIcons.Add(icon);
+                    }
+                    else
+                    {
+                        iconsTemp.Add(icon);
+                    }
                 }
             }
             allIcons = iconsTemp.OrderByDescending(icon => icon.Width).ToList();
+            allIcons.AddRange(svgIcons);
         }
 
         /// <summary>
@@ -191,10 +275,14 @@ namespace pmdbs
                     }
                     catch (WebException e)
                     {
-                        if (e.Status != WebExceptionStatus.SecureChannelFailure)
+                        if (e.Status != WebExceptionStatus.SecureChannelFailure && e.Status != WebExceptionStatus.SendFailure)
                         {
                             return null;
                         }
+                    }
+                    catch (ArgumentException)
+                    {
+                        return null;
                     }
                 }
             }

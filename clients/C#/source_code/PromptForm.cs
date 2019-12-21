@@ -11,10 +11,6 @@ using System.Windows.Forms;
 
 namespace pmdbs
 {
-    public static class Prompt
-    {
-        public static PromptCommand Command = PromptCommand.NONE;
-    }
     public partial class PromptForm : MetroFramework.Forms.MetroForm
     {
         public PromptForm(string promptMain, string promptAction)
@@ -85,21 +81,17 @@ namespace pmdbs
                 case PromptCommand.CONFIRM_NEW_DEVICE:
                     {
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "LOGIN_SUCCESSFUL", () => NetworkAdapter.MethodProvider.ConfirmNewDevice(code));
-                        for (int i = 1; i < scheduledTasks.Count; i++)
-                        {
-                            AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
-                        }
                         break;
                     }
                 case PromptCommand.VERIFY_PASSWORD_CHANGE:
                     {
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "PASSWORD_CHANGED", () => NetworkAdapter.MethodProvider.CommitPasswordChange(GlobalVarPool.plainMasterPassword, code));
-                        for (int i = 1; i < scheduledTasks.Count; i++)
-                        {
-                            AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
-                        }
                         break;
                     }
+            }
+            for (int i = 1; i < scheduledTasks.Count; i++)
+            {
+                AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[i]);
             }
             AutomatedTaskFramework.Tasks.Execute();
             this.DialogResult = DialogResult.OK;
@@ -120,6 +112,10 @@ namespace pmdbs
         {
             this.Focus();
         }
+    }
+    public static class Prompt
+    {
+        public static PromptCommand Command = PromptCommand.NONE;
     }
     public enum PromptCommand
     {

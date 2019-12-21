@@ -577,41 +577,23 @@ namespace pmdbs
             string oldHostname = LinkedRow["3"].ToString();
             if (!website.Equals(oldUrl))
             {
-                new Thread(async delegate () {
+                new Thread(async delegate () 
+                {
                     string favIcon = "";
-                    try
+                    if (string.IsNullOrWhiteSpace(website))
                     {
-                        if (string.IsNullOrWhiteSpace(website))
+                        if (hostname[0].Equals(oldHostname[0]) || oldUrl.Equals("\x01"))
                         {
-                            if (hostname[0].Equals(oldHostname[0]) || oldUrl.Equals("\x01"))
-                            {
-                                return;
-                            }
-                            favIcon = IconExtractor.Generate(hostname);
+                            return;
                         }
-                        else
-                        {
-                            IconExtractor extractor = IconExtractor.Load(website);
-                            await extractor.Extract();
-                            extractor.ApplyFilter(48);
-                            if (extractor.IconsAvailable)
-                            {
-                                IconExtractor.Icon icon = extractor.GetBestIcon();
-                                favIcon = icon.ToBase64String();
-                            }
-                            else
-                            {
-                                favIcon = IconExtractor.Generate(hostname);
-                            }
-                        }
-                    }
-                    catch (UriFormatException)
-                    {
                         favIcon = IconExtractor.Generate(hostname);
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        CustomException.ThrowNew.NetworkException(ex.ToString());
+                        favIcon = await IconExtractor.IconFromUrl(website, hostname);
+                    }
+                    if (favIcon == null)
+                    {
                         return;
                     }
                     LinkedRow["9"] = favIcon;
@@ -900,35 +882,16 @@ namespace pmdbs
                 }
                 else
                 {
-                    try
-                    {
-                        if (string.IsNullOrWhiteSpace(website))
-                        {
-                            favIcon = IconExtractor.Generate(hostname);
-                        }
-                        else
-                        {
-                            IconExtractor extractor = IconExtractor.Load(website);
-                            await extractor.Extract();
-                            extractor.ApplyFilter(48);
-                            if (extractor.IconsAvailable)
-                            {
-                                IconExtractor.Icon icon = extractor.GetBestIcon();
-                                favIcon = icon.ToBase64String();
-                            }
-                            else
-                            {
-                                favIcon = IconExtractor.Generate(hostname);
-                            }
-                        }
-                    }
-                    catch (UriFormatException)
+                    if (string.IsNullOrWhiteSpace(website))
                     {
                         favIcon = IconExtractor.Generate(hostname);
                     }
-                    catch(Exception ex)
+                    else
                     {
-                        CustomException.ThrowNew.NetworkException(ex.ToString());
+                        favIcon = await IconExtractor.IconFromUrl(website, hostname);
+                    }
+                    if (favIcon == null)
+                    {
                         return;
                     }
                 }
@@ -1030,31 +993,11 @@ namespace pmdbs
             AddPanelAnimatedButtonCheckIcon.Enabled = false;
             new Thread(async delegate ()
             {
-                string favIcon = string.Empty;
                 string url = AddEditFieldWebsite.TextTextBox;
                 string hostname = AddEditFieldHostname.TextTextBox;
-                try
+                string favIcon = await IconExtractor.IconFromUrl(url, hostname);
+                if (favIcon == null)
                 {
-                    IconExtractor extractor = IconExtractor.Load(url);
-                    await extractor.Extract();
-                    extractor.ApplyFilter(48);
-                    if (extractor.IconsAvailable)
-                    {
-                        IconExtractor.Icon icon = extractor.GetBestIcon();
-                        favIcon = icon.ToBase64String();
-                    }
-                    else
-                    {
-                        favIcon = IconExtractor.Generate(hostname);
-                    }
-                }
-                catch (UriFormatException)
-                {
-                    favIcon = IconExtractor.Generate(hostname);
-                }
-                catch (Exception ex)
-                {
-                    CustomException.ThrowNew.NetworkException(ex.ToString());
                     return;
                 }
                 byte[] iconBytes = Convert.FromBase64String(favIcon);
@@ -1338,7 +1281,7 @@ namespace pmdbs
             Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(Stage1PasswordHash, firstUsage));
             string stage2PasswordHash = await ScryptTask;
             WindowManager.LoadingScreen.SetStatus("Initializing Database...");
-            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 1, U_firstUsage = \"", firstUsage, "\";" }));
+            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\", U_wasOnline = 0, U_firstUsage = \"", firstUsage, "\";" }));
             GlobalVarPool.isLocalDatabaseInitialized = true;
             GlobalVarPool.localAESkey = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(32, 32));
             GlobalVarPool.onlinePassword = CryptoHelper.SHA256Hash(Stage1PasswordHash.Substring(0, 32));
