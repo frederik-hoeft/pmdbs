@@ -20,41 +20,41 @@ namespace pmdbs
                 Task currentTask = Tasks.GetCurrent();
                 if (currentTask.FailedCondition.Split('|').Where(failedCondition => data.Contains(failedCondition)).Count() == 0 && !currentTask.IsFailed() && !currentTask.IsTerminated)
                 {
-                    if (currentTask.SearchCondition == SearchCondition.Match)
+                    switch (currentTask.SearchCondition)
                     {
-                        if (data.Equals(currentTask.FinishedCondition))
-                        {
-                            currentTask.Delete();
-
-                            if (Tasks.Available())
+                        case SearchCondition.Match:
+                            if (data.Equals(currentTask.FinishedCondition))
                             {
-                                Tasks.GetCurrent().Run();
-                            }
-                        }
-                    }
-                    else if (currentTask.SearchCondition == SearchCondition.In)
-                    {
-                        if (currentTask.FinishedCondition.Split('|').Where(taskCondition => data.Contains(taskCondition)).Count() != 0)
-                        {
-                            currentTask.Delete();
+                                currentTask.Delete();
 
-                            if (Tasks.Available())
-                            {
-                                Tasks.GetCurrent().Run();
+                                if (Tasks.Available())
+                                {
+                                    Tasks.GetCurrent().Run();
+                                }
                             }
-                        }
-                    }
-                    else
-                    {
-                        if (data.Contains(currentTask.FinishedCondition))
-                        {
-                            currentTask.Delete();
+                            break;
+                        case SearchCondition.In:
+                            if (currentTask.FinishedCondition.Split('|').Where(taskCondition => data.Contains(taskCondition)).Count() != 0)
+                            {
+                                currentTask.Delete();
 
-                            if (Tasks.Available())
-                            {
-                                Tasks.GetCurrent().Run();
+                                if (Tasks.Available())
+                                {
+                                    Tasks.GetCurrent().Run();
+                                }
                             }
-                        }
+                            break;
+                        default:
+                            if (data.Contains(currentTask.FinishedCondition))
+                            {
+                                currentTask.Delete();
+
+                                if (Tasks.Available())
+                                {
+                                    Tasks.GetCurrent().Run();
+                                }
+                            }
+                            break;
                     }
                 }
                 else
@@ -81,6 +81,10 @@ namespace pmdbs
         /// </summary>
         public sealed class Tasks
         {
+            /// <summary>
+            /// Can be used to control the finished condition of an interactive task.
+            /// </summary>
+            public static bool InteractiveSubTaskFinished = false;
             private static Action _blockingTaskFailedAction = new Action(delegate () { });
             private static bool executing = false;
             private static readonly List<Task> taskList = new List<Task>();
@@ -92,12 +96,12 @@ namespace pmdbs
             {
                 return taskList[0];
             }
-
+#pragma warning disable
             public static void Finalize()
             {
                 executing = false;
             }
-
+#pragma warning restore
             /// <summary>
             /// The code to be executed when a failed task blocks the queue.
             /// </summary>

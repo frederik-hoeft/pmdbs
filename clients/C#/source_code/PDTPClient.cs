@@ -52,11 +52,11 @@ namespace pmdbs
                 {
                     DirectoryInfo d = new DirectoryInfo(Directory.GetCurrentDirectory());
                     bool retry = true;
-                    HelperMethods.InvokeOutputLabel("Looking for RSA key pair in " + d.FullName + "\\keys ...");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Looking for RSA key pair in " + d.FullName + "\\keys ...");
                     if (!Directory.Exists(d.FullName + "\\keys"))
                     {
-                        HelperMethods.InvokeOutputLabel("Directory \"keys\" does not exist in " + d.FullName + ".");
-                        HelperMethods.InvokeOutputLabel("Creating directory \"keys\" ...");
+                        WindowManager.LoadingScreen.InvokeSetStatus("Directory \"keys\" does not exist in " + d.FullName + ".");
+                        WindowManager.LoadingScreen.InvokeSetStatus("Creating directory \"keys\" ...");
                         try
                         {
                             Directory.CreateDirectory(d.FullName + "\\keys");
@@ -67,7 +67,7 @@ namespace pmdbs
                             CustomException.ThrowNew.GenericException("Could not create directory: " + e.ToString());
                             return;
                         }
-                        HelperMethods.InvokeOutputLabel("Directory \"keys\" created successfully.");
+                        WindowManager.LoadingScreen.InvokeSetStatus("Directory \"keys\" created successfully.");
                     }
                     while (retry)
                     {
@@ -78,63 +78,63 @@ namespace pmdbs
                             bool selected = false;
                             while (!selected)
                             {
-                                HelperMethods.InvokeOutputLabel("No key file found!");
-                                HelperMethods.InvokeOutputLabel("Generating RSA Keys ...");
-                                HelperMethods.InvokeOutputLabel("Generating 4096 bit RSA key pair...");
+                                WindowManager.LoadingScreen.InvokeSetStatus("No key file found!");
+                                WindowManager.LoadingScreen.InvokeSetStatus("Generating RSA Keys ...");
+                                WindowManager.LoadingScreen.InvokeSetStatus("Generating 4096 bit RSA key pair...");
                                 string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
                                 GlobalVarPool.PublicKey = RSAKeyPair[0];
                                 GlobalVarPool.PrivateKey = RSAKeyPair[1];
-                                HelperMethods.InvokeOutputLabel("Exporting RSA private key ...");
+                                WindowManager.LoadingScreen.InvokeSetStatus("Exporting RSA private key ...");
                                 File.WriteAllText(d.FullName + "\\client.privatekey", GlobalVarPool.PrivateKey);
-                                HelperMethods.InvokeOutputLabel("RSA private key exported successfully.");
-                                HelperMethods.InvokeOutputLabel("Exporting RSA public key ...");
+                                WindowManager.LoadingScreen.InvokeSetStatus("RSA private key exported successfully.");
+                                WindowManager.LoadingScreen.InvokeSetStatus("Exporting RSA public key ...");
                                 File.WriteAllText(d.FullName + "\\client.publickey", GlobalVarPool.PublicKey);
-                                HelperMethods.InvokeOutputLabel("RSA public key exported successfully.");
-                                HelperMethods.InvokeOutputLabel("Generated RSA key pair.");
+                                WindowManager.LoadingScreen.InvokeSetStatus("RSA public key exported successfully.");
+                                WindowManager.LoadingScreen.InvokeSetStatus("Generated RSA key pair.");
                                 retry = false;
                                 selected = true;
                             }
                         }
                         else
                         {
-                            HelperMethods.InvokeOutputLabel("Reading RSA keys ...");
+                            WindowManager.LoadingScreen.InvokeSetStatus("Reading RSA keys ...");
                             // KINDA LAZY BUT IT WORKS
                             GlobalVarPool.PrivateKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.privatekey")).ToArray()[0].FullName);
                             GlobalVarPool.PublicKey = File.ReadAllText(files.Where(file => file.Name.Equals("client.publickey")).ToArray()[0].FullName);
-                            HelperMethods.InvokeOutputLabel("Successfully set up RSA keys.");
+                            WindowManager.LoadingScreen.InvokeSetStatus("Successfully set up RSA keys.");
                             retry = false;
                         }
                     }
                 }
                 else
                 {
-                    HelperMethods.InvokeOutputLabel("Generating RSA keys ...");
-                    HelperMethods.InvokeOutputLabel("Generating 4096 bit RSA key pair...");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Generating RSA keys ...");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Generating 4096 bit RSA key pair...");
                     string[] RSAKeyPair = CryptoHelper.RSAKeyPairGenerator();
                     GlobalVarPool.PublicKey = RSAKeyPair[0];
                     GlobalVarPool.PrivateKey = RSAKeyPair[1];
-                    HelperMethods.InvokeOutputLabel("Generated RSA key pair.");
-                    HelperMethods.InvokeOutputLabel("Successfully set up RSA keys.");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Generated RSA key pair.");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Successfully set up RSA keys.");
                 }
             }
             if (string.IsNullOrEmpty(GlobalVarPool.cookie))
             {
-                HelperMethods.InvokeOutputLabel("Looking for cookie ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Looking for cookie ...");
                 Task<string> GetCookie = DataBaseHelper.GetSingleOrDefault("SELECT U_cookie FROM Tbl_user;");
                 GlobalVarPool.cookie = await GetCookie;
                 if (string.IsNullOrEmpty(GlobalVarPool.cookie))
                 {
-                    HelperMethods.InvokeOutputLabel("Cookie not found.");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Cookie not found.");
                 }
                 else
                 {
-                    HelperMethods.InvokeOutputLabel("Found cookie.");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Found cookie.");
                 }
             }
             GlobalVarPool.threadKilled = false;
             string ip = GlobalVarPool.REMOTE_ADDRESS;
             int port = GlobalVarPool.REMOTE_PORT;
-            HelperMethods.InvokeOutputLabel("Connecting to " + ip + ":" + port + " ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Connecting to " + ip + ":" + port + " ...");
             bool isDisconnected = false;
             bool isSocketError = false;
             bool isTcpFin = false;
@@ -172,10 +172,10 @@ namespace pmdbs
             }
             ip = ipAddress.ToString();
             string address = ip + ":" + port;
-            HelperMethods.InvokeOutputLabel("Successfully connected to " + ip + ":" + port + "!");
+            WindowManager.LoadingScreen.InvokeSetStatus("Successfully connected to " + ip + ":" + port + "!");
             GlobalVarPool.bootCompleted = true;
             GlobalVarPool.connected = true;
-            HelperMethods.InvokeOutputLabel("Sending Client Hello ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Sending Client Hello ...");
             GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01UINICRT\x04"));
             // AWAIT PACKETS FROM SERVER
             try
@@ -324,7 +324,7 @@ namespace pmdbs
                                             }
                                         case "KEY":
                                             {
-                                                HelperMethods.InvokeOutputLabel("Received Server Hello ...");
+                                                WindowManager.LoadingScreen.InvokeSetStatus("Received Server Hello ...");
                                                 string packetSID = dataString.Substring(4, 3);
                                                 switch (packetSID)
                                                 {
@@ -334,7 +334,7 @@ namespace pmdbs
                                                             GlobalVarPool.nonce = CryptoHelper.RandomString();
                                                             string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
                                                             string message = "CKEkey%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
-                                                            HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
+                                                            WindowManager.LoadingScreen.InvokeSetStatus("Client Key Exchange ...");
                                                             GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
                                                             break;
                                                         }
@@ -345,7 +345,7 @@ namespace pmdbs
                                                             string isTrustedCertificateString = await GetTrustedCertificates;
                                                             if (!isTrustedCertificateString.Equals("1"))
                                                             {
-                                                                HelperMethods.ShowCertificateWarning(certificate);
+                                                                WindowManager.ShowCertificateWarning(certificate);
                                                             }
                                                             else
                                                             {
@@ -353,7 +353,7 @@ namespace pmdbs
                                                                 GlobalVarPool.nonce = CryptoHelper.RandomString();
                                                                 string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
                                                                 string message = "CKEformat%eq!XML!;key%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
-                                                                HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
+                                                                WindowManager.LoadingScreen.InvokeSetStatus("Client Key Exchange ...");
                                                                 GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
                                                             }
                                                             break;
@@ -384,7 +384,7 @@ namespace pmdbs
                                     string packetID = decrypted.Substring(0, 3);
                                     if (packetID.Equals("SKE"))
                                     {
-                                        HelperMethods.InvokeOutputLabel("Symmetric Keys Exchange ...");
+                                        WindowManager.LoadingScreen.InvokeSetStatus("Symmetric Keys Exchange ...");
                                         string key = string.Empty;
                                         string providedNonce = string.Empty;
                                         foreach (string returnValue in decrypted.Substring(3).Split(';'))
@@ -417,7 +417,7 @@ namespace pmdbs
                                             Console.WriteLine("HMAC KEY: " + GlobalVarPool.hmac);
                                         }
                                         GlobalVarPool.nonce = CryptoHelper.RandomString();
-                                        HelperMethods.InvokeOutputLabel("Acknowledging ...");
+                                        WindowManager.LoadingScreen.InvokeSetStatus("Acknowledging ...");
                                         Network.SendEncrypted("KEXACKnonce%eq!" + GlobalVarPool.nonce + "!;");
                                     }
                                     break;
@@ -453,7 +453,7 @@ namespace pmdbs
                                                 }
                                                 else
                                                 {
-                                                    HelperMethods.InvokeOutputLabel("Key Exchange finished.");
+                                                    WindowManager.LoadingScreen.InvokeSetStatus("Key Exchange finished.");
                                                     if (GlobalVarPool.cookie.Equals(string.Empty))
                                                     {
                                                         NetworkAdapter.MethodProvider.GetCookie();
@@ -548,8 +548,10 @@ namespace pmdbs
                                                                             object parameters = new string[] { remoteHeaderString, deletedItemString };
                                                                             Thread t = new Thread(new ParameterizedThreadStart(Sync.Initialize));
                                                                             t.Start(parameters);
+                                                                            GlobalVarPool.hidThreadCounter++;
                                                                             break;
                                                                         }
+                                                                    case "DELETING_COMPLETED":
                                                                     case "UPDATE":
                                                                         {
                                                                             if (GlobalVarPool.countSyncPackets)
@@ -561,14 +563,6 @@ namespace pmdbs
                                                                     case "SELECT":
                                                                         {
                                                                             GlobalVarPool.selectedAccounts.Add(content);
-                                                                            if (GlobalVarPool.countSyncPackets)
-                                                                            {
-                                                                                GlobalVarPool.countedPackets++;
-                                                                            }
-                                                                            break;
-                                                                        }
-                                                                    case "DELETING_COMPLETED":
-                                                                        {
                                                                             if (GlobalVarPool.countSyncPackets)
                                                                             {
                                                                                 GlobalVarPool.countedPackets++;
@@ -644,7 +638,7 @@ namespace pmdbs
                                                             {
                                                                 case "UEXT":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = -2;
+                                                                        AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         CustomException.ThrowNew.GenericException("This username is already in use." + Environment.NewLine + message);
                                                                         break;
                                                                     }
@@ -652,33 +646,29 @@ namespace pmdbs
                                                                     {
                                                                         if (message.Equals("EMAIL_ALREADY_IN_USE"))
                                                                         {
-                                                                            GlobalVarPool.commandErrorCode = -2;
                                                                             CustomException.ThrowNew.GenericException("This email address is already in use." + Environment.NewLine + message);
                                                                         }
                                                                         break;
                                                                     }
                                                                 case "UDNE":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("This username does not exist." + Environment.NewLine + message);
                                                                         break;
                                                                     }
                                                                 case "CRED":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("Invalid credentials." + Environment.NewLine + message);
                                                                         AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.Terminate();
                                                                         break;
                                                                     }
                                                                 case "I2FA":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = 1;
                                                                         CustomException.ThrowNew.GenericException("Invalid 2FA code." + Environment.NewLine + message);
+                                                                        WindowManager.TwoFactorAuthentication.PromptAgain();
                                                                         break;
                                                                     }
                                                                 case "E2FA":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = -2;
                                                                         CustomException.ThrowNew.GenericException("Expired 2FA code." + Environment.NewLine + message);
                                                                         break;
                                                                     }
@@ -691,7 +681,7 @@ namespace pmdbs
                                                             }
                                                             break;
                                                         }
-                                                    //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF WHAT AM I DOING WITH MY LIFE???
+                                                    //HANDLING RETURN VALUES BELOW... IT'S 03:30 AM WTF AM I DOING WITH MY LIFE???
                                                     case "RET":
                                                         {
                                                             switch (decryptedData.Split('!')[1])
@@ -708,13 +698,13 @@ namespace pmdbs
                                                                             }).Start();
                                                                         }
                                                                         GlobalVarPool.isUser = true;
-                                                                        HelperMethods.InvokeOutputLabel("Logged in.");
+                                                                        WindowManager.LoadingScreen.InvokeSetStatus("Logged in.");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_ACTIVATE_ACCOUNT":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "ACTIVATE_ACCOUNT";
-                                                                        HelperMethods.Prompt("Activate your account", "Please verify your email address.");
+                                                                        Prompt.Command = PromptCommand.ACTIVATE_ACCOUNT;
+                                                                        WindowManager.TwoFactorAuthentication.Prompt("Activate your account", "Please verify your email address.");
                                                                         break;
                                                                     }
                                                                 case "LOGGED_OUT":
@@ -769,8 +759,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_NEW_DEVICE":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "CONFIRM_NEW_DEVICE";
-                                                                        HelperMethods.Prompt("Confirm new device", "Looks like you're trying to login from a new device.");
+                                                                        Prompt.Command = PromptCommand.CONFIRM_NEW_DEVICE;
+                                                                        WindowManager.TwoFactorAuthentication.Prompt("Confirm new device", "Looks like you're trying to login from a new device.");
                                                                         break;
                                                                     }
                                                                 case "NOT_LOGGED_IN":
@@ -792,8 +782,8 @@ namespace pmdbs
                                                                     }
                                                                 case "SEND_VERIFICATION_CHANGE_PASSWORD":
                                                                     {
-                                                                        GlobalVarPool.promptCommand = "VERIFY_PASSWORD_CHANGE";
-                                                                        HelperMethods.Prompt("Verify password change", "Looks like your trying to change your password.");
+                                                                        Prompt.Command = PromptCommand.VERIFY_PASSWORD_CHANGE;
+                                                                        WindowManager.TwoFactorAuthentication.Prompt("Verify password change", "Looks like your trying to change your password.");
                                                                         break;
                                                                     }
                                                                 case "SEND_VERIFICATION_DELETE_ACCOUNT":
@@ -806,7 +796,6 @@ namespace pmdbs
                                                                     }
                                                                 case "PASSWORD_CHANGED":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = 0;
                                                                         break;
                                                                     }
                                                                 case "SELECT_FINISHED":
@@ -860,7 +849,6 @@ namespace pmdbs
                                                                     }
                                                                 case "NAME_CHANGED":
                                                                     {
-                                                                        GlobalVarPool.commandErrorCode = 0;
                                                                         // TODO: CREATE NOTIFICATION
                                                                         CustomException.ThrowNew.GenericException("Name changed successfully.");
                                                                         break;

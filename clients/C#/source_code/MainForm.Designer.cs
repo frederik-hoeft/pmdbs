@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                this.bmp.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -116,11 +117,6 @@
             this.SettingsAnimatedButtonOnlineChangeServerLogin = new LunaForms.LunaAnimatedButton();
             this.SettingsLabelOnlineChangeServerDescription = new System.Windows.Forms.Label();
             this.SettingsLabelOnlineChangeServer = new System.Windows.Forms.Label();
-            this.SettingsPanelLoadingMain = new System.Windows.Forms.Panel();
-            this.SettingsPanelLoadingCenter = new System.Windows.Forms.Panel();
-            this.SettingsLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
-            this.SettingsLabelLoadingStatus = new System.Windows.Forms.Label();
-            this.SettingsPictureBoxLoadingLogo = new System.Windows.Forms.PictureBox();
             this.SettingsFlowLayoutPanelOffline = new System.Windows.Forms.FlowLayoutPanel();
             this.SettingsPanelOfflineContentHeader = new System.Windows.Forms.Panel();
             this.SettingsLabelOfflineAccountHeader = new System.Windows.Forms.Label();
@@ -284,32 +280,6 @@
             this.PanelLogin = new System.Windows.Forms.Panel();
             this.LoginTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
             this.LoginPictureBoxMain = new System.Windows.Forms.PictureBox();
-            this.LoginPictureBoxOnlineSettings = new System.Windows.Forms.PictureBox();
-            this.LoginLabelOnlineSettingsRegister = new System.Windows.Forms.Label();
-            this.LoginPictureBoxOnlineSettingsLogo = new System.Windows.Forms.PictureBox();
-            this.LoginLunaAnimatedButtonNext = new LunaForms.LunaAnimatedButton();
-            this.LoginLabelOnlineSettingsTitle = new System.Windows.Forms.Label();
-            this.LoginPanelOnlineSettings = new System.Windows.Forms.Panel();
-            this.LoginLabelOnlineSettingsSubHeader = new System.Windows.Forms.Label();
-            this.LoginLabelOnlineSettingsHeader = new System.Windows.Forms.Label();
-            this.LoginEditFieldOnlineSettingsPort = new LunaForms.EditField();
-            this.LoginEditFieldOnlineSettingsIp = new LunaForms.EditField();
-            this.LoginPictureBoxOnlineMain = new System.Windows.Forms.PictureBox();
-            this.LoginLabelOnlineBack = new System.Windows.Forms.Label();
-            this.LoginPictureBoxOnlineLogo = new System.Windows.Forms.PictureBox();
-            this.LoginAnimatedButtonOnlineLogin = new LunaForms.LunaAnimatedButton();
-            this.LoginLabelOnlineMain = new System.Windows.Forms.Label();
-            this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
-            this.label12 = new System.Windows.Forms.Label();
-            this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
-            this.LoginEditFieldOnlinePassword = new LunaForms.EditField();
-            this.LoginEditFieldOnlineUsername = new LunaForms.EditField();
-            this.LoginPictureBoxLoadingMain = new System.Windows.Forms.PictureBox();
-            this.LoginLoadingPictureBoxLogo = new System.Windows.Forms.PictureBox();
-            this.LoginLoadingLabelMain = new System.Windows.Forms.Label();
-            this.LoginLoadingPanelMain = new System.Windows.Forms.Panel();
-            this.LoginLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
-            this.LoginLoadingLabelDetails = new System.Windows.Forms.Label();
             this.LoginPictureBoxOfflineMain = new System.Windows.Forms.PictureBox();
             this.LoginLabelOfflineUsername = new System.Windows.Forms.Label();
             this.LoginPanelOfflineCredentials = new System.Windows.Forms.Panel();
@@ -332,6 +302,35 @@
             this.LoginLabelRegisterMain = new System.Windows.Forms.Label();
             this.LoginAnimatedButtonRegister = new LunaForms.LunaAnimatedButton();
             this.LoginPictureBoxRegisterLogo = new System.Windows.Forms.PictureBox();
+            this.LoginPictureBoxOnlineSettings = new System.Windows.Forms.PictureBox();
+            this.LoginLabelOnlineSettingsRegister = new System.Windows.Forms.Label();
+            this.LoginPictureBoxOnlineSettingsLogo = new System.Windows.Forms.PictureBox();
+            this.LoginLunaAnimatedButtonNext = new LunaForms.LunaAnimatedButton();
+            this.LoginLabelOnlineSettingsTitle = new System.Windows.Forms.Label();
+            this.LoginPanelOnlineSettings = new System.Windows.Forms.Panel();
+            this.LoginLabelOnlineSettingsSubHeader = new System.Windows.Forms.Label();
+            this.LoginLabelOnlineSettingsHeader = new System.Windows.Forms.Label();
+            this.LoginEditFieldOnlineSettingsPort = new LunaForms.EditField();
+            this.LoginEditFieldOnlineSettingsIp = new LunaForms.EditField();
+            this.LoginPictureBoxOnlineMain = new System.Windows.Forms.PictureBox();
+            this.LoginLabelOnlineBack = new System.Windows.Forms.Label();
+            this.LoginPictureBoxOnlineLogo = new System.Windows.Forms.PictureBox();
+            this.LoginAnimatedButtonOnlineLogin = new LunaForms.LunaAnimatedButton();
+            this.LoginLabelOnlineMain = new System.Windows.Forms.Label();
+            this.LoginPanelOnlineCredentials = new System.Windows.Forms.Panel();
+            this.label12 = new System.Windows.Forms.Label();
+            this.LoginLabelOnlineTitle = new System.Windows.Forms.Label();
+            this.LoginEditFieldOnlinePassword = new LunaForms.EditField();
+            this.LoginEditFieldOnlineUsername = new LunaForms.EditField();
+            this.PanelLoading = new System.Windows.Forms.Panel();
+            this.LoadingTableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
+            this.LoadingPictureBoxOverlay = new System.Windows.Forms.PictureBox();
+            this.LoadingPictureBoxContent = new System.Windows.Forms.PictureBox();
+            this.LoadingPictureBoxLogo = new System.Windows.Forms.PictureBox();
+            this.LoadingLabelHeader = new System.Windows.Forms.Label();
+            this.LoadingPanelDisplay = new System.Windows.Forms.Panel();
+            this.LoadingLunaProgressSpinnerFading = new LunaForms.LunaProgressSpinnerFading();
+            this.LoadingLabelStatus = new System.Windows.Forms.Label();
             this.PictureBoxOverlay = new System.Windows.Forms.PictureBox();
             this.windowButtonMinimize = new LunaForms.WindowButton();
             this.windowButtonClose = new LunaForms.WindowButton();
@@ -373,9 +372,6 @@
             this.SettingsPanelOnlineContent1.SuspendLayout();
             this.SettingsPanelOnlineContent2.SuspendLayout();
             this.SettingsPanelOnlineContent3.SuspendLayout();
-            this.SettingsPanelLoadingMain.SuspendLayout();
-            this.SettingsPanelLoadingCenter.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLoadingLogo)).BeginInit();
             this.SettingsFlowLayoutPanelOffline.SuspendLayout();
             this.SettingsPanelOfflineContentHeader.SuspendLayout();
             this.SettingsPanelOfflineContent3.SuspendLayout();
@@ -426,18 +422,6 @@
             this.LoginTableLayoutPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).BeginInit();
             this.LoginPictureBoxMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettings)).BeginInit();
-            this.LoginPictureBoxOnlineSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettingsLogo)).BeginInit();
-            this.LoginPanelOnlineSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineMain)).BeginInit();
-            this.LoginPictureBoxOnlineMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
-            this.LoginPanelOnlineCredentials.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).BeginInit();
-            this.LoginPictureBoxLoadingMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginLoadingPictureBoxLogo)).BeginInit();
-            this.LoginLoadingPanelMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).BeginInit();
             this.LoginPictureBoxOfflineMain.SuspendLayout();
             this.LoginPanelOfflineCredentials.SuspendLayout();
@@ -446,6 +430,22 @@
             this.LoginPictureBoxRegisterMain.SuspendLayout();
             this.LoginPanelRegisterCredentials.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxRegisterLogo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettings)).BeginInit();
+            this.LoginPictureBoxOnlineSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettingsLogo)).BeginInit();
+            this.LoginPanelOnlineSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineMain)).BeginInit();
+            this.LoginPictureBoxOnlineMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).BeginInit();
+            this.LoginPanelOnlineCredentials.SuspendLayout();
+            this.PanelLoading.SuspendLayout();
+            this.LoadingTableLayoutPanelMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoadingPictureBoxOverlay)).BeginInit();
+            this.LoadingPictureBoxOverlay.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoadingPictureBoxContent)).BeginInit();
+            this.LoadingPictureBoxContent.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoadingPictureBoxLogo)).BeginInit();
+            this.LoadingPanelDisplay.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOverlay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -1362,7 +1362,6 @@
             // SettingsPanelContentMain
             // 
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOnline);
-            this.SettingsPanelContentMain.Controls.Add(this.SettingsPanelLoadingMain);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelOffline);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelRegister);
             this.SettingsPanelContentMain.Controls.Add(this.SettingsFlowLayoutPanelLogin);
@@ -1613,7 +1612,7 @@
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Primary = false;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOnlineChangeServerRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOnlineChangeServerRegister.Text = "Register";
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Uppercase = false;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOnlineChangeServerRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
@@ -1656,67 +1655,6 @@
             this.SettingsLabelOnlineChangeServer.Size = new System.Drawing.Size(179, 32);
             this.SettingsLabelOnlineChangeServer.TabIndex = 10;
             this.SettingsLabelOnlineChangeServer.Text = "Change Server";
-            // 
-            // SettingsPanelLoadingMain
-            // 
-            this.SettingsPanelLoadingMain.BackColor = System.Drawing.Color.White;
-            this.SettingsPanelLoadingMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.SettingsPanelLoadingMain.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.SettingsPanelLoadingMain.Controls.Add(this.SettingsPanelLoadingCenter);
-            this.SettingsPanelLoadingMain.Controls.Add(this.SettingsPictureBoxLoadingLogo);
-            this.SettingsPanelLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SettingsPanelLoadingMain.Location = new System.Drawing.Point(0, 0);
-            this.SettingsPanelLoadingMain.Margin = new System.Windows.Forms.Padding(0);
-            this.SettingsPanelLoadingMain.Name = "SettingsPanelLoadingMain";
-            this.SettingsPanelLoadingMain.Size = new System.Drawing.Size(700, 898);
-            this.SettingsPanelLoadingMain.TabIndex = 16;
-            // 
-            // SettingsPanelLoadingCenter
-            // 
-            this.SettingsPanelLoadingCenter.BackColor = System.Drawing.Color.White;
-            this.SettingsPanelLoadingCenter.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("SettingsPanelLoadingCenter.BackgroundImage")));
-            this.SettingsPanelLoadingCenter.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.SettingsPanelLoadingCenter.Controls.Add(this.SettingsLunaProgressSpinnerFading);
-            this.SettingsPanelLoadingCenter.Controls.Add(this.SettingsLabelLoadingStatus);
-            this.SettingsPanelLoadingCenter.Location = new System.Drawing.Point(45, 554);
-            this.SettingsPanelLoadingCenter.Name = "SettingsPanelLoadingCenter";
-            this.SettingsPanelLoadingCenter.Size = new System.Drawing.Size(601, 215);
-            this.SettingsPanelLoadingCenter.TabIndex = 6;
-            // 
-            // SettingsLunaProgressSpinnerFading
-            // 
-            this.SettingsLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 1;
-            this.SettingsLunaProgressSpinnerFading.BackColor = System.Drawing.Color.Gainsboro;
-            this.SettingsLunaProgressSpinnerFading.DotSizeMultiplier = 1.5F;
-            this.SettingsLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.SettingsLunaProgressSpinnerFading.Location = new System.Drawing.Point(228, 3);
-            this.SettingsLunaProgressSpinnerFading.Name = "SettingsLunaProgressSpinnerFading";
-            this.SettingsLunaProgressSpinnerFading.NumberOfDots = 100;
-            this.SettingsLunaProgressSpinnerFading.Size = new System.Drawing.Size(140, 140);
-            this.SettingsLunaProgressSpinnerFading.TabIndex = 13;
-            this.SettingsLunaProgressSpinnerFading.UseForeColor = true;
-            // 
-            // SettingsLabelLoadingStatus
-            // 
-            this.SettingsLabelLoadingStatus.BackColor = System.Drawing.Color.Gainsboro;
-            this.SettingsLabelLoadingStatus.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.SettingsLabelLoadingStatus.ForeColor = System.Drawing.Color.Black;
-            this.SettingsLabelLoadingStatus.Location = new System.Drawing.Point(35, 148);
-            this.SettingsLabelLoadingStatus.Name = "SettingsLabelLoadingStatus";
-            this.SettingsLabelLoadingStatus.Size = new System.Drawing.Size(526, 30);
-            this.SettingsLabelLoadingStatus.TabIndex = 4;
-            this.SettingsLabelLoadingStatus.Text = "performing handshake with host... 47%";
-            this.SettingsLabelLoadingStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // SettingsPictureBoxLoadingLogo
-            // 
-            this.SettingsPictureBoxLoadingLogo.Image = ((System.Drawing.Image)(resources.GetObject("SettingsPictureBoxLoadingLogo.Image")));
-            this.SettingsPictureBoxLoadingLogo.Location = new System.Drawing.Point(203, 187);
-            this.SettingsPictureBoxLoadingLogo.Name = "SettingsPictureBoxLoadingLogo";
-            this.SettingsPictureBoxLoadingLogo.Size = new System.Drawing.Size(284, 272);
-            this.SettingsPictureBoxLoadingLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.SettingsPictureBoxLoadingLogo.TabIndex = 14;
-            this.SettingsPictureBoxLoadingLogo.TabStop = false;
             // 
             // SettingsFlowLayoutPanelOffline
             // 
@@ -1881,7 +1819,7 @@
             this.SettingsAnimatedButtonOfflineRegister.Primary = false;
             this.SettingsAnimatedButtonOfflineRegister.Size = new System.Drawing.Size(232, 61);
             this.SettingsAnimatedButtonOfflineRegister.TabIndex = 14;
-            this.SettingsAnimatedButtonOfflineRegister.Text = "REgister";
+            this.SettingsAnimatedButtonOfflineRegister.Text = "Register";
             this.SettingsAnimatedButtonOfflineRegister.Uppercase = false;
             this.SettingsAnimatedButtonOfflineRegister.UseVisualStyleBackColor = true;
             this.SettingsAnimatedButtonOfflineRegister.Click += new System.EventHandler(this.SettingsAnimatedButtonRegister_Click);
@@ -4110,11 +4048,10 @@
             // LoginPictureBoxMain
             // 
             this.LoginPictureBoxMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineSettings);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
-            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxLoadingMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOfflineMain);
             this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxRegisterMain);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineSettings);
+            this.LoginPictureBoxMain.Controls.Add(this.LoginPictureBoxOnlineMain);
             this.LoginPictureBoxMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoginPictureBoxMain.Location = new System.Drawing.Point(615, 131);
             this.LoginPictureBoxMain.Margin = new System.Windows.Forms.Padding(0);
@@ -4122,384 +4059,6 @@
             this.LoginPictureBoxMain.Size = new System.Drawing.Size(650, 850);
             this.LoginPictureBoxMain.TabIndex = 2;
             this.LoginPictureBoxMain.TabStop = false;
-            // 
-            // LoginPictureBoxOnlineSettings
-            // 
-            this.LoginPictureBoxOnlineSettings.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsRegister);
-            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginPictureBoxOnlineSettingsLogo);
-            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginLunaAnimatedButtonNext);
-            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsTitle);
-            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginPanelOnlineSettings);
-            this.LoginPictureBoxOnlineSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxOnlineSettings.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxOnlineSettings.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxOnlineSettings.Name = "LoginPictureBoxOnlineSettings";
-            this.LoginPictureBoxOnlineSettings.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxOnlineSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.LoginPictureBoxOnlineSettings.TabIndex = 3;
-            this.LoginPictureBoxOnlineSettings.TabStop = false;
-            // 
-            // LoginLabelOnlineSettingsRegister
-            // 
-            this.LoginLabelOnlineSettingsRegister.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoginLabelOnlineSettingsRegister.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.LoginLabelOnlineSettingsRegister.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.LoginLabelOnlineSettingsRegister.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineSettingsRegister.Location = new System.Drawing.Point(0, 804);
-            this.LoginLabelOnlineSettingsRegister.Name = "LoginLabelOnlineSettingsRegister";
-            this.LoginLabelOnlineSettingsRegister.Size = new System.Drawing.Size(650, 46);
-            this.LoginLabelOnlineSettingsRegister.TabIndex = 6;
-            this.LoginLabelOnlineSettingsRegister.Text = "Register";
-            this.LoginLabelOnlineSettingsRegister.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.LoginLabelOnlineSettingsRegister.Click += new System.EventHandler(this.LoginLabelOnlineSettingsRegister_Click);
-            // 
-            // LoginPictureBoxOnlineSettingsLogo
-            // 
-            this.LoginPictureBoxOnlineSettingsLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOnlineSettingsLogo.Image")));
-            this.LoginPictureBoxOnlineSettingsLogo.Location = new System.Drawing.Point(238, 75);
-            this.LoginPictureBoxOnlineSettingsLogo.Name = "LoginPictureBoxOnlineSettingsLogo";
-            this.LoginPictureBoxOnlineSettingsLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxOnlineSettingsLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxOnlineSettingsLogo.TabIndex = 5;
-            this.LoginPictureBoxOnlineSettingsLogo.TabStop = false;
-            // 
-            // LoginLunaAnimatedButtonNext
-            // 
-            this.LoginLunaAnimatedButtonNext.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginLunaAnimatedButtonNext.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginLunaAnimatedButtonNext.Depth = 0;
-            this.LoginLunaAnimatedButtonNext.Icon = null;
-            this.LoginLunaAnimatedButtonNext.Location = new System.Drawing.Point(220, 728);
-            this.LoginLunaAnimatedButtonNext.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginLunaAnimatedButtonNext.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
-            this.LoginLunaAnimatedButtonNext.Name = "LoginLunaAnimatedButtonNext";
-            this.LoginLunaAnimatedButtonNext.Primary = false;
-            this.LoginLunaAnimatedButtonNext.Size = new System.Drawing.Size(211, 71);
-            this.LoginLunaAnimatedButtonNext.TabIndex = 4;
-            this.LoginLunaAnimatedButtonNext.Text = "Next";
-            this.LoginLunaAnimatedButtonNext.Uppercase = false;
-            this.LoginLunaAnimatedButtonNext.UseVisualStyleBackColor = true;
-            this.LoginLunaAnimatedButtonNext.Click += new System.EventHandler(this.LoginLunaAnimatedButtonNext_Click);
-            // 
-            // LoginLabelOnlineSettingsTitle
-            // 
-            this.LoginLabelOnlineSettingsTitle.AutoSize = true;
-            this.LoginLabelOnlineSettingsTitle.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelOnlineSettingsTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineSettingsTitle.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineSettingsTitle.Location = new System.Drawing.Point(199, 275);
-            this.LoginLabelOnlineSettingsTitle.Name = "LoginLabelOnlineSettingsTitle";
-            this.LoginLabelOnlineSettingsTitle.Size = new System.Drawing.Size(228, 45);
-            this.LoginLabelOnlineSettingsTitle.TabIndex = 2;
-            this.LoginLabelOnlineSettingsTitle.Text = "Welcome Back";
-            // 
-            // LoginPanelOnlineSettings
-            // 
-            this.LoginPanelOnlineSettings.BackColor = System.Drawing.Color.White;
-            this.LoginPanelOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsSubHeader);
-            this.LoginPanelOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsHeader);
-            this.LoginPanelOnlineSettings.Controls.Add(this.LoginEditFieldOnlineSettingsPort);
-            this.LoginPanelOnlineSettings.Controls.Add(this.LoginEditFieldOnlineSettingsIp);
-            this.LoginPanelOnlineSettings.Location = new System.Drawing.Point(64, 337);
-            this.LoginPanelOnlineSettings.Name = "LoginPanelOnlineSettings";
-            this.LoginPanelOnlineSettings.Size = new System.Drawing.Size(523, 363);
-            this.LoginPanelOnlineSettings.TabIndex = 1;
-            // 
-            // LoginLabelOnlineSettingsSubHeader
-            // 
-            this.LoginLabelOnlineSettingsSubHeader.AutoSize = true;
-            this.LoginLabelOnlineSettingsSubHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.LoginLabelOnlineSettingsSubHeader.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineSettingsSubHeader.Location = new System.Drawing.Point(38, 65);
-            this.LoginLabelOnlineSettingsSubHeader.Name = "LoginLabelOnlineSettingsSubHeader";
-            this.LoginLabelOnlineSettingsSubHeader.Size = new System.Drawing.Size(130, 25);
-            this.LoginLabelOnlineSettingsSubHeader.TabIndex = 4;
-            this.LoginLabelOnlineSettingsSubHeader.Text = "Server Settings";
-            // 
-            // LoginLabelOnlineSettingsHeader
-            // 
-            this.LoginLabelOnlineSettingsHeader.AutoSize = true;
-            this.LoginLabelOnlineSettingsHeader.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineSettingsHeader.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineSettingsHeader.Location = new System.Drawing.Point(36, 24);
-            this.LoginLabelOnlineSettingsHeader.Name = "LoginLabelOnlineSettingsHeader";
-            this.LoginLabelOnlineSettingsHeader.Size = new System.Drawing.Size(152, 32);
-            this.LoginLabelOnlineSettingsHeader.TabIndex = 2;
-            this.LoginLabelOnlineSettingsHeader.Text = "Online Login";
-            // 
-            // LoginEditFieldOnlineSettingsPort
-            // 
-            this.LoginEditFieldOnlineSettingsPort.AutoSize = true;
-            this.LoginEditFieldOnlineSettingsPort.BackColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineSettingsPort.BackGroundColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineSettingsPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlineSettingsPort.ColorTextBoxNormal = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlineSettingsPort.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlineSettingsPort.DefaultValue = "Enter some text...";
-            this.LoginEditFieldOnlineSettingsPort.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineSettingsPort.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineSettingsPort.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlineSettingsPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LoginEditFieldOnlineSettingsPort.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.LoginEditFieldOnlineSettingsPort.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.LoginEditFieldOnlineSettingsPort.Location = new System.Drawing.Point(42, 212);
-            this.LoginEditFieldOnlineSettingsPort.Name = "LoginEditFieldOnlineSettingsPort";
-            this.LoginEditFieldOnlineSettingsPort.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlineSettingsPort.TabIndex = 1;
-            this.LoginEditFieldOnlineSettingsPort.TextTextBox = "4447";
-            this.LoginEditFieldOnlineSettingsPort.TextTitle = "Port";
-            this.LoginEditFieldOnlineSettingsPort.UseColoredCaret = false;
-            this.LoginEditFieldOnlineSettingsPort.UseDefaultValue = false;
-            this.LoginEditFieldOnlineSettingsPort.UseSystemPasswordChar = false;
-            // 
-            // LoginEditFieldOnlineSettingsIp
-            // 
-            this.LoginEditFieldOnlineSettingsIp.AutoSize = true;
-            this.LoginEditFieldOnlineSettingsIp.BackColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineSettingsIp.BackGroundColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineSettingsIp.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlineSettingsIp.ColorTextBoxNormal = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlineSettingsIp.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlineSettingsIp.DefaultValue = "Enter your Username...";
-            this.LoginEditFieldOnlineSettingsIp.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineSettingsIp.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineSettingsIp.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlineSettingsIp.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LoginEditFieldOnlineSettingsIp.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.LoginEditFieldOnlineSettingsIp.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.LoginEditFieldOnlineSettingsIp.Location = new System.Drawing.Point(42, 105);
-            this.LoginEditFieldOnlineSettingsIp.Name = "LoginEditFieldOnlineSettingsIp";
-            this.LoginEditFieldOnlineSettingsIp.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlineSettingsIp.TabIndex = 0;
-            this.LoginEditFieldOnlineSettingsIp.TextTextBox = "192.168.178.46";
-            this.LoginEditFieldOnlineSettingsIp.TextTitle = "IP";
-            this.LoginEditFieldOnlineSettingsIp.UseColoredCaret = false;
-            this.LoginEditFieldOnlineSettingsIp.UseDefaultValue = false;
-            this.LoginEditFieldOnlineSettingsIp.UseSystemPasswordChar = false;
-            // 
-            // LoginPictureBoxOnlineMain
-            // 
-            this.LoginPictureBoxOnlineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineBack);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPictureBoxOnlineLogo);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginAnimatedButtonOnlineLogin);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineMain);
-            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPanelOnlineCredentials);
-            this.LoginPictureBoxOnlineMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxOnlineMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxOnlineMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxOnlineMain.Name = "LoginPictureBoxOnlineMain";
-            this.LoginPictureBoxOnlineMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxOnlineMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.LoginPictureBoxOnlineMain.TabIndex = 1;
-            this.LoginPictureBoxOnlineMain.TabStop = false;
-            // 
-            // LoginLabelOnlineBack
-            // 
-            this.LoginLabelOnlineBack.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.LoginLabelOnlineBack.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.LoginLabelOnlineBack.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineBack.Location = new System.Drawing.Point(10, 804);
-            this.LoginLabelOnlineBack.Name = "LoginLabelOnlineBack";
-            this.LoginLabelOnlineBack.Size = new System.Drawing.Size(632, 44);
-            this.LoginLabelOnlineBack.TabIndex = 6;
-            this.LoginLabelOnlineBack.Text = "Back To Server Settings";
-            this.LoginLabelOnlineBack.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.LoginLabelOnlineBack.Click += new System.EventHandler(this.LoginLabelOnlineBack_Click);
-            // 
-            // LoginPictureBoxOnlineLogo
-            // 
-            this.LoginPictureBoxOnlineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOnlineLogo.Image")));
-            this.LoginPictureBoxOnlineLogo.Location = new System.Drawing.Point(238, 75);
-            this.LoginPictureBoxOnlineLogo.Name = "LoginPictureBoxOnlineLogo";
-            this.LoginPictureBoxOnlineLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginPictureBoxOnlineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginPictureBoxOnlineLogo.TabIndex = 5;
-            this.LoginPictureBoxOnlineLogo.TabStop = false;
-            // 
-            // LoginAnimatedButtonOnlineLogin
-            // 
-            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.LoginAnimatedButtonOnlineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
-            this.LoginAnimatedButtonOnlineLogin.Icon = null;
-            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
-            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.LoginAnimatedButtonOnlineLogin.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
-            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
-            this.LoginAnimatedButtonOnlineLogin.Primary = false;
-            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
-            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
-            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
-            this.LoginAnimatedButtonOnlineLogin.Uppercase = false;
-            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
-            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
-            // 
-            // LoginLabelOnlineMain
-            // 
-            this.LoginLabelOnlineMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLabelOnlineMain.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineMain.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineMain.Location = new System.Drawing.Point(10, 255);
-            this.LoginLabelOnlineMain.Name = "LoginLabelOnlineMain";
-            this.LoginLabelOnlineMain.Size = new System.Drawing.Size(632, 65);
-            this.LoginLabelOnlineMain.TabIndex = 2;
-            this.LoginLabelOnlineMain.Text = "Welcome Back";
-            this.LoginLabelOnlineMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // LoginPanelOnlineCredentials
-            // 
-            this.LoginPanelOnlineCredentials.BackColor = System.Drawing.Color.White;
-            this.LoginPanelOnlineCredentials.Controls.Add(this.label12);
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginLabelOnlineTitle);
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlinePassword);
-            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlineUsername);
-            this.LoginPanelOnlineCredentials.Location = new System.Drawing.Point(64, 337);
-            this.LoginPanelOnlineCredentials.Name = "LoginPanelOnlineCredentials";
-            this.LoginPanelOnlineCredentials.Size = new System.Drawing.Size(523, 363);
-            this.LoginPanelOnlineCredentials.TabIndex = 1;
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.label12.ForeColor = System.Drawing.Color.Black;
-            this.label12.Location = new System.Drawing.Point(36, 65);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(254, 25);
-            this.label12.TabIndex = 4;
-            this.label12.Text = "Credentials for 192.168.178.46";
-            // 
-            // LoginLabelOnlineTitle
-            // 
-            this.LoginLabelOnlineTitle.AutoSize = true;
-            this.LoginLabelOnlineTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginLabelOnlineTitle.ForeColor = System.Drawing.Color.Black;
-            this.LoginLabelOnlineTitle.Location = new System.Drawing.Point(36, 24);
-            this.LoginLabelOnlineTitle.Name = "LoginLabelOnlineTitle";
-            this.LoginLabelOnlineTitle.Size = new System.Drawing.Size(152, 32);
-            this.LoginLabelOnlineTitle.TabIndex = 2;
-            this.LoginLabelOnlineTitle.Text = "Online Login";
-            // 
-            // LoginEditFieldOnlinePassword
-            // 
-            this.LoginEditFieldOnlinePassword.AutoSize = true;
-            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlinePassword.DefaultValue = "Enter some text...";
-            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LoginEditFieldOnlinePassword.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.LoginEditFieldOnlinePassword.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 212);
-            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
-            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlinePassword.TabIndex = 1;
-            this.LoginEditFieldOnlinePassword.TextTextBox = "öüä";
-            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
-            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
-            this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
-            this.LoginEditFieldOnlinePassword.UseSystemPasswordChar = true;
-            // 
-            // LoginEditFieldOnlineUsername
-            // 
-            this.LoginEditFieldOnlineUsername.AutoSize = true;
-            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.White;
-            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
-            this.LoginEditFieldOnlineUsername.DefaultValue = "Enter your Username...";
-            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.Black;
-            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.LoginEditFieldOnlineUsername.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
-            this.LoginEditFieldOnlineUsername.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
-            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 105);
-            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
-            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
-            this.LoginEditFieldOnlineUsername.TabIndex = 0;
-            this.LoginEditFieldOnlineUsername.TextTextBox = "testuser2";
-            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
-            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
-            this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
-            this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
-            // 
-            // LoginPictureBoxLoadingMain
-            // 
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPictureBoxLogo);
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingLabelMain);
-            this.LoginPictureBoxLoadingMain.Controls.Add(this.LoginLoadingPanelMain);
-            this.LoginPictureBoxLoadingMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.LoginPictureBoxLoadingMain.Location = new System.Drawing.Point(0, 0);
-            this.LoginPictureBoxLoadingMain.Margin = new System.Windows.Forms.Padding(0);
-            this.LoginPictureBoxLoadingMain.Name = "LoginPictureBoxLoadingMain";
-            this.LoginPictureBoxLoadingMain.Size = new System.Drawing.Size(650, 850);
-            this.LoginPictureBoxLoadingMain.TabIndex = 3;
-            this.LoginPictureBoxLoadingMain.TabStop = false;
-            // 
-            // LoginLoadingPictureBoxLogo
-            // 
-            this.LoginLoadingPictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginLoadingPictureBoxLogo.Image")));
-            this.LoginLoadingPictureBoxLogo.Location = new System.Drawing.Point(238, 75);
-            this.LoginLoadingPictureBoxLogo.Name = "LoginLoadingPictureBoxLogo";
-            this.LoginLoadingPictureBoxLogo.Size = new System.Drawing.Size(175, 175);
-            this.LoginLoadingPictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.LoginLoadingPictureBoxLogo.TabIndex = 7;
-            this.LoginLoadingPictureBoxLogo.TabStop = false;
-            // 
-            // LoginLoadingLabelMain
-            // 
-            this.LoginLoadingLabelMain.BackColor = System.Drawing.Color.Transparent;
-            this.LoginLoadingLabelMain.Font = new System.Drawing.Font("Segoe UI", 20F);
-            this.LoginLoadingLabelMain.ForeColor = System.Drawing.Color.Black;
-            this.LoginLoadingLabelMain.Location = new System.Drawing.Point(63, 317);
-            this.LoginLoadingLabelMain.Name = "LoginLoadingLabelMain";
-            this.LoginLoadingLabelMain.Size = new System.Drawing.Size(524, 69);
-            this.LoginLoadingLabelMain.TabIndex = 9;
-            this.LoginLoadingLabelMain.Text = "Loading...";
-            this.LoginLoadingLabelMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // LoginLoadingPanelMain
-            // 
-            this.LoginLoadingPanelMain.BackColor = System.Drawing.Color.White;
-            this.LoginLoadingPanelMain.Controls.Add(this.LoginLunaProgressSpinnerFading);
-            this.LoginLoadingPanelMain.Controls.Add(this.LoginLoadingLabelDetails);
-            this.LoginLoadingPanelMain.Location = new System.Drawing.Point(64, 412);
-            this.LoginLoadingPanelMain.Name = "LoginLoadingPanelMain";
-            this.LoginLoadingPanelMain.Size = new System.Drawing.Size(523, 230);
-            this.LoginLoadingPanelMain.TabIndex = 5;
-            // 
-            // LoginLunaProgressSpinnerFading
-            // 
-            this.LoginLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 4;
-            this.LoginLunaProgressSpinnerFading.DotSizeMultiplier = 0.9F;
-            this.LoginLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
-            this.LoginLunaProgressSpinnerFading.Location = new System.Drawing.Point(189, 9);
-            this.LoginLunaProgressSpinnerFading.MinimumDotAlpha = 1D;
-            this.LoginLunaProgressSpinnerFading.Name = "LoginLunaProgressSpinnerFading";
-            this.LoginLunaProgressSpinnerFading.NumberOfDots = 20;
-            this.LoginLunaProgressSpinnerFading.Size = new System.Drawing.Size(150, 150);
-            this.LoginLunaProgressSpinnerFading.TabIndex = 25;
-            this.LoginLunaProgressSpinnerFading.UseForeColor = true;
-            // 
-            // LoginLoadingLabelDetails
-            // 
-            this.LoginLoadingLabelDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.LoginLoadingLabelDetails.ForeColor = System.Drawing.Color.Black;
-            this.LoginLoadingLabelDetails.Location = new System.Drawing.Point(6, 175);
-            this.LoginLoadingLabelDetails.Name = "LoginLoadingLabelDetails";
-            this.LoginLoadingLabelDetails.Size = new System.Drawing.Size(517, 30);
-            this.LoginLoadingLabelDetails.TabIndex = 4;
-            this.LoginLoadingLabelDetails.Text = "performing handshake with host... 47%";
-            this.LoginLoadingLabelDetails.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LoginPictureBoxOfflineMain
             // 
@@ -4833,6 +4392,426 @@
             this.LoginPictureBoxRegisterLogo.TabIndex = 6;
             this.LoginPictureBoxRegisterLogo.TabStop = false;
             // 
+            // LoginPictureBoxOnlineSettings
+            // 
+            this.LoginPictureBoxOnlineSettings.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsRegister);
+            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginPictureBoxOnlineSettingsLogo);
+            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginLunaAnimatedButtonNext);
+            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsTitle);
+            this.LoginPictureBoxOnlineSettings.Controls.Add(this.LoginPanelOnlineSettings);
+            this.LoginPictureBoxOnlineSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxOnlineSettings.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxOnlineSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxOnlineSettings.Name = "LoginPictureBoxOnlineSettings";
+            this.LoginPictureBoxOnlineSettings.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxOnlineSettings.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.LoginPictureBoxOnlineSettings.TabIndex = 3;
+            this.LoginPictureBoxOnlineSettings.TabStop = false;
+            // 
+            // LoginLabelOnlineSettingsRegister
+            // 
+            this.LoginLabelOnlineSettingsRegister.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoginLabelOnlineSettingsRegister.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.LoginLabelOnlineSettingsRegister.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.LoginLabelOnlineSettingsRegister.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineSettingsRegister.Location = new System.Drawing.Point(0, 804);
+            this.LoginLabelOnlineSettingsRegister.Name = "LoginLabelOnlineSettingsRegister";
+            this.LoginLabelOnlineSettingsRegister.Size = new System.Drawing.Size(650, 46);
+            this.LoginLabelOnlineSettingsRegister.TabIndex = 6;
+            this.LoginLabelOnlineSettingsRegister.Text = "Register";
+            this.LoginLabelOnlineSettingsRegister.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.LoginLabelOnlineSettingsRegister.Click += new System.EventHandler(this.LoginLabelOnlineSettingsRegister_Click);
+            // 
+            // LoginPictureBoxOnlineSettingsLogo
+            // 
+            this.LoginPictureBoxOnlineSettingsLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOnlineSettingsLogo.Image")));
+            this.LoginPictureBoxOnlineSettingsLogo.Location = new System.Drawing.Point(238, 75);
+            this.LoginPictureBoxOnlineSettingsLogo.Name = "LoginPictureBoxOnlineSettingsLogo";
+            this.LoginPictureBoxOnlineSettingsLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxOnlineSettingsLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxOnlineSettingsLogo.TabIndex = 5;
+            this.LoginPictureBoxOnlineSettingsLogo.TabStop = false;
+            // 
+            // LoginLunaAnimatedButtonNext
+            // 
+            this.LoginLunaAnimatedButtonNext.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginLunaAnimatedButtonNext.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginLunaAnimatedButtonNext.Depth = 0;
+            this.LoginLunaAnimatedButtonNext.Icon = null;
+            this.LoginLunaAnimatedButtonNext.Location = new System.Drawing.Point(220, 728);
+            this.LoginLunaAnimatedButtonNext.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginLunaAnimatedButtonNext.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
+            this.LoginLunaAnimatedButtonNext.Name = "LoginLunaAnimatedButtonNext";
+            this.LoginLunaAnimatedButtonNext.Primary = false;
+            this.LoginLunaAnimatedButtonNext.Size = new System.Drawing.Size(211, 71);
+            this.LoginLunaAnimatedButtonNext.TabIndex = 4;
+            this.LoginLunaAnimatedButtonNext.Text = "Next";
+            this.LoginLunaAnimatedButtonNext.Uppercase = false;
+            this.LoginLunaAnimatedButtonNext.UseVisualStyleBackColor = true;
+            this.LoginLunaAnimatedButtonNext.Click += new System.EventHandler(this.LoginLunaAnimatedButtonNext_Click);
+            // 
+            // LoginLabelOnlineSettingsTitle
+            // 
+            this.LoginLabelOnlineSettingsTitle.AutoSize = true;
+            this.LoginLabelOnlineSettingsTitle.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelOnlineSettingsTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineSettingsTitle.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineSettingsTitle.Location = new System.Drawing.Point(199, 275);
+            this.LoginLabelOnlineSettingsTitle.Name = "LoginLabelOnlineSettingsTitle";
+            this.LoginLabelOnlineSettingsTitle.Size = new System.Drawing.Size(228, 45);
+            this.LoginLabelOnlineSettingsTitle.TabIndex = 2;
+            this.LoginLabelOnlineSettingsTitle.Text = "Welcome Back";
+            // 
+            // LoginPanelOnlineSettings
+            // 
+            this.LoginPanelOnlineSettings.BackColor = System.Drawing.Color.White;
+            this.LoginPanelOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsSubHeader);
+            this.LoginPanelOnlineSettings.Controls.Add(this.LoginLabelOnlineSettingsHeader);
+            this.LoginPanelOnlineSettings.Controls.Add(this.LoginEditFieldOnlineSettingsPort);
+            this.LoginPanelOnlineSettings.Controls.Add(this.LoginEditFieldOnlineSettingsIp);
+            this.LoginPanelOnlineSettings.Location = new System.Drawing.Point(64, 337);
+            this.LoginPanelOnlineSettings.Name = "LoginPanelOnlineSettings";
+            this.LoginPanelOnlineSettings.Size = new System.Drawing.Size(523, 363);
+            this.LoginPanelOnlineSettings.TabIndex = 1;
+            // 
+            // LoginLabelOnlineSettingsSubHeader
+            // 
+            this.LoginLabelOnlineSettingsSubHeader.AutoSize = true;
+            this.LoginLabelOnlineSettingsSubHeader.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LoginLabelOnlineSettingsSubHeader.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineSettingsSubHeader.Location = new System.Drawing.Point(38, 65);
+            this.LoginLabelOnlineSettingsSubHeader.Name = "LoginLabelOnlineSettingsSubHeader";
+            this.LoginLabelOnlineSettingsSubHeader.Size = new System.Drawing.Size(130, 25);
+            this.LoginLabelOnlineSettingsSubHeader.TabIndex = 4;
+            this.LoginLabelOnlineSettingsSubHeader.Text = "Server Settings";
+            // 
+            // LoginLabelOnlineSettingsHeader
+            // 
+            this.LoginLabelOnlineSettingsHeader.AutoSize = true;
+            this.LoginLabelOnlineSettingsHeader.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineSettingsHeader.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineSettingsHeader.Location = new System.Drawing.Point(36, 24);
+            this.LoginLabelOnlineSettingsHeader.Name = "LoginLabelOnlineSettingsHeader";
+            this.LoginLabelOnlineSettingsHeader.Size = new System.Drawing.Size(152, 32);
+            this.LoginLabelOnlineSettingsHeader.TabIndex = 2;
+            this.LoginLabelOnlineSettingsHeader.Text = "Online Login";
+            // 
+            // LoginEditFieldOnlineSettingsPort
+            // 
+            this.LoginEditFieldOnlineSettingsPort.AutoSize = true;
+            this.LoginEditFieldOnlineSettingsPort.BackColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineSettingsPort.BackGroundColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineSettingsPort.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlineSettingsPort.ColorTextBoxNormal = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlineSettingsPort.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlineSettingsPort.DefaultValue = "Enter some text...";
+            this.LoginEditFieldOnlineSettingsPort.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineSettingsPort.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineSettingsPort.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlineSettingsPort.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.LoginEditFieldOnlineSettingsPort.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.LoginEditFieldOnlineSettingsPort.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.LoginEditFieldOnlineSettingsPort.Location = new System.Drawing.Point(42, 212);
+            this.LoginEditFieldOnlineSettingsPort.Name = "LoginEditFieldOnlineSettingsPort";
+            this.LoginEditFieldOnlineSettingsPort.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlineSettingsPort.TabIndex = 1;
+            this.LoginEditFieldOnlineSettingsPort.TextTextBox = "4447";
+            this.LoginEditFieldOnlineSettingsPort.TextTitle = "Port";
+            this.LoginEditFieldOnlineSettingsPort.UseColoredCaret = false;
+            this.LoginEditFieldOnlineSettingsPort.UseDefaultValue = false;
+            this.LoginEditFieldOnlineSettingsPort.UseSystemPasswordChar = false;
+            // 
+            // LoginEditFieldOnlineSettingsIp
+            // 
+            this.LoginEditFieldOnlineSettingsIp.AutoSize = true;
+            this.LoginEditFieldOnlineSettingsIp.BackColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineSettingsIp.BackGroundColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineSettingsIp.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlineSettingsIp.ColorTextBoxNormal = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlineSettingsIp.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlineSettingsIp.DefaultValue = "Enter your Username...";
+            this.LoginEditFieldOnlineSettingsIp.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineSettingsIp.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineSettingsIp.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlineSettingsIp.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.LoginEditFieldOnlineSettingsIp.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.LoginEditFieldOnlineSettingsIp.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.LoginEditFieldOnlineSettingsIp.Location = new System.Drawing.Point(42, 105);
+            this.LoginEditFieldOnlineSettingsIp.Name = "LoginEditFieldOnlineSettingsIp";
+            this.LoginEditFieldOnlineSettingsIp.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlineSettingsIp.TabIndex = 0;
+            this.LoginEditFieldOnlineSettingsIp.TextTextBox = "192.168.178.46";
+            this.LoginEditFieldOnlineSettingsIp.TextTitle = "IP";
+            this.LoginEditFieldOnlineSettingsIp.UseColoredCaret = false;
+            this.LoginEditFieldOnlineSettingsIp.UseDefaultValue = false;
+            this.LoginEditFieldOnlineSettingsIp.UseSystemPasswordChar = false;
+            // 
+            // LoginPictureBoxOnlineMain
+            // 
+            this.LoginPictureBoxOnlineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineBack);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPictureBoxOnlineLogo);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginAnimatedButtonOnlineLogin);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginLabelOnlineMain);
+            this.LoginPictureBoxOnlineMain.Controls.Add(this.LoginPanelOnlineCredentials);
+            this.LoginPictureBoxOnlineMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoginPictureBoxOnlineMain.Location = new System.Drawing.Point(0, 0);
+            this.LoginPictureBoxOnlineMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoginPictureBoxOnlineMain.Name = "LoginPictureBoxOnlineMain";
+            this.LoginPictureBoxOnlineMain.Size = new System.Drawing.Size(650, 850);
+            this.LoginPictureBoxOnlineMain.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.LoginPictureBoxOnlineMain.TabIndex = 1;
+            this.LoginPictureBoxOnlineMain.TabStop = false;
+            // 
+            // LoginLabelOnlineBack
+            // 
+            this.LoginLabelOnlineBack.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.LoginLabelOnlineBack.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.LoginLabelOnlineBack.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineBack.Location = new System.Drawing.Point(10, 804);
+            this.LoginLabelOnlineBack.Name = "LoginLabelOnlineBack";
+            this.LoginLabelOnlineBack.Size = new System.Drawing.Size(632, 44);
+            this.LoginLabelOnlineBack.TabIndex = 6;
+            this.LoginLabelOnlineBack.Text = "Back To Server Settings";
+            this.LoginLabelOnlineBack.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.LoginLabelOnlineBack.Click += new System.EventHandler(this.LoginLabelOnlineBack_Click);
+            // 
+            // LoginPictureBoxOnlineLogo
+            // 
+            this.LoginPictureBoxOnlineLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoginPictureBoxOnlineLogo.Image")));
+            this.LoginPictureBoxOnlineLogo.Location = new System.Drawing.Point(238, 75);
+            this.LoginPictureBoxOnlineLogo.Name = "LoginPictureBoxOnlineLogo";
+            this.LoginPictureBoxOnlineLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoginPictureBoxOnlineLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoginPictureBoxOnlineLogo.TabIndex = 5;
+            this.LoginPictureBoxOnlineLogo.TabStop = false;
+            // 
+            // LoginAnimatedButtonOnlineLogin
+            // 
+            this.LoginAnimatedButtonOnlineLogin.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.LoginAnimatedButtonOnlineLogin.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginAnimatedButtonOnlineLogin.Depth = 0;
+            this.LoginAnimatedButtonOnlineLogin.Icon = null;
+            this.LoginAnimatedButtonOnlineLogin.Location = new System.Drawing.Point(220, 728);
+            this.LoginAnimatedButtonOnlineLogin.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.LoginAnimatedButtonOnlineLogin.MouseState = LunaForms.LunaAnimatedButton.MouseStateBase.HOVER;
+            this.LoginAnimatedButtonOnlineLogin.Name = "LoginAnimatedButtonOnlineLogin";
+            this.LoginAnimatedButtonOnlineLogin.Primary = false;
+            this.LoginAnimatedButtonOnlineLogin.Size = new System.Drawing.Size(211, 71);
+            this.LoginAnimatedButtonOnlineLogin.TabIndex = 4;
+            this.LoginAnimatedButtonOnlineLogin.Text = "Sign in";
+            this.LoginAnimatedButtonOnlineLogin.Uppercase = false;
+            this.LoginAnimatedButtonOnlineLogin.UseVisualStyleBackColor = true;
+            this.LoginAnimatedButtonOnlineLogin.Click += new System.EventHandler(this.LoginAnimatedButtonOnlineLogin_Click);
+            // 
+            // LoginLabelOnlineMain
+            // 
+            this.LoginLabelOnlineMain.BackColor = System.Drawing.Color.Transparent;
+            this.LoginLabelOnlineMain.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineMain.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineMain.Location = new System.Drawing.Point(10, 255);
+            this.LoginLabelOnlineMain.Name = "LoginLabelOnlineMain";
+            this.LoginLabelOnlineMain.Size = new System.Drawing.Size(632, 65);
+            this.LoginLabelOnlineMain.TabIndex = 2;
+            this.LoginLabelOnlineMain.Text = "Welcome Back";
+            this.LoginLabelOnlineMain.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LoginPanelOnlineCredentials
+            // 
+            this.LoginPanelOnlineCredentials.BackColor = System.Drawing.Color.White;
+            this.LoginPanelOnlineCredentials.Controls.Add(this.label12);
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginLabelOnlineTitle);
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlinePassword);
+            this.LoginPanelOnlineCredentials.Controls.Add(this.LoginEditFieldOnlineUsername);
+            this.LoginPanelOnlineCredentials.Location = new System.Drawing.Point(64, 337);
+            this.LoginPanelOnlineCredentials.Name = "LoginPanelOnlineCredentials";
+            this.LoginPanelOnlineCredentials.Size = new System.Drawing.Size(523, 363);
+            this.LoginPanelOnlineCredentials.TabIndex = 1;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.label12.ForeColor = System.Drawing.Color.Black;
+            this.label12.Location = new System.Drawing.Point(36, 65);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(254, 25);
+            this.label12.TabIndex = 4;
+            this.label12.Text = "Credentials for 192.168.178.46";
+            // 
+            // LoginLabelOnlineTitle
+            // 
+            this.LoginLabelOnlineTitle.AutoSize = true;
+            this.LoginLabelOnlineTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginLabelOnlineTitle.ForeColor = System.Drawing.Color.Black;
+            this.LoginLabelOnlineTitle.Location = new System.Drawing.Point(36, 24);
+            this.LoginLabelOnlineTitle.Name = "LoginLabelOnlineTitle";
+            this.LoginLabelOnlineTitle.Size = new System.Drawing.Size(152, 32);
+            this.LoginLabelOnlineTitle.TabIndex = 2;
+            this.LoginLabelOnlineTitle.Text = "Online Login";
+            // 
+            // LoginEditFieldOnlinePassword
+            // 
+            this.LoginEditFieldOnlinePassword.AutoSize = true;
+            this.LoginEditFieldOnlinePassword.BackColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.BackGroundColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlinePassword.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlinePassword.ColorTextBoxNormal = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlinePassword.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlinePassword.DefaultValue = "Enter some text...";
+            this.LoginEditFieldOnlinePassword.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlinePassword.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.LoginEditFieldOnlinePassword.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.LoginEditFieldOnlinePassword.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.LoginEditFieldOnlinePassword.Location = new System.Drawing.Point(42, 212);
+            this.LoginEditFieldOnlinePassword.Name = "LoginEditFieldOnlinePassword";
+            this.LoginEditFieldOnlinePassword.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlinePassword.TabIndex = 1;
+            this.LoginEditFieldOnlinePassword.TextTextBox = "öüä";
+            this.LoginEditFieldOnlinePassword.TextTitle = "Password";
+            this.LoginEditFieldOnlinePassword.UseColoredCaret = false;
+            this.LoginEditFieldOnlinePassword.UseDefaultValue = false;
+            this.LoginEditFieldOnlinePassword.UseSystemPasswordChar = true;
+            // 
+            // LoginEditFieldOnlineUsername
+            // 
+            this.LoginEditFieldOnlineUsername.AutoSize = true;
+            this.LoginEditFieldOnlineUsername.BackColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.BackGroundColor = System.Drawing.Color.White;
+            this.LoginEditFieldOnlineUsername.ColorTextBoxFocus = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoginEditFieldOnlineUsername.ColorTextBoxNormal = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlineUsername.ColorTitle = System.Drawing.SystemColors.WindowText;
+            this.LoginEditFieldOnlineUsername.DefaultValue = "Enter your Username...";
+            this.LoginEditFieldOnlineUsername.FontTextBox = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.FontTitle = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxFocus = System.Drawing.Color.Black;
+            this.LoginEditFieldOnlineUsername.ForeColorTextBoxNormal = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.LoginEditFieldOnlineUsername.ImageClearHover = global::pmdbs.Properties.Resources.textBox_clear_hover;
+            this.LoginEditFieldOnlineUsername.ImageClearNormal = global::pmdbs.Properties.Resources.textBox_clear_normal;
+            this.LoginEditFieldOnlineUsername.Location = new System.Drawing.Point(42, 105);
+            this.LoginEditFieldOnlineUsername.Name = "LoginEditFieldOnlineUsername";
+            this.LoginEditFieldOnlineUsername.Size = new System.Drawing.Size(476, 89);
+            this.LoginEditFieldOnlineUsername.TabIndex = 0;
+            this.LoginEditFieldOnlineUsername.TextTextBox = "testuser2";
+            this.LoginEditFieldOnlineUsername.TextTitle = "Username";
+            this.LoginEditFieldOnlineUsername.UseColoredCaret = false;
+            this.LoginEditFieldOnlineUsername.UseDefaultValue = false;
+            this.LoginEditFieldOnlineUsername.UseSystemPasswordChar = false;
+            // 
+            // PanelLoading
+            // 
+            this.PanelLoading.Controls.Add(this.LoadingTableLayoutPanelMain);
+            this.PanelLoading.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelLoading.Location = new System.Drawing.Point(20, 60);
+            this.PanelLoading.Margin = new System.Windows.Forms.Padding(0);
+            this.PanelLoading.Name = "PanelLoading";
+            this.PanelLoading.Size = new System.Drawing.Size(1880, 1112);
+            this.PanelLoading.TabIndex = 14;
+            // 
+            // LoadingTableLayoutPanelMain
+            // 
+            this.LoadingTableLayoutPanelMain.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("LoadingTableLayoutPanelMain.BackgroundImage")));
+            this.LoadingTableLayoutPanelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.LoadingTableLayoutPanelMain.ColumnCount = 3;
+            this.LoadingTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoadingTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 650F));
+            this.LoadingTableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoadingTableLayoutPanelMain.Controls.Add(this.LoadingPictureBoxOverlay, 1, 1);
+            this.LoadingTableLayoutPanelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoadingTableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
+            this.LoadingTableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
+            this.LoadingTableLayoutPanelMain.Name = "LoadingTableLayoutPanelMain";
+            this.LoadingTableLayoutPanelMain.RowCount = 3;
+            this.LoadingTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoadingTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 850F));
+            this.LoadingTableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.LoadingTableLayoutPanelMain.Size = new System.Drawing.Size(1880, 1112);
+            this.LoadingTableLayoutPanelMain.TabIndex = 0;
+            // 
+            // LoadingPictureBoxOverlay
+            // 
+            this.LoadingPictureBoxOverlay.BackColor = System.Drawing.Color.Transparent;
+            this.LoadingPictureBoxOverlay.Controls.Add(this.LoadingPictureBoxContent);
+            this.LoadingPictureBoxOverlay.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoadingPictureBoxOverlay.Location = new System.Drawing.Point(615, 131);
+            this.LoadingPictureBoxOverlay.Margin = new System.Windows.Forms.Padding(0);
+            this.LoadingPictureBoxOverlay.Name = "LoadingPictureBoxOverlay";
+            this.LoadingPictureBoxOverlay.Size = new System.Drawing.Size(650, 850);
+            this.LoadingPictureBoxOverlay.TabIndex = 2;
+            this.LoadingPictureBoxOverlay.TabStop = false;
+            // 
+            // LoadingPictureBoxContent
+            // 
+            this.LoadingPictureBoxContent.Controls.Add(this.LoadingPictureBoxLogo);
+            this.LoadingPictureBoxContent.Controls.Add(this.LoadingLabelHeader);
+            this.LoadingPictureBoxContent.Controls.Add(this.LoadingPanelDisplay);
+            this.LoadingPictureBoxContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LoadingPictureBoxContent.Location = new System.Drawing.Point(0, 0);
+            this.LoadingPictureBoxContent.Margin = new System.Windows.Forms.Padding(0);
+            this.LoadingPictureBoxContent.Name = "LoadingPictureBoxContent";
+            this.LoadingPictureBoxContent.Size = new System.Drawing.Size(650, 850);
+            this.LoadingPictureBoxContent.TabIndex = 3;
+            this.LoadingPictureBoxContent.TabStop = false;
+            // 
+            // LoadingPictureBoxLogo
+            // 
+            this.LoadingPictureBoxLogo.Image = ((System.Drawing.Image)(resources.GetObject("LoadingPictureBoxLogo.Image")));
+            this.LoadingPictureBoxLogo.Location = new System.Drawing.Point(238, 75);
+            this.LoadingPictureBoxLogo.Name = "LoadingPictureBoxLogo";
+            this.LoadingPictureBoxLogo.Size = new System.Drawing.Size(175, 175);
+            this.LoadingPictureBoxLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.LoadingPictureBoxLogo.TabIndex = 7;
+            this.LoadingPictureBoxLogo.TabStop = false;
+            // 
+            // LoadingLabelHeader
+            // 
+            this.LoadingLabelHeader.BackColor = System.Drawing.Color.Transparent;
+            this.LoadingLabelHeader.Font = new System.Drawing.Font("Segoe UI", 20F);
+            this.LoadingLabelHeader.ForeColor = System.Drawing.Color.Black;
+            this.LoadingLabelHeader.Location = new System.Drawing.Point(63, 317);
+            this.LoadingLabelHeader.Name = "LoadingLabelHeader";
+            this.LoadingLabelHeader.Size = new System.Drawing.Size(524, 69);
+            this.LoadingLabelHeader.TabIndex = 9;
+            this.LoadingLabelHeader.Text = "Loading...";
+            this.LoadingLabelHeader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LoadingPanelDisplay
+            // 
+            this.LoadingPanelDisplay.BackColor = System.Drawing.Color.White;
+            this.LoadingPanelDisplay.Controls.Add(this.LoadingLunaProgressSpinnerFading);
+            this.LoadingPanelDisplay.Controls.Add(this.LoadingLabelStatus);
+            this.LoadingPanelDisplay.Location = new System.Drawing.Point(64, 412);
+            this.LoadingPanelDisplay.Name = "LoadingPanelDisplay";
+            this.LoadingPanelDisplay.Size = new System.Drawing.Size(523, 230);
+            this.LoadingPanelDisplay.TabIndex = 5;
+            // 
+            // LoadingLunaProgressSpinnerFading
+            // 
+            this.LoadingLunaProgressSpinnerFading.AnimationSlowDownCoefficient = 4;
+            this.LoadingLunaProgressSpinnerFading.DotSizeMultiplier = 0.9F;
+            this.LoadingLunaProgressSpinnerFading.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(49)))));
+            this.LoadingLunaProgressSpinnerFading.Location = new System.Drawing.Point(189, 9);
+            this.LoadingLunaProgressSpinnerFading.MinimumDotAlpha = 1D;
+            this.LoadingLunaProgressSpinnerFading.Name = "LoadingLunaProgressSpinnerFading";
+            this.LoadingLunaProgressSpinnerFading.NumberOfDots = 20;
+            this.LoadingLunaProgressSpinnerFading.Size = new System.Drawing.Size(150, 150);
+            this.LoadingLunaProgressSpinnerFading.TabIndex = 25;
+            this.LoadingLunaProgressSpinnerFading.UseForeColor = true;
+            // 
+            // LoadingLabelStatus
+            // 
+            this.LoadingLabelStatus.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.LoadingLabelStatus.ForeColor = System.Drawing.Color.Black;
+            this.LoadingLabelStatus.Location = new System.Drawing.Point(6, 175);
+            this.LoadingLabelStatus.Name = "LoadingLabelStatus";
+            this.LoadingLabelStatus.Size = new System.Drawing.Size(517, 30);
+            this.LoadingLabelStatus.TabIndex = 4;
+            this.LoadingLabelStatus.Text = "performing handshake with host... 47%";
+            this.LoadingLabelStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // PictureBoxOverlay
             // 
             this.PictureBoxOverlay.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -4874,8 +4853,9 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(1920, 1192);
             this.ControlBox = false;
-            this.Controls.Add(this.PanelMain);
             this.Controls.Add(this.PanelLogin);
+            this.Controls.Add(this.PanelMain);
+            this.Controls.Add(this.PanelLoading);
             this.Controls.Add(this.PictureBoxOverlay);
             this.Controls.Add(this.windowButtonMinimize);
             this.Controls.Add(this.windowButtonClose);
@@ -4940,9 +4920,6 @@
             this.SettingsPanelOnlineContent2.PerformLayout();
             this.SettingsPanelOnlineContent3.ResumeLayout(false);
             this.SettingsPanelOnlineContent3.PerformLayout();
-            this.SettingsPanelLoadingMain.ResumeLayout(false);
-            this.SettingsPanelLoadingCenter.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.SettingsPictureBoxLoadingLogo)).EndInit();
             this.SettingsFlowLayoutPanelOffline.ResumeLayout(false);
             this.SettingsPanelOfflineContentHeader.ResumeLayout(false);
             this.SettingsPanelOfflineContentHeader.PerformLayout();
@@ -5012,21 +4989,6 @@
             this.LoginTableLayoutPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxMain)).EndInit();
             this.LoginPictureBoxMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettings)).EndInit();
-            this.LoginPictureBoxOnlineSettings.ResumeLayout(false);
-            this.LoginPictureBoxOnlineSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettingsLogo)).EndInit();
-            this.LoginPanelOnlineSettings.ResumeLayout(false);
-            this.LoginPanelOnlineSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineMain)).EndInit();
-            this.LoginPictureBoxOnlineMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
-            this.LoginPanelOnlineCredentials.ResumeLayout(false);
-            this.LoginPanelOnlineCredentials.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxLoadingMain)).EndInit();
-            this.LoginPictureBoxLoadingMain.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.LoginLoadingPictureBoxLogo)).EndInit();
-            this.LoginLoadingPanelMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOfflineMain)).EndInit();
             this.LoginPictureBoxOfflineMain.ResumeLayout(false);
             this.LoginPanelOfflineCredentials.ResumeLayout(false);
@@ -5038,6 +5000,25 @@
             this.LoginPanelRegisterCredentials.ResumeLayout(false);
             this.LoginPanelRegisterCredentials.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxRegisterLogo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettings)).EndInit();
+            this.LoginPictureBoxOnlineSettings.ResumeLayout(false);
+            this.LoginPictureBoxOnlineSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineSettingsLogo)).EndInit();
+            this.LoginPanelOnlineSettings.ResumeLayout(false);
+            this.LoginPanelOnlineSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineMain)).EndInit();
+            this.LoginPictureBoxOnlineMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LoginPictureBoxOnlineLogo)).EndInit();
+            this.LoginPanelOnlineCredentials.ResumeLayout(false);
+            this.LoginPanelOnlineCredentials.PerformLayout();
+            this.PanelLoading.ResumeLayout(false);
+            this.LoadingTableLayoutPanelMain.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LoadingPictureBoxOverlay)).EndInit();
+            this.LoadingPictureBoxOverlay.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LoadingPictureBoxContent)).EndInit();
+            this.LoadingPictureBoxContent.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.LoadingPictureBoxLogo)).EndInit();
+            this.LoadingPanelDisplay.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxOverlay)).EndInit();
             this.ResumeLayout(false);
 
@@ -5151,10 +5132,6 @@
         private System.Windows.Forms.PictureBox LoginPictureBoxRegisterLogo;
         private System.Windows.Forms.Label LoginLabelRegisterSignIn;
         private System.Windows.Forms.Label LoginLabelOnlineBack;
-        private System.Windows.Forms.PictureBox LoginPictureBoxLoadingMain;
-        private System.Windows.Forms.Label LoginLoadingLabelMain;
-        private System.Windows.Forms.Panel LoginLoadingPanelMain;
-        private System.Windows.Forms.PictureBox LoginLoadingPictureBoxLogo;
         private System.Windows.Forms.Panel DataEditPanelPasswordGenerator;
         private LunaForms.LunaAnimatedButton DataEditAnimatedButtonGeneratePassword;
         private System.Windows.Forms.Label DataEditLabelPasswordGeneratorTitle;
@@ -5207,10 +5184,6 @@
         private LunaForms.EditField SettingsEditFieldLoginIP;
         private LunaForms.EditField SettingsEditFieldLoginPort;
         private LunaForms.EditField SettingsEditFieldLoginUsername;
-        private System.Windows.Forms.Panel SettingsPanelLoadingMain;
-        private System.Windows.Forms.Panel SettingsPanelLoadingCenter;
-        private System.Windows.Forms.Label SettingsLabelLoadingStatus;
-        private System.Windows.Forms.PictureBox SettingsPictureBoxLoadingLogo;
         private LunaForms.EditField SettingsEditFieldOfflineNewPasswordConfirm;
         private System.Windows.Forms.Label SettingsLabelOfflineChangePassword;
         private LunaForms.LunaAnimatedButton SettingsAnimatedButtonChangePasswordSubmit;
@@ -5280,9 +5253,6 @@
         private System.Windows.Forms.Label LoginLabelRegisterPasswordStrengthIndicator;
         private System.Windows.Forms.Label LoginLabelRegisterPasswordStrengthHeader;
         private LunaForms.PasswordStrengthIndicator LoginPasswordStrengthIndicatorRegister;
-        private System.Windows.Forms.Label LoginLoadingLabelDetails;
-        private LunaForms.LunaProgressSpinnerFading LoginLunaProgressSpinnerFading;
-        private LunaForms.LunaProgressSpinnerFading SettingsLunaProgressSpinnerFading;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
@@ -5350,6 +5320,15 @@
         private LunaForms.LunaAnimatedButton DashboardLunaAnimatedButtonLogoutAll;
         private System.Windows.Forms.Label label1;
         private LunaForms.LunaBarDiagram lunaBarDiagram1;
+        private System.Windows.Forms.Panel PanelLoading;
+        private System.Windows.Forms.TableLayoutPanel LoadingTableLayoutPanelMain;
+        private System.Windows.Forms.PictureBox LoadingPictureBoxOverlay;
+        private System.Windows.Forms.PictureBox LoadingPictureBoxContent;
+        private System.Windows.Forms.PictureBox LoadingPictureBoxLogo;
+        private System.Windows.Forms.Label LoadingLabelHeader;
+        private System.Windows.Forms.Panel LoadingPanelDisplay;
+        private LunaForms.LunaProgressSpinnerFading LoadingLunaProgressSpinnerFading;
+        private System.Windows.Forms.Label LoadingLabelStatus;
     }
 }
 

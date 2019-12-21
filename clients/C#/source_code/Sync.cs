@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace pmdbs
@@ -169,11 +170,20 @@ namespace pmdbs
                         GlobalVarPool.syncButton.Enabled = true;
                     });
                 }
+                if (AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.TaskType == TaskType.Interactive)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = true;
+                }
             }
         }
 
         public static async void Finish()
         {
+            while (GlobalVarPool.hidThreadCounter > 0)
+            {
+                Thread.Sleep(100);
+            }
+            GlobalVarPool.hidThreadCounter = 0;
             for (int i = 0; i < GlobalVarPool.selectedAccounts.Count; i++)
             {
                 string[] account = new string[] { "host%eq", "url%eq", "uname%eq", "password%eq", "email%eq", "notes%eq", "icon%eq", "hid%eq", "datetime%eq" };
@@ -295,28 +305,39 @@ namespace pmdbs
 
         public static async void SetHid(object parameter)
         {
-            string[] parameters = (string[])parameter;
-            string localID = string.Empty;
-            string hid = string.Empty;
-            for (int i = 0; i < parameters.Length; i++)
+            try
             {
-                if (parameters[i].Contains("local_id"))
+                string[] parameters = (string[])parameter;
+                string localID = string.Empty;
+                string hid = string.Empty;
+                for (int i = 0; i < parameters.Length; i++)
                 {
-                    localID = parameters[i].Split('!')[1];
+                    if (parameters[i].Contains("local_id"))
+                    {
+                        localID = parameters[i].Split('!')[1];
+                    }
+                    else if (parameters[i].Contains("hashed_id"))
+                    {
+                        hid = parameters[i].Split('!')[1];
+                    }
                 }
-                else if (parameters[i].Contains("hashed_id"))
+                if (new string[] { localID, hid }.Contains(string.Empty))
                 {
-                    hid = parameters[i].Split('!')[1];
+                    CustomException.ThrowNew.GenericException("Missing parameter in SetHid().");
+                    return;
                 }
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_hid = \"", hid, "\" WHERE D_id = ", localID, ";" }));
             }
-            if (new string[] { localID, hid }.Contains(string.Empty))
+            catch
             {
-                CustomException.ThrowNew.GenericException("Missing parameter in SetHid().");
-                return;
+                CustomException.ThrowNew.GenericException("Unknown error in SetHid().");
             }
-            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_hid = \"", hid, "\" WHERE D_id = ", localID, ";" }));
+            finally
+            {
+                GlobalVarPool.hidThreadCounter--;
+            }
         }
-
+        
         private static async void ReloadData()
         {
             Task<DataTable> GetData = DataBaseHelper.GetDataAsDataTable("SELECT D_id, D_hid, D_datetime, D_host, D_uname, D_password, D_url, D_email, D_notes, D_icon, D_score FROM Tbl_data;", (int)ColumnCount.Tbl_data);
@@ -357,6 +378,10 @@ namespace pmdbs
             {
                 GlobalVarPool.syncButton.Enabled = true;
             });
+            if (AutomatedTaskFramework.Tasks.GetCurrentOrDefault()?.TaskType == TaskType.Interactive)
+            {
+                AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = true;
+            }
         }
     }
 }

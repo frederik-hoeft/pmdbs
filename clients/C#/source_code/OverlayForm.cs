@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 
 namespace pmdbs
 {
-    class Overlay : Form
+    class OverlayForm : Form
     {
-        public Overlay(Form tocover)
+        public OverlayForm(Form tocover)
         {
             this.BackColor = Color.Black;
             this.Opacity = 0.5d;      // Tweak as desired

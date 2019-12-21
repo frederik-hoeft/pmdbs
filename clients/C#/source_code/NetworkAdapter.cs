@@ -309,7 +309,7 @@ namespace pmdbs
             /// <param name="code">The 2FA code to use.</param>
             public static void ActivateAccount(string code)
             {
-                HelperMethods.InvokeOutputLabel("Activating account ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Activating account ...");
                 Network.SendEncrypted("MNGVERusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;");
             }
             /// <summary>
@@ -326,7 +326,7 @@ namespace pmdbs
             /// <param name="newName">The new name.</param>
             public static void ChangeName(string newName)
             {
-                HelperMethods.InvokeOutputLabel("Changing name ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Changing name ...");
                 Network.SendEncrypted("MNGCHNnew_name%eq!" + newName + "!;");
             }
             /// <summary>
@@ -334,7 +334,7 @@ namespace pmdbs
             /// </summary>
             public static void CheckCookie()
             {
-                HelperMethods.InvokeOutputLabel("Checking cookie ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Checking cookie ...");
                 Network.SendEncrypted("MNGCCKcookie%eq!" + GlobalVarPool.cookie + "!;");
             }
             /// <summary>
@@ -344,7 +344,7 @@ namespace pmdbs
             /// <param name="code">The 2FA code (PM-XXXXXX)</param>
             public static void CommitPasswordChange(string password, string code)
             {
-                HelperMethods.InvokeOutputLabel("Changing password ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Changing password ...");
                 string passwordHash = CryptoHelper.SHA256Hash(password);
                 string onlinePassword = CryptoHelper.SHA256Hash(passwordHash.Substring(0, 32));
                 Network.SendEncrypted("MNGCPCpassword%eq!" + onlinePassword + "!;code%eq!PM-" + code + "!;");
@@ -356,7 +356,7 @@ namespace pmdbs
             {
                 if (!GlobalVarPool.connected)
                 {
-                    HelperMethods.InvokeOutputLabel("Connecting ...");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Connecting ...");
                     Thread connectionThread = new Thread(new ThreadStart(PDTPClient.Connect))
                     {
                         IsBackground = true
@@ -370,7 +370,7 @@ namespace pmdbs
             /// <param name="code">2FA code</param>
             public static void ConfirmNewDevice(string code)
             {
-                HelperMethods.InvokeOutputLabel("Adding device ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Adding device ...");
                 Network.SendEncrypted("MNGCNDusername%eq!" + GlobalVarPool.username + "!;code%eq!PM-" + code + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
             /// <summary>
@@ -379,7 +379,7 @@ namespace pmdbs
             /// <param name="hids">The HIDs to delete.</param>
             public static void Delete(List<string> hids)
             {
-                HelperMethods.InvokeOutputLabel("Deleting data ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Deleting data ...");
                 string hidsFormatted = "";
                 for (int i = 0; i < hids.Count; i++)
                 {
@@ -392,7 +392,7 @@ namespace pmdbs
             /// </summary>
             public static void Disconnect()
             {
-                HelperMethods.InvokeOutputLabel("Disconnecting ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Disconnecting ...");
                 Network.Send("FIN");
                 GlobalVarPool.threadKilled = true;
                 try
@@ -409,7 +409,7 @@ namespace pmdbs
             /// </summary>
             public static async void GetAccountDetails()
             {
-                HelperMethods.InvokeOutputLabel("Validating account details ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Validating account details ...");
                 System.Threading.Tasks.Task<string> GetDateTime = DataBaseHelper.GetSingleOrDefault("SELECT U_datetime FROM Tbl_user LIMIT 1;");
                 string datetime = await GetDateTime;
                 Network.SendEncrypted("MNGGADdatetime%eq!" + datetime + "!;");
@@ -419,7 +419,7 @@ namespace pmdbs
             /// </summary>
             public static void GetCookie()
             {
-                HelperMethods.InvokeOutputLabel("Requested cookie.");
+                WindowManager.LoadingScreen.InvokeSetStatus("Requested cookie.");
                 Network.SendEncrypted("MNGCKI");
             }
             /// <summary>
@@ -427,7 +427,7 @@ namespace pmdbs
             /// </summary>
             public static void GetDevices()
             {
-                HelperMethods.InvokeOutputLabel("Retrieving device list ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Retrieving device list ...");
                 Network.SendEncrypted("MNGDEV");
             }
 
@@ -436,7 +436,7 @@ namespace pmdbs
             /// </summary>
             public static void InitPasswordChange()
             {
-                HelperMethods.InvokeOutputLabel("Initiated password change.");
+                WindowManager.LoadingScreen.InvokeSetStatus("Initiated password change.");
                 Network.SendEncrypted("MNGIPCmode%eq!PASSWORD_CHANGE!;");
             }
 
@@ -446,7 +446,7 @@ namespace pmdbs
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Insert(List<string> account)
             {
-                HelperMethods.InvokeOutputLabel("Inserting data ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Inserting data ...");
                 string id = account[0];
                 string host = account[1];
                 string url = account[2];
@@ -465,7 +465,7 @@ namespace pmdbs
             /// </summary>
             public static void Login()
             {
-                HelperMethods.InvokeOutputLabel("Logging in ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Logging in ...");
                 Network.SendEncrypted("MNGLGIusername%eq!" + GlobalVarPool.username + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
             /// <summary>
@@ -473,7 +473,7 @@ namespace pmdbs
             /// </summary>
             public static void Logout()
             {
-                HelperMethods.InvokeOutputLabel("Logging out ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Logging out ...");
                 Network.SendEncrypted("MNGLGO");
             }
             /// <summary>
@@ -481,7 +481,7 @@ namespace pmdbs
             /// </summary>
             public static void Register()
             {
-                HelperMethods.InvokeOutputLabel("Registering new user ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Registering new user ...");
                 Network.SendEncrypted("MNGREGusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;nickname%eq!" + GlobalVarPool.name + "!;password%eq!" + GlobalVarPool.onlinePassword + "!;cookie%eq!" + GlobalVarPool.cookie + "!;");
             }
 
@@ -491,7 +491,7 @@ namespace pmdbs
             /// <param name="cookie">The device to unlink.</param>
             public static void RemoveDevice(string cookie)
             {
-                HelperMethods.InvokeOutputLabel("Unlinking device ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Unlinking device ...");
                 Network.SendEncrypted("MNGULKcookie%eq!" + cookie + "!;");
             }
 
@@ -500,7 +500,7 @@ namespace pmdbs
             /// </summary>
             public static void ResendCode()
             {
-                HelperMethods.InvokeOutputLabel("Resending code ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Resending code ...");
                 Network.SendEncrypted("MNGRTCusername%eq!" + GlobalVarPool.username + "!;email%eq!" + GlobalVarPool.email + "!;");
             }
             /// <summary>
@@ -509,7 +509,7 @@ namespace pmdbs
             /// <param name="hids"></param>
             public static void Select(List<string> hids)
             {
-                HelperMethods.InvokeOutputLabel("Downloading data ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Downloading data ...");
                 string hidsFormatted = "";
                 for (int i = 0; i < hids.Count; i++)
                 {
@@ -522,7 +522,7 @@ namespace pmdbs
             /// </summary>
             public static void Sync()
             {
-                HelperMethods.InvokeOutputLabel("Synchronizing ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Synchronizing ...");
                 Network.SendEncrypted("REQSYNfetch_mode%eq!FETCH_SYNC!;");
             }
 
@@ -532,7 +532,7 @@ namespace pmdbs
             /// <param name="account">id, host, url, username, password, email, notes, icon, hid, timestamp</param>
             public static void Update(List<string> account)
             {
-                HelperMethods.InvokeOutputLabel("Updating data ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Updating data ...");
                 string host = account[1];
                 string url = account[2];
                 string username = account[3];
@@ -1053,7 +1053,7 @@ namespace pmdbs
             }
             public static void ConfirmNewDevice(object parameterObject)
             {
-                HelperMethods.InvokeOutputLabel("Confirming new device ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Confirming new device ...");
                 string[] parameters = (string[])parameterObject;
                 if (!GlobalVarPool.connected)
                 {
@@ -1665,7 +1665,7 @@ namespace pmdbs
             }
             public static void Login(object parameterObject)
             {
-                HelperMethods.InvokeOutputLabel("Logging in ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Logging in ...");
                 string[] parameters = (string[])parameterObject;
                 if (!GlobalVarPool.connected)
                 {
@@ -2328,7 +2328,7 @@ namespace pmdbs
             }
             public static void ActivateAccount(object parameterObject)
             {
-                HelperMethods.InvokeOutputLabel("Activating account ...");
+                WindowManager.LoadingScreen.InvokeSetStatus("Activating account ...");
                 string[] parameters = (string[])parameterObject;
                 if (!GlobalVarPool.connected)
                 {

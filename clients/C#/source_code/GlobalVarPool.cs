@@ -40,12 +40,8 @@ namespace pmdbs
         public static string onlinePassword = string.Empty;
 
         // GLOBAL CONTROLS
-        public static LunaForms.LunaProgressSpinnerFading loadingSpinner = null;
-        public static System.Windows.Forms.Panel loadingPanel = null;
-        public static System.Windows.Forms.Label loadingLabel = null;
-        public static System.Windows.Forms.PictureBox loadingLogo = null;
         public static System.Windows.Forms.TableLayoutPanel settingsPanel = null;
-        public static System.Windows.Forms.Panel previousPanel = null;
+        // public static System.Windows.Forms.Panel previousPanel = null;
         public static LunaForms.AdvancedImageButton syncButton = null;
         public static LunaForms.LunaItemList deviceList = null;
 
@@ -61,7 +57,6 @@ namespace pmdbs
         public static string username = string.Empty;
         public static string email = string.Empty;
         public static string scryptHash = string.Empty;
-        public static string promptCommand = string.Empty;
         public static List<string> selectedAccounts = new List<string>();
         /// <summary>
         /// Represents the decrypted database. Columns are [0]D_id, [1]D_hid, [2]D_datetime, [3]D_host, [4]D_uname, [5]D_password, [6]D_url, [7]D_email, [8]D_notes, [9]D_icon, [10]score.
@@ -73,15 +68,15 @@ namespace pmdbs
         /// </summary>
         public static System.Data.DataTable FilteredUserData = new System.Data.DataTable();
         public static MainForm MainForm = null;
-        public static LoadingHelper.LoadingType loadingType = LoadingHelper.LoadingType.DEFAULT;
 
         public static int countedPackets = 0;
         public static int expectedPacketCount = 0;
+        public static int hidThreadCounter = 0;
 
         public static bool uiInitialized = false;
         public static bool isLocalDatabaseInitialized = false;
         public static bool connectionLost = false;
-        public static int commandErrorCode = -1;
+        // public static int commandErrorCode = -1;
         public static bool countSyncPackets = false;
         public static bool connected = false;
         public static bool bootCompleted = false;
@@ -93,8 +88,5 @@ namespace pmdbs
         public static bool databaseIsInUse = false;
         public static List<int> ThreadIDs = new List<int>();
         public static Socket clientSocket;
-
-        public static System.Windows.Forms.Label outputLabel = null;
-        public static bool outputLabelIsValid = false;
     }
 }

@@ -18,6 +18,9 @@ using Newtonsoft.Json;
 
 namespace pmdbs
 {
+    /// <summary>
+    /// [TEMP] A class to hold all sorts of random / not-yet-classified Methods.
+    /// </summary>
     public static class HelperMethods
     {
         public static void CollectGarbage()
@@ -25,64 +28,6 @@ namespace pmdbs
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
-        }
-
-        private static bool overlayIsShown = false;
-
-        public static async Task<System.Windows.Forms.DialogResult> ShowAsOverlay(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
-        {
-            System.Windows.Forms.DialogResult result = System.Windows.Forms.DialogResult.None;
-            if (parent.InvokeRequired)
-            {
-                parent.Invoke((System.Windows.Forms.MethodInvoker)async delegate
-                {
-                    result = await ShowAsOverlayHelper(parent, child);
-                });
-            }
-            else
-            {
-                result = await ShowAsOverlayHelper(parent, child);
-            }
-            return result;
-        }
-
-        private static async Task<System.Windows.Forms.DialogResult> ShowAsOverlayHelper(System.Windows.Forms.Form parent, System.Windows.Forms.Form child)
-        {
-            while (overlayIsShown)
-            {
-                await Task.Delay(100);
-            }
-            overlayIsShown = true;
-            Overlay overlay = new Overlay(parent);
-            child.Owner = parent;
-            System.Windows.Forms.DialogResult result = child.ShowDialog(null);
-            parent.RemoveOwnedForm(child);
-            child.Dispose();
-            overlay.Close();
-            overlay.Dispose();
-            overlayIsShown = false;
-            return result;
-        }
-
-        public static async void ShowCertificateWarning(CryptoHelper.CertificateInformation cert)
-        {
-            Task<System.Windows.Forms.DialogResult> ShowDialog = ShowAsOverlay(GlobalVarPool.MainForm, (CertificateForm)GlobalVarPool.MainForm.Invoke(new Func<CertificateForm>(() => new CertificateForm(GlobalVarPool.REMOTE_ADDRESS, cert))));
-            System.Windows.Forms.DialogResult result = await ShowDialog;
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                GlobalVarPool.foreignRsaKey = cert.PublicKey;
-                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_certificates (C_hash, C_accepted) VALUES (\"", cert.Checksum, "\", \"1\");" }));
-                GlobalVarPool.nonce = CryptoHelper.RandomString();
-                string encNonce = CryptoHelper.RSAEncrypt(GlobalVarPool.foreignRsaKey, GlobalVarPool.nonce);
-                string message = "CKEformat%eq!XML!;key%eq!" + GlobalVarPool.PublicKey + "!;nonce%eq!" + encNonce + "!;";
-                HelperMethods.InvokeOutputLabel("Client Key Exchange ...");
-                GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01K" + message + "\x04"));
-            }
-            else
-            {
-                NetworkAdapter.MethodProvider.Disconnect();
-                GlobalVarPool.commandErrorCode = -2;
-            }
         }
 
         public static List<byte[]> Separate(byte[] source, byte[] separator)
@@ -123,11 +68,6 @@ namespace pmdbs
             return json.Replace('\"', '§').Replace('\'', '§');
         }
 
-        public static void Prompt(string promptMain, string promptAction)
-        {
-            _ = ShowAsOverlay(GlobalVarPool.MainForm, (PromptForm)GlobalVarPool.MainForm.Invoke(new Func<PromptForm>(() => new PromptForm(promptMain, promptAction))));
-        }
-
         public static string ToHumanReadableFileSize(this double fileSize, int decimals)
         {
             string[] units = new string[] { "B", "KB", "MB", "GB", "TB", "PB" };
@@ -142,17 +82,6 @@ namespace pmdbs
                 }
             }
             return fileSize.ToString() + units[i];
-        }
-
-        public static void InvokeOutputLabel(string text)
-        {
-            if (GlobalVarPool.outputLabelIsValid)
-            {
-                GlobalVarPool.outputLabel.Invoke((System.Windows.Forms.MethodInvoker)delegate
-                {
-                    GlobalVarPool.outputLabel.Text = text;
-                });
-            }
         }
 
         /// <summary>
@@ -241,7 +170,7 @@ namespace pmdbs
         }
         public static async Task ChangeMasterPassword(string password, bool showLoadingScreen)
         {
-            InvokeOutputLabel("Creating stage 1 password hash ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Creating stage 1 password hash ...");
             string stage1PasswordHash = CryptoHelper.SHA256Hash(password);
             string localAESkey = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(32, 32));
             string onlinePassword = CryptoHelper.SHA256Hash(stage1PasswordHash.Substring(0, 32));
@@ -265,14 +194,14 @@ namespace pmdbs
                     }
                     double Percentage = ((((double)rowCounter * ((double)columns - (double)3)) + (double)i - 3) / (double)fields) * (double)100;
                     double FinalPercentage = Math.Round(Percentage, 0, MidpointRounding.ToEven);
-                    InvokeOutputLabel("Changing your password ... " + FinalPercentage.ToString() + "%");
+                    WindowManager.LoadingScreen.InvokeSetStatus("Changing your password ... " + FinalPercentage.ToString() + "%");
                 }
                 rowCounter++;
             }
-            InvokeOutputLabel("Creating stage 2 password hash ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Creating stage 2 password hash ...");
             Task<string> ScryptTask = Task.Run(() => CryptoHelper.ScryptHash(stage1PasswordHash, GlobalVarPool.firstUsage));
             string stage2PasswordHash = await ScryptTask;
-            InvokeOutputLabel("Setting new password ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Setting new password ...");
             await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_user SET U_password = \"", stage2PasswordHash, "\"" }));
             rowCounter = 0;
             int totalRowCount = encryptedUserData.Rows.Count;
@@ -280,9 +209,9 @@ namespace pmdbs
             foreach (DataRow row in encryptedUserData.Rows)
             {
                 await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_data SET D_host = \"", row[3].ToString(), "\", D_url = \"", row[6].ToString(), "\", D_uname = \"", row[4].ToString(), "\", D_password = \"", row[5].ToString(), "\", D_email = \"", row[7].ToString(), "\", D_notes = \"", row[8].ToString(), "\", D_icon = \"", row[9].ToString(), "\", D_hid = \"EMPTY\", D_datetime = \"", TimeConverter.TimeStamp(), "\" WHERE D_id = ", row[0].ToString(), ";" }));
-                InvokeOutputLabel("Writing changes ... " + Math.Round(((float)rowCounter / (float)totalRowCount) * 100f,0,MidpointRounding.ToEven).ToString() + "%");
+                WindowManager.LoadingScreen.InvokeSetStatus("Writing changes ... " + Math.Round(((float)rowCounter / (float)totalRowCount) * 100f,0,MidpointRounding.ToEven).ToString() + "%");
             }
-            InvokeOutputLabel("Updating data source ...");
+            WindowManager.LoadingScreen.InvokeSetStatus("Updating data source ...");
             // UPDATE GlobalVarPool.UserData
             foreach (DataRow row in GlobalVarPool.UserData.Rows)
             {
