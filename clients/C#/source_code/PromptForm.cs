@@ -69,13 +69,17 @@ namespace pmdbs
             }
             // DEEP COPY SCHEDULED TASKS
             List<AutomatedTaskFramework.Task> scheduledTasks = AutomatedTaskFramework.Tasks.DeepCopy();
+            AutomatedTaskFramework.Tasks.AbortAll();
             AutomatedTaskFramework.Tasks.Clear();
+
             switch (Prompt.Command)
             {
                 case PromptCommand.ACTIVATE_ACCOUNT:
                     {
+                        AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = true;
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "ACCOUNT_VERIFIED", () => NetworkAdapter.MethodProvider.ActivateAccount(code));
                         AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "ALREADY_LOGGED_IN|LOGIN_SUCCESSFUL", NetworkAdapter.MethodProvider.Login);
+                        AutomatedTaskFramework.Tasks.Schedule(scheduledTasks[0]);
                         break;
                     }
                 case PromptCommand.CONFIRM_NEW_DEVICE:

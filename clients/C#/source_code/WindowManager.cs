@@ -99,6 +99,7 @@ namespace pmdbs
             /// </summary>
             public static void InvokeHide()
             {
+                HelperMethods.Debug("WindowManager:  Hiding LoadingScreen ...");
                 if (!isInitialized) throw new NullReferenceException("LoadingScreen requires Controls to operate. Expected ControlCollection but got null");
                 Controls.ParentForm.Invoke((System.Windows.Forms.MethodInvoker)delegate
                 {

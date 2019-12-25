@@ -20,10 +20,7 @@ namespace pmdbs
         {
             try
             {
-                if (GlobalVarPool.debugging)
-                {
-                    Console.WriteLine("SENDING: U" + data);
-                }
+                HelperMethods.Debug("Network:  SENDING: U" + data);
                 GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01U" + data + "\x04"));
             }
             catch (Exception e)
@@ -45,12 +42,9 @@ namespace pmdbs
             {
                 string encryptedData = CryptoHelper.AESEncrypt(data, GlobalVarPool.aesKey);
                 string hmac = CryptoHelper.CalculateHMAC(GlobalVarPool.hmac, encryptedData);
-                if (GlobalVarPool.debugging)
-                {
-                    Console.WriteLine("SENDING: E" + data);
-                    Console.WriteLine("SENDINGE: E" + encryptedData);
-                    Console.WriteLine("CALCULATED HMAC: " + hmac);
-                }
+                HelperMethods.Debug("Network:  SENDING: E" + data);
+                HelperMethods.Debug("Network:  SENDINGE: E" + encryptedData);
+                HelperMethods.Debug("Network:  CALCULATED HMAC: " + hmac);
                 GlobalVarPool.clientSocket.Send(Encoding.UTF8.GetBytes("\x01" + "E" + encryptedData + hmac + "\x04"));
             }
             catch (Exception e)
