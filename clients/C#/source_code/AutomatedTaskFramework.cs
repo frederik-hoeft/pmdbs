@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace pmdbs
 {
@@ -26,7 +27,7 @@ namespace pmdbs
                             if (data.Equals(currentTask.FinishedCondition))
                             {
                                 currentTask.Delete();
-
+                                HelperMethods.Debug("AutomatedTaskFramework:  Task #" + currentTask.GetHashCode().ToString() + " has finished gracefully.");
                                 if (Tasks.Available())
                                 {
                                     Tasks.GetCurrent().Run();
@@ -37,7 +38,7 @@ namespace pmdbs
                             if (currentTask.FinishedCondition.Split('|').Where(taskCondition => data.Contains(taskCondition)).Count() != 0)
                             {
                                 currentTask.Delete();
-
+                                HelperMethods.Debug("AutomatedTaskFramework:  Task #" + currentTask.GetHashCode().ToString() + " has finished gracefully.");
                                 if (Tasks.Available())
                                 {
                                     Tasks.GetCurrent().Run();
@@ -48,7 +49,7 @@ namespace pmdbs
                             if (data.Contains(currentTask.FinishedCondition))
                             {
                                 currentTask.Delete();
-
+                                HelperMethods.Debug("AutomatedTaskFramework:  Task #" + currentTask.GetHashCode().ToString() + " has finished gracefully.");
                                 if (Tasks.Available())
                                 {
                                     Tasks.GetCurrent().Run();
@@ -61,8 +62,11 @@ namespace pmdbs
                 {
                     if (currentTask.BlockingState == FailedTaskBlocking.Block)
                     {
+                        HelperMethods.Debug("AutomatedTaskFramework:  Task #" + currentTask.ToString() + " has been terminated!");
                         currentTask.TaskFailedAction?.Invoke();
+                        HelperMethods.Debug("AutomatedTaskFramework:  Task #" + currentTask.ToString() + " is launching BlockingTaskFailedAction!");
                         Tasks.BlockingTaskFailedAction();
+                        HelperMethods.Debug("AutomatedTaskFramework:  Task #" + currentTask.ToString() + " is exiting. Bye!");
                     }
                     else
                     {
@@ -88,6 +92,7 @@ namespace pmdbs
             private static Action _blockingTaskFailedAction = new Action(delegate () { });
             private static bool executing = false;
             private static readonly List<Task> taskList = new List<Task>();
+            private static readonly List<int> threads = new List<int>();
             /// <summary>
             /// Gets the next scheduled task
             /// </summary>
@@ -102,6 +107,26 @@ namespace pmdbs
                 executing = false;
             }
 #pragma warning restore
+
+            /// <summary>
+            /// Abort all running interactive background threads.
+            /// </summary>
+            public static void AbortAll()
+            {
+                for (int i = 0; i < threads.Count; i++)
+                {
+                    if (threads[i] != Thread.CurrentThread.ManagedThreadId)
+                    {
+                        threads.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+
+            internal static bool IsExecutingThread()
+            {
+                return threads.Contains(Thread.CurrentThread.ManagedThreadId);
+            }
             /// <summary>
             /// The code to be executed when a failed task blocks the queue.
             /// </summary>
@@ -1068,11 +1093,13 @@ namespace pmdbs
             /// </summary>
             public void Run()
             {
+                HelperMethods.Debug("AutomatedTaskFramework:  Launching new Task #" + this.GetHashCode().ToString() + " (" + _taskType.ToString() + ")...");
                 switch (_taskType)
                 {
                     case TaskType.FireAndForget:
                         _automatedAction();
                         Delete();
+                        HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.GetHashCode().ToString() + " has finished gracefully.");
                         if (Tasks.Available())
                         {
                             Tasks.GetCurrent().Run();
@@ -1080,27 +1107,42 @@ namespace pmdbs
                         break;
 
                     case TaskType.Interactive:
-                        new System.Threading.Thread(delegate ()
+                        System.Threading.Thread interactiveThread = new System.Threading.Thread(delegate ()
                         {
-                            while (!IsFinished() && !IsFailed() && !IsTerminated)
+                            HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.GetHashCode().ToString() + " has started Thread 0x" + AppDomain.GetCurrentThreadId().ToString("x"));
+                            bool threadAborted = false;
+                            while (!IsFinished() && !IsFailed() && !IsTerminated && Tasks.IsExecutingThread())
                             {
                                 System.Threading.Thread.Sleep(100);
+                            }
+                            if (!Tasks.IsExecutingThread())
+                            {
+                                HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.GetHashCode().ToString() + " has been aborted!");
+                                Delete();
+                                HelperMethods.Debug("AutomatedTaskFramework:  Thread 0x" + AppDomain.GetCurrentThreadId().ToString("x") + " is exiting. Bye!");
+                                return;
                             }
                             if (IsFailed() || IsTerminated)
                             {
                                 if (BlockingState == FailedTaskBlocking.Block)
                                 {
+                                    HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.GetHashCode().ToString() + " has been terminated!");
                                     TaskFailedAction?.Invoke();
+                                    HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.GetHashCode().ToString() + " is launching BlockingTaskFailedAction!");
                                     Tasks.BlockingTaskFailedAction();
+                                    HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.GetHashCode().ToString() + " is exiting. Bye!");
                                     return;
                                 }
                             }
+                            HelperMethods.Debug("AutomatedTaskFramework:  Task #" + this.ToString() + " has finished gracefully.");
                             Delete();
                             if (Tasks.Available())
                             {
                                 Tasks.GetCurrent().Run();
                             }
-                        }).Start();
+                        });
+
+                        interactiveThread.Start();
                         try
                         {
                             _automatedAction();

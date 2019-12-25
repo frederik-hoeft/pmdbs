@@ -23,6 +23,13 @@ namespace pmdbs
     /// </summary>
     public static class HelperMethods
     {
+        public static void Debug(string message)
+        {
+            if (GlobalVarPool.debugging)
+            {
+                Console.WriteLine(message);
+            }
+        }
         public static void CollectGarbage()
         {
             GC.Collect();
@@ -127,6 +134,11 @@ namespace pmdbs
         /// </summary>
         public static async Task LoadSettings()
         {
+            string metaData = await DataBaseHelper.GetSingleOrDefault("SELECT EXISTS(SELECT 1 FROM Tbl_meta LIMIT 1);");
+            if (metaData.Equals("0"))
+            {
+                await DataBaseHelper.ModifyData("INSERT INTO Tbl_meta(M_avgScoreOld) VALUES (\"0\")");
+            }
             Task<List<string>> getUserSettings = DataBaseHelper.GetDataAsList("SELECT * FROM Tbl_user LIMIT 1;", (int)ColumnCount.Tbl_user);
             List<string> userSettings = await getUserSettings;
             AutomatedTaskFramework.Tasks.BlockingTaskFailedAction = new Action(delegate () 

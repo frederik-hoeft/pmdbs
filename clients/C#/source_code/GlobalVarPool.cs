@@ -82,7 +82,7 @@ namespace pmdbs
         public static bool bootCompleted = false;
         public static bool isRoot = false;
         public static bool isUser = false;
-        public static bool debugging = false;
+        public static bool debugging = true;
         public static bool threadKilled = false;
         public static bool search = false;
         public static bool databaseIsInUse = false;

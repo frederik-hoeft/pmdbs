@@ -314,11 +314,8 @@ namespace pmdbs
                                                     isTcpFin = true;
                                                 }
                                                 catch { }
-                                                if (GlobalVarPool.debugging)
-                                                {
-                                                    Console.WriteLine("Disconnected.");
-                                                    Console.WriteLine("REASON: " + dataString.Substring(4).Split(new string[] { "%eq" }, StringSplitOptions.None)[1].Replace("!", "").Replace(";", ""));
-                                                }
+                                                HelperMethods.Debug("PDTPClient:  Disconnected.");
+                                                HelperMethods.Debug("PDTPClient:  REASON: " + dataString.Substring(4).Split(new string[] { "%eq" }, StringSplitOptions.None)[1].Replace("!", "").Replace(";", ""));
                                                 
                                                 return;
                                             }
@@ -398,24 +395,19 @@ namespace pmdbs
                                                 providedNonce = returnValue.Split('!')[1].Replace("\0", "");
                                             }
                                         }
-                                        if (GlobalVarPool.debugging)
-                                        {
-                                            Console.WriteLine("Provided nonce: " + providedNonce);
-                                            Console.WriteLine("Real nonce: " + GlobalVarPool.nonce);
-                                        }
+                                        HelperMethods.Debug("PDTPClient:  Provided nonce: " + providedNonce);
+                                        HelperMethods.Debug("PDTPClient:  Real nonce: " + GlobalVarPool.nonce);
                                         if (!providedNonce.Equals(GlobalVarPool.nonce))
                                         {
                                             return;
                                         }
+                                        HelperMethods.Debug("PDTPClient:  Nonce ok!");
                                         GlobalVarPool.aesKey = key;
                                         string shaIn = GlobalVarPool.aesKey + GlobalVarPool.nonce;
                                         GlobalVarPool.hmac = CryptoHelper.SHA256Hash(GlobalVarPool.aesKey + GlobalVarPool.nonce);
-                                        if (GlobalVarPool.debugging)
-                                        {
-                                            Console.WriteLine("AES KEY: " + GlobalVarPool.aesKey);
-                                            Console.WriteLine("NONCE: " + GlobalVarPool.nonce);
-                                            Console.WriteLine("HMAC KEY: " + GlobalVarPool.hmac);
-                                        }
+                                        HelperMethods.Debug("PDTPClient:  AES KEY: " + GlobalVarPool.aesKey);
+                                        HelperMethods.Debug("PDTPClient:  NONCE: " + GlobalVarPool.nonce);
+                                        HelperMethods.Debug("PDTPClient:  HMAC KEY: " + GlobalVarPool.hmac);
                                         GlobalVarPool.nonce = CryptoHelper.RandomString();
                                         WindowManager.LoadingScreen.InvokeSetStatus("Acknowledging ...");
                                         Network.SendEncrypted("KEXACKnonce%eq!" + GlobalVarPool.nonce + "!;");
@@ -429,15 +421,12 @@ namespace pmdbs
                                     {
                                         CustomException.ThrowNew.NetworkException("Received an invalid HMAC checksum.", "[ERRNO 31] IMAC");
                                     }
-                                    else if (GlobalVarPool.debugging)
+                                    else
                                     {
-                                        Console.WriteLine("HMAC OK!");
+                                        HelperMethods.Debug("PDTPClient:  HMAC ok!");
                                     }
                                     string decryptedData = CryptoHelper.AESDecrypt(dataString.Substring(1, dataString.Length - 45), GlobalVarPool.aesKey);
-                                    if (GlobalVarPool.debugging)
-                                    {
-                                        Console.WriteLine("SERVER: " + decryptedData);
-                                    }
+                                    HelperMethods.Debug("PDTPClient:  SERVER: " + decryptedData);
                                     string packetID = decryptedData.Substring(0, 3);
                                     string packetSID = decryptedData.Substring(3, 3);
                                     // AUTOMATED TASK MANAGEMENT (CHECK FOR COMPLETED TASKS AND START NEXT ONE IN QUEUE)

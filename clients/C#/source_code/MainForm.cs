@@ -1410,9 +1410,37 @@ namespace pmdbs
                 WindowManager.LoadingScreen.InvokeHide();
             });
             AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "DEVICE_AUTHORIZED", NetworkAdapter.MethodProvider.Connect, onTaskFailed);
-            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register, onTaskFailed);
+            // AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.Contains, "SEND_VERIFICATION_ACTIVATE_ACCOUNT", NetworkAdapter.MethodProvider.Register, onTaskFailed);
+            Func<bool> interactiveFinishedWhen = new Func<bool>(delegate
+            {
+                if (AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished)
+                {
+                    AutomatedTaskFramework.Tasks.InteractiveSubTaskFinished = false;
+                    return true;
+                }
+                return false;
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Register, interactiveFinishedWhen, onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, delegate () { });
+            AutomatedTaskFramework.Task.Create(TaskType.Interactive, NetworkAdapter.MethodProvider.Sync, interactiveFinishedWhen, onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.NetworkTask, SearchCondition.In, "LOGGED_OUT|NOT_LOGGED_IN", NetworkAdapter.MethodProvider.Logout, onTaskFailed);
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, NetworkAdapter.MethodProvider.Disconnect);
+            Action finalizeRegister = new Action(delegate
+            {
+                SettingsFlowLayoutPanelOnline.Invoke((MethodInvoker)SettingsFlowLayoutPanelOnline.BringToFront);
+                WindowManager.LoadingScreen.InvokeHide();
+            });
+            AutomatedTaskFramework.Task.Create(TaskType.FireAndForget, finalizeRegister);
             AutomatedTaskFramework.Tasks.Execute();
-            await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
+            string settingsExists = await DataBaseHelper.GetSingleOrDefault("SELECT EXISTS (SELECT 1 FROM Tbl_settings LIMIT 1);");
+            if (settingsExists.Equals("1"))
+            {
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "UPDATE Tbl_settings SET S_server_ip = \"", GlobalVarPool.REMOTE_ADDRESS, "\", S_server_port = \"", GlobalVarPool.REMOTE_PORT.ToString(), "\";" }));
+            }
+            else
+            {
+                await DataBaseHelper.ModifyData(DataBaseHelper.Security.SQLInjectionCheckQuery(new string[] { "INSERT INTO Tbl_settings (S_server_ip, S_server_port) VALUES (\"", GlobalVarPool.REMOTE_ADDRESS, "\",\"", GlobalVarPool.REMOTE_PORT.ToString(), "\");" }));
+            }
         }
         #endregion
         #region SettingsOffline
