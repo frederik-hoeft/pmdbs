@@ -1,66 +1,104 @@
-package com.rodaues.pmdbs_androidclient;
+package com.example.rodaues.pmdbs_navdraw;
 
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import com.google.android.material.navigation.NavigationView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import java.lang.reflect.Method;
+import java.util.List;
 
-public class Main extends AppCompatActivity{
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
-
+public class Main extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     public static RelativeLayout rl_loading;
-    public static Boolean loading=false;
+    public static NavigationView navigationView;
+    ImageButton btn_go2settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme_NoActionBar);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        rl_loading = findViewById(R.id.rlayout_progressbar);
+        setContentView(R.layout.activity_main_test);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        btn_go2settings=findViewById(R.id.btn_go2settings);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        globalVARpool.aca_main=this;
+        HelperMethods.setup(this);
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+
+        rl_loading = findViewById(R.id.rlayout_progressbar);
         stopLoadingScreen();
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.contentmain,new tab_saveddata()).commit();
+
+       // Toast.makeText(this,"Cookie: "+globalVARpool.cookie,Toast.LENGTH_LONG).show();
+
+
+        btn_go2settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Main.this,Settings.class));
+
+            }
+        });
+
+
+        DataBaseHelper db = DataBaseHelper.GetInstance();
+        db.updateDATASET();
+
+        System.out.println(globalVARpool.hashedMasterPW);
+
+
+    }
+    protected void onResume()
+    {
+        super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            startActivity(new Intent(Main.this, login.class));
+            super.onBackPressed();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.main, menu);
 
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -69,72 +107,115 @@ public class Main extends AppCompatActivity{
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
+        if (id == R.id.action_settings) {
+
+
             return true;
-        }*/
+        }
 
         return super.onOptionsItemSelected(item);
     }
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
+    @SuppressWarnings("StatementWithEmptyBody" )
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+
+
+        if (id == R.id.nav_addaccount) {
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.contentmain,new tab_add()).commit();
+
+        } else if (id == R.id.nav_saveddata) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.contentmain,new tab_saveddata(),"tab_saveddata").commit();
+
+
+        } else if (id == R.id.nav_myaccount) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.contentmain,new tab_myaccount()).commit();
+
+
+        } else if (id == R.id.nav_settings) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.contentmain,new tab_settings()).commit();
+
+
+        } else if (id == R.id.nav_printdb) {
+
+            DataBaseHelper db = DataBaseHelper.GetInstance();
+            db.printDB();
+
+
+        }else if (id == R.id.register_online) {
+
+            Intent i_registeronline = new Intent(Main.this,registeronline.class);
+            i_registeronline.putExtra("onlinepw",globalVARpool.onlinePassword);
+            startActivity(i_registeronline);
+
+        }/* else if (id == R.id.nav_send) {
+
+        }*/
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    public static void startLoadingScreen(){
+
+        rl_loading.setVisibility(View.VISIBLE);
+
+    }
+    public static void stopLoadingScreen() {
+
+        rl_loading.setVisibility(View.GONE);
+    }
+
+
+    public Boolean networkCON(){
+        boolean connected = false;
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            connected = true;
         }
+        else
+            connected = false;
+        return connected;
+    }
+/*
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem register = menu.findItem(R.id.nav_settings);
+        if(true)
+        {
+            register.setVisible(false);
+        }
+        else
+        {
+            register.setVisible(true);
+        }
+        return true;
+    }*/
 
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
-            switch (position){
-                case 0:
-                    fragment = new tab1_addacc();
-                    break;
-                case 1:
-                    fragment = new tab2_savacc();
-                    break;
-                case 2:
-                    fragment = new tab3_myacc();
-                    break;
-                case 3:
-                    fragment = new tab4_serversettings();
-                    break;
+    @Override
+    public void onPause() {
+        if (isApplicationSentToBackground(this)){
+            onBackPressed();
+            // Do what you want to do on detecting Home Key being Pressed
+        }
+        super.onPause();
+    }
+    public boolean isApplicationSentToBackground(final Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                return true;
             }
-            return fragment;
         }
-
-        @Override
-        public int getCount() {
-            // Show 4 total pages.
-            return 4;
-        }
-    }
-
-    private void msg(String s){
-        View parentLayout = findViewById(android.R.id.content);
-        Snackbar.make(parentLayout,s, Snackbar.LENGTH_SHORT)
-                .setAction("Action", null)
-                .setActionTextColor(getResources().getColor(R.color.colorAccent)).show();
-
-    }
-
-    public static Method startLoadingScreen(){
-
-       // rl_loading.animate().alpha(1.0f);
-        //rl_loading.setClickable(true);
-
-         rl_loading.setVisibility(View.VISIBLE);
-
-         if(rl_loading.getVisibility()==View.VISIBLE)  loading=true;
-         else{
-             Log.e("","MOIN! Hat nicht geladen :(");
-         }
-
-        return null;
-    }
-    public static Method stopLoadingScreen(){
-        //rl_loading.animate().alpha(0.0f);
-        //rl_loading.setClickable(false);
-       rl_loading.setVisibility(View.GONE);
-        if(rl_loading.getVisibility()==View.VISIBLE)  loading=false;
-        return null;
+        return false;
     }
 }
